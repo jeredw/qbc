@@ -5,4 +5,5 @@
   (line (line_number 10) (statement (goto_statement goto (line_number 20))) \n) 
   (line (text_label label) : (statement (goto_statement goto (line_number 10))) \n) 
   (line (text_label foo) : (statement (goto_statement goto (line_number 10))) : (statement (goto_statement goto (line_number 20))) \n) 
-  (line (text_label bar) : statement : statement : (statement (goto_statement goto (line_number 40))) \n) <EOF>)
+  (line (text_label bar) : statement : statement : (statement (goto_statement goto (line_number 40))) \n) 
+  (line (text_label Periods.Are.Cool) : (statement (goto_statement goto (line_number 2))) \n) <EOF>)

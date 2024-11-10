@@ -73,6 +73,6 @@ STRING : '"' ~["\r\n]* '"' ;
 // Note: We skip ' comments here, but REM comments are parsed as statements.
 COMMENT : '\'' ~[\r\n]* '\r'? '\n' -> skip;
 
-ID : [A-Za-z][A-Za-z0-9]* ;
+ID : [A-Za-z][A-Za-z0-9.]* ;
 NL : '\r'? '\n' ;
 WS : [ \t]+ -> skip ;
