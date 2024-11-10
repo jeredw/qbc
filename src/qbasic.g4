@@ -19,23 +19,23 @@ statement
 // REM style comments start wherever a statement begins and consume the rest of the line.
 // We just include them in the parse tree and ignore them.
 rem_statement
-  : 'rem' (~NL)*
+  : REM (~NL)*
   ;
 
 // The LET keyword is optional.
 assignment_statement
-  : 'let'? variable '=' expr
+  : LET? variable '=' expr
   ;
 
 goto_statement
-  : 'goto' (line_number | text_label)
+  : GOTO (line_number | text_label)
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
 // separated by a ',' or ';'. There can be a trailing ',' or ';' even if
 // there is no other argument.
 print_statement
-  : 'print' (file_number ',')? print_args (',' | ';')?
+  : PRINT (file_number ',')? print_args (',' | ';')?
   ;
 
 print_args
@@ -47,7 +47,7 @@ print_args
 // PRINT USING must use ';' expression separators - the IDE auto-corrects
 // ',' to ';'. The USING format string must always be followed by ';'.
 print_using_statement
-  : 'print' (file_number ',')? 'using' (string_variable | STRING) ';' print_using_args ';'?
+  : PRINT (file_number ',')? USING (string_variable | STRING) ';' print_using_args ';'?
   ;
 
 print_using_args
@@ -107,6 +107,14 @@ fragment
 EXPONENT : 'e' [-+]? [0-9]+ ;
 STRING : '"' ~["\r\n]* '"' ;
 
+// Keywords
+GOTO : [Gg][Oo][Tt][Oo] ;
+LET : [Ll][Ee][Tt] ;
+PRINT : [Pp][Rr][Ii][Nn][Tt] ;
+REM : [Rr][Ee][Mm] ;
+USING : [Uu][Ss][Ii][Nn][Gg] ;
+
+// Note id has lower precedence than keywords
 ID : [A-Za-z][A-Za-z0-9.]* ;
 
 NL : '\r'? '\n' ;
