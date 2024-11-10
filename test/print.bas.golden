@@ -1,0 +1,12 @@
+(program 
+  (line (statement (print_statement print print_args)) \n) 
+  (line (statement (print_statement print (print_args (expr 3)))) \n) 
+  (line (statement (print_using_statement print using "#.#" ; (print_using_args (expr 1) ; (print_using_args (expr 1) ; (print_using_args (expr 3)))))) \n) 
+  (line (statement (print_using_statement print using (string_var s $) ; (print_using_args (expr 1) ; (print_using_args (expr 1) ; (print_using_args (expr 3)))) ;)) \n) 
+  (line (statement (print_using_statement print (file_number # (expr 42)) , using "#.##" ; print_using_args)) \n) 
+  (line (statement (print_statement print (print_args (expr 1) , (print_args (expr 2) ; (print_args (expr 3) , (print_args (expr 4) ; (print_args (expr 5) , (print_args (expr 6))))))) ,)) \n) 
+  (line (statement (print_statement print (print_args (expr 1)) ;)) \n) 
+  (line (statement (print_statement print (print_args (expr 2)) ,)) \n) 
+  (line (statement (print_statement print (file_number # (expr 42)) , (print_args (expr "hi")))) \n) 
+  (line (statement (print_statement print print_args ,)) \n) 
+  (line (statement (print_statement print print_args ;)) \n) <EOF>)

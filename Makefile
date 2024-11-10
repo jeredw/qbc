@@ -4,9 +4,8 @@ build/qbasicParser.java: src/qbasic.g4
 	(cd build && javac *.java)
 
 .PHONY: test
-test: build/qbasicParser.java
-	(cd build && grun qbasic program -tree ../test/labels.bas)
-	(cd build && grun qbasic program -tree ../test/comments.bas)
+test: build/qbasicParser.java test/*.bas
+	python3 src/test_parser.py test/*.bas
 
 .PHONY: clean
 clean:
