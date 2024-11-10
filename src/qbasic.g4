@@ -1,3 +1,4 @@
+// Based on MS-DOS QBasic 1.1
 grammar qbasic;
 
 program: line* EOF ;
