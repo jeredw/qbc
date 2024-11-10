@@ -10,4 +10,5 @@ print #42, "hi"
 ' print #hello, "baz"
 ' print #(4\4), "baz"
 print ,
+print #1,,
 print ;
