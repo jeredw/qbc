@@ -45,9 +45,10 @@ print_args
   ;
 
 // PRINT USING must use ';' expression separators - the IDE auto-corrects
-// ',' to ';'. The USING format string must always be followed by ';'.
+// ',' to ';'. The USING expr must be a format string, and must always be
+// followed by ';'.
 print_using_statement
-  : PRINT (file_number ',')? USING (string_variable | STRING) ';' print_using_args ';'?
+  : PRINT (file_number ',')? USING expr ';' print_using_args ';'?
   ;
 
 print_using_args
@@ -64,47 +65,51 @@ expr
   | variable
   ;
 
-// Variables can have weird type sigils appended, or not.
-variable
-  : float_variable
-  | double_variable
-  | string_variable
-  | int_variable
-  | long_variable
-  | ID
-  ;
-float_variable: ID '!' ;
-double_variable: ID '#' ;
-string_variable: ID '$' ; 
-int_variable: ID '%' ;
-long_variable: ID '&' ;
+// Variables can have type sigils appended.
+variable : ID ('!' | '#' | '$' | '%' | '&')? ;
 
 literal
-  : FLOAT
-// '%' is the default for ints so the IDE erases it, but we'll just accept and ignore it.
+// Single precision unless value requires double precision.
+  : PROBABLY_SINGLE
+  | DOUBLE
+// The IDE erases trailing % from ints.
+// Trailling % on a too-long literal is a syntax error.
   | (INT | HEX | OCTAL) ('%' | '&')?
   | STRING
   ;
 
+// Admits negative line numbers because it's simpler to have the lexer
+// always match [0-9]+ as INT.
 line_number : INT ;
 text_label : ID ;
 
-// Negative numbers are handled by unary minus.
-// The IDE strips leading plusses from numbers, so we'll disallow them.
-// It also strips leading zeros, but it's simpler to accept and ignore them.
-INT : [0-9]+ ;
-HEX : '&' 'h' [0-9a-f]+ ;
-OCTAL : '&' 'o' [0-7]+ ;
-FLOAT
+// Treat '-' as part of INT because -32768 can't be represented as - (32768) in
+// 2's complement arithmetic.  The IDE strips whitespace between '-' and a
+// number, so admit this.  The IDE also strips unary plus from expressions in
+// general, not just numbers, so there is no need to specialize that here.
+// The IDE strips leading zeros, so accept those.
+INT : '-'? [0-9]+ ;
+// Hex and octal constants cannot have leading minus.
+HEX : '&' [hH] [0-9a-fA-F]+ ;
+OCTAL : '&' [oO] [0-7]+ ;
+PROBABLY_SINGLE
 // The IDE expands scientific notation into '!' decimals for numbers
 // with 6 or fewer digits, but the language accepts exponents.
-  : [0-9]+ '.' [0-9]* EXPONENT? '!'?
-  | '.' [0-9]+ EXPONENT? '!'?
-  | [0-9]+ EXPONENT '!'?
+  : [0-9]+ '.' [0-9]* E_EXPONENT? '!'?
+  | '.' [0-9]+ E_EXPONENT? '!'?
+  | [0-9]+ E_EXPONENT '!'?
   | [0-9]+ '!'
   ;
 fragment
-EXPONENT : 'e' [-+]? [0-9]+ ;
+E_EXPONENT : [eE] [-+]? [0-9]+ ;
+// If a decimal number has a 'd' exponent or a '#' it's a double.
+DOUBLE
+  : [0-9]+ '.' [0-9]* (D_EXPONENT | '#')
+  | '.' [0-9]+ (D_EXPONENT | '#')
+  | [0-9]+ (D_EXPONENT | '#')
+  ;
+fragment
+D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
 STRING : '"' ~["\r\n]* '"' ;
 
 // Keywords
