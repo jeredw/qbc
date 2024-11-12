@@ -12,6 +12,7 @@ statement
   | deftype_statement
   | dim_statement
   | goto_statement
+  | lifetime_statement
   | print_statement
   | print_using_statement
 // Statements can be empty after line labels, before or between :.
@@ -29,7 +30,24 @@ assignment_statement
   : LET? variable '=' expr
   ;
 
-// DEFtype is a leftover from a previous MS BASIC.
+// COMMON, SHARED, and STATIC declare variable lifetimes using the same syntax.
+lifetime_statement
+  : COMMON SHARED? decl_variable (',' decl_variable)*
+  | SHARED decl_variable (',' decl_variable)*
+  | STATIC decl_variable (',' decl_variable)*
+  ;
+
+decl_variable
+  : ID decl_array_bounds? AS as_type_name
+  | variable decl_array_bounds?
+  ;
+
+// The IDE erases a number of dimensions in array bounds.
+decl_array_bounds
+  : '(' DIGITS? ')'
+  ;
+
+// DEFtype typing is a leftover from a previous MS BASIC.
 deftype_statement
   : DEFINT letter_range (',' letter_range)*
   | DEFLNG letter_range (',' letter_range)*
@@ -39,19 +57,31 @@ deftype_statement
   ;
 
 // Supporting ranges like A-Z in the lexer is messy since that's also an
-// expression...  and the IDE allows any ID-ID here and strips down to
-// the first letter, so relax ranges to permit any ID.
+// expression.  The IDE allows any ID-ID in ranges and strips down to the first
+// letter, so we'll parse that and deal with it later.
 letter_range: ID | ID '-' ID ;
 
-// TODO: arrays
+// DIM can take a mix of "as" types and names with sigils.
 dim_statement
-  : DIM SHARED? ID AS as_type_name
-  | REDIM SHARED? ID AS as_type_name
+  : DIM SHARED? dim_variable (',' dim_variable)*
+  | REDIM SHARED? dim_variable (',' dim_variable)*
+  ;
+
+dim_variable
+  : ID dim_array_bounds? AS as_type_name
+  | variable dim_array_bounds?
+  ;
+
+dim_array_bounds
+  : '(' dim_subscript (',' dim_subscript)* ')'
+  ;
+
+// expr must be some kind of vaguely integer type expression.
+dim_subscript
+  : (lower=expr TO)? upper=expr
   ;
 
 // A system or user-defined type following an AS keyword.
-// We could just match ID here but need to define tokens for type names
-// anyway so they can't be IDs...
 as_type_name
   : INTEGER
   | LONG
@@ -155,6 +185,7 @@ DEFINT : [Dd][Ee][Ff][Ii][Nn][Tt] ;
 DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
 DEFSNG : [Dd][Ee][Ff][Ss][Nn][Gg] ;
 DEFSTR : [Dd][Ee][Ff][Ss][Tt][Rr] ;
+COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 DIM : [Dd][Ii][Mm] ;
 DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
@@ -166,7 +197,9 @@ REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
 SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
 SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
+STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
 STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
+TO : [Tt][Oo] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
 
 // Note id has lower precedence than keywords
