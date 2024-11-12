@@ -5,9 +5,6 @@ MS-DOS QBasic 1.1 language.
 
 # Language
 
-First things first:  no, you don't have to type in all caps, mostly because all
-caps is mom jeans, but I will now spend several paragraphs justifying why not.
-
 ## IDE behavior
 
 QBasic uses a fancy IDE that automatically formats your code as you type, so

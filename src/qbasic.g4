@@ -9,6 +9,7 @@ line: (line_number | text_label ':')? statement (':' statement)* NL ;
 statement
   : rem_statement
   | assignment_statement
+  | deftype_statement
   | goto_statement
   | print_statement
   | print_using_statement
@@ -26,6 +27,19 @@ rem_statement
 assignment_statement
   : LET? variable '=' expr
   ;
+
+deftype_statement
+  : DEFINT letter_range (',' letter_range)*
+  | DEFLNG letter_range (',' letter_range)*
+  | DEFSNG letter_range (',' letter_range)*
+  | DEFDBL letter_range (',' letter_range)*
+  | DEFSTR letter_range (',' letter_range)*
+  ;
+
+// Supporting ranges like A-Z in the lexer is messy since that's also an
+// expression...  and the IDE allows any ID-ID here and strips down to
+// the first letter, so relax ranges to permit any ID.
+letter_range: ID | ID '-' ID ;
 
 goto_statement
   : GOTO (line_number | text_label)
@@ -113,6 +127,11 @@ D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
 STRING : '"' ~["\r\n]* '"' ;
 
 // Keywords
+DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
+DEFINT : [Dd][Ee][Ff][Ii][Nn][Tt] ;
+DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
+DEFSNG : [Dd][Ee][Ff][Ss][Nn][Gg] ;
+DEFSTR : [Dd][Ee][Ff][Ss][Tt][Rr] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 LET : [Ll][Ee][Tt] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
