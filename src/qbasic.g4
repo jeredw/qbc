@@ -4,17 +4,20 @@ grammar qbasic;
 program: line* EOF ;
 
 // Lines have an optional label, then one or more : separated statements.
+// TYPE .. END TYPE is a special case that consumes multiple lines
 line: (line_number | text_label ':')? statement (':' statement)* NL ;
 
 statement
   : rem_statement
   | assignment_statement
+  | const_statement
   | deftype_statement
   | dim_statement
   | goto_statement
   | lifetime_statement
   | print_statement
   | print_using_statement
+  | type_statement
 // Statements can be empty after line labels, before or between :.
   |
   ;
@@ -30,6 +33,19 @@ assignment_statement
   : LET? variable '=' expr
   ;
 
+// Const expressions have bizarre 
+const_statement
+  : CONST const_assignment (',' const_assignment)*
+  ;
+
+// Constants can have sigils, but they're not part of the name.
+const_assignment
+  : variable '=' const_expr
+  ;
+
+// TODO: Only a limited subset of expressions are supported here.
+const_expr : expr ;
+
 // COMMON, SHARED, and STATIC declare variable lifetimes using the same syntax.
 lifetime_statement
   : COMMON SHARED? decl_variable (',' decl_variable)*
@@ -38,7 +54,7 @@ lifetime_statement
   ;
 
 decl_variable
-  : ID decl_array_bounds? AS as_type_name
+  : ID decl_array_bounds? AS type_name
   | variable decl_array_bounds?
   ;
 
@@ -68,7 +84,7 @@ dim_statement
   ;
 
 dim_variable
-  : ID dim_array_bounds? AS as_type_name
+  : ID dim_array_bounds? AS type_name
   | variable dim_array_bounds?
   ;
 
@@ -82,12 +98,22 @@ dim_subscript
   ;
 
 // A system or user-defined type following an AS keyword.
-as_type_name
+type_name
   : INTEGER
   | LONG
   | SINGLE
   | DOUBLE
   | STRING
+  | STRING '*' DIGITS
+  | ID
+  ;
+
+// Can't use variable-length strings in user-defined types.
+restricted_type_name
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
   | STRING '*' DIGITS
   | ID
   ;
@@ -124,6 +150,17 @@ print_using_args
   | expr ';' print_using_args
   |
   ;
+
+// User defined types must contain at least one member.
+type_statement
+   : TYPE ID NL+ type_member+ END TYPE
+   ;
+
+type_member
+   : ID AS restricted_type_name NL+
+// Since we handle REM comments as statements, need to accept them here.
+   | rem_statement NL
+   ;
 
 // A file number can be any expression that evaluates to a valid file handle
 file_number : '#' expr ;
@@ -180,14 +217,16 @@ STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
 AS : [Aa][Ss] ;
+COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
+CONST : [Cc][Oo][Nn][Ss][Tt] ;
 DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
 DEFINT : [Dd][Ee][Ff][Ii][Nn][Tt] ;
 DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
 DEFSNG : [Dd][Ee][Ff][Ss][Nn][Gg] ;
 DEFSTR : [Dd][Ee][Ff][Ss][Tt][Rr] ;
-COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 DIM : [Dd][Ii][Mm] ;
 DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
+END : [Ee][Nn][Dd] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 LET : [Ll][Ee][Tt] ;
@@ -200,6 +239,7 @@ SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
 STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
 STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
 TO : [Tt][Oo] ;
+TYPE : [Tt][Yy][Pp][Ee] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
 
 // Note id has lower precedence than keywords
