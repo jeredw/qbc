@@ -10,6 +10,7 @@ statement
   : rem_statement
   | assignment_statement
   | deftype_statement
+  | dim_statement
   | goto_statement
   | print_statement
   | print_using_statement
@@ -34,6 +35,25 @@ deftype_statement
   | DEFSNG letter_range (',' letter_range)*
   | DEFDBL letter_range (',' letter_range)*
   | DEFSTR letter_range (',' letter_range)*
+  ;
+
+// TODO: arrays
+dim_statement
+  : DIM SHARED? ID AS as_type_name
+  | REDIM SHARED? ID AS as_type_name
+  ;
+
+// A system or user-defined type following an AS keyword.
+// We could just match ID here but need to define tokens for type names
+// anyway so they can't be IDs...
+as_type_name
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING
+  | STRING '*' INT
+  | ID
   ;
 
 // Supporting ranges like A-Z in the lexer is messy since that's also an
@@ -84,12 +104,12 @@ variable : ID ('!' | '#' | '$' | '%' | '&')? ;
 
 literal
 // Single precision unless value requires double precision.
-  : PROBABLY_SINGLE
-  | DOUBLE
+  : PROBABLY_SINGLE_PRECISION_NUMBER
+  | DOUBLE_PRECISION_NUMBER
 // The IDE erases trailing % from ints.
 // Trailling % on a too-long literal is a syntax error.
   | (INT | HEX | OCTAL) ('%' | '&')?
-  | STRING
+  | STRING_LITERAL
   ;
 
 // Admits negative line numbers because it's simpler to have the lexer
@@ -106,7 +126,7 @@ INT : '-'? [0-9]+ ;
 // Hex and octal constants cannot have leading minus.
 HEX : '&' [hH] [0-9a-fA-F]+ ;
 OCTAL : '&' [oO] [0-7]+ ;
-PROBABLY_SINGLE
+PROBABLY_SINGLE_PRECISION_NUMBER
 // The IDE expands scientific notation into '!' decimals for numbers
 // with 6 or fewer digits, but the language accepts exponents.
   : [0-9]+ '.' [0-9]* E_EXPONENT? '!'?
@@ -117,25 +137,34 @@ PROBABLY_SINGLE
 fragment
 E_EXPONENT : [eE] [-+]? [0-9]+ ;
 // If a decimal number has a 'd' exponent or a '#' it's a double.
-DOUBLE
+DOUBLE_PRECISION_NUMBER
   : [0-9]+ '.' [0-9]* (D_EXPONENT | '#')
   | '.' [0-9]+ (D_EXPONENT | '#')
   | [0-9]+ (D_EXPONENT | '#')
   ;
 fragment
 D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
-STRING : '"' ~["\r\n]* '"' ;
+STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
+AS : [Aa][Ss] ;
 DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
 DEFINT : [Dd][Ee][Ff][Ii][Nn][Tt] ;
 DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
 DEFSNG : [Dd][Ee][Ff][Ss][Nn][Gg] ;
 DEFSTR : [Dd][Ee][Ff][Ss][Tt][Rr] ;
+DIM : [Dd][Ii][Mm] ;
+DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
+INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 LET : [Ll][Ee][Tt] ;
+LONG : [Ll][Oo][Nn][Gg] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
+REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
+SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
+SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
+STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
 
 // Note id has lower precedence than keywords

@@ -1,0 +1,9 @@
+(program 
+  (line (statement (dim_statement dim s as (as_type_name string))) \n) 
+  (line (statement (dim_statement dim shared foo as (as_type_name string * 42))) \n) 
+  (line (statement (dim_statement redim q as (as_type_name double))) \n) 
+  (line (statement (dim_statement dim x as (as_type_name single))) \n) 
+  (line (statement (dim_statement dim lo as (as_type_name long))) \n) 
+  (line (statement (dim_statement dim bar as (as_type_name sometype))) \n) 
+  (line (statement (dim_statement dim the.thing as (as_type_name integer))) \n) 
+  (line (statement (dim_statement redim shared q2 as (as_type_name single))) \n) <EOF>)
