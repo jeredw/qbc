@@ -29,6 +29,7 @@ assignment_statement
   : LET? variable '=' expr
   ;
 
+// DEFtype is a leftover from a previous MS BASIC.
 deftype_statement
   : DEFINT letter_range (',' letter_range)*
   | DEFLNG letter_range (',' letter_range)*
@@ -36,6 +37,11 @@ deftype_statement
   | DEFDBL letter_range (',' letter_range)*
   | DEFSTR letter_range (',' letter_range)*
   ;
+
+// Supporting ranges like A-Z in the lexer is messy since that's also an
+// expression...  and the IDE allows any ID-ID here and strips down to
+// the first letter, so relax ranges to permit any ID.
+letter_range: ID | ID '-' ID ;
 
 // TODO: arrays
 dim_statement
@@ -52,18 +58,16 @@ as_type_name
   | SINGLE
   | DOUBLE
   | STRING
-  | STRING '*' INT
+  | STRING '*' DIGITS
   | ID
   ;
-
-// Supporting ranges like A-Z in the lexer is messy since that's also an
-// expression...  and the IDE allows any ID-ID here and strips down to
-// the first letter, so relax ranges to permit any ID.
-letter_range: ID | ID '-' ID ;
 
 goto_statement
   : GOTO (line_number | text_label)
   ;
+
+line_number : DIGITS ;
+text_label : ID ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
 // separated by a ',' or ';'. There can be a trailing ',' or ';' even if
@@ -100,30 +104,28 @@ expr
   ;
 
 // Variables can have type sigils appended.
+// No space is allowed before a sigil, but it's easier to permit it and check later.
 variable : ID ('!' | '#' | '$' | '%' | '&')? ;
 
 literal
-// Single precision unless value requires double precision.
-  : PROBABLY_SINGLE_PRECISION_NUMBER
-  | DOUBLE_PRECISION_NUMBER
-// The IDE erases trailing % from ints.
-// Trailling % on a too-long literal is a syntax error.
-  | (INT | HEX | OCTAL) ('%' | '&')?
+// If a floating point constant isn't explicitly marked as single or double and
+// is representable in single precision, it will be single precision, otherwise
+// double precision.
+  : '-'? PROBABLY_SINGLE_PRECISION_NUMBER
+  | '-'? DOUBLE_PRECISION_NUMBER
+// The IDE has all kinds of behavior for integer constants.
+// - Erases trailing %
+// - Rejects out of range values as 'Illegal number'.
+// - Strips whitespace between '-' and a number.
+// - Strips unary '+' from expressions in general, not just numbers, so no
+//   need to handle that here.
+// - Strips leading zeros, so accept those.
+  | ('-'? DIGITS | HEX | OCTAL) ('%' | '&')?
   | STRING_LITERAL
   ;
 
-// Admits negative line numbers because it's simpler to have the lexer
-// always match [0-9]+ as INT.
-line_number : INT ;
-text_label : ID ;
-
-// Treat '-' as part of INT because -32768 can't be represented as - (32768) in
-// 2's complement arithmetic.  The IDE strips whitespace between '-' and a
-// number, so admit this.  The IDE also strips unary plus from expressions in
-// general, not just numbers, so there is no need to specialize that here.
-// The IDE strips leading zeros, so accept those.
-INT : '-'? [0-9]+ ;
-// Hex and octal constants cannot have leading minus.
+// Literals
+DIGITS : [0-9]+ ;
 HEX : '&' [hH] [0-9a-fA-F]+ ;
 OCTAL : '&' [oO] [0-7]+ ;
 PROBABLY_SINGLE_PRECISION_NUMBER
