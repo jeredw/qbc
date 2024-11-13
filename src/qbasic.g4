@@ -4,8 +4,15 @@ grammar qbasic;
 program: line* EOF ;
 
 // Lines have an optional label, then one or more : separated statements.
-// TYPE .. END TYPE is a special case that consumes multiple lines
-line: (line_number | text_label ':')? statement (':' statement)* NL ;
+line: (line_number | text_label ':')? block_statement (':' statement)* NL ;
+
+// Some block statements such as DEF SUB .. END SUB and IF .. END IF must be
+// the first statement on a line, so you can't write e.g.
+// IF foo THEN DEF SUB bar: END SUB
+block_statement
+  : statement
+  | if_block_statement
+  ;
 
 statement
   : rem_statement
@@ -14,9 +21,12 @@ statement
   | deftype_statement
   | dim_statement
   | goto_statement
+  | if_inline_statement
   | lifetime_statement
   | print_statement
   | print_using_statement
+// TYPE .. END TYPE is strangely not a block statement, it just consumes
+// multiple lines.
   | type_statement
 // Statements can be empty after line labels, before or between :.
   |
@@ -84,6 +94,7 @@ dim_statement
   ;
 
 dim_variable
+// Variables of user defined types cannot have names containing '.'.
   : ID dim_array_bounds? AS type_name
   | variable dim_array_bounds?
   ;
@@ -118,12 +129,34 @@ restricted_type_name
   | ID
   ;
 
+// GOTO can't jump into or out of subroutines.
 goto_statement
   : GOTO (line_number | text_label)
   ;
 
+// Labels or line numbers must be distinct.
 line_number : DIGITS ;
 text_label : ID ;
+
+// IF has a concise inline form that can occur anywhere.
+// The ELSE binds to the innermost IF.
+if_inline_statement
+  : IF expr THEN if_inline_action (ELSE if_inline_action)?
+  ;
+
+if_inline_action
+  : statement (':' statement)*
+  | line_number  // Implicit GOTO
+  ;
+
+// The lines inside an IF block are all normal labeled lines, and they can
+// nest other statement blocks.
+if_block_statement
+  : IF expr THEN NL line*
+    (ELSEIF expr THEN NL line*)*
+    (ELSE NL line*)?
+    END IF
+  ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
 // separated by a ',' or ';'. There can be a trailing ',' or ';' even if
@@ -152,11 +185,15 @@ print_using_args
   ;
 
 // User defined types must contain at least one member.
+// TODO: type cannot occur in procedure or DEF FN.
 type_statement
+// Note: type names cannot include '.'.
    : TYPE ID NL+ type_member+ END TYPE
    ;
 
+// Type members can't have labels etc. like normal lines.
 type_member
+// Note: type members cannot include '.'.
    : ID AS restricted_type_name NL+
 // Since we handle REM comments as statements, need to accept them here.
    | rem_statement NL
@@ -172,6 +209,21 @@ expr
 
 // Variables can have type sigils appended.
 // No space is allowed before a sigil, but it's easier to permit it and check later.
+//
+// Variable names can contain '.', which is also used to access fields in user
+// defined types. This creates an interesting ambiguity.
+//
+// TYPE record
+// member AS INTEGER
+// END TYPE
+// DIM example AS record
+// example.member = 42
+// 'example.huh = 50 ' Error: Element not defined
+// some.variable = 50 ' This is ok.
+// 'DIM example.tricky AS record ' Error: Identifier cannot include period
+//
+// Field lookup is not part of this grammar at all, and will be handled in
+// symbol tables instead.
 variable : ID ('!' | '#' | '$' | '%' | '&')? ;
 
 literal
@@ -226,8 +278,11 @@ DEFSNG : [Dd][Ee][Ff][Ss][Nn][Gg] ;
 DEFSTR : [Dd][Ee][Ff][Ss][Tt][Rr] ;
 DIM : [Dd][Ii][Mm] ;
 DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
+ELSE : [Ee][Ll][Ss][Ee] ;
+ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
+IF : [Ii][Ff] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 LET : [Ll][Ee][Tt] ;
 LONG : [Ll][Oo][Nn][Gg] ;
@@ -238,11 +293,12 @@ SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
 SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
 STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
 STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
+THEN : [Tt][Hh][Ee][Nn] ;
 TO : [Tt][Oo] ;
 TYPE : [Tt][Yy][Pp][Ee] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
 
-// Note id has lower precedence than keywords
+// Note ID has lower precedence than keywords
 ID : [A-Za-z][A-Za-z0-9.]* ;
 
 NL : '\r'? '\n' ;
