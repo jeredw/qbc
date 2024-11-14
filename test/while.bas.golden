@@ -1,0 +1,5 @@
+(program 
+  (line (statement (while_wend_statement while (expr (variable TRUE)) : statement wend)) \n) 
+  (line (statement (while_wend_statement while (expr (variable foo)) \n 
+  (line (statement (print_statement print (print_args (expr (literal "ok"))))) \n) (wend_line wend))) \n) 
+  (line (statement (print_statement print (print_args (expr (literal "hi"))))) : (statement (while_wend_statement while (expr (variable x)) : (statement (print_statement print (print_args (expr (literal "stuff"))))) \n (wend_line (statement (print_statement print (print_args (expr (literal "blah"))))) : wend : (statement (print_statement print (print_args (expr (literal "ok")))))))) \n) <EOF>)

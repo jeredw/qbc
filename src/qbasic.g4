@@ -19,7 +19,8 @@ statement
   | const_statement
   | deftype_statement
   | dim_statement
-  | do_statement
+  | do_loop_statement
+  | for_next_statement
   | goto_statement
   | if_inline_statement
   | lifetime_statement
@@ -28,6 +29,7 @@ statement
 // TYPE .. END TYPE is strangely not a block statement, it just consumes
 // multiple lines.
   | type_statement
+  | while_wend_statement
 // Statements can be empty after line labels, before or between :.
   |
   ;
@@ -129,8 +131,8 @@ restricted_type_name
   | ID
   ;
 
-// A DO statement can start anywhere but must match LOOP.
-do_statement
+// A DO..LOOP statement can start anywhere but must match LOOP.
+do_loop_statement
 // The loop can end on the same line it started on...
   : DO do_condition (':' statement)* (':' LOOP)
   | DO (':' statement)* (':' LOOP do_condition?)
@@ -144,7 +146,7 @@ do_condition
   ;
 
 // These rules terminate a DO loop.  An implicit NL is matched by the line that
-// contained the original do_statement.
+// contained the original do_loop_statement.
 // TODO: Make this less confusing somehow?
 loop_line
   : line_label? LOOP (':' statement)*
@@ -153,6 +155,25 @@ loop_line
 loop_condition_line
   : line_label? LOOP do_condition? (':' statement)*
   | line_label? statement (':' statement)* (':' LOOP do_condition?) (':' statement)*
+  ;
+
+// FOR..NEXT is a totally reasonable for loop, except that multiple NEXTs can
+// be combined into one statement using the syntax NEXT v1, v2, ... vN.
+// TODO: Figure out how to parse NEXT v1, v2, ... vN.
+for_next_statement
+// Single line loop.
+  : for_assignment (':' statement)* ':' NEXT variable?
+  | for_assignment (':' statement)* NL line* next_line
+  ;
+
+for_assignment
+  : FOR variable '=' expr TO expr (STEP expr)?
+  ;
+
+// The final NL is implicitly in the line rule that has the for_next_statement.
+next_line
+  : line_label? NEXT variable?
+  | line_label? statement (':' statement)* (':' NEXT variable?) (':' statement)*
   ;
 
 // GOTO can't jump into or out of subroutines.
@@ -226,6 +247,9 @@ print_using_args
   |
   ;
 
+// A file number can be any expression that evaluates to a valid file handle
+file_number : '#' expr ;
+
 // User defined types must contain at least one member.
 // TODO: type cannot occur in procedure or DEF FN.
 type_statement
@@ -241,8 +265,19 @@ type_member
    | rem_statement NL
    ;
 
-// A file number can be any expression that evaluates to a valid file handle
-file_number : '#' expr ;
+// Loop construct from an older BASIC?
+while_wend_statement
+  : WHILE expr (':' statement)* WEND
+  | WHILE expr (':' statement)* NL line* wend_line
+  ;
+
+// This rule terminates a WHILE loop.  An implicit NL is matched by the line that
+// contained the original while_wend_statement.
+// TODO: Make this less confusing somehow?
+wend_line
+  : line_label? WEND (':' statement)*
+  | line_label? statement (':' statement)* (':' WEND) (':' statement)*
+  ;
 
 expr
   : literal
@@ -324,24 +359,28 @@ DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 ELSE : [Ee][Ll][Ss][Ee] ;
 ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
+FOR : [Ff][Oo][Rr] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 LET : [Ll][Ee][Tt] ;
 LONG : [Ll][Oo][Nn][Gg] ;
 LOOP : [Ll][Oo][Oo][Pp] ;
+NEXT : [Nn][Ee][Xx][Tt] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
 SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
 SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
 STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
+STEP : [Ss][Tt][Ee][Pp] ;
 STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
 THEN : [Tt][Hh][Ee][Nn] ;
 TO : [Tt][Oo] ;
 TYPE : [Tt][Yy][Pp][Ee] ;
 UNTIL : [Uu][Nn][Tt][Ii][Ll] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
+WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
 
 // Note ID has lower precedence than keywords
