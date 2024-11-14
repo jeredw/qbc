@@ -4,15 +4,14 @@ grammar qbasic;
 program: line* EOF ;
 
 // Lines have an optional label, then one or more : separated statements.
-line: (line_number | text_label ':')? block_statement (':' statement)* NL ;
-
-// Some block statements such as DEF SUB .. END SUB and IF .. END IF must be
-// the first statement on a line, so you can't write e.g.
-// IF foo THEN DEF SUB bar: END SUB
-block_statement
-  : statement
-  | if_block_statement
+line
+  : line_label? statement (':' statement)* NL
+// An IF block must be the first statement on a line.
+  | line_label? if_block  // line ends in if_block
   ;
+
+line_label
+  : (line_number | text_label ':') ;
 
 statement
   : rem_statement
@@ -20,6 +19,7 @@ statement
   | const_statement
   | deftype_statement
   | dim_statement
+  | do_statement
   | goto_statement
   | if_inline_statement
   | lifetime_statement
@@ -129,6 +129,32 @@ restricted_type_name
   | ID
   ;
 
+// A DO statement can start anywhere but must match LOOP.
+do_statement
+// The loop can end on the same line it started on...
+  : DO do_condition (':' statement)* (':' LOOP)
+  | DO (':' statement)* (':' LOOP do_condition?)
+// Or the loop can end on a different line.
+  | DO do_condition (':' statement)* NL line* loop_line
+  | DO (':' statement)* NL line* loop_condition_line
+  ;
+
+do_condition
+  : (WHILE expr | UNTIL expr)
+  ;
+
+// These rules terminate a DO loop.  An implicit NL is matched by the line that
+// contained the original do_statement.
+// TODO: Make this less confusing somehow?
+loop_line
+  : line_label? LOOP (':' statement)*
+  | line_label? statement (':' statement)* (':' LOOP) (':' statement)*
+  ;
+loop_condition_line
+  : line_label? LOOP do_condition? (':' statement)*
+  | line_label? statement (':' statement)* (':' LOOP do_condition?) (':' statement)*
+  ;
+
 // GOTO can't jump into or out of subroutines.
 goto_statement
   : GOTO (line_number | text_label)
@@ -150,12 +176,28 @@ if_inline_action
   ;
 
 // The lines inside an IF block are all normal labeled lines, and they can
-// nest other statement blocks.
-if_block_statement
+// also nest other statement blocks.
+if_block
+// Must have NL after THEN since otherwise this is if_inline_statement.
   : IF expr THEN NL line*
-    (ELSEIF expr THEN NL line*)*
-    (ELSE NL line*)?
-    END IF
+    (elseif_line line*)*
+    (else_line line*)?
+    end_if_line
+  ;
+
+// ELSEIF .. THEN can have statements immediately following THEN.
+elseif_line
+  : line_label? ELSEIF expr THEN (NL | statement (':' statement)* NL)
+  ;
+
+// ELSE can have statements immediately following.
+else_line
+  : line_label? ELSE (NL | statement (':' statement)* NL)
+  ;
+
+// END IF can have more statements after it.
+end_if_line
+  : line_label? END IF (':' statement)* NL
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
@@ -277,6 +319,7 @@ DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
 DEFSNG : [Dd][Ee][Ff][Ss][Nn][Gg] ;
 DEFSTR : [Dd][Ee][Ff][Ss][Tt][Rr] ;
 DIM : [Dd][Ii][Mm] ;
+DO : [Dd][Oo] ;
 DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 ELSE : [Ee][Ll][Ss][Ee] ;
 ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
@@ -286,6 +329,7 @@ IF : [Ii][Ff] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 LET : [Ll][Ee][Tt] ;
 LONG : [Ll][Oo][Nn][Gg] ;
+LOOP : [Ll][Oo][Oo][Pp] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
@@ -296,7 +340,9 @@ STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
 THEN : [Tt][Hh][Ee][Nn] ;
 TO : [Tt][Oo] ;
 TYPE : [Tt][Yy][Pp][Ee] ;
+UNTIL : [Uu][Nn][Tt][Ii][Ll] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
+WHILE : [Ww][Hh][Ii][Ll][Ee] ;
 
 // Note ID has lower precedence than keywords
 ID : [A-Za-z][A-Za-z0-9.]* ;

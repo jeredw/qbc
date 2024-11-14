@@ -1,8 +1,13 @@
 (program 
-  (line (block_statement (statement (if_inline_statement if (expr (variable TRUE)) then (if_inline_action (line_number 10)) else (if_inline_action (line_number 20))))) \n) 
-  (line (block_statement (statement (if_inline_statement if (expr (literal 0)) then (if_inline_action (statement (if_inline_statement if (expr (literal 1)) then (if_inline_action (statement (print_statement print (print_args (expr (literal "hi"))))) : (statement (goto_statement goto (line_number 5)))) else (if_inline_action (line_number 30)))))))) \n) 
-  (line (block_statement (if_block_statement if (expr (variable foo)) then \n 
-  (line (block_statement (if_block_statement if (expr (variable bar)) then \n 
-  (line (block_statement (statement (print_statement print (print_args (expr (literal "hi")))))) \n) end if)) \n) elseif (expr (variable baz)) then \n 
-  (line (block_statement (statement (print_statement print (print_args (expr (literal "yo")))))) \n) else \n 
-  (line (block_statement (statement (print_statement print (print_args (expr (literal 42)))))) \n) end if)) \n) <EOF>)
+  (line (statement (if_inline_statement if (expr (variable TRUE)) then (if_inline_action (line_number 10)) else (if_inline_action (line_number 20)))) \n) 
+  (line (statement (if_inline_statement if (expr (literal 0)) then (if_inline_action (statement (if_inline_statement if (expr (literal 1)) then (if_inline_action (statement (print_statement print (print_args (expr (literal "hi"))))) : (statement (goto_statement goto (line_number 5)))) else (if_inline_action (line_number 30))))))) \n) 
+  (line (if_block if (expr (variable foo)) then \n 
+  (line (if_block if (expr (variable bar)) then \n 
+  (line (statement (print_statement print (print_args (expr (literal "hi"))))) \n) (end_if_line end if \n))) (elseif_line elseif (expr (variable baz)) then \n) 
+  (line (statement (print_statement print (print_args (expr (literal "yo"))))) \n) (else_line else \n) 
+  (line (statement (print_statement print (print_args (expr (literal 42))))) \n) (end_if_line end if \n))) 
+  (line (if_block if (expr (variable foo)) then \n (elseif_line elseif (expr (variable bar)) then (statement (print_statement print (print_args (expr (literal "yes"))))) \n) 
+  (line (statement (print_statement print (print_args (expr (literal "more"))))) \n) (end_if_line end if \n))) 
+  (line (line_label (line_number 10)) (if_block if (expr (variable foo)) then \n 
+  (line (line_label (line_number 20)) statement \n) (elseif_line (line_label (line_number 30)) elseif (expr (variable bar)) then statement : (statement (print_statement print (print_args (expr (literal "ok"))))) \n) 
+  (line (line_label (line_number 40)) (statement (print_statement print (print_args (expr (literal "yes ok"))))) \n) (else_line (line_label (line_number 50)) else (statement (print_statement print (print_args (expr (literal "baz"))))) : (statement (print_statement print (print_args (expr (literal "quux"))))) \n) (end_if_line (line_label (line_number 60)) end if : (statement (print_statement print (print_args (expr (literal "ok"))))) \n))) <EOF>)
