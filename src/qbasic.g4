@@ -134,15 +134,26 @@ restricted_type_name
 // A DO..LOOP statement can start anywhere but must match LOOP.
 do_loop_statement
 // The loop can end on the same line it started on...
-  : DO do_condition (':' statement)* (':' LOOP)
-  | DO (':' statement)* (':' LOOP do_condition?)
+  : DO do_condition (':' do_body_statement)* (':' LOOP)
+  | DO (':' do_body_statement)* (':' LOOP do_condition?)
 // Or the loop can end on a different line.
-  | DO do_condition (':' statement)* NL line* loop_line
-  | DO (':' statement)* NL line* loop_condition_line
+  | DO do_condition (':' do_body_statement)* NL do_body_line* loop_line
+  | DO (':' do_body_statement)* NL do_body_line* loop_condition_line
   ;
 
 do_condition
   : (WHILE expr | UNTIL expr)
+  ;
+
+// Allow EXIT DO inside DO loops.
+do_body_statement
+  : statement
+  | EXIT DO
+  ;
+
+do_body_line
+  : line_label? do_body_statement (':' do_body_statement)* NL
+  | line_label? if_block  // line ends in if_block
   ;
 
 // These rules terminate a DO loop.  An implicit NL is matched by the line that
@@ -150,11 +161,11 @@ do_condition
 // TODO: Make this less confusing somehow?
 loop_line
   : line_label? LOOP (':' statement)*
-  | line_label? statement (':' statement)* (':' LOOP) (':' statement)*
+  | line_label? do_body_statement (':' do_body_statement)* (':' LOOP) (':' statement)*
   ;
 loop_condition_line
   : line_label? LOOP do_condition? (':' statement)*
-  | line_label? statement (':' statement)* (':' LOOP do_condition?) (':' statement)*
+  | line_label? do_body_statement (':' do_body_statement)* (':' LOOP do_condition?) (':' statement)*
   ;
 
 // FOR..NEXT is a totally reasonable for loop, except that multiple NEXTs can
@@ -162,18 +173,29 @@ loop_condition_line
 // TODO: Figure out how to parse NEXT v1, v2, ... vN.
 for_next_statement
 // Single line loop.
-  : for_assignment (':' statement)* ':' NEXT variable?
-  | for_assignment (':' statement)* NL line* next_line
+  : for_assignment (':' for_body_statement)* ':' NEXT variable?
+  | for_assignment (':' for_body_statement)* NL for_body_line* next_line
   ;
 
 for_assignment
   : FOR variable '=' expr TO expr (STEP expr)?
   ;
 
+// Allow EXIT FOR inside FOR..NEXT.
+for_body_statement
+  : statement
+  | EXIT FOR
+  ;
+
+for_body_line
+  : line_label? for_body_statement (':' for_body_statement)* NL
+  | line_label? if_block  // line ends in if_block
+  ;
+
 // The final NL is implicitly in the line rule that has the for_next_statement.
 next_line
   : line_label? NEXT variable?
-  | line_label? statement (':' statement)* (':' NEXT variable?) (':' statement)*
+  | line_label? for_body_statement (':' for_body_statement)* (':' NEXT variable?) (':' statement)*
   ;
 
 // GOTO can't jump into or out of subroutines.
@@ -359,6 +381,7 @@ DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 ELSE : [Ee][Ll][Ss][Ee] ;
 ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
+EXIT : [Ee][Xx][Ii][Tt] ;
 FOR : [Ff][Oo][Rr] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;

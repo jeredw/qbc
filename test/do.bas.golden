@@ -1,18 +1,14 @@
 (program 
   (line (statement (do_loop_statement do : loop (do_condition until (expr (literal 0))))) \n) 
-  (line (statement (do_loop_statement do \n 
-  (line (statement (print_statement print (print_args (expr (literal "hi"))))) \n) (loop_condition_line loop (do_condition while (expr (literal 0)))))) \n) 
-  (line (statement (do_loop_statement do (do_condition while (expr (literal 1))) \n 
-  (line (statement (goto_statement goto (text_label out))) \n) (loop_line loop))) \n) 
+  (line (statement (do_loop_statement do \n (do_body_line (do_body_statement (statement (print_statement print (print_args (expr (literal "hi")))))) \n) (loop_condition_line loop (do_condition while (expr (literal 0)))))) \n) 
+  (line (statement (do_loop_statement do (do_condition while (expr (literal 1))) \n (do_body_line (do_body_statement (statement (goto_statement goto (text_label out)))) \n) (loop_line loop))) \n) 
   (line (line_label (line_number 10)) statement \n) 
-  (line (statement (do_loop_statement do \n 
-  (line (statement (goto_statement goto (line_number 20))) \n) (loop_condition_line loop))) \n) 
+  (line (statement (do_loop_statement do \n (do_body_line (do_body_statement (statement (goto_statement goto (line_number 20)))) \n) (loop_condition_line loop))) \n) 
   (line (statement (do_loop_statement do (do_condition until (expr (literal 0))) : loop)) \n) 
-  (line (statement (do_loop_statement do : (statement (goto_statement goto (line_number 30))) : loop)) \n) 
+  (line (statement (do_loop_statement do : (do_body_statement (statement (goto_statement goto (line_number 30)))) : loop)) \n) 
   (line (line_label (line_number 30)) statement \n) 
-  (line (statement (print_statement print (print_args (expr (literal "hi"))))) : (statement (do_loop_statement do \n (loop_condition_line (line_label (line_number 40)) statement : (statement (goto_statement goto (line_number 50))) : loop))) \n) 
+  (line (statement (print_statement print (print_args (expr (literal "hi"))))) : (statement (do_loop_statement do \n (loop_condition_line (line_label (line_number 40)) (do_body_statement statement) : (do_body_statement (statement (goto_statement goto (line_number 50)))) : loop))) \n) 
   (line (line_label (line_number 50)) statement \n) 
-  (line (statement (print_statement print (print_args (expr (literal "hi"))))) : (statement (do_loop_statement do : (statement (do_loop_statement do \n (loop_condition_line (line_label (line_number 60)) statement : (statement (goto_statement goto (line_number 70))) : loop))) : loop)) \n) 
+  (line (statement (print_statement print (print_args (expr (literal "hi"))))) : (statement (do_loop_statement do : (do_body_statement (statement (do_loop_statement do \n (loop_condition_line (line_label (line_number 60)) (do_body_statement statement) : (do_body_statement (statement (goto_statement goto (line_number 70)))) : loop)))) : loop)) \n) 
   (line (line_label (line_number 70)) statement \n) 
-  (line (statement (do_loop_statement do \n 
-  (line (statement (do_loop_statement do \n (loop_condition_line loop (do_condition while (expr (variable j)))))) \n) (loop_condition_line loop (do_condition until (expr (variable i)))))) \n) <EOF>)
+  (line (statement (do_loop_statement do \n (do_body_line (do_body_statement (statement (do_loop_statement do \n (loop_condition_line loop (do_condition while (expr (variable j))))))) \n) (loop_condition_line loop (do_condition until (expr (variable i)))))) \n) <EOF>)

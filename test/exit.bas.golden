@@ -1,0 +1,3 @@
+(program 
+  (line (statement (do_loop_statement do \n (do_body_line (do_body_statement exit do) \n) (loop_condition_line loop))) \n) 
+  (line (statement (for_next_statement (for_assignment for (variable i) = (expr (literal 1)) to (expr (literal 10))) \n (for_body_line (for_body_statement exit for) \n) (next_line next (variable i)))) \n) <EOF>)
