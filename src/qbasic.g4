@@ -29,6 +29,7 @@ statement
   | print_statement
   | print_using_statement
   | return_statement
+  | select_case_statement
 // TYPE .. END TYPE is strangely not a block statement, it just consumes
 // multiple lines.
   | type_statement
@@ -288,6 +289,50 @@ return_statement
   : RETURN (line_number | text_label)?
   ;
 
+// SELECT CASE matches CASE statements at the top level, but not inside nested
+// blocks (like nested IF...THEN).
+// TODO: Ideally this would have CASE children instead of a bunch of lines,
+// but labels and if_block make this tough right now.
+select_case_statement
+  : SELECT CASE expr before_first_case
+    (first_case_line select_body_line*)?
+    end_select_line
+  ;
+
+// No statements or labels are allowed before the first CASE.
+before_first_case
+  : (':' | rem_statement | NL)*
+  ;
+first_case_line
+  : case_statement (':' select_body_statement)* NL
+  ;
+
+select_body_line
+  : line_label? select_body_statement (':' select_body_statement)* NL
+  | line_label? if_block  // line ends in if_block
+  ;
+
+// Line ends in the select_case_statement line.
+end_select_line
+  : line_label? END SELECT (':' statement)*
+  | line_label? select_body_statement (':' select_body_statement)* (':' END SELECT) (':' statement)*
+  ;
+
+select_body_statement
+  : statement
+  | case_statement;
+
+case_statement
+  : CASE case_expr (',' case_expr)*
+// CASE ELSE can occur anywhere in the SELECT body, even multiple times.
+  | CASE ELSE
+  ;
+case_expr
+  : IS ('<' | '<=' | '>' | '>=' | '<>' | '=') expr
+  | expr TO expr
+  | expr
+  ;
+
 // User defined types must contain at least one member.
 // TODO: type cannot occur in procedure or DEF FN.
 type_statement
@@ -384,6 +429,7 @@ STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
 AS : [Aa][Ss] ;
+CASE : [Cc][Aa][Ss][Ee] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;
 DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
@@ -402,6 +448,7 @@ FOR : [Ff][Oo][Rr] ;
 GOSUB : [Gg][Oo][Ss][Uu][Bb] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;
+IS : [Ii][Ss] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 LET : [Ll][Ee][Tt] ;
 LONG : [Ll][Oo][Nn][Gg] ;
@@ -411,6 +458,7 @@ PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
+SELECT : [Ss][Ee][Ll][Ee][Cc][Tt] ;
 SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
 SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
 STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
