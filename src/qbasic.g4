@@ -20,12 +20,15 @@ statement
   | deftype_statement
   | dim_statement
   | do_loop_statement
+  | end_statement
   | for_next_statement
+  | gosub_statement
   | goto_statement
   | if_inline_statement
   | lifetime_statement
   | print_statement
   | print_using_statement
+  | return_statement
 // TYPE .. END TYPE is strangely not a block statement, it just consumes
 // multiple lines.
   | type_statement
@@ -168,6 +171,10 @@ loop_condition_line
   | line_label? do_body_statement (':' do_body_statement)* (':' LOOP do_condition?) (':' statement)*
   ;
 
+end_statement
+  : END
+  ;
+
 // FOR..NEXT is a totally reasonable for loop, except that multiple NEXTs can
 // be combined into one statement using the syntax NEXT v1, v2, ... vN.
 // TODO: Figure out how to parse NEXT v1, v2, ... vN.
@@ -196,6 +203,10 @@ for_body_line
 next_line
   : line_label? NEXT variable?
   | line_label? for_body_statement (':' for_body_statement)* (':' NEXT variable?) (':' statement)*
+  ;
+
+gosub_statement
+  : GOSUB (line_number | text_label)
   ;
 
 // GOTO can't jump into or out of subroutines.
@@ -271,6 +282,11 @@ print_using_args
 
 // A file number can be any expression that evaluates to a valid file handle
 file_number : '#' expr ;
+
+// Return can optionally return anywhere. Awesome.
+return_statement
+  : RETURN (line_number | text_label)?
+  ;
 
 // User defined types must contain at least one member.
 // TODO: type cannot occur in procedure or DEF FN.
@@ -383,6 +399,7 @@ ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
 EXIT : [Ee][Xx][Ii][Tt] ;
 FOR : [Ff][Oo][Rr] ;
+GOSUB : [Gg][Oo][Ss][Uu][Bb] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
@@ -393,6 +410,7 @@ NEXT : [Nn][Ee][Xx][Tt] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
+RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
 SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
 STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
