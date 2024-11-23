@@ -1,0 +1,69 @@
+(program 
+  (function_block function 
+    (variable x) 
+    (function_body_block \n 
+      (function_body_statement statement)) 
+    (end_function_statement end function)) \n 
+  (function_block function 
+    (variable y $) 
+    (function_body_block :) 
+    (end_function_statement end function)) \n 
+  (function_block function 
+    (variable z %) 
+    ( 
+      (parameter_list 
+        (decl_variable foo as 
+          (type_name string)) , 
+        (decl_variable 
+          (variable bar $))) ) static 
+    (function_body_block \n 
+      (function_body_statement 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "ok")))))) : 
+      (function_body_statement statement)) 
+    (end_function_statement end function : 
+      (statement 
+        (print_statement print 
+          (print_args 
+            (expr 
+              (literal "ignored"))))))) \n 
+  (function_block function 
+    (variable ParseLine) 
+    ( 
+      (parameter_list 
+        (decl_variable 
+          (variable Keywords $) 
+          (decl_array_bounds 
+            ( ))) , 
+        (decl_variable 
+          (variable KeywordTypes) 
+          (decl_array_bounds 
+            ( )))) ) 
+    (function_body_block \n 
+      (function_body_statement statement)) 
+    (end_function_statement end function)) \n 
+  (function_block function 
+    (variable hooray) 
+    (function_body_block : 
+      (function_body_statement 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "hi")))))) \n 
+      (function_body_statement 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "stuff")))))) : 
+      (function_body_statement statement)) 
+    (end_function_statement end function)) \n 
+  (function_block function 
+    (variable empty) 
+    ( ) 
+    (function_body_block :) 
+    (end_function_statement end function)) \n statement <EOF>)

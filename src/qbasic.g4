@@ -12,8 +12,8 @@ grammar qbasic;
 // level at the end of the program, and unnests automatically if you start
 // typing SUB inside another SUB.
 program
-  : (label? (statement | if_block | sub_block) (':' statement)* NL)*
-     label? (statement | if_block | sub_block) (':' statement)* EOF
+  : (label? (statement | if_block | sub_block | function_block) (':' statement)* NL)*
+     label? (statement | if_block | sub_block | function_block) (':' statement)* EOF
   ;
 
 // It's easier if we include the ':' as part of the label rule.
@@ -196,6 +196,32 @@ for_body_block
     label? (for_body_statement | if_block) (':' for_body_statement)*
   ;
 
+// IDE drops empty '()' parameter lists.
+function_block
+  : FUNCTION variable ('(' parameter_list? ')')? STATIC?
+    function_body_block
+    end_function_statement
+  ;
+
+function_body_statement
+  : statement
+  | EXIT FUNCTION
+  ;
+
+function_body_block
+  : (':' function_body_statement)* ':'
+  | (':' function_body_statement)* NL
+    (label? (function_body_statement | if_block) (':' function_body_statement)* NL)*
+// Match END FUNCTION in function_block.
+    label? (function_body_statement | if_block) (':' function_body_statement)*
+  ;
+
+// Statements after END FUNCTION on the same line are silently dropped!
+// program should consume the final NL or EOL.
+end_function_statement
+  : label? END FUNCTION (':' statement)*
+  ;
+
 gosub_statement
   : GOSUB (line_number | text_label)
   ;
@@ -324,8 +350,9 @@ end_select_statement
   : label? END SELECT
   ;
 
+// IDE drops empty '()' parameter lists.
 sub_block
-  : SUB ID ('(' parameter_list ')')? STATIC?
+  : SUB ID ('(' parameter_list? ')')? STATIC?
     sub_body_block
     end_sub_statement
   ;
@@ -464,6 +491,7 @@ ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
 EXIT : [Ee][Xx][Ii][Tt] ;
 FOR : [Ff][Oo][Rr] ;
+FUNCTION : [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn] ;
 GOSUB : [Gg][Oo][Ss][Uu][Bb] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;

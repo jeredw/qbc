@@ -49,4 +49,8 @@
               (expr 
                 (literal "stuff")))))) : 
       (sub_body_statement statement)) 
+    (end_sub_statement end sub)) \n 
+  (sub_block sub empty 
+    ( ) 
+    (sub_body_block :) 
     (end_sub_statement end sub)) \n statement <EOF>)
