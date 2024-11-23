@@ -12,3 +12,7 @@ sub empty(): end sub
 '  sub wow
 '  end sub
 'end if
+'
+'error:
+'sub foo (a as string*40)
+'end sub

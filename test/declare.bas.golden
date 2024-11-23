@@ -3,17 +3,17 @@
   (declare_statement declare sub foo2 
     ( 
       (parameter_list 
-        (decl_variable x as 
-          (type_name string)) , 
-        (decl_variable 
+        (parameter x as 
+          (type_name_for_parameter_list string)) , 
+        (parameter 
           (variable y $)) , 
-        (decl_variable 
+        (parameter 
           (variable z %))) )) \n 
   (declare_statement declare function 
     (variable bar %) 
     ( 
       (parameter_list 
-        (decl_variable 
+        (parameter 
           (variable y %))) )) \n 
   (declare_statement declare function 
     (variable baz) 

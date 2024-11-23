@@ -2,11 +2,11 @@
   (sub_block sub foo 
     ( 
       (parameter_list 
-        (decl_variable 
+        (parameter 
           (variable bar $)) , 
-        (decl_variable baz as 
-          (type_name string)) , 
-        (decl_variable 
+        (parameter baz as 
+          (type_name_for_parameter_list string)) , 
+        (parameter 
           (variable quux))) ) static 
     (sub_body_block \n 
       (sub_body_statement statement)) 
@@ -14,11 +14,11 @@
   (sub_block sub bar 
     ( 
       (parameter_list 
-        (decl_variable 
+        (parameter 
           (variable a)) , 
-        (decl_variable 
+        (parameter 
           (variable b)) , 
-        (decl_variable 
+        (parameter 
           (variable c %))) ) 
     (sub_body_block :) 
     (end_sub_statement end sub)) \n 

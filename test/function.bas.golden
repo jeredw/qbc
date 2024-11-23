@@ -12,9 +12,9 @@
     (variable z %) 
     ( 
       (parameter_list 
-        (decl_variable foo as 
-          (type_name string)) , 
-        (decl_variable 
+        (parameter foo as 
+          (type_name_for_parameter_list string)) , 
+        (parameter 
           (variable bar $))) ) static 
     (function_body_block \n 
       (function_body_statement 
@@ -34,13 +34,13 @@
     (variable ParseLine) 
     ( 
       (parameter_list 
-        (decl_variable 
+        (parameter 
           (variable Keywords $) 
-          (decl_array_bounds 
+          (parameter_array_bounds 
             ( ))) , 
-        (decl_variable 
+        (parameter 
           (variable KeywordTypes) 
-          (decl_array_bounds 
+          (parameter_array_bounds 
             ( )))) ) 
     (function_body_block \n 
       (function_body_statement statement)) 

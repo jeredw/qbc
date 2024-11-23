@@ -133,12 +133,22 @@ type_name
   ;
 
 // Can't use variable-length strings in user-defined types.
-restricted_type_name
+type_name_for_type_member
   : INTEGER
   | LONG
   | SINGLE
   | DOUBLE
   | STRING '*' DIGITS
+  | ID
+  ;
+
+// Can _only_ use variable-length strings in sub parameter lists.
+type_name_for_parameter_list
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING
   | ID
   ;
 
@@ -350,15 +360,25 @@ end_select_statement
   : label? END SELECT
   ;
 
+parameter_list
+  : parameter (',' parameter)*
+  ;
+
+parameter
+  : ID parameter_array_bounds? AS type_name_for_parameter_list
+  | variable parameter_array_bounds?
+  ;
+
+// See decl_array_bounds.
+parameter_array_bounds
+  : '(' DIGITS? ')'
+  ;
+
 // IDE drops empty '()' parameter lists.
 sub_block
   : SUB ID ('(' parameter_list? ')')? STATIC?
     sub_body_block
     end_sub_statement
-  ;
-
-parameter_list
-  : decl_variable (',' decl_variable)*
   ;
 
 sub_body_statement
@@ -395,7 +415,7 @@ type_statement
 // Type members can't have labels etc. like normal lines.
 type_member
 // Note: type members cannot include '.'.
-   : ID AS restricted_type_name NL+
+   : ID AS type_name_for_type_member NL+
 // Since we handle REM comments as statements, need to accept them here.
    | rem_statement NL
    ;
