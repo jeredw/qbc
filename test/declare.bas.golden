@@ -1,0 +1,20 @@
+(program 
+  (declare_statement declare sub foo) \n 
+  (declare_statement declare sub foo2 
+    ( 
+      (parameter_list 
+        (decl_variable x as 
+          (type_name string)) , 
+        (decl_variable 
+          (variable y $)) , 
+        (decl_variable 
+          (variable z %))) )) \n 
+  (declare_statement declare function 
+    (variable bar %) 
+    ( 
+      (parameter_list 
+        (decl_variable 
+          (variable y %))) )) \n 
+  (declare_statement declare function 
+    (variable baz) 
+    ( )) \n statement <EOF>)

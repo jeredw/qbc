@@ -12,8 +12,8 @@ grammar qbasic;
 // level at the end of the program, and unnests automatically if you start
 // typing SUB inside another SUB.
 program
-  : (label? (statement | if_block | sub_block | function_block) (':' statement)* NL)*
-     label? (statement | if_block | sub_block | function_block) (':' statement)* EOF
+  : (label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement)* NL)*
+     label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement)* EOF
   ;
 
 // It's easier if we include the ':' as part of the label rule.
@@ -380,6 +380,11 @@ end_sub_statement
   : label? END SUB (':' statement)*
   ;
 
+// IDE drops empty '()' parameter lists.
+declare_statement
+  : DECLARE (SUB ID | FUNCTION variable) ('(' parameter_list? ')')?
+  ;
+
 // User defined types must contain at least one member.
 // TODO: type cannot occur in procedure or DEF FN.
 type_statement
@@ -478,6 +483,7 @@ AS : [Aa][Ss] ;
 CASE : [Cc][Aa][Ss][Ee] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;
+DECLARE : [Dd][Ee][Cc][Ll][Aa][Rr][Ee] ;
 DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
 DEFINT : [Dd][Ee][Ff][Ii][Nn][Tt] ;
 DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
