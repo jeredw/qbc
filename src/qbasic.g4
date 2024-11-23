@@ -15,8 +15,8 @@ grammar qbasic;
 //
 // TODO: Support optional absent NL on last line in a less ugly way.
 program
-  : (label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement) (':' statement | declare_statement | def_fn_statement)* NL)*
-     label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement) (':' statement | declare_statement | def_fn_statement)* EOF
+  : (label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* NL)*
+     label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* EOF
   ;
 
 // It's easier if we include the ':' as part of the label rule.
@@ -124,6 +124,11 @@ dim_array_bounds
 // expr must be some kind of vaguely integer type expression.
 dim_subscript
   : (lower=expr TO)? upper=expr
+  ;
+
+// DIGITS must be 0 or 1, but that will be checked later.
+option_statement
+  : OPTION BASE DIGITS
   ;
 
 // A system or user-defined type following an AS keyword.
@@ -561,6 +566,7 @@ STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
 AS : [Aa][Ss] ;
+BASE : [Bb][Aa][Ss][Ee] ;
 CASE : [Cc][Aa][Ss][Ee] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;
@@ -590,6 +596,7 @@ LET : [Ll][Ee][Tt] ;
 LONG : [Ll][Oo][Nn][Gg] ;
 LOOP : [Ll][Oo][Oo][Pp] ;
 NEXT : [Nn][Ee][Xx][Tt] ;
+OPTION : [Oo][Pp][Tt][Ii][Oo][Nn] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
