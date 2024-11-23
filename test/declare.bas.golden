@@ -1,5 +1,5 @@
-(program 
-  (declare_statement declare sub foo) \n 
+(program statement 
+  (declare_statement declare sub foo) \n statement 
   (declare_statement declare sub foo2 
     ( 
       (parameter_list 
@@ -8,13 +8,15 @@
         (parameter 
           (variable y $)) , 
         (parameter 
-          (variable z %))) )) \n 
+          (variable z %))) )) \n statement 
   (declare_statement declare function 
     (variable bar %) 
     ( 
       (parameter_list 
         (parameter 
-          (variable y %))) )) \n 
+          (variable y %))) )) \n statement 
   (declare_statement declare function 
     (variable baz) 
-    ( )) \n statement <EOF>)
+    ( )) \n statement 
+  (declare_statement declare sub a) : statement 
+  (declare_statement declare sub b) \n statement <EOF>)

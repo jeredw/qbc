@@ -11,9 +11,11 @@ grammar qbasic;
 // Technically though the IDE will move SUB in a nested if/loop to the top
 // level at the end of the program, and unnests automatically if you start
 // typing SUB inside another SUB.
+//
+// TODO: Support optional absent NL on last line in a less ugly way.
 program
-  : (label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement)* NL)*
-     label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement)* EOF
+  : (label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement | declare_statement)* NL)*
+     label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement | declare_statement)* EOF
   ;
 
 // It's easier if we include the ':' as part of the label rule.
