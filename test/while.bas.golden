@@ -1,9 +1,41 @@
 (program 
-    (statement (while_wend_statement while (expr (variable TRUE)) (while_body_block :) wend)) \n 
-    (statement (while_wend_statement while (expr (variable foo)) (while_body_block \n 
-    (statement (print_statement print (print_args (expr (literal "ok"))))) \n statement) wend)) \n 
-    (statement (print_statement print (print_args (expr (literal "hi"))))) : 
-    (statement (while_wend_statement while (expr (variable x)) (while_body_block : 
-    (statement (print_statement print (print_args (expr (literal "stuff"))))) \n 
-    (statement (print_statement print (print_args (expr (literal "blah"))))) : statement) wend)) : 
-    (statement (print_statement print (print_args (expr (literal "ok"))))) \n statement <EOF>)
+  (statement 
+    (while_wend_statement while 
+      (expr 
+        (variable TRUE)) 
+      (while_body_block :) wend)) \n 
+  (statement 
+    (while_wend_statement while 
+      (expr 
+        (variable foo)) 
+      (while_body_block \n 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "ok"))))) \n statement) wend)) \n 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (literal "hi"))))) : 
+  (statement 
+    (while_wend_statement while 
+      (expr 
+        (variable x)) 
+      (while_body_block : 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "stuff"))))) \n 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "blah"))))) : statement) wend)) : 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (literal "ok"))))) \n statement <EOF>)

@@ -1,3 +1,18 @@
 (program 
-    (statement (do_loop_statement do (do_body_block \n (do_body_statement exit do) \n (do_body_statement statement)) loop)) \n 
-    (statement (for_next_statement (for_assignment for (variable i) = (expr (literal 1)) to (expr (literal 10))) (for_body_block \n (for_body_statement exit for) \n (for_body_statement statement)) next (variable i))) \n statement <EOF>)
+  (statement 
+    (do_loop_statement do 
+      (do_body_block \n 
+        (do_body_statement exit do) \n 
+        (do_body_statement statement)) loop)) \n 
+  (statement 
+    (for_next_statement 
+      (for_assignment for 
+        (variable i) = 
+        (expr 
+          (literal 1)) to 
+        (expr 
+          (literal 10))) 
+      (for_body_block \n 
+        (for_body_statement exit for) \n 
+        (for_body_statement statement)) next 
+      (variable i))) \n statement <EOF>)

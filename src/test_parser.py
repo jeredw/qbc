@@ -4,6 +4,19 @@ import subprocess
 import re
 from typing import List
 
+def pretty_print(tree):
+  output = []
+  depth = 0
+  for ch in tree:
+    if ch == '(':
+      if depth > 0:
+        output += ['\n', ' ' * (depth * 2)]
+      depth += 1
+    elif ch == ')':
+      depth -= 1
+    output.append(ch)
+  return ''.join(output)
+
 def main(argv: List[str]) -> None:
   for test in argv[1:]:
     golden_file_name = f'{test}.golden'
@@ -16,10 +29,7 @@ def main(argv: List[str]) -> None:
     if grun.stderr:
       print(f'{test} errors\n{grun.stderr}', end='')
       continue
-    tree = grun.stdout
-    tree = re.sub('\(block ', '\n  (block ', tree)
-    tree = re.sub('\(statement ', '\n    (statement ', tree)
-    tree = re.sub('\(if_block ', '\n    (if_block ', tree)
+    tree = pretty_print(grun.stdout)
     diff = subprocess.Popen(
         f'diff -du {golden_file_name} -',
         shell=True,

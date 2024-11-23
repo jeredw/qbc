@@ -1,13 +1,88 @@
 (program 
-    (statement (print_statement print print_args)) \n 
-    (statement (print_statement print (print_args (expr (literal 3))))) \n 
-    (statement (print_using_statement print using (expr (literal "#.#")) ; (print_using_args (expr (literal 1)) ; (print_using_args (expr (literal 1)) ; (print_using_args (expr (literal 3))))))) \n 
-    (statement (print_using_statement print using (expr (variable s $)) ; (print_using_args (expr (literal 1)) ; (print_using_args (expr (literal 1)) ; (print_using_args (expr (literal 3))))) ;)) \n 
-    (statement (print_using_statement print (file_number # (expr (literal 42))) , using (expr (literal "#.##")) ; print_using_args)) \n 
-    (statement (print_statement print (print_args (expr (literal 1)) , (print_args (expr (literal 2)) ; (print_args (expr (literal 3)) , (print_args (expr (literal 4)) ; (print_args (expr (literal 5)) , (print_args (expr (literal 6)))))))) ,)) \n 
-    (statement (print_statement print (print_args (expr (literal 1))) ;)) \n 
-    (statement (print_statement print (print_args (expr (literal 2))) ,)) \n 
-    (statement (print_statement print (file_number # (expr (literal 42))) , (print_args (expr (literal "hi"))))) \n 
-    (statement (print_statement print print_args ,)) \n 
-    (statement (print_statement print (file_number # (expr (literal 1))) , print_args ,)) \n 
-    (statement (print_statement print print_args ;)) \n statement <EOF>)
+  (statement 
+    (print_statement print print_args)) \n 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (literal 3))))) \n 
+  (statement 
+    (print_using_statement print using 
+      (expr 
+        (literal "#.#")) ; 
+      (print_using_args 
+        (expr 
+          (literal 1)) ; 
+        (print_using_args 
+          (expr 
+            (literal 1)) ; 
+          (print_using_args 
+            (expr 
+              (literal 3))))))) \n 
+  (statement 
+    (print_using_statement print using 
+      (expr 
+        (variable s $)) ; 
+      (print_using_args 
+        (expr 
+          (literal 1)) ; 
+        (print_using_args 
+          (expr 
+            (literal 1)) ; 
+          (print_using_args 
+            (expr 
+              (literal 3))))) ;)) \n 
+  (statement 
+    (print_using_statement print 
+      (file_number # 
+        (expr 
+          (literal 42))) , using 
+      (expr 
+        (literal "#.##")) ; print_using_args)) \n 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (literal 1)) , 
+        (print_args 
+          (expr 
+            (literal 2)) ; 
+          (print_args 
+            (expr 
+              (literal 3)) , 
+            (print_args 
+              (expr 
+                (literal 4)) ; 
+              (print_args 
+                (expr 
+                  (literal 5)) , 
+                (print_args 
+                  (expr 
+                    (literal 6)))))))) ,)) \n 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (literal 1))) ;)) \n 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (literal 2))) ,)) \n 
+  (statement 
+    (print_statement print 
+      (file_number # 
+        (expr 
+          (literal 42))) , 
+      (print_args 
+        (expr 
+          (literal "hi"))))) \n 
+  (statement 
+    (print_statement print print_args ,)) \n 
+  (statement 
+    (print_statement print 
+      (file_number # 
+        (expr 
+          (literal 1))) , print_args ,)) \n 
+  (statement 
+    (print_statement print print_args ;)) \n statement <EOF>)

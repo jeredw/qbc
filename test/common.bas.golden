@@ -1,4 +1,33 @@
 (program 
-    (statement (lifetime_statement common shared (decl_variable wowzas (decl_array_bounds ( )) as (type_name string * 42)))) \n 
-    (statement (lifetime_statement common (decl_variable (variable i)) , (decl_variable (variable j)) , (decl_variable (variable k)) , (decl_variable (variable a) (decl_array_bounds ( ))))) \n 
-    (statement (lifetime_statement common (decl_variable (variable a $)) , (decl_variable (variable b $) (decl_array_bounds ( ))) , (decl_variable (variable x)) , (decl_variable (variable y)) , (decl_variable (variable z)))) \n statement <EOF>)
+  (statement 
+    (lifetime_statement common shared 
+      (decl_variable wowzas 
+        (decl_array_bounds 
+          ( )) as 
+        (type_name string * 42)))) \n 
+  (statement 
+    (lifetime_statement common 
+      (decl_variable 
+        (variable i)) , 
+      (decl_variable 
+        (variable j)) , 
+      (decl_variable 
+        (variable k)) , 
+      (decl_variable 
+        (variable a) 
+        (decl_array_bounds 
+          ( ))))) \n 
+  (statement 
+    (lifetime_statement common 
+      (decl_variable 
+        (variable a $)) , 
+      (decl_variable 
+        (variable b $) 
+        (decl_array_bounds 
+          ( ))) , 
+      (decl_variable 
+        (variable x)) , 
+      (decl_variable 
+        (variable y)) , 
+      (decl_variable 
+        (variable z)))) \n statement <EOF>)

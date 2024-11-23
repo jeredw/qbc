@@ -1,5 +1,20 @@
 (program 
-    (statement (do_loop_statement do (do_body_block \n (do_body_statement 
-    (statement (while_wend_statement while (expr (literal 1)) (while_body_block \n statement) wend))) : (do_body_statement statement)) loop)) \n 
-    (statement (while_wend_statement while (expr (variable true)) (while_body_block \n 
-    (statement (do_loop_statement do (do_body_block \n (do_body_statement statement)) loop)) \n statement) wend)) \n statement <EOF>)
+  (statement 
+    (do_loop_statement do 
+      (do_body_block \n 
+        (do_body_statement 
+          (statement 
+            (while_wend_statement while 
+              (expr 
+                (literal 1)) 
+              (while_body_block \n statement) wend))) : 
+        (do_body_statement statement)) loop)) \n 
+  (statement 
+    (while_wend_statement while 
+      (expr 
+        (variable true)) 
+      (while_body_block \n 
+        (statement 
+          (do_loop_statement do 
+            (do_body_block \n 
+              (do_body_statement statement)) loop)) \n statement) wend)) \n statement <EOF>)
