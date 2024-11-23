@@ -5,10 +5,10 @@ grammar qbasic;
 // last statement in a program without a newline.
 //
 // An IF block must be the first statement on a line, so you cannot write "ELSE
-// IF" instead of ELSEIF for example.
+// IF" instead of ELSEIF for example.  Ditto SUB.
 program
-  : (label? (statement | if_block) (':' statement)* NL)*
-     label? (statement | if_block) (':' statement)* EOF
+  : (label? (statement | if_block | sub_block) (':' statement)* NL)*
+     label? (statement | if_block | sub_block) (':' statement)* EOF
   ;
 
 // It's easier if we include the ':' as part of the label rule.
@@ -32,8 +32,6 @@ statement
   | print_using_statement
   | return_statement
   | select_case_statement
-// TYPE .. END TYPE is strangely not a block statement, it just consumes
-// multiple lines.
   | type_statement
   | while_wend_statement
 // Statements can be empty after line labels, before or between :.
@@ -51,7 +49,6 @@ assignment_statement
   : LET? variable '=' expr
   ;
 
-// Const expressions have bizarre 
 const_statement
   : CONST const_assignment (',' const_assignment)*
   ;
@@ -76,7 +73,9 @@ decl_variable
   | variable decl_array_bounds?
   ;
 
-// The IDE erases a number of dimensions in array bounds.
+// Earlier MS BASIC required you to specify the number of dimensions in array
+// declarations, but QBasic doesn't.  The IDE erases the number of dimensions
+// if it is specified.
 decl_array_bounds
   : '(' DIGITS? ')'
   ;
@@ -102,7 +101,8 @@ dim_statement
   ;
 
 dim_variable
-// Variables of user defined types cannot have names containing '.'.
+// Variables of user defined types cannot have names containing '.',
+// probably to prevent member lookup ambiguity.
   : ID dim_array_bounds? AS type_name
   | variable dim_array_bounds?
   ;
@@ -319,6 +319,35 @@ end_select_statement
   : label? END SELECT
   ;
 
+sub_block
+  : SUB ID ('(' parameter_list ')')? STATIC?
+    sub_body_block
+    end_sub_statement
+  ;
+
+parameter_list
+  : decl_variable (',' decl_variable)*
+  ;
+
+sub_body_statement
+  : statement
+  | EXIT SUB
+  ;
+
+sub_body_block
+  : (':' sub_body_statement)* ':'
+  | (':' sub_body_statement)* NL
+    (label? (sub_body_statement | if_block) (':' sub_body_statement)* NL)*
+// Match END SUB in sub_block.
+    label? (sub_body_statement | if_block) (':' sub_body_statement)*
+  ;
+
+// Statements after END SUB on the same line are silently dropped!
+// program should consume the final NL or EOL.
+end_sub_statement
+  : label? END SUB (':' statement)*
+  ;
+
 // User defined types must contain at least one member.
 // TODO: type cannot occur in procedure or DEF FN.
 type_statement
@@ -449,6 +478,7 @@ SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
 STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
 STEP : [Ss][Tt][Ee][Pp] ;
 STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
+SUB : [Ss][Uu][Bb];
 THEN : [Tt][Hh][Ee][Nn] ;
 TO : [Tt][Oo] ;
 TYPE : [Tt][Yy][Pp][Ee] ;

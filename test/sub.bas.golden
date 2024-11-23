@@ -1,0 +1,52 @@
+(program 
+  (sub_block sub foo 
+    ( 
+      (parameter_list 
+        (decl_variable 
+          (variable bar $)) , 
+        (decl_variable baz as 
+          (type_name string)) , 
+        (decl_variable 
+          (variable quux))) ) static 
+    (sub_body_block \n 
+      (sub_body_statement statement)) 
+    (end_sub_statement end sub)) \n 
+  (sub_block sub bar 
+    ( 
+      (parameter_list 
+        (decl_variable 
+          (variable a)) , 
+        (decl_variable 
+          (variable b)) , 
+        (decl_variable 
+          (variable c %))) ) 
+    (sub_body_block :) 
+    (end_sub_statement end sub)) \n 
+  (sub_block sub baz 
+    (sub_body_block :) 
+    (end_sub_statement end sub : 
+      (statement 
+        (print_statement print 
+          (print_args 
+            (expr 
+              (literal "wow"))))))) \n 
+  (sub_block sub quux static 
+    (sub_body_block \n 
+      (sub_body_statement statement)) 
+    (end_sub_statement end sub)) \n 
+  (sub_block sub quux2 
+    (sub_body_block : 
+      (sub_body_statement 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "hi")))))) \n 
+      (sub_body_statement 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "stuff")))))) : 
+      (sub_body_statement statement)) 
+    (end_sub_statement end sub)) \n statement <EOF>)
