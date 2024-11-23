@@ -1,16 +1,18 @@
 // Based on MS-DOS QBasic 1.1
 grammar qbasic;
 
-program: line* EOF ;
-
-// Lines have an optional label, then one or more : separated statements.
-line
-  : line_label? statement (':' statement)* NL
-// An IF block must be the first statement on a line.
-  | line_label? if_block  // line ends in if_block
+// A program is one or more statements separated by ':' or NL, or EOF for the
+// last statement in a program without a newline.
+//
+// An IF block must be the first statement on a line, so you cannot write "ELSE
+// IF" instead of ELSEIF for example.
+program
+  : (label? (statement | if_block) (':' statement)* NL)*
+     label? (statement | if_block) (':' statement)* EOF
   ;
 
-line_label
+// It's easier if we include the ':' as part of the label rule.
+label
   : (line_number | text_label ':') ;
 
 statement
@@ -135,41 +137,28 @@ restricted_type_name
   | ID
   ;
 
-// A DO..LOOP statement can start anywhere but must match LOOP.
 do_loop_statement
-// The loop can end on the same line it started on...
-  : DO do_condition (':' do_body_statement)* (':' LOOP)
-  | DO (':' do_body_statement)* (':' LOOP do_condition?)
-// Or the loop can end on a different line.
-  | DO do_condition (':' do_body_statement)* NL do_body_line* loop_line
-  | DO (':' do_body_statement)* NL do_body_line* loop_condition_line
+  : (DO do_condition) do_body_block LOOP
+  | DO do_body_block (LOOP do_condition)
+  | DO do_body_block LOOP
   ;
 
 do_condition
   : (WHILE expr | UNTIL expr)
   ;
 
-// Allow EXIT DO inside DO loops.
+// Allow EXIT DO only inside DO loops.
 do_body_statement
   : statement
   | EXIT DO
   ;
 
-do_body_line
-  : line_label? do_body_statement (':' do_body_statement)* NL
-  | line_label? if_block  // line ends in if_block
-  ;
-
-// These rules terminate a DO loop.  An implicit NL is matched by the line that
-// contained the original do_loop_statement.
-// TODO: Make this less confusing somehow?
-loop_line
-  : line_label? LOOP (':' statement)*
-  | line_label? do_body_statement (':' do_body_statement)* (':' LOOP) (':' statement)*
-  ;
-loop_condition_line
-  : line_label? LOOP do_condition? (':' statement)*
-  | line_label? do_body_statement (':' do_body_statement)* (':' LOOP do_condition?) (':' statement)*
+do_body_block
+  : (':' do_body_statement)* ':'
+  | (':' do_body_statement)* NL
+    (label? (do_body_statement | if_block) (':' do_body_statement)* NL)*
+// Match LOOP next in do_loop_statement, then match NL in the parent block.
+    label? (do_body_statement | if_block) (':' do_body_statement)*
   ;
 
 end_statement
@@ -181,29 +170,25 @@ end_statement
 // TODO: Figure out how to parse NEXT v1, v2, ... vN.
 for_next_statement
 // Single line loop.
-  : for_assignment (':' for_body_statement)* ':' NEXT variable?
-  | for_assignment (':' for_body_statement)* NL for_body_line* next_line
+  : for_assignment for_body_block NEXT variable?
   ;
 
 for_assignment
   : FOR variable '=' expr TO expr (STEP expr)?
   ;
 
-// Allow EXIT FOR inside FOR..NEXT.
+// Allow EXIT FOR only inside FOR..NEXT.
 for_body_statement
   : statement
   | EXIT FOR
   ;
 
-for_body_line
-  : line_label? for_body_statement (':' for_body_statement)* NL
-  | line_label? if_block  // line ends in if_block
-  ;
-
-// The final NL is implicitly in the line rule that has the for_next_statement.
-next_line
-  : line_label? NEXT variable?
-  | line_label? for_body_statement (':' for_body_statement)* (':' NEXT variable?) (':' statement)*
+for_body_block
+  : (':' for_body_statement)* ':'
+  | (':' for_body_statement)* NL
+    (label? (for_body_statement | if_block) (':' for_body_statement)* NL)*
+// Match NEXT in for_loop_statement, then match NL in the parent block.
+    label? (for_body_statement | if_block) (':' for_body_statement)*
   ;
 
 gosub_statement
@@ -230,29 +215,35 @@ if_inline_action
   | line_number  // Implicit GOTO
   ;
 
-// The lines inside an IF block are all normal labeled lines, and they can
-// also nest other statement blocks.
 if_block
-// Must have NL after THEN since otherwise this is if_inline_statement.
-  : IF expr THEN NL line*
-    (elseif_line line*)*
-    (else_line line*)?
-    end_if_line
+// Must have NL after THEN since otherwise this is an if_inline_statement.
+  : IF expr THEN NL if_body_block
+// ELSEIF, ELSE, and END IF must be the first statement on a line.
+    elseif_block*
+    else_block?
+    end_if_statement
   ;
 
-// ELSEIF .. THEN can have statements immediately following THEN.
-elseif_line
-  : line_label? ELSEIF expr THEN (NL | statement (':' statement)* NL)
+elseif_block
+  : label? ELSEIF expr THEN midline_if_body_block
   ;
 
-// ELSE can have statements immediately following.
-else_line
-  : line_label? ELSE (NL | statement (':' statement)* NL)
+else_block
+  : label? ELSE midline_if_body_block
   ;
 
-// END IF can have more statements after it.
-end_if_line
-  : line_label? END IF (':' statement)* NL
+// Statements after END IF will be part of the parent of if_block.
+end_if_statement
+  : label? END IF
+  ;
+
+if_body_block
+  : (label? (statement | if_block) (':' statement)* NL)*
+  ;
+
+midline_if_body_block
+  : statement (':' statement)* NL
+    (label? (statement | if_block) (':' statement)* NL)*
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
@@ -291,36 +282,27 @@ return_statement
 
 // SELECT CASE matches CASE statements at the top level, but not inside nested
 // blocks (like nested IF...THEN).
-// TODO: Ideally this would have CASE children instead of a bunch of lines,
-// but labels and if_block make this tough right now.
 select_case_statement
   : SELECT CASE expr before_first_case
-    (first_case_line select_body_line*)?
-    end_select_line
+    case_block*
+    end_select_statement
   ;
 
-// No statements or labels are allowed before the first CASE.
+// No real statements or labels are allowed before the first CASE.
 before_first_case
   : (':' | rem_statement | NL)*
   ;
-first_case_line
-  : case_statement (':' select_body_statement)* NL
-  ;
 
-select_body_line
-  : line_label? select_body_statement (':' select_body_statement)* NL
-  | line_label? if_block  // line ends in if_block
+case_block
+  : case_statement
+   ((':' statement)* ':'
+    |
+    (':' statement)* NL
+    (label? (statement | if_block) (':' statement)* NL)*
+// Match CASE or END SELECT next in select_case_statement, then match NL in the parent block.
+    label? (statement | if_block) (':' statement)*
+   )
   ;
-
-// Line ends in the select_case_statement line.
-end_select_line
-  : line_label? END SELECT (':' statement)*
-  | line_label? select_body_statement (':' select_body_statement)* (':' END SELECT) (':' statement)*
-  ;
-
-select_body_statement
-  : statement
-  | case_statement;
 
 case_statement
   : CASE case_expr (',' case_expr)*
@@ -331,6 +313,10 @@ case_expr
   : IS ('<' | '<=' | '>' | '>=' | '<>' | '=') expr
   | expr TO expr
   | expr
+  ;
+
+end_select_statement
+  : label? END SELECT
   ;
 
 // User defined types must contain at least one member.
@@ -350,16 +336,15 @@ type_member
 
 // Loop construct from an older BASIC?
 while_wend_statement
-  : WHILE expr (':' statement)* WEND
-  | WHILE expr (':' statement)* NL line* wend_line
+  : WHILE expr while_body_block WEND
   ;
 
-// This rule terminates a WHILE loop.  An implicit NL is matched by the line that
-// contained the original while_wend_statement.
-// TODO: Make this less confusing somehow?
-wend_line
-  : line_label? WEND (':' statement)*
-  | line_label? statement (':' statement)* (':' WEND) (':' statement)*
+while_body_block
+  : (':' statement)* ':'
+  | (':' statement)* NL
+    (label? (statement | if_block) (':' statement)* NL)*
+// Match WEND in while_wend_statement, then match NL in the parent block.
+    label? (statement | if_block) (':' statement)*
   ;
 
 expr

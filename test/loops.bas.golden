@@ -1,4 +1,5 @@
 (program 
-  (line (statement (do_loop_statement do \n (loop_condition_line (do_body_statement (statement (while_wend_statement while (expr (literal 1)) \n (wend_line wend)))) : loop))) \n) 
-  (line (statement (while_wend_statement while (expr (variable true)) \n 
-  (line (statement (do_loop_statement do \n (loop_condition_line loop))) \n) (wend_line wend))) \n) <EOF>)
+    (statement (do_loop_statement do (do_body_block \n (do_body_statement 
+    (statement (while_wend_statement while (expr (literal 1)) (while_body_block \n statement) wend))) : (do_body_statement statement)) loop)) \n 
+    (statement (while_wend_statement while (expr (variable true)) (while_body_block \n 
+    (statement (do_loop_statement do (do_body_block \n (do_body_statement statement)) loop)) \n statement) wend)) \n statement <EOF>)

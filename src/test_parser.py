@@ -16,7 +16,10 @@ def main(argv: List[str]) -> None:
     if grun.stderr:
       print(f'{test} errors\n{grun.stderr}', end='')
       continue
-    tree = re.sub('\(line ', '\n  (line ', grun.stdout)
+    tree = grun.stdout
+    tree = re.sub('\(block ', '\n  (block ', tree)
+    tree = re.sub('\(statement ', '\n    (statement ', tree)
+    tree = re.sub('\(if_block ', '\n    (if_block ', tree)
     diff = subprocess.Popen(
         f'diff -du {golden_file_name} -',
         shell=True,
