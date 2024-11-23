@@ -6,6 +6,11 @@ grammar qbasic;
 //
 // An IF block must be the first statement on a line, so you cannot write "ELSE
 // IF" instead of ELSEIF for example.  Ditto SUB.
+//
+// For simplicity, in this grammar SUB must go at the top level and can't nest.
+// Technically though the IDE will move SUB in a nested if/loop to the top
+// level at the end of the program, and unnests automatically if you start
+// typing SUB inside another SUB.
 program
   : (label? (statement | if_block | sub_block) (':' statement)* NL)*
      label? (statement | if_block | sub_block) (':' statement)* EOF

@@ -6,3 +6,8 @@ sub quux static
 end sub
 sub quux2: print "hi"
 print "stuff": end sub
+'fixed by ide but not matched by this grammar
+'if 42 then
+'  sub wow
+'  end sub
+'end if
