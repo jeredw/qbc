@@ -14,8 +14,8 @@ grammar qbasic;
 //
 // TODO: Support optional absent NL on last line in a less ugly way.
 program
-  : (label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement | declare_statement)* NL)*
-     label? (statement | if_block | sub_block | function_block | declare_statement) (':' statement | declare_statement)* EOF
+  : (label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement) (':' statement | declare_statement | def_fn_statement)* NL)*
+     label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement) (':' statement | declare_statement | def_fn_statement)* EOF
   ;
 
 // It's easier if we include the ':' as part of the label rule.
@@ -99,7 +99,9 @@ deftype_statement
 // Supporting ranges like A-Z in the lexer is messy since that's also an
 // expression.  The IDE allows any ID-ID in ranges and strips down to the first
 // letter, so we'll parse that and deal with it later.
-letter_range: ID | ID '-' ID ;
+// Note that DEFINT fna-fnb turns into DEFINT a-b, so fn prefixes are evidently
+// stripped.
+letter_range: ID | ID '-' ID | FNID | FNID '-' FNID ;
 
 // DIM can take a mix of "as" types and names with sigils.
 dim_statement
@@ -132,6 +134,7 @@ type_name
   | STRING
   | STRING '*' DIGITS
   | ID
+  | FNID
   ;
 
 // Can't use variable-length strings in user-defined types.
@@ -142,6 +145,7 @@ type_name_for_type_member
   | DOUBLE
   | STRING '*' DIGITS
   | ID
+  | FNID
   ;
 
 // Can _only_ use variable-length strings in sub parameter lists.
@@ -152,6 +156,17 @@ type_name_for_parameter_list
   | DOUBLE
   | STRING
   | ID
+  | FNID
+  ;
+
+// DEF FN parameters can't be arrays, records, or fixed-length strings.
+// The QBasic help file says user-defined types are allowed, but they aren't.
+type_name_for_def_fn_parameter_list
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING
   ;
 
 do_loop_statement
@@ -245,7 +260,7 @@ goto_statement
 
 // Labels or line numbers must be distinct.
 line_number : DIGITS ;
-text_label : ID ;
+text_label : ID | FNID;
 
 // IF has a concise inline form that can occur anywhere.
 // The ELSE binds to the innermost IF.
@@ -407,17 +422,60 @@ declare_statement
   : DECLARE (SUB ID | FUNCTION variable) ('(' parameter_list? ')')?
   ;
 
+// DEF FNname is unusual because FNname is both a keyword and an identifier.
+// Many rules that match identifiers like variables, procedure names, and
+// parameter names also can't start with FN, so we model this by explicitly
+// splitting FN-prefixed IDs out of ID into a separate FNID token.
+//
+// The IDE automatically corrects "DEF FN x" to "DEF FNx", so we'll also match
+// a separate token form of DEF FN and merge that into FN+name later.
+def_fn_statement
+  : DEF (FNID | FN ID) ('(' def_fn_parameter_list? ')')?
+    ('=' expr |
+    def_fn_body_block
+    END DEF)
+  ;
+
+def_fn_parameter_list
+  : def_fn_parameter (',' def_fn_parameter)*
+  ;
+
+def_fn_parameter
+  : ID AS type_name_for_def_fn_parameter_list
+  | variable
+  ;
+
+// FNID can only be assigned inside a DEF FN - we'll check elsewhere that this
+// is the same FNID.  This accepts optional LET like other assignments.
+def_fn_assignment_statement
+  : LET? FNID '=' expr
+  ;
+
+def_fn_body_statement
+  : statement
+  | def_fn_assignment_statement
+  | EXIT DEF
+  ;
+
+def_fn_body_block
+  : (':' def_fn_body_statement)* ':'
+  | (':' def_fn_body_statement)* NL
+    (label? (def_fn_body_statement | if_block) (':' def_fn_body_statement)* NL)*
+// Match END DEF in def_fn_statement.
+    label? (def_fn_body_statement | if_block) (':' def_fn_body_statement)*
+  ;
+
 // User defined types must contain at least one member.
 // TODO: type cannot occur in procedure or DEF FN.
 type_statement
 // Note: type names cannot include '.'.
-   : TYPE ID NL+ type_member+ END TYPE
+   : TYPE (ID | FNID) NL+ type_member+ END TYPE
    ;
 
 // Type members can't have labels etc. like normal lines.
 type_member
 // Note: type members cannot include '.'.
-   : ID AS type_name_for_type_member NL+
+   : (ID | FNID) AS type_name_for_type_member NL+
 // Since we handle REM comments as statements, need to accept them here.
    | rem_statement NL
    ;
@@ -506,6 +564,7 @@ CASE : [Cc][Aa][Ss][Ee] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;
 DECLARE : [Dd][Ee][Cc][Ll][Aa][Rr][Ee] ;
+DEF : [Dd][Ee][Ff] ;
 DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
 DEFINT : [Dd][Ee][Ff][Ii][Nn][Tt] ;
 DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
@@ -519,6 +578,7 @@ ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
 EXIT : [Ee][Xx][Ii][Tt] ;
 FOR : [Ff][Oo][Rr] ;
+FN : [Ff][Nn] ;
 FUNCTION : [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn] ;
 GOSUB : [Gg][Oo][Ss][Uu][Bb] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
@@ -548,8 +608,14 @@ USING : [Uu][Ss][Ii][Nn][Gg] ;
 WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
 
-// Note ID has lower precedence than keywords
-ID : [A-Za-z][A-Za-z0-9.]* ;
+// IDs prefixed with FN are special cased as user defined functions and not
+// allowed in many places where IDs are allowed.
+FNID : [Ff][Nn][A-Za-z][A-Za-z0-9.]* ;
+// ID matches identifier names not starting with FN.
+ID : [A-EG-Za-eg-z][A-Za-z0-9.]*
+   | [Ff][A-MO-Za-mo-z][A-Za-z0-9.]*
+   | [Ff]
+   ;
 
 NL : '\r'? '\n' ;
 // Note: We skip ' comments here, but REM comments are parsed as statements.
