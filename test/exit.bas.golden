@@ -15,4 +15,19 @@
       (for_body_block \n 
         (for_body_statement exit for) \n 
         (for_body_statement statement)) next 
-      (variable i))) \n statement <EOF>)
+      (variable i))) \n 
+  (sub_block sub blah 
+    (sub_body_block \n 
+      (sub_body_statement exit sub) \n 
+      (sub_body_statement statement)) 
+    (end_sub_statement end sub)) \n 
+  (function_block function 
+    (variable ok) 
+    (function_body_block \n 
+      (function_body_statement exit function) \n 
+      (function_body_statement statement)) 
+    (end_function_statement end function)) \n statement 
+  (def_fn_statement def fnfoo 
+    (def_fn_body_block \n 
+      (def_fn_body_statement exit def) \n 
+      (def_fn_body_statement statement)) end def) \n statement <EOF>)

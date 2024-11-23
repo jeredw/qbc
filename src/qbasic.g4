@@ -10,7 +10,8 @@ grammar qbasic;
 // For simplicity, in this grammar SUB must go at the top level and can't nest.
 // Technically though the IDE will move SUB in a nested if/loop to the top
 // level at the end of the program, and unnests automatically if you start
-// typing SUB inside another SUB.
+// typing SUB inside another SUB (though it errors if you load a program with
+// a nested SUB).
 //
 // TODO: Support optional absent NL on last line in a less ugly way.
 program

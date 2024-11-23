@@ -4,3 +4,12 @@ loop
 for i=1 to 10
   exit for
 next i
+sub blah
+  exit sub
+end sub
+function ok
+  exit function
+end function
+def fnfoo
+  exit def
+end def
