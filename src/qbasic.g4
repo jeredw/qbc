@@ -25,11 +25,13 @@ program
        | function_statement
        | if_block_statement
        | option_statement
-       | sub_statement)
+       | sub_statement
+       | type_statement)
       (':' statement
            | declare_statement
            | def_fn_statement
-           | option_statement)* NL)*
+           | option_statement
+           | type_statement)* NL)*
   ;
 
 // block matches statements in loops, procedures, and conditionals.
@@ -66,7 +68,6 @@ statement
   | print_using_statement
   | return_statement
   | select_case_statement
-  | type_statement
   | while_wend_statement
 // Statements can be empty after line labels, before or between :.
   |
@@ -185,6 +186,19 @@ end_sub_statement
   : label? END SUB (':' statement)*
   ;
 
+type_statement
+// *** Note: type names cannot include '.'.
+   : TYPE (ID | FNID) (':' | NL)+
+// *** Types must have at least one type member.
+     (rem_statement NL | type_member)+
+     END TYPE
+   ;
+
+// Type members can't have labels etc. like normal lines.
+type_member
+   : (ID | FNID) AS type_name_for_type_member (':' | NL)+
+   ;
+
 assignment_statement
 // The LET keyword is optional.
   : LET? typed_id args_or_indices? '=' expr
@@ -267,12 +281,6 @@ dim_subscript
   : (lower=expr TO)? upper=expr
   ;
 
-// We just treat EXIT as a normal statement and leave it up to a semantic pass
-// to determine if it is legal at the current point in the program.
-exit_statement
-  : EXIT (DEF | DO | FOR | FUNCTION | SUB)
-  ;
-
 do_loop_statement
   : (DO do_condition) block LOOP
   | DO block (LOOP do_condition)
@@ -285,6 +293,12 @@ do_condition
 
 end_statement
   : END
+  ;
+
+// *** This grammar allows EXIT anywhere, and leaves it up to a later pass to
+// determine if it is legal at the current point in the program.
+exit_statement
+  : EXIT (DEF | DO | FOR | FUNCTION | SUB)
   ;
 
 // FOR..NEXT is a totally reasonable for loop, except that multiple NEXTs can
@@ -405,22 +419,6 @@ end_select_statement
   : label? END SELECT
   ;
 
-// User defined types must contain at least one member.
-// TODO: type cannot occur in procedure or DEF FN.
-type_statement
-// Note: type names cannot include '.'.
-   : TYPE (ID | FNID) NL+ type_member+ END TYPE
-   ;
-
-// Type members can't have labels etc. like normal lines.
-type_member
-// Can only used fixed length strings, not variable-length strings in user-defined types.
-// *** Note: type members cannot include '.'.
-   : (ID | FNID) AS type_name_for_type_member NL+
-// Since we handle REM comments as statements, need to accept them here.
-   | rem_statement NL
-   ;
-
 // Loop construct from an older BASIC?
 while_wend_statement
   : WHILE expr block WEND
@@ -492,6 +490,7 @@ type_name_for_parameter
   | FNID
   ;
 
+// See def_fn_parameter.
 type_name_for_def_fn_parameter
   : INTEGER
   | LONG
@@ -500,6 +499,7 @@ type_name_for_def_fn_parameter
   | STRING
   ;
 
+// Can only used fixed length strings, not variable-length strings in user-defined types.
 type_name_for_type_member
   : INTEGER
   | LONG

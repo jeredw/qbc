@@ -1,11 +1,30 @@
-(program 
-  (statement 
-    (type_statement type thing \n \n \n 
-      (type_member x as 
-        (type_name_for_type_member string * 40) \n) 
-      (type_member 
-        (rem_statement rem this is sure a great variable) \n) 
-      (type_member y as 
-        (type_name_for_type_member double) \n) 
-      (type_member z as 
-        (type_name_for_type_member anotherthing) \n) end type)) \n)
+(program statement 
+  (type_statement type thing \n \n \n 
+    (type_member x as 
+      (type_name_for_type_member string * 40) \n) 
+    (rem_statement rem this is sure a great variable) \n 
+    (type_member y as 
+      (type_name_for_type_member double) \n) 
+    (type_member z as 
+      (type_name_for_type_member anotherthing) \n) end type) \n statement 
+  (type_statement type foo : 
+    (type_member a as 
+      (type_name_for_type_member string * 2) :) end type) : statement 
+  (type_statement type bar : 
+    (type_member a as 
+      (type_name_for_type_member string * 4) :) end type) \n statement 
+  (type_statement type baz : : 
+    (type_member a as 
+      (type_name_for_type_member integer) :) end type) \n statement 
+  (type_statement type whoa \n 
+    (type_member a as 
+      (type_name_for_type_member integer) :) 
+    (type_member b as 
+      (type_name_for_type_member integer) \n) end type) \n statement 
+  (type_statement type yep \n 
+    (type_member a as 
+      (type_name_for_type_member integer) :) 
+    (rem_statement rem what a great type) \n 
+    (type_member b as 
+      (type_name_for_type_member integer) :) 
+    (rem_statement rem this is really rad) \n end type) \n)
