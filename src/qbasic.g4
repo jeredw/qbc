@@ -491,7 +491,7 @@ type_name
   | SINGLE
   | DOUBLE
   | STRING
-  | STRING '*' DIGITS
+  | fixed_string
   | ID
   | FNID
   ;
@@ -534,9 +534,18 @@ type_name_for_type_member
   | LONG
   | SINGLE
   | DOUBLE
-  | STRING '*' DIGITS
+  | fixed_string
   | ID
   | FNID
+  ;
+
+// QBasic permits sizing a fixed string with a constant after '*'.  The IDE
+// will remove any type sigils after the constant.
+// *** If typed_id is not a constant, DIM errors with 'Invalid constant'.
+// In TYPE definitions, fixed strings with non-constant dimensions parse, but
+// trying to DIM things of the resulting TYPE hangs at runtime!
+fixed_string
+  : STRING '*' (DIGITS | typed_id)
   ;
 
 literal

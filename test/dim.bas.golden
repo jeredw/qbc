@@ -14,7 +14,8 @@
   (statement 
     (dim_statement dim shared 
       (dim_variable foo as 
-        (type_name string * 42)))) \n 
+        (type_name 
+          (fixed_string string * 42))))) \n 
   (statement 
     (dim_statement redim 
       (dim_variable q as 
@@ -131,4 +132,10 @@
                   (literal 5))) to 
               (expr 
                 (literal 30))) )) as 
-        (type_name string)))) \n)
+        (type_name string)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable foo as 
+        (type_name 
+          (fixed_string string * 
+            (typed_id maxsize %)))))) \n)

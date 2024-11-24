@@ -1,7 +1,8 @@
 (program statement 
   (type_statement type thing \n \n \n 
     (type_member x as 
-      (type_name_for_type_member string * 40) \n) 
+      (type_name_for_type_member 
+        (fixed_string string * 40)) \n) 
     (rem_statement rem this is sure a great variable) \n 
     (type_member y as 
       (type_name_for_type_member double) \n) 
@@ -9,10 +10,12 @@
       (type_name_for_type_member anotherthing) \n) end type) \n statement 
   (type_statement type foo : 
     (type_member a as 
-      (type_name_for_type_member string * 2) :) end type) : statement 
+      (type_name_for_type_member 
+        (fixed_string string * 2)) :) end type) : statement 
   (type_statement type bar : 
     (type_member a as 
-      (type_name_for_type_member string * 4) :) end type) \n statement 
+      (type_name_for_type_member 
+        (fixed_string string * 4)) :) end type) \n statement 
   (type_statement type baz : : 
     (type_member a as 
       (type_name_for_type_member integer) :) end type) \n statement 

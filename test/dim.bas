@@ -15,3 +15,4 @@ dim ar(-2 to -1)
 dim arz(0)
 dim boo(k%)
 dim multi(xxx, 0 to 20, 30 to 35, yyy), wowzas(hi, -5 to 30) as string
+dim foo as string * maxsize%
