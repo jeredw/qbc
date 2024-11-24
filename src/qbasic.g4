@@ -12,11 +12,19 @@ grammar qbasic;
 // level at the end of the program, and unnests automatically if you start
 // typing SUB inside another SUB (though it errors if you load a program with
 // a nested SUB).
-//
-// TODO: Support optional absent NL on last line in a less ugly way.
 program
-  : (label? (statement | if_block_statement | sub_statement | function_statement | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* NL)*
-     label? (statement | if_block_statement | sub_statement | function_statement | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* EOF
+  : (label?
+      (statement
+       | if_block_statement
+       | sub_statement
+       | function_statement
+       | declare_statement
+       | def_fn_statement
+       | option_statement)
+      (':' statement
+           | declare_statement
+           | def_fn_statement
+           | option_statement)* NL)*
   ;
 
 // block collects statements inside loops, procedures, and conditionals.
