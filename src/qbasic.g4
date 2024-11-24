@@ -26,6 +26,7 @@ label
 statement
   : rem_statement
   | assignment_statement
+  | call_statement
   | const_statement
   | deftype_statement
   | dim_statement
@@ -54,7 +55,30 @@ rem_statement
 
 // The LET keyword is optional.
 assignment_statement
-  : LET? variable '=' expr
+  : LET? variable array_index? '=' expr
+  ;
+
+// CALL can only be used with SUB procedures.
+call_statement
+// CALL sub or CALL sub(arg1, arg2, ... argN)
+  : CALL ID ('(' call_argument_list ')')?
+// If CALL is omitted, parens must also be omitted.
+  | ID call_argument_list?
+  ;
+
+call_argument_list
+  : call_argument (',' call_argument)*
+  ;
+
+call_argument
+// Array variables must have () after their name, and are always passed by reference.
+  : variable '(' ')'
+// Non-parenthesized variables are passed by reference. Note this includes
+// variables with array indices.
+  | variable array_index?
+// Otherwise we can pass arbitrary expressions by value, including variables
+// (by parenthesizing them).
+  | expr
   ;
 
 const_statement
@@ -446,6 +470,7 @@ def_fn_parameter_list
   : def_fn_parameter (',' def_fn_parameter)*
   ;
 
+// DEF FN can't take array parameters.
 def_fn_parameter
   : ID AS type_name_for_def_fn_parameter_list
   | variable
@@ -515,7 +540,7 @@ expr
   | expr EQV expr
   | expr IMP expr
   | literal
-  | variable
+  | variable array_index?
   ;
 
 // Variables can have type sigils appended.
@@ -536,6 +561,8 @@ expr
 // Field lookup is not part of this grammar at all, and will be handled in
 // symbol tables instead.
 variable : ID ('!' | '#' | '$' | '%' | '&')? ;
+
+array_index : '(' expr (',' expr)* ')';
 
 literal
 // If a floating point constant isn't explicitly marked as single or double and
@@ -582,6 +609,7 @@ STRING_LITERAL : '"' ~["\r\n]* '"' ;
 AND : [Aa][Nn][Dd] ;
 AS : [Aa][Ss] ;
 BASE : [Bb][Aa][Ss][Ee] ;
+CALL : [Cc][Aa][Ll][Ll] ;
 CASE : [Cc][Aa][Ss][Ee] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;

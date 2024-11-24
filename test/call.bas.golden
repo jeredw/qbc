@@ -1,0 +1,138 @@
+(program 
+  (statement 
+    (call_statement noargs)) \n 
+  (statement 
+    (call_statement call noargs)) \n 
+  (statement 
+    (call_statement onearg 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 1)))))) \n 
+  (statement 
+    (call_statement call onearg 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (expr 
+              (literal 1)))) ))) \n 
+  (statement 
+    (call_statement twoargs 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 1))) , 
+        (call_argument 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (call_statement call twoargs 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (expr 
+              (literal 1))) , 
+          (call_argument 
+            (expr 
+              (literal 2)))) ))) \n 
+  (statement 
+    (call_statement twoargs 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (expr 
+              (literal 1)) + 
+            (expr 
+              (expr 
+                (literal 2)) \ 
+              (expr 
+                (literal 4))))) , 
+        (call_argument 
+          (expr 
+            (expr 
+              (literal 3)) + 
+            (expr 
+              (literal 7))))))) \n 
+  (statement 
+    (call_statement call twoargs 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (expr 
+              (expr 
+                (literal 1)) + 
+              (expr 
+                (expr 
+                  (literal 2)) \ 
+                (expr 
+                  (literal 4))))) , 
+          (call_argument 
+            (expr 
+              (expr 
+                (literal 3)) + 
+              (expr 
+                (literal 7))))) ))) \n 
+  (statement 
+    (call_statement twoargs 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            ( 
+              (expr 
+                (variable x)) ))) , 
+        (call_argument 
+          (variable y))))) \n 
+  (statement 
+    (call_statement call twoargs 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (expr 
+              ( 
+                (expr 
+                  (variable x)) ))) , 
+          (call_argument 
+            (variable y))) ))) \n 
+  (statement 
+    (call_statement threeargs 
+      (call_argument_list 
+        (call_argument 
+          (variable a) 
+          ( )) , 
+        (call_argument 
+          (expr 
+            ( 
+              (expr 
+                (variable b) 
+                (array_index 
+                  ( 
+                    (expr 
+                      (literal 2)) ))) ))) , 
+        (call_argument 
+          (variable c) 
+          (array_index 
+            ( 
+              (expr 
+                (literal 1)) )))))) \n 
+  (statement 
+    (call_statement call threeargs 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (variable a) 
+            ( )) , 
+          (call_argument 
+            (expr 
+              ( 
+                (expr 
+                  (variable b) 
+                  (array_index 
+                    ( 
+                      (expr 
+                        (literal 2)) ))) ))) , 
+          (call_argument 
+            (variable c) 
+            (array_index 
+              ( 
+                (expr 
+                  (literal 1)) )))) ))) \n statement <EOF>)
