@@ -1,33 +1,33 @@
 (program 
   (statement 
-    (lifetime_statement common shared 
-      (decl_variable wowzas 
-        (decl_array_bounds 
+    (scope_statement common shared 
+      (scope_variable wowzas 
+        (array_declaration 
           ( )) as 
         (type_name string * 42)))) \n 
   (statement 
-    (lifetime_statement common 
-      (decl_variable 
+    (scope_statement common 
+      (scope_variable 
         (typed_id i)) , 
-      (decl_variable 
+      (scope_variable 
         (typed_id j)) , 
-      (decl_variable 
+      (scope_variable 
         (typed_id k)) , 
-      (decl_variable 
+      (scope_variable 
         (typed_id a) 
-        (decl_array_bounds 
+        (array_declaration 
           ( ))))) \n 
   (statement 
-    (lifetime_statement common 
-      (decl_variable 
+    (scope_statement common 
+      (scope_variable 
         (typed_id a $)) , 
-      (decl_variable 
+      (scope_variable 
         (typed_id b $) 
-        (decl_array_bounds 
+        (array_declaration 
           ( ))) , 
-      (decl_variable 
+      (scope_variable 
         (typed_id x)) , 
-      (decl_variable 
+      (scope_variable 
         (typed_id y)) , 
-      (decl_variable 
+      (scope_variable 
         (typed_id z)))) \n)

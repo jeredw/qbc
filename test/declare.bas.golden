@@ -2,21 +2,26 @@
   (declare_statement declare sub foo) \n statement 
   (declare_statement declare sub foo2 
     ( 
-      (parameter_list 
-        (parameter x as 
-          (type_name_for_parameter string)) , 
-        (parameter 
+      (declare_parameter_list 
+        (declare_parameter x as 
+          (type_name_for_declare_parameter string)) , 
+        (declare_parameter 
           (typed_id y $)) , 
-        (parameter 
+        (declare_parameter 
           (typed_id z %))) )) \n statement 
   (declare_statement declare function 
     (typed_id bar %) 
     ( 
-      (parameter_list 
-        (parameter 
+      (declare_parameter_list 
+        (declare_parameter 
           (typed_id y %))) )) \n statement 
   (declare_statement declare function 
     (typed_id baz) 
     ( )) \n statement 
   (declare_statement declare sub a) : statement 
-  (declare_statement declare sub b) \n)
+  (declare_statement declare sub b) \n statement 
+  (declare_statement declare sub s 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter p as 
+          (type_name_for_declare_parameter any))) )) \n)

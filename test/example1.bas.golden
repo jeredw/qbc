@@ -20,8 +20,8 @@
           (typed_id A $))) ) 
     (block \n 
       (statement 
-        (lifetime_statement STATIC 
-          (decl_variable 
+        (scope_statement STATIC 
+          (scope_variable 
             (typed_id I)))) \n 
       (statement 
         (for_next_statement FOR 

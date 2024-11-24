@@ -4,6 +4,7 @@
 // neutral notation, and so it relies on subsequent analysis to detect some
 // kinds of syntax issues.  These are noted with *** in comments.
 grammar qbasic;
+import qbasiclexer;
 
 // A program is one or more statements separated by ':' or NL. The QBasic IDE
 // adds NL to the last line if it is missing.
@@ -63,10 +64,10 @@ statement
   | gosub_statement
   | goto_statement
   | if_inline_statement
-  | lifetime_statement
   | print_statement
   | print_using_statement
   | return_statement
+  | scope_statement
   | select_case_statement
   | while_wend_statement
 // Statements can be empty after line labels, before or between :.
@@ -82,7 +83,16 @@ rem_statement
   ;
 
 declare_statement
-  : DECLARE (SUB ID | FUNCTION typed_id) ('(' parameter_list? ')')?
+  : DECLARE (SUB ID | FUNCTION typed_id) ('(' declare_parameter_list? ')')?
+  ;
+
+declare_parameter_list
+  : declare_parameter (',' declare_parameter)*
+  ;
+
+declare_parameter
+  : ID array_declaration? AS type_name_for_declare_parameter
+  | typed_id array_declaration?
   ;
 
 // DEF FNname is unusual because FNname is both a keyword and an identifier.
@@ -122,12 +132,14 @@ parameter_list
   ;
 
 parameter
-  : ID parameter_array_bounds? AS type_name_for_parameter
-  | typed_id parameter_array_bounds?
+  : ID array_declaration? AS type_name_for_parameter
+  | typed_id array_declaration?
   ;
 
-// See decl_array_bounds.
-parameter_array_bounds
+// Earlier MS BASIC required you to specify the number of dimensions in array
+// declarations, but QBasic doesn't.  The IDE erases the number of dimensions
+// if it is specified.
+array_declaration
   : '(' DIGITS? ')'
   ;
 
@@ -334,25 +346,6 @@ if_inline_action
   | line_number  // Implicit GOTO
   ;
 
-// COMMON, SHARED, and STATIC declare variable lifetimes using the same syntax.
-lifetime_statement
-  : COMMON SHARED? decl_variable (',' decl_variable)*
-  | SHARED decl_variable (',' decl_variable)*
-  | STATIC decl_variable (',' decl_variable)*
-  ;
-
-decl_variable
-  : ID decl_array_bounds? AS type_name
-  | typed_id decl_array_bounds?
-  ;
-
-// Earlier MS BASIC required you to specify the number of dimensions in array
-// declarations, but QBasic doesn't.  The IDE erases the number of dimensions
-// if it is specified.
-decl_array_bounds
-  : '(' DIGITS? ')'
-  ;
-
 // PRINT accepts an optional file handle and then zero or more expressions
 // separated by a ',' or ';'. There can be a trailing ',' or ';' even if
 // there is no other argument.
@@ -419,6 +412,19 @@ end_select_statement
   : label? END SELECT
   ;
 
+// COMMON, SHARED, and STATIC declare variable scopes using the same syntax.
+// The syntax is similar to DIM but arrays aren't dimensioned.
+scope_statement
+  : COMMON SHARED? scope_variable (',' scope_variable)*
+  | SHARED scope_variable (',' scope_variable)*
+  | STATIC scope_variable (',' scope_variable)*
+  ;
+
+scope_variable
+  : ID array_declaration? AS type_name
+  | typed_id array_declaration?
+  ;
+
 // Loop construct from an older BASIC?
 while_wend_statement
   : WHILE expr block WEND
@@ -444,6 +450,7 @@ expr
   | literal
 // A variable with an array index is syntactically the same as a function call,
 // so that has to be figured out by semantic analysis later.
+// TODO: Consider adding call_argument_list here.
   | typed_id args_or_indices?
   ;
 
@@ -495,6 +502,18 @@ type_name_for_parameter
   | FNID
   ;
 
+// Can _only_ use variable-length strings in sub parameter lists.
+type_name_for_declare_parameter
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING
+  | ANY
+  | ID
+  | FNID
+  ;
+
 // See def_fn_parameter.
 type_name_for_def_fn_parameter
   : INTEGER
@@ -531,102 +550,3 @@ literal
   | (DIGITS | HEX | OCTAL) ('%' | '&')?
   | STRING_LITERAL
   ;
-
-// Literals
-DIGITS : [0-9]+ ;
-HEX : '&' [hH] [0-9a-fA-F]+ ;
-OCTAL : '&' [oO] [0-7]+ ;
-PROBABLY_SINGLE_PRECISION_NUMBER
-// The IDE expands scientific notation into '!' decimals for numbers
-// with 6 or fewer digits, but the language accepts exponents.
-  : [0-9]+ '.' [0-9]* E_EXPONENT? '!'?
-  | '.' [0-9]+ E_EXPONENT? '!'?
-  | [0-9]+ E_EXPONENT '!'?
-  | [0-9]+ '!'
-  ;
-fragment
-E_EXPONENT : [eE] [-+]? [0-9]+ ;
-// If a decimal number has a 'd' exponent or a '#' it's a double.
-DOUBLE_PRECISION_NUMBER
-  : [0-9]+ '.' [0-9]* (D_EXPONENT | '#')
-  | '.' [0-9]+ (D_EXPONENT | '#')
-  | [0-9]+ (D_EXPONENT | '#')
-  ;
-fragment
-D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
-STRING_LITERAL : '"' ~["\r\n]* '"' ;
-
-// Keywords
-AND : [Aa][Nn][Dd] ;
-AS : [Aa][Ss] ;
-BASE : [Bb][Aa][Ss][Ee] ;
-CALL : [Cc][Aa][Ll][Ll] ;
-CASE : [Cc][Aa][Ss][Ee] ;
-COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
-CONST : [Cc][Oo][Nn][Ss][Tt] ;
-DECLARE : [Dd][Ee][Cc][Ll][Aa][Rr][Ee] ;
-DEF : [Dd][Ee][Ff] ;
-DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
-DEFINT : [Dd][Ee][Ff][Ii][Nn][Tt] ;
-DEFLNG : [Dd][Ee][Ff][Ll][Nn][Gg] ;
-DEFSNG : [Dd][Ee][Ff][Ss][Nn][Gg] ;
-DEFSTR : [Dd][Ee][Ff][Ss][Tt][Rr] ;
-DIM : [Dd][Ii][Mm] ;
-DO : [Dd][Oo] ;
-DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
-ELSE : [Ee][Ll][Ss][Ee] ;
-ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
-EQV : [Ee][Qq][Vv] ;
-END : [Ee][Nn][Dd] ;
-EXIT : [Ee][Xx][Ii][Tt] ;
-FOR : [Ff][Oo][Rr] ;
-FN : [Ff][Nn] ;
-FUNCTION : [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn] ;
-GOSUB : [Gg][Oo][Ss][Uu][Bb] ;
-GOTO : [Gg][Oo][Tt][Oo] ;
-IF : [Ii][Ff] ;
-IMP : [Ii][Mm][Pp] ;
-IS : [Ii][Ss] ;
-INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
-LET : [Ll][Ee][Tt] ;
-LONG : [Ll][Oo][Nn][Gg] ;
-LOOP : [Ll][Oo][Oo][Pp] ;
-MOD : [Mm][Oo][Dd] ;
-NEXT : [Nn][Ee][Xx][Tt] ;
-NOT : [Nn][Oo][Tt] ;
-OPTION : [Oo][Pp][Tt][Ii][Oo][Nn] ;
-OR : [Oo][Rr] ;
-PRINT : [Pp][Rr][Ii][Nn][Tt] ;
-REDIM : [Rr][Ee][Dd][Ii][Mm] ;
-REM : [Rr][Ee][Mm] ;
-RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
-SELECT : [Ss][Ee][Ll][Ee][Cc][Tt] ;
-SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
-SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
-STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
-STEP : [Ss][Tt][Ee][Pp] ;
-STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
-SUB : [Ss][Uu][Bb];
-THEN : [Tt][Hh][Ee][Nn] ;
-TO : [Tt][Oo] ;
-TYPE : [Tt][Yy][Pp][Ee] ;
-UNTIL : [Uu][Nn][Tt][Ii][Ll] ;
-USING : [Uu][Ss][Ii][Nn][Gg] ;
-WEND : [Ww][Ee][Nn][Dd] ;
-WHILE : [Ww][Hh][Ii][Ll][Ee] ;
-XOR : [Xx][Oo][Rr] ;
-
-// IDs prefixed with FN are special cased as user-defined functions and not
-// allowed in many places where IDs are allowed.
-FNID : [Ff][Nn][A-Za-z][A-Za-z0-9.]* ;
-// ID matches identifier names not starting with FN.
-ID : [A-EG-Za-eg-z][A-Za-z0-9.]*
-   | [Ff][A-MO-Za-mo-z][A-Za-z0-9.]*
-   | [Ff]
-   ;
-
-NL : '\r'? '\n' ;
-// Note: We skip ' comments here, but REM comments are parsed as statements.
-// Don't actually consume NL because it's needed to parse statement ' NL statement.
-COMMENT : '\'' ~[\r\n]* -> skip;
-WS : [ \t]+ -> skip ;
