@@ -64,9 +64,9 @@
         (def_fn_parameter 
           (typed_id a %)) , 
         (def_fn_parameter b as 
-          (type_name_for_def_fn_parameter_list string)) , 
+          (type_name_for_def_fn_parameter string)) , 
         (def_fn_parameter c as 
-          (type_name_for_def_fn_parameter_list double))) ) 
+          (type_name_for_def_fn_parameter double))) ) 
     (block \n statement) end def) \n statement 
   (def_fn_statement def 
     (typed_fnid fnz) 

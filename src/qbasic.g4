@@ -20,12 +20,12 @@ grammar qbasic;
 program
   : (label?
       (statement
-       | if_block_statement
-       | sub_statement
-       | function_statement
        | declare_statement
        | def_fn_statement
-       | option_statement)
+       | function_statement
+       | if_block_statement
+       | option_statement
+       | sub_statement)
       (':' statement
            | declare_statement
            | def_fn_statement
@@ -48,7 +48,7 @@ label
   : (line_number | text_label ':') ;
 
 statement
-  : rem_statement
+  : rem_statement  // Slurps up the rest of its line.
   | assignment_statement
   | call_statement
   | const_statement
@@ -78,6 +78,111 @@ statement
 // them in the parse tree and ignore them.
 rem_statement
   : REM (~NL)*
+  ;
+
+declare_statement
+  : DECLARE (SUB ID | FUNCTION typed_id) ('(' parameter_list? ')')?
+  ;
+
+// DEF FNname is unusual because FNname is both a keyword and an identifier.
+// Many rules can't match identifiers that start with FN, so we explicitly
+// split FN-prefixed IDs out of ID into a separate FNID token.
+//
+// *** The IDE automatically corrects "DEF FN x" to "DEF FNx", so we'll also
+// match a separate token form of DEF FN and merge that into FN+name later.
+def_fn_statement
+  : DEF (typed_fnid | FN typed_id) ('(' def_fn_parameter_list? ')')?
+    ('=' expr
+     | block
+       END DEF)
+  ;
+
+def_fn_parameter_list
+  : def_fn_parameter (',' def_fn_parameter)*
+  ;
+
+// DEF FN parameters can't be arrays, user-defined types, or fixed-length
+// strings. (The QBasic help file incorrectly says user-defined types are
+// allowed.)
+def_fn_parameter
+  : ID AS type_name_for_def_fn_parameter
+  | typed_id
+  ;
+
+// IDE drops empty '()' parameter lists.
+function_statement
+  : FUNCTION typed_id ('(' parameter_list? ')')? STATIC?
+    block
+    end_function_statement
+  ;
+
+parameter_list
+  : parameter (',' parameter)*
+  ;
+
+parameter
+  : ID parameter_array_bounds? AS type_name_for_parameter
+  | typed_id parameter_array_bounds?
+  ;
+
+// See decl_array_bounds.
+parameter_array_bounds
+  : '(' DIGITS? ')'
+  ;
+
+// Statements after END FUNCTION on the same line are silently dropped!
+// program should consume the final NL or EOL.
+end_function_statement
+  : label? END FUNCTION (':' statement)*
+  ;
+
+if_block_statement
+// Must have NL after THEN since otherwise this is an if_inline_statement.
+  : IF expr THEN NL then_block
+// ELSEIF, ELSE, and END IF must be the first statement on a line.
+    elseif_block_statement*
+    else_block_statement?
+    end_if_statement
+  ;
+
+elseif_block_statement
+  : label? ELSEIF expr THEN else_block
+  ;
+
+else_block_statement
+  : label? ELSE else_block
+  ;
+
+// Statements after END IF will be part of the parent of if_block_statement.
+end_if_statement
+  : label? END IF
+  ;
+
+then_block
+  : (label? (statement | if_block_statement) (':' statement)* NL)*
+  ;
+
+else_block
+  : statement (':' statement)* NL
+    (label? (statement | if_block_statement) (':' statement)* NL)*
+  ;
+
+// *** DIGITS must be 0 or 1, but that will be checked later.
+option_statement
+  : OPTION BASE DIGITS
+  ;
+
+// IDE drops empty '()' parameter lists.
+sub_statement
+  : SUB ID ('(' parameter_list? ')')? STATIC?
+    block
+    end_sub_statement
+  ;
+
+// Statements after END SUB on the same line are silently dropped!
+// program should consume the final NL or EOL.
+end_sub_statement
+  : label? END SUB (':' statement)*
   ;
 
 assignment_statement
@@ -122,25 +227,6 @@ const_assignment
 
 // TODO: Only a limited subset of expressions are supported here.
 const_expr : expr ;
-
-// COMMON, SHARED, and STATIC declare variable lifetimes using the same syntax.
-lifetime_statement
-  : COMMON SHARED? decl_variable (',' decl_variable)*
-  | SHARED decl_variable (',' decl_variable)*
-  | STATIC decl_variable (',' decl_variable)*
-  ;
-
-decl_variable
-  : ID decl_array_bounds? AS type_name
-  | typed_id decl_array_bounds?
-  ;
-
-// Earlier MS BASIC required you to specify the number of dimensions in array
-// declarations, but QBasic doesn't.  The IDE erases the number of dimensions
-// if it is specified.
-decl_array_bounds
-  : '(' DIGITS? ')'
-  ;
 
 // DEFtype typing is a leftover from a previous MS BASIC.
 deftype_statement
@@ -187,55 +273,6 @@ exit_statement
   : EXIT (DEF | DO | FOR | FUNCTION | SUB)
   ;
 
-// DIGITS must be 0 or 1, but that will be checked later.
-option_statement
-  : OPTION BASE DIGITS
-  ;
-
-// A system or user-defined type following an AS keyword.
-type_name
-  : INTEGER
-  | LONG
-  | SINGLE
-  | DOUBLE
-  | STRING
-  | STRING '*' DIGITS
-  | ID
-  | FNID
-  ;
-
-// Can't use variable-length strings in user-defined types.
-type_name_for_type_member
-  : INTEGER
-  | LONG
-  | SINGLE
-  | DOUBLE
-  | STRING '*' DIGITS
-  | ID
-  | FNID
-  ;
-
-// Can _only_ use variable-length strings in sub parameter lists.
-type_name_for_parameter_list
-  : INTEGER
-  | LONG
-  | SINGLE
-  | DOUBLE
-  | STRING
-  | ID
-  | FNID
-  ;
-
-// DEF FN parameters can't be arrays, records, or fixed-length strings.
-// The QBasic help file says user-defined types are allowed, but they aren't.
-type_name_for_def_fn_parameter_list
-  : INTEGER
-  | LONG
-  | SINGLE
-  | DOUBLE
-  | STRING
-  ;
-
 do_loop_statement
   : (DO do_condition) block LOOP
   | DO block (LOOP do_condition)
@@ -257,19 +294,6 @@ for_next_statement
   : FOR typed_id '=' expr TO expr (STEP expr)?
     block
     NEXT typed_id?
-  ;
-
-// IDE drops empty '()' parameter lists.
-function_statement
-  : FUNCTION typed_id ('(' parameter_list? ')')? STATIC?
-    block
-    end_function_statement
-  ;
-
-// Statements after END FUNCTION on the same line are silently dropped!
-// program should consume the final NL or EOL.
-end_function_statement
-  : label? END FUNCTION (':' statement)*
   ;
 
 gosub_statement
@@ -296,35 +320,23 @@ if_inline_action
   | line_number  // Implicit GOTO
   ;
 
-if_block_statement
-// Must have NL after THEN since otherwise this is an if_inline_statement.
-  : IF expr THEN NL then_block
-// ELSEIF, ELSE, and END IF must be the first statement on a line.
-    elseif_block_statement*
-    else_block_statement?
-    end_if_statement
+// COMMON, SHARED, and STATIC declare variable lifetimes using the same syntax.
+lifetime_statement
+  : COMMON SHARED? decl_variable (',' decl_variable)*
+  | SHARED decl_variable (',' decl_variable)*
+  | STATIC decl_variable (',' decl_variable)*
   ;
 
-elseif_block_statement
-  : label? ELSEIF expr THEN else_block
+decl_variable
+  : ID decl_array_bounds? AS type_name
+  | typed_id decl_array_bounds?
   ;
 
-else_block_statement
-  : label? ELSE else_block
-  ;
-
-// Statements after END IF will be part of the parent of if_block_statement.
-end_if_statement
-  : label? END IF
-  ;
-
-then_block
-  : (label? (statement | if_block_statement) (':' statement)* NL)*
-  ;
-
-else_block
-  : statement (':' statement)* NL
-    (label? (statement | if_block_statement) (':' statement)* NL)*
+// Earlier MS BASIC required you to specify the number of dimensions in array
+// declarations, but QBasic doesn't.  The IDE erases the number of dimensions
+// if it is specified.
+decl_array_bounds
+  : '(' DIGITS? ')'
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
@@ -393,62 +405,6 @@ end_select_statement
   : label? END SELECT
   ;
 
-parameter_list
-  : parameter (',' parameter)*
-  ;
-
-parameter
-  : ID parameter_array_bounds? AS type_name_for_parameter_list
-  | typed_id parameter_array_bounds?
-  ;
-
-// See decl_array_bounds.
-parameter_array_bounds
-  : '(' DIGITS? ')'
-  ;
-
-// IDE drops empty '()' parameter lists.
-sub_statement
-  : SUB ID ('(' parameter_list? ')')? STATIC?
-    block
-    end_sub_statement
-  ;
-
-// Statements after END SUB on the same line are silently dropped!
-// program should consume the final NL or EOL.
-end_sub_statement
-  : label? END SUB (':' statement)*
-  ;
-
-// IDE drops empty '()' parameter lists.
-declare_statement
-  : DECLARE (SUB ID | FUNCTION typed_id) ('(' parameter_list? ')')?
-  ;
-
-// DEF FNname is unusual because FNname is both a keyword and an identifier.
-// Many rules that match identifiers like variables, procedure names, and
-// parameter names also can't start with FN, so we model this by explicitly
-// splitting FN-prefixed IDs out of ID into a separate FNID token.
-//
-// The IDE automatically corrects "DEF FN x" to "DEF FNx", so we'll also match
-// a separate token form of DEF FN and merge that into FN+name later.
-def_fn_statement
-  : DEF (typed_fnid | FN typed_id) ('(' def_fn_parameter_list? ')')?
-    ('=' expr
-     | block
-       END DEF)
-  ;
-
-def_fn_parameter_list
-  : def_fn_parameter (',' def_fn_parameter)*
-  ;
-
-// DEF FN can't take array parameters.
-def_fn_parameter
-  : ID AS type_name_for_def_fn_parameter_list
-  | typed_id
-  ;
-
 // User defined types must contain at least one member.
 // TODO: type cannot occur in procedure or DEF FN.
 type_statement
@@ -458,7 +414,8 @@ type_statement
 
 // Type members can't have labels etc. like normal lines.
 type_member
-// Note: type members cannot include '.'.
+// Can only used fixed length strings, not variable-length strings in user-defined types.
+// *** Note: type members cannot include '.'.
    : (ID | FNID) AS type_name_for_type_member NL+
 // Since we handle REM comments as statements, need to accept them here.
    | rem_statement NL
@@ -511,6 +468,47 @@ typed_id : ID ('!' | '#' | '$' | '%' | '&')? ;
 typed_fnid : FNID ('!' | '#' | '$' | '%' | '&')? ;
 
 args_or_indices : '(' expr (',' expr)* ')';
+
+// A system or user-defined type following an AS keyword.
+type_name
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING
+  | STRING '*' DIGITS
+  | ID
+  | FNID
+  ;
+
+// Can _only_ use variable-length strings in sub parameter lists.
+type_name_for_parameter
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING
+  | ID
+  | FNID
+  ;
+
+type_name_for_def_fn_parameter
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING
+  ;
+
+type_name_for_type_member
+  : INTEGER
+  | LONG
+  | SINGLE
+  | DOUBLE
+  | STRING '*' DIGITS
+  | ID
+  | FNID
+  ;
 
 literal
 // If a floating point constant isn't explicitly marked as single or double and
