@@ -125,4 +125,13 @@
               (expr 
                 (literal 4)) xor 
               (expr 
-                (literal 5)))))))) \n)
+                (literal 5)))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (expr + 
+            (expr 
+              (literal 3))) * 
+          (expr 
+            (literal 2)))))) \n)

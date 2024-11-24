@@ -266,7 +266,7 @@ dim_statement
   ;
 
 dim_variable
-// *** Variables of user defined types cannot have names containing '.',
+// *** Variables of user-defined types cannot have names containing '.',
 // probably to prevent member lookup ambiguity.
   : ID dim_array_bounds? AS type_name
   | typed_id dim_array_bounds?
@@ -427,6 +427,8 @@ while_wend_statement
 expr
   : '(' expr ')'
   | expr '^' expr  // Unusually, ^ is left-associative.
+// *** QBasic doesn't have unary plus, but the IDE accepts it and drops it.
+  | '+' expr
   | '-' expr
   | expr ('*' | '/') expr
   | expr '\\' expr
@@ -446,9 +448,10 @@ expr
   ;
 
 // Identifiers can optionally have type sigils appended.
-// No space is allowed before a sigil, but it's easier to permit it and check later.
+// *** No space is allowed between a name and a type sigil, but it's easier to
+// permit it and check later.
 //
-// Variable names can contain '.', which is also used to access fields in user
+// Variable names can contain '.', which is also used to access members in user
 // defined types. This creates an interesting ambiguity.
 //
 // TYPE record
@@ -460,11 +463,13 @@ expr
 // some.variable = 50 ' This is ok.
 // 'DIM example.tricky AS record ' Error: Identifier cannot include period
 //
-// Field lookup is not part of this grammar at all, and will be handled in
-// symbol tables instead.
+// *** Member lookup is not part of this grammar at all, and '.' will be
+// handled in symbol tables instead.
 typed_id : ID ('!' | '#' | '$' | '%' | '&')? ;
 typed_fnid : FNID ('!' | '#' | '$' | '%' | '&')? ;
 
+// An argument list or set of array indices following an identifier,
+// either an array lookup or a function call.
 args_or_indices : '(' expr (',' expr)* ')';
 
 // A system or user-defined type following an AS keyword.
@@ -514,8 +519,8 @@ literal
 // If a floating point constant isn't explicitly marked as single or double and
 // is representable in single precision, it will be single precision, otherwise
 // double precision.
-  : '-'? PROBABLY_SINGLE_PRECISION_NUMBER
-  | '-'? DOUBLE_PRECISION_NUMBER
+  : PROBABLY_SINGLE_PRECISION_NUMBER
+  | DOUBLE_PRECISION_NUMBER
 // The IDE has all kinds of behavior for integer constants.
 // - Erases trailing %
 // - Rejects out of range values as 'Illegal number'.
@@ -523,7 +528,7 @@ literal
 // - Strips unary '+' from expressions in general, not just numbers, so no
 //   need to handle that here.
 // - Strips leading zeros, so accept those.
-  | ('-'? DIGITS | HEX | OCTAL) ('%' | '&')?
+  | (DIGITS | HEX | OCTAL) ('%' | '&')?
   | STRING_LITERAL
   ;
 
@@ -611,7 +616,7 @@ WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
 XOR : [Xx][Oo][Rr] ;
 
-// IDs prefixed with FN are special cased as user defined functions and not
+// IDs prefixed with FN are special cased as user-defined functions and not
 // allowed in many places where IDs are allowed.
 FNID : [Ff][Nn][A-Za-z][A-Za-z0-9.]* ;
 // ID matches identifier names not starting with FN.
