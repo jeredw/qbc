@@ -6,11 +6,12 @@
 grammar qbasic;
 import qbasiclexer;
 
-// A program is one or more statements separated by ':' or NL. The QBasic IDE
-// adds NL to the last line if it is missing.
+// A program is one or more statements separated by ':' or NL.
+// *** The QBasic IDE adds NL to the last line if it is missing, so callers
+// should make sure to do this.
 //
 // For simplicity, in this grammar some statements like SUB must go at the top
-// level and can't nest. Technically, the IDE will move SUB in a nested IF or
+// level and can't nest. Technically, the IDE will move SUB from a nested IF or
 // DO to the top level at the end of the program, and unnests automatically if
 // you start typing SUB inside another SUB (though it errors if you load a
 // program with a nested SUB...END SUB).
@@ -38,7 +39,12 @@ program
 // block matches statements in loops, procedures, and conditionals.
 // It does not allow some statements only allowed at the top level.
 block
+// blocks can go on one line, like START : block : END
   : (':' statement)* ':'
+// blocks can also span many lines, like
+// START: {block...
+// ...
+// ...}: END
   | (':' statement)* NL
     (label? (statement | if_block_statement) (':' statement)* NL)*
 // Match block ending keyword in the parent statement, then match NL
@@ -46,7 +52,6 @@ block
     label? (statement | if_block_statement) (':' statement)*
   ;
 
-// It's easier if we include the ':' as part of the label rule.
 label
   : (line_number | text_label ':') ;
 
