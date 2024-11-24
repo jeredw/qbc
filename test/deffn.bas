@@ -15,3 +15,4 @@ end def
 def fnq(a%, b as string, c as double)
 end def
 def fnz(): end def
+def fnchoo$ : fnchoo$ = "hi": end def

@@ -12,7 +12,8 @@
           (expr NOT 
             (expr 
               (typed_id NO))))))) \n statement 
-  (def_fn_statement DEF FNIsThereAZ 
+  (def_fn_statement DEF 
+    (typed_fnid FNIsThereAZ) 
     ( 
       (def_fn_parameter_list 
         (def_fn_parameter 
@@ -54,7 +55,8 @@
                   (literal "Z"))) THEN \n 
               (then_block 
                 (statement 
-                  (assignment_statement FNIsThereAZ = 
+                  (assignment_statement 
+                    (typed_fnid FNIsThereAZ) = 
                     (expr 
                       (typed_id YES)))) \n 
                 (statement 
@@ -62,6 +64,7 @@
               (end_if_statement END IF)) \n statement) NEXT 
           (typed_id I))) \n 
       (statement 
-        (assignment_statement FNIsThereAZ = 
+        (assignment_statement 
+          (typed_fnid FNIsThereAZ) = 
           (expr 
             (typed_id NO)))) \n statement) END DEF) \n)

@@ -34,7 +34,8 @@
       (statement 
         (exit_statement exit function)) \n statement) 
     (end_function_statement end function)) \n statement 
-  (def_fn_statement def fnfoo 
+  (def_fn_statement def 
+    (typed_fnid fnfoo) 
     (block \n 
       (statement 
         (exit_statement exit def)) \n statement) end def) \n)

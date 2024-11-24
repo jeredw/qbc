@@ -1,17 +1,22 @@
 // Based on MS-DOS QBasic 1.1
+//
+// This grammar avoids antlr4 semantic predicates and sticks to language
+// neutral notation, and so it relies on subsequent analysis to detect some
+// kinds of syntax issues.  These are noted with *** in comments.
 grammar qbasic;
 
-// A program is one or more statements separated by ':' or NL, or EOF for the
-// last statement in a program without a newline.
+// A program is one or more statements separated by ':' or NL. The QBasic IDE
+// adds NL to the last line if it is missing.
 //
-// An IF block must be the first statement on a line, so you cannot write "ELSE
-// IF" instead of ELSEIF for example.  Ditto SUB.
+// For simplicity, in this grammar some statements like SUB must go at the top
+// level and can't nest. Technically, the IDE will move SUB in a nested IF or
+// DO to the top level at the end of the program, and unnests automatically if
+// you start typing SUB inside another SUB (though it errors if you load a
+// program with a nested SUB...END SUB).
 //
-// For simplicity, in this grammar SUB must go at the top level and can't nest.
-// Technically though the IDE will move SUB in a nested if/loop to the top
-// level at the end of the program, and unnests automatically if you start
-// typing SUB inside another SUB (though it errors if you load a program with
-// a nested SUB).
+// Some statements must be the first statement on a line, like the block form
+// of IF (so you can't write "ELSE IF" instead of ELSEIF for example).  This is
+// a real restriction that QBasic enforces.
 program
   : (label?
       (statement
@@ -27,12 +32,14 @@ program
            | option_statement)* NL)*
   ;
 
-// block collects statements inside loops, procedures, and conditionals.
+// block matches statements in loops, procedures, and conditionals.
+// It does not allow some statements only allowed at the top level.
 block
   : (':' statement)* ':'
   | (':' statement)* NL
     (label? (statement | if_block_statement) (':' statement)* NL)*
-// Match block end in parent, then match NL in the parent block.
+// Match block ending keyword in the parent statement, then match NL
+// in the parent block or program.
     label? (statement | if_block_statement) (':' statement)*
   ;
 
@@ -65,18 +72,20 @@ statement
   |
   ;
 
-// REM style comments start wherever a statement begins and consume the rest of the line.
-// We just include them in the parse tree and ignore them.
+// REM style comments start wherever a statement begins and consume the rest of
+// the line. Because statements can only start in specific places, it is
+// complicated to remove them with other comments in the lexer. We just include
+// them in the parse tree and ignore them.
 rem_statement
   : REM (~NL)*
   ;
 
-// The LET keyword is optional.
 assignment_statement
+// The LET keyword is optional.
   : LET? typed_id args_or_indices? '=' expr
-// This form is legal only inside a DEF FN, but we will use a semantic pass to 
-// enforce this later.
-  | LET? FNID '=' expr
+// This form is legal only inside a DEF FN, but we will use a semantic pass to
+// enforce this later.  LET is also allowed here.
+  | LET? typed_fnid '=' expr
   ;
 
 // CALL can only be used with SUB procedures.
@@ -143,20 +152,21 @@ deftype_statement
   ;
 
 // Supporting ranges like A-Z in the lexer is messy since that's also an
-// expression.  The IDE allows any ID-ID in ranges and strips down to the first
-// letter, so we'll parse that and deal with it later.
-// Note that DEFINT fna-fnb turns into DEFINT a-b, so fn prefixes are evidently
-// stripped.
-letter_range: ID | ID '-' ID | FNID | FNID '-' FNID ;
+// expression.
+//
+// *** The IDE allows basically any typed_id or typed_fnid in ranges and strips
+// down to the first letter, so we'll parse this liberally and deal with it
+// later. Note that DEFINT fna-fnb turns into DEFINT a-b, so fn prefixes are
+// evidently stripped.
+letter_range: (typed_id | typed_fnid) ('-' (typed_id | typed_fnid))? ;
 
-// DIM can take a mix of "as" types and names with sigils.
 dim_statement
   : DIM SHARED? dim_variable (',' dim_variable)*
   | REDIM SHARED? dim_variable (',' dim_variable)*
   ;
 
 dim_variable
-// Variables of user defined types cannot have names containing '.',
+// *** Variables of user defined types cannot have names containing '.',
 // probably to prevent member lookup ambiguity.
   : ID dim_array_bounds? AS type_name
   | typed_id dim_array_bounds?
@@ -423,7 +433,7 @@ declare_statement
 // The IDE automatically corrects "DEF FN x" to "DEF FNx", so we'll also match
 // a separate token form of DEF FN and merge that into FN+name later.
 def_fn_statement
-  : DEF (FNID | FN ID) ('(' def_fn_parameter_list? ')')?
+  : DEF (typed_fnid | FN typed_id) ('(' def_fn_parameter_list? ')')?
     ('=' expr
      | block
        END DEF)
@@ -498,6 +508,7 @@ expr
 // Field lookup is not part of this grammar at all, and will be handled in
 // symbol tables instead.
 typed_id : ID ('!' | '#' | '$' | '%' | '&')? ;
+typed_fnid : FNID ('!' | '#' | '$' | '%' | '&')? ;
 
 args_or_indices : '(' expr (',' expr)* ')';
 
