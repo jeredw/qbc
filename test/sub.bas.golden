@@ -3,11 +3,11 @@
     ( 
       (parameter_list 
         (parameter 
-          (variable bar $)) , 
+          (typed_id bar $)) , 
         (parameter baz as 
           (type_name_for_parameter_list string)) , 
         (parameter 
-          (variable quux))) ) static 
+          (typed_id quux))) ) static 
     (sub_body_block \n 
       (sub_body_statement statement)) 
     (end_sub_statement end sub)) \n 
@@ -15,11 +15,11 @@
     ( 
       (parameter_list 
         (parameter 
-          (variable a)) , 
+          (typed_id a)) , 
         (parameter 
-          (variable b)) , 
+          (typed_id b)) , 
         (parameter 
-          (variable c %))) ) 
+          (typed_id c %))) ) 
     (sub_body_block :) 
     (end_sub_statement end sub)) \n 
   (sub_block sub baz 

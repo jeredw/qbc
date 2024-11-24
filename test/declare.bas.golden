@@ -6,17 +6,17 @@
         (parameter x as 
           (type_name_for_parameter_list string)) , 
         (parameter 
-          (variable y $)) , 
+          (typed_id y $)) , 
         (parameter 
-          (variable z %))) )) \n statement 
+          (typed_id z %))) )) \n statement 
   (declare_statement declare function 
-    (variable bar %) 
+    (typed_id bar %) 
     ( 
       (parameter_list 
         (parameter 
-          (variable y %))) )) \n statement 
+          (typed_id y %))) )) \n statement 
   (declare_statement declare function 
-    (variable baz) 
+    (typed_id baz) 
     ( )) \n statement 
   (declare_statement declare sub a) : statement 
   (declare_statement declare sub b) \n statement <EOF>)

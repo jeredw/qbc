@@ -105,8 +105,8 @@
                 (do_body_statement statement)) loop 
               (do_condition while 
                 (expr 
-                  (variable j)))))) \n 
+                  (typed_id j)))))) \n 
         (do_body_statement statement)) loop 
       (do_condition until 
         (expr 
-          (variable i))))) \n statement <EOF>)
+          (typed_id i))))) \n statement <EOF>)

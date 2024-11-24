@@ -55,7 +55,7 @@ rem_statement
 
 // The LET keyword is optional.
 assignment_statement
-  : LET? variable array_index? '=' expr
+  : LET? typed_id args_or_indices? '=' expr
   ;
 
 // CALL can only be used with SUB procedures.
@@ -72,10 +72,10 @@ call_argument_list
 
 call_argument
 // Array variables must have () after their name, and are always passed by reference.
-  : variable '(' ')'
+  : typed_id '(' ')'
 // Non-parenthesized variables are passed by reference. Note this includes
 // variables with array indices.
-  | variable array_index?
+  | typed_id args_or_indices?
 // Otherwise we can pass arbitrary expressions by value, including variables
 // (by parenthesizing them).
   | expr
@@ -87,7 +87,7 @@ const_statement
 
 // Constants can have sigils, but they're not part of the name.
 const_assignment
-  : variable '=' const_expr
+  : typed_id '=' const_expr
   ;
 
 // TODO: Only a limited subset of expressions are supported here.
@@ -102,7 +102,7 @@ lifetime_statement
 
 decl_variable
   : ID decl_array_bounds? AS type_name
-  | variable decl_array_bounds?
+  | typed_id decl_array_bounds?
   ;
 
 // Earlier MS BASIC required you to specify the number of dimensions in array
@@ -138,7 +138,7 @@ dim_variable
 // Variables of user defined types cannot have names containing '.',
 // probably to prevent member lookup ambiguity.
   : ID dim_array_bounds? AS type_name
-  | variable dim_array_bounds?
+  | typed_id dim_array_bounds?
   ;
 
 dim_array_bounds
@@ -232,11 +232,11 @@ end_statement
 // TODO: Figure out how to parse NEXT v1, v2, ... vN.
 for_next_statement
 // Single line loop.
-  : for_assignment for_body_block NEXT variable?
+  : for_assignment for_body_block NEXT typed_id?
   ;
 
 for_assignment
-  : FOR variable '=' expr TO expr (STEP expr)?
+  : FOR typed_id '=' expr TO expr (STEP expr)?
   ;
 
 // Allow EXIT FOR only inside FOR..NEXT.
@@ -255,7 +255,7 @@ for_body_block
 
 // IDE drops empty '()' parameter lists.
 function_block
-  : FUNCTION variable ('(' parameter_list? ')')? STATIC?
+  : FUNCTION typed_id ('(' parameter_list? ')')? STATIC?
     function_body_block
     end_function_statement
   ;
@@ -413,7 +413,7 @@ parameter_list
 
 parameter
   : ID parameter_array_bounds? AS type_name_for_parameter_list
-  | variable parameter_array_bounds?
+  | typed_id parameter_array_bounds?
   ;
 
 // See decl_array_bounds.
@@ -449,7 +449,7 @@ end_sub_statement
 
 // IDE drops empty '()' parameter lists.
 declare_statement
-  : DECLARE (SUB ID | FUNCTION variable) ('(' parameter_list? ')')?
+  : DECLARE (SUB ID | FUNCTION typed_id) ('(' parameter_list? ')')?
   ;
 
 // DEF FNname is unusual because FNname is both a keyword and an identifier.
@@ -473,7 +473,7 @@ def_fn_parameter_list
 // DEF FN can't take array parameters.
 def_fn_parameter
   : ID AS type_name_for_def_fn_parameter_list
-  | variable
+  | typed_id
   ;
 
 // FNID can only be assigned inside a DEF FN - we'll check elsewhere that this
@@ -540,10 +540,12 @@ expr
   | expr EQV expr
   | expr IMP expr
   | literal
-  | variable array_index?
+// A variable with an array index is syntactically the same as a function call,
+// so that has to be figured out by semantic analysis later.
+  | typed_id args_or_indices?
   ;
 
-// Variables can have type sigils appended.
+// Identifiers can optionally have type sigils appended.
 // No space is allowed before a sigil, but it's easier to permit it and check later.
 //
 // Variable names can contain '.', which is also used to access fields in user
@@ -560,9 +562,9 @@ expr
 //
 // Field lookup is not part of this grammar at all, and will be handled in
 // symbol tables instead.
-variable : ID ('!' | '#' | '$' | '%' | '&')? ;
+typed_id : ID ('!' | '#' | '$' | '%' | '&')? ;
 
-array_index : '(' expr (',' expr)* ')';
+args_or_indices : '(' expr (',' expr)* ')';
 
 literal
 // If a floating point constant isn't explicitly marked as single or double and

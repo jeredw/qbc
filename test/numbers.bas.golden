@@ -1,120 +1,120 @@
 (program 
   (statement 
     (assignment_statement 
-      (variable intmin %) = 
+      (typed_id intmin %) = 
       (expr - 
         (expr 
           (literal 32768))))) \n 
   (statement 
     (assignment_statement 
-      (variable intmax %) = 
+      (typed_id intmax %) = 
       (expr 
         (literal 32767)))) \n 
   (statement 
     (assignment_statement 
-      (variable hexmin %) = 
+      (typed_id hexmin %) = 
       (expr 
         (literal &h0)))) \n 
   (statement 
     (assignment_statement 
-      (variable hexmax %) = 
+      (typed_id hexmax %) = 
       (expr 
         (literal &hffff)))) \n 
   (statement 
     (assignment_statement 
-      (variable octmin %) = 
+      (typed_id octmin %) = 
       (expr 
         (literal &o0)))) \n 
   (statement 
     (assignment_statement 
-      (variable octmax %) = 
+      (typed_id octmax %) = 
       (expr 
         (literal &o177777)))) \n 
   (statement 
     (assignment_statement 
-      (variable longmin) = 
+      (typed_id longmin) = 
       (expr - 
         (expr 
           (literal 2147483648))))) \n 
   (statement 
     (assignment_statement 
-      (variable longmax &) = 
+      (typed_id longmax &) = 
       (expr 
         (literal 2147483647)))) \n 
   (statement 
     (assignment_statement 
-      (variable longhexmin &) = 
+      (typed_id longhexmin &) = 
       (expr 
         (literal &h0 &)))) \n 
   (statement 
     (assignment_statement 
-      (variable longhexmin &) = 
+      (typed_id longhexmin &) = 
       (expr 
         (literal &hffffffff &)))) \n 
   (statement 
     (assignment_statement 
-      (variable longoctmin &) = 
+      (typed_id longoctmin &) = 
       (expr 
         (literal &o0 &)))) \n 
   (statement 
     (assignment_statement 
-      (variable longoctmax &) = 
+      (typed_id longoctmax &) = 
       (expr 
         (literal &o37777777777 &)))) \n statement \n 
   (statement 
     (assignment_statement 
-      (variable floatmin) = 
+      (typed_id floatmin) = 
       (expr - 
         (expr 
           (literal 3.37E+38))))) \n 
   (statement 
     (assignment_statement 
-      (variable floatmax !) = 
+      (typed_id floatmax !) = 
       (expr 
         (literal 3.37E+38)))) \n statement \n 
   (statement 
     (assignment_statement 
-      (variable floatwithe !) = 
+      (typed_id floatwithe !) = 
       (expr 
         (literal 1.5e2)))) \n statement \n 
   (statement 
     (assignment_statement 
-      (variable floatwithsigil !) = 
+      (typed_id floatwithsigil !) = 
       (expr 
         (literal 1.5!)))) \n statement \n statement \n statement \n 
   (statement 
     (assignment_statement 
-      (variable floatsmall !) = 
+      (typed_id floatsmall !) = 
       (expr 
         (literal 1.234567)))) \n statement \n statement \n 
   (statement 
     (assignment_statement 
-      (variable floatbigint !) = 
+      (typed_id floatbigint !) = 
       (expr 
         (literal 2147483648)))) \n statement \n 
   (statement 
     (assignment_statement 
-      (variable doublemin) = 
+      (typed_id doublemin) = 
       (expr - 
         (expr 
           (literal 1.67D+308))))) \n 
   (statement 
     (assignment_statement 
-      (variable doublemax #) = 
+      (typed_id doublemax #) = 
       (expr 
         (literal 1.67D+308)))) \n statement \n 
   (statement 
     (assignment_statement 
-      (variable doublewithd #) = 
+      (typed_id doublewithd #) = 
       (expr 
         (literal 1.5d2)))) \n statement \n 
   (statement 
     (assignment_statement 
-      (variable doublewithsigil #) = 
+      (typed_id doublewithsigil #) = 
       (expr 
         (literal 1.5#)))) \n statement \n statement \n 
   (statement 
     (assignment_statement 
-      (variable doubletoobig #) = 
+      (typed_id doubletoobig #) = 
       (expr 
         (literal 1.2345678)))) \n statement <EOF>)

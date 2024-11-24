@@ -42,16 +42,16 @@
     ( 
       (def_fn_parameter_list 
         (def_fn_parameter 
-          (variable a %)) , 
+          (typed_id a %)) , 
         (def_fn_parameter 
-          (variable b %))) ) 
+          (typed_id b %))) ) 
     (def_fn_body_block \n 
       (def_fn_body_statement statement)) end def) \n statement 
   (def_fn_statement def fnq 
     ( 
       (def_fn_parameter_list 
         (def_fn_parameter 
-          (variable a %)) , 
+          (typed_id a %)) , 
         (def_fn_parameter b as 
           (type_name_for_def_fn_parameter_list string)) , 
         (def_fn_parameter c as 

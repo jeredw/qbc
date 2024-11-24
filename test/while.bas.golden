@@ -2,12 +2,12 @@
   (statement 
     (while_wend_statement while 
       (expr 
-        (variable TRUE)) 
+        (typed_id TRUE)) 
       (while_body_block :) wend)) \n 
   (statement 
     (while_wend_statement while 
       (expr 
-        (variable foo)) 
+        (typed_id foo)) 
       (while_body_block \n 
         (statement 
           (print_statement print 
@@ -22,7 +22,7 @@
   (statement 
     (while_wend_statement while 
       (expr 
-        (variable x)) 
+        (typed_id x)) 
       (while_body_block : 
         (statement 
           (print_statement print 

@@ -2,19 +2,19 @@
   (statement 
     (const_statement const 
       (const_assignment 
-        (variable answer) = 
+        (typed_id answer) = 
         (const_expr 
           (expr 
             (literal 42)))) , 
       (const_assignment 
-        (variable question) = 
+        (typed_id question) = 
         (const_expr 
           (expr 
             (literal 0)))))) \n 
   (statement 
     (const_statement const 
       (const_assignment 
-        (variable x) = 
+        (typed_id x) = 
         (const_expr 
           (expr - 
             (expr 

@@ -7,7 +7,7 @@
   (statement 
     (for_next_statement 
       (for_assignment for 
-        (variable i) = 
+        (typed_id i) = 
         (expr 
           (literal 1)) to 
         (expr 
@@ -15,14 +15,14 @@
       (for_body_block \n 
         (for_body_statement exit for) \n 
         (for_body_statement statement)) next 
-      (variable i))) \n 
+      (typed_id i))) \n 
   (sub_block sub blah 
     (sub_body_block \n 
       (sub_body_statement exit sub) \n 
       (sub_body_statement statement)) 
     (end_sub_statement end sub)) \n 
   (function_block function 
-    (variable ok) 
+    (typed_id ok) 
     (function_body_block \n 
       (function_body_statement exit function) \n 
       (function_body_statement statement)) 

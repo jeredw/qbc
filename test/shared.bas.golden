@@ -8,32 +8,32 @@
   (statement 
     (lifetime_statement shared 
       (decl_variable 
-        (variable i)) , 
+        (typed_id i)) , 
       (decl_variable 
-        (variable j)) , 
+        (typed_id j)) , 
       (decl_variable 
-        (variable k)) , 
+        (typed_id k)) , 
       (decl_variable 
-        (variable a) 
+        (typed_id a) 
         (decl_array_bounds 
           ( ))))) \n 
   (statement 
     (lifetime_statement shared 
       (decl_variable 
-        (variable a $)) , 
+        (typed_id a $)) , 
       (decl_variable 
-        (variable b $) 
+        (typed_id b $) 
         (decl_array_bounds 
           ( ))) , 
       (decl_variable 
-        (variable x)) , 
+        (typed_id x)) , 
       (decl_variable 
-        (variable y)) , 
+        (typed_id y)) , 
       (decl_variable 
-        (variable z)))) \n 
+        (typed_id z)))) \n 
   (statement 
     (lifetime_statement shared 
       (decl_variable 
-        (variable test) 
+        (typed_id test) 
         (decl_array_bounds 
           ( 2 ))))) \n statement <EOF>)

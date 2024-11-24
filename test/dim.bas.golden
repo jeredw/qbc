@@ -2,11 +2,11 @@
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable sigil $)))) \n 
+        (typed_id sigil $)))) \n 
   (statement 
     (dim_statement redim shared 
       (dim_variable 
-        (variable ssh %)))) \n 
+        (typed_id ssh %)))) \n 
   (statement 
     (dim_statement dim 
       (dim_variable s as 
@@ -42,25 +42,25 @@
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable foo $)) , 
+        (typed_id foo $)) , 
       (dim_variable 
-        (variable bar %)) , 
+        (typed_id bar %)) , 
       (dim_variable baz as 
         (type_name long)) , 
       (dim_variable 
-        (variable quux !)))) \n 
+        (typed_id quux !)))) \n 
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable a)) , 
+        (typed_id a)) , 
       (dim_variable 
-        (variable b)) , 
+        (typed_id b)) , 
       (dim_variable 
-        (variable c)))) \n 
+        (typed_id c)))) \n 
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable arq $) 
+        (typed_id arq $) 
         (dim_array_bounds 
           ( 
             (dim_subscript 
@@ -69,7 +69,7 @@
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable ar) 
+        (typed_id ar) 
         (dim_array_bounds 
           ( 
             (dim_subscript 
@@ -82,7 +82,7 @@
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable arz) 
+        (typed_id arz) 
         (dim_array_bounds 
           ( 
             (dim_subscript 
@@ -91,21 +91,21 @@
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable boo) 
+        (typed_id boo) 
         (dim_array_bounds 
           ( 
             (dim_subscript 
               (expr 
-                (variable k %))) ))))) \n 
+                (typed_id k %))) ))))) \n 
   (statement 
     (dim_statement dim 
       (dim_variable 
-        (variable multi) 
+        (typed_id multi) 
         (dim_array_bounds 
           ( 
             (dim_subscript 
               (expr 
-                (variable xxx))) , 
+                (typed_id xxx))) , 
             (dim_subscript 
               (expr 
                 (literal 0)) to 
@@ -118,13 +118,13 @@
                 (literal 35))) , 
             (dim_subscript 
               (expr 
-                (variable yyy))) ))) , 
+                (typed_id yyy))) ))) , 
       (dim_variable wowzas 
         (dim_array_bounds 
           ( 
             (dim_subscript 
               (expr 
-                (variable hi))) , 
+                (typed_id hi))) , 
             (dim_subscript 
               (expr - 
                 (expr 

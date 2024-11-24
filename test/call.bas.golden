@@ -79,9 +79,9 @@
           (expr 
             ( 
               (expr 
-                (variable x)) ))) , 
+                (typed_id x)) ))) , 
         (call_argument 
-          (variable y))))) \n 
+          (typed_id y))))) \n 
   (statement 
     (call_statement call twoargs 
       ( 
@@ -90,27 +90,27 @@
             (expr 
               ( 
                 (expr 
-                  (variable x)) ))) , 
+                  (typed_id x)) ))) , 
           (call_argument 
-            (variable y))) ))) \n 
+            (typed_id y))) ))) \n 
   (statement 
     (call_statement threeargs 
       (call_argument_list 
         (call_argument 
-          (variable a) 
+          (typed_id a) 
           ( )) , 
         (call_argument 
           (expr 
             ( 
               (expr 
-                (variable b) 
-                (array_index 
+                (typed_id b) 
+                (args_or_indices 
                   ( 
                     (expr 
                       (literal 2)) ))) ))) , 
         (call_argument 
-          (variable c) 
-          (array_index 
+          (typed_id c) 
+          (args_or_indices 
             ( 
               (expr 
                 (literal 1)) )))))) \n 
@@ -119,20 +119,20 @@
       ( 
         (call_argument_list 
           (call_argument 
-            (variable a) 
+            (typed_id a) 
             ( )) , 
           (call_argument 
             (expr 
               ( 
                 (expr 
-                  (variable b) 
-                  (array_index 
+                  (typed_id b) 
+                  (args_or_indices 
                     ( 
                       (expr 
                         (literal 2)) ))) ))) , 
           (call_argument 
-            (variable c) 
-            (array_index 
+            (typed_id c) 
+            (args_or_indices 
               ( 
                 (expr 
                   (literal 1)) )))) ))) \n statement <EOF>)

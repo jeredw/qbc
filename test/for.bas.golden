@@ -2,7 +2,7 @@
   (statement 
     (for_next_statement 
       (for_assignment for 
-        (variable i) = 
+        (typed_id i) = 
         (expr 
           (literal 1)) to 
         (expr 
@@ -15,11 +15,11 @@
                 (expr 
                   (literal "hi")))))) \n 
         (for_body_statement statement)) next 
-      (variable i))) \n 
+      (typed_id i))) \n 
   (statement 
     (for_next_statement 
       (for_assignment for 
-        (variable i) = 
+        (typed_id i) = 
         (expr 
           (literal 10)) to 
         (expr 
@@ -32,7 +32,7 @@
   (statement 
     (for_next_statement 
       (for_assignment for 
-        (variable a) = 
+        (typed_id a) = 
         (expr 
           (literal 1)) to 
         (expr 
@@ -42,16 +42,16 @@
           (statement 
             (for_next_statement 
               (for_assignment for 
-                (variable b) = 
+                (typed_id b) = 
                 (expr 
                   (literal 1)) to 
                 (expr 
                   (literal 5))) 
               (for_body_block \n 
                 (for_body_statement statement)) next 
-              (variable b)))) \n 
+              (typed_id b)))) \n 
         (for_body_statement statement)) next 
-      (variable a))) \n statement \n statement \n statement \n 
+      (typed_id a))) \n statement \n statement \n statement \n 
   (statement 
     (print_statement print 
       (print_args 
@@ -60,7 +60,7 @@
   (statement 
     (for_next_statement 
       (for_assignment for 
-        (variable i) = 
+        (typed_id i) = 
         (expr 
           (literal 1)) to 
         (expr 
@@ -82,7 +82,7 @@
   (statement 
     (for_next_statement 
       (for_assignment for 
-        (variable i) = 
+        (typed_id i) = 
         (expr 
           (literal 1)) to 
         (expr 
@@ -92,7 +92,7 @@
           (statement 
             (for_next_statement 
               (for_assignment for 
-                (variable j) = 
+                (typed_id j) = 
                 (expr 
                   (literal 1)) to 
                 (expr 
@@ -103,9 +103,9 @@
                     (print_statement print 
                       (print_args 
                         (expr 
-                          (variable i)) , 
+                          (typed_id i)) , 
                         (print_args 
                           (expr 
-                            (variable j))))))) :) next 
-              (variable j)))) :) next 
-      (variable i))) \n statement <EOF>)
+                            (typed_id j))))))) :) next 
+              (typed_id j)))) :) next 
+      (typed_id i))) \n statement <EOF>)
