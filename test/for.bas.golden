@@ -1,56 +1,46 @@
 (program 
   (statement 
-    (for_next_statement 
-      (for_assignment for 
-        (typed_id i) = 
-        (expr 
-          (literal 1)) to 
-        (expr 
-          (literal 20))) 
-      (for_body_block \n 
-        (for_body_statement 
-          (statement 
-            (print_statement print 
-              (print_args 
-                (expr 
-                  (literal "hi")))))) \n 
-        (for_body_statement statement)) next 
+    (for_next_statement for 
+      (typed_id i) = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 20)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "hi"))))) \n statement) next 
       (typed_id i))) \n 
   (statement 
-    (for_next_statement 
-      (for_assignment for 
-        (typed_id i) = 
+    (for_next_statement for 
+      (typed_id i) = 
+      (expr 
+        (literal 10)) to 
+      (expr 
+        (literal 1)) step 
+      (expr - 
         (expr 
-          (literal 10)) to 
-        (expr 
-          (literal 1)) step 
-        (expr - 
-          (expr 
-            (literal 1)))) 
-      (for_body_block \n 
-        (for_body_statement statement)) next)) \n 
+          (literal 1))) 
+      (block \n statement) next)) \n 
   (statement 
-    (for_next_statement 
-      (for_assignment for 
-        (typed_id a) = 
-        (expr 
-          (literal 1)) to 
-        (expr 
-          (literal 5))) 
-      (for_body_block \n 
-        (for_body_statement 
-          (statement 
-            (for_next_statement 
-              (for_assignment for 
-                (typed_id b) = 
-                (expr 
-                  (literal 1)) to 
-                (expr 
-                  (literal 5))) 
-              (for_body_block \n 
-                (for_body_statement statement)) next 
-              (typed_id b)))) \n 
-        (for_body_statement statement)) next 
+    (for_next_statement for 
+      (typed_id a) = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) 
+      (block \n 
+        (statement 
+          (for_next_statement for 
+            (typed_id b) = 
+            (expr 
+              (literal 1)) to 
+            (expr 
+              (literal 5)) 
+            (block \n statement) next 
+            (typed_id b))) \n statement) next 
       (typed_id a))) \n statement \n statement \n statement \n 
   (statement 
     (print_statement print 
@@ -58,54 +48,46 @@
         (expr 
           (literal "hi"))))) : 
   (statement 
-    (for_next_statement 
-      (for_assignment for 
-        (typed_id i) = 
-        (expr 
-          (literal 1)) to 
-        (expr 
-          (literal 2))) 
-      (for_body_block : 
-        (for_body_statement 
-          (statement 
-            (print_statement print 
-              (print_args 
-                (expr 
-                  (literal "hi")))))) \n 
-        (for_body_statement 
-          (statement 
-            (print_statement print 
-              (print_args 
-                (expr 
-                  (literal "foo")))))) : 
-        (for_body_statement statement)) next)) \n 
+    (for_next_statement for 
+      (typed_id i) = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 2)) 
+      (block : 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "hi"))))) \n 
+        (statement 
+          (print_statement print 
+            (print_args 
+              (expr 
+                (literal "foo"))))) : statement) next)) \n 
   (statement 
-    (for_next_statement 
-      (for_assignment for 
-        (typed_id i) = 
-        (expr 
-          (literal 1)) to 
-        (expr 
-          (literal 10))) 
-      (for_body_block : 
-        (for_body_statement 
-          (statement 
-            (for_next_statement 
-              (for_assignment for 
-                (typed_id j) = 
-                (expr 
-                  (literal 1)) to 
-                (expr 
-                  (literal 10))) 
-              (for_body_block : 
-                (for_body_statement 
-                  (statement 
-                    (print_statement print 
-                      (print_args 
-                        (expr 
-                          (typed_id i)) , 
-                        (print_args 
-                          (expr 
-                            (typed_id j))))))) :) next 
-              (typed_id j)))) :) next 
+    (for_next_statement for 
+      (typed_id i) = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) 
+      (block : 
+        (statement 
+          (for_next_statement for 
+            (typed_id j) = 
+            (expr 
+              (literal 1)) to 
+            (expr 
+              (literal 10)) 
+            (block : 
+              (statement 
+                (print_statement print 
+                  (print_args 
+                    (expr 
+                      (typed_id i)) , 
+                    (print_args 
+                      (expr 
+                        (typed_id j)))))) :) next 
+            (typed_id j))) :) next 
       (typed_id i))) \n statement <EOF>)

@@ -27,11 +27,11 @@
                   (line_number 5)))) else 
             (if_inline_action 
               (line_number 30))))))) \n 
-  (if_block if 
+  (if_block_statement if 
     (expr 
       (typed_id foo)) then \n 
     (if_body_block 
-      (if_block if 
+      (if_block_statement if 
         (expr 
           (typed_id bar)) then \n 
         (if_body_block 
@@ -58,7 +58,7 @@
               (expr 
                 (literal 42))))) \n)) 
     (end_if_statement end if)) \n 
-  (if_block if 
+  (if_block_statement if 
     (expr 
       (typed_id foo)) then \n if_body_block 
     (elseif_block elseif 
@@ -78,7 +78,7 @@
     (end_if_statement end if)) \n 
   (label 
     (line_number 10)) 
-  (if_block if 
+  (if_block_statement if 
     (expr 
       (typed_id foo)) then \n 
     (if_body_block 

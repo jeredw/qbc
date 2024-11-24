@@ -3,12 +3,12 @@
     (while_wend_statement while 
       (expr 
         (typed_id TRUE)) 
-      (while_body_block :) wend)) \n 
+      (block :) wend)) \n 
   (statement 
     (while_wend_statement while 
       (expr 
         (typed_id foo)) 
-      (while_body_block \n 
+      (block \n 
         (statement 
           (print_statement print 
             (print_args 
@@ -23,7 +23,7 @@
     (while_wend_statement while 
       (expr 
         (typed_id x)) 
-      (while_body_block : 
+      (block : 
         (statement 
           (print_statement print 
             (print_args 

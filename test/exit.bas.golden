@@ -1,33 +1,40 @@
 (program 
   (statement 
     (do_loop_statement do 
-      (do_body_block \n 
-        (do_body_statement exit do) \n 
-        (do_body_statement statement)) loop)) \n 
+      (block \n 
+        (statement 
+          (exit_statement exit do)) \n statement) loop)) \n 
   (statement 
-    (for_next_statement 
-      (for_assignment for 
-        (typed_id i) = 
-        (expr 
-          (literal 1)) to 
-        (expr 
-          (literal 10))) 
-      (for_body_block \n 
-        (for_body_statement exit for) \n 
-        (for_body_statement statement)) next 
+    (for_next_statement for 
+      (typed_id i) = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (if_block_statement if 
+          (expr 
+            (expr 
+              (typed_id i)) = 
+            (expr 
+              (literal 5))) then \n 
+          (if_body_block 
+            (statement 
+              (exit_statement exit for)) \n) 
+          (end_if_statement end if)) \n statement) next 
       (typed_id i))) \n 
-  (sub_block sub blah 
-    (sub_body_block \n 
-      (sub_body_statement exit sub) \n 
-      (sub_body_statement statement)) 
+  (sub_statement sub blah 
+    (block \n 
+      (statement 
+        (exit_statement exit sub)) \n statement) 
     (end_sub_statement end sub)) \n 
-  (function_block function 
+  (function_statement function 
     (typed_id ok) 
-    (function_body_block \n 
-      (function_body_statement exit function) \n 
-      (function_body_statement statement)) 
+    (block \n 
+      (statement 
+        (exit_statement exit function)) \n statement) 
     (end_function_statement end function)) \n statement 
   (def_fn_statement def fnfoo 
-    (def_fn_body_block \n 
-      (def_fn_body_statement exit def) \n 
-      (def_fn_body_statement statement)) end def) \n statement <EOF>)
+    (block \n 
+      (statement 
+        (exit_statement exit def)) \n statement) end def) \n statement <EOF>)

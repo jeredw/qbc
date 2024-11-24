@@ -6,38 +6,36 @@
     (expr 
       (literal 1))) \n statement 
   (def_fn_statement def fnbaz 
-    (def_fn_body_block \n 
-      (def_fn_body_statement 
-        (def_fn_assignment_statement fnbaz = 
+    (block \n 
+      (statement 
+        (assignment_statement fnbaz = 
           (expr 
-            (literal 4)))) \n 
-      (def_fn_body_statement statement)) end def) \n statement 
+            (literal 4)))) \n statement) end def) \n statement 
   (def_fn_statement def fna 
-    (def_fn_body_block : 
-      (def_fn_body_statement 
-        (def_fn_assignment_statement fna = 
+    (block : 
+      (statement 
+        (assignment_statement fna = 
           (expr 
             (literal 1)))) :) end def) : statement 
   (def_fn_statement def fnb = 
     (expr 
       (literal 2))) : statement 
   (def_fn_statement def fnc 
-    (def_fn_body_block : 
-      (def_fn_body_statement 
-        (def_fn_assignment_statement fnc = 
+    (block : 
+      (statement 
+        (assignment_statement fnc = 
           (expr 
             (literal 5)))) :) end def) \n statement 
   (def_fn_statement def fnlet 
-    (def_fn_body_block \n 
-      (def_fn_body_statement 
-        (def_fn_assignment_statement let fnlet = 
+    (block \n 
+      (statement 
+        (assignment_statement let fnlet = 
           (expr 
-            (literal 42)))) \n 
-      (def_fn_body_statement statement)) end def) \n statement 
+            (literal 42)))) \n statement) end def) \n statement 
   (def_fn_statement def fnexit 
-    (def_fn_body_block \n 
-      (def_fn_body_statement exit def) \n 
-      (def_fn_body_statement statement)) end def) \n statement 
+    (block \n 
+      (statement 
+        (exit_statement exit def)) \n statement) end def) \n statement 
   (def_fn_statement def fnq 
     ( 
       (def_fn_parameter_list 
@@ -45,8 +43,7 @@
           (typed_id a %)) , 
         (def_fn_parameter 
           (typed_id b %))) ) 
-    (def_fn_body_block \n 
-      (def_fn_body_statement statement)) end def) \n statement 
+    (block \n statement) end def) \n statement 
   (def_fn_statement def fnq 
     ( 
       (def_fn_parameter_list 
@@ -56,8 +53,7 @@
           (type_name_for_def_fn_parameter_list string)) , 
         (def_fn_parameter c as 
           (type_name_for_def_fn_parameter_list double))) ) 
-    (def_fn_body_block \n 
-      (def_fn_body_statement statement)) end def) \n statement 
+    (block \n statement) end def) \n statement 
   (def_fn_statement def fnz 
     ( ) 
-    (def_fn_body_block :) end def) \n statement <EOF>)
+    (block :) end def) \n statement <EOF>)

@@ -5,17 +5,19 @@
         (typed_id i)) 
       (before_first_case \n) 
       (case_block 
-        (case_statement case else) \n 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "huh"))))) \n statement) 
+        (case_statement case else) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (print_args 
+                (expr 
+                  (literal "huh"))))) \n statement)) 
       (case_block 
         (case_statement case 
           (case_expr is >= 
             (expr 
-              (literal 5)))) \n statement) 
+              (literal 5)))) 
+        (block \n statement)) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -26,7 +28,8 @@
               (literal 3))) , 
           (case_expr 
             (expr 
-              (literal 4)))) \n statement) 
+              (literal 4)))) 
+        (block \n statement)) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -38,7 +41,8 @@
             (expr 
               (literal 5)) to 
             (expr 
-              (literal 7)))) \n statement) 
+              (literal 7)))) 
+        (block \n statement)) 
       (end_select_statement end select))) \n 
   (statement 
     (select_case_statement select case 
@@ -61,12 +65,13 @@
         (case_statement case 
           (case_expr 
             (expr 
-              (literal 4)))) : 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "hi"))))) :) 
+              (literal 4)))) 
+        (block : 
+          (statement 
+            (print_statement print 
+              (print_args 
+                (expr 
+                  (literal "hi"))))) :)) 
       (end_select_statement end select))) \n statement \n 
   (statement 
     (select_case_statement select case 
@@ -79,22 +84,24 @@
         (case_statement case 
           (case_expr 
             (expr 
-              (literal 4)))) : 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "hi"))))) :) 
+              (literal 4)))) 
+        (block : 
+          (statement 
+            (print_statement print 
+              (print_args 
+                (expr 
+                  (literal "hi"))))) :)) 
       (case_block 
         (case_statement case 
           (case_expr 
             (expr 
-              (literal 5)))) : 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "bye"))))) \n statement) 
+              (literal 5)))) 
+        (block : 
+          (statement 
+            (print_statement print 
+              (print_args 
+                (expr 
+                  (literal "bye"))))) \n statement)) 
       (end_select_statement end select))) \n statement \n 
   (statement 
     (select_case_statement select case 
@@ -102,11 +109,12 @@
         (typed_id i)) 
       (before_first_case \n) 
       (case_block 
-        (case_statement case else) \n 
-        (if_block if 
-          (expr 
-            (typed_id foo)) then \n if_body_block 
-          (end_if_statement end if)) \n statement) 
+        (case_statement case else) 
+        (block \n 
+          (if_block_statement if 
+            (expr 
+              (typed_id foo)) then \n if_body_block 
+            (end_if_statement end if)) \n statement)) 
       (end_select_statement end select))) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
   (statement 
     (select_case_statement select case 
@@ -117,26 +125,30 @@
         (case_statement case 
           (case_expr 
             (expr 
-              (literal 20)))) \n 
-        (statement 
-          (select_case_statement select case 
-            (expr 
-              (typed_id j)) 
-            (before_first_case \n) 
-            (case_block 
-              (case_statement case 
-                (case_expr 
-                  (expr 
-                    (literal 42)))) \n statement) 
-            (case_block 
-              (case_statement case else) \n statement) 
-            (end_select_statement end select))) \n statement) 
+              (literal 20)))) 
+        (block \n 
+          (statement 
+            (select_case_statement select case 
+              (expr 
+                (typed_id j)) 
+              (before_first_case \n) 
+              (case_block 
+                (case_statement case 
+                  (case_expr 
+                    (expr 
+                      (literal 42)))) 
+                (block \n statement)) 
+              (case_block 
+                (case_statement case else) 
+                (block \n statement)) 
+              (end_select_statement end select))) \n statement)) 
       (case_block 
-        (case_statement case else) \n 
-        (statement 
-          (select_case_statement select case 
-            (expr 
-              (typed_id k)) 
-            (before_first_case \n) 
-            (end_select_statement end select))) \n statement) 
+        (case_statement case else) 
+        (block \n 
+          (statement 
+            (select_case_statement select case 
+              (expr 
+                (typed_id k)) 
+              (before_first_case \n) 
+              (end_select_statement end select))) \n statement)) 
       (end_select_statement end select))) \n statement <EOF>)

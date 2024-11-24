@@ -1,14 +1,13 @@
 (program 
-  (function_block function 
+  (function_statement function 
     (typed_id x) 
-    (function_body_block \n 
-      (function_body_statement statement)) 
+    (block \n statement) 
     (end_function_statement end function)) \n 
-  (function_block function 
+  (function_statement function 
     (typed_id y $) 
-    (function_body_block :) 
+    (block :) 
     (end_function_statement end function)) \n 
-  (function_block function 
+  (function_statement function 
     (typed_id z %) 
     ( 
       (parameter_list 
@@ -16,21 +15,19 @@
           (type_name_for_parameter_list string)) , 
         (parameter 
           (typed_id bar $))) ) static 
-    (function_body_block \n 
-      (function_body_statement 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "ok")))))) : 
-      (function_body_statement statement)) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_args 
+            (expr 
+              (literal "ok"))))) : statement) 
     (end_function_statement end function : 
       (statement 
         (print_statement print 
           (print_args 
             (expr 
               (literal "ignored"))))))) \n 
-  (function_block function 
+  (function_statement function 
     (typed_id ParseLine) 
     ( 
       (parameter_list 
@@ -42,28 +39,24 @@
           (typed_id KeywordTypes) 
           (parameter_array_bounds 
             ( )))) ) 
-    (function_body_block \n 
-      (function_body_statement statement)) 
+    (block \n statement) 
     (end_function_statement end function)) \n 
-  (function_block function 
+  (function_statement function 
     (typed_id hooray) 
-    (function_body_block : 
-      (function_body_statement 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "hi")))))) \n 
-      (function_body_statement 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "stuff")))))) : 
-      (function_body_statement statement)) 
+    (block : 
+      (statement 
+        (print_statement print 
+          (print_args 
+            (expr 
+              (literal "hi"))))) \n 
+      (statement 
+        (print_statement print 
+          (print_args 
+            (expr 
+              (literal "stuff"))))) : statement) 
     (end_function_statement end function)) \n 
-  (function_block function 
+  (function_statement function 
     (typed_id empty) 
     ( ) 
-    (function_body_block :) 
+    (block :) 
     (end_function_statement end function)) \n statement <EOF>)

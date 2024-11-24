@@ -2,7 +2,9 @@ do
   exit do
 loop
 for i=1 to 10
-  exit for
+  if i=5 then
+    exit for
+  end if
 next i
 sub blah
   exit sub

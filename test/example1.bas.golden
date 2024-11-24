@@ -1,0 +1,67 @@
+(program 
+  (statement 
+    (const_statement CONST 
+      (const_assignment 
+        (typed_id NO) = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment 
+        (typed_id YES) = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (typed_id NO))))))) \n statement 
+  (def_fn_statement DEF FNIsThereAZ 
+    ( 
+      (def_fn_parameter_list 
+        (def_fn_parameter 
+          (typed_id A $))) ) 
+    (block \n 
+      (statement 
+        (lifetime_statement STATIC 
+          (decl_variable 
+            (typed_id I)))) \n 
+      (statement 
+        (for_next_statement FOR 
+          (typed_id I) = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (typed_id LEN) 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (typed_id A $)) ))) 
+          (block \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (typed_id UCASE $) 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (typed_id MID $) 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (typed_id A $)) , 
+                            (expr 
+                              (typed_id I)) , 
+                            (expr 
+                              (literal 1)) ))) ))) = 
+                (expr 
+                  (literal "Z"))) THEN \n 
+              (if_body_block 
+                (statement 
+                  (assignment_statement FNIsThereAZ = 
+                    (expr 
+                      (typed_id YES)))) \n 
+                (statement 
+                  (exit_statement EXIT DEF)) \n) 
+              (end_if_statement END IF)) \n statement) NEXT 
+          (typed_id I))) \n 
+      (statement 
+        (assignment_statement FNIsThereAZ = 
+          (expr 
+            (typed_id NO)))) \n statement) END DEF) \n statement <EOF>)

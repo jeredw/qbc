@@ -1,5 +1,5 @@
 (program 
-  (sub_block sub foo 
+  (sub_statement sub foo 
     ( 
       (parameter_list 
         (parameter 
@@ -8,10 +8,9 @@
           (type_name_for_parameter_list string)) , 
         (parameter 
           (typed_id quux))) ) static 
-    (sub_body_block \n 
-      (sub_body_statement statement)) 
+    (block \n statement) 
     (end_sub_statement end sub)) \n 
-  (sub_block sub bar 
+  (sub_statement sub bar 
     ( 
       (parameter_list 
         (parameter 
@@ -20,37 +19,33 @@
           (typed_id b)) , 
         (parameter 
           (typed_id c %))) ) 
-    (sub_body_block :) 
+    (block :) 
     (end_sub_statement end sub)) \n 
-  (sub_block sub baz 
-    (sub_body_block :) 
+  (sub_statement sub baz 
+    (block :) 
     (end_sub_statement end sub : 
       (statement 
         (print_statement print 
           (print_args 
             (expr 
               (literal "wow"))))))) \n 
-  (sub_block sub quux static 
-    (sub_body_block \n 
-      (sub_body_statement statement)) 
+  (sub_statement sub quux static 
+    (block \n statement) 
     (end_sub_statement end sub)) \n 
-  (sub_block sub quux2 
-    (sub_body_block : 
-      (sub_body_statement 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "hi")))))) \n 
-      (sub_body_statement 
-        (statement 
-          (print_statement print 
-            (print_args 
-              (expr 
-                (literal "stuff")))))) : 
-      (sub_body_statement statement)) 
+  (sub_statement sub quux2 
+    (block : 
+      (statement 
+        (print_statement print 
+          (print_args 
+            (expr 
+              (literal "hi"))))) \n 
+      (statement 
+        (print_statement print 
+          (print_args 
+            (expr 
+              (literal "stuff"))))) : statement) 
     (end_sub_statement end sub)) \n 
-  (sub_block sub empty 
+  (sub_statement sub empty 
     ( ) 
-    (sub_body_block :) 
+    (block :) 
     (end_sub_statement end sub)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement <EOF>)

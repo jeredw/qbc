@@ -15,8 +15,17 @@ grammar qbasic;
 //
 // TODO: Support optional absent NL on last line in a less ugly way.
 program
-  : (label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* NL)*
-     label? (statement | if_block | sub_block | function_block | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* EOF
+  : (label? (statement | if_block_statement | sub_statement | function_statement | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* NL)*
+     label? (statement | if_block_statement | sub_statement | function_statement | declare_statement | def_fn_statement | option_statement) (':' statement | declare_statement | def_fn_statement | option_statement)* EOF
+  ;
+
+// block collects statements inside loops, procedures, and conditionals.
+block
+  : (':' statement)* ':'
+  | (':' statement)* NL
+    (label? (statement | if_block_statement) (':' statement)* NL)*
+// Match block end in parent, then match NL in the parent block.
+    label? (statement | if_block_statement) (':' statement)*
   ;
 
 // It's easier if we include the ':' as part of the label rule.
@@ -32,6 +41,7 @@ statement
   | dim_statement
   | do_loop_statement
   | end_statement
+  | exit_statement
   | for_next_statement
   | gosub_statement
   | goto_statement
@@ -56,6 +66,9 @@ rem_statement
 // The LET keyword is optional.
 assignment_statement
   : LET? typed_id args_or_indices? '=' expr
+// This form is legal only inside a DEF FN, but we will use a semantic pass to 
+// enforce this later.
+  | LET? FNID '=' expr
   ;
 
 // CALL can only be used with SUB procedures.
@@ -150,6 +163,12 @@ dim_subscript
   : (lower=expr TO)? upper=expr
   ;
 
+// We just treat EXIT as a normal statement and leave it up to a semantic pass
+// to determine if it is legal at the current point in the program.
+exit_statement
+  : EXIT (DEF | DO | FOR | FUNCTION | SUB)
+  ;
+
 // DIGITS must be 0 or 1, but that will be checked later.
 option_statement
   : OPTION BASE DIGITS
@@ -200,27 +219,13 @@ type_name_for_def_fn_parameter_list
   ;
 
 do_loop_statement
-  : (DO do_condition) do_body_block LOOP
-  | DO do_body_block (LOOP do_condition)
-  | DO do_body_block LOOP
+  : (DO do_condition) block LOOP
+  | DO block (LOOP do_condition)
+  | DO block LOOP
   ;
 
 do_condition
   : (WHILE expr | UNTIL expr)
-  ;
-
-// Allow EXIT DO only inside DO loops.
-do_body_statement
-  : statement
-  | EXIT DO
-  ;
-
-do_body_block
-  : (':' do_body_statement)* ':'
-  | (':' do_body_statement)* NL
-    (label? (do_body_statement | if_block) (':' do_body_statement)* NL)*
-// Match LOOP next in do_loop_statement, then match NL in the parent block.
-    label? (do_body_statement | if_block) (':' do_body_statement)*
   ;
 
 end_statement
@@ -231,46 +236,16 @@ end_statement
 // be combined into one statement using the syntax NEXT v1, v2, ... vN.
 // TODO: Figure out how to parse NEXT v1, v2, ... vN.
 for_next_statement
-// Single line loop.
-  : for_assignment for_body_block NEXT typed_id?
-  ;
-
-for_assignment
   : FOR typed_id '=' expr TO expr (STEP expr)?
-  ;
-
-// Allow EXIT FOR only inside FOR..NEXT.
-for_body_statement
-  : statement
-  | EXIT FOR
-  ;
-
-for_body_block
-  : (':' for_body_statement)* ':'
-  | (':' for_body_statement)* NL
-    (label? (for_body_statement | if_block) (':' for_body_statement)* NL)*
-// Match NEXT in for_loop_statement, then match NL in the parent block.
-    label? (for_body_statement | if_block) (':' for_body_statement)*
+    block
+    NEXT typed_id?
   ;
 
 // IDE drops empty '()' parameter lists.
-function_block
+function_statement
   : FUNCTION typed_id ('(' parameter_list? ')')? STATIC?
-    function_body_block
+    block
     end_function_statement
-  ;
-
-function_body_statement
-  : statement
-  | EXIT FUNCTION
-  ;
-
-function_body_block
-  : (':' function_body_statement)* ':'
-  | (':' function_body_statement)* NL
-    (label? (function_body_statement | if_block) (':' function_body_statement)* NL)*
-// Match END FUNCTION in function_block.
-    label? (function_body_statement | if_block) (':' function_body_statement)*
   ;
 
 // Statements after END FUNCTION on the same line are silently dropped!
@@ -303,7 +278,7 @@ if_inline_action
   | line_number  // Implicit GOTO
   ;
 
-if_block
+if_block_statement
 // Must have NL after THEN since otherwise this is an if_inline_statement.
   : IF expr THEN NL if_body_block
 // ELSEIF, ELSE, and END IF must be the first statement on a line.
@@ -320,18 +295,18 @@ else_block
   : label? ELSE midline_if_body_block
   ;
 
-// Statements after END IF will be part of the parent of if_block.
+// Statements after END IF will be part of the parent of if_block_statement.
 end_if_statement
   : label? END IF
   ;
 
 if_body_block
-  : (label? (statement | if_block) (':' statement)* NL)*
+  : (label? (statement | if_block_statement) (':' statement)* NL)*
   ;
 
 midline_if_body_block
   : statement (':' statement)* NL
-    (label? (statement | if_block) (':' statement)* NL)*
+    (label? (statement | if_block_statement) (':' statement)* NL)*
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
@@ -382,14 +357,7 @@ before_first_case
   ;
 
 case_block
-  : case_statement
-   ((':' statement)* ':'
-    |
-    (':' statement)* NL
-    (label? (statement | if_block) (':' statement)* NL)*
-// Match CASE or END SELECT next in select_case_statement, then match NL in the parent block.
-    label? (statement | if_block) (':' statement)*
-   )
+  : case_statement block
   ;
 
 case_statement
@@ -422,23 +390,10 @@ parameter_array_bounds
   ;
 
 // IDE drops empty '()' parameter lists.
-sub_block
+sub_statement
   : SUB ID ('(' parameter_list? ')')? STATIC?
-    sub_body_block
+    block
     end_sub_statement
-  ;
-
-sub_body_statement
-  : statement
-  | EXIT SUB
-  ;
-
-sub_body_block
-  : (':' sub_body_statement)* ':'
-  | (':' sub_body_statement)* NL
-    (label? (sub_body_statement | if_block) (':' sub_body_statement)* NL)*
-// Match END SUB in sub_block.
-    label? (sub_body_statement | if_block) (':' sub_body_statement)*
   ;
 
 // Statements after END SUB on the same line are silently dropped!
@@ -461,9 +416,9 @@ declare_statement
 // a separate token form of DEF FN and merge that into FN+name later.
 def_fn_statement
   : DEF (FNID | FN ID) ('(' def_fn_parameter_list? ')')?
-    ('=' expr |
-    def_fn_body_block
-    END DEF)
+    ('=' expr
+     | block
+       END DEF)
   ;
 
 def_fn_parameter_list
@@ -474,26 +429,6 @@ def_fn_parameter_list
 def_fn_parameter
   : ID AS type_name_for_def_fn_parameter_list
   | typed_id
-  ;
-
-// FNID can only be assigned inside a DEF FN - we'll check elsewhere that this
-// is the same FNID.  This accepts optional LET like other assignments.
-def_fn_assignment_statement
-  : LET? FNID '=' expr
-  ;
-
-def_fn_body_statement
-  : statement
-  | def_fn_assignment_statement
-  | EXIT DEF
-  ;
-
-def_fn_body_block
-  : (':' def_fn_body_statement)* ':'
-  | (':' def_fn_body_statement)* NL
-    (label? (def_fn_body_statement | if_block) (':' def_fn_body_statement)* NL)*
-// Match END DEF in def_fn_statement.
-    label? (def_fn_body_statement | if_block) (':' def_fn_body_statement)*
   ;
 
 // User defined types must contain at least one member.
@@ -513,15 +448,7 @@ type_member
 
 // Loop construct from an older BASIC?
 while_wend_statement
-  : WHILE expr while_body_block WEND
-  ;
-
-while_body_block
-  : (':' statement)* ':'
-  | (':' statement)* NL
-    (label? (statement | if_block) (':' statement)* NL)*
-// Match WEND in while_wend_statement, then match NL in the parent block.
-    label? (statement | if_block) (':' statement)*
+  : WHILE expr block WEND
   ;
 
 expr
