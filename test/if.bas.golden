@@ -30,28 +30,28 @@
   (if_block_statement if 
     (expr 
       (typed_id foo)) then \n 
-    (if_body_block 
+    (then_block 
       (if_block_statement if 
         (expr 
           (typed_id bar)) then \n 
-        (if_body_block 
+        (then_block 
           (statement 
             (print_statement print 
               (print_args 
                 (expr 
                   (literal "hi"))))) \n) 
         (end_if_statement end if)) \n) 
-    (elseif_block elseif 
+    (elseif_block_statement elseif 
       (expr 
         (typed_id baz)) then 
-      (midline_if_body_block statement \n 
+      (else_block statement \n 
         (statement 
           (print_statement print 
             (print_args 
               (expr 
                 (literal "yo"))))) \n)) 
-    (else_block else 
-      (midline_if_body_block statement \n 
+    (else_block_statement else 
+      (else_block statement \n 
         (statement 
           (print_statement print 
             (print_args 
@@ -60,11 +60,11 @@
     (end_if_statement end if)) \n 
   (if_block_statement if 
     (expr 
-      (typed_id foo)) then \n if_body_block 
-    (elseif_block elseif 
+      (typed_id foo)) then \n then_block 
+    (elseif_block_statement elseif 
       (expr 
         (typed_id bar)) then 
-      (midline_if_body_block 
+      (else_block 
         (statement 
           (print_statement print 
             (print_args 
@@ -81,15 +81,15 @@
   (if_block_statement if 
     (expr 
       (typed_id foo)) then \n 
-    (if_body_block 
+    (then_block 
       (label 
         (line_number 20)) statement \n) 
-    (elseif_block 
+    (elseif_block_statement 
       (label 
         (line_number 30)) elseif 
       (expr 
         (typed_id bar)) then 
-      (midline_if_body_block statement : 
+      (else_block statement : 
         (statement 
           (print_statement print 
             (print_args 
@@ -102,10 +102,10 @@
             (print_args 
               (expr 
                 (literal "yes ok"))))) \n)) 
-    (else_block 
+    (else_block_statement 
       (label 
         (line_number 50)) else 
-      (midline_if_body_block 
+      (else_block 
         (statement 
           (print_statement print 
             (print_args 

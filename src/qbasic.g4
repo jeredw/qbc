@@ -280,19 +280,19 @@ if_inline_action
 
 if_block_statement
 // Must have NL after THEN since otherwise this is an if_inline_statement.
-  : IF expr THEN NL if_body_block
+  : IF expr THEN NL then_block
 // ELSEIF, ELSE, and END IF must be the first statement on a line.
-    elseif_block*
-    else_block?
+    elseif_block_statement*
+    else_block_statement?
     end_if_statement
   ;
 
-elseif_block
-  : label? ELSEIF expr THEN midline_if_body_block
+elseif_block_statement
+  : label? ELSEIF expr THEN else_block
   ;
 
-else_block
-  : label? ELSE midline_if_body_block
+else_block_statement
+  : label? ELSE else_block
   ;
 
 // Statements after END IF will be part of the parent of if_block_statement.
@@ -300,11 +300,11 @@ end_if_statement
   : label? END IF
   ;
 
-if_body_block
+then_block
   : (label? (statement | if_block_statement) (':' statement)* NL)*
   ;
 
-midline_if_body_block
+else_block
   : statement (':' statement)* NL
     (label? (statement | if_block_statement) (':' statement)* NL)*
   ;
