@@ -16,5 +16,6 @@
       (const_assignment 
         (variable x) = 
         (const_expr 
-          (expr 
-            (literal - 2.0)))))) \n statement <EOF>)
+          (expr - 
+            (expr 
+              (literal 2.0))))))) \n statement <EOF>)

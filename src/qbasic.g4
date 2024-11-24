@@ -500,7 +500,21 @@ while_body_block
   ;
 
 expr
-  : literal
+  : '(' expr ')'
+  | expr '^' expr  // Unusually, ^ is left-associative.
+  | '-' expr
+  | expr ('*' | '/') expr
+  | expr '\\' expr
+  | expr MOD expr
+  | expr ('+' | '-') expr
+  | expr ('=' | '>' | '<' | '<>' | '<=' | '>=') expr
+  | NOT expr
+  | expr AND expr
+  | expr OR expr
+  | expr XOR expr
+  | expr EQV expr
+  | expr IMP expr
+  | literal
   | variable
   ;
 
@@ -565,6 +579,7 @@ D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
 STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
+AND : [Aa][Nn][Dd] ;
 AS : [Aa][Ss] ;
 BASE : [Bb][Aa][Ss][Ee] ;
 CASE : [Cc][Aa][Ss][Ee] ;
@@ -582,6 +597,7 @@ DO : [Dd][Oo] ;
 DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 ELSE : [Ee][Ll][Ss][Ee] ;
 ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
+EQV : [Ee][Qq][Vv] ;
 END : [Ee][Nn][Dd] ;
 EXIT : [Ee][Xx][Ii][Tt] ;
 FOR : [Ff][Oo][Rr] ;
@@ -590,13 +606,17 @@ FUNCTION : [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn] ;
 GOSUB : [Gg][Oo][Ss][Uu][Bb] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;
+IMP : [Ii][Mm][Pp] ;
 IS : [Ii][Ss] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 LET : [Ll][Ee][Tt] ;
 LONG : [Ll][Oo][Nn][Gg] ;
 LOOP : [Ll][Oo][Oo][Pp] ;
+MOD : [Mm][Oo][Dd] ;
 NEXT : [Nn][Ee][Xx][Tt] ;
+NOT : [Nn][Oo][Tt] ;
 OPTION : [Oo][Pp][Tt][Ii][Oo][Nn] ;
+OR : [Oo][Rr] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
@@ -615,6 +635,7 @@ UNTIL : [Uu][Nn][Tt][Ii][Ll] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
 WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
+XOR : [Xx][Oo][Rr] ;
 
 // IDs prefixed with FN are special cased as user defined functions and not
 // allowed in many places where IDs are allowed.
@@ -627,5 +648,6 @@ ID : [A-EG-Za-eg-z][A-Za-z0-9.]*
 
 NL : '\r'? '\n' ;
 // Note: We skip ' comments here, but REM comments are parsed as statements.
-COMMENT : '\'' ~[\r\n]* '\r'? '\n' -> skip;
+// Don't actually consume NL because it's needed to parse statement ' NL statement.
+COMMENT : '\'' ~[\r\n]* -> skip;
 WS : [ \t]+ -> skip ;

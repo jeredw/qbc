@@ -101,6 +101,7 @@
           (statement 
             (do_loop_statement do 
               (do_body_block \n 
+                (do_body_statement statement) \n 
                 (do_body_statement statement)) loop 
               (do_condition while 
                 (expr 

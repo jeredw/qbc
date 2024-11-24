@@ -73,10 +73,12 @@
         (dim_array_bounds 
           ( 
             (dim_subscript 
-              (expr 
-                (literal - 2)) to 
-              (expr 
-                (literal - 1))) ))))) \n 
+              (expr - 
+                (expr 
+                  (literal 2))) to 
+              (expr - 
+                (expr 
+                  (literal 1)))) ))))) \n 
   (statement 
     (dim_statement dim 
       (dim_variable 
@@ -124,8 +126,9 @@
               (expr 
                 (variable hi))) , 
             (dim_subscript 
-              (expr 
-                (literal - 5)) to 
+              (expr - 
+                (expr 
+                  (literal 5))) to 
               (expr 
                 (literal 30))) )) as 
         (type_name string)))) \n statement <EOF>)

@@ -31,7 +31,7 @@
             (literal 1)) ; 
           (print_using_args 
             (expr 
-              (literal 3))))) ;)) \n 
+              (literal 3))))) ;)) \n statement \n 
   (statement 
     (print_using_statement print 
       (file_number # 
@@ -76,7 +76,7 @@
           (literal 42))) , 
       (print_args 
         (expr 
-          (literal "hi"))))) \n 
+          (literal "hi"))))) \n statement \n statement \n 
   (statement 
     (print_statement print print_args ,)) \n 
   (statement 

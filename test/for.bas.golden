@@ -24,8 +24,9 @@
           (literal 10)) to 
         (expr 
           (literal 1)) step 
-        (expr 
-          (literal - 1))) 
+        (expr - 
+          (expr 
+            (literal 1)))) 
       (for_body_block \n 
         (for_body_statement statement)) next)) \n 
   (statement 
@@ -50,7 +51,7 @@
                 (for_body_statement statement)) next 
               (variable b)))) \n 
         (for_body_statement statement)) next 
-      (variable a))) \n 
+      (variable a))) \n statement \n statement \n statement \n 
   (statement 
     (print_statement print 
       (print_args 
