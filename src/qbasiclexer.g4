@@ -66,6 +66,7 @@ NEXT : [Nn][Ee][Xx][Tt] ;
 NOT : [Nn][Oo][Tt] ;
 OPTION : [Oo][Pp][Tt][Ii][Oo][Nn] ;
 OR : [Oo][Rr] ;
+ON : [Oo][Nn] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;

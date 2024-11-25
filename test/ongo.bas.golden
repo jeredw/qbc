@@ -1,0 +1,55 @@
+(program 
+  (statement 
+    (on_gosub_statement on 
+      (expr 
+        (typed_id i %)) gosub 
+      (target_list 
+        (target 
+          (text_label one)) , 
+        (target 
+          (text_label two))))) \n 
+  (statement 
+    (on_gosub_statement on 
+      (expr 
+        (literal 2)) gosub 
+      (target_list 
+        (target 
+          (line_number 1)) , 
+        (target 
+          (line_number 2)) , 
+        (target 
+          (line_number 3))))) \n 
+  (statement 
+    (on_gosub_statement on 
+      (expr 
+        (literal 1.5)) gosub 
+      (target_list 
+        (target 
+          (line_number 2))))) \n 
+  (statement 
+    (on_goto_statement on 
+      (expr 
+        (typed_id i %)) goto 
+      (target_list 
+        (target 
+          (text_label one)) , 
+        (target 
+          (text_label two))))) \n 
+  (statement 
+    (on_goto_statement on 
+      (expr 
+        (literal 2)) goto 
+      (target_list 
+        (target 
+          (line_number 1)) , 
+        (target 
+          (line_number 2)) , 
+        (target 
+          (line_number 3))))) \n 
+  (statement 
+    (on_goto_statement on 
+      (expr 
+        (literal 1.5)) goto 
+      (target_list 
+        (target 
+          (line_number 2))))) \n)

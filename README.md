@@ -49,6 +49,150 @@ should print "overflow".
 There are 70+ error codes for various specific error situations.  We're probably
 not going to model all of those exactly.
 
+# Support status
+
+| Feature     | Type      | Parser  |
+| ----------- | --------- | ------- |
+| `ABS`       | Function  | -      |
+| `ABSOLUTE`  | Keyword   | ⛔      |
+| `ACCESS`    | Keyword   | ⛔      |
+| `AND`       | Operator  | ✅      |
+| `ANY`       | Keyword   | ✅      |
+| `APPEND`    | Keyword   | ⛔      |
+| `AS`        | Keyword   | ✅      |
+| `ASC`       | Function  | -      |
+| `ATN`       | Function  | -      |
+| `BASE`      | Keyword   | ✅      |
+| `BEEP`      | Statement | -      |
+| `BINARY`    | Keyword   | ⛔      |
+| `BLOAD`     | Statement | -      |
+| `BSAVE`     | Statement | -      |
+| `CALL`      | Statement | ✅      |
+| `CALL ABSOLUTE` | Statement | ⛔  |
+| `CASE`      | Keyword   |  ✅     |
+| `CDBL`      | Function  |  -     |
+| `CHAIN`     | Statement |  -     |
+| `CHDIR`     | Statement |  -     |
+| `CHR$`      | Function  |  -     |
+| `CINT`      | Function  |  -     |
+| `CIRCLE`    | Statement |  ⛔    |
+| `CLEAR`     | Statement |  ⛔    |
+| `CLNG`      | Function  |  -    |
+| `CLOSE`     | Statement |  ⛔    |
+| `CLS`       | Statement |  -    |
+| `COLOR`     | Statement | -      |
+| `COM`       | Statement | ⛔     |
+| `COMMON`    | Statement |  ✅     |
+| `CONST`     | Statement |  🚧    |
+| `COS`       | Function  |  -     |
+| `CSNG`      | Function  |  -     |
+| `CSRLIN`    | Function  |  -     |
+| `CVD`       | Function  |  -     |
+| `CVDMBF`    | Function  |  -     |
+| `CVI`       | Function  |  -     |
+| `CVL`       | Function  |  -     |
+| `CVS`       | Function  |  -     |
+| `CVSMBF`    | Function  |  -     |
+| `DATA`      | Statement |  ⛔     |
+| `DATE$`     | Function  |  -     |
+| `DATE$`     | Statement |  ⛔     |
+| `DECLARE`   | Statement |  ✅     |
+| `DEF FN`    | Statement |  ✅     |
+| `DEF SEG`   | Statement |  ⛔     |
+| `DEFDBL`    | Statement |  ✅     |
+| `DEFINT`    | Statement |  ✅     |
+| `DEFLNG`    | Statement |  ✅     |
+| `DEFSNG`    | Statement |  ✅     |
+| `DEFSTR`    | Statement |  ✅     |
+| `DIM`       | Statement |  ✅     |
+| `DO`...`LOOP` | Statement |  ✅   |
+| `$DYNAMIC`  | Metacommand |  ⛔   |
+| `ELSE`      | Keyword   |  ✅   |
+| `ELSEIF`    | Keyword   |  ✅   |
+| `END`       | Statement |  ✅   |
+| `ENVIRON`   | Statement |  -   |
+| `ENVIRON$`  | Function  |  -   |
+| `EOF`       | Function  |  -   |
+| `EQV`       | Operator  |  ✅   |
+| `ERASE`     | Statement |  -   |
+| `ERDEV`     | Function  |  -   |
+| `ERDEV$`    | Function  |  -   |
+| `ERL`       | Function  |  -   |
+| `ERR`       | Function  |  -   |
+| `ERROR`     | Statement |  -   |
+| `EXIT`      | Statement |  ✅   |
+| `EXP`       | Function  |  -   |
+| `FIELD`     | Statement |  ⛔   |
+| `FILEATTR`  | Function  |  -   |
+| `FILES`     | Statement |  -   |
+| `FIX`       | Function  |  -   |
+| `FOR`...`NEXT` | Statement | 🚧 |
+| `FRE`       | Function  | -    |
+| `FREEFILE`  | Function  | -    |
+| `FUNCTION`  | Statement | ✅    |
+| `GET` I/O   | Statement | ⛔    |
+| `GET` Graphics | Statement | ⛔ |
+| `GOSUB`     | Statement | ✅    |
+| `GOTO`      | Statement | ✅    |
+| `HEX$`      | Function  | -    |
+| `IF`...`THEN`...`ELSE` | Statement | ✅    |
+| `IMP`       | Operator  | ✅    |
+| `INKEY$`    | Function  | -    |
+| `INP`       | Function  | -    |
+| `INPUT`     | Statement | ⛔    |
+| `INPUT$`    | Function  | ⛔    |
+| `INT`       | Function  | -    |
+| `INTEGER`   | Keyword   | ✅    |
+| `IOCTL`     | Statement | ⛔    |
+| `IOCTL$`    | Function  | ⛔    |
+| `IS`        | Keyword   | ✅    |
+| `KEY` Assignment | Statement | ⛔    |
+| `KEY` Event      | Statement | ⛔    |
+| `KILL`      | Statement | -    |
+| `LBOUND`    | Function  | -    |
+| `LCASE$`    | Function  | -    |
+| `LEFT$`     | Function  | -    |
+| `LET`       | Statement | ✅    |
+| `LINE` Graphics | Statement | ⛔    |
+| `LINE INPUT` | Statement | ⛔    |
+| `LIST`      | Keyword   | ⛔    |
+| `LOCATE`    | Statement | -    |
+| `LOCK`      | Statement | ⛔    |
+| `LOF`       | Function  | -    |
+| `LOG`       | Function  | -    |
+| `LONG`      | Keyword   | ✅    |
+| `LOOP`      | Keyword   | ✅    |
+| `LPOS`      | Function  | -    |
+| `LPRINT`    | Statement | ⛔    |
+| `LPRINT USING` | Statement | ⛔    |
+| `LSET`      | Statement | ⛔    |
+| `LTRIM$`    | Function  | -    |
+| `MID$`      | Function  | -    |
+| `MID$`      | Statement | ⛔    |
+| `MKD$`      | Function  | -    |
+| `MKDIR`     | Statement | -    |
+| `MKDMBF$`   | Function  | -    |
+| `MKI$`      | Function  | -    |
+| `MKL$`      | Function  | -    |
+| `MKS$`      | Function  | -    |
+| `MKSMBF$`   | Function  | -    |
+| `MOD`       | Operator  | ✅    |
+| `NAME`      | Statement | ⛔    |
+| `NEXT`      | Keyword   | 🚧    |
+| `NOT`       | Operator  | ✅    |
+| `OCT$`      | Function  | -    |
+| `OFF`       | Keyword   | ⛔    |
+| `ON COM`    | Statement | ⛔    |
+| `ON ERROR`  | Statement | ⛔    |
+| `ON`        | Keyword   | ⛔    |
+| `ON KEY`    | Statement | ⛔    |
+| `ON PEN`    | Statement | ⛔    |
+| `ON PLAY`   | Statement | ⛔    |
+| `ON STRIG`  | Statement | ⛔    |
+| `ON TIMER`  | Statement | ⛔    |
+| `ON`...`GOSUB` | Statement | ⛔ |
+| `ON`...`GOTO`  | Statement | ⛔ |
+
 # Standard library
 
 QBasic has a ton of built-in commands to control your 1980's MS-DOS computer.

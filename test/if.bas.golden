@@ -24,7 +24,8 @@
                       (literal "hi"))))) : 
               (statement 
                 (goto_statement goto 
-                  (line_number 5)))) else 
+                  (target 
+                    (line_number 5))))) else 
             (if_inline_action 
               (line_number 30))))))) \n 
   (if_block_statement if 

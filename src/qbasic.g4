@@ -69,6 +69,8 @@ statement
   | gosub_statement
   | goto_statement
   | if_inline_statement
+  | on_gosub_statement
+  | on_goto_statement
   | print_statement
   | print_using_statement
   | return_statement
@@ -328,17 +330,21 @@ for_next_statement
   ;
 
 gosub_statement
-  : GOSUB (line_number | text_label)
+  : GOSUB target
   ;
 
 // GOTO can't jump into or out of subroutines.
 goto_statement
-  : GOTO (line_number | text_label)
+  : GOTO target
   ;
 
-// Labels or line numbers must be distinct.
+// *** Labels or line numbers must be distinct.
 line_number : DIGITS ;
 text_label : ID | FNID;
+target
+  : line_number
+  | text_label
+  ;
 
 // IF has a concise inline form that can occur anywhere.
 // The ELSE binds to the innermost IF.
@@ -349,6 +355,18 @@ if_inline_statement
 if_inline_action
   : statement (':' statement)*
   | line_number  // Implicit GOTO
+  ;
+
+on_gosub_statement
+  : ON expr GOSUB target_list
+  ;
+
+target_list
+  : target (',' target)*
+  ;
+
+on_goto_statement
+  : ON expr GOTO target_list
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions

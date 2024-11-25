@@ -1,7 +1,8 @@
 (program 
   (statement 
     (gosub_statement gosub 
-      (line_number 1000))) \n 
+      (target 
+        (line_number 1000)))) \n 
   (label 
     (line_number 1000)) 
   (statement 
@@ -11,7 +12,8 @@
     (line_number 20)) 
   (statement 
     (gosub_statement gosub 
-      (text_label foo))) \n 
+      (target 
+        (text_label foo)))) \n 
   (statement 
     (end_statement end)) \n 
   (label 
