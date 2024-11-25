@@ -208,19 +208,20 @@ end_sub_statement
 type_statement
 // *** Note: type names cannot include '.'.
    : TYPE (ID | FNID) (':' | NL)+
-// *** Types must have at least one type member.
-     (rem_statement NL | type_member)+
+// *** Types must have at least one element.
+     (rem_statement NL | type_element)+
      END TYPE
    ;
 
-// Type members can't have labels etc. like normal lines.
-type_member
-   : (ID | FNID) AS type_name_for_type_member (':' | NL)+
+// Type elements can't have labels etc. like normal lines.
+type_element
+   : (ID | FNID) AS type_name_for_type_element (':' | NL)+
    ;
 
 assignment_statement
 // The LET keyword is optional.
-  : LET? typed_id args_or_indices? '=' expr
+// See the note in expr about element lookup.
+  : LET? typed_id (args_or_indices ('.' typed_id)?)? '=' expr
 // This form is legal only inside a DEF FN, but we will use a semantic pass to
 // enforce this later.  LET is also allowed here.
   | LET? typed_fnid '=' expr
@@ -286,7 +287,7 @@ dim_statement
 
 dim_variable
 // *** Variables of user-defined types cannot have names containing '.',
-// probably to prevent member lookup ambiguity.
+// probably to prevent element lookup ambiguity.
   : ID dim_array_bounds? AS type_name
   | typed_id dim_array_bounds?
   ;
@@ -471,30 +472,23 @@ expr
   | expr EQV expr
   | expr IMP expr
   | literal
-// A variable with an array index is syntactically the same as a function call,
-// so that has to be figured out by semantic analysis later.
-// TODO: Consider adding call_argument_list here.
-  | typed_id args_or_indices?
+// *** A variable with an array index is syntactically the same as a function
+// call, so semantic analysis needs to distinguish those cases later.
+//
+// Identifiers can contain '.', and '.' is also how to look up type elements.
+// *** This grammar always matches the longest possible token name as an
+// identifier, and expects later passes to decide whether 'x.y.z' is a variable
+// or an element 'z' in a variable 'x.y'. However, we need to explicitly model
+// one level of element lookup to parse 'array(x).y' - since user-defined types
+// cannot contain arrays, only one '.' must be matched.
+// 
+// Note the IDE reformats "x   . y" as "x.y".
+  | typed_id (args_or_indices ('.' typed_id)?)?
   ;
 
 // Identifiers can optionally have type sigils appended.
 // *** No space is allowed between a name and a type sigil, but it's easier to
 // permit it and check later.
-//
-// Variable names can contain '.', which is also used to access members in user
-// defined types. This creates an interesting ambiguity.
-//
-// TYPE record
-// member AS INTEGER
-// END TYPE
-// DIM example AS record
-// example.member = 42
-// 'example.huh = 50 ' Error: Element not defined
-// some.variable = 50 ' This is ok.
-// 'DIM example.tricky AS record ' Error: Identifier cannot include period
-//
-// *** Member lookup is not part of this grammar at all, and '.' will be
-// handled in symbol tables instead.
 typed_id : ID ('!' | '#' | '$' | '%' | '&')? ;
 typed_fnid : FNID ('!' | '#' | '$' | '%' | '&')? ;
 
@@ -547,7 +541,7 @@ type_name_for_def_fn_parameter
   ;
 
 // Can only used fixed length strings, not variable-length strings in user-defined types.
-type_name_for_type_member
+type_name_for_type_element
   : INTEGER
   | LONG
   | SINGLE
