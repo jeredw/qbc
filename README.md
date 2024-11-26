@@ -134,7 +134,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `ERDEV$`         | Function    | -       |
 | `ERL`            | Function    | -       |
 | `ERR`            | Function    | -       |
-| `ERROR`          | Statement   | -       |
+| `ERROR`          | Statement   | ✅      |
 | `EXIT`           | Statement   | ✅      |
 | `EXP`            | Function    | -       |
 | `FIELD`          | Statement   | ⛔      |
@@ -198,7 +198,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `OCT$`           | Function    | -       |
 | `OFF`            | Keyword     | ✅      |
 | `ON COM`         | Statement   | ✅      |
-| `ON ERROR`       | Statement   | ⛔      |
+| `ON ERROR`       | Statement   | ✅      |
 | `ON`             | Keyword     | ✅      |
 | `ON KEY`         | Statement   | ✅      |
 | `ON PEN`         | Statement   | ✅      |
@@ -240,7 +240,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `REM`            | Statement   | ✅      |
 | `RESET`          | Statement   | -       |
 | `RESTORE`        | Statement   | -       |
-| `RESUME`         | Statement   | ⛔      |
+| `RESUME`         | Statement   | ✅      |
 | `RETURN`         | Statement   | ✅      |
 | `RIGHT$`         | Function    | -       |
 | `RMDIR`          | Statement   | -       |

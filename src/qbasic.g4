@@ -63,6 +63,7 @@ statement
   | deftype_statement
   | dim_statement
   | do_loop_statement
+  | error_statement
   | event_control_statement
   | end_statement
   | exit_statement
@@ -71,12 +72,14 @@ statement
   | goto_statement
   | if_inline_statement
   | key_statement
+  | on_error_statement
   | on_event_gosub_statement
   | on_expr_gosub_statement
   | on_expr_goto_statement
   | play_statement
   | print_statement
   | print_using_statement
+  | resume_statement
   | return_statement
   | scope_statement
   | select_case_statement
@@ -254,6 +257,10 @@ call_argument
   | expr
   ;
 
+error_statement
+  : ERROR expr
+  ;
+
 event_control_statement
   : COM '(' expr ')' (ON | OFF | STOP)
   | KEY '(' expr ')' (ON | OFF | STOP)
@@ -377,6 +384,10 @@ key_statement
   | KEY expr ',' expr
   ;
 
+on_error_statement
+  : ON ERROR (GOTO target | RESUME NEXT)
+  ;
+
 on_event_gosub_statement
   : ON COM '(' expr ')' GOSUB target
   | ON KEY '(' expr ')' GOSUB target
@@ -431,9 +442,13 @@ print_using_args
 // A file number can be any expression that evaluates to a valid file handle
 file_number : '#' expr ;
 
+// A special kind of return statement just for ON ERROR handlers.
+resume_statement
+  : RESUME (NEXT | target)?;
+
 // Return can optionally return anywhere. Awesome.
 return_statement
-  : RETURN (line_number | text_label)?
+  : RETURN target?
   ;
 
 // SELECT CASE matches CASE statements at the top level, but not inside nested

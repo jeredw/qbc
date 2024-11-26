@@ -1,0 +1,110 @@
+(program statement \n 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (text_label Handler)))) \n 
+  (label 
+    (line_number 10)) 
+  (statement 
+    (call_statement CHDIR 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal "a:\")))))) \n statement \n 
+  (label 
+    (line_number 20)) 
+  (statement 
+    (assignment_statement 
+      (typed_id y %) = 
+      (expr 
+        (literal 0)))) \n 
+  (label 
+    (line_number 30)) 
+  (statement 
+    (assignment_statement 
+      (typed_id x %) = 
+      (expr 
+        (expr 
+          (literal 5)) / 
+        (expr 
+          (typed_id y %))))) \n 
+  (label 
+    (line_number 40)) 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "x% =")) ; 
+        (print_args 
+          (expr 
+            (typed_id x %)))))) \n 
+  (label 
+    (line_number 50)) 
+  (statement 
+    (error_statement ERROR 
+      (expr 
+        (literal 57)))) \n statement \n 
+  (label 
+    (text_label Handler) :) statement \n 
+  (statement 
+    (print_statement PRINT print_args)) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Error ")) ; 
+        (print_args 
+          (expr 
+            (typed_id ERR)) ; 
+          (print_args 
+            (expr 
+              (literal " on line ")) ; 
+            (print_args 
+              (expr 
+                (typed_id ERL)))))))) \n 
+  (statement 
+    (select_case_statement SELECT CASE 
+      (expr 
+        (typed_id ERR)) 
+      (before_first_case \n) 
+      (case_block 
+        (case_statement CASE 
+          (case_expr 
+            (expr 
+              (literal 71)))) 
+        (block \n 
+          (statement 
+            (print_statement PRINT 
+              (print_args 
+                (expr 
+                  (literal "Using device ")) ; 
+                (print_args 
+                  (expr 
+                    (typed_id ERDEV $)) ; 
+                  (print_args 
+                    (expr 
+                      (literal " device error code = ")) ; 
+                    (print_args 
+                      (expr 
+                        (typed_id ERDEV)))))))) \n 
+          (statement 
+            (resume_statement RESUME NEXT)) \n statement)) 
+      (case_block 
+        (case_statement CASE 
+          (case_expr 
+            (expr 
+              (literal 11)))) 
+        (block \n statement \n 
+          (statement 
+            (resume_statement RESUME)) \n statement)) 
+      (case_block 
+        (case_statement CASE ELSE) 
+        (block \n 
+          (statement 
+            (print_statement PRINT 
+              (print_args 
+                (expr 
+                  (literal "Unexpected error, ending program."))))) \n 
+          (statement 
+            (end_statement END)) \n statement)) 
+      (end_select_statement END SELECT))) \n)
