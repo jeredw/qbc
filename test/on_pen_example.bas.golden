@@ -1,0 +1,51 @@
+(program statement \n 
+  (statement 
+    (on_event_gosub_statement ON PEN GOSUB 
+      (target 
+        (text_label Handler)))) \n 
+  (statement 
+    (event_control_statement PEN ON)) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Press Esc to exit."))))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition UNTIL 
+        (expr 
+          (expr 
+            (typed_id INKEY $)) = 
+          (expr 
+            (typed_id CHR $) 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 27)) ))))) 
+      (block :) LOOP)) \n 
+  (statement 
+    (end_statement END)) \n statement \n 
+  (label 
+    (text_label Handler) :) statement \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Pen is at row")) ; 
+        (print_args 
+          (expr 
+            (builtin_function PEN 
+              ( 
+                (expr 
+                  (literal 6)) ))) ; 
+          (print_args 
+            (expr 
+              (literal ", column")) ; 
+            (print_args 
+              (expr 
+                (builtin_function PEN 
+                  ( 
+                    (expr 
+                      (literal 7)) ))))))))) \n 
+  (statement 
+    (return_statement RETURN)) \n)

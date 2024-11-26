@@ -1,0 +1,41 @@
+(program statement \n 
+  (statement 
+    (assignment_statement 
+      (typed_id scale $) = 
+      (expr 
+        (literal "CDEFGAB")))) \n 
+  (statement 
+    (play_statement PLAY 
+      (expr 
+        (literal "L16")))) \n 
+  (statement 
+    (for_next_statement FOR 
+      (typed_id i %) = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (literal 6)) 
+      (block \n 
+        (statement 
+          (play_statement PLAY 
+            (expr 
+              (expr 
+                (literal "O")) + 
+              (expr 
+                (typed_id STR $) 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (typed_id i %)) )))))) \n 
+        (statement 
+          (play_statement PLAY 
+            (expr 
+              (expr 
+                (literal "X")) + 
+              (expr 
+                (typed_id VARPTR $) 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (typed_id scale $)) )))))) \n statement) NEXT 
+      (typed_id i %))) \n)

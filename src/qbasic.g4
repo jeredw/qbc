@@ -63,14 +63,18 @@ statement
   | deftype_statement
   | dim_statement
   | do_loop_statement
+  | event_control_statement
   | end_statement
   | exit_statement
   | for_next_statement
   | gosub_statement
   | goto_statement
   | if_inline_statement
-  | on_gosub_statement
-  | on_goto_statement
+  | key_statement
+  | on_event_gosub_statement
+  | on_expr_gosub_statement
+  | on_expr_goto_statement
+  | play_statement
   | print_statement
   | print_using_statement
   | return_statement
@@ -250,6 +254,15 @@ call_argument
   | expr
   ;
 
+event_control_statement
+  : COM '(' expr ')' (ON | OFF | STOP)
+  | KEY '(' expr ')' (ON | OFF | STOP)
+  | PEN (ON | OFF | STOP)
+  | PLAY (ON | OFF | STOP)
+  | STRIG '(' expr ')' (ON | OFF | STOP)
+  | TIMER (ON | OFF | STOP)
+  ;
+
 const_statement
   : CONST const_assignment (',' const_assignment)*
   ;
@@ -358,7 +371,22 @@ if_inline_action
   | line_number  // Implicit GOTO
   ;
 
-on_gosub_statement
+key_statement
+  : KEY LIST
+  | KEY (ON | OFF)
+  | KEY expr ',' expr
+  ;
+
+on_event_gosub_statement
+  : ON COM '(' expr ')' GOSUB target
+  | ON KEY '(' expr ')' GOSUB target
+  | ON PEN GOSUB target
+  | ON PLAY '(' expr ')' GOSUB target
+  | ON STRIG '(' expr ')' GOSUB target
+  | ON TIMER '(' expr ')' GOSUB target
+  ;
+
+on_expr_gosub_statement
   : ON expr GOSUB target_list
   ;
 
@@ -366,8 +394,12 @@ target_list
   : target (',' target)*
   ;
 
-on_goto_statement
+on_expr_goto_statement
   : ON expr GOTO target_list
+  ;
+
+play_statement
+  : PLAY expr
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
@@ -471,6 +503,7 @@ expr
   | expr XOR expr
   | expr EQV expr
   | expr IMP expr
+  | builtin_function
   | literal
 // *** A variable with an array index is syntactically the same as a function
 // call, so semantic analysis needs to distinguish those cases later.
@@ -484,6 +517,14 @@ expr
 // 
 // Note the IDE reformats "x   . y" as "x.y".
   | typed_id (args_or_indices ('.' typed_id)?)?
+  ;
+
+// These functions use keywords so can't just be pre-defined by the runtime.
+builtin_function
+  : TIMER
+  | PEN '(' expr ')'
+  | PLAY '(' expr ')'
+  | STRIG '(' expr ')'
   ;
 
 // Identifiers can optionally have type sigils appended.

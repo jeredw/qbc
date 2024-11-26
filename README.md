@@ -49,17 +49,22 @@ should print "overflow".
 There are 70+ error codes for various specific error situations.  We're probably
 not going to model all of those exactly.
 
-# Support status
+# Feature status
 
-Built-in functions don't need special parsing, and can just be defined by the
-runtime.  Many statements also don't need special parsing and can be parsed the
-same way as CALLs would be.
+QBasic doesn't distinguish the core of the language from libraries, but it
+would be nice to keep the grammar down to a somewhat reasonable size rather
+than just having hundreds of rules to match all the commands.
 
-However some statements have variable numbers or types of arguments, which
-isn't supported for user defined functions.
+Built-in functions don't need any special parsing, and can just be defined by
+the runtime... unless they are also keywords used in other contexts, and thus
+not valid identifiers, like `TIMER`!
 
-Many statements don't need special parsing, and can just be parsed as CALLs to
-built-in subroutines.
+In theory, many statements also shouldn't need special parsing and can be
+parsed the same way as CALLs would be.  However some statements have variable
+numbers or types of arguments, which isn't supported for user defined
+functions, so that needs some special case support at runtime.  And some
+statements have novel argument syntax like ordered pairs, file handles or
+keywords as arguments - it's probably easier just to parse those.
 
 | Feature          | Category    | Parser  |
 | ---------------- | ----------- | ------- |
@@ -91,7 +96,7 @@ built-in subroutines.
 | `CLOSE`          | Statement   | ⛔      |
 | `CLS`            | Statement   | -       |
 | `COLOR`          | Statement   | -       |
-| `COM`            | Statement   | ⛔      |
+| `COM`            | Statement   | ✅      |
 | `COMMON`         | Statement   | ✅      |
 | `CONST`          | Statement   | 🚧      |
 | `COS`            | Function    | -       |
@@ -156,8 +161,8 @@ built-in subroutines.
 | `IOCTL`          | Statement   | ⛔      |
 | `IOCTL$`         | Function    | ⛔      |
 | `IS`             | Keyword     | ✅      |
-| `KEY` Assignment | Statement   | ⛔      |
-| `KEY` Event      | Statement   | ⛔      |
+| `KEY` Assignment | Statement   | ✅      |
+| `KEY` Event      | Statement   | ✅      |
 | `KILL`           | Statement   | -       |
 | `LBOUND`         | Function    | -       |
 | `LCASE$`         | Function    | -       |
@@ -191,15 +196,15 @@ built-in subroutines.
 | `NEXT`           | Keyword     | 🚧      |
 | `NOT`            | Operator    | ✅      |
 | `OCT$`           | Function    | -       |
-| `OFF`            | Keyword     | ⛔      |
-| `ON COM`         | Statement   | ⛔      |
+| `OFF`            | Keyword     | ✅      |
+| `ON COM`         | Statement   | ✅      |
 | `ON ERROR`       | Statement   | ⛔      |
-| `ON`             | Keyword     | ⛔      |
-| `ON KEY`         | Statement   | ⛔      |
-| `ON PEN`         | Statement   | ⛔      |
-| `ON PLAY`        | Statement   | ⛔      |
-| `ON STRIG`       | Statement   | ⛔      |
-| `ON TIMER`       | Statement   | ⛔      |
+| `ON`             | Keyword     | ✅      |
+| `ON KEY`         | Statement   | ✅      |
+| `ON PEN`         | Statement   | ✅      |
+| `ON PLAY`        | Statement   | ✅      |
+| `ON STRIG`       | Statement   | ✅      |
+| `ON TIMER`       | Statement   | ✅      |
 | `ON`...`GOSUB`   | Statement   | ✅      |
 | `ON`...`GOTO`    | Statement   | ✅      |
 | `OPEN`           | Statement   | ⛔      |
@@ -213,10 +218,11 @@ built-in subroutines.
 | `PALETTE USING`  | Statement   | ⛔      |
 | `PCOPY`          | Statement   | -       |
 | `PEEK`           | Function    | -       |
-| `PEN`            | Function    | -       |
-| `PLAY`           | Function    | -       |
-| `PLAY`           | Statement   | -       |
-| `PLAY` Events    | Statement   | ⛔      |
+| `PEN`            | Function    | ✅      |
+| `PEN`            | Statement   | ✅      |
+| `PLAY`           | Function    | ✅      |
+| `PLAY`           | Statement   | ✅      |
+| `PLAY` Events    | Statement   | ✅      |
 | `PMAP`           | Function    | -       |
 | `POKE`           | Statement   | -       |
 | `POS`            | Function    | -       |
@@ -263,12 +269,11 @@ built-in subroutines.
 | `$STATIC`        | Metacommand | ⛔      |
 | `STEP`           | Keyword     | ✅      |
 | `STICK`          | Function    | -       |
-| `STOP`           | Statement   | -       |
+| `STOP`           | Statement   | ⛔      |
 | `STOP`           | Keyword     | ⛔      |
 | `STR$`           | Function    | -       |
-| `STRIG`          | Function    | -       |
-| `STRIG`          | Statement   | ⛔      |
-| `STRIG`          | Statement   | ⛔      |
+| `STRIG`          | Function    | ✅      |
+| `STRIG`          | Statement   | ✅      |
 | `STRING`         | Keyword     | ✅      |
 | `STRING$`        | Function    | -       |
 | `SUB`            | Statement   | ✅      |
@@ -278,8 +283,8 @@ built-in subroutines.
 | `TAN`            | Function    | -       |
 | `THEN`           | Keyword     | ✅      |
 | `TIME$`          | Function    | -       |
-| `TIMER`          | Function    | -       |
-| `TIMER`          | Statement   | ⛔      |
+| `TIMER`          | Function    | ✅      |
+| `TIMER`          | Statement   | ✅      |
 | `TO`             | Keyword     | ✅      |
 | `TROFF`          | Statement   | -       |
 | `TRON`           | Statement   | -       |

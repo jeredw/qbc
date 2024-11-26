@@ -1,0 +1,81 @@
+(program 
+  (statement 
+    (on_event_gosub_statement ON PLAY 
+      ( 
+        (expr 
+          (literal 3)) ) GOSUB 
+      (target 
+        (text_label Background)))) \n 
+  (statement 
+    (event_control_statement PLAY ON)) \n 
+  (statement 
+    (assignment_statement 
+      (typed_id Music $) = 
+      (expr 
+        (literal "MBo3L8ED+ED+Eo2Bo3DCL2o2A")))) \n 
+  (statement 
+    (play_statement PLAY 
+      (expr 
+        (typed_id Music $)))) \n 
+  (statement 
+    (call_statement LOCATE 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 2))) , 
+        (call_argument 
+          (expr 
+            (literal 1)))))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Press any key to stop."))) ;)) \n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (typed_id INKEY $)) = 
+          (expr 
+            (literal "")))) 
+      (block :) LOOP)) \n 
+  (statement 
+    (end_statement END)) \n statement \n 
+  (label 
+    (text_label Background) :) statement \n 
+  (statement 
+    (assignment_statement 
+      (typed_id i %) = 
+      (expr 
+        (expr 
+          (typed_id i %)) + 
+        (expr 
+          (literal 1))))) \n 
+  (statement 
+    (call_statement LOCATE 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 1))) , 
+        (call_argument 
+          (expr 
+            (literal 1)))))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Background called ")) ; 
+        (print_args 
+          (expr 
+            (typed_id i %)) ; 
+          (print_args 
+            (expr 
+              (literal "time
+                (s)"))))) ;)) \n 
+  (statement 
+    (play_statement PLAY 
+      (expr 
+        (typed_id Music $)))) \n 
+  (statement 
+    (return_statement RETURN)) \n)

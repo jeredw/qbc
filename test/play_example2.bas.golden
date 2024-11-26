@@ -1,0 +1,26 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (typed_id Music $) = 
+      (expr 
+        (literal "MBT180o2P2P8L8GGGL2E-P24P8L8FFFL2D")))) \n 
+  (statement 
+    (play_statement PLAY 
+      (expr 
+        (typed_id Music $)))) \n 
+  (statement 
+    (while_wend_statement WHILE 
+      (expr 
+        (expr 
+          (builtin_function PLAY 
+            ( 
+              (expr 
+                (literal 0)) ))) > 
+        (expr 
+          (literal 5))) 
+      (block :) WEND)) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Just about done!"))))) \n)

@@ -1,0 +1,42 @@
+(program statement \n 
+  (statement 
+    (on_event_gosub_statement ON STRIG 
+      ( 
+        (expr 
+          (literal 0)) ) GOSUB 
+      (target 
+        (text_label Handler)))) \n 
+  (statement 
+    (event_control_statement STRIG 
+      ( 
+        (expr 
+          (literal 0)) ) ON)) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Press Esc to exit."))))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition UNTIL 
+        (expr 
+          (expr 
+            (typed_id INKEY $)) = 
+          (expr 
+            (typed_id CHR $) 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 27)) ))))) 
+      (block :) LOOP)) \n 
+  (statement 
+    (end_statement END)) \n statement \n 
+  (label 
+    (text_label Handler) :) statement \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Joystick trigger is depressed."))))) \n 
+  (statement 
+    (return_statement RETURN)) \n)

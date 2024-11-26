@@ -1,0 +1,24 @@
+(program 
+  (statement 
+    (key_statement KEY 
+      (expr 
+        (literal 4)) , 
+      (expr 
+        (expr 
+          (literal "MENU")) + 
+        (expr 
+          (typed_id CHR $) 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 13)) )))))) \n 
+  (statement 
+    (key_statement KEY LIST)) \n 
+  (statement 
+    (key_statement KEY 
+      (expr 
+        (literal 4)) , 
+      (expr 
+        (literal "")))) \n 
+  (statement 
+    (key_statement KEY LIST)) \n)

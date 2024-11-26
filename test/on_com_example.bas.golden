@@ -1,0 +1,38 @@
+(program 
+  (statement 
+    (event_control_statement COM 
+      ( 
+        (expr 
+          (literal 1)) ) ON)) \n 
+  (statement 
+    (on_event_gosub_statement ON COM 
+      ( 
+        (expr 
+          (literal 1)) ) GOSUB 
+      (target 
+        (text_label ComHandler)))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (block :) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (typed_id INKEY $)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (event_control_statement COM 
+      ( 
+        (expr 
+          (literal 1)) ) OFF)) \n 
+  (statement 
+    (end_statement END)) \n statement \n 
+  (label 
+    (text_label ComHandler) :) statement \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Something was typed at the terminal attached to COM1."))))) \n 
+  (statement 
+    (return_statement RETURN)) \n)
