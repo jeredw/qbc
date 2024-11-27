@@ -1,7 +1,7 @@
 (program statement \n 
   (statement 
     (assignment_statement 
-      (typed_id scale $) = 
+      (variable_or_function_call scale$) = 
       (expr 
         (literal "CDEFGAB")))) \n 
   (statement 
@@ -9,8 +9,7 @@
       (expr 
         (literal "L16")))) \n 
   (statement 
-    (for_next_statement FOR 
-      (typed_id i %) = 
+    (for_next_statement FOR i% = 
       (expr 
         (literal 0)) TO 
       (expr 
@@ -22,20 +21,19 @@
               (expr 
                 (literal "O")) + 
               (expr 
-                (typed_id STR $) 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (typed_id i %)) )))))) \n 
+                (variable_or_function_call STR$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call i%)) ))))))) \n 
         (statement 
           (play_statement PLAY 
             (expr 
               (expr 
                 (literal "X")) + 
               (expr 
-                (typed_id VARPTR $) 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (typed_id scale $)) )))))) \n statement) NEXT 
-      (typed_id i %))) \n)
+                (variable_or_function_call VARPTR$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call scale$)) ))))))) \n statement) NEXT i%)) \n)

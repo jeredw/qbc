@@ -1,13 +1,17 @@
 (program statement 
-  (type_statement TYPE Card \n 
-    (type_element Suit AS 
+  (type_statement TYPE 
+    (untyped_id Card) \n 
+    (type_element 
+      (untyped_id Suit) AS 
       (type_name_for_type_element 
         (fixed_string STRING * 9)) \n) 
-    (type_element Value AS 
+    (type_element 
+      (untyped_id Value) AS 
       (type_name_for_type_element INTEGER) \n) END TYPE) \n 
   (statement 
     (dim_statement DIM 
-      (dim_variable Deck 
+      (dim_variable 
+        (untyped_id Deck) 
         (dim_array_bounds 
           ( 
             (dim_subscript 
@@ -15,42 +19,39 @@
                 (literal 1)) TO 
               (expr 
                 (literal 52))) )) AS 
-        (type_name Card)))) \n 
+        (type_name 
+          (untyped_id Card))))) \n 
   (statement 
     (assignment_statement 
-      (typed_id Deck) 
-      (args_or_indices 
-        ( 
-          (expr 
-            (literal 1)) )) . 
-      (typed_id Suit) = 
+      (variable_or_function_call Deck 
+        (args_or_indices 
+          ( 
+            (expr 
+              (literal 1)) )) . Suit) = 
       (expr 
         (literal "Club")))) \n 
   (statement 
     (assignment_statement 
-      (typed_id Deck) 
-      (args_or_indices 
-        ( 
-          (expr 
-            (literal 1)) )) . 
-      (typed_id Value) = 
+      (variable_or_function_call Deck 
+        (args_or_indices 
+          ( 
+            (expr 
+              (literal 1)) )) . Value) = 
       (expr 
         (literal 2)))) \n 
   (statement 
     (print_statement PRINT 
       (print_args 
         (expr 
-          (typed_id Deck) 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 1)) )) . 
-          (typed_id Suit)) , 
-        (print_args 
-          (expr 
-            (typed_id Deck) 
+          (variable_or_function_call Deck 
             (args_or_indices 
               ( 
                 (expr 
-                  (literal 1)) )) . 
-            (typed_id Value)))))) \n)
+                  (literal 1)) )) . Suit)) , 
+        (print_args 
+          (expr 
+            (variable_or_function_call Deck 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 1)) )) . Value)))))) \n)

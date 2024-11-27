@@ -1,0 +1,49 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (input_statement INPUT "Enter filename: " , 
+      (input_variable_list 
+        (variable_or_function_call n$)))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call n$)) FOR 
+      (open_mode OUTPUT) AS # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_args 
+        (expr 
+          (literal "This is saved to the file."))))) \n 
+  (statement 
+    (close_statement CLOSE)) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call n$)) FOR 
+      (open_mode INPUT) AS # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (input_statement INPUT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (input_variable_list 
+        (variable_or_function_call a$)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_args 
+        (expr 
+          (literal "Read from file: ")) ; 
+        (print_args 
+          (expr 
+            (variable_or_function_call a$)))))) \n 
+  (statement 
+    (close_statement CLOSE)) \n)

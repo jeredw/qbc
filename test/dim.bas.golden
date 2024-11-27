@@ -1,67 +1,68 @@
 (program 
   (statement 
     (dim_statement dim 
-      (dim_variable 
-        (typed_id sigil $)))) \n 
+      (dim_variable sigil$))) \n 
   (statement 
     (dim_statement redim shared 
-      (dim_variable 
-        (typed_id ssh %)))) \n 
+      (dim_variable ssh%))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable s as 
+      (dim_variable 
+        (untyped_id s) as 
         (type_name string)))) \n 
   (statement 
     (dim_statement dim shared 
-      (dim_variable foo as 
+      (dim_variable 
+        (untyped_id foo) as 
         (type_name 
           (fixed_string string * 42))))) \n 
   (statement 
     (dim_statement redim 
-      (dim_variable q as 
+      (dim_variable 
+        (untyped_id q) as 
         (type_name double)))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable x as 
+      (dim_variable 
+        (untyped_id x) as 
         (type_name single)))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable lo as 
+      (dim_variable 
+        (untyped_id lo) as 
         (type_name long)))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable bar as 
-        (type_name sometype)))) \n 
+      (dim_variable 
+        (untyped_id bar) as 
+        (type_name 
+          (untyped_id sometype))))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable the.thing as 
+      (dim_variable 
+        (untyped_id the.thing) as 
         (type_name integer)))) \n 
   (statement 
     (dim_statement redim shared 
-      (dim_variable q2 as 
+      (dim_variable 
+        (untyped_id q2) as 
         (type_name single)))) \n 
   (statement 
     (dim_statement dim 
+      (dim_variable foo$) , 
+      (dim_variable bar%) , 
       (dim_variable 
-        (typed_id foo $)) , 
-      (dim_variable 
-        (typed_id bar %)) , 
-      (dim_variable baz as 
+        (untyped_id baz) as 
         (type_name long)) , 
-      (dim_variable 
-        (typed_id quux !)))) \n 
+      (dim_variable quux!))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable 
-        (typed_id a)) , 
-      (dim_variable 
-        (typed_id b)) , 
-      (dim_variable 
-        (typed_id c)))) \n 
+      (dim_variable a) , 
+      (dim_variable b) , 
+      (dim_variable c))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable 
-        (typed_id arq $) 
+      (dim_variable arq$ 
         (dim_array_bounds 
           ( 
             (dim_subscript 
@@ -69,8 +70,7 @@
                 (literal 40))) ))))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable 
-        (typed_id ar) 
+      (dim_variable ar 
         (dim_array_bounds 
           ( 
             (dim_subscript 
@@ -82,8 +82,7 @@
                   (literal 1)))) ))))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable 
-        (typed_id arz) 
+      (dim_variable arz 
         (dim_array_bounds 
           ( 
             (dim_subscript 
@@ -91,22 +90,20 @@
                 (literal 0))) ))))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable 
-        (typed_id boo) 
+      (dim_variable boo 
         (dim_array_bounds 
           ( 
             (dim_subscript 
               (expr 
-                (typed_id k %))) ))))) \n 
+                (variable_or_function_call k%))) ))))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable 
-        (typed_id multi) 
+      (dim_variable multi 
         (dim_array_bounds 
           ( 
             (dim_subscript 
               (expr 
-                (typed_id xxx))) , 
+                (variable_or_function_call xxx))) , 
             (dim_subscript 
               (expr 
                 (literal 0)) to 
@@ -119,13 +116,14 @@
                 (literal 35))) , 
             (dim_subscript 
               (expr 
-                (typed_id yyy))) ))) , 
-      (dim_variable wowzas 
+                (variable_or_function_call yyy))) ))) , 
+      (dim_variable 
+        (untyped_id wowzas) 
         (dim_array_bounds 
           ( 
             (dim_subscript 
               (expr 
-                (typed_id hi))) , 
+                (variable_or_function_call hi))) , 
             (dim_subscript 
               (expr - 
                 (expr 
@@ -135,7 +133,7 @@
         (type_name string)))) \n 
   (statement 
     (dim_statement dim 
-      (dim_variable foo as 
+      (dim_variable 
+        (untyped_id foo) as 
         (type_name 
-          (fixed_string string * 
-            (typed_id maxsize %)))))) \n)
+          (fixed_string string * maxsize%))))) \n)

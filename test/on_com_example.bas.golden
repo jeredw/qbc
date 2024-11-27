@@ -10,14 +10,15 @@
         (expr 
           (literal 1)) ) GOSUB 
       (target 
-        (text_label ComHandler)))) \n 
+        (text_label 
+          (untyped_id ComHandler))))) \n 
   (statement 
     (do_loop_statement DO 
       (block :) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
-            (typed_id INKEY $)) = 
+            (variable_or_function_call INKEY$)) = 
           (expr 
             (literal "")))))) \n 
   (statement 
@@ -28,7 +29,8 @@
   (statement 
     (end_statement END)) \n statement \n 
   (label 
-    (text_label ComHandler) :) statement \n 
+    (text_label 
+      (untyped_id ComHandler)) :) statement \n 
   (statement 
     (print_statement PRINT 
       (print_args 

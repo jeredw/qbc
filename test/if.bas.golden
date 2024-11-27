@@ -2,7 +2,7 @@
   (statement 
     (if_inline_statement if 
       (expr 
-        (typed_id TRUE)) then 
+        (variable_or_function_call TRUE)) then 
       (if_inline_action 
         (line_number 10)) else 
       (if_inline_action 
@@ -30,11 +30,11 @@
               (line_number 30))))))) \n 
   (if_block_statement if 
     (expr 
-      (typed_id foo)) then \n 
+      (variable_or_function_call foo)) then \n 
     (then_block 
       (if_block_statement if 
         (expr 
-          (typed_id bar)) then \n 
+          (variable_or_function_call bar)) then \n 
         (then_block 
           (statement 
             (print_statement print 
@@ -44,7 +44,7 @@
         (end_if_statement end if)) \n) 
     (elseif_block_statement elseif 
       (expr 
-        (typed_id baz)) then 
+        (variable_or_function_call baz)) then 
       (else_block statement \n 
         (statement 
           (print_statement print 
@@ -61,10 +61,10 @@
     (end_if_statement end if)) \n 
   (if_block_statement if 
     (expr 
-      (typed_id foo)) then \n then_block 
+      (variable_or_function_call foo)) then \n then_block 
     (elseif_block_statement elseif 
       (expr 
-        (typed_id bar)) then 
+        (variable_or_function_call bar)) then 
       (else_block 
         (statement 
           (print_statement print 
@@ -81,7 +81,7 @@
     (line_number 10)) 
   (if_block_statement if 
     (expr 
-      (typed_id foo)) then \n 
+      (variable_or_function_call foo)) then \n 
     (then_block 
       (label 
         (line_number 20)) statement \n) 
@@ -89,7 +89,7 @@
       (label 
         (line_number 30)) elseif 
       (expr 
-        (typed_id bar)) then 
+        (variable_or_function_call bar)) then 
       (else_block statement : 
         (statement 
           (print_statement print 

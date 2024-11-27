@@ -22,7 +22,7 @@
   (statement 
     (print_using_statement print using 
       (expr 
-        (typed_id s $)) ; 
+        (variable_or_function_call s$)) ; 
       (print_using_args 
         (expr 
           (literal 1)) ; 

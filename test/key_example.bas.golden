@@ -7,11 +7,11 @@
         (expr 
           (literal "MENU")) + 
         (expr 
-          (typed_id CHR $) 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 13)) )))))) \n 
+          (variable_or_function_call CHR$ 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 13)) ))))))) \n 
   (statement 
     (key_statement KEY LIST)) \n 
   (statement 

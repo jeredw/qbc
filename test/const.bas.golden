@@ -1,20 +1,17 @@
 (program 
   (statement 
     (const_statement const 
-      (const_assignment 
-        (typed_id answer) = 
+      (const_assignment answer = 
         (const_expr 
           (expr 
             (literal 42)))) , 
-      (const_assignment 
-        (typed_id question) = 
+      (const_assignment question = 
         (const_expr 
           (expr 
             (literal 0)))))) \n 
   (statement 
     (const_statement const 
-      (const_assignment 
-        (typed_id x) = 
+      (const_assignment x = 
         (const_expr 
           (expr - 
             (expr 

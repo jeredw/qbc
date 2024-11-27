@@ -1,13 +1,13 @@
 (program 
   (statement 
     (assignment_statement 
-      (typed_id Music $) = 
+      (variable_or_function_call Music$) = 
       (expr 
         (literal "MBT180o2P2P8L8GGGL2E-P24P8L8FFFL2D")))) \n 
   (statement 
     (play_statement PLAY 
       (expr 
-        (typed_id Music $)))) \n 
+        (variable_or_function_call Music$)))) \n 
   (statement 
     (while_wend_statement WHILE 
       (expr 

@@ -1,20 +1,17 @@
 (program 
-  (function_statement function 
-    (typed_id x) 
+  (function_statement function x 
     (block \n statement) 
     (end_function_statement end function)) \n 
-  (function_statement function 
-    (typed_id y $) 
+  (function_statement function y$ 
     (block :) 
     (end_function_statement end function)) \n 
-  (function_statement function 
-    (typed_id z %) 
+  (function_statement function z% 
     ( 
       (parameter_list 
-        (parameter foo as 
-          (type_name_for_parameter string)) , 
         (parameter 
-          (typed_id bar $))) ) static 
+          (untyped_id foo) as 
+          (type_name_for_parameter string)) , 
+        (parameter bar$)) ) static 
     (block \n 
       (statement 
         (print_statement print 
@@ -27,22 +24,18 @@
           (print_args 
             (expr 
               (literal "ignored"))))))) \n 
-  (function_statement function 
-    (typed_id ParseLine) 
+  (function_statement function ParseLine 
     ( 
       (parameter_list 
-        (parameter 
-          (typed_id Keywords $) 
+        (parameter Keywords$ 
           (array_declaration 
             ( ))) , 
-        (parameter 
-          (typed_id KeywordTypes) 
+        (parameter KeywordTypes 
           (array_declaration 
             ( )))) ) 
     (block \n statement) 
     (end_function_statement end function)) \n 
-  (function_statement function 
-    (typed_id hooray) 
+  (function_statement function hooray 
     (block : 
       (statement 
         (print_statement print 
@@ -55,8 +48,7 @@
             (expr 
               (literal "stuff"))))) : statement) 
     (end_function_statement end function)) \n 
-  (function_statement function 
-    (typed_id empty) 
+  (function_statement function empty 
     ( ) 
     (block :) 
     (end_function_statement end function)) \n)

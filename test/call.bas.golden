@@ -1,23 +1,28 @@
 (program 
   (statement 
-    (call_statement noargs)) \n 
+    (call_statement 
+      (untyped_id noargs))) \n 
   (statement 
-    (call_statement call noargs)) \n 
+    (call_statement call 
+      (untyped_id noargs))) \n 
   (statement 
-    (call_statement onearg 
+    (call_statement 
+      (untyped_id onearg) 
       (call_argument_list 
         (call_argument 
           (expr 
             (literal 1)))))) \n 
   (statement 
-    (call_statement call onearg 
+    (call_statement call 
+      (untyped_id onearg) 
       ( 
         (call_argument_list 
           (call_argument 
             (expr 
               (literal 1)))) ))) \n 
   (statement 
-    (call_statement twoargs 
+    (call_statement 
+      (untyped_id twoargs) 
       (call_argument_list 
         (call_argument 
           (expr 
@@ -26,7 +31,8 @@
           (expr 
             (literal 2)))))) \n 
   (statement 
-    (call_statement call twoargs 
+    (call_statement call 
+      (untyped_id twoargs) 
       ( 
         (call_argument_list 
           (call_argument 
@@ -36,7 +42,8 @@
             (expr 
               (literal 2)))) ))) \n 
   (statement 
-    (call_statement twoargs 
+    (call_statement 
+      (untyped_id twoargs) 
       (call_argument_list 
         (call_argument 
           (expr 
@@ -54,7 +61,8 @@
             (expr 
               (literal 7))))))) \n 
   (statement 
-    (call_statement call twoargs 
+    (call_statement call 
+      (untyped_id twoargs) 
       ( 
         (call_argument_list 
           (call_argument 
@@ -73,65 +81,63 @@
               (expr 
                 (literal 7))))) ))) \n 
   (statement 
-    (call_statement twoargs 
+    (call_statement 
+      (untyped_id twoargs) 
       (call_argument_list 
         (call_argument 
           (expr 
             ( 
               (expr 
-                (typed_id x)) ))) , 
-        (call_argument 
-          (typed_id y))))) \n 
+                (variable_or_function_call x)) ))) , 
+        (call_argument y)))) \n 
   (statement 
-    (call_statement call twoargs 
+    (call_statement call 
+      (untyped_id twoargs) 
       ( 
         (call_argument_list 
           (call_argument 
             (expr 
               ( 
                 (expr 
-                  (typed_id x)) ))) , 
-          (call_argument 
-            (typed_id y))) ))) \n 
+                  (variable_or_function_call x)) ))) , 
+          (call_argument y)) ))) \n 
   (statement 
-    (call_statement threeargs 
+    (call_statement 
+      (untyped_id threeargs) 
       (call_argument_list 
-        (call_argument 
-          (typed_id a) 
+        (call_argument a 
           ( )) , 
         (call_argument 
           (expr 
             ( 
               (expr 
-                (typed_id b) 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 2)) ))) ))) , 
-        (call_argument 
-          (typed_id c) 
+                (variable_or_function_call b 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 2)) )))) ))) , 
+        (call_argument c 
           (args_or_indices 
             ( 
               (expr 
                 (literal 1)) )))))) \n 
   (statement 
-    (call_statement call threeargs 
+    (call_statement call 
+      (untyped_id threeargs) 
       ( 
         (call_argument_list 
-          (call_argument 
-            (typed_id a) 
+          (call_argument a 
             ( )) , 
           (call_argument 
             (expr 
               ( 
                 (expr 
-                  (typed_id b) 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2)) ))) ))) , 
-          (call_argument 
-            (typed_id c) 
+                  (variable_or_function_call b 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 2)) )))) ))) , 
+          (call_argument c 
             (args_or_indices 
               ( 
                 (expr 

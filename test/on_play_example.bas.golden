@@ -5,20 +5,22 @@
         (expr 
           (literal 3)) ) GOSUB 
       (target 
-        (text_label Background)))) \n 
+        (text_label 
+          (untyped_id Background))))) \n 
   (statement 
     (event_control_statement PLAY ON)) \n 
   (statement 
     (assignment_statement 
-      (typed_id Music $) = 
+      (variable_or_function_call Music$) = 
       (expr 
         (literal "MBo3L8ED+ED+Eo2Bo3DCL2o2A")))) \n 
   (statement 
     (play_statement PLAY 
       (expr 
-        (typed_id Music $)))) \n 
+        (variable_or_function_call Music$)))) \n 
   (statement 
-    (call_statement LOCATE 
+    (call_statement 
+      (untyped_id LOCATE) 
       (call_argument_list 
         (call_argument 
           (expr 
@@ -36,24 +38,26 @@
       (do_condition WHILE 
         (expr 
           (expr 
-            (typed_id INKEY $)) = 
+            (variable_or_function_call INKEY$)) = 
           (expr 
             (literal "")))) 
       (block :) LOOP)) \n 
   (statement 
     (end_statement END)) \n statement \n 
   (label 
-    (text_label Background) :) statement \n 
+    (text_label 
+      (untyped_id Background)) :) statement \n 
   (statement 
     (assignment_statement 
-      (typed_id i %) = 
+      (variable_or_function_call i%) = 
       (expr 
         (expr 
-          (typed_id i %)) + 
+          (variable_or_function_call i%)) + 
         (expr 
           (literal 1))))) \n 
   (statement 
-    (call_statement LOCATE 
+    (call_statement 
+      (untyped_id LOCATE) 
       (call_argument_list 
         (call_argument 
           (expr 
@@ -68,7 +72,7 @@
           (literal "Background called ")) ; 
         (print_args 
           (expr 
-            (typed_id i %)) ; 
+            (variable_or_function_call i%)) ; 
           (print_args 
             (expr 
               (literal "time
@@ -76,6 +80,6 @@
   (statement 
     (play_statement PLAY 
       (expr 
-        (typed_id Music $)))) \n 
+        (variable_or_function_call Music$)))) \n 
   (statement 
     (return_statement RETURN)) \n)

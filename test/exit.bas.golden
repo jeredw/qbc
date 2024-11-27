@@ -5,8 +5,7 @@
         (statement 
           (exit_statement exit do)) \n statement) loop)) \n 
   (statement 
-    (for_next_statement for 
-      (typed_id i) = 
+    (for_next_statement for i = 
       (expr 
         (literal 1)) to 
       (expr 
@@ -15,27 +14,25 @@
         (if_block_statement if 
           (expr 
             (expr 
-              (typed_id i)) = 
+              (variable_or_function_call i)) = 
             (expr 
               (literal 5))) then \n 
           (then_block 
             (statement 
               (exit_statement exit for)) \n) 
-          (end_if_statement end if)) \n statement) next 
-      (typed_id i))) \n 
-  (sub_statement sub blah 
+          (end_if_statement end if)) \n statement) next i)) \n 
+  (sub_statement sub 
+    (untyped_id blah) 
     (block \n 
       (statement 
         (exit_statement exit sub)) \n statement) 
     (end_sub_statement end sub)) \n 
-  (function_statement function 
-    (typed_id ok) 
+  (function_statement function ok 
     (block \n 
       (statement 
         (exit_statement exit function)) \n statement) 
     (end_function_statement end function)) \n statement 
-  (def_fn_statement def 
-    (typed_fnid fnfoo) 
+  (def_fn_statement def fnfoo 
     (block \n 
       (statement 
         (exit_statement exit def)) \n statement) end def) \n)

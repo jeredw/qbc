@@ -1,27 +1,29 @@
 (program statement 
-  (declare_statement declare sub foo) \n statement 
-  (declare_statement declare sub foo2 
+  (declare_statement declare sub 
+    (untyped_id foo)) \n statement 
+  (declare_statement declare sub 
+    (untyped_id foo2) 
     ( 
       (declare_parameter_list 
-        (declare_parameter x as 
+        (declare_parameter 
+          (untyped_id x) as 
           (type_name_for_declare_parameter string)) , 
-        (declare_parameter 
-          (typed_id y $)) , 
-        (declare_parameter 
-          (typed_id z %))) )) \n statement 
-  (declare_statement declare function 
-    (typed_id bar %) 
+        (declare_parameter y$) , 
+        (declare_parameter z%)) )) \n statement 
+  (declare_statement declare function bar% 
     ( 
       (declare_parameter_list 
-        (declare_parameter 
-          (typed_id y %))) )) \n statement 
-  (declare_statement declare function 
-    (typed_id baz) 
+        (declare_parameter y%)) )) \n statement 
+  (declare_statement declare function baz 
     ( )) \n statement 
-  (declare_statement declare sub a) : statement 
-  (declare_statement declare sub b) \n statement 
-  (declare_statement declare sub s 
+  (declare_statement declare sub 
+    (untyped_id a)) : statement 
+  (declare_statement declare sub 
+    (untyped_id b)) \n statement 
+  (declare_statement declare sub 
+    (untyped_id s) 
     ( 
       (declare_parameter_list 
-        (declare_parameter p as 
+        (declare_parameter 
+          (untyped_id p) as 
           (type_name_for_declare_parameter any))) )) \n)

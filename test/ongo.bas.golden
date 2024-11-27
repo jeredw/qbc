@@ -2,12 +2,14 @@
   (statement 
     (on_expr_gosub_statement on 
       (expr 
-        (typed_id i %)) gosub 
+        (variable_or_function_call i%)) gosub 
       (target_list 
         (target 
-          (text_label one)) , 
+          (text_label 
+            (untyped_id one))) , 
         (target 
-          (text_label two))))) \n 
+          (text_label 
+            (untyped_id two)))))) \n 
   (statement 
     (on_expr_gosub_statement on 
       (expr 
@@ -29,12 +31,14 @@
   (statement 
     (on_expr_goto_statement on 
       (expr 
-        (typed_id i %)) goto 
+        (variable_or_function_call i%)) goto 
       (target_list 
         (target 
-          (text_label one)) , 
+          (text_label 
+            (untyped_id one))) , 
         (target 
-          (text_label two))))) \n 
+          (text_label 
+            (untyped_id two)))))) \n 
   (statement 
     (on_expr_goto_statement on 
       (expr 

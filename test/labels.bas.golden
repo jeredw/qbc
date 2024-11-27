@@ -1,6 +1,7 @@
 (program 
   (label 
-    (text_label Hello) :) statement \n 
+    (text_label 
+      (untyped_id Hello)) :) statement \n 
   (label 
     (line_number 20)) statement \n 
   (statement 
@@ -14,13 +15,15 @@
       (target 
         (line_number 20)))) \n 
   (label 
-    (text_label label) :) 
+    (text_label 
+      (untyped_id label)) :) 
   (statement 
     (goto_statement goto 
       (target 
         (line_number 10)))) \n 
   (label 
-    (text_label foo) :) 
+    (text_label 
+      (untyped_id foo)) :) 
   (statement 
     (goto_statement goto 
       (target 
@@ -30,19 +33,22 @@
       (target 
         (line_number 20)))) \n 
   (label 
-    (text_label bar) :) statement : statement : 
+    (text_label 
+      (untyped_id bar)) :) statement : statement : 
   (statement 
     (goto_statement goto 
       (target 
         (line_number 40)))) \n 
   (label 
-    (text_label Periods.Are.Cool) :) 
+    (text_label 
+      (untyped_id Periods.Are.Cool)) :) 
   (statement 
     (goto_statement goto 
       (target 
         (line_number 2)))) \n 
   (label 
-    (text_label blanks.ok) :) 
+    (text_label 
+      (untyped_id blanks.ok)) :) 
   (statement 
     (goto_statement goto 
       (target 

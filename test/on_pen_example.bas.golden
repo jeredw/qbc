@@ -2,7 +2,8 @@
   (statement 
     (on_event_gosub_statement ON PEN GOSUB 
       (target 
-        (text_label Handler)))) \n 
+        (text_label 
+          (untyped_id Handler))))) \n 
   (statement 
     (event_control_statement PEN ON)) \n 
   (statement 
@@ -15,18 +16,19 @@
       (do_condition UNTIL 
         (expr 
           (expr 
-            (typed_id INKEY $)) = 
+            (variable_or_function_call INKEY$)) = 
           (expr 
-            (typed_id CHR $) 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 27)) ))))) 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 27)) )))))) 
       (block :) LOOP)) \n 
   (statement 
     (end_statement END)) \n statement \n 
   (label 
-    (text_label Handler) :) statement \n 
+    (text_label 
+      (untyped_id Handler)) :) statement \n 
   (statement 
     (print_statement PRINT 
       (print_args 

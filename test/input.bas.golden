@@ -1,0 +1,47 @@
+(program 
+  (statement 
+    (input_statement input 
+      (input_variable_list 
+        (variable_or_function_call hello)))) \n 
+  (statement 
+    (input_statement input 
+      (input_variable_list 
+        (variable_or_function_call a) , 
+        (variable_or_function_call b) , 
+        (variable_or_function_call c)))) \n 
+  (statement 
+    (input_statement input ; 
+      (input_variable_list 
+        (variable_or_function_call foo$) , 
+        (variable_or_function_call bar%)))) \n 
+  (statement 
+    (input_statement input ; "y/n" , 
+      (input_variable_list 
+        (variable_or_function_call thing)))) \n 
+  (statement 
+    (input_statement input "y/n" ; 
+      (input_variable_list 
+        (variable_or_function_call yn)))) \n 
+  (statement 
+    (input_statement INPUT "Enter name and age: " ; 
+      (input_variable_list 
+        (variable_or_function_call Person.FullName) , 
+        (variable_or_function_call Person.Age)))) \n 
+  (statement 
+    (input_statement input 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (input_variable_list 
+        (variable_or_function_call foo$) , 
+        (variable_or_function_call bar%) , 
+        (variable_or_function_call baz$)))) \n 
+  (statement 
+    (input_statement input 
+      (file_number # 
+        (expr 
+          (variable_or_function_call a%))) , 
+      (input_variable_list 
+        (variable_or_function_call foo$) , 
+        (variable_or_function_call bar%) , 
+        (variable_or_function_call baz$)))) \n)

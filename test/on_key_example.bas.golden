@@ -1,8 +1,7 @@
 (program statement \n 
   (statement 
     (const_statement CONST 
-      (const_assignment 
-        (typed_id ESC) = 
+      (const_assignment ESC = 
         (const_expr 
           (expr 
             (literal 27)))))) \n 
@@ -12,24 +11,25 @@
         (literal 15)) , 
       (expr 
         (expr 
-          (typed_id CHR $) 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal &H4)) ))) + 
+          (variable_or_function_call CHR$ 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal &H4)) )))) + 
         (expr 
-          (typed_id CHR $) 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal &H1F)) )))))) \n 
+          (variable_or_function_call CHR$ 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal &H1F)) ))))))) \n 
   (statement 
     (on_event_gosub_statement ON KEY 
       ( 
         (expr 
           (literal 15)) ) GOSUB 
       (target 
-        (text_label PauseHandler)))) \n 
+        (text_label 
+          (untyped_id PauseHandler))))) \n 
   (statement 
     (event_control_statement KEY 
       ( 
@@ -39,13 +39,13 @@
     (while_wend_statement WHILE 
       (expr 
         (expr 
-          (typed_id INKEY $)) <> 
+          (variable_or_function_call INKEY$)) <> 
         (expr 
-          (typed_id CHR $) 
-          (args_or_indices 
-            ( 
-              (expr 
-                (typed_id ESC)) )))) 
+          (variable_or_function_call CHR$ 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (variable_or_function_call ESC)) ))))) 
       (block \n 
         (statement 
           (print_statement PRINT 
@@ -57,9 +57,11 @@
   (statement 
     (end_statement END)) \n statement \n 
   (label 
-    (text_label PauseHandler) :) statement \n 
+    (text_label 
+      (untyped_id PauseHandler)) :) statement \n 
   (statement 
-    (call_statement SLEEP 
+    (call_statement 
+      (untyped_id SLEEP) 
       (call_argument_list 
         (call_argument 
           (expr 

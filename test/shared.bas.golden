@@ -1,40 +1,31 @@
 (program 
   (statement 
     (scope_statement shared 
-      (scope_variable wowzas 
+      (scope_variable 
+        (untyped_id wowzas) 
         (array_declaration 
           ( )) as 
         (type_name 
           (fixed_string string * 42))))) \n 
   (statement 
     (scope_statement shared 
-      (scope_variable 
-        (typed_id i)) , 
-      (scope_variable 
-        (typed_id j)) , 
-      (scope_variable 
-        (typed_id k)) , 
-      (scope_variable 
-        (typed_id a) 
+      (scope_variable i) , 
+      (scope_variable j) , 
+      (scope_variable k) , 
+      (scope_variable a 
         (array_declaration 
           ( ))))) \n 
   (statement 
     (scope_statement shared 
-      (scope_variable 
-        (typed_id a $)) , 
-      (scope_variable 
-        (typed_id b $) 
+      (scope_variable a$) , 
+      (scope_variable b$ 
         (array_declaration 
           ( ))) , 
-      (scope_variable 
-        (typed_id x)) , 
-      (scope_variable 
-        (typed_id y)) , 
-      (scope_variable 
-        (typed_id z)))) \n 
+      (scope_variable x) , 
+      (scope_variable y) , 
+      (scope_variable z))) \n 
   (statement 
     (scope_statement shared 
-      (scope_variable 
-        (typed_id test) 
+      (scope_variable test 
         (array_declaration 
           ( 2 ))))) \n)

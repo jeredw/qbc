@@ -14,10 +14,12 @@
   (statement 
     (gosub_statement gosub 
       (target 
-        (text_label foo)))) \n 
+        (text_label 
+          (untyped_id foo))))) \n 
   (statement 
     (end_statement end)) \n 
   (label 
-    (text_label foo) :) 
+    (text_label 
+      (untyped_id foo)) :) 
   (statement 
     (return_statement return)) \n)

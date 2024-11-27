@@ -59,6 +59,7 @@ statement
   : rem_statement  // Slurps up the rest of its line.
   | assignment_statement
   | call_statement
+  | close_statement
   | const_statement
   | deftype_statement
   | dim_statement
@@ -71,11 +72,15 @@ statement
   | gosub_statement
   | goto_statement
   | if_inline_statement
+  | input_statement
   | key_statement
+  | line_input_statement
   | on_error_statement
   | on_event_gosub_statement
   | on_expr_gosub_statement
   | on_expr_goto_statement
+  | open_statement
+  | open_legacy_statement
   | play_statement
   | print_statement
   | print_using_statement
@@ -97,7 +102,7 @@ rem_statement
   ;
 
 declare_statement
-  : DECLARE (SUB ID | FUNCTION typed_id) ('(' declare_parameter_list? ')')?
+  : DECLARE (SUB untyped_id | FUNCTION ID) ('(' declare_parameter_list? ')')?
   ;
 
 declare_parameter_list
@@ -105,8 +110,8 @@ declare_parameter_list
   ;
 
 declare_parameter
-  : ID array_declaration? AS type_name_for_declare_parameter
-  | typed_id array_declaration?
+  : untyped_id array_declaration? AS type_name_for_declare_parameter
+  | ID array_declaration?
   ;
 
 // DEF FNname is unusual because FNname is both a keyword and an identifier.
@@ -116,7 +121,7 @@ declare_parameter
 // *** The IDE automatically corrects "DEF FN x" to "DEF FNx", so we'll also
 // match a separate token form of DEF FN and merge that into FN+name later.
 def_fn_statement
-  : DEF (typed_fnid | FN typed_id) ('(' def_fn_parameter_list? ')')?
+  : DEF (FNID | FN ID) ('(' def_fn_parameter_list? ')')?
     ('=' expr
      | block
        END DEF)
@@ -130,13 +135,13 @@ def_fn_parameter_list
 // strings. (The QBasic help file incorrectly says user-defined types are
 // allowed.)
 def_fn_parameter
-  : ID AS type_name_for_def_fn_parameter
-  | typed_id
+  : untyped_id AS type_name_for_def_fn_parameter
+  | ID
   ;
 
 // IDE drops empty '()' parameter lists.
 function_statement
-  : FUNCTION typed_id ('(' parameter_list? ')')? STATIC?
+  : FUNCTION ID ('(' parameter_list? ')')? STATIC?
     block
     end_function_statement
   ;
@@ -146,8 +151,8 @@ parameter_list
   ;
 
 parameter
-  : ID array_declaration? AS type_name_for_parameter
-  | typed_id array_declaration?
+  : untyped_id array_declaration? AS type_name_for_parameter
+  | ID array_declaration?
   ;
 
 // Earlier MS BASIC required you to specify the number of dimensions in array
@@ -201,7 +206,7 @@ option_statement
 
 // IDE drops empty '()' parameter lists.
 sub_statement
-  : SUB ID ('(' parameter_list? ')')? STATIC?
+  : SUB untyped_id ('(' parameter_list? ')')? STATIC?
     block
     end_sub_statement
   ;
@@ -214,7 +219,7 @@ end_sub_statement
 
 type_statement
 // *** Note: type names cannot include '.'.
-   : TYPE (ID | FNID) (':' | NL)+
+   : TYPE (untyped_id | untyped_fnid) (':' | NL)+
 // *** Types must have at least one element.
      (rem_statement NL | type_element)+
      END TYPE
@@ -222,24 +227,23 @@ type_statement
 
 // Type elements can't have labels etc. like normal lines.
 type_element
-   : (ID | FNID) AS type_name_for_type_element (':' | NL)+
+   : (untyped_id | untyped_fnid) AS type_name_for_type_element (':' | NL)+
    ;
 
 assignment_statement
 // The LET keyword is optional.
-// See the note in expr about element lookup.
-  : LET? typed_id (args_or_indices ('.' typed_id)?)? '=' expr
+  : LET? variable_or_function_call '=' expr
 // This form is legal only inside a DEF FN, but we will use a semantic pass to
 // enforce this later.  LET is also allowed here.
-  | LET? typed_fnid '=' expr
+  | LET? FNID '=' expr
   ;
 
 // CALL can only be used with SUB procedures.
 call_statement
 // CALL sub or CALL sub(arg1, arg2, ... argN)
-  : CALL ID ('(' call_argument_list ')')?
+  : CALL untyped_id ('(' call_argument_list ')')?
 // If CALL is omitted, parens must also be omitted.
-  | ID call_argument_list?
+  | untyped_id call_argument_list?
   ;
 
 call_argument_list
@@ -248,10 +252,10 @@ call_argument_list
 
 call_argument
 // Array variables must have () after their name, and are always passed by reference.
-  : typed_id '(' ')'
+  : ID '(' ')'
 // Non-parenthesized variables are passed by reference. Note this includes
 // variables with array indices.
-  | typed_id args_or_indices?
+  | ID args_or_indices?
 // Otherwise we can pass arbitrary expressions by value, including variables
 // (by parenthesizing them).
   | expr
@@ -270,13 +274,17 @@ event_control_statement
   | TIMER (ON | OFF | STOP)
   ;
 
+close_statement
+  : CLOSE ('#'? expr)? (',' '#'? expr)*
+  ;
+
 const_statement
   : CONST const_assignment (',' const_assignment)*
   ;
 
 // Constants can have sigils, but they're not part of the name.
 const_assignment
-  : typed_id '=' const_expr
+  : ID '=' const_expr
   ;
 
 // TODO: Only a limited subset of expressions are supported here.
@@ -294,11 +302,11 @@ deftype_statement
 // Supporting ranges like A-Z in the lexer is messy since that's also an
 // expression.
 //
-// *** The IDE allows basically any typed_id or typed_fnid in ranges and strips
+// *** The IDE allows basically any ID or FNID in ranges and strips
 // down to the first letter, so we'll parse this liberally and deal with it
 // later. Note that DEFINT fna-fnb turns into DEFINT a-b, so fn prefixes are
 // evidently stripped.
-letter_range: (typed_id | typed_fnid) ('-' (typed_id | typed_fnid))? ;
+letter_range: (ID | FNID) ('-' (ID | FNID))? ;
 
 dim_statement
   : DIM SHARED? dim_variable (',' dim_variable)*
@@ -308,8 +316,8 @@ dim_statement
 dim_variable
 // *** Variables of user-defined types cannot have names containing '.',
 // probably to prevent element lookup ambiguity.
-  : ID dim_array_bounds? AS type_name
-  | typed_id dim_array_bounds?
+  : untyped_id dim_array_bounds? AS type_name
+  | ID dim_array_bounds?
   ;
 
 dim_array_bounds
@@ -345,9 +353,9 @@ exit_statement
 // be combined into one statement using the syntax NEXT v1, v2, ... vN.
 // TODO: Figure out how to parse NEXT v1, v2, ... vN.
 for_next_statement
-  : FOR typed_id '=' expr TO expr (STEP expr)?
+  : FOR ID '=' expr TO expr (STEP expr)?
     block
-    NEXT typed_id?
+    NEXT ID?
   ;
 
 gosub_statement
@@ -361,7 +369,7 @@ goto_statement
 
 // *** Labels or line numbers must be distinct.
 line_number : DIGITS ;
-text_label : ID | FNID;
+text_label : untyped_id | untyped_fnid;
 target
   : line_number
   | text_label
@@ -378,10 +386,24 @@ if_inline_action
   | line_number  // Implicit GOTO
   ;
 
+input_statement
+  : INPUT ';'? (STRING_LITERAL (';' | ','))? input_variable_list
+  | INPUT file_number ',' input_variable_list
+  ;
+
+input_variable_list
+  : variable_or_function_call (',' variable_or_function_call)*
+  ;
+
 key_statement
   : KEY LIST
   | KEY (ON | OFF)
   | KEY expr ',' expr
+  ;
+
+line_input_statement
+  : LINE INPUT ';'? (STRING_LITERAL ';')? variable_or_function_call
+  | LINE INPUT file_number ',' variable_or_function_call
   ;
 
 on_error_statement
@@ -407,6 +429,29 @@ target_list
 
 on_expr_goto_statement
   : ON expr GOTO target_list
+  ;
+
+open_legacy_statement
+  : OPEN openmode=expr ',' '#'? filenum=expr ',' file=expr (',' reclen=expr)?
+  ;
+
+open_statement
+  : OPEN file=expr (FOR open_mode)? (ACCESS open_access)? open_lock? AS ('#'? filenum=expr) (LEN '=' reclen=expr)?
+  ;
+
+open_mode
+  : OUTPUT | INPUT | APPEND | RANDOM | BINARY
+  ;
+
+open_access
+  : READ | WRITE | READ WRITE
+  ;
+
+open_lock
+  : SHARED
+  | LOCK READ
+  | LOCK WRITE
+  | LOCK READ WRITE
   ;
 
 play_statement
@@ -492,8 +537,8 @@ scope_statement
   ;
 
 scope_variable
-  : ID array_declaration? AS type_name
-  | typed_id array_declaration?
+  : untyped_id array_declaration? AS type_name
+  | ID array_declaration?
   ;
 
 // Loop construct from an older BASIC?
@@ -522,7 +567,22 @@ expr
   | literal
 // *** A variable with an array index is syntactically the same as a function
 // call, so semantic analysis needs to distinguish those cases later.
-//
+  | variable_or_function_call
+  ;
+
+// These functions use keywords so can't just be pre-defined by the runtime.
+builtin_function
+  : TIMER
+  | LEN '(' expr ')'
+  | PEN '(' expr ')'
+  | PLAY '(' expr ')'
+  | STRIG '(' expr ')'
+  ;
+
+// An argument list or set of array indices following an identifier,
+// either an array lookup or a function call.
+args_or_indices : '(' expr (',' expr)* ')';
+
 // Identifiers can contain '.', and '.' is also how to look up type elements.
 // *** This grammar always matches the longest possible token name as an
 // identifier, and expects later passes to decide whether 'x.y.z' is a variable
@@ -531,26 +591,9 @@ expr
 // cannot contain arrays, only one '.' must be matched.
 // 
 // Note the IDE reformats "x   . y" as "x.y".
-  | typed_id (args_or_indices ('.' typed_id)?)?
+variable_or_function_call
+  : ID (args_or_indices ('.' ID)?)?
   ;
-
-// These functions use keywords so can't just be pre-defined by the runtime.
-builtin_function
-  : TIMER
-  | PEN '(' expr ')'
-  | PLAY '(' expr ')'
-  | STRIG '(' expr ')'
-  ;
-
-// Identifiers can optionally have type sigils appended.
-// *** No space is allowed between a name and a type sigil, but it's easier to
-// permit it and check later.
-typed_id : ID ('!' | '#' | '$' | '%' | '&')? ;
-typed_fnid : FNID ('!' | '#' | '$' | '%' | '&')? ;
-
-// An argument list or set of array indices following an identifier,
-// either an array lookup or a function call.
-args_or_indices : '(' expr (',' expr)* ')';
 
 // A system or user-defined type following an AS keyword.
 type_name
@@ -560,8 +603,8 @@ type_name
   | DOUBLE
   | STRING
   | fixed_string
-  | ID
-  | FNID
+  | untyped_id
+  | untyped_fnid
   ;
 
 // Can _only_ use variable-length strings in sub parameter lists.
@@ -571,8 +614,8 @@ type_name_for_parameter
   | SINGLE
   | DOUBLE
   | STRING
-  | ID
-  | FNID
+  | untyped_id
+  | untyped_fnid
   ;
 
 // Can _only_ use variable-length strings in sub parameter lists.
@@ -583,8 +626,8 @@ type_name_for_declare_parameter
   | DOUBLE
   | STRING
   | ANY
-  | ID
-  | FNID
+  | untyped_id
+  | untyped_fnid
   ;
 
 // See def_fn_parameter.
@@ -603,18 +646,22 @@ type_name_for_type_element
   | SINGLE
   | DOUBLE
   | fixed_string
-  | ID
-  | FNID
+  | untyped_id
+  | untyped_fnid
   ;
 
 // QBasic permits sizing a fixed string with a constant after '*'.  The IDE
 // will remove any type sigils after the constant.
-// *** If typed_id is not a constant, DIM errors with 'Invalid constant'.
+// *** If ID is not a constant, DIM errors with 'Invalid constant'.
 // In TYPE definitions, fixed strings with non-constant dimensions parse, but
 // trying to DIM things of the resulting TYPE hangs at runtime!
 fixed_string
-  : STRING '*' (DIGITS | typed_id)
+  : STRING '*' (DIGITS | ID)
   ;
+
+// *** untyped_id and untyped_fnid should be checked for no trailing type sigil.
+untyped_id: ID ;
+untyped_fnid: FNID ;
 
 literal
 // If a floating point constant isn't explicitly marked as single or double and

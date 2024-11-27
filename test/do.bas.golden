@@ -25,7 +25,8 @@
         (statement 
           (goto_statement goto 
             (target 
-              (text_label out)))) \n statement) loop)) \n 
+              (text_label 
+                (untyped_id out))))) \n statement) loop)) \n 
   (label 
     (line_number 10)) statement \n 
   (statement 
@@ -93,7 +94,7 @@
             (block \n statement \n statement) loop 
             (do_condition while 
               (expr 
-                (typed_id j))))) \n statement) loop 
+                (variable_or_function_call j))))) \n statement) loop 
       (do_condition until 
         (expr 
-          (typed_id i))))) \n)
+          (variable_or_function_call i))))) \n)

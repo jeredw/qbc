@@ -1,81 +1,81 @@
 (program 
   (statement 
     (assignment_statement let 
-      (typed_id x) = 
+      (variable_or_function_call x) = 
       (expr 
         (literal 42)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id y) = 
+      (variable_or_function_call y) = 
       (expr 
         (literal 42)))) \n 
   (statement 
     (assignment_statement let 
-      (typed_id s $) = 
+      (variable_or_function_call s$) = 
       (expr 
         (literal "foo bar")))) \n 
   (statement 
     (assignment_statement 
-      (typed_id i !) = 
+      (variable_or_function_call i!) = 
       (expr 
         (literal 1)))) : 
   (statement 
     (assignment_statement 
-      (typed_id j #) = 
+      (variable_or_function_call j#) = 
       (expr 
         (literal 2)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id k $) = 
+      (variable_or_function_call k$) = 
       (expr 
         (literal "3")))) \n 
   (statement 
     (assignment_statement 
-      (typed_id l %) = 
+      (variable_or_function_call l%) = 
       (expr 
         (literal 4)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id m &) = 
+      (variable_or_function_call m&) = 
       (expr 
         (literal 5)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id a) = 
+      (variable_or_function_call a) = 
       (expr 
         (literal 1e5)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id b) = 
+      (variable_or_function_call b) = 
       (expr 
         (literal .002)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id c) = 
+      (variable_or_function_call c) = 
       (expr 
         (literal 2.00553)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id d) = 
+      (variable_or_function_call d) = 
       (expr 
         (literal 0.00553e-6)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id e) = 
+      (variable_or_function_call e) = 
       (expr 
         (literal &h2ff)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id f) = 
+      (variable_or_function_call f) = 
       (expr 
         (literal &h9ab &)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id f) = 
+      (variable_or_function_call f) = 
       (expr 
         (literal &hcc %)))) \n 
   (statement 
     (assignment_statement 
-      (typed_id g) = 
+      (variable_or_function_call g) = 
       (expr 
         (literal &o774)))) \n)

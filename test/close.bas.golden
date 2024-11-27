@@ -1,0 +1,15 @@
+(program 
+  (statement 
+    (close_statement close 
+      (expr 
+        (literal 1)) , # 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (close_statement close 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (close_statement close)) \n)

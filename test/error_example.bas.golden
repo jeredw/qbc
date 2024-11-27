@@ -2,11 +2,13 @@
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
-        (text_label Handler)))) \n 
+        (text_label 
+          (untyped_id Handler))))) \n 
   (label 
     (line_number 10)) 
   (statement 
-    (call_statement CHDIR 
+    (call_statement 
+      (untyped_id CHDIR) 
       (call_argument_list 
         (call_argument 
           (expr 
@@ -15,19 +17,19 @@
     (line_number 20)) 
   (statement 
     (assignment_statement 
-      (typed_id y %) = 
+      (variable_or_function_call y%) = 
       (expr 
         (literal 0)))) \n 
   (label 
     (line_number 30)) 
   (statement 
     (assignment_statement 
-      (typed_id x %) = 
+      (variable_or_function_call x%) = 
       (expr 
         (expr 
           (literal 5)) / 
         (expr 
-          (typed_id y %))))) \n 
+          (variable_or_function_call y%))))) \n 
   (label 
     (line_number 40)) 
   (statement 
@@ -37,7 +39,7 @@
           (literal "x% =")) ; 
         (print_args 
           (expr 
-            (typed_id x %)))))) \n 
+            (variable_or_function_call x%)))))) \n 
   (label 
     (line_number 50)) 
   (statement 
@@ -45,7 +47,8 @@
       (expr 
         (literal 57)))) \n statement \n 
   (label 
-    (text_label Handler) :) statement \n 
+    (text_label 
+      (untyped_id Handler)) :) statement \n 
   (statement 
     (print_statement PRINT print_args)) \n 
   (statement 
@@ -55,17 +58,17 @@
           (literal "Error ")) ; 
         (print_args 
           (expr 
-            (typed_id ERR)) ; 
+            (variable_or_function_call ERR)) ; 
           (print_args 
             (expr 
               (literal " on line ")) ; 
             (print_args 
               (expr 
-                (typed_id ERL)))))))) \n 
+                (variable_or_function_call ERL)))))))) \n 
   (statement 
     (select_case_statement SELECT CASE 
       (expr 
-        (typed_id ERR)) 
+        (variable_or_function_call ERR)) 
       (before_first_case \n) 
       (case_block 
         (case_statement CASE 
@@ -80,13 +83,13 @@
                   (literal "Using device ")) ; 
                 (print_args 
                   (expr 
-                    (typed_id ERDEV $)) ; 
+                    (variable_or_function_call ERDEV$)) ; 
                   (print_args 
                     (expr 
                       (literal " device error code = ")) ; 
                     (print_args 
                       (expr 
-                        (typed_id ERDEV)))))))) \n 
+                        (variable_or_function_call ERDEV)))))))) \n 
           (statement 
             (resume_statement RESUME NEXT)) \n statement)) 
       (case_block 

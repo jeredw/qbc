@@ -1,72 +1,42 @@
 (program 
   (statement 
     (deftype_statement defint 
-      (letter_range 
-        (typed_id a) - 
-        (typed_id z)))) \n 
+      (letter_range a - z))) \n 
   (statement 
     (deftype_statement deflng 
-      (letter_range 
-        (typed_id a) - 
-        (typed_id z)))) \n 
+      (letter_range a - z))) \n 
   (statement 
     (deftype_statement defsng 
-      (letter_range 
-        (typed_id a) - 
-        (typed_id z)))) \n 
+      (letter_range a - z))) \n 
   (statement 
     (deftype_statement defstr 
-      (letter_range 
-        (typed_id a) - 
-        (typed_id z)))) \n 
+      (letter_range a - z))) \n 
   (statement 
     (deftype_statement defdbl 
-      (letter_range 
-        (typed_id a) - 
-        (typed_id z)))) \n 
+      (letter_range a - z))) \n 
   (statement 
     (deftype_statement defint 
-      (letter_range 
-        (typed_id a)) , 
-      (letter_range 
-        (typed_id b) - 
-        (typed_id c)))) \n 
+      (letter_range a) , 
+      (letter_range b - c))) \n 
   (statement 
     (deftype_statement defstr 
-      (letter_range 
-        (typed_id s)) , 
-      (letter_range 
-        (typed_id x) - 
-        (typed_id z)) , 
-      (letter_range 
-        (typed_id a) - 
-        (typed_id b)))) \n 
+      (letter_range s) , 
+      (letter_range x - z) , 
+      (letter_range a - b))) \n 
   (statement 
     (deftype_statement defdbl 
-      (letter_range 
-        (typed_id bar) - 
-        (typed_id foo)))) \n 
+      (letter_range bar - foo))) \n 
   (statement 
     (deftype_statement defsng 
-      (letter_range 
-        (typed_id foo) - 
-        (typed_id bar)) , 
-      (letter_range 
-        (typed_id baz)) , 
-      (letter_range 
-        (typed_id quux)))) \n 
+      (letter_range foo - bar) , 
+      (letter_range baz) , 
+      (letter_range quux))) \n 
   (statement 
     (deftype_statement defint 
-      (letter_range 
-        (typed_id a %) - 
-        (typed_id z $)))) \n 
+      (letter_range a% - z$))) \n 
   (statement 
     (deftype_statement defint 
-      (letter_range 
-        (typed_fnid fna) - 
-        (typed_fnid fnz)))) \n 
+      (letter_range fna - fnz))) \n 
   (statement 
     (deftype_statement defint 
-      (letter_range 
-        (typed_fnid fna) - 
-        (typed_id z $)))) \n)
+      (letter_range fna - z$))) \n)

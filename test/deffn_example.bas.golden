@@ -1,70 +1,60 @@
 (program 
   (statement 
     (const_statement CONST 
-      (const_assignment 
-        (typed_id NO) = 
+      (const_assignment NO = 
         (const_expr 
           (expr 
             (literal 0)))) , 
-      (const_assignment 
-        (typed_id YES) = 
+      (const_assignment YES = 
         (const_expr 
           (expr NOT 
             (expr 
-              (typed_id NO))))))) \n statement 
-  (def_fn_statement DEF 
-    (typed_fnid FNIsThereAZ) 
+              (variable_or_function_call NO))))))) \n statement 
+  (def_fn_statement DEF FNIsThereAZ 
     ( 
       (def_fn_parameter_list 
-        (def_fn_parameter 
-          (typed_id A $))) ) 
+        (def_fn_parameter A$)) ) 
     (block \n 
       (statement 
         (scope_statement STATIC 
-          (scope_variable 
-            (typed_id I)))) \n 
+          (scope_variable I))) \n 
       (statement 
-        (for_next_statement FOR 
-          (typed_id I) = 
+        (for_next_statement FOR I = 
           (expr 
             (literal 1)) TO 
           (expr 
-            (typed_id LEN) 
-            (args_or_indices 
+            (builtin_function LEN 
               ( 
                 (expr 
-                  (typed_id A $)) ))) 
+                  (variable_or_function_call A$)) ))) 
           (block \n 
             (if_block_statement IF 
               (expr 
                 (expr 
-                  (typed_id UCASE $) 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (typed_id MID $) 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (typed_id A $)) , 
-                            (expr 
-                              (typed_id I)) , 
-                            (expr 
-                              (literal 1)) ))) ))) = 
+                  (variable_or_function_call UCASE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call MID$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call A$)) , 
+                                (expr 
+                                  (variable_or_function_call I)) , 
+                                (expr 
+                                  (literal 1)) )))) )))) = 
                 (expr 
                   (literal "Z"))) THEN \n 
               (then_block 
                 (statement 
-                  (assignment_statement 
-                    (typed_fnid FNIsThereAZ) = 
+                  (assignment_statement FNIsThereAZ = 
                     (expr 
-                      (typed_id YES)))) \n 
+                      (variable_or_function_call YES)))) \n 
                 (statement 
                   (exit_statement EXIT DEF)) \n) 
-              (end_if_statement END IF)) \n statement) NEXT 
-          (typed_id I))) \n 
+              (end_if_statement END IF)) \n statement) NEXT I)) \n 
       (statement 
-        (assignment_statement 
-          (typed_fnid FNIsThereAZ) = 
+        (assignment_statement FNIsThereAZ = 
           (expr 
-            (typed_id NO)))) \n statement) END DEF) \n)
+            (variable_or_function_call NO)))) \n statement) END DEF) \n)

@@ -2,7 +2,7 @@
   (statement 
     (select_case_statement select case 
       (expr 
-        (typed_id i)) 
+        (variable_or_function_call i)) 
       (before_first_case \n) 
       (case_block 
         (case_statement case else) 
@@ -47,19 +47,19 @@
   (statement 
     (select_case_statement select case 
       (expr 
-        (typed_id i)) 
+        (variable_or_function_call i)) 
       (before_first_case \n) 
       (end_select_statement end select))) \n 
   (statement 
     (select_case_statement select case 
       (expr 
-        (typed_id i)) 
+        (variable_or_function_call i)) 
       (before_first_case :) 
       (end_select_statement end select))) \n 
   (statement 
     (select_case_statement select case 
       (expr 
-        (typed_id i)) 
+        (variable_or_function_call i)) 
       (before_first_case :) 
       (case_block 
         (case_statement case 
@@ -76,7 +76,7 @@
   (statement 
     (select_case_statement select case 
       (expr 
-        (typed_id i)) 
+        (variable_or_function_call i)) 
       (before_first_case : 
         (rem_statement rem hooray) \n : : 
         (rem_statement rem yep) \n) 
@@ -106,20 +106,20 @@
   (statement 
     (select_case_statement select case 
       (expr 
-        (typed_id i)) 
+        (variable_or_function_call i)) 
       (before_first_case \n) 
       (case_block 
         (case_statement case else) 
         (block \n 
           (if_block_statement if 
             (expr 
-              (typed_id foo)) then \n then_block 
+              (variable_or_function_call foo)) then \n then_block 
             (end_if_statement end if)) \n statement)) 
       (end_select_statement end select))) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
   (statement 
     (select_case_statement select case 
       (expr 
-        (typed_id i)) 
+        (variable_or_function_call i)) 
       (before_first_case \n) 
       (case_block 
         (case_statement case 
@@ -130,7 +130,7 @@
           (statement 
             (select_case_statement select case 
               (expr 
-                (typed_id j)) 
+                (variable_or_function_call j)) 
               (before_first_case \n) 
               (case_block 
                 (case_statement case 
@@ -148,7 +148,7 @@
           (statement 
             (select_case_statement select case 
               (expr 
-                (typed_id k)) 
+                (variable_or_function_call k)) 
               (before_first_case \n) 
               (end_select_statement end select))) \n statement)) 
       (end_select_statement end select))) \n)

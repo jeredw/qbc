@@ -26,12 +26,16 @@ D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
 STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
+ACCESS : [Aa][Cc][Cc][Ee][Ss][Ss] ;
 AND : [Aa][Nn][Dd] ;
 ANY : [Aa][Nn][Yy] ;
+APPEND : [Aa][Pp][Pp][Ee][Nn][Dd] ;
 AS : [Aa][Ss] ;
 BASE : [Bb][Aa][Ss][Ee] ;
+BINARY : [Bb][Ii][Nn][Aa][Rr][Yy] ;
 CALL : [Cc][Aa][Ll][Ll] ;
 CASE : [Cc][Aa][Ss][Ee] ;
+CLOSE : [Cc][Ll][Oo][Ss][Ee] ;
 COM : [Cc][Oo][Mm] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;
@@ -58,11 +62,15 @@ GOSUB : [Gg][Oo][Ss][Uu][Bb] ;
 GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;
 IMP : [Ii][Mm][Pp] ;
+INPUT : [Ii][Nn][Pp][Uu][Tt] ;
 IS : [Ii][Ss] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 KEY : [Kk][Ee][Yy] ;
+LEN : [Ll][Ee][Nn] ;
 LET : [Ll][Ee][Tt] ;
+LINE : [Ll][Ii][Nn][Ee] ;
 LIST : [Ll][Ii][Ss][Tt] ;
+LOCK : [Ll][Oo][Cc][Kk] ;
 LONG : [Ll][Oo][Nn][Gg] ;
 LOOP : [Ll][Oo][Oo][Pp] ;
 MOD : [Mm][Oo][Dd] ;
@@ -70,11 +78,15 @@ NEXT : [Nn][Ee][Xx][Tt] ;
 NOT : [Nn][Oo][Tt] ;
 OPTION : [Oo][Pp][Tt][Ii][Oo][Nn] ;
 OFF : [Oo][Ff][Ff] ;
+OPEN : [Oo][Pp][Ee][Nn] ;
+OUTPUT : [Oo][Uu][Tt][Pp][Uu][Tt] ;
 OR : [Oo][Rr] ;
 ON : [Oo][Nn] ;
 PEN : [Pp][Ee][Nn] ;
 PLAY : [Pp][Ll][Aa][Yy] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
+RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
+READ : [Rr][Ee][Aa][Dd] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
@@ -96,16 +108,22 @@ UNTIL : [Uu][Nn][Tt][Ii][Ll] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
 WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
+WRITE : [Ww][Rr][Ii][Tt][Ee] ;
 XOR : [Xx][Oo][Rr] ;
+
+// Note that IDs with type sigils can have the same name as keywords, so we
+// have to include type sigils themselves in the tokens.
 
 // IDs prefixed with FN are special cased as user-defined functions and not
 // allowed in many places where IDs are allowed.
-FNID : [Ff][Nn][A-Za-z][A-Za-z0-9.]* ;
+FNID : [Ff][Nn][A-Za-z][A-Za-z0-9.]* TYPE_SIGIL? ;
 // ID matches identifier names not starting with FN.
-ID : [A-EG-Za-eg-z][A-Za-z0-9.]*
-   | [Ff][A-MO-Za-mo-z][A-Za-z0-9.]*
-   | [Ff]
+ID : [A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
+   | [Ff][A-MO-Za-mo-z][A-Za-z0-9.]* TYPE_SIGIL?
+   | [Ff] TYPE_SIGIL?
    ;
+
+fragment TYPE_SIGIL: ('!' | '#' | '$' | '%' | '&') ;
 
 NL : '\r'? '\n' ;
 // Note: We skip ' comments here, but REM comments are parsed as statements.

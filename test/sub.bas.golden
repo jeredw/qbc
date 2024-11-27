@@ -1,27 +1,26 @@
 (program 
-  (sub_statement sub foo 
+  (sub_statement sub 
+    (untyped_id foo) 
     ( 
       (parameter_list 
+        (parameter bar$) , 
         (parameter 
-          (typed_id bar $)) , 
-        (parameter baz as 
+          (untyped_id baz) as 
           (type_name_for_parameter string)) , 
-        (parameter 
-          (typed_id quux))) ) static 
+        (parameter quux)) ) static 
     (block \n statement) 
     (end_sub_statement end sub)) \n 
-  (sub_statement sub bar 
+  (sub_statement sub 
+    (untyped_id bar) 
     ( 
       (parameter_list 
-        (parameter 
-          (typed_id a)) , 
-        (parameter 
-          (typed_id b)) , 
-        (parameter 
-          (typed_id c %))) ) 
+        (parameter a) , 
+        (parameter b) , 
+        (parameter c%)) ) 
     (block :) 
     (end_sub_statement end sub)) \n 
-  (sub_statement sub baz 
+  (sub_statement sub 
+    (untyped_id baz) 
     (block :) 
     (end_sub_statement end sub : 
       (statement 
@@ -29,10 +28,12 @@
           (print_args 
             (expr 
               (literal "wow"))))))) \n 
-  (sub_statement sub quux static 
+  (sub_statement sub 
+    (untyped_id quux) static 
     (block \n statement) 
     (end_sub_statement end sub)) \n 
-  (sub_statement sub quux2 
+  (sub_statement sub 
+    (untyped_id quux2) 
     (block : 
       (statement 
         (print_statement print 
@@ -45,7 +46,8 @@
             (expr 
               (literal "stuff"))))) : statement) 
     (end_sub_statement end sub)) \n 
-  (sub_statement sub empty 
+  (sub_statement sub 
+    (untyped_id empty) 
     ( ) 
     (block :) 
     (end_sub_statement end sub)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n)

@@ -70,10 +70,10 @@ keywords as arguments - it's probably easier just to parse those.
 | ---------------- | ----------- | ------- |
 | `ABS`            | Function    | -       |
 | `ABSOLUTE`       | Keyword     | ⛔      |
-| `ACCESS`         | Keyword     | ⛔      |
+| `ACCESS`         | Keyword     | ✅      |
 | `AND`            | Operator    | ✅      |
 | `ANY`            | Keyword     | ✅      |
-| `APPEND`         | Keyword     | ⛔      |
+| `APPEND`         | Keyword     | ✅      |
 | `AS`             | Keyword     | ✅      |
 | `ASC`            | Function    | -       |
 | `ATN`            | Function    | -       |
@@ -93,7 +93,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `CIRCLE`         | Statement   | ⛔      |
 | `CLEAR`          | Statement   | ⛔      |
 | `CLNG`           | Function    | -       |
-| `CLOSE`          | Statement   | ⛔      |
+| `CLOSE`          | Statement   | ✅      |
 | `CLS`            | Statement   | -       |
 | `COLOR`          | Statement   | -       |
 | `COM`            | Statement   | ✅      |
@@ -109,7 +109,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `CVS`            | Function    | -       |
 | `CVSMBF`         | Function    | -       |
 | `DATA`           | Statement   | ⛔      |
-| `DATE$`          | Function    | -       |
+| `DATE$`          | Function    | ⛔      |
 | `DATE$`          | Statement   | ⛔      |
 | `DECLARE`        | Statement   | ✅      |
 | `DEF FN`         | Statement   | ✅      |
@@ -154,7 +154,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `IMP`            | Operator    | ✅      |
 | `INKEY$`         | Function    | -       |
 | `INP`            | Function    | -       |
-| `INPUT`          | Statement   | ⛔      |
+| `INPUT`          | Statement   | ✅      |
 | `INPUT$`         | Function    | ⛔      |
 | `INT`            | Function    | -       |
 | `INTEGER`        | Keyword     | ✅      |
@@ -167,9 +167,10 @@ keywords as arguments - it's probably easier just to parse those.
 | `LBOUND`         | Function    | -       |
 | `LCASE$`         | Function    | -       |
 | `LEFT$`          | Function    | -       |
+| `LEN`            | Function    | ✅      |
 | `LET`            | Statement   | ✅      |
 | `LINE` Graphics  | Statement   | ⛔      |
-| `LINE INPUT`     | Statement   | ⛔      |
+| `LINE INPUT`     | Statement   | ✅      |
 | `LIST`           | Keyword     | ⛔      |
 | `LOCATE`         | Statement   | -       |
 | `LOCK`           | Statement   | ⛔      |
@@ -207,8 +208,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `ON TIMER`       | Statement   | ✅      |
 | `ON`...`GOSUB`   | Statement   | ✅      |
 | `ON`...`GOTO`    | Statement   | ✅      |
-| `OPEN`           | Statement   | ⛔      |
-| `OPEN COM`       | Statement   | ⛔      |
+| `OPEN`           | Statement   | ✅      |
+| `OPEN COM`       | Statement   | ✅      |
 | `OPTION BASE`    | Statement   | ✅      |
 | `OR`             | Operator    | ✅      |
 | `OUT`            | Statement   | -       |
@@ -233,7 +234,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `PSET`           | Statement   | ⛔      |
 | `PUT` I/O        | Statement   | ⛔      |
 | `PUT` Graphics   | Statement   | ⛔      |
-| `RANDOM`         | Keyword     | ⛔      |
+| `RANDOM`         | Keyword     | ✅      |
 | `RANDOMIZE`      | Statement   | -       |
 | `READ`           | Statement   | ⛔      |
 | `REDIM`          | Statement   | ✅      |

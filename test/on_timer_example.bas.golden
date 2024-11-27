@@ -5,11 +5,13 @@
         (expr 
           (literal 1)) ) GOSUB 
       (target 
-        (text_label TimeUpdate)))) \n 
+        (text_label 
+          (untyped_id TimeUpdate))))) \n 
   (statement 
     (event_control_statement TIMER ON)) \n 
   (statement 
-    (call_statement CLS)) \n 
+    (call_statement 
+      (untyped_id CLS))) \n 
   (statement 
     (print_statement PRINT 
       (print_args 
@@ -17,34 +19,36 @@
           (literal "Time: ")) ; 
         (print_args 
           (expr 
-            (typed_id TIME $)))))) \n 
+            (variable_or_function_call TIME$)))))) \n 
   (statement 
     (assignment_statement 
-      (typed_id StartTime) = 
+      (variable_or_function_call StartTime) = 
       (expr 
         (builtin_function TIMER)))) \n 
   (statement 
     (while_wend_statement WHILE 
       (expr 
         (expr 
-          (typed_id TimePast)) < 
+          (variable_or_function_call TimePast)) < 
         (expr 
           (literal 10))) 
       (block \n 
         (statement 
           (assignment_statement 
-            (typed_id TimePast) = 
+            (variable_or_function_call TimePast) = 
             (expr 
               (expr 
                 (builtin_function TIMER)) - 
               (expr 
-                (typed_id StartTime))))) \n statement) WEND)) \n 
+                (variable_or_function_call StartTime))))) \n statement) WEND)) \n 
   (statement 
     (end_statement END)) \n statement \n 
   (label 
-    (text_label TimeUpdate) :) statement \n 
+    (text_label 
+      (untyped_id TimeUpdate)) :) statement \n 
   (statement 
-    (call_statement LOCATE 
+    (call_statement 
+      (untyped_id LOCATE) 
       (call_argument_list 
         (call_argument 
           (expr 
@@ -56,6 +60,6 @@
     (print_statement PRINT 
       (print_args 
         (expr 
-          (typed_id TIME $))))) \n 
+          (variable_or_function_call TIME$))))) \n 
   (statement 
     (return_statement RETURN)) \n)

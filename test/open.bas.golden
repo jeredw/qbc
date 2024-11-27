@@ -1,0 +1,65 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "file.txt")) for 
+      (open_mode input) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "file.txt")) as # 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "file.txt")) for 
+      (open_mode random) access 
+      (open_access read write) 
+      (open_lock lock write) as # 
+      (expr 
+        (literal 3)) len = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (variable_or_function_call foo$)) for 
+      (open_mode binary) access 
+      (open_access write) as # 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (open_legacy_statement open 
+      (expr 
+        (literal "I")) , # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal "con")))) \n 
+  (statement 
+    (open_legacy_statement open 
+      (expr 
+        (literal "O")) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal "lpt1:")))) \n 
+  (statement 
+    (open_legacy_statement open 
+      (expr 
+        (literal "R")) , 
+      (expr 
+        (literal 3)) , 
+      (expr 
+        (literal "foo.txt")) , 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "COM1:9600,N,8,1,BIN")) AS 
+      (expr 
+        (literal 2)))) \n)
