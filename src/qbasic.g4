@@ -570,13 +570,15 @@ expr
   | variable_or_function_call
   ;
 
-// These functions use keywords so can't just be pre-defined by the runtime.
+// These functions use keywords or special syntax like file numbers so can't
+// just be pre-defined by the runtime.
 builtin_function
-  : TIMER
+  : INPUT_STRING '(' n=expr (',' '#'? filenumber=expr)? ')'
   | LEN '(' expr ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
   | STRIG '(' expr ')'
+  | TIMER
   ;
 
 // An argument list or set of array indices following an identifier,

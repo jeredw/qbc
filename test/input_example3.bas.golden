@@ -1,0 +1,100 @@
+(program statement \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment HTAB = 
+        (const_expr 
+          (expr 
+            (literal 9)))) , 
+      (const_assignment LFEED = 
+        (const_expr 
+          (expr 
+            (literal 10)))))) \n statement \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (input_statement INPUT "Display which file" ; 
+      (input_variable_list 
+        (variable_or_function_call Filename$)))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call Filename$)) FOR 
+      (open_mode INPUT) AS # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr NOT 
+          (expr 
+            (variable_or_function_call EOF 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 1)) )))))) 
+      (block \n statement \n statement \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call S$) = 
+            (expr 
+              (builtin_function INPUT$ 
+                ( 
+                  (expr 
+                    (literal 1)) , # 
+                  (expr 
+                    (literal 1)) ))))) \n statement \n statement \n statement \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call C) = 
+            (expr 
+              (expr 
+                (variable_or_function_call ASC 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call S$)) )))) AND 
+              (expr 
+                (literal &H7F))))) \n statement \n 
+        (if_block_statement IF 
+          (expr 
+            (expr 
+              (expr 
+                ( 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call C)) >= 
+                      (expr 
+                        (literal 32))) AND 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call C)) <= 
+                      (expr 
+                        (literal 126)))) )) OR 
+              (expr 
+                (expr 
+                  (variable_or_function_call C)) = 
+                (expr 
+                  (variable_or_function_call HTAB)))) OR 
+            (expr 
+              (expr 
+                (variable_or_function_call C)) = 
+              (expr 
+                (variable_or_function_call LFEED)))) THEN \n 
+          (then_block 
+            (statement 
+              (print_statement PRINT 
+                (print_args 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call C)) ))))) ;)) \n) 
+          (end_if_statement END IF)) \n statement \n statement) LOOP)) \n 
+  (statement 
+    (end_statement END)) \n statement \n)

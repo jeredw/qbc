@@ -155,7 +155,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `INKEY$`         | Function    | -       |
 | `INP`            | Function    | -       |
 | `INPUT`          | Statement   | ✅      |
-| `INPUT$`         | Function    | ⛔      |
+| `INPUT$`         | Function    | ✅      |
 | `INT`            | Function    | -       |
 | `INTEGER`        | Keyword     | ✅      |
 | `IOCTL`          | Statement   | ⛔      |

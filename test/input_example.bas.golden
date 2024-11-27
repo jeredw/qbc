@@ -1,0 +1,60 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call PI) = 
+      (expr 
+        (literal 3.141593)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call R) = 
+      (expr - 
+        (expr 
+          (literal 1))))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr 
+          (variable_or_function_call R))) 
+      (block \n 
+        (statement 
+          (print_statement PRINT 
+            (print_args 
+              (expr 
+                (literal "Enter radius 
+                  (or 0 to quit)."))))) \n 
+        (statement 
+          (input_statement INPUT ; "If radius = " , 
+            (input_variable_list 
+              (variable_or_function_call R)))) \n 
+        (if_block_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call R)) > 
+            (expr 
+              (literal 0))) THEN \n 
+          (then_block 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call A) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call PI)) * 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call R)) ^ 
+                    (expr 
+                      (literal 2)))))) \n 
+            (statement 
+              (print_statement PRINT 
+                (print_args 
+                  (expr 
+                    (literal ", the area of the circle =")) ; 
+                  (print_args 
+                    (expr 
+                      (variable_or_function_call A)))))) \n) 
+          (end_if_statement END IF)) \n 
+        (statement 
+          (print_statement PRINT print_args)) \n statement) LOOP)) \n)

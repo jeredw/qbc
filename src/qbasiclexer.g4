@@ -63,6 +63,7 @@ GOTO : [Gg][Oo][Tt][Oo] ;
 IF : [Ii][Ff] ;
 IMP : [Ii][Mm][Pp] ;
 INPUT : [Ii][Nn][Pp][Uu][Tt] ;
+INPUT_STRING : [Ii][Nn][Pp][Uu][Tt] '$' ;
 IS : [Ii][Ss] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 KEY : [Kk][Ee][Yy] ;
