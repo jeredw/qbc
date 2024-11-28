@@ -1,0 +1,16 @@
+(program 
+  (statement 
+    (call_absolute_statement call absolute 
+      ( 
+        (expr 
+          (variable_or_function_call x%)) ))) \n 
+  (statement 
+    (call_absolute_statement call absolute 
+      ( 
+        (call_absolute_argument_list 
+          (expr 
+            (variable_or_function_call a)) , 
+          (expr 
+            (variable_or_function_call b))) , 
+        (expr 
+          (variable_or_function_call c)) ))) \n)

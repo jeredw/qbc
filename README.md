@@ -69,7 +69,7 @@ keywords as arguments - it's probably easier just to parse those.
 | Feature          | Category    | Parser  |
 | ---------------- | ----------- | ------- |
 | `ABS`            | Function    | -       |
-| `ABSOLUTE`       | Keyword     | ⛔      |
+| `ABSOLUTE`       | Keyword     | ✅      |
 | `ACCESS`         | Keyword     | ✅      |
 | `AND`            | Operator    | ✅      |
 | `ANY`            | Keyword     | ✅      |
@@ -79,11 +79,11 @@ keywords as arguments - it's probably easier just to parse those.
 | `ATN`            | Function    | -       |
 | `BASE`           | Keyword     | ✅      |
 | `BEEP`           | Statement   | -       |
-| `BINARY`         | Keyword     | ⛔      |
+| `BINARY`         | Keyword     | ✅      |
 | `BLOAD`          | Statement   | -       |
 | `BSAVE`          | Statement   | -       |
 | `CALL`           | Statement   | ✅      |
-| `CALL ABSOLUTE`  | Statement   | ⛔      |
+| `CALL ABSOLUTE`  | Statement   | ✅      |
 | `CASE`           | Keyword     | ✅      |
 | `CDBL`           | Function    | -       |
 | `CHAIN`          | Statement   | -       |
@@ -113,7 +113,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `DATE$`          | Statement   | ⛔      |
 | `DECLARE`        | Statement   | ✅      |
 | `DEF FN`         | Statement   | ✅      |
-| `DEF SEG`        | Statement   | ⛔      |
+| `DEF SEG`        | Statement   | ✅      |
 | `DEFDBL`         | Statement   | ✅      |
 | `DEFINT`         | Statement   | ✅      |
 | `DEFLNG`         | Statement   | ✅      |
@@ -213,7 +213,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `OPTION BASE`    | Statement   | ✅      |
 | `OR`             | Operator    | ✅      |
 | `OUT`            | Statement   | -       |
-| `OUTPUT`         | Keyword     | ⛔      |
+| `OUTPUT`         | Keyword     | ✅      |
 | `PAINT`          | Statement   | ⛔      |
 | `PALETTE`        | Statement   | ⛔      |
 | `PALETTE USING`  | Statement   | ⛔      |

@@ -1,0 +1,79 @@
+(program statement \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable a% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n 
+  (statement 
+    (def_seg_statement DEF SEG = 
+      (expr 
+        (variable_or_function_call VARSEG 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call a% 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 0)) )))) )))))) \n 
+  (statement 
+    (for_next_statement FOR i% = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (literal 2)) 
+      (block \n 
+        (statement 
+          (read_statement READ 
+            (read_argument_list 
+              (variable_or_function_call d%)))) \n 
+        (statement 
+          (call_statement 
+            (untyped_id POKE) 
+            (call_argument_list 
+              (call_argument 
+                (expr 
+                  (expr 
+                    (variable_or_function_call VARPTR 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call a% 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (literal 0)) )))) )))) + 
+                  (expr 
+                    (variable_or_function_call i%)))) , 
+              (call_argument d%)))) \n statement) NEXT i%)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DATA) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 205))) , 
+        (call_argument 
+          (expr 
+            (literal 5))) , 
+        (call_argument 
+          (expr 
+            (literal 203)))))) : statement \n statement \n 
+  (statement 
+    (call_absolute_statement CALL ABSOLUTE 
+      ( 
+        (expr 
+          (variable_or_function_call VARPTR 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (variable_or_function_call a% 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 0)) )))) )))) ))) \n 
+  (statement 
+    (def_seg_statement DEF SEG)) \n)

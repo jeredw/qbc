@@ -59,8 +59,10 @@ statement
   : rem_statement  // Slurps up the rest of its line.
   | assignment_statement
   | call_statement
+  | call_absolute_statement
   | close_statement
   | const_statement
+  | def_seg_statement
   | deftype_statement
   | dim_statement
   | do_loop_statement
@@ -84,6 +86,7 @@ statement
   | play_statement
   | print_statement
   | print_using_statement
+  | read_statement
   | resume_statement
   | return_statement
   | scope_statement
@@ -261,6 +264,14 @@ call_argument
   | expr
   ;
 
+call_absolute_statement
+  : CALL ABSOLUTE '(' (call_absolute_argument_list ',')? expr ')'
+  ;
+
+call_absolute_argument_list
+  : expr (',' expr)*
+  ;
+
 error_statement
   : ERROR expr
   ;
@@ -289,6 +300,9 @@ const_assignment
 
 // TODO: Only a limited subset of expressions are supported here.
 const_expr : expr ;
+
+def_seg_statement
+  : DEF SEG ('=' expr)?;
 
 // DEFtype typing is a leftover from a previous MS BASIC.
 deftype_statement
@@ -486,6 +500,13 @@ print_using_args
 
 // A file number can be any expression that evaluates to a valid file handle
 file_number : '#' expr ;
+
+read_statement
+  : READ read_argument_list;
+
+read_argument_list
+  : variable_or_function_call (',' variable_or_function_call)*
+  ;
 
 // A special kind of return statement just for ON ERROR handlers.
 resume_statement

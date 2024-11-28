@@ -26,6 +26,7 @@ D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
 STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
+ABSOLUTE : [Aa][Bb][Ss][Oo][Ll][Uu][Tt][Ee] ;
 ACCESS : [Aa][Cc][Cc][Ee][Ss][Ss] ;
 AND : [Aa][Nn][Dd] ;
 ANY : [Aa][Nn][Yy] ;
@@ -92,6 +93,7 @@ REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
+SEG : [Ss][Ee][Gg] ;
 SELECT : [Ss][Ee][Ll][Ee][Cc][Tt] ;
 SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
 SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
