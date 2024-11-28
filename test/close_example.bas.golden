@@ -4,8 +4,7 @@
       (untyped_id CLS))) \n 
   (statement 
     (input_statement INPUT "Enter filename: " , 
-      (input_variable_list 
-        (variable_or_function_call n$)))) \n 
+      (variable_or_function_call n$))) \n 
   (statement 
     (open_statement OPEN 
       (expr 
@@ -34,8 +33,7 @@
       (file_number # 
         (expr 
           (literal 1))) , 
-      (input_variable_list 
-        (variable_or_function_call a$)))) \n 
+      (variable_or_function_call a$))) \n 
   (statement 
     (print_statement PRINT 
       (expr 

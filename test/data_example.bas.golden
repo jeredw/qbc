@@ -17,8 +17,7 @@
       (block \n 
         (statement 
           (read_statement READ 
-            (read_argument_list 
-              (variable_or_function_call Month$)))) \n statement) NEXT)) \n 
+            (variable_or_function_call Month$))) \n statement) NEXT)) \n 
   (statement 
     (data_statement DATA 
       (data_item January) , 

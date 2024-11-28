@@ -28,8 +28,7 @@
       (block \n 
         (statement 
           (read_statement READ 
-            (read_argument_list 
-              (variable_or_function_call d%)))) \n 
+            (variable_or_function_call d%))) \n 
         (statement 
           (call_statement 
             (untyped_id POKE) 

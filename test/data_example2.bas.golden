@@ -9,10 +9,9 @@
       (data_item 2))) \n 
   (statement 
     (read_statement READ 
-      (read_argument_list 
-        (variable_or_function_call A$) , 
-        (variable_or_function_call B$) , 
-        (variable_or_function_call C$)))) \n 
+      (variable_or_function_call A$) , 
+      (variable_or_function_call B$) , 
+      (variable_or_function_call C$))) \n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -25,10 +24,9 @@
     (print_statement PRINT)) \n 
   (statement 
     (read_statement READ 
-      (read_argument_list 
-        (variable_or_function_call A) , 
-        (variable_or_function_call B) , 
-        (variable_or_function_call C)))) \n 
+      (variable_or_function_call A) , 
+      (variable_or_function_call B) , 
+      (variable_or_function_call C))) \n 
   (statement 
     (print_statement PRINT 
       (expr 

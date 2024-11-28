@@ -14,8 +14,7 @@
       (untyped_id CLS))) \n 
   (statement 
     (input_statement INPUT "Display which file" ; 
-      (input_variable_list 
-        (variable_or_function_call Filename$)))) \n 
+      (variable_or_function_call Filename$))) \n 
   (statement 
     (open_statement OPEN 
       (expr 

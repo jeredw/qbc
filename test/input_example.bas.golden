@@ -26,8 +26,7 @@
                 (or 0 to quit).")))) \n 
         (statement 
           (input_statement INPUT ; "If radius = " , 
-            (input_variable_list 
-              (variable_or_function_call R)))) \n 
+            (variable_or_function_call R))) \n 
         (if_block_statement IF 
           (expr 
             (expr 

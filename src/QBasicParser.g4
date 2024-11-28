@@ -421,13 +421,11 @@ if_inline_action
   | line_number  // Implicit GOTO
   ;
 
+// The IDE does not seem to automatically insert missing ','s for INPUT the way
+// it does for PRINT statements.
 input_statement
-  : INPUT ';'? (STRING_LITERAL (';' | COMMA))? input_variable_list
-  | INPUT file_number COMMA input_variable_list
-  ;
-
-input_variable_list
-  : variable_or_function_call (COMMA variable_or_function_call)*
+  : INPUT ';'? (STRING_LITERAL (';' | COMMA))? variable_or_function_call (COMMA variable_or_function_call)*
+  | INPUT file_number COMMA variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
 key_statement
@@ -513,10 +511,7 @@ print_using_statement
 file_number : '#' expr ;
 
 read_statement
-  : READ read_argument_list;
-
-read_argument_list
-  : variable_or_function_call (COMMA variable_or_function_call)*
+  : READ variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
 // A special kind of return statement just for ON ERROR handlers.
