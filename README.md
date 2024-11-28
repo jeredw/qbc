@@ -179,8 +179,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `LONG`           | Keyword     | ✅      |
 | `LOOP`           | Keyword     | ✅      |
 | `LPOS`           | Function    | -       |
-| `LPRINT`         | Statement   | ⛔      |
-| `LPRINT USING`   | Statement   | ⛔      |
+| `LPRINT`         | Statement   | ✅      |
+| `LPRINT USING`   | Statement   | ✅      |
 | `LSET`           | Statement   | ⛔      |
 | `LTRIM$`         | Function    | -       |
 | `MID$`           | Function    | -       |

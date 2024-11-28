@@ -1,12 +1,12 @@
 (program 
   (statement 
-    (print_statement print)) \n 
+    (lprint_statement lprint)) \n 
   (statement 
-    (print_statement print 
+    (lprint_statement lprint 
       (expr 
         (literal 3)))) \n 
   (statement 
-    (print_statement print 
+    (lprint_statement lprint 
       (expr 
         (literal 1)) , 
       (expr 
@@ -20,50 +20,33 @@
       (expr 
         (literal 6)) ,)) \n 
   (statement 
-    (print_statement print 
+    (lprint_statement lprint 
       (expr 
         (literal 1)) ;)) \n 
   (statement 
-    (print_statement print 
+    (lprint_statement lprint 
       (expr 
         (literal 2)) ,)) \n 
   (statement 
-    (print_statement print 
-      (file_number # 
-        (expr 
-          (literal 42))) , 
+    (lprint_statement lprint 
       (expr 
         (literal "hi")))) \n 
   (statement 
-    (print_statement print 
-      (file_number # 
-        (expr 
-          (variable_or_function_call hello))) , 
+    (lprint_statement lprint 
       (expr 
         (literal "baz")))) \n 
   (statement 
-    (print_statement print 
-      (file_number # 
-        (expr 
-          ( 
-            (expr 
-              (expr 
-                (literal 4)) \ 
-              (expr 
-                (literal 4))) ))) , 
+    (lprint_statement lprint 
       (expr 
         (literal "baz")))) \n 
   (statement 
-    (print_statement print ,)) \n 
+    (lprint_statement lprint ,)) \n 
   (statement 
-    (print_statement print 
-      (file_number # 
-        (expr 
-          (literal 1))) , ,)) \n 
+    (lprint_statement lprint , ,)) \n 
   (statement 
-    (print_statement print ;)) \n 
+    (lprint_statement lprint ;)) \n 
   (statement 
-    (print_using_statement print using 
+    (lprint_using_statement lprint using 
       (expr 
         (literal "#.#")) ; 
       (expr 
@@ -73,7 +56,7 @@
       (expr 
         (literal 3)))) \n 
   (statement 
-    (print_using_statement print using 
+    (lprint_using_statement lprint using 
       (expr 
         (literal "#.#")) ; 
       (expr 
@@ -83,7 +66,7 @@
       (expr 
         (literal 3)))) \n 
   (statement 
-    (print_using_statement print using 
+    (lprint_using_statement lprint using 
       (expr 
         (variable_or_function_call s$)) ; 
       (expr 
@@ -93,7 +76,7 @@
       (expr 
         (literal 3)) ;)) \n 
   (statement 
-    (print_using_statement print using 
+    (lprint_using_statement lprint using 
       (expr 
         (expr 
           (literal "#")) + 
@@ -102,9 +85,6 @@
       (expr 
         (literal 3.14)))) \n 
   (statement 
-    (print_using_statement print 
-      (file_number # 
-        (expr 
-          (literal 42))) , using 
+    (lprint_using_statement lprint using 
       (expr 
         (literal "#.##")) ;)) \n)

@@ -94,7 +94,9 @@ statement
   | open_statement
   | open_legacy_statement
   | play_statement
+  | lprint_statement
   | print_statement
+  | lprint_using_statement
   | print_using_statement
   | put_io_statement
   | read_statement
@@ -501,6 +503,15 @@ open_lock
   | LOCK READ WRITE
   ;
 
+lprint_statement
+  : LPRINT ((COMMA | ';') | (COMMA | ';')? expr)*
+  ;
+
+// See note for PRINT USING for comma handling.
+lprint_using_statement
+  : LPRINT USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
+  ;
+
 play_statement
   : PLAY expr
   ;
@@ -514,11 +525,11 @@ print_statement
   ;
 
 // PRINT USING must use ';' expression separators - the IDE auto-corrects
-// ';' to ';'. The USING expr must be a format string, and must always be
+// ',' to ';'. The USING expr must be a format string, and must always be
 // followed by ';'.  The IDE inserts a ';' between expressions that have no
 // separator.
 print_using_statement
-  : PRINT (file_number COMMA)? USING expr ';' expr? (';' | ';'? expr)*
+  : PRINT (file_number COMMA)? USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
   ;
 
 put_io_statement
