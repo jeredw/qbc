@@ -101,6 +101,7 @@ LIST : [Ll][Ii][Ss][Tt] ;
 LOCK : [Ll][Oo][Cc][Kk] ;
 LONG : [Ll][Oo][Nn][Gg] ;
 LOOP : [Ll][Oo][Oo][Pp] ;
+LPRINT : [Ll][Pp][Rr][Ii][Nn][Tt] ;
 MOD : [Mm][Oo][Dd] ;
 NEXT : [Nn][Ee][Xx][Tt] ;
 NOT : [Nn][Oo][Tt] ;
@@ -137,6 +138,7 @@ UNTIL : [Uu][Nn][Tt][Ii][Ll] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
 WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
+WIDTH : [Ww][Ii][Dd][Tt][Hh] ;
 WRITE : [Ww][Rr][Ii][Tt][Ee] ;
 XOR : [Xx][Oo][Rr] ;
 

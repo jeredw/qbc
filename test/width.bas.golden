@@ -1,0 +1,25 @@
+(program 
+  (statement 
+    (width_statement width 
+      (expr 
+        (literal 80)))) \n 
+  (statement 
+    (width_statement width , 
+      (expr 
+        (literal 50)))) \n 
+  (statement 
+    (width_statement width 
+      (expr 
+        (literal 80)) , 
+      (expr 
+        (literal 25)))) \n 
+  (statement 
+    (width_statement width 
+      (expr 
+        (literal "lpt1:")) , 
+      (expr 
+        (literal 20)))) \n 
+  (statement 
+    (width_statement width lprint 
+      (expr 
+        (literal 40)))) \n)

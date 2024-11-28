@@ -1,0 +1,43 @@
+(program statement \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "LPT1:")) FOR 
+      (open_mode OUTPUT) AS # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Test$) = 
+      (expr 
+        (literal "1234567890")))) \n 
+  (statement 
+    (width_statement WIDTH 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (variable_or_function_call Test$)))) \n 
+  (statement 
+    (width_statement WIDTH 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (variable_or_function_call Test$)))) \n 
+  (statement 
+    (close_statement CLOSE)) \n)

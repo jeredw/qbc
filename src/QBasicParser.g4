@@ -100,6 +100,7 @@ statement
   | scope_statement
   | select_case_statement
   | while_wend_statement
+  | width_statement
 // Statements can be empty after line labels, before or between :.
   |
   ;
@@ -571,6 +572,14 @@ scope_variable
 // Loop construct from an older BASIC?
 while_wend_statement
   : WHILE expr block WEND
+  ;
+
+width_statement
+  : WIDTH columns=expr
+  | WIDTH COMMA lines=expr
+  | WIDTH expr COMMA expr  // Could be WIDTH device$, width or WIDTH columns, lines
+  | WIDTH file_number COMMA width=expr
+  | WIDTH LPRINT width=expr
   ;
 
 expr
