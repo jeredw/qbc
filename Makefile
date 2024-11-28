@@ -1,11 +1,11 @@
-build/qbasicParser.java: src/qbasicParser.g4 src/qbasicLexer.g4
+build/QBasicParser.java: src/QBasicParser.g4 src/QBasicLexer.g4
 	mkdir -p build
-	(cd src && antlr -Werror qbasicLexer.g4 -o ../build)
-	(cd src && antlr -Werror qbasicParser.g4 -o ../build)
+	(cd src && antlr -Werror QBasicLexer.g4 -o ../build)
+	(cd src && antlr -Werror QBasicParser.g4 -o ../build)
 	(cd build && javac *.java)
 
 .PHONY: test
-test: build/qbasicParser.java test/*.bas
+test: build/QBasicParser.java test/*.bas
 	python3 src/test_parser.py test/*.bas
 
 .PHONY: clean

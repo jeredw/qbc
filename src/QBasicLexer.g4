@@ -1,5 +1,5 @@
 // Based on MS-DOS QBasic 1.1
-lexer grammar qbasicLexer;
+lexer grammar QBasicLexer;
 
 // Operators and punctuation
 // For legibility, the parser grammar doesn't actually use these token names,

@@ -8,9 +8,9 @@
 // language and use CSV-like syntax.  So a couple tokens like NL, COLON and
 // COMMA have to be aliased for different lexical modes, and must be named.
 // Otherwise, this parser uses token literals like '+' for legibility.
-parser grammar qbasicParser;
+parser grammar QBasicParser;
 options {
-  tokenVocab = qbasicLexer;
+  tokenVocab = QBasicLexer;
 }
 
 // A program is one or more statements separated by ':' or NL.

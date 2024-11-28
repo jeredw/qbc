@@ -22,7 +22,7 @@ def main(argv: List[str]) -> None:
     golden_file_name = f'{test}.golden'
     check_file_name = f'/tmp/{test}.check'
     grun = subprocess.run(
-        f'cd build && grun qbasic program -tree ../{test}',
+        f'cd build && grun QBasic program -tree ../{test}',
         shell=True,
         capture_output=True,
         encoding='utf-8')
