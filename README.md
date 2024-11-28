@@ -305,7 +305,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `WHILE`...`WEND` | Statement   | ✅      |
 | `WIDTH`          | Statement   | ✅      |
 | `WINDOW`         | Statement   | ⛔      |
-| `WRITE`          | Statement   | ⛔      |
+| `WRITE`          | Statement   | ✅      |
 
 # Standard library
 

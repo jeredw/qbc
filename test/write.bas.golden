@@ -1,0 +1,29 @@
+(program 
+  (statement 
+    (write_statement write)) \n 
+  (statement 
+    (write_statement write 
+      (file_number # 
+        (expr 
+          (literal 1))) ,)) \n 
+  (statement 
+    (write_statement write 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal "hello")) , 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (write_statement write 
+      (expr 
+        (literal "yes")))) \n 
+  (statement 
+    (write_statement write 
+      (expr 
+        (literal "yes")) ; 
+      (expr 
+        (literal "this")) ; 
+      (expr 
+        (literal "works")))) \n)

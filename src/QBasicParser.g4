@@ -101,6 +101,7 @@ statement
   | select_case_statement
   | while_wend_statement
   | width_statement
+  | write_statement
 // Statements can be empty after line labels, before or between :.
   |
   ;
@@ -580,6 +581,14 @@ width_statement
   | WIDTH expr COMMA expr  // Could be WIDTH device$, width or WIDTH columns, lines
   | WIDTH file_number COMMA width=expr
   | WIDTH LPRINT width=expr
+  ;
+
+write_statement
+// Can omit argument to write an empty line
+  : WRITE
+  | WRITE file_number COMMA
+// The IDE rewrites ';' as ',' for WRITE, so accept either.
+  | WRITE (file_number COMMA)? expr ((COMMA | ';') expr)*
   ;
 
 expr
