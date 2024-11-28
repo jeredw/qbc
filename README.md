@@ -108,7 +108,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `CVL`            | Function    | -       |
 | `CVS`            | Function    | -       |
 | `CVSMBF`         | Function    | -       |
-| `DATA`           | Statement   | ⛔      |
+| `DATA`           | Statement   | ✅      |
 | `DATE$`          | Function    | ⛔      |
 | `DATE$`          | Statement   | ⛔      |
 | `DECLARE`        | Statement   | ✅      |
