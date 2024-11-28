@@ -3,10 +3,12 @@
 // This grammar avoids antlr4 semantic predicates and sticks to language
 // neutral notation, and so it relies on subsequent analysis to detect some
 // kinds of syntax issues.  These are noted with *** in comments.
-grammar qbasic;
-import qbasiclexer;
+parser grammar qbasicParser;
+options {
+  tokenVocab = qbasicLexer;
+}
 
-// A program is one or more statements separated by ':' or NL.
+// A program is one or more statements separated by COLON or NL.
 // *** The QBasic IDE adds NL to the last line if it is missing, so callers
 // should make sure to do this.
 //
@@ -29,31 +31,31 @@ program
        | option_statement
        | sub_statement
        | type_statement)
-      (':' statement
+      ((COLON | DATA_COLON) statement
            | declare_statement
            | def_fn_statement
            | option_statement
-           | type_statement)* NL)*
+           | type_statement)* (NL | DATA_NL))*
   ;
 
 // block matches statements in loops, procedures, and conditionals.
 // It does not allow some statements only allowed at the top level.
 block
 // blocks can go on one line, like START : block : END
-  : (':' statement)* ':'
+  : (COLON statement)* COLON
 // blocks can also span many lines, like
 // START: {block...
 // ...
 // ...}: END
-  | (':' statement)* NL
-    (label? (statement | if_block_statement) (':' statement)* NL)*
+  | (COLON statement)* NL
+    (label? (statement | if_block_statement) (COLON statement)* NL)*
 // Match block ending keyword in the parent statement, then match NL
 // in the parent block or program.
-    label? (statement | if_block_statement) (':' statement)*
+    label? (statement | if_block_statement) (COLON statement)*
   ;
 
 label
-  : (line_number | text_label ':') ;
+  : (line_number | text_label COLON) ;
 
 statement
   : rem_statement  // Slurps up the rest of its line.
@@ -62,6 +64,7 @@ statement
   | call_absolute_statement
   | close_statement
   | const_statement
+  | data_statement
   | def_seg_statement
   | deftype_statement
   | dim_statement
@@ -109,7 +112,7 @@ declare_statement
   ;
 
 declare_parameter_list
-  : declare_parameter (',' declare_parameter)*
+  : declare_parameter (COMMA declare_parameter)*
   ;
 
 declare_parameter
@@ -131,7 +134,7 @@ def_fn_statement
   ;
 
 def_fn_parameter_list
-  : def_fn_parameter (',' def_fn_parameter)*
+  : def_fn_parameter (COMMA def_fn_parameter)*
   ;
 
 // DEF FN parameters can't be arrays, user-defined types, or fixed-length
@@ -150,7 +153,7 @@ function_statement
   ;
 
 parameter_list
-  : parameter (',' parameter)*
+  : parameter (COMMA parameter)*
   ;
 
 parameter
@@ -168,7 +171,7 @@ array_declaration
 // Statements after END FUNCTION on the same line are silently dropped!
 // program should consume the final NL or EOL.
 end_function_statement
-  : label? END FUNCTION (':' statement)*
+  : label? END FUNCTION (COLON statement)*
   ;
 
 if_block_statement
@@ -194,12 +197,12 @@ end_if_statement
   ;
 
 then_block
-  : (label? (statement | if_block_statement) (':' statement)* NL)*
+  : (label? (statement | if_block_statement) (COLON statement)* NL)*
   ;
 
 else_block
-  : statement (':' statement)* NL
-    (label? (statement | if_block_statement) (':' statement)* NL)*
+  : statement (COLON statement)* NL
+    (label? (statement | if_block_statement) (COLON statement)* NL)*
   ;
 
 // *** DIGITS must be 0 or 1, but that will be checked later.
@@ -217,12 +220,12 @@ sub_statement
 // Statements after END SUB on the same line are silently dropped!
 // program should consume the final NL or EOL.
 end_sub_statement
-  : label? END SUB (':' statement)*
+  : label? END SUB (COLON statement)*
   ;
 
 type_statement
 // *** Note: type names cannot include '.'.
-   : TYPE (untyped_id | untyped_fnid) (':' | NL)+
+   : TYPE (untyped_id | untyped_fnid) (COLON | NL)+
 // *** Types must have at least one element.
      (rem_statement NL | type_element)+
      END TYPE
@@ -230,7 +233,7 @@ type_statement
 
 // Type elements can't have labels etc. like normal lines.
 type_element
-   : (untyped_id | untyped_fnid) AS type_name_for_type_element (':' | NL)+
+   : (untyped_id | untyped_fnid) AS type_name_for_type_element (COLON | NL)+
    ;
 
 assignment_statement
@@ -250,7 +253,7 @@ call_statement
   ;
 
 call_argument_list
-  : call_argument (',' call_argument)*
+  : call_argument (COMMA call_argument)*
   ;
 
 call_argument
@@ -265,11 +268,11 @@ call_argument
   ;
 
 call_absolute_statement
-  : CALL ABSOLUTE '(' (call_absolute_argument_list ',')? expr ')'
+  : CALL ABSOLUTE '(' (call_absolute_argument_list COMMA)? expr ')'
   ;
 
 call_absolute_argument_list
-  : expr (',' expr)*
+  : expr (COMMA expr)*
   ;
 
 error_statement
@@ -286,11 +289,11 @@ event_control_statement
   ;
 
 close_statement
-  : CLOSE ('#'? expr)? (',' '#'? expr)*
+  : CLOSE ('#'? expr)? (COMMA '#'? expr)*
   ;
 
 const_statement
-  : CONST const_assignment (',' const_assignment)*
+  : CONST const_assignment (COMMA const_assignment)*
   ;
 
 // Constants can have sigils, but they're not part of the name.
@@ -301,16 +304,26 @@ const_assignment
 // TODO: Only a limited subset of expressions are supported here.
 const_expr : expr ;
 
+data_statement
+  : DATA data_item (DATA_COMMA data_item)*
+  ;
+
+data_item
+  : DATA_QUOTED
+  | DATA_UNQUOTED
+  |  // Empty items are allowed e.g. DATA 1,,2
+  ;
+
 def_seg_statement
   : DEF SEG ('=' expr)?;
 
 // DEFtype typing is a leftover from a previous MS BASIC.
 deftype_statement
-  : DEFINT letter_range (',' letter_range)*
-  | DEFLNG letter_range (',' letter_range)*
-  | DEFSNG letter_range (',' letter_range)*
-  | DEFDBL letter_range (',' letter_range)*
-  | DEFSTR letter_range (',' letter_range)*
+  : DEFINT letter_range (COMMA letter_range)*
+  | DEFLNG letter_range (COMMA letter_range)*
+  | DEFSNG letter_range (COMMA letter_range)*
+  | DEFDBL letter_range (COMMA letter_range)*
+  | DEFSTR letter_range (COMMA letter_range)*
   ;
 
 // Supporting ranges like A-Z in the lexer is messy since that's also an
@@ -323,8 +336,8 @@ deftype_statement
 letter_range: (ID | FNID) ('-' (ID | FNID))? ;
 
 dim_statement
-  : DIM SHARED? dim_variable (',' dim_variable)*
-  | REDIM SHARED? dim_variable (',' dim_variable)*
+  : DIM SHARED? dim_variable (COMMA dim_variable)*
+  | REDIM SHARED? dim_variable (COMMA dim_variable)*
   ;
 
 dim_variable
@@ -335,7 +348,7 @@ dim_variable
   ;
 
 dim_array_bounds
-  : '(' dim_subscript (',' dim_subscript)* ')'
+  : '(' dim_subscript (COMMA dim_subscript)* ')'
   ;
 
 // expr must be some kind of vaguely integer type expression.
@@ -396,28 +409,28 @@ if_inline_statement
   ;
 
 if_inline_action
-  : statement (':' statement)*
+  : statement (COLON statement)*
   | line_number  // Implicit GOTO
   ;
 
 input_statement
-  : INPUT ';'? (STRING_LITERAL (';' | ','))? input_variable_list
-  | INPUT file_number ',' input_variable_list
+  : INPUT ';'? (STRING_LITERAL (';' | COMMA))? input_variable_list
+  | INPUT file_number COMMA input_variable_list
   ;
 
 input_variable_list
-  : variable_or_function_call (',' variable_or_function_call)*
+  : variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
 key_statement
   : KEY LIST
   | KEY (ON | OFF)
-  | KEY expr ',' expr
+  | KEY expr COMMA expr
   ;
 
 line_input_statement
   : LINE INPUT ';'? (STRING_LITERAL ';')? variable_or_function_call
-  | LINE INPUT file_number ',' variable_or_function_call
+  | LINE INPUT file_number COMMA variable_or_function_call
   ;
 
 on_error_statement
@@ -438,7 +451,7 @@ on_expr_gosub_statement
   ;
 
 target_list
-  : target (',' target)*
+  : target (COMMA target)*
   ;
 
 on_expr_goto_statement
@@ -446,7 +459,7 @@ on_expr_goto_statement
   ;
 
 open_legacy_statement
-  : OPEN openmode=expr ',' '#'? filenum=expr ',' file=expr (',' reclen=expr)?
+  : OPEN openmode=expr COMMA '#'? filenum=expr COMMA file=expr (COMMA reclen=expr)?
   ;
 
 open_statement
@@ -473,23 +486,23 @@ play_statement
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
-// separated by a ',' or ';'. There can be a trailing ',' or ';' even if
+// separated by a COMMA or ';'. There can be a trailing COMMA or ';' even if
 // there is no other argument.
 print_statement
-  : PRINT (file_number ',')? print_args (',' | ';')?
+  : PRINT (file_number COMMA)? print_args (COMMA | ';')?
   ;
 
 print_args
   : expr
-  | expr (',' | ';') print_args
+  | expr (COMMA | ';') print_args
   |
   ;
 
 // PRINT USING must use ';' expression separators - the IDE auto-corrects
-// ',' to ';'. The USING expr must be a format string, and must always be
+// COMMA to ';'. The USING expr must be a format string, and must always be
 // followed by ';'.
 print_using_statement
-  : PRINT (file_number ',')? USING expr ';' print_using_args ';'?
+  : PRINT (file_number COMMA)? USING expr ';' print_using_args ';'?
   ;
 
 print_using_args
@@ -505,7 +518,7 @@ read_statement
   : READ read_argument_list;
 
 read_argument_list
-  : variable_or_function_call (',' variable_or_function_call)*
+  : variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
 // A special kind of return statement just for ON ERROR handlers.
@@ -527,7 +540,7 @@ select_case_statement
 
 // No real statements or labels are allowed before the first CASE.
 before_first_case
-  : (':' | rem_statement | NL)*
+  : (COLON | rem_statement | NL)*
   ;
 
 case_block
@@ -535,7 +548,7 @@ case_block
   ;
 
 case_statement
-  : CASE case_expr (',' case_expr)*
+  : CASE case_expr (COMMA case_expr)*
 // CASE ELSE can occur anywhere in the SELECT body, even multiple times.
   | CASE ELSE
   ;
@@ -552,9 +565,9 @@ end_select_statement
 // COMMON, SHARED, and STATIC declare variable scopes using the same syntax.
 // The syntax is similar to DIM but arrays aren't dimensioned.
 scope_statement
-  : COMMON SHARED? scope_variable (',' scope_variable)*
-  | SHARED scope_variable (',' scope_variable)*
-  | STATIC scope_variable (',' scope_variable)*
+  : COMMON SHARED? scope_variable (COMMA scope_variable)*
+  | SHARED scope_variable (COMMA scope_variable)*
+  | STATIC scope_variable (COMMA scope_variable)*
   ;
 
 scope_variable
@@ -594,7 +607,7 @@ expr
 // These functions use keywords or special syntax like file numbers so can't
 // just be pre-defined by the runtime.
 builtin_function
-  : INPUT_STRING '(' n=expr (',' '#'? filenumber=expr)? ')'
+  : INPUT_STRING '(' n=expr (COMMA '#'? filenumber=expr)? ')'
   | LEN '(' expr ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
@@ -604,7 +617,7 @@ builtin_function
 
 // An argument list or set of array indices following an identifier,
 // either an array lookup or a function call.
-args_or_indices : '(' expr (',' expr)* ')';
+args_or_indices : '(' expr (COMMA expr)* ')';
 
 // Identifiers can contain '.', and '.' is also how to look up type elements.
 // *** This grammar always matches the longest possible token name as an

@@ -1,0 +1,20 @@
+(program 
+  (statement 
+    (data_statement data 
+      (data_item 1) , data_item , 
+      (data_item 2))) \n 
+  (statement 
+    (data_statement data 
+      (data_item foo) , 
+      (data_item some words here) , 
+      (data_item "this is a thing") , 
+      (data_item 42.6) , 
+      (data_item well! interesting) , data_item , data_item)) \n 
+  (statement 
+    (data_statement data 
+      (data_item how ' exciting is this))) : 
+  (statement 
+    (print_statement print 
+      (print_args 
+        (expr 
+          (literal "very"))))) \n)

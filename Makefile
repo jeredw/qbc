@@ -1,6 +1,7 @@
-build/qbasicParser.java: src/qbasic.g4 src/qbasiclexer.g4
+build/qbasicParser.java: src/qbasicParser.g4 src/qbasicLexer.g4
 	mkdir -p build
-	(cd src && antlr -Werror qbasic.g4 -o ../build)
+	(cd src && antlr -Werror qbasicLexer.g4 -o ../build)
+	(cd src && antlr -Werror qbasicParser.g4 -o ../build)
 	(cd build && javac *.java)
 
 .PHONY: test

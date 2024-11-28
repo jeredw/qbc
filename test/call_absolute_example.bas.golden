@@ -50,18 +50,10 @@
                     (variable_or_function_call i%)))) , 
               (call_argument d%)))) \n statement) NEXT i%)) \n 
   (statement 
-    (call_statement 
-      (untyped_id DATA) 
-      (call_argument_list 
-        (call_argument 
-          (expr 
-            (literal 205))) , 
-        (call_argument 
-          (expr 
-            (literal 5))) , 
-        (call_argument 
-          (expr 
-            (literal 203)))))) : statement \n statement \n 
+    (data_statement DATA 
+      (data_item 205) , 
+      (data_item 5) , 
+      (data_item 203))) : statement \n statement \n 
   (statement 
     (call_absolute_statement CALL ABSOLUTE 
       ( 

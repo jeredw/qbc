@@ -1,5 +1,30 @@
 // Based on MS-DOS QBasic 1.1
-lexer grammar qbasiclexer;
+lexer grammar qbasicLexer;
+
+// Operators and punctuation
+// For legibility, the parser grammar doesn't actually use these token names,
+// but they have to be defined here.
+COLON : ':' ;
+LEFT_PAREN : '(' ;
+RIGHT_PAREN : ')' ;
+NUMBER : '#' ;
+DIVIDE : '/' ;
+INTEGER_DIVIDE : '\\' ;
+EXP : '^' ;
+MINUS : '-' ;
+PLUS : '+' ;
+TIMES : '*' ;
+COMMA : ',' ;
+SEMICOLON : ';' ;
+LT : '<' ;
+LE : '<=' ;
+NE : '<>' ;
+EQ : '=' ;
+GT : '>' ;
+GE : '>=' ;
+AMP : '&' ;
+PERCENT : '%' ;
+DOT : '.' ;
 
 // Literals
 DIGITS : [0-9]+ ;
@@ -40,6 +65,7 @@ CLOSE : [Cc][Ll][Oo][Ss][Ee] ;
 COM : [Cc][Oo][Mm] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;
+DATA : [Dd][Aa][Tt][Aa] -> mode(DATA_MODE);
 DECLARE : [Dd][Ee][Cc][Ll][Aa][Rr][Ee] ;
 DEF : [Dd][Ee][Ff] ;
 DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
@@ -133,3 +159,21 @@ NL : '\r'? '\n' ;
 // Don't actually consume NL because it's needed to parse statement ' NL statement.
 COMMENT : '\'' ~[\r\n]* -> skip;
 WS : [ \t]+ -> skip ;
+
+// DATA statements have CSV-like lexical rules, and don't support ' comments
+// or expressions.
+mode DATA_MODE;
+
+// Commas delimit fields.
+DATA_COMMA : ',' ;
+// : or NL ends the data statement.
+DATA_COLON : ':' -> mode(DEFAULT_MODE) ;
+DATA_NL : '\r'? '\n' -> mode(DEFAULT_MODE) ;
+// Everything between quotes is captured literally.
+DATA_QUOTED : '"' ~["\r\n]* '"' ;
+// Otherwise, capture everything except leading and trailing whitespace.
+DATA_UNQUOTED : ~[ \t,\n\r:]   // _ "x" _
+              | ~[ \t,\n\r:]~[ \t,\n\r:] // _ "xy" _
+              | ~[ \t,\n\r:]~[,\n\r:]+~[ \t,\n\r:] ; // _ "x_y_z" _
+// Whitespace before and after fields is ignored.
+DATA_WS : [ \t]+ -> skip ;
