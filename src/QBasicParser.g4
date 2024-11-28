@@ -78,6 +78,7 @@ statement
   | event_control_statement
   | end_statement
   | exit_statement
+  | field_statement
   | for_next_statement
   | get_io_statement
   | gosub_statement
@@ -390,6 +391,14 @@ end_statement
 // determine if it is legal at the current point in the program.
 exit_statement
   : EXIT (DEF | DO | FOR | FUNCTION | SUB)
+  ;
+
+field_statement
+  : FIELD '#'? expr COMMA field_assignment (COMMA field_assignment)*
+  ;
+
+field_assignment
+  : expr AS variable_or_function_call
   ;
 
 // FOR..NEXT is a totally reasonable for loop, except that multiple NEXTs can

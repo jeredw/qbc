@@ -1,0 +1,21 @@
+(program 
+  (statement 
+    (field_statement field # 
+      (expr 
+        (literal 1)) , 
+      (field_assignment 
+        (expr 
+          (literal 5)) as 
+        (variable_or_function_call f1$)))) \n 
+  (statement 
+    (field_statement field 
+      (expr 
+        (literal 1)) , 
+      (field_assignment 
+        (expr 
+          (literal 6)) as 
+        (variable_or_function_call f1$)) , 
+      (field_assignment 
+        (expr 
+          (literal 7)) as 
+        (variable_or_function_call f2)))) \n)

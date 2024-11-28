@@ -137,7 +137,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `ERROR`          | Statement   | ✅      |
 | `EXIT`           | Statement   | ✅      |
 | `EXP`            | Function    | -       |
-| `FIELD`          | Statement   | ⛔      |
+| `FIELD`          | Statement   | ✅      |
 | `FILEATTR`       | Function    | -       |
 | `FILES`          | Statement   | -       |
 | `FIX`            | Function    | -       |

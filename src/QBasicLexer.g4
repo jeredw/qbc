@@ -82,6 +82,7 @@ EQV : [Ee][Qq][Vv] ;
 ERROR : [Ee][Rr][Rr][Oo][Rr] ;
 END : [Ee][Nn][Dd] ;
 EXIT : [Ee][Xx][Ii][Tt] ;
+FIELD : [Ff][Ii][Ee][Ll][Dd] ;
 FOR : [Ff][Oo][Rr] ;
 FN : [Ff][Nn] ;
 FUNCTION : [Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn] ;
@@ -153,7 +154,7 @@ XOR : [Xx][Oo][Rr] ;
 FNID : [Ff][Nn][A-Za-z][A-Za-z0-9.]* TYPE_SIGIL? ;
 // ID matches identifier names not starting with FN.
 ID : [A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
-   | [Ff][A-MO-Za-mo-z][A-Za-z0-9.]* TYPE_SIGIL?
+   | [Ff][A-MO-Za-mo-z0-9.][A-Za-z0-9.]* TYPE_SIGIL?
    | [Ff] TYPE_SIGIL?
    ;
 
