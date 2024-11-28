@@ -145,7 +145,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `FRE`            | Function    | -       |
 | `FREEFILE`       | Function    | -       |
 | `FUNCTION`       | Statement   | ✅      |
-| `GET` I/O        | Statement   | ⛔      |
+| `GET` I/O        | Statement   | ✅      |
 | `GET` Graphics   | Statement   | ⛔      |
 | `GOSUB`          | Statement   | ✅      |
 | `GOTO`           | Statement   | ✅      |
@@ -173,7 +173,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `LINE INPUT`     | Statement   | ✅      |
 | `LIST`           | Keyword     | ⛔      |
 | `LOCATE`         | Statement   | -       |
-| `LOCK`           | Statement   | ⛔      |
+| `LOCK`           | Statement   | ✅      |
 | `LOF`            | Function    | -       |
 | `LOG`            | Function    | -       |
 | `LONG`           | Keyword     | ✅      |
@@ -232,11 +232,11 @@ keywords as arguments - it's probably easier just to parse those.
 | `PRINT`          | Statement   | ✅      |
 | `PRINT USING`    | Statement   | ✅      |
 | `PSET`           | Statement   | ⛔      |
-| `PUT` I/O        | Statement   | ⛔      |
+| `PUT` I/O        | Statement   | ✅      |
 | `PUT` Graphics   | Statement   | ⛔      |
 | `RANDOM`         | Keyword     | ✅      |
 | `RANDOMIZE`      | Statement   | -       |
-| `READ`           | Statement   | ⛔      |
+| `READ`           | Statement   | ✅      |
 | `REDIM`          | Statement   | ✅      |
 | `REM`            | Statement   | ✅      |
 | `RESET`          | Statement   | -       |
@@ -292,7 +292,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `TYPE`           | Statement   | ✅      |
 | `UBOUND`         | Function    | -       |
 | `UCASE$`         | Function    | -       |
-| `UNLOCK`         | Statement   | ⛔      |
+| `UNLOCK`         | Statement   | ✅      |
 | `UNTIL`          | Keyword     | ✅      |
 | `USING`          | Keyword     | ✅      |
 | `VARPTR`         | Function    | -       |

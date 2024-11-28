@@ -1,0 +1,91 @@
+(program statement 
+  (type_statement TYPE 
+    (untyped_id TestRecord) \n 
+    (type_element 
+      (untyped_id Student) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 20)) \n) 
+    (type_element 
+      (untyped_id Score) AS 
+      (type_name_for_type_element SINGLE) \n) END TYPE) \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id MyClass) AS 
+        (type_name 
+          (untyped_id TestRecord))))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "FINAL.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (builtin_function LEN 
+          ( 
+            (expr 
+              (variable_or_function_call MyClass)) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call MyClass.Student) = 
+      (expr 
+        (literal "MarySa")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call MyClass.Score) = 
+      (expr 
+        (literal 99)))) \n 
+  (statement 
+    (put_io_statement PUT # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)) , 
+      (variable_or_function_call MyClass))) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "FINAL.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (builtin_function LEN 
+          ( 
+            (expr 
+              (variable_or_function_call MyClass)) ))))) \n 
+  (statement 
+    (get_io_statement GET # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)) , 
+      (variable_or_function_call MyClass))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "STUDENT:")) , 
+      (expr 
+        (variable_or_function_call MyClass.Student)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "SCORE:")) , 
+      (expr 
+        (variable_or_function_call MyClass.Score)))) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id KILL) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal "FINAL.DAT")))))) \n)

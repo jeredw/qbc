@@ -79,12 +79,14 @@ statement
   | end_statement
   | exit_statement
   | for_next_statement
+  | get_io_statement
   | gosub_statement
   | goto_statement
   | if_inline_statement
   | input_statement
   | key_statement
   | line_input_statement
+  | lock_statement
   | on_error_statement
   | on_event_gosub_statement
   | on_expr_gosub_statement
@@ -94,11 +96,13 @@ statement
   | play_statement
   | print_statement
   | print_using_statement
+  | put_io_statement
   | read_statement
   | resume_statement
   | return_statement
   | scope_statement
   | select_case_statement
+  | unlock_statement
   | while_wend_statement
   | width_statement
   | write_statement
@@ -395,6 +399,10 @@ for_next_statement
     NEXT ID?
   ;
 
+get_io_statement
+  : GET '#'? expr (COMMA expr? (COMMA variable_or_function_call)?)?
+  ;
+
 gosub_statement
   : GOSUB target
   ;
@@ -439,6 +447,10 @@ key_statement
 line_input_statement
   : LINE INPUT ';'? (STRING_LITERAL ';')? variable_or_function_call
   | LINE INPUT file_number COMMA variable_or_function_call
+  ;
+
+lock_statement
+  : LOCK '#'? expr (COMMA (expr | expr TO expr))?
   ;
 
 on_error_statement
@@ -509,8 +521,9 @@ print_using_statement
   : PRINT (file_number COMMA)? USING expr ';' expr? (';' | ';'? expr)*
   ;
 
-// A file number can be any expression that evaluates to a valid file handle
-file_number : '#' expr ;
+put_io_statement
+  : PUT '#'? expr (COMMA expr? (COMMA variable_or_function_call)?)?
+  ;
 
 read_statement
   : READ variable_or_function_call (COMMA variable_or_function_call)*
@@ -570,6 +583,10 @@ scope_variable
   | ID array_declaration?
   ;
 
+unlock_statement
+  : UNLOCK '#'? expr (COMMA (expr | expr TO expr))?
+  ;
+
 // Loop construct from an older BASIC?
 while_wend_statement
   : WHILE expr block WEND
@@ -586,6 +603,10 @@ width_statement
 write_statement
 // Can omit argument to write an empty line
   : WRITE
+// The QBasic help file says '#' is optional, but it's totally not.  WRITE 1, 1
+// prints two ones to standard output, while WRITE #1, 1 prints a 1 to file
+// number 1.  WRITE #1, prints a blank line to file number 1, while WRITE 1, is
+// a syntax error.
   | WRITE file_number COMMA
 // The IDE rewrites ';' as ',' for WRITE, so accept either.
   | WRITE (file_number COMMA)? expr ((COMMA | ';') expr)*
@@ -696,6 +717,9 @@ type_name_for_type_element
   | untyped_id
   | untyped_fnid
   ;
+
+// A file number can be any expression that evaluates to a valid file handle
+file_number : '#' expr ;
 
 // QBasic permits sizing a fixed string with a constant after '*'.  The IDE
 // will remove any type sigils after the constant.

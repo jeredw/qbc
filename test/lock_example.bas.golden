@@ -1,0 +1,39 @@
+(program statement \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "TEST.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (for_next_statement FOR i% = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (put_io_statement PUT # 
+            (expr 
+              (literal 1)) , , 
+            (variable_or_function_call i%))) \n statement) NEXT i%)) \n 
+  (statement 
+    (lock_statement LOCK # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (get_io_statement GET # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)) , 
+      (variable_or_function_call i%))) \n 
+  (statement 
+    (unlock_statement UNLOCK # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n)

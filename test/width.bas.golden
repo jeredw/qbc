@@ -22,4 +22,11 @@
   (statement 
     (width_statement width lprint 
       (expr 
-        (literal 40)))) \n)
+        (literal 40)))) \n 
+  (statement 
+    (width_statement width 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal 80)))) \n)

@@ -1,0 +1,45 @@
+(program 
+  (statement 
+    (get_io_statement get 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (get_io_statement get 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (get_io_statement get 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call foo$))) \n 
+  (statement 
+    (get_io_statement get 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)) , 
+      (variable_or_function_call foo$))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call foo$))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)) , 
+      (variable_or_function_call foo$))) \n)
