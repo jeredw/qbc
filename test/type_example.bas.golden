@@ -41,17 +41,15 @@
         (literal 2)))) \n 
   (statement 
     (print_statement PRINT 
-      (print_args 
-        (expr 
-          (variable_or_function_call Deck 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 1)) )) . Suit)) , 
-        (print_args 
-          (expr 
-            (variable_or_function_call Deck 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 1)) )) . Value)))))) \n)
+      (expr 
+        (variable_or_function_call Deck 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 1)) )) . Suit)) , 
+      (expr 
+        (variable_or_function_call Deck 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 1)) )) . Value)))) \n)

@@ -8,9 +8,8 @@
       (block \n 
         (statement 
           (print_statement print 
-            (print_args 
-              (expr 
-                (literal "hi"))))) \n statement) next i)) \n 
+            (expr 
+              (literal "hi")))) \n statement) next i)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -37,9 +36,8 @@
             (block \n statement) next b)) \n statement) next a)) \n statement \n statement \n statement \n 
   (statement 
     (print_statement print 
-      (print_args 
-        (expr 
-          (literal "hi"))))) : 
+      (expr 
+        (literal "hi")))) : 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -49,14 +47,12 @@
       (block : 
         (statement 
           (print_statement print 
-            (print_args 
-              (expr 
-                (literal "hi"))))) \n 
+            (expr 
+              (literal "hi")))) \n 
         (statement 
           (print_statement print 
-            (print_args 
-              (expr 
-                (literal "foo"))))) : statement) next)) \n 
+            (expr 
+              (literal "foo")))) : statement) next)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -73,9 +69,7 @@
             (block : 
               (statement 
                 (print_statement print 
-                  (print_args 
-                    (expr 
-                      (variable_or_function_call i)) , 
-                    (print_args 
-                      (expr 
-                        (variable_or_function_call j)))))) :) next j)) :) next i)) \n)
+                  (expr 
+                    (variable_or_function_call i)) , 
+                  (expr 
+                    (variable_or_function_call j)))) :) next j)) :) next i)) \n)

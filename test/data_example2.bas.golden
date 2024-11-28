@@ -1,0 +1,39 @@
+(program 
+  (statement 
+    (data_statement DATA 
+      (data_item abc) , data_item , 
+      (data_item def))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item 1) , data_item , 
+      (data_item 2))) \n 
+  (statement 
+    (read_statement READ 
+      (read_argument_list 
+        (variable_or_function_call A$) , 
+        (variable_or_function_call B$) , 
+        (variable_or_function_call C$)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call A$)) , 
+      (expr 
+        (variable_or_function_call B$)) , 
+      (expr 
+        (variable_or_function_call C$)))) \n 
+  (statement 
+    (print_statement PRINT)) \n 
+  (statement 
+    (read_statement READ 
+      (read_argument_list 
+        (variable_or_function_call A) , 
+        (variable_or_function_call B) , 
+        (variable_or_function_call C)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call A)) , 
+      (expr 
+        (variable_or_function_call B)) , 
+      (expr 
+        (variable_or_function_call C)))) \n)

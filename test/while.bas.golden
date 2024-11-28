@@ -11,14 +11,12 @@
       (block \n 
         (statement 
           (print_statement print 
-            (print_args 
-              (expr 
-                (literal "ok"))))) \n statement) wend)) \n 
+            (expr 
+              (literal "ok")))) \n statement) wend)) \n 
   (statement 
     (print_statement print 
-      (print_args 
-        (expr 
-          (literal "hi"))))) : 
+      (expr 
+        (literal "hi")))) : 
   (statement 
     (while_wend_statement while 
       (expr 
@@ -26,16 +24,13 @@
       (block : 
         (statement 
           (print_statement print 
-            (print_args 
-              (expr 
-                (literal "stuff"))))) \n 
+            (expr 
+              (literal "stuff")))) \n 
         (statement 
           (print_statement print 
-            (print_args 
-              (expr 
-                (literal "blah"))))) : statement) wend)) : 
+            (expr 
+              (literal "blah")))) : statement) wend)) : 
   (statement 
     (print_statement print 
-      (print_args 
-        (expr 
-          (literal "ok"))))) \n)
+      (expr 
+        (literal "ok")))) \n)

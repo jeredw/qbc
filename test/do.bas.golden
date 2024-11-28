@@ -10,9 +10,8 @@
       (block \n 
         (statement 
           (print_statement print 
-            (print_args 
-              (expr 
-                (literal "hi"))))) \n statement) loop 
+            (expr 
+              (literal "hi")))) \n statement) loop 
       (do_condition while 
         (expr 
           (literal 0))))) \n 
@@ -53,9 +52,8 @@
     (line_number 30)) statement \n 
   (statement 
     (print_statement print 
-      (print_args 
-        (expr 
-          (literal "hi"))))) : 
+      (expr 
+        (literal "hi")))) : 
   (statement 
     (do_loop_statement do 
       (block \n 
@@ -69,9 +67,8 @@
     (line_number 50)) statement \n 
   (statement 
     (print_statement print 
-      (print_args 
-        (expr 
-          (literal "hi"))))) : 
+      (expr 
+        (literal "hi")))) : 
   (statement 
     (do_loop_statement do 
       (block : 

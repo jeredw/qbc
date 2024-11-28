@@ -48,28 +48,22 @@
                 (variable_or_function_call Score))))) \n 
         (statement 
           (print_statement PRINT 
-            (print_args 
-              (expr 
-                (variable_or_function_call Count)) ; 
-              (print_args 
-                (expr 
-                  (variable_or_function_call Score)))))) \n statement) LOOP)) \n 
+            (expr 
+              (variable_or_function_call Count)) ; 
+            (expr 
+              (variable_or_function_call Score)))) \n statement) LOOP)) \n 
   (statement 
-    (print_statement PRINT print_args)) \n 
+    (print_statement PRINT)) \n 
   (statement 
     (print_statement PRINT 
-      (print_args 
+      (expr 
+        (literal "Total students:")) ; 
+      (expr 
+        (variable_or_function_call Count)) ; 
+      (expr 
+        (literal " Average score:")) ; 
+      (expr 
         (expr 
-          (literal "Total students:")) ; 
-        (print_args 
-          (expr 
-            (variable_or_function_call Count)) ; 
-          (print_args 
-            (expr 
-              (literal " Average score:")) ; 
-            (print_args 
-              (expr 
-                (expr 
-                  (variable_or_function_call Total)) / 
-                (expr 
-                  (variable_or_function_call Count))))))))) \n)
+          (variable_or_function_call Total)) / 
+        (expr 
+          (variable_or_function_call Count))))) \n)

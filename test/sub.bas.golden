@@ -25,9 +25,8 @@
     (end_sub_statement end sub : 
       (statement 
         (print_statement print 
-          (print_args 
-            (expr 
-              (literal "wow"))))))) \n 
+          (expr 
+            (literal "wow")))))) \n 
   (sub_statement sub 
     (untyped_id quux) static 
     (block \n statement) 
@@ -37,14 +36,12 @@
     (block : 
       (statement 
         (print_statement print 
-          (print_args 
-            (expr 
-              (literal "hi"))))) \n 
+          (expr 
+            (literal "hi")))) \n 
       (statement 
         (print_statement print 
-          (print_args 
-            (expr 
-              (literal "stuff"))))) : statement) 
+          (expr 
+            (literal "stuff")))) : statement) 
     (end_sub_statement end sub)) \n 
   (sub_statement sub 
     (untyped_id empty) 

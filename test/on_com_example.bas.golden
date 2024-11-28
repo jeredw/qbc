@@ -33,8 +33,7 @@
       (untyped_id ComHandler)) :) statement \n 
   (statement 
     (print_statement PRINT 
-      (print_args 
-        (expr 
-          (literal "Something was typed at the terminal attached to COM1."))))) \n 
+      (expr 
+        (literal "Something was typed at the terminal attached to COM1.")))) \n 
   (statement 
     (return_statement RETURN)) \n)

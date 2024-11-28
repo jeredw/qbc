@@ -9,9 +9,8 @@
         (block \n 
           (statement 
             (print_statement print 
-              (print_args 
-                (expr 
-                  (literal "huh"))))) \n statement)) 
+              (expr 
+                (literal "huh")))) \n statement)) 
       (case_block 
         (case_statement case 
           (case_expr is >= 
@@ -69,9 +68,8 @@
         (block : 
           (statement 
             (print_statement print 
-              (print_args 
-                (expr 
-                  (literal "hi"))))) :)) 
+              (expr 
+                (literal "hi")))) :)) 
       (end_select_statement end select))) \n statement \n 
   (statement 
     (select_case_statement select case 
@@ -88,9 +86,8 @@
         (block : 
           (statement 
             (print_statement print 
-              (print_args 
-                (expr 
-                  (literal "hi"))))) :)) 
+              (expr 
+                (literal "hi")))) :)) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -99,9 +96,8 @@
         (block : 
           (statement 
             (print_statement print 
-              (print_args 
-                (expr 
-                  (literal "bye"))))) \n statement)) 
+              (expr 
+                (literal "bye")))) \n statement)) 
       (end_select_statement end select))) \n statement \n 
   (statement 
     (select_case_statement select case 

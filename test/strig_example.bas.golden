@@ -1,9 +1,8 @@
 (program 
   (statement 
     (print_statement PRINT 
-      (print_args 
-        (expr 
-          (literal "Press Esc to exit."))))) \n 
+      (expr 
+        (literal "Press Esc to exit.")))) \n 
   (statement 
     (do_loop_statement DO 
       (block \n 

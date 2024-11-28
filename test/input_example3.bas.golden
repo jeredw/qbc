@@ -88,13 +88,12 @@
           (then_block 
             (statement 
               (print_statement PRINT 
-                (print_args 
-                  (expr 
-                    (variable_or_function_call CHR$ 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call C)) ))))) ;)) \n) 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call C)) )))) ;)) \n) 
           (end_if_statement END IF)) \n statement \n statement) LOOP)) \n 
   (statement 
     (end_statement END)) \n statement \n)

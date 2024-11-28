@@ -1,16 +1,13 @@
 (program 
   (statement 
     (print_statement prINT 
-      (print_args 
-        (expr 
-          (literal "hello"))))) \n 
+      (expr 
+        (literal "hello")))) \n 
   (statement 
     (print_statement print 
-      (print_args 
-        (expr 
-          (literal "yes"))))) \n 
+      (expr 
+        (literal "yes")))) \n 
   (statement 
     (print_statement PRINT 
-      (print_args 
-        (expr 
-          (literal "ok"))))) \n)
+      (expr 
+        (literal "ok")))) \n)

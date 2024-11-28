@@ -1,0 +1,100 @@
+(program statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call C$) = 
+      (expr 
+        (variable_or_function_call DATE$)))) \n statement \n statement \n 
+  (statement 
+    (for_next_statement FOR I% = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (variable_or_function_call VAL 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call C$)) )))) 
+      (block \n 
+        (statement 
+          (read_statement READ 
+            (read_argument_list 
+              (variable_or_function_call Month$)))) \n statement) NEXT)) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item January) , 
+      (data_item February) , 
+      (data_item March) , 
+      (data_item April) , 
+      (data_item May) , 
+      (data_item June) , 
+      (data_item July))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item August) , 
+      (data_item September) , 
+      (data_item October) , 
+      (data_item November) , 
+      (data_item December))) \n statement \n statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Day$) = 
+      (expr 
+        (variable_or_function_call MID$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call C$)) , 
+              (expr 
+                (literal 4)) , 
+              (expr 
+                (literal 2)) )))))) \n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call LEFT$ 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (variable_or_function_call Day$)) , 
+                (expr 
+                  (literal 1)) )))) = 
+        (expr 
+          (literal "0"))) THEN 
+      (if_inline_action 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Day$) = 
+            (expr 
+              (variable_or_function_call RIGHT$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Day$)) , 
+                    (expr 
+                      (literal 1)) ))))))))) \n statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Year$) = 
+      (expr 
+        (variable_or_function_call RIGHT$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call C$)) , 
+              (expr 
+                (literal 4)) )))))) \n statement \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Today is ")) 
+      (expr 
+        (variable_or_function_call Month$)) 
+      (expr 
+        (literal " ")) 
+      (expr 
+        (variable_or_function_call Day$)) 
+      (expr 
+        (literal ", ")) 
+      (expr 
+        (variable_or_function_call Year$)))) \n)

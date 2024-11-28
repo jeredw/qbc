@@ -309,6 +309,9 @@ const_assignment
 // TODO: Only a limited subset of expressions are supported here.
 const_expr : expr ;
 
+// The IDE complains if you type a DATA statement inside a SUB or FUNCTION, but
+// qbasic /run will quietly move any such statements out to the top level.  So
+// we allow DATA statements anywhere.
 data_statement
   : DATA data_item (DATA_COMMA data_item)*
   ;
@@ -491,29 +494,19 @@ play_statement
   ;
 
 // PRINT accepts an optional file handle and then zero or more expressions
-// separated by a COMMA or ';'. There can be a trailing COMMA or ';' even if
-// there is no other argument.
+// separated by a ',' or ';'. There can be a trailing ',' or ';' even if
+// there is no other argument.  The IDE inserts a ';' between expressions that
+// have no separator.
 print_statement
-  : PRINT (file_number COMMA)? print_args (COMMA | ';')?
-  ;
-
-print_args
-  : expr
-  | expr (COMMA | ';') print_args
-  |
+  : PRINT (file_number COMMA)? expr? ((COMMA | ';') | (COMMA | ';')? expr)*
   ;
 
 // PRINT USING must use ';' expression separators - the IDE auto-corrects
-// COMMA to ';'. The USING expr must be a format string, and must always be
-// followed by ';'.
+// ';' to ';'. The USING expr must be a format string, and must always be
+// followed by ';'.  The IDE inserts a ';' between expressions that have no
+// separator.
 print_using_statement
-  : PRINT (file_number COMMA)? USING expr ';' print_using_args ';'?
-  ;
-
-print_using_args
-  : expr
-  | expr ';' print_using_args
-  |
+  : PRINT (file_number COMMA)? USING expr ';' expr? (';' | ';'? expr)*
   ;
 
 // A file number can be any expression that evaluates to a valid file handle
