@@ -1,0 +1,177 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable KeyText$ 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 3))) ))))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item Add) , 
+      (data_item Delete) , 
+      (data_item Quit))) \n statement \n 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 3)) 
+      (block \n 
+        (statement 
+          (read_statement READ 
+            (variable_or_function_call KeyText$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call I)) ))))) \n 
+        (statement 
+          (key_statement KEY 
+            (expr 
+              (variable_or_function_call I)) , 
+            (expr 
+              (expr 
+                (variable_or_function_call KeyText$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) )))) + 
+              (expr 
+                (variable_or_function_call CHR$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 13)) ))))))) \n statement) NEXT I)) \n statement \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "                 Main Menu")))) : 
+  (statement 
+    (print_statement PRINT)) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "           Add to list 
+          (F1)")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "           Delete from list 
+          (F2)")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "           Quit 
+          (F3)")))) : 
+  (statement 
+    (print_statement PRINT)) \n statement \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n 
+        (statement 
+          (call_statement 
+            (untyped_id LOCATE) 
+            (call_argument_list 
+              (call_argument 
+                (expr 
+                  (literal 7))) , 
+              (call_argument 
+                (expr 
+                  (literal 1)))))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal 50)) )))) ;)) \n 
+        (statement 
+          (call_statement 
+            (untyped_id LOCATE) 
+            (call_argument_list 
+              (call_argument 
+                (expr 
+                  (literal 7))) , 
+              (call_argument 
+                (expr 
+                  (literal 1)))))) : 
+        (statement 
+          (input_statement INPUT "             Enter your choice:" , 
+            (variable_or_function_call R$))) \n 
+        (statement 
+          (select_case_statement SELECT CASE 
+            (expr 
+              (variable_or_function_call R$)) 
+            (before_first_case \n) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (literal "Add"))) , 
+                (case_expr 
+                  (expr 
+                    (literal "Delete")))) 
+              (block \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id LOCATE) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (literal 10))) , 
+                      (call_argument 
+                        (expr 
+                          (literal 1)))))) : 
+                (statement 
+                  (print_statement PRINT 
+                    (expr 
+                      (variable_or_function_call SPACE$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (literal 15)) )))) ;)) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id LOCATE) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (literal 10))) , 
+                      (call_argument 
+                        (expr 
+                          (literal 1)))))) : 
+                (statement 
+                  (print_statement PRINT 
+                    (expr 
+                      (variable_or_function_call R$)) ;)) \n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (literal "Quit")))) 
+              (block \n 
+                (statement 
+                  (exit_statement EXIT DO)) \n statement)) 
+            (case_block 
+              (case_statement CASE ELSE) 
+              (block \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id LOCATE) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (literal 10))) , 
+                      (call_argument 
+                        (expr 
+                          (literal 1)))))) : 
+                (statement 
+                  (print_statement PRINT 
+                    (expr 
+                      (literal "Enter first word or press key.")))) \n statement)) 
+            (end_select_statement END SELECT))) \n statement) LOOP)) \n)
