@@ -1,0 +1,13 @@
+(program 
+  (statement 
+    (input_statement INPUT "Old Name: " ; 
+      (variable_or_function_call OldFN$))) \n 
+  (statement 
+    (input_statement INPUT "New Name: " ; 
+      (variable_or_function_call NewFN$))) \n 
+  (statement 
+    (name_statement NAME 
+      (expr 
+        (variable_or_function_call OldFN$)) AS 
+      (expr 
+        (variable_or_function_call NewFN$)))) \n)

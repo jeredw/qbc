@@ -1,0 +1,41 @@
+(program 
+  (statement 
+    (clear_statement clear)) \n 
+  (statement 
+    (clear_statement clear 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (clear_statement clear 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (clear_statement clear 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (clear_statement clear , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (clear_statement clear , 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (clear_statement clear , , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (clear_statement clear 
+      (expr 
+        (literal 1)) , , 
+      (expr 
+        (literal 2)))) \n)

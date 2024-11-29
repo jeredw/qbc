@@ -67,6 +67,7 @@ statement
   | assignment_statement
   | call_statement
   | call_absolute_statement
+  | clear_statement
   | close_statement
   | const_statement
   | data_statement
@@ -92,6 +93,7 @@ statement
   | lprint_statement
   | lprint_using_statement
   | lset_statement
+  | name_statement
   | on_error_statement
   | on_event_gosub_statement
   | on_expr_gosub_statement
@@ -307,6 +309,14 @@ event_control_statement
   | TIMER (ON | OFF | STOP)
   ;
 
+// The help file only mentions CLEAR ,,stack but the langauge seems to accept 
+// two optional arguments.
+clear_statement
+  : CLEAR expr?
+  | CLEAR expr? COMMA expr
+  | CLEAR expr? COMMA expr? COMMA stacksize=expr
+  ;
+
 close_statement
   : CLOSE ('#'? expr)? (COMMA '#'? expr)*
   ;
@@ -484,6 +494,10 @@ lprint_using_statement
 
 lset_statement
   : LSET variable_or_function_call '=' expr
+  ;
+
+name_statement
+  : NAME oldspec=expr AS newspec=expr
   ;
 
 on_error_statement

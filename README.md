@@ -91,7 +91,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `CHR$`           | Function    | -       |
 | `CINT`           | Function    | -       |
 | `CIRCLE`         | Statement   | ⛔      |
-| `CLEAR`          | Statement   | ⛔      |
+| `CLEAR`          | Statement   | ✅      |
 | `CLNG`           | Function    | -       |
 | `CLOSE`          | Statement   | ✅      |
 | `CLS`            | Statement   | -       |
@@ -193,7 +193,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `MKS$`           | Function    | -       |
 | `MKSMBF$`        | Function    | -       |
 | `MOD`            | Operator    | ✅      |
-| `NAME`           | Statement   | ⛔      |
+| `NAME`           | Statement   | ✅      |
 | `NEXT`           | Keyword     | 🚧      |
 | `NOT`            | Operator    | ✅      |
 | `OCT$`           | Function    | -       |
