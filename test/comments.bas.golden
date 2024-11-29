@@ -1,3 +1,7 @@
 (program statement \n 
   (statement 
-    (rem_statement rem this is also a comment : so is this : and this : and this)) \n)
+    (rem_statement rem)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal 42)))) \n)

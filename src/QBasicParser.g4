@@ -63,8 +63,7 @@ label
   : (line_number | text_label COLON) ;
 
 statement
-  : rem_statement  // Slurps up the rest of its line.
-  | assignment_statement
+  : assignment_statement
   | call_statement
   | call_absolute_statement
   | clear_statement
@@ -106,6 +105,7 @@ statement
   | print_using_statement
   | put_io_statement
   | read_statement
+  | rem_statement
   | resume_statement
   | return_statement
   | rset_statement
@@ -119,14 +119,6 @@ statement
   | write_statement
 // Statements can be empty after line labels, before or between :.
   |
-  ;
-
-// REM style comments start wherever a statement begins and consume the rest of
-// the line. Because statements can only start in specific places, it is
-// complicated to remove them with other comments in the lexer. We just include
-// them in the parse tree and ignore them.
-rem_statement
-  : REM (~NL)*
   ;
 
 declare_statement
@@ -579,6 +571,12 @@ put_io_statement
 
 read_statement
   : READ variable_or_function_call (COMMA variable_or_function_call)*
+  ;
+
+// The lexer slurps up the rest of the line and returns a REM token so that we
+// can match the start of a statement.
+rem_statement
+  : REM
   ;
 
 // A special kind of return statement just for ON ERROR handlers.

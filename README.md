@@ -121,7 +121,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `DEFSTR`         | Statement   | ✅      |
 | `DIM`            | Statement   | ✅      |
 | `DO`...`LOOP`    | Statement   | ✅      |
-| `$DYNAMIC`       | Metacommand | ⛔      |
+| `$DYNAMIC`       | Metacommand | ✅      |
 | `ELSE`           | Keyword     | ✅      |
 | `ELSEIF`         | Keyword     | ✅      |
 | `END`            | Statement   | ✅      |
@@ -267,7 +267,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `SQR`            | Function    | -       |
 | `SQR`            | Function    | -       |
 | `STATIC`         | Statement   | ✅      |
-| `$STATIC`        | Metacommand | ⛔      |
+| `$STATIC`        | Metacommand | ✅      |
 | `STEP`           | Keyword     | ✅      |
 | `STICK`          | Function    | -       |
 | `STOP`           | Statement   | ✅      |

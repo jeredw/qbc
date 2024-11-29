@@ -66,7 +66,7 @@ CLOSE : [Cc][Ll][Oo][Ss][Ee] ;
 COM : [Cc][Oo][Mm] ;
 COMMON : [Cc][Oo][Mm][Mm][Oo][Nn] ;
 CONST : [Cc][Oo][Nn][Ss][Tt] ;
-DATA : [Dd][Aa][Tt][Aa] -> mode(DATA_MODE);
+DATA : [Dd][Aa][Tt][Aa] -> pushMode(DATA_MODE);
 DECLARE : [Dd][Ee][Cc][Ll][Aa][Rr][Ee] ;
 DEF : [Dd][Ee][Ff] ;
 DEFDBL : [Dd][Ee][Ff][Dd][Bb][Ll] ;
@@ -126,7 +126,7 @@ PUT : [Pp][Uu][Tt] ;
 RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
 READ : [Rr][Ee][Aa][Dd] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
-REM : [Rr][Ee][Mm] ;
+REM : [Rr][Ee][Mm] -> pushMode(COMMENT_MODE) ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 RSET : [Rr][Ss][Ee][Tt] ;
@@ -169,10 +169,13 @@ ID : [A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
 fragment TYPE_SIGIL: ('!' | '#' | '$' | '%' | '&') ;
 
 NL : '\r'? '\n' ;
-// Note: We skip ' comments here, but REM comments are parsed as statements.
-// Don't actually consume NL because it's needed to parse statement ' NL statement.
-COMMENT : '\'' ~[\r\n]* -> skip;
+COMMENT : '\'' -> skip, pushMode(COMMENT_MODE) ;
 WS : [ \t]+ -> skip ;
+
+mode COMMENT_MODE;
+// *** Should be checked for $STATIC and $DYNAMIC.
+COMMENT_TEXT : ~[\r\n]+ -> channel(HIDDEN) ;
+COMMENT_NL : '\r'? '\n' -> type(NL), popMode ;
 
 // DATA statements have CSV-like lexical rules, and don't support ' comments
 // or expressions.
@@ -181,8 +184,8 @@ mode DATA_MODE;
 // Commas delimit fields.
 DATA_COMMA : ',' ;
 // : or NL ends the data statement.
-DATA_COLON : ':' -> mode(DEFAULT_MODE) ;
-DATA_NL : '\r'? '\n' -> mode(DEFAULT_MODE) ;
+DATA_COLON : ':' -> popMode ;
+DATA_NL : '\r'? '\n' -> popMode ;
 // Everything between quotes is captured literally.
 DATA_QUOTED : '"' ~["\r\n]* '"' ;
 // Otherwise, capture everything except leading and trailing whitespace.
