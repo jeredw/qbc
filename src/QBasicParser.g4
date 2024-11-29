@@ -5,9 +5,9 @@
 // kinds of syntax issues.  These are noted with *** in comments.
 //
 // QBasic's lexical grammar has some quirks:  DATA statements escape the normal
-// language and use CSV-like syntax.  So a couple tokens like NL, COLON and
-// COMMA have to be aliased for different lexical modes, and must be named.
-// Otherwise, this parser uses token literals like '+' for legibility.
+// language and use CSV-like syntax.  So a couple tokens like ':' and ',' have
+// to be aliased for different lexical modes, and must be named.  Otherwise,
+// this parser uses token literals like '+' for legibility.
 parser grammar QBasicParser;
 options {
   tokenVocab = QBasicLexer;
@@ -36,27 +36,27 @@ program
        | option_statement
        | sub_statement
        | type_statement)
-      ((COLON | DATA_COLON) statement
+      (COLON statement
            | declare_statement
            | def_fn_statement
            | option_statement
-           | type_statement)* (NL | DATA_NL))*
+           | type_statement)* NL)*
   ;
 
 // block matches statements in loops, procedures, and conditionals.
 // It does not allow some statements only allowed at the top level.
 block
 // blocks can go on one line, like START : block : END
-  : (COLON statement)* (COLON | DATA_COLON)
+  : (COLON statement)* COLON
 // blocks can also span many lines, like
 // START: {block...
 // ...
 // ...}: END
   | (COLON statement)* NL
-    (label? (statement | if_block_statement) ((COLON | DATA_COLON) statement)* (NL | DATA_NL))*
+    (label? (statement | if_block_statement) (COLON statement)* NL)*
 // Match block ending keyword in the parent statement, then match NL
 // in the parent block or program.
-    label? (statement | if_block_statement) ((COLON | DATA_COLON) statement)*
+    label? (statement | if_block_statement) (COLON statement)*
   ;
 
 label
@@ -211,12 +211,12 @@ end_if_statement
   ;
 
 then_block
-  : (label? (statement | if_block_statement) ((COLON | DATA_COLON) statement)* (NL | DATA_NL))*
+  : (label? (statement | if_block_statement) (COLON statement)* NL)*
   ;
 
 else_block
-  : statement ((COLON | DATA_COLON) statement)* (NL | DATA_NL)
-    (label? (statement | if_block_statement) ((COLON | DATA_COLON) statement)* (NL | DATA_NL))*
+  : statement (COLON statement)* NL
+    (label? (statement | if_block_statement) (COLON statement)* NL)*
   ;
 
 // *** DIGITS must be 0 or 1, but that will be checked later.

@@ -184,8 +184,8 @@ mode DATA_MODE;
 // Commas delimit fields.
 DATA_COMMA : ',' ;
 // : or NL ends the data statement.
-DATA_COLON : ':' -> popMode ;
-DATA_NL : '\r'? '\n' -> popMode ;
+DATA_COLON : ':' -> type(COLON), popMode ;
+DATA_NL : '\r'? '\n' -> type(NL), popMode ;
 // Everything between quotes is captured literally.
 DATA_QUOTED : '"' ~["\r\n]* '"' ;
 // Otherwise, capture everything except leading and trailing whitespace.
