@@ -61,6 +61,7 @@ BASE : [Bb][Aa][Ss][Ee] ;
 BINARY : [Bb][Ii][Nn][Aa][Rr][Yy] ;
 CALL : [Cc][Aa][Ll][Ll] ;
 CASE : [Cc][Aa][Ss][Ee] ;
+CIRCLE : [Cc][Ii][Rr][Cc][Ll][Ee] ;
 CLEAR : [Cc][Ll][Ee][Aa][Rr] ;
 CLOSE : [Cc][Ll][Oo][Ss][Ee] ;
 COM : [Cc][Oo][Mm] ;

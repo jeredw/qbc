@@ -69,6 +69,7 @@ statement
   : assignment_statement
   | call_statement
   | call_absolute_statement
+  | circle_statement
   | clear_statement
   | close_statement
   | const_statement
@@ -304,6 +305,27 @@ event_control_statement
   | STRIG '(' expr ')' (ON | OFF | STOP)
   | TIMER (ON | OFF | STOP)
   ;
+
+circle_statement
+  : CIRCLE STEP? '(' x=expr COMMA y=expr ')' COMMA radius=expr
+    ( COMMA color=expr COMMA start=expr COMMA end=expr COMMA aspect=expr
+    | COMMA color=expr COMMA start=expr COMMA end=expr
+    | COMMA color=expr COMMA start=expr COMMA          COMMA aspect=expr
+    | COMMA color=expr COMMA start=expr
+    | COMMA color=expr COMMA            COMMA end=expr COMMA aspect=expr
+    | COMMA color=expr COMMA            COMMA end=expr
+    | COMMA color=expr COMMA            COMMA          COMMA aspect=expr
+    | COMMA color=expr
+    | COMMA            COMMA start=expr COMMA end=expr COMMA aspect=expr
+    | COMMA            COMMA start=expr COMMA end=expr
+    | COMMA            COMMA start=expr COMMA          COMMA aspect=expr
+    | COMMA            COMMA start=expr
+    | COMMA            COMMA            COMMA end=expr COMMA aspect=expr
+    | COMMA            COMMA            COMMA end=expr
+    | COMMA            COMMA            COMMA          COMMA aspect=expr
+// The IDE removes a single final comma with no other arguments.
+    | COMMA)?
+  ;    
 
 // The help file only mentions CLEAR [,,stack] but the language seems to accept
 // two optional arguments.

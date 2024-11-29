@@ -90,7 +90,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `CHDIR`          | Statement   | -       |
 | `CHR$`           | Function    | -       |
 | `CINT`           | Function    | -       |
-| `CIRCLE`         | Statement   | ⛔      |
+| `CIRCLE`         | Statement   | ✅      |
 | `CLEAR`          | Statement   | ✅      |
 | `CLNG`           | Function    | -       |
 | `CLOSE`          | Statement   | ✅      |
