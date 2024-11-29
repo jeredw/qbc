@@ -1,0 +1,38 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a$) = 
+      (expr 
+        (literal "Where is Paris?")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (builtin_function MID$ 
+          ( 
+            (expr 
+              (variable_or_function_call a$)) , 
+            (expr 
+              (literal 10)) , 
+            (expr 
+              (literal 5)) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Text$) = 
+      (expr 
+        (literal "Paris, France")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call Text$)))) \n 
+  (statement 
+    (mid_statement MID$ 
+      ( 
+        (variable_or_function_call Text$) , 
+        (expr 
+          (literal 8)) ) = 
+      (expr 
+        (literal "Texas ")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call Text$)))) \n)

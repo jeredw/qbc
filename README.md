@@ -183,8 +183,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `LPRINT USING`   | Statement   | ✅      |
 | `LSET`           | Statement   | ✅      |
 | `LTRIM$`         | Function    | -       |
-| `MID$`           | Function    | -       |
-| `MID$`           | Statement   | ⛔      |
+| `MID$`           | Function    | ✅      |
+| `MID$`           | Statement   | ✅      |
 | `MKD$`           | Function    | -       |
 | `MKDIR`          | Statement   | -       |
 | `MKDMBF$`        | Function    | -       |

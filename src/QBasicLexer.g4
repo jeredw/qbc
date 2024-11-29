@@ -108,6 +108,7 @@ LONG : [Ll][Oo][Nn][Gg] ;
 LOOP : [Ll][Oo][Oo][Pp] ;
 LPRINT : [Ll][Pp][Rr][Ii][Nn][Tt] ;
 LSET : [Ll][Ss][Ee][Tt] ;
+MID_STRING : [Mm][Ii][Dd] '$';
 MOD : [Mm][Oo][Dd] ;
 NAME : [Nn][Aa][Mm][Ee] ;
 NEXT : [Nn][Ee][Xx][Tt] ;

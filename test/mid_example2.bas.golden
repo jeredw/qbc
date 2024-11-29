@@ -1,0 +1,84 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (input_statement INPUT "Binary number = " , 
+      (variable_or_function_call Binary$))) \n statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Length) = 
+      (expr 
+        (builtin_function LEN 
+          ( 
+            (expr 
+              (variable_or_function_call Binary$)) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Decimal) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement FOR K = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (variable_or_function_call Length)) 
+      (block \n statement \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Digit$) = 
+            (expr 
+              (builtin_function MID$ 
+                ( 
+                  (expr 
+                    (variable_or_function_call Binary$)) , 
+                  (expr 
+                    (variable_or_function_call K)) , 
+                  (expr 
+                    (literal 1)) ))))) \n statement \n 
+        (if_block_statement IF 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call Digit$)) = 
+              (expr 
+                (literal "0"))) OR 
+            (expr 
+              (expr 
+                (variable_or_function_call Digit$)) = 
+              (expr 
+                (literal "1")))) THEN \n 
+          (then_block statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Decimal) = 
+                (expr 
+                  (expr 
+                    (expr 
+                      (literal 2)) * 
+                    (expr 
+                      (variable_or_function_call Decimal))) + 
+                  (expr 
+                    (variable_or_function_call VAL 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Digit$)) ))))))) \n) 
+          (else_block_statement ELSE 
+            (else_block statement \n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Error--invalid binary digit: ")) ; 
+                  (expr 
+                    (variable_or_function_call Digit$)))) \n 
+              (statement 
+                (exit_statement EXIT FOR)) \n)) 
+          (end_if_statement END IF)) \n statement) NEXT)) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Decimal number =")) 
+      (expr 
+        (variable_or_function_call Decimal)))) \n)

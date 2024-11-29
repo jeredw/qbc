@@ -1,0 +1,39 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function mid$ 
+          ( 
+            (expr 
+              (literal "hello")) , 
+            (expr 
+              (literal 1)) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function mid$ 
+          ( 
+            (expr 
+              (literal "hello")) , 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (literal 2)) ))))) \n 
+  (statement 
+    (mid_statement mid$ 
+      ( 
+        (variable_or_function_call a$) , 
+        (expr 
+          (literal 1)) ) = 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (mid_statement mid$ 
+      ( 
+        (variable_or_function_call a$) , 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 2)) ) = 
+      (expr 
+        (literal "ok")))) \n)

@@ -93,6 +93,7 @@ statement
   | lprint_statement
   | lprint_using_statement
   | lset_statement
+  | mid_statement
   | name_statement
   | on_error_statement
   | on_event_gosub_statement
@@ -496,6 +497,10 @@ lset_statement
   : LSET variable_or_function_call '=' expr
   ;
 
+mid_statement
+  : MID_STRING '(' variable_or_function_call COMMA expr (COMMA expr)? ')' '=' expr
+  ;
+
 name_statement
   : NAME oldspec=expr AS newspec=expr
   ;
@@ -701,6 +706,7 @@ builtin_function
   : INPUT_STRING '(' n=expr (COMMA '#'? filenumber=expr)? ')'
   | IOCTL_STRING '(' '#'? filenumber=expr ')'
   | LEN '(' expr ')'
+  | MID_STRING '(' expr COMMA expr (COMMA expr)? ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
   | SEEK '(' expr ')'

@@ -35,15 +35,14 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call MID$ 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call A$)) , 
-                                (expr 
-                                  (variable_or_function_call I)) , 
-                                (expr 
-                                  (literal 1)) )))) )))) = 
+                          (builtin_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call A$)) , 
+                              (expr 
+                                (variable_or_function_call I)) , 
+                              (expr 
+                                (literal 1)) ))) )))) = 
                 (expr 
                   (literal "Z"))) THEN \n 
               (then_block 
