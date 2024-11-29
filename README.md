@@ -181,7 +181,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `LPOS`           | Function    | -       |
 | `LPRINT`         | Statement   | ✅      |
 | `LPRINT USING`   | Statement   | ✅      |
-| `LSET`           | Statement   | ⛔      |
+| `LSET`           | Statement   | ✅      |
 | `LTRIM$`         | Function    | -       |
 | `MID$`           | Function    | -       |
 | `MID$`           | Statement   | ⛔      |
@@ -246,7 +246,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `RIGHT$`         | Function    | -       |
 | `RMDIR`          | Statement   | -       |
 | `RND`            | Function    | -       |
-| `RSET`           | Statement   | ⛔      |
+| `RSET`           | Statement   | ✅      |
 | `RTRIM$`         | Function    | -       |
 | `RUN`            | Statement   | -       |
 | `SCREEN`         | Function    | -       |

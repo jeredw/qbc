@@ -1,0 +1,28 @@
+(program statement 
+  (type_statement TYPE 
+    (untyped_id TwoString) \n 
+    (type_element 
+      (untyped_id StrFld) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 2)) \n) END TYPE) \n statement 
+  (type_statement TYPE 
+    (untyped_id ThreeString) \n 
+    (type_element 
+      (untyped_id StrFld) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 3)) \n) END TYPE) \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id RecOne) AS 
+        (type_name 
+          (untyped_id TwoString))) , 
+      (dim_variable 
+        (untyped_id RecTwo) AS 
+        (type_name 
+          (untyped_id ThreeString))))) \n 
+  (statement 
+    (lset_statement LSET 
+      (variable_or_function_call RecOne) = 
+      (expr 
+        (variable_or_function_call RecTwo)))) \n)

@@ -1,0 +1,59 @@
+(program 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id TmpStr2) AS 
+        (type_name 
+          (fixed_string STRING * 10))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "         1         2         3")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "123456789012345678901234567890")))) \n statement \n statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call TmpStr$) = 
+      (expr 
+        (literal "")))) \n 
+  (statement 
+    (rset_statement RSET 
+      (variable_or_function_call TmpStr$) = 
+      (expr 
+        (literal "Another")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call TmpStr$)))) \n statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call TmpStr$) = 
+      (expr 
+        (variable_or_function_call SPACE$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 20)) )))))) \n 
+  (statement 
+    (rset_statement RSET 
+      (variable_or_function_call TmpStr$) = 
+      (expr 
+        (literal "Another")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call TmpStr$)))) \n statement \n 
+  (statement 
+    (rset_statement RSET 
+      (variable_or_function_call TmpStr2) = 
+      (expr 
+        (literal "Another")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call TmpStr2)))) \n)

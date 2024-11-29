@@ -91,6 +91,7 @@ statement
   | lock_statement
   | lprint_statement
   | lprint_using_statement
+  | lset_statement
   | on_error_statement
   | on_event_gosub_statement
   | on_expr_gosub_statement
@@ -104,6 +105,7 @@ statement
   | read_statement
   | resume_statement
   | return_statement
+  | rset_statement
   | scope_statement
   | seek_statement
   | select_case_statement
@@ -480,6 +482,10 @@ lprint_using_statement
   : LPRINT USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
   ;
 
+lset_statement
+  : LSET variable_or_function_call '=' expr
+  ;
+
 on_error_statement
   : ON ERROR (GOTO target | RESUME NEXT)
   ;
@@ -563,6 +569,10 @@ resume_statement
 // Return can optionally return anywhere. Awesome.
 return_statement
   : RETURN target?
+  ;
+
+rset_statement
+  : RSET variable_or_function_call '=' expr
   ;
 
 // SELECT CASE matches CASE statements at the top level, but not inside nested

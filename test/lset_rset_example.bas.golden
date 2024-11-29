@@ -1,0 +1,91 @@
+(program 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "FILEDAT.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (literal 10)))) \n 
+  (statement 
+    (field_statement FIELD # 
+      (expr 
+        (literal 1)) , 
+      (field_assignment 
+        (expr 
+          (literal 5)) AS 
+        (variable_or_function_call Ls1$)) , 
+      (field_assignment 
+        (expr 
+          (literal 5)) AS 
+        (variable_or_function_call Rs1$)))) \n 
+  (statement 
+    (lset_statement LSET 
+      (variable_or_function_call Ls1$) = 
+      (expr 
+        (literal "LSET")))) \n 
+  (statement 
+    (rset_statement RSET 
+      (variable_or_function_call Rs1$) = 
+      (expr 
+        (literal "RSET")))) \n 
+  (statement 
+    (put_io_statement PUT # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "FILEDAT.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (literal 10)))) \n 
+  (statement 
+    (field_statement FIELD # 
+      (expr 
+        (literal 1)) , 
+      (field_assignment 
+        (expr 
+          (literal 5)) AS 
+        (variable_or_function_call Ls2$)) , 
+      (field_assignment 
+        (expr 
+          (literal 5)) AS 
+        (variable_or_function_call Rs2$)))) \n 
+  (statement 
+    (get_io_statement GET # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (expr 
+          (expr 
+            (literal "*")) + 
+          (expr 
+            (variable_or_function_call Ls2$))) + 
+        (expr 
+          (literal "*"))) , 
+      (expr 
+        (expr 
+          (expr 
+            (literal "*")) + 
+          (expr 
+            (variable_or_function_call Rs2$))) + 
+        (expr 
+          (literal "*"))))) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n)
