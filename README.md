@@ -141,7 +141,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `FILEATTR`       | Function    | -       |
 | `FILES`          | Statement   | -       |
 | `FIX`            | Function    | -       |
-| `FOR`...`NEXT`   | Statement   | 🚧      |
+| `FOR`...`NEXT`   | Statement   | ✅      |
 | `FRE`            | Function    | -       |
 | `FREEFILE`       | Function    | -       |
 | `FUNCTION`       | Statement   | ✅      |
@@ -194,7 +194,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `MKSMBF$`        | Function    | -       |
 | `MOD`            | Operator    | ✅      |
 | `NAME`           | Statement   | ✅      |
-| `NEXT`           | Keyword     | 🚧      |
+| `NEXT`           | Keyword     | ✅      |
 | `NOT`            | Operator    | ✅      |
 | `OCT$`           | Function    | -       |
 | `OFF`            | Keyword     | ✅      |

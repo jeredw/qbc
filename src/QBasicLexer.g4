@@ -111,7 +111,7 @@ LSET : [Ll][Ss][Ee][Tt] ;
 MID_STRING : [Mm][Ii][Dd] '$';
 MOD : [Mm][Oo][Dd] ;
 NAME : [Nn][Aa][Mm][Ee] ;
-NEXT : [Nn][Ee][Xx][Tt] ;
+NEXT : [Nn][Ee][Xx][Tt] -> pushMode(NEXT_MODE) ;
 NOT : [Nn][Oo][Tt] ;
 OPTION : [Oo][Pp][Tt][Ii][Oo][Nn] ;
 OFF : [Oo][Ff][Ff] ;
@@ -179,6 +179,22 @@ mode COMMENT_MODE;
 COMMENT_TEXT : ~[\r\n]+ -> channel(HIDDEN) ;
 // The final NL must be passed through to terminate REM statements.
 COMMENT_NL : '\r'? '\n' -> type(NL), popMode ;
+
+// This mode turns ',' into a special NEXT keyword so we can parse
+// NEXT i, j as NEXT i : NEXT j.
+mode NEXT_MODE;
+
+NEXT_WITH_MANDATORY_ID : ',' ;
+// Have to replicate ID here to recognize NEXT ID?
+NEXT_ID : ([A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
+        | [Ff][A-MO-Za-mo-z0-9.][A-Za-z0-9.]* TYPE_SIGIL?
+        | [Ff] TYPE_SIGIL?) -> type(ID)
+        ;
+NEXT_NL : '\r'? '\n' -> type(NL), popMode ;
+NEXT_COLON : ':' -> type(COLON), popMode ;
+NEXT_WS : [ \t]+ -> skip ;
+// Do not pushMode, so that COMMENT_MODE pops back to DEFAULT_MODE.
+NEXT_COMMENT : '\'' -> skip, mode(COMMENT_MODE) ;
 
 // DATA statements have CSV-like lexical rules, and don't support ' comments
 // or expressions.

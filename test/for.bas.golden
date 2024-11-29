@@ -33,7 +33,21 @@
               (literal 1)) to 
             (expr 
               (literal 5)) 
-            (block \n statement) next b)) \n statement) next a)) \n statement \n statement \n statement \n 
+            (block \n statement) next b)) \n statement) next a)) \n 
+  (statement 
+    (for_next_statement for a = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) 
+      (block \n 
+        (statement 
+          (for_next_statement for b = 
+            (expr 
+              (literal 1)) to 
+            (expr 
+              (literal 5)) 
+            (block \n statement) next b))) , a)) \n 
   (statement 
     (print_statement print 
       (expr 
@@ -72,4 +86,22 @@
                   (expr 
                     (variable_or_function_call i)) , 
                   (expr 
-                    (variable_or_function_call j)))) :) next j)) :) next i)) \n)
+                    (variable_or_function_call j)))) :) next j)) :) next i)) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 42)) 
+      (block :) next)) : 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "statement")))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 42)) 
+      (block :) next)) \n)

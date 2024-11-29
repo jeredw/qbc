@@ -409,13 +409,14 @@ field_assignment
   : expr AS variable_or_function_call
   ;
 
-// FOR..NEXT is a totally reasonable for loop, except that multiple NEXTs can
-// be combined into one statement using the syntax NEXT v1, v2, ... vN.
-// TODO: Figure out how to parse NEXT v1, v2, ... vN.
+// FOR...NEXT is a totally reasonable for loop, except that multiple NEXTs can
+// be combined into one statement using the syntax NEXT v1, v2, ... vN.  That
+// is handled in the lexer by a special mode just for NEXT statements that
+// turns ',' into NEXT_WITH_MANDATORY_ID.
 for_next_statement
   : FOR ID '=' expr TO expr (STEP expr)?
     block
-    NEXT ID?
+    (NEXT ID? | NEXT_WITH_MANDATORY_ID ID)
   ;
 
 get_io_statement
