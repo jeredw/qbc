@@ -125,6 +125,7 @@ REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
+SEEK : [Ss][Ee][Ee][Kk] ;
 SEG : [Ss][Ee][Gg] ;
 SELECT : [Ss][Ee][Ll][Ee][Cc][Tt] ;
 SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;

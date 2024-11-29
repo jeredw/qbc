@@ -1,0 +1,20 @@
+(program 
+  (statement 
+    (seek_statement seek # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 5)))) \n 
+  (statement 
+    (seek_statement seek 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function seek 
+          ( 
+            (expr 
+              (literal 1)) ))))) \n)

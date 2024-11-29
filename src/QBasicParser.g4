@@ -105,6 +105,7 @@ statement
   | resume_statement
   | return_statement
   | scope_statement
+  | seek_statement
   | select_case_statement
   | unlock_statement
   | while_wend_statement
@@ -608,6 +609,10 @@ scope_variable
   | ID array_declaration?
   ;
 
+seek_statement
+  : SEEK '#'? expr COMMA expr
+  ;
+
 unlock_statement
   : UNLOCK '#'? expr (COMMA (expr | expr TO expr))?
   ;
@@ -669,6 +674,7 @@ builtin_function
   | LEN '(' expr ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
+  | SEEK '(' expr ')'
   | STRIG '(' expr ')'
   | TIMER
   ;

@@ -251,8 +251,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `RUN`            | Statement   | -       |
 | `SCREEN`         | Function    | -       |
 | `SCREEN`         | Statement   | -       |
-| `SEEK`           | Function    | -       |
-| `SEEK`           | Statement   | ⛔      |
+| `SEEK`           | Function    | ✅      |
+| `SEEK`           | Statement   | ✅      |
 | `SELECT CASE`    | Statement   | ✅      |
 | `SGN`            | Function    | -       |
 | `SHARED`         | Statement   | ✅      |
