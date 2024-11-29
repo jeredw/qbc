@@ -107,6 +107,7 @@ statement
   | scope_statement
   | seek_statement
   | select_case_statement
+  | stop_statement
   | unlock_statement
   | while_wend_statement
   | width_statement
@@ -611,6 +612,10 @@ scope_variable
 
 seek_statement
   : SEEK '#'? expr COMMA expr
+  ;
+
+stop_statement
+  : STOP
   ;
 
 unlock_statement

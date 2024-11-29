@@ -270,8 +270,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `$STATIC`        | Metacommand | ⛔      |
 | `STEP`           | Keyword     | ✅      |
 | `STICK`          | Function    | -       |
-| `STOP`           | Statement   | ⛔      |
-| `STOP`           | Keyword     | ⛔      |
+| `STOP`           | Statement   | ✅      |
+| `STOP`           | Keyword     | ✅      |
 | `STR$`           | Function    | -       |
 | `STRIG`          | Function    | ✅      |
 | `STRIG`          | Statement   | ✅      |

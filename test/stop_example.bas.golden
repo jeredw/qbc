@@ -1,0 +1,22 @@
+(program 
+  (statement 
+    (for_next_statement FOR i% = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call i%)))) \n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call i%)) = 
+              (expr 
+                (literal 5))) THEN 
+            (if_inline_action 
+              (statement 
+                (stop_statement STOP))))) \n statement) NEXT i%)) \n)
