@@ -1,0 +1,29 @@
+(program statement \n statement \n statement \n statement \n statement \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "\DEV\ENGINE")) FOR 
+      (open_mode OUTPUT) AS # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (ioctl_statement IOCTL # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal "RAW")))) \n statement \n statement \n statement \n statement \n statement \n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (builtin_function IOCTL$ 
+            ( 
+              (expr 
+                (literal 1)) ))) = 
+        (expr 
+          (literal "0"))) THEN 
+      (if_inline_action 
+        (statement 
+          (close_statement CLOSE 
+            (expr 
+              (literal 1))))))) \n)

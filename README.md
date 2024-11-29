@@ -158,8 +158,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `INPUT$`         | Function    | ✅      |
 | `INT`            | Function    | -       |
 | `INTEGER`        | Keyword     | ✅      |
-| `IOCTL`          | Statement   | ⛔      |
-| `IOCTL$`         | Function    | ⛔      |
+| `IOCTL`          | Statement   | ✅      |
+| `IOCTL$`         | Function    | ✅      |
 | `IS`             | Keyword     | ✅      |
 | `KEY` Assignment | Statement   | ✅      |
 | `KEY` Event      | Statement   | ✅      |

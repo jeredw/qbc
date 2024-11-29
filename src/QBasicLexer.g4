@@ -93,6 +93,8 @@ IF : [Ii][Ff] ;
 IMP : [Ii][Mm][Pp] ;
 INPUT : [Ii][Nn][Pp][Uu][Tt] ;
 INPUT_STRING : [Ii][Nn][Pp][Uu][Tt] '$' ;
+IOCTL : [Ii][Oo][Cc][Tt][Ll] ;
+IOCTL_STRING : [Ii][Oo][Cc][Tt][Ll] '$' ;
 IS : [Ii][Ss] ;
 INTEGER : [Ii][Nn][Tt][Ee][Gg][Ee][Rr] ;
 KEY : [Kk][Ee][Yy] ;

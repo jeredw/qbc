@@ -85,9 +85,12 @@ statement
   | goto_statement
   | if_inline_statement
   | input_statement
+  | ioctl_statement
   | key_statement
   | line_input_statement
   | lock_statement
+  | lprint_statement
+  | lprint_using_statement
   | on_error_statement
   | on_event_gosub_statement
   | on_expr_gosub_statement
@@ -95,9 +98,7 @@ statement
   | open_statement
   | open_legacy_statement
   | play_statement
-  | lprint_statement
   | print_statement
-  | lprint_using_statement
   | print_using_statement
   | put_io_statement
   | read_statement
@@ -449,6 +450,10 @@ input_statement
   | INPUT file_number COMMA variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
+ioctl_statement
+  : IOCTL '#'? expr COMMA expr
+  ;
+
 key_statement
   : KEY LIST
   | KEY (ON | OFF)
@@ -462,6 +467,15 @@ line_input_statement
 
 lock_statement
   : LOCK '#'? expr (COMMA (expr | expr TO expr))?
+  ;
+
+lprint_statement
+  : LPRINT ((COMMA | ';') | (COMMA | ';')? expr)*
+  ;
+
+// See note for PRINT USING for comma handling.
+lprint_using_statement
+  : LPRINT USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
   ;
 
 on_error_statement
@@ -510,15 +524,6 @@ open_lock
   | LOCK READ
   | LOCK WRITE
   | LOCK READ WRITE
-  ;
-
-lprint_statement
-  : LPRINT ((COMMA | ';') | (COMMA | ';')? expr)*
-  ;
-
-// See note for PRINT USING for comma handling.
-lprint_using_statement
-  : LPRINT USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
   ;
 
 play_statement
@@ -660,6 +665,7 @@ expr
 // just be pre-defined by the runtime.
 builtin_function
   : INPUT_STRING '(' n=expr (COMMA '#'? filenumber=expr)? ')'
+  | IOCTL_STRING '(' '#'? filenumber=expr ')'
   | LEN '(' expr ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'

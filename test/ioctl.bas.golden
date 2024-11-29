@@ -1,0 +1,27 @@
+(program 
+  (statement 
+    (ioctl_statement ioctl 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal "hello")))) \n 
+  (statement 
+    (ioctl_statement ioctl # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal "yes")))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function ioctl$ 
+          ( 
+            (expr 
+              (literal 1)) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function ioctl$ 
+          ( # 
+            (expr 
+              (literal 1)) ))))) \n)
