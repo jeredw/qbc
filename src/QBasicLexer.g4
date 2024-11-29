@@ -172,9 +172,12 @@ NL : '\r'? '\n' ;
 COMMENT : '\'' -> skip, pushMode(COMMENT_MODE) ;
 WS : [ \t]+ -> skip ;
 
+// Use a mode to capture just text so it can be checked for metacommands.
 mode COMMENT_MODE;
+
 // *** Should be checked for $STATIC and $DYNAMIC.
 COMMENT_TEXT : ~[\r\n]+ -> channel(HIDDEN) ;
+// The final NL must be passed through to terminate REM statements.
 COMMENT_NL : '\r'? '\n' -> type(NL), popMode ;
 
 // DATA statements have CSV-like lexical rules, and don't support ' comments
