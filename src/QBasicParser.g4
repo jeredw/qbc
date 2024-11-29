@@ -309,7 +309,7 @@ event_control_statement
   | TIMER (ON | OFF | STOP)
   ;
 
-// The help file only mentions CLEAR ,,stack but the langauge seems to accept 
+// The help file only mentions CLEAR [,,stack] but the language seems to accept
 // two optional arguments.
 clear_statement
   : CLEAR expr?

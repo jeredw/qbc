@@ -1,0 +1,16 @@
+(program 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call DATE$)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call DATE$) = 
+      (expr 
+        (literal "01-01-90")))) \n statement \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Date set to ")) ; 
+      (expr 
+        (variable_or_function_call DATE$)))) \n)

@@ -109,8 +109,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `CVS`            | Function    | -       |
 | `CVSMBF`         | Function    | -       |
 | `DATA`           | Statement   | ✅      |
-| `DATE$`          | Function    | ⛔      |
-| `DATE$`          | Statement   | ⛔      |
+| `DATE$`          | Function    | -       |
+| `DATE$`          | Statement   | -       |
 | `DECLARE`        | Statement   | ✅      |
 | `DEF FN`         | Statement   | ✅      |
 | `DEF SEG`        | Statement   | ✅      |
