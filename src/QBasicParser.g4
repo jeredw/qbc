@@ -4,10 +4,10 @@
 // neutral notation, and so it relies on subsequent analysis to detect some
 // kinds of syntax issues.  These are noted with *** in comments.
 //
-// QBasic's lexical grammar has some quirks:  DATA statements escape the normal
-// language and use CSV-like syntax.  So a couple tokens like ':' and ',' have
-// to be aliased for different lexical modes, and must be named.  Otherwise,
-// this parser uses token literals like '+' for legibility.
+// Where possible, literal symbols like '+' are used instead of named tokens
+// like PLUS for legibility.  But QBasic's lexical grammar has many quirks,
+// e.g. DATA statements use CSV-like syntax.  So a couple tokens like ':' and
+// ',' have to be aliased for different lexical modes, and must be named.
 parser grammar QBasicParser;
 options {
   tokenVocab = QBasicLexer;
@@ -17,11 +17,14 @@ options {
 // *** The QBasic IDE adds NL to the last line if it is missing, so callers
 // should make sure to do this.
 //
-// For simplicity, in this grammar some statements like SUB must go at the top
-// level and can't nest. Technically, the IDE will move SUB from a nested IF or
-// DO to the top level at the end of the program, and unnests automatically if
-// you start typing SUB inside another SUB (though it errors if you load a
-// program with a nested SUB...END SUB).
+// Formally, some statements are only allowed at the top level of the program,
+// and procedures can't nest. The IDE tries to fix problems: it will move SUB
+// out from an IF or DO block, and unnests automatically if you start typing
+// SUB inside another SUB (though it errors if you load a program with a nested
+// SUB...END SUB). For simplicity, this grammar only allows SUBs at the top
+// level and errors on SUBs nested anywhere.
+//
+// TODO: DECLARE and COMMON have to come before other statements.
 //
 // Some statements must be the first statement on a line, like the block form
 // of IF (so you can't write "ELSE IF" instead of ELSEIF for example).  This is
@@ -628,9 +631,15 @@ end_select_statement
 // COMMON, SHARED, and STATIC declare variable scopes using the same syntax.
 // The syntax is similar to DIM but arrays aren't dimensioned.
 scope_statement
-  : COMMON SHARED? scope_variable (COMMA scope_variable)*
+  : COMMON SHARED? block_name? scope_variable (COMMA scope_variable)*
   | SHARED scope_variable (COMMA scope_variable)*
   | STATIC scope_variable (COMMA scope_variable)*
+  ;
+
+// The QBasic help file doesn't mention this, but it still parses this
+// QuickBasic syntax.
+block_name
+  : '/' ID? '/'
   ;
 
 scope_variable
