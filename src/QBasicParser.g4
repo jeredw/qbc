@@ -125,6 +125,7 @@ statement
   | select_case_statement
   | stop_statement
   | unlock_statement
+  | view_print_statement
   | while_wend_statement
   | width_statement
   | write_statement
@@ -747,6 +748,10 @@ stop_statement
 
 unlock_statement
   : UNLOCK '#'? expr (COMMA (expr | expr TO expr))?
+  ;
+
+view_print_statement
+  : VIEW PRINT (toprow=expr TO bottomrow=expr)?
   ;
 
 // Loop construct from an older BASIC?

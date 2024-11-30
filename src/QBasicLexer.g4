@@ -153,6 +153,7 @@ TIMER : [Tt][Ii][Mm][Ee][Rr] ;
 UNLOCK : [Uu][Nn][Ll][Oo][Cc][Kk] ;
 UNTIL : [Uu][Nn][Tt][Ii][Ll] ;
 USING : [Uu][Ss][Ii][Nn][Gg] ;
+VIEW : [Vv][Ii][Ee][Ww] ;
 WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
 WIDTH : [Ww][Ii][Dd][Tt][Hh] ;
