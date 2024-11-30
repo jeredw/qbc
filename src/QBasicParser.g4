@@ -84,6 +84,7 @@ statement
   | exit_statement
   | field_statement
   | for_next_statement
+  | get_graphics_statement
   | get_io_statement
   | gosub_statement
   | goto_statement
@@ -107,6 +108,7 @@ statement
   | play_statement
   | print_statement
   | print_using_statement
+  | put_graphics_statement
   | put_io_statement
   | read_statement
   | rem_statement
@@ -444,6 +446,12 @@ for_next_statement
     (NEXT ID? | NEXT_WITH_MANDATORY_ID ID)
   ;
 
+get_graphics_statement
+  : GET STEP? '(' x1=expr COMMA y1=expr ')' '-'
+        STEP? '(' x2=expr COMMA y2=expr ')'
+    COMMA arrayname=variable_or_function_call
+  ;
+
 get_io_statement
   : GET '#'? expr (COMMA expr? (COMMA variable_or_function_call)?)?
   ;
@@ -589,6 +597,12 @@ print_statement
 // separator.
 print_using_statement
   : PRINT (file_number COMMA)? USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
+  ;
+
+put_graphics_statement
+  : PUT STEP? '(' x1=expr COMMA y1=expr ')'
+    COMMA arrayname=variable_or_function_call
+    (COMMA (AND | OR | PSET | PRESET | XOR))?
   ;
 
 put_io_statement

@@ -1,0 +1,45 @@
+(program 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (variable_or_function_call sprite%) , xor)) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (variable_or_function_call sprite%) , preset)) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (variable_or_function_call sprite%) , pset)) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (variable_or_function_call sprite%) , and)) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (variable_or_function_call sprite% 
+        (args_or_indices 
+          ( 
+            (expr 
+              (literal 5)) ))) , or)) \n)

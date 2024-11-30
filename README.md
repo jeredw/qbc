@@ -146,7 +146,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `FREEFILE`       | Function    | -       |
 | `FUNCTION`       | Statement   | ✅      |
 | `GET` I/O        | Statement   | ✅      |
-| `GET` Graphics   | Statement   | ⛔      |
+| `GET` Graphics   | Statement   | ✅      |
 | `GOSUB`          | Statement   | ✅      |
 | `GOTO`           | Statement   | ✅      |
 | `HEX$`           | Function    | -       |
@@ -233,7 +233,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `PRINT USING`    | Statement   | ✅      |
 | `PSET`           | Statement   | ⛔      |
 | `PUT` I/O        | Statement   | ✅      |
-| `PUT` Graphics   | Statement   | ⛔      |
+| `PUT` Graphics   | Statement   | ✅      |
 | `RANDOM`         | Keyword     | ✅      |
 | `RANDOMIZE`      | Statement   | -       |
 | `READ`           | Statement   | ✅      |

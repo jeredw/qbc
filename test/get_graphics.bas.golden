@@ -1,0 +1,31 @@
+(program 
+  (statement 
+    (get_graphics_statement get 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 16)) , 
+        (expr 
+          (literal 16)) ) , 
+      (variable_or_function_call sprite%))) \n 
+  (statement 
+    (get_graphics_statement get step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - step 
+      ( 
+        (expr 
+          (literal 16)) , 
+        (expr 
+          (literal 16)) ) , 
+      (variable_or_function_call sprite% 
+        (args_or_indices 
+          ( 
+            (expr 
+              (literal 2)) ))))) \n)

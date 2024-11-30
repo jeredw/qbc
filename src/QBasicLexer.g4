@@ -123,6 +123,8 @@ ON : [Oo][Nn] ;
 PEN : [Pp][Ee][Nn] ;
 PLAY : [Pp][Ll][Aa][Yy] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
+PRESET : [Pp][Rr][Ee][Ss][Ee][Tt] ;
+PSET : [Pp][Ss][Ee][Tt] ;
 PUT : [Pp][Uu][Tt] ;
 RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
 READ : [Rr][Ee][Aa][Dd] ;
