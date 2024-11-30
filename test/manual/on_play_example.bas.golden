@@ -19,15 +19,11 @@
       (expr 
         (variable_or_function_call Music$)))) \n 
   (statement 
-    (call_statement 
-      (untyped_id LOCATE) 
-      (call_argument_list 
-        (call_argument 
-          (expr 
-            (literal 2))) , 
-        (call_argument 
-          (expr 
-            (literal 1)))))) : 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 1)))) : 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -55,15 +51,11 @@
         (expr 
           (literal 1))))) \n 
   (statement 
-    (call_statement 
-      (untyped_id LOCATE) 
-      (call_argument_list 
-        (call_argument 
-          (expr 
-            (literal 1))) , 
-        (call_argument 
-          (expr 
-            (literal 1)))))) : 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)))) : 
   (statement 
     (print_statement PRINT 
       (expr 

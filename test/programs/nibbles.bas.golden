@@ -389,22 +389,20 @@
         (parameter text$)) ) 
     (block \n 
       (statement 
-        (call_statement 
-          (untyped_id LOCATE) 
-          (call_argument_list 
-            (call_argument row) , 
-            (call_argument 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call row)) , 
+          (expr 
+            (expr 
+              (literal 41)) - 
+            (expr 
               (expr 
-                (expr 
-                  (literal 41)) - 
-                (expr 
-                  (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call text$)) ))) / 
-                  (expr 
-                    (literal 2)))))))) \n 
+                (builtin_function LEN 
+                  ( 
+                    (expr 
+                      (variable_or_function_call text$)) ))) / 
+              (expr 
+                (literal 2)))))) \n 
       (statement 
         (print_statement PRINT 
           (expr 
@@ -624,15 +622,11 @@
         (do_loop_statement DO 
           (block \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 5))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 47)))))) : 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 5)) , 
+                (expr 
+                  (literal 47)))) : 
             (statement 
               (print_statement PRINT 
                 (expr 
@@ -642,15 +636,11 @@
                         (expr 
                           (literal 34)) )))) ;)) \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 5))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 20)))))) \n 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 5)) , 
+                (expr 
+                  (literal 20)))) \n 
             (statement 
               (input_statement INPUT "How many players 
                 (1 or 2)" ; 
@@ -685,72 +675,52 @@
                   (expr 
                     (variable_or_function_call num$)) )))))) \n statement \n 
       (statement 
-        (call_statement 
-          (untyped_id LOCATE) 
-          (call_argument_list 
-            (call_argument 
-              (expr 
-                (literal 8))) , 
-            (call_argument 
-              (expr 
-                (literal 21)))))) : 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 8)) , 
+          (expr 
+            (literal 21)))) : 
       (statement 
         (print_statement PRINT 
           (expr 
             (literal "Skill level 
               (1 to 100)")))) \n 
       (statement 
-        (call_statement 
-          (untyped_id LOCATE) 
-          (call_argument_list 
-            (call_argument 
-              (expr 
-                (literal 9))) , 
-            (call_argument 
-              (expr 
-                (literal 22)))))) : 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 9)) , 
+          (expr 
+            (literal 22)))) : 
       (statement 
         (print_statement PRINT 
           (expr 
             (literal "1   = Novice")))) \n 
       (statement 
-        (call_statement 
-          (untyped_id LOCATE) 
-          (call_argument_list 
-            (call_argument 
-              (expr 
-                (literal 10))) , 
-            (call_argument 
-              (expr 
-                (literal 22)))))) : 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 10)) , 
+          (expr 
+            (literal 22)))) : 
       (statement 
         (print_statement PRINT 
           (expr 
             (literal "90  = Expert")))) \n 
       (statement 
-        (call_statement 
-          (untyped_id LOCATE) 
-          (call_argument_list 
-            (call_argument 
-              (expr 
-                (literal 11))) , 
-            (call_argument 
-              (expr 
-                (literal 22)))))) : 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 11)) , 
+          (expr 
+            (literal 22)))) : 
       (statement 
         (print_statement PRINT 
           (expr 
             (literal "100 = Twiddle Fingers")))) \n 
       (statement 
-        (call_statement 
-          (untyped_id LOCATE) 
-          (call_argument_list 
-            (call_argument 
-              (expr 
-                (literal 12))) , 
-            (call_argument 
-              (expr 
-                (literal 15)))))) : 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 12)) , 
+          (expr 
+            (literal 15)))) : 
       (statement 
         (print_statement PRINT 
           (expr 
@@ -760,15 +730,11 @@
         (do_loop_statement DO 
           (block \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 8))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 44)))))) : 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 8)) , 
+                (expr 
+                  (literal 44)))) : 
             (statement 
               (print_statement PRINT 
                 (expr 
@@ -778,15 +744,11 @@
                         (expr 
                           (literal 35)) )))) ;)) \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 8))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 43)))))) \n 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 8)) , 
+                (expr 
+                  (literal 43)))) \n 
             (statement 
               (input_statement INPUT 
                 (variable_or_function_call gamespeed$))) \n statement) LOOP 
@@ -839,15 +801,11 @@
         (do_loop_statement DO 
           (block \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 15))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 56)))))) : 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 15)) , 
+                (expr 
+                  (literal 56)))) : 
             (statement 
               (print_statement PRINT 
                 (expr 
@@ -857,15 +815,11 @@
                         (expr 
                           (literal 25)) )))) ;)) \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 15))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 15)))))) \n 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 15)) , 
+                (expr 
+                  (literal 15)))) \n 
             (statement 
               (input_statement INPUT "Increase game speed during play 
                 (Y or N)" ; 
@@ -895,15 +849,11 @@
         (do_loop_statement DO 
           (block \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 17))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 46)))))) : 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 17)) , 
+                (expr 
+                  (literal 46)))) : 
             (statement 
               (print_statement PRINT 
                 (expr 
@@ -913,15 +863,11 @@
                         (expr 
                           (literal 34)) )))) ;)) \n 
             (statement 
-              (call_statement 
-                (untyped_id LOCATE) 
-                (call_argument_list 
-                  (call_argument 
-                    (expr 
-                      (literal 17))) , 
-                  (call_argument 
-                    (expr 
-                      (literal 17)))))) \n 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 17)) , 
+                (expr 
+                  (literal 17)))) \n 
             (statement 
               (input_statement INPUT "Monochrome or color monitor 
                 (M or C)" ; 
@@ -2975,11 +2921,11 @@
                                   (expr 
                                     (literal 4)) )))))) \n 
                       (statement 
-                        (call_statement 
-                          (untyped_id LOCATE) 
-                          (call_argument_list 
-                            (call_argument numberRow) , 
-                            (call_argument NumberCol)))) \n 
+                        (locate_statement LOCATE 
+                          (expr 
+                            (variable_or_function_call numberRow)) , 
+                          (expr 
+                            (variable_or_function_call NumberCol)))) \n 
                       (statement 
                         (print_statement PRINT 
                           (expr 
@@ -3558,11 +3504,11 @@
                                         (expr 
                                           (literal 2)))))) \n 
                                 (statement 
-                                  (call_statement 
-                                    (untyped_id LOCATE) 
-                                    (call_argument_list 
-                                      (call_argument numberRow) , 
-                                      (call_argument NumberCol)))) : 
+                                  (locate_statement LOCATE 
+                                    (expr 
+                                      (variable_or_function_call numberRow)) , 
+                                    (expr 
+                                      (variable_or_function_call NumberCol)))) : 
                                 (statement 
                                   (print_statement PRINT 
                                     (expr 
@@ -3761,11 +3707,11 @@
                                         (expr 
                                           (literal 4)) )))))) \n 
                             (statement 
-                              (call_statement 
-                                (untyped_id LOCATE) 
-                                (call_argument_list 
-                                  (call_argument numberRow) , 
-                                  (call_argument NumberCol)))) \n 
+                              (locate_statement LOCATE 
+                                (expr 
+                                  (variable_or_function_call numberRow)) , 
+                                (expr 
+                                  (variable_or_function_call NumberCol)))) \n 
                             (statement 
                               (print_statement PRINT 
                                 (expr 
@@ -4189,15 +4135,11 @@
             (literal 2))) THEN \n 
         (then_block 
           (statement 
-            (call_statement 
-              (untyped_id LOCATE) 
-              (call_argument_list 
-                (call_argument 
-                  (expr 
-                    (literal 1))) , 
-                (call_argument 
-                  (expr 
-                    (literal 1)))))) \n 
+            (locate_statement LOCATE 
+              (expr 
+                (literal 1)) , 
+              (expr 
+                (literal 1)))) \n 
           (statement 
             (print_using_statement PRINT USING 
               (expr 
@@ -4208,15 +4150,11 @@
                 (variable_or_function_call lives2)))) \n) 
         (end_if_statement END IF)) \n statement \n 
       (statement 
-        (call_statement 
-          (untyped_id LOCATE) 
-          (call_argument_list 
-            (call_argument 
-              (expr 
-                (literal 1))) , 
-            (call_argument 
-              (expr 
-                (literal 49)))))) \n 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 49)))) \n 
       (statement 
         (print_using_statement PRINT USING 
           (expr 
@@ -4306,11 +4244,11 @@
                       (expr 
                         (variable_or_function_call col)) )) . acolor)))) \n statement \n 
           (statement 
-            (call_statement 
-              (untyped_id LOCATE) 
-              (call_argument_list 
-                (call_argument realRow) , 
-                (call_argument col)))) \n statement \n 
+            (locate_statement LOCATE 
+              (expr 
+                (variable_or_function_call realRow)) , 
+              (expr 
+                (variable_or_function_call col)))) \n statement \n 
           (if_block_statement IF 
             (expr 
               (expr 
@@ -4583,15 +4521,11 @@
                   (literal 5)) 
                 (block \n 
                   (statement 
-                    (call_statement 
-                      (untyped_id LOCATE) 
-                      (call_argument_list 
-                        (call_argument 
-                          (expr 
-                            (literal 1))) , 
-                        (call_argument 
-                          (expr 
-                            (literal 1)))))) \n 
+                    (locate_statement LOCATE 
+                      (expr 
+                        (literal 1)) , 
+                      (expr 
+                        (literal 1)))) \n 
                   (statement 
                     (print_statement PRINT 
                       (expr 
@@ -4604,15 +4538,11 @@
                             (expr 
                               (literal 80)) ))) ;)) \n 
                   (statement 
-                    (call_statement 
-                      (untyped_id LOCATE) 
-                      (call_argument_list 
-                        (call_argument 
-                          (expr 
-                            (literal 22))) , 
-                        (call_argument 
-                          (expr 
-                            (literal 1)))))) \n 
+                    (locate_statement LOCATE 
+                      (expr 
+                        (literal 22)) , 
+                      (expr 
+                        (literal 1)))) \n 
                   (statement 
                     (print_statement PRINT 
                       (expr 
@@ -4655,30 +4585,24 @@
                               (literal 1))) THEN \n 
                           (then_block 
                             (statement 
-                              (call_statement 
-                                (untyped_id LOCATE) 
-                                (call_argument_list 
-                                  (call_argument b) , 
-                                  (call_argument 
-                                    (expr 
-                                      (literal 80)))))) \n 
+                              (locate_statement LOCATE 
+                                (expr 
+                                  (variable_or_function_call b)) , 
+                                (expr 
+                                  (literal 80)))) \n 
                             (statement 
                               (print_statement PRINT 
                                 (expr 
                                   (literal "*")) ;)) \n 
                             (statement 
-                              (call_statement 
-                                (untyped_id LOCATE) 
-                                (call_argument_list 
-                                  (call_argument 
-                                    (expr 
-                                      (expr 
-                                        (literal 23)) - 
-                                      (expr 
-                                        (variable_or_function_call b)))) , 
-                                  (call_argument 
-                                    (expr 
-                                      (literal 1)))))) \n 
+                              (locate_statement LOCATE 
+                                (expr 
+                                  (expr 
+                                    (literal 23)) - 
+                                  (expr 
+                                    (variable_or_function_call b))) , 
+                                (expr 
+                                  (literal 1)))) \n 
                             (statement 
                               (print_statement PRINT 
                                 (expr 
@@ -4686,30 +4610,24 @@
                           (else_block_statement ELSE 
                             (else_block statement \n 
                               (statement 
-                                (call_statement 
-                                  (untyped_id LOCATE) 
-                                  (call_argument_list 
-                                    (call_argument b) , 
-                                    (call_argument 
-                                      (expr 
-                                        (literal 80)))))) \n 
+                                (locate_statement LOCATE 
+                                  (expr 
+                                    (variable_or_function_call b)) , 
+                                  (expr 
+                                    (literal 80)))) \n 
                               (statement 
                                 (print_statement PRINT 
                                   (expr 
                                     (literal " ")) ;)) \n 
                               (statement 
-                                (call_statement 
-                                  (untyped_id LOCATE) 
-                                  (call_argument_list 
-                                    (call_argument 
-                                      (expr 
-                                        (expr 
-                                          (literal 23)) - 
-                                        (expr 
-                                          (variable_or_function_call b)))) , 
-                                    (call_argument 
-                                      (expr 
-                                        (literal 1)))))) \n 
+                                (locate_statement LOCATE 
+                                  (expr 
+                                    (expr 
+                                      (literal 23)) - 
+                                    (expr 
+                                      (variable_or_function_call b))) , 
+                                  (expr 
+                                    (literal 1)))) \n 
                               (statement 
                                 (print_statement PRINT 
                                   (expr 

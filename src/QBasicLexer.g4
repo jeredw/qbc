@@ -105,6 +105,7 @@ LEN : [Ll][Ee][Nn] ;
 LET : [Ll][Ee][Tt] ;
 LINE : [Ll][Ii][Nn][Ee] ;
 LIST : [Ll][Ii][Ss][Tt] ;
+LOCATE : [Ll][Oo][Cc][Aa][Tt][Ee] ;
 LOCK : [Ll][Oo][Cc][Kk] ;
 LONG : [Ll][Oo][Nn][Gg] ;
 LOOP : [Ll][Oo][Oo][Pp] ;

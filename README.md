@@ -51,20 +51,21 @@ not going to model all of those exactly.
 
 # Feature status
 
-QBasic doesn't distinguish the core of the language from libraries, but it
-would be nice to keep the grammar down to a somewhat reasonable size rather
-than just having hundreds of rules to match all the commands.
+QBasic doesn't distinguish the core of the language from standard libraries,
+but it would be nice to keep the grammar down to a somewhat reasonable size
+rather than just having hundreds of rules to match all the possible pre-defined
+statements and functions.
 
 Built-in functions don't need any special parsing, and can just be defined by
 the runtime... unless they are also keywords used in other contexts, and thus
-not valid identifiers, like `TIMER`!
+not valid identifiers, like `TIMER`.
 
 In theory, many statements also shouldn't need special parsing and can be
-parsed the same way as CALLs would be.  However some statements have variable
-numbers or types of arguments, which isn't supported for user defined
-functions, so that needs some special case support at runtime.  And some
-statements have novel argument syntax like ordered pairs, file handles or
-keywords as arguments - it's probably easier just to parse those.
+parsed the same way as CALLs would be.  However some statements can elide
+arguments in the middle of their argument list, which isn't supported for user
+defined functions.  And some statements have novel argument syntax like ordered
+pairs, file handles or keywords as arguments - it's probably easier just to
+parse those using baked in rules.
 
 | Feature          | Category    | Parser  |
 | ---------------- | ----------- | ------- |
@@ -172,7 +173,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `LINE` Graphics  | Statement   | ✅      |
 | `LINE INPUT`     | Statement   | ✅      |
 | `LIST`           | Keyword     | ✅      |
-| `LOCATE`         | Statement   | -       |
+| `LOCATE`         | Statement   | ✅      |
 | `LOCK`           | Statement   | ✅      |
 | `LOF`            | Function    | -       |
 | `LOG`            | Function    | -       |
@@ -258,7 +259,6 @@ keywords as arguments - it's probably easier just to parse those.
 | `SHELL`          | Statement   | -       |
 | `SIN`            | Function    | -       |
 | `SINGLE`         | Keyword     | ✅      |
-| `SLEEP`          | Statement   | -       |
 | `SLEEP`          | Statement   | -       |
 | `SOUND`          | Statement   | -       |
 | `SPACE$`         | Function    | -       |

@@ -73,15 +73,11 @@
     (do_loop_statement DO 
       (block \n 
         (statement 
-          (call_statement 
-            (untyped_id LOCATE) 
-            (call_argument_list 
-              (call_argument 
-                (expr 
-                  (literal 7))) , 
-              (call_argument 
-                (expr 
-                  (literal 1)))))) : 
+          (locate_statement LOCATE 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 1)))) : 
         (statement 
           (print_statement PRINT 
             (expr 
@@ -91,15 +87,11 @@
                     (expr 
                       (literal 50)) )))) ;)) \n 
         (statement 
-          (call_statement 
-            (untyped_id LOCATE) 
-            (call_argument_list 
-              (call_argument 
-                (expr 
-                  (literal 7))) , 
-              (call_argument 
-                (expr 
-                  (literal 1)))))) : 
+          (locate_statement LOCATE 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 1)))) : 
         (statement 
           (input_statement INPUT "             Enter your choice:" , 
             (variable_or_function_call R$))) \n 
@@ -118,15 +110,11 @@
                     (literal "Delete")))) 
               (block \n 
                 (statement 
-                  (call_statement 
-                    (untyped_id LOCATE) 
-                    (call_argument_list 
-                      (call_argument 
-                        (expr 
-                          (literal 10))) , 
-                      (call_argument 
-                        (expr 
-                          (literal 1)))))) : 
+                  (locate_statement LOCATE 
+                    (expr 
+                      (literal 10)) , 
+                    (expr 
+                      (literal 1)))) : 
                 (statement 
                   (print_statement PRINT 
                     (expr 
@@ -136,15 +124,11 @@
                             (expr 
                               (literal 15)) )))) ;)) \n 
                 (statement 
-                  (call_statement 
-                    (untyped_id LOCATE) 
-                    (call_argument_list 
-                      (call_argument 
-                        (expr 
-                          (literal 10))) , 
-                      (call_argument 
-                        (expr 
-                          (literal 1)))))) : 
+                  (locate_statement LOCATE 
+                    (expr 
+                      (literal 10)) , 
+                    (expr 
+                      (literal 1)))) : 
                 (statement 
                   (print_statement PRINT 
                     (expr 
@@ -161,15 +145,11 @@
               (case_statement CASE ELSE) 
               (block \n 
                 (statement 
-                  (call_statement 
-                    (untyped_id LOCATE) 
-                    (call_argument_list 
-                      (call_argument 
-                        (expr 
-                          (literal 10))) , 
-                      (call_argument 
-                        (expr 
-                          (literal 1)))))) : 
+                  (locate_statement LOCATE 
+                    (expr 
+                      (literal 10)) , 
+                    (expr 
+                      (literal 1)))) : 
                 (statement 
                   (print_statement PRINT 
                     (expr 

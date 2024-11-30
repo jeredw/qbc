@@ -95,6 +95,7 @@ statement
   | key_statement
   | line_statement
   | line_input_statement
+  | locate_statement
   | lock_statement
   | lprint_statement
   | lprint_using_statement
@@ -523,6 +524,15 @@ box_style
 line_input_statement
   : LINE INPUT ';'? (STRING_LITERAL ';')? variable_or_function_call
   | LINE INPUT file_number COMMA variable_or_function_call
+  ;
+
+locate_statement
+  : LOCATE 
+  | LOCATE row=expr
+    ( COMMA (column=expr)? COMMA (cursor=expr)? COMMA (start=expr)? COMMA stop=expr
+    | COMMA (column=expr)? COMMA (cursor=expr)? COMMA start=expr
+    | COMMA (column=expr)? COMMA cursor=expr
+    | COMMA column=expr )?
   ;
 
 lock_statement

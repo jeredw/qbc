@@ -1,0 +1,59 @@
+(program 
+  (statement 
+    (locate_statement locate)) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 31)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 2)) , , 
+      (expr 
+        (literal 31)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 31)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , , , 
+      (expr 
+        (literal 31)))) \n <EOF>)

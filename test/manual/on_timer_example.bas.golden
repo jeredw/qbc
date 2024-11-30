@@ -45,15 +45,11 @@
     (text_label 
       (untyped_id TimeUpdate)) :) statement \n 
   (statement 
-    (call_statement 
-      (untyped_id LOCATE) 
-      (call_argument_list 
-        (call_argument 
-          (expr 
-            (literal 1))) , 
-        (call_argument 
-          (expr 
-            (literal 7)))))) : 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 7)))) : 
   (statement 
     (print_statement PRINT 
       (expr 
