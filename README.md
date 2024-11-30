@@ -169,7 +169,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `LEFT$`          | Function    | -       |
 | `LEN`            | Function    | ✅      |
 | `LET`            | Statement   | ✅      |
-| `LINE` Graphics  | Statement   | ⛔      |
+| `LINE` Graphics  | Statement   | ✅      |
 | `LINE INPUT`     | Statement   | ✅      |
 | `LIST`           | Keyword     | ✅      |
 | `LOCATE`         | Statement   | -       |

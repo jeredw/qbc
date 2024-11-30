@@ -1,0 +1,45 @@
+SCREEN 1                          'Sets up the screen mode.
+ 
+LINE -(X2, Y2)                    'Draws a line (in the
+                                  'foreground color) from
+                                  'the most recent point
+                                  'to  X2,Y2.
+DO
+LOOP WHILE INKEY$ = ""            'Press any key to continue
+CLS    ' Clear screen
+LINE(0, 0)-(319, 199)             'Draws a diagonal line across
+                                  'the screen (downward).
+DO
+LOOP WHILE INKEY$ = ""            'Press any key to continue
+CLS    ' Clear screen
+LINE(0, 100)-(319, 100)           'Draws a horizontal line
+                                  'across the screen.
+DO
+LOOP WHILE INKEY$ = ""            'Press any key to continue
+CLS    ' Clear screen
+LINE(10, 10)-(20, 20), 2          'Draws a line in color 2.
+DO
+LOOP WHILE INKEY$ = ""            'Press any key to continue
+CLS    ' Clear screen
+FOR X = 0 to 319                  'Draws an alternating pattern
+    LINE(X, 0)-(X, 199), X AND 1  '(line on/line off) on mono-
+NEXT                              'chrome display.
+DO
+LOOP WHILE INKEY$ = ""            'Press any key to continue
+CLS    ' Clear screen
+LINE (0, 0)-(100, 100),, B        'Draws a box in the fore-
+                                  'ground color (note that the
+                                  'color is not included).
+DO
+LOOP WHILE INKEY$ = ""            'Press any key to continue
+CLS    ' Clear screen
+LINE STEP(0,0)-STEP(200,200),2,BF 'Draws a filled box in color
+                                  '2 (coordinates are given as
+                                  'offsets with the STEP option).
+DO
+LOOP WHILE INKEY$ = ""            'Press any key to continue
+CLS    ' Clear screen
+LINE(0,0)-(160,100),3,,&HFF00     'Draws a dashed line from
+                                  'the upper lefthand corner to
+                                  'the center of the screen in
+                                  'color 3.

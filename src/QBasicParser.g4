@@ -43,7 +43,7 @@ program
            | declare_statement
            | def_fn_statement
            | option_statement
-           | type_statement)* NL)*
+           | type_statement)* NL)* EOF
   ;
 
 // block matches statements in loops, procedures, and conditionals.
@@ -92,6 +92,7 @@ statement
   | input_statement
   | ioctl_statement
   | key_statement
+  | line_statement
   | line_input_statement
   | lock_statement
   | lprint_statement
@@ -499,6 +500,29 @@ key_statement
   : KEY LIST
   | KEY (ON | OFF)
   | KEY expr COMMA expr
+  ;
+
+line_statement
+  : LINE (STEP? '(' x1=expr COMMA y1=expr ')')? '-'
+         STEP? '(' x2=expr COMMA y2=expr ')'
+    (COMMA color=expr COMMA box=box_style? COMMA style=expr
+    |COMMA color=expr COMMA box=box_style?
+    |COMMA color=expr COMMA               COMMA style=expr
+// The IDE will erase a trailing comma after color.
+    |COMMA color=expr COMMA?
+    |COMMA            COMMA box=box_style? COMMA style=expr
+    |COMMA            COMMA box=box_style?
+    |COMMA            COMMA               COMMA style=expr
+// Strangely, the IDE will also erase two trailing commas.
+    |COMMA            COMMA
+// And just one.
+    |COMMA)?
+  ;
+
+// Box style constants aren't keywords, they're valid identifiers.  It's easier
+// to parse them as IDs and check for valid values later.
+box_style
+  : ID  // *** Must be B or BF.
   ;
 
 line_input_statement

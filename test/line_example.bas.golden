@@ -1,0 +1,205 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id SCREEN) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 1)))))) \n statement \n 
+  (statement 
+    (line_statement LINE - 
+      ( 
+        (expr 
+          (variable_or_function_call X2)) , 
+        (expr 
+          (variable_or_function_call Y2)) ))) \n statement \n statement \n statement \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 319)) , 
+        (expr 
+          (literal 199)) ))) \n statement \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 100)) ) - 
+      ( 
+        (expr 
+          (literal 319)) , 
+        (expr 
+          (literal 100)) ))) \n statement \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 10)) ) - 
+      ( 
+        (expr 
+          (literal 20)) , 
+        (expr 
+          (literal 20)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (for_next_statement FOR X = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 319)) 
+      (block \n 
+        (statement 
+          (line_statement LINE 
+            ( 
+              (expr 
+                (variable_or_function_call X)) , 
+              (expr 
+                (literal 0)) ) - 
+            ( 
+              (expr 
+                (variable_or_function_call X)) , 
+              (expr 
+                (literal 199)) ) , 
+            (expr 
+              (expr 
+                (variable_or_function_call X)) AND 
+              (expr 
+                (literal 1))))) \n statement) NEXT)) \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ) , , 
+      (box_style B))) \n statement \n statement \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (line_statement LINE STEP 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - STEP 
+      ( 
+        (expr 
+          (literal 200)) , 
+        (expr 
+          (literal 200)) ) , 
+      (expr 
+        (literal 2)) , 
+      (box_style BF))) \n statement \n statement \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (literal 3)) , , 
+      (expr 
+        (literal &HFF00)))) \n statement \n statement \n statement \n <EOF>)
