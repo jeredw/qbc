@@ -318,23 +318,11 @@ event_control_statement
 
 circle_statement
   : CIRCLE STEP? '(' x=expr COMMA y=expr ')' COMMA radius=expr
-    ( COMMA color=expr COMMA start=expr COMMA end=expr COMMA aspect=expr
-    | COMMA color=expr COMMA start=expr COMMA end=expr
-    | COMMA color=expr COMMA start=expr COMMA          COMMA aspect=expr
-    | COMMA color=expr COMMA start=expr
-    | COMMA color=expr COMMA            COMMA end=expr COMMA aspect=expr
-    | COMMA color=expr COMMA            COMMA end=expr
-    | COMMA color=expr COMMA            COMMA          COMMA aspect=expr
-    | COMMA color=expr
-    | COMMA            COMMA start=expr COMMA end=expr COMMA aspect=expr
-    | COMMA            COMMA start=expr COMMA end=expr
-    | COMMA            COMMA start=expr COMMA          COMMA aspect=expr
-    | COMMA            COMMA start=expr
-    | COMMA            COMMA            COMMA end=expr COMMA aspect=expr
-    | COMMA            COMMA            COMMA end=expr
-    | COMMA            COMMA            COMMA          COMMA aspect=expr
+    ( COMMA (color=expr)? COMMA (start=expr)? COMMA (end=expr)? COMMA aspect=expr
+    | COMMA (color=expr)? COMMA (start=expr)? COMMA end=expr
+    | COMMA (color=expr)? COMMA start=expr
 // The IDE removes a single final comma with no other arguments.
-    | COMMA)?
+    | COMMA (color=expr)? )?
   ;    
 
 // The help file only mentions CLEAR [,,stack] but the language seems to accept
@@ -512,18 +500,11 @@ key_statement
 line_statement
   : LINE (STEP? '(' x1=expr COMMA y1=expr ')')? '-'
          STEP? '(' x2=expr COMMA y2=expr ')'
-    (COMMA color=expr COMMA box=box_style COMMA style=expr
-    |COMMA color=expr COMMA box=box_style
-    |COMMA color=expr COMMA               COMMA style=expr
+    ( COMMA (color=expr)? COMMA (box=box_style)? COMMA style=expr
+    | COMMA (color=expr)? COMMA box=box_style
 // The IDE will erase a trailing comma after color.
-    |COMMA color=expr COMMA?
-    |COMMA            COMMA box=box_style COMMA style=expr
-    |COMMA            COMMA box=box_style
-    |COMMA            COMMA               COMMA style=expr
-// Strangely, the IDE will also erase two trailing commas.
-    |COMMA            COMMA
-// And just one.
-    |COMMA)?
+// Strangely, the IDE will also erase two trailing commas, and just one.
+    | COMMA (color=expr)? COMMA? )?
   ;
 
 // Box style constants aren't keywords, they're valid identifiers.  It's easier
@@ -610,17 +591,13 @@ open_lock
   | LOCK READ WRITE
   ;
 
+// PAINT fails at runtime if you pass background without also passing tile, but
+// that parses just fine.
 paint_statement
   : PAINT STEP? '(' x=expr COMMA y=expr ')'
-    (COMMA color_tile=expr COMMA bordercolor=expr COMMA background=expr
-    |COMMA color_tile=expr COMMA bordercolor=expr
-    |COMMA color_tile=expr COMMA                  COMMA background=expr
-    |COMMA color_tile=expr
-// This fails at runtime because there's no tile, but parses.
-    |COMMA                 COMMA bordercolor=expr COMMA background=expr
-    |COMMA                 COMMA bordercolor=expr
-// This fails at runtime because there's no tile, but parses.
-    |COMMA                 COMMA                  COMMA background=expr)?
+    ( COMMA (color_tile=expr)? COMMA (bordercolor=expr)? COMMA background=expr
+    | COMMA (color_tile=expr)? COMMA bordercolor=expr
+    | COMMA color_tile=expr )?
   ;
 
 palette_statement
@@ -742,9 +719,9 @@ scope_variable
 
 screen_statement
   : SCREEN screenmode=expr
-    (COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visualpage=expr
-    |COMMA (colorswitch=expr)? COMMA activepage=expr
-    |COMMA colorswitch=expr)?
+    ( COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visualpage=expr
+    | COMMA (colorswitch=expr)? COMMA activepage=expr
+    | COMMA colorswitch=expr )?
   ;
 
 seek_statement
