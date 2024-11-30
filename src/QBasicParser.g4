@@ -72,6 +72,7 @@ statement
   | circle_statement
   | clear_statement
   | close_statement
+  | color_statement
   | const_statement
   | data_statement
   | def_seg_statement
@@ -267,10 +268,8 @@ type_element
 
 assignment_statement
 // The LET keyword is optional.
+// *** Assignment to a FNID is only legal inside DEF FNname body.
   : LET? variable_or_function_call '=' expr
-// This form is legal only inside a DEF FN, but we will use a semantic pass to
-// enforce this later.  LET is also allowed here.
-  | LET? FNID '=' expr
   ;
 
 // CALL can only be used with SUB procedures.
@@ -336,6 +335,13 @@ clear_statement
 
 close_statement
   : CLOSE ('#'? expr)? (COMMA '#'? expr)*
+  ;
+
+color_statement
+  : COLOR
+    ( (arg1=expr)? COMMA (arg2=expr)? COMMA (arg3=expr)
+    | (arg1=expr)? COMMA (arg2=expr)
+    | (arg1=expr)? )
   ;
 
 const_statement
@@ -829,7 +835,7 @@ args_or_indices : '(' expr (COMMA expr)* ')';
 // 
 // Note the IDE reformats "x   . y" as "x.y".
 variable_or_function_call
-  : ID (args_or_indices ('.' ID)?)?
+  : (ID | FNID) (args_or_indices ('.' ID)?)?
   ;
 
 // A system or user-defined type following an AS keyword.

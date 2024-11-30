@@ -1,0 +1,41 @@
+(program 
+  (statement 
+    (color_statement color 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (color_statement color 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (color_statement color 
+      (expr 
+        (literal 1)) , , 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (color_statement color 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (color_statement color , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (color_statement color , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (color_statement color , , 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (color_statement color)) \n <EOF>)

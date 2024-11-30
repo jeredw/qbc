@@ -5,8 +5,8 @@ build/QBasicParser.java: src/QBasicParser.g4 src/QBasicLexer.g4
 	(cd build && javac *.java)
 
 .PHONY: test
-test: build/QBasicParser.java test/*.bas
-	python3 src/test_parser.py test/*.bas
+test: build/QBasicParser.java test/*/*.bas
+	python3 src/test_parser.py test/{parser,manual,programs}/*.bas
 
 .PHONY: clean
 clean:

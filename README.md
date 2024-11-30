@@ -95,7 +95,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `CLNG`           | Function    | -       |
 | `CLOSE`          | Statement   | ✅      |
 | `CLS`            | Statement   | -       |
-| `COLOR`          | Statement   | -       |
+| `COLOR`          | Statement   | ✅      |
 | `COM`            | Statement   | ✅      |
 | `COMMON`         | Statement   | ✅      |
 | `CONST`          | Statement   | 🚧      |
