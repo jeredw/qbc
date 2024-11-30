@@ -1,0 +1,88 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function screen 
+          ( 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (literal 2)) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function screen 
+          ( 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (literal 2)) , 
+            (expr 
+              (literal 1)) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function screen 
+          ( 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (literal 2)) , 
+            (expr 
+              (literal 0)) ))))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 0)) , , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)) , , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)) , , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)) , , , 
+      (expr 
+        (literal 0)))) \n <EOF>)

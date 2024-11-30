@@ -1,11 +1,8 @@
 (program statement \n 
   (statement 
-    (call_statement 
-      (untyped_id SCREEN) 
-      (call_argument_list 
-        (call_argument 
-          (expr 
-            (literal 1)))))) \n 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)))) \n 
   (statement 
     (for_next_statement FOR i% = 
       (expr 

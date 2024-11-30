@@ -9,12 +9,9 @@
     (call_statement 
       (untyped_id CLS))) \n 
   (statement 
-    (call_statement 
-      (untyped_id SCREEN) 
-      (call_argument_list 
-        (call_argument 
-          (expr 
-            (literal 1)))))) \n statement \n 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)))) \n statement \n 
   (statement 
     (circle_statement CIRCLE 
       ( 

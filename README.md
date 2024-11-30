@@ -248,8 +248,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `RSET`           | Statement   | ✅      |
 | `RTRIM$`         | Function    | -       |
 | `RUN`            | Statement   | -       |
-| `SCREEN`         | Function    | -       |
-| `SCREEN`         | Statement   | -       |
+| `SCREEN`         | Function    | ✅      |
+| `SCREEN`         | Statement   | ✅      |
 | `SEEK`           | Function    | ✅      |
 | `SEEK`           | Statement   | ✅      |
 | `SELECT CASE`    | Statement   | ✅      |
@@ -297,13 +297,13 @@ keywords as arguments - it's probably easier just to parse those.
 | `VARPTR`         | Function    | -       |
 | `VARPTR$`        | Function    | -       |
 | `VARSEG`         | Function    | -       |
-| `VIEW`           | Statement   | ✅      |
+| `VIEW`           | Statement   | ⛔      |
 | `VIEW PRINT`     | Statement   | ✅      |
 | `WAIT`           | Statement   | -       |
 | `WEND`           | Keyword     | ✅      |
 | `WHILE`...`WEND` | Statement   | ✅      |
 | `WIDTH`          | Statement   | ✅      |
-| `WINDOW`         | Statement   | ⛔      |
+| `WINDOW`         | Statement   | ✅      |
 | `WRITE`          | Statement   | ✅      |
 
 # Standard library

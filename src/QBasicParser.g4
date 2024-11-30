@@ -121,6 +121,7 @@ statement
   | return_statement
   | rset_statement
   | scope_statement
+  | screen_statement
   | seek_statement
   | select_case_statement
   | stop_statement
@@ -128,6 +129,7 @@ statement
   | view_print_statement
   | while_wend_statement
   | width_statement
+  | window_statement
   | write_statement
 // Statements can be empty after line labels, before or between :.
   |
@@ -738,6 +740,13 @@ scope_variable
   | ID array_declaration?
   ;
 
+screen_statement
+  : SCREEN screenmode=expr
+    (COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visualpage=expr
+    |COMMA (colorswitch=expr)? COMMA activepage=expr
+    |COMMA colorswitch=expr)?
+  ;
+
 seek_statement
   : SEEK '#'? expr COMMA expr
   ;
@@ -765,6 +774,10 @@ width_statement
   | WIDTH expr COMMA expr  // Could be WIDTH device$, width or WIDTH columns, lines
   | WIDTH file_number COMMA width=expr
   | WIDTH LPRINT width=expr
+  ;
+
+window_statement
+  : WINDOW (SCREEN? '(' x1=expr COMMA y1=expr ')' '-' '(' x2=expr COMMA y2=expr')' )?
   ;
 
 write_statement
@@ -812,6 +825,7 @@ builtin_function
   | MID_STRING '(' expr COMMA expr (COMMA expr)? ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
+  | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | SEEK '(' expr ')'
   | STRIG '(' expr ')'
   | TIMER

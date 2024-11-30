@@ -1,0 +1,45 @@
+(program 
+  (statement 
+    (window_statement window)) \n 
+  (statement 
+    (window_statement window 
+      ( 
+        (expr - 
+          (expr 
+            (literal 100))) , 
+        (expr - 
+          (expr 
+            (literal 100))) ) - 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ))) \n 
+  (statement 
+    (window_statement window screen 
+      ( 
+        (expr - 
+          (expr 
+            (literal 100))) , 
+        (expr - 
+          (expr 
+            (literal 100))) ) - 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ))) \n 
+  (statement 
+    (window_statement window screen 
+      ( 
+        (expr - 
+          (expr 
+            (literal 100))) , 
+        (expr - 
+          (expr 
+            (literal 100))) ) - 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ))) \n <EOF>)

@@ -135,6 +135,7 @@ REM : [Rr][Ee][Mm] -> pushMode(COMMENT_MODE) ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 RSET : [Rr][Ss][Ee][Tt] ;
+SCREEN : [Ss][Cc][Rr][Ee][Ee][Nn] ;
 SEEK : [Ss][Ee][Ee][Kk] ;
 SEG : [Ss][Ee][Gg] ;
 SELECT : [Ss][Ee][Ll][Ee][Cc][Tt] ;
@@ -157,6 +158,7 @@ VIEW : [Vv][Ii][Ee][Ww] ;
 WEND : [Ww][Ee][Nn][Dd] ;
 WHILE : [Ww][Hh][Ii][Ll][Ee] ;
 WIDTH : [Ww][Ii][Dd][Tt][Hh] ;
+WINDOW : [Ww][Ii][Nn][Dd][Oo][Ww] ;
 WRITE : [Ww][Rr][Ii][Tt][Ee] ;
 XOR : [Xx][Oo][Rr] ;
 
