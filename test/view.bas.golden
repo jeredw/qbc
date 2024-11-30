@@ -1,0 +1,59 @@
+(program 
+  (statement 
+    (view_statement view screen 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ) - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 120)) ))) \n 
+  (statement 
+    (view_statement view screen 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ) - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 120)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (view_statement view screen 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ) - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 120)) ) , 
+      (expr 
+        (literal 15)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (view_statement view screen 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ) - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 120)) ) , , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (view_statement view)) \n <EOF>)

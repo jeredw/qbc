@@ -126,6 +126,7 @@ statement
   | select_case_statement
   | stop_statement
   | unlock_statement
+  | view_statement
   | view_print_statement
   | while_wend_statement
   | width_statement
@@ -736,6 +737,13 @@ unlock_statement
   : UNLOCK '#'? expr (COMMA (expr | expr TO expr))?
   ;
 
+view_statement
+  : VIEW
+  | VIEW SCREEN? '(' x1=expr COMMA y1=expr ')' '-' '(' x2=expr COMMA y2=expr')'
+    ( COMMA (color=expr)? COMMA border=expr
+    | COMMA color=expr )?
+  ;
+
 view_print_statement
   : VIEW PRINT (toprow=expr TO bottomrow=expr)?
   ;
@@ -754,7 +762,7 @@ width_statement
   ;
 
 window_statement
-  : WINDOW (SCREEN? '(' x1=expr COMMA y1=expr ')' '-' '(' x2=expr COMMA y2=expr')' )?
+  : WINDOW ( SCREEN? '(' x1=expr COMMA y1=expr ')' '-' '(' x2=expr COMMA y2=expr')' )?
   ;
 
 write_statement

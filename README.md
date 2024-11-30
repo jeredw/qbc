@@ -297,7 +297,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `VARPTR`         | Function    | -       |
 | `VARPTR$`        | Function    | -       |
 | `VARSEG`         | Function    | -       |
-| `VIEW`           | Statement   | ⛔      |
+| `VIEW`           | Statement   | ✅      |
 | `VIEW PRINT`     | Statement   | ✅      |
 | `WAIT`           | Statement   | -       |
 | `WEND`           | Keyword     | ✅      |
