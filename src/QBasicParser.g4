@@ -106,6 +106,7 @@ statement
   | on_expr_goto_statement
   | open_statement
   | open_legacy_statement
+  | paint_statement
   | play_statement
   | print_statement
   | print_using_statement
@@ -505,13 +506,13 @@ key_statement
 line_statement
   : LINE (STEP? '(' x1=expr COMMA y1=expr ')')? '-'
          STEP? '(' x2=expr COMMA y2=expr ')'
-    (COMMA color=expr COMMA box=box_style? COMMA style=expr
-    |COMMA color=expr COMMA box=box_style?
+    (COMMA color=expr COMMA box=box_style COMMA style=expr
+    |COMMA color=expr COMMA box=box_style
     |COMMA color=expr COMMA               COMMA style=expr
 // The IDE will erase a trailing comma after color.
     |COMMA color=expr COMMA?
-    |COMMA            COMMA box=box_style? COMMA style=expr
-    |COMMA            COMMA box=box_style?
+    |COMMA            COMMA box=box_style COMMA style=expr
+    |COMMA            COMMA box=box_style
     |COMMA            COMMA               COMMA style=expr
 // Strangely, the IDE will also erase two trailing commas.
     |COMMA            COMMA
@@ -601,6 +602,19 @@ open_lock
   | LOCK READ
   | LOCK WRITE
   | LOCK READ WRITE
+  ;
+
+paint_statement
+  : PAINT STEP? '(' x=expr COMMA y=expr ')'
+    (COMMA color_tile=expr COMMA bordercolor=expr COMMA background=expr
+    |COMMA color_tile=expr COMMA bordercolor=expr
+    |COMMA color_tile=expr COMMA                  COMMA background=expr
+    |COMMA color_tile=expr
+// This fails at runtime because there's no tile, but parses.
+    |COMMA                 COMMA bordercolor=expr COMMA background=expr
+    |COMMA                 COMMA bordercolor=expr
+// This fails at runtime because there's no tile, but parses.
+    |COMMA                 COMMA                  COMMA background=expr)?
   ;
 
 play_statement

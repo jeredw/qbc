@@ -214,7 +214,7 @@ keywords as arguments - it's probably easier just to parse those.
 | `OR`             | Operator    | ✅      |
 | `OUT`            | Statement   | -       |
 | `OUTPUT`         | Keyword     | ✅      |
-| `PAINT`          | Statement   | ⛔      |
+| `PAINT`          | Statement   | ✅      |
 | `PALETTE`        | Statement   | ⛔      |
 | `PALETTE USING`  | Statement   | ⛔      |
 | `PCOPY`          | Statement   | -       |

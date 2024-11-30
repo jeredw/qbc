@@ -120,6 +120,7 @@ OPEN : [Oo][Pp][Ee][Nn] ;
 OUTPUT : [Oo][Uu][Tt][Pp][Uu][Tt] ;
 OR : [Oo][Rr] ;
 ON : [Oo][Nn] ;
+PAINT : [Pp][Aa][Ii][Nn][Tt] ;
 PEN : [Pp][Ee][Nn] ;
 PLAY : [Pp][Ll][Aa][Yy] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
