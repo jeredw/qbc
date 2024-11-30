@@ -1,0 +1,510 @@
+(program 
+  (label 
+    (line_number 5)) 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n 
+  (label 
+    (line_number 10)) statement \r\n 
+  (label 
+    (line_number 15)) statement \r\n 
+  (label 
+    (line_number 20)) statement \r\n 
+  (label 
+    (line_number 25)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Q) = 
+      (expr 
+        (literal 2)))) \r\n 
+  (label 
+    (line_number 30)) 
+  (statement 
+    (while_wend_statement WHILE 
+      (expr 
+        (expr 
+          (variable_or_function_call Q)) >= 
+        (expr 
+          (literal 1))) 
+      (block \r\n 
+        (label 
+          (line_number 35)) 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n 
+        (label 
+          (line_number 40)) 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Sound effects")))) : 
+        (statement 
+          (print_statement PRINT)) \r\n 
+        (label 
+          (line_number 45)) 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  B")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "ouncing")))) \r\n 
+        (label 
+          (line_number 50)) 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  F")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "alling")))) \r\n 
+        (label 
+          (line_number 55)) 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  K")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "laxon")))) \r\n 
+        (label 
+          (line_number 60)) 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  S")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "iren")))) \r\n 
+        (label 
+          (line_number 65)) 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  Q")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "uit")))) \r\n 
+        (label 
+          (line_number 70)) 
+        (statement 
+          (print_statement PRINT)) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Select: ")) ;)) \r\n 
+        (label 
+          (line_number 75)) 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Q$) = 
+            (expr 
+              (builtin_function INPUT$ 
+                ( 
+                  (expr 
+                    (literal 1)) ))))) : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Q) = 
+            (expr 
+              (variable_or_function_call INSTR 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal "BFKSQbfksq")) , 
+                    (expr 
+                      (variable_or_function_call Q$)) )))))) \r\n 
+        (label 
+          (line_number 80)) 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call Q)) = 
+              (expr 
+                (literal 0))) 
+            (goto_statement GOTO 
+              (target 
+                (line_number 75))))) \r\n 
+        (label 
+          (line_number 85)) 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n 
+        (label 
+          (line_number 90)) 
+        (statement 
+          (on_expr_gosub_statement ON 
+            (expr 
+              (variable_or_function_call Q)) GOSUB 
+            (target_list 
+              (target 
+                (line_number 100)) , 
+              (target 
+                (line_number 200)) , 
+              (target 
+                (line_number 300)) , 
+              (target 
+                (line_number 400)) , 
+              (target 
+                (line_number 500)) , 
+              (target 
+                (line_number 100)) , 
+              (target 
+                (line_number 200)) , 
+              (target 
+                (line_number 300)) , 
+              (target 
+                (line_number 400)) , 
+              (target 
+                (line_number 500))))) \r\n 
+        (label 
+          (line_number 95)) statement) WEND)) \r\n 
+  (label 
+    (line_number 100)) statement \r\n 
+  (label 
+    (line_number 105)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call HTONE) = 
+      (expr 
+        (literal 32767)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call LTONE) = 
+      (expr 
+        (literal 246)))) \r\n 
+  (label 
+    (line_number 110)) 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Bouncing . . .")))) \r\n 
+  (label 
+    (line_number 115)) 
+  (statement 
+    (for_next_statement FOR COUNT = 
+      (expr 
+        (literal 60)) TO 
+      (expr 
+        (literal 1)) STEP 
+      (expr - 
+        (expr 
+          (literal 2))) 
+      (block \r\n 
+        (label 
+          (line_number 120)) 
+        (statement 
+          (call_statement 
+            (untyped_id SOUND) 
+            (call_argument_list 
+              (call_argument 
+                (expr 
+                  (expr 
+                    (variable_or_function_call LTONE)) - 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call COUNT)) / 
+                    (expr 
+                      (literal 2))))) , 
+              (call_argument 
+                (expr 
+                  (expr 
+                    (variable_or_function_call COUNT)) / 
+                  (expr 
+                    (literal 20))))))) \r\n 
+        (label 
+          (line_number 125)) 
+        (statement 
+          (call_statement 
+            (untyped_id SOUND) 
+            (call_argument_list 
+              (call_argument HTONE) , 
+              (call_argument 
+                (expr 
+                  (expr 
+                    (variable_or_function_call COUNT)) / 
+                  (expr 
+                    (literal 15))))))) \r\n 
+        (label 
+          (line_number 130)) statement) NEXT COUNT)) \r\n 
+  (label 
+    (line_number 135)) 
+  (statement 
+    (return_statement RETURN)) \r\n 
+  (label 
+    (line_number 200)) statement \r\n 
+  (label 
+    (line_number 205)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call HTONE) = 
+      (expr 
+        (literal 2000)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call LTONE) = 
+      (expr 
+        (literal 550)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call DELAY) = 
+      (expr 
+        (literal 500)))) \r\n 
+  (label 
+    (line_number 210)) 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Falling . . .")))) \r\n 
+  (label 
+    (line_number 215)) 
+  (statement 
+    (for_next_statement FOR COUNT = 
+      (expr 
+        (variable_or_function_call HTONE)) TO 
+      (expr 
+        (variable_or_function_call LTONE)) STEP 
+      (expr - 
+        (expr 
+          (literal 10))) 
+      (block \r\n 
+        (label 
+          (line_number 220)) 
+        (statement 
+          (call_statement 
+            (untyped_id SOUND) 
+            (call_argument_list 
+              (call_argument COUNT) , 
+              (call_argument 
+                (expr 
+                  (expr 
+                    (variable_or_function_call DELAY)) / 
+                  (expr 
+                    (variable_or_function_call COUNT))))))) \r\n 
+        (label 
+          (line_number 225)) statement) NEXT COUNT)) \r\n 
+  (label 
+    (line_number 230)) 
+  (statement 
+    (return_statement RETURN)) \r\n 
+  (label 
+    (line_number 300)) statement \r\n 
+  (label 
+    (line_number 305)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call HTONE) = 
+      (expr 
+        (literal 987)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call LTONE) = 
+      (expr 
+        (literal 329)))) \r\n 
+  (label 
+    (line_number 310)) 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Oscillating . . .")))) \r\n 
+  (label 
+    (line_number 315)) 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal " . . . press any key to end.")))) \r\n 
+  (label 
+    (line_number 320)) 
+  (statement 
+    (while_wend_statement WHILE 
+      (expr 
+        (expr 
+          (variable_or_function_call INKEY$)) = 
+        (expr 
+          (literal ""))) 
+      (block \r\n 
+        (label 
+          (line_number 325)) 
+        (statement 
+          (call_statement 
+            (untyped_id SOUND) 
+            (call_argument_list 
+              (call_argument HTONE) , 
+              (call_argument 
+                (expr 
+                  (literal 5)))))) : 
+        (statement 
+          (call_statement 
+            (untyped_id SOUND) 
+            (call_argument_list 
+              (call_argument LTONE) , 
+              (call_argument 
+                (expr 
+                  (literal 5)))))) \r\n 
+        (label 
+          (line_number 330)) statement) WEND)) \r\n 
+  (label 
+    (line_number 335)) 
+  (statement 
+    (return_statement RETURN)) \r\n 
+  (label 
+    (line_number 400)) statement \r\n 
+  (label 
+    (line_number 405)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call HTONE) = 
+      (expr 
+        (literal 780)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call RANGE) = 
+      (expr 
+        (literal 650)))) \r\n 
+  (label 
+    (line_number 410)) 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Wailing . . .")))) \r\n 
+  (label 
+    (line_number 415)) 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal " . . . press any key to end.")))) \r\n 
+  (label 
+    (line_number 420)) 
+  (statement 
+    (while_wend_statement WHILE 
+      (expr 
+        (expr 
+          (variable_or_function_call INKEY$)) = 
+        (expr 
+          (literal ""))) 
+      (block \r\n 
+        (label 
+          (line_number 425)) 
+        (statement 
+          (for_next_statement FOR COUNT = 
+            (expr 
+              (variable_or_function_call RANGE)) TO 
+            (expr - 
+              (expr 
+                (variable_or_function_call RANGE))) STEP 
+            (expr - 
+              (expr 
+                (literal 4))) 
+            (block \r\n 
+              (label 
+                (line_number 430)) 
+              (statement 
+                (call_statement 
+                  (untyped_id SOUND) 
+                  (call_argument_list 
+                    (call_argument 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call HTONE)) - 
+                        (expr 
+                          (variable_or_function_call ABS 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call COUNT)) )))))) , 
+                    (call_argument 
+                      (expr 
+                        (literal .3)))))) \r\n 
+              (label 
+                (line_number 435)) 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call COUNT) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call COUNT)) - 
+                    (expr 
+                      (expr 
+                        (literal 2)) / 
+                      (expr 
+                        (variable_or_function_call RANGE)))))) \r\n 
+              (label 
+                (line_number 440)) statement) NEXT COUNT)) \r\n 
+        (label 
+          (line_number 445)) statement) WEND)) \r\n 
+  (label 
+    (line_number 450)) 
+  (statement 
+    (return_statement RETURN)) \r\n 
+  (label 
+    (line_number 500)) statement \r\n 
+  (label 
+    (line_number 505)) 
+  (statement 
+    (end_statement END)) \r\n statement \r\n <EOF>)

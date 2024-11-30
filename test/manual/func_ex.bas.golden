@@ -1,0 +1,52 @@
+(program statement \r\n statement \r\n 
+  (statement 
+    (line_input_statement LINE INPUT "Enter a string: " , 
+      (variable_or_function_call InString$))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "The string length is")) ; 
+      (expr 
+        (variable_or_function_call StrLen 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call InString$)) )))))) \r\n statement \r\n 
+  (function_statement FUNCTION StrLen 
+    ( 
+      (parameter_list 
+        (parameter X$)) ) 
+    (block \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call X$)) = 
+          (expr 
+            (literal ""))) THEN \r\n 
+        (then_block statement \r\n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call StrLen) = 
+              (expr 
+                (literal 0)))) \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n statement \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call StrLen) = 
+                (expr 
+                  (expr 
+                    (literal 1)) + 
+                  (expr 
+                    (variable_or_function_call StrLen 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (builtin_function MID$ 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call X$)) , 
+                                (expr 
+                                  (literal 2)) ))) ))))))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n <EOF>)

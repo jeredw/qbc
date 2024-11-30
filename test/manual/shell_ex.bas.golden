@@ -1,0 +1,205 @@
+(program statement \r\n statement \r\n statement 
+  (declare_statement DECLARE FUNCTION GetName$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter DirLine$)) )) \r\n 
+  (statement 
+    (line_input_statement LINE INPUT "Enter target drive and directory: " , 
+      (variable_or_function_call PathSpec$))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id SHELL) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal "DIR > DIRFILE")))))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (open_statement OPEN 
+            (expr 
+              (literal "DIRFILE")) FOR 
+            (open_mode INPUT) AS # 
+            (expr 
+              (literal 1)))) \r\n 
+        (statement 
+          (input_statement INPUT "Enter date 
+            (MM-DD-YY): " , 
+            (variable_or_function_call MDate$))) \r\n 
+        (statement 
+          (print_statement PRINT)) \r\n statement \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (block \r\n 
+              (statement 
+                (line_input_statement LINE INPUT 
+                  (file_number # 
+                    (expr 
+                      (literal 1))) , 
+                  (variable_or_function_call DirLine$))) \r\n statement \r\n statement \r\n 
+              (if_block_statement IF 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call INSTR 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call DirLine$)) , 
+                            (expr 
+                              (variable_or_function_call MDate$)) )))) > 
+                    (expr 
+                      (literal 0))) AND 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call LEFT$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call DirLine$)) , 
+                            (expr 
+                              (literal 1)) )))) <> 
+                    (expr 
+                      (literal ".")))) THEN \r\n 
+                (then_block 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call FileSpec$) = 
+                      (expr 
+                        (variable_or_function_call GetName$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call DirLine$)) )))))) \r\n statement \r\n 
+                  (if_block_statement IF 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call FileSpec$)) <> 
+                      (expr 
+                        (literal "DIRFILE"))) THEN \r\n 
+                    (then_block statement \r\n 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call DoLine$) = 
+                          (expr 
+                            (expr 
+                              (expr 
+                                (expr 
+                                  (literal "COPY ")) + 
+                                (expr 
+                                  (variable_or_function_call FileSpec$))) + 
+                              (expr 
+                                (literal "  "))) + 
+                            (expr 
+                              (variable_or_function_call PathSpec$))))) \r\n 
+                      (statement 
+                        (print_statement PRINT 
+                          (expr 
+                            (variable_or_function_call DoLine$)))) \r\n statement \r\n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id SHELL) 
+                          (call_argument_list 
+                            (call_argument DoLine$)))) \r\n) 
+                    (end_if_statement END IF)) \r\n) 
+                (end_if_statement END IF)) \r\n statement) LOOP 
+            (do_condition UNTIL 
+              (expr 
+                (variable_or_function_call EOF 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 1)) ))))))) \r\n 
+        (statement 
+          (close_statement CLOSE # 
+            (expr 
+              (literal 1)))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "New date?")))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call R$) = 
+            (expr 
+              (builtin_function INPUT$ 
+                ( 
+                  (expr 
+                    (literal 1)) ))))) \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n statement) LOOP 
+      (do_condition UNTIL 
+        (expr 
+          (expr 
+            (variable_or_function_call UCASE$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call R$)) )))) <> 
+          (expr 
+            (literal "Y")))))) \r\n statement \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n 
+  (function_statement FUNCTION GetName$ 
+    ( 
+      (parameter_list 
+        (parameter DirLine$)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BaseName$) = 
+          (expr 
+            (variable_or_function_call RTRIM$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call LEFT$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call DirLine$)) , 
+                          (expr 
+                            (literal 8)) )))) )))))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ExtName$) = 
+          (expr 
+            (variable_or_function_call RTRIM$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (builtin_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call DirLine$)) , 
+                        (expr 
+                          (literal 10)) , 
+                        (expr 
+                          (literal 3)) ))) )))))) \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call ExtName$)) <> 
+          (expr 
+            (literal ""))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call BaseName$) = 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call BaseName$)) + 
+                  (expr 
+                    (literal "."))) + 
+                (expr 
+                  (variable_or_function_call ExtName$))))) \r\n) 
+        (end_if_statement END IF)) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call GetName$) = 
+          (expr 
+            (variable_or_function_call BaseName$)))) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \n <EOF>)

@@ -1,0 +1,121 @@
+(program statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n 
+  (function_statement FUNCTION YesQues 
+    ( 
+      (parameter_list 
+        (parameter Prompt$) , 
+        (parameter Row) , 
+        (parameter Col)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call OldRow) = 
+          (expr 
+            (variable_or_function_call CSRLIN)))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call OldCol) = 
+          (expr 
+            (variable_or_function_call POS 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 0)) )))))) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Row)) , 
+          (expr 
+            (variable_or_function_call Col)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call Prompt$)) 
+          (expr 
+            (literal "
+              (Y/N):")) ;)) \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n statement \r\n 
+            (statement 
+              (do_loop_statement DO 
+                (block \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Resp$) = 
+                      (expr 
+                        (variable_or_function_call INKEY$)))) \r\n statement) LOOP 
+                (do_condition WHILE 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Resp$)) = 
+                    (expr 
+                      (literal "")))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Resp$) = 
+                (expr 
+                  (variable_or_function_call UCASE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Resp$)) )))))) \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Resp$)) = 
+                  (expr 
+                    (literal "Y"))) OR 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Resp$)) = 
+                  (expr 
+                    (literal "N")))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (exit_statement EXIT DO)) \r\n) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n 
+                  (statement 
+                    (call_statement 
+                      (untyped_id BEEP))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement) LOOP)) \r\n statement \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call Resp$)) ;)) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call OldRow)) , 
+          (expr 
+            (variable_or_function_call OldCol)))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YesQues) = 
+          (expr 
+            ( 
+              (expr 
+                (expr 
+                  (variable_or_function_call Resp$)) = 
+                (expr 
+                  (literal "Y"))) )))) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr NOT 
+          (expr 
+            (variable_or_function_call YesQues 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal "Do you know the frequency?")) , 
+                  (expr 
+                    (literal 12)) , 
+                  (expr 
+                    (literal 5)) )))))))) \r\n statement \n <EOF>)

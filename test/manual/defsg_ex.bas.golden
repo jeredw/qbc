@@ -1,0 +1,179 @@
+(program statement \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id CapsOn) 
+    ( )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id CapsOff) 
+    ( )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id PrntMsg) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter R%) , 
+        (declare_parameter C%) , 
+        (declare_parameter M$)) )) \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CapsOn))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id PrntMsg) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 24))) , 
+        (call_argument 
+          (expr 
+            (literal 1))) , 
+        (call_argument 
+          (expr 
+            (literal "<Caps Lock On>")))))) \r\n 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 12)) , 
+      (expr 
+        (literal 10)))) \r\n 
+  (statement 
+    (line_input_statement LINE INPUT "Enter a string 
+      (all characters are caps): " , 
+      (variable_or_function_call S$))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CapsOff))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id PrntMsg) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 24))) , 
+        (call_argument 
+          (expr 
+            (literal 1))) , 
+        (call_argument 
+          (expr 
+            (literal "              ")))))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id PrntMsg) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 25))) , 
+        (call_argument 
+          (expr 
+            (literal 1))) , 
+        (call_argument 
+          (expr 
+            (literal "Press any key to continue...")))))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))) 
+      (block :) LOOP)) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id CapsOn) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (def_seg_statement DEF SEG = 
+          (expr 
+            (literal 0)))) \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id POKE) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (literal &H0417))) , 
+            (call_argument 
+              (expr 
+                (expr 
+                  (variable_or_function_call PEEK 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal &H0417)) )))) OR 
+                (expr 
+                  (literal &H40))))))) \r\n statement \r\n 
+      (statement 
+        (def_seg_statement DEF SEG)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id CapsOff) STATIC 
+    (block \r\n statement \r\n 
+      (statement 
+        (def_seg_statement DEF SEG = 
+          (expr 
+            (literal 0)))) \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id POKE) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (literal &H0417))) , 
+            (call_argument 
+              (expr 
+                (expr 
+                  (variable_or_function_call PEEK 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal &H0417)) )))) AND 
+                (expr 
+                  (literal &HBF))))))) \r\n 
+      (statement 
+        (def_seg_statement DEF SEG)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id PrntMsg) 
+    ( 
+      (parameter_list 
+        (parameter Row%) , 
+        (parameter Col%) , 
+        (parameter Message$)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call CurRow%) = 
+          (expr 
+            (variable_or_function_call CSRLIN)))) : 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call CurCol%) = 
+          (expr 
+            (variable_or_function_call POS 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 0)) )))))) \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Row%)) , 
+          (expr 
+            (variable_or_function_call Col%)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call Message$)) ;)) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call CurRow%)) , 
+          (expr 
+            (variable_or_function_call CurCol%)))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

@@ -6,9 +6,6 @@
         "sourceMap": true,
         "esModuleInterop": true,
         "noEmit": false,
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "outDir": "dist",
         "noImplicitAny": true,
         "strictNullChecks": true,
         "preserveConstEnums": true,
@@ -21,7 +18,7 @@
         "skipLibCheck": true,
     },
     "include": [
-        "src/**/*.ts",
+        "build/**/*.ts",
     ],
     "exclude": [
         "node_modules",

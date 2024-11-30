@@ -1,0 +1,50 @@
+(program statement \r\n statement \r\n statement \r\n statement 
+  (def_fn_statement DEF FNFactorial# 
+    ( 
+      (def_fn_parameter_list 
+        (def_fn_parameter X)) ) 
+    (block \r\n 
+      (statement 
+        (scope_statement STATIC 
+          (scope_variable Tmp#) , 
+          (scope_variable I))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Tmp#) = 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 2)) TO 
+          (expr 
+            (variable_or_function_call X)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Tmp#) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Tmp#)) * 
+                  (expr 
+                    (variable_or_function_call I))))) \r\n statement) NEXT I)) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call FNFactorial#) = 
+          (expr 
+            (variable_or_function_call Tmp#)))) \r\n statement) END DEF) \r\n statement \r\n 
+  (statement 
+    (input_statement INPUT "Enter a number: " , 
+      (variable_or_function_call Num))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (variable_or_function_call Num)) 
+      (expr 
+        (literal "factorial is")) 
+      (expr 
+        (variable_or_function_call FNFactorial# 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call Num)) )))))) \r\n statement \n <EOF>)

@@ -1,0 +1,123 @@
+(program statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id PRNTMAT) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter A! 
+          (array_declaration 
+            ( )))) )) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable A 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 0)) TO 
+              (expr 
+                (literal 3))) , 
+            (dim_subscript 
+              (expr 
+                (literal 0)) TO 
+              (expr 
+                (literal 3))) ))))) \r\n 
+  (statement 
+    (for_next_statement FOR I% = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (literal 3)) 
+      (block \r\n 
+        (statement 
+          (for_next_statement FOR J% = 
+            (expr 
+              (literal 0)) TO 
+            (expr 
+              (literal 3)) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call A 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I%)) , 
+                        (expr 
+                          (variable_or_function_call J%)) ))) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call I%)) + 
+                    (expr 
+                      (variable_or_function_call J%))))) \r\n statement) NEXT J%)) \r\n statement) NEXT I%)) \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id PRNTMAT) 
+      ( 
+        (call_argument_list 
+          (call_argument A 
+            ( ))) ))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id PRNTMAT) 
+    ( 
+      (parameter_list 
+        (parameter A 
+          (array_declaration 
+            ( )))) ) STATIC 
+    (block \r\n 
+      (statement 
+        (for_next_statement FOR I% = 
+          (expr 
+            (variable_or_function_call LBOUND 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call A)) , 
+                  (expr 
+                    (literal 1)) )))) TO 
+          (expr 
+            (variable_or_function_call UBOUND 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call A)) , 
+                  (expr 
+                    (literal 1)) )))) 
+          (block \r\n 
+            (statement 
+              (for_next_statement FOR J% = 
+                (expr 
+                  (variable_or_function_call LBOUND 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call A)) , 
+                        (expr 
+                          (literal 2)) )))) TO 
+                (expr 
+                  (variable_or_function_call UBOUND 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call A)) , 
+                        (expr 
+                          (literal 2)) )))) 
+                (block \r\n 
+                  (statement 
+                    (print_statement PRINT 
+                      (expr 
+                        (variable_or_function_call A 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call I%)) , 
+                              (expr 
+                                (variable_or_function_call J%)) )))) ; 
+                      (expr 
+                        (literal " ")) ;)) \r\n statement) NEXT J%)) \r\n 
+            (statement 
+              (print_statement PRINT)) : 
+            (statement 
+              (print_statement PRINT)) \r\n statement) NEXT I%)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n <EOF>)

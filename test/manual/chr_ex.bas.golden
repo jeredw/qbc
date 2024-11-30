@@ -1,0 +1,217 @@
+(program statement \r\n statement \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id DBox) 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (expr 
+              (literal 5))) , 
+          (call_argument 
+            (expr 
+              (literal 22))) , 
+          (call_argument 
+            (expr 
+              (literal 18))) , 
+          (call_argument 
+            (expr 
+              (literal 40)))) ))) \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id DBox) 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (expr 
+              (literal 1))) , 
+          (call_argument 
+            (expr 
+              (literal 4))) , 
+          (call_argument 
+            (expr 
+              (literal 4))) , 
+          (call_argument 
+            (expr 
+              (literal 50)))) ))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment ULEFTC = 
+        (const_expr 
+          (expr 
+            (literal 201)))) , 
+      (const_assignment URIGHTC = 
+        (const_expr 
+          (expr 
+            (literal 187)))) , 
+      (const_assignment VERTICAL = 
+        (const_expr 
+          (expr 
+            (literal 186)))) , 
+      (const_assignment HORIZONTAL = 
+        (const_expr 
+          (expr 
+            (literal 205)))))) \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment LLEFTC = 
+        (const_expr 
+          (expr 
+            (literal 200)))) , 
+      (const_assignment LRIGHTC = 
+        (const_expr 
+          (expr 
+            (literal 188)))))) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id DBox) 
+    ( 
+      (parameter_list 
+        (parameter Urow%) , 
+        (parameter Ucol%) , 
+        (parameter Lrow%) , 
+        (parameter Lcol%)) ) STATIC 
+    (block \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Urow%)) , 
+          (expr 
+            (variable_or_function_call Ucol%)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call ULEFTC)) )))) ;)) \r\n 
+      (statement 
+        (locate_statement LOCATE , 
+          (expr 
+            (expr 
+              (variable_or_function_call Ucol%)) + 
+            (expr 
+              (literal 1))))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call STRING$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Lcol%)) - 
+                    (expr 
+                      (variable_or_function_call Ucol%))) , 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call HORIZONTAL)) )))) )))) ;)) \r\n 
+      (statement 
+        (locate_statement LOCATE , 
+          (expr 
+            (variable_or_function_call Lcol%)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call URIGHTC)) )))) ;)) \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (expr 
+              (variable_or_function_call Urow%)) + 
+            (expr 
+              (literal 1))) TO 
+          (expr 
+            (expr 
+              (variable_or_function_call Lrow%)) - 
+            (expr 
+              (literal 1))) 
+          (block \r\n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (variable_or_function_call I)) , 
+                (expr 
+                  (variable_or_function_call Ucol%)))) : 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call VERTICAL)) )))) ;)) \r\n 
+            (statement 
+              (locate_statement LOCATE , 
+                (expr 
+                  (variable_or_function_call Lcol%)))) : 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call VERTICAL)) )))) ;)) \r\n statement) NEXT I)) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Lrow%)) , 
+          (expr 
+            (variable_or_function_call Ucol%)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call LLEFTC)) )))) ;)) \r\n 
+      (statement 
+        (locate_statement LOCATE , 
+          (expr 
+            (expr 
+              (variable_or_function_call Ucol%)) + 
+            (expr 
+              (literal 1))))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call STRING$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Lcol%)) - 
+                    (expr 
+                      (variable_or_function_call Ucol%))) , 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call HORIZONTAL)) )))) )))) ;)) \r\n 
+      (statement 
+        (locate_statement LOCATE , 
+          (expr 
+            (variable_or_function_call Lcol%)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call LRIGHTC)) )))) ;)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

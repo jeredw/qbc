@@ -1,0 +1,1162 @@
+(program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \n statement \n statement \n statement 
+  (declare_statement DECLARE FUNCTION GetToken$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Search$) , 
+        (declare_parameter Delim$)) )) \n statement 
+  (declare_statement DECLARE FUNCTION StrSpn% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter InString$) , 
+        (declare_parameter Separator$)) )) \n statement 
+  (declare_statement DECLARE FUNCTION StrBrk% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter InString$) , 
+        (declare_parameter Separator$)) )) \n statement 
+  (declare_statement DECLARE FUNCTION IsDigit% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Char$)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id GetFileNames) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id BuildTable) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id GenOutFile) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id InitKeyTable) 
+    ( )) \n statement \n statement \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr - 
+            (expr 
+              (literal 1))))))) \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment false = 
+        (const_expr 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment MaxLines = 
+        (const_expr 
+          (expr 
+            (literal 400)))))) \n statement \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable LineTable! 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call MaxLines))) ))))) \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable LineCount))) \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable Seps$) , 
+      (dim_variable InputFile$) , 
+      (dim_variable OutputFile$) , 
+      (dim_variable TmpFile$))) \n statement \n statement \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment KeyWordCount = 
+        (const_expr 
+          (expr 
+            (literal 9)))))) \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable KeyWordTable$ 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call KeyWordCount))) ))))) \n statement \n 
+  (label 
+    (text_label 
+      (untyped_id KeyData)) :) statement \n 
+  (statement 
+    (data_statement DATA 
+      (data_item THEN) , 
+      (data_item ELSE) , 
+      (data_item GOSUB) , 
+      (data_item GOTO) , 
+      (data_item RESUME) , 
+      (data_item RETURN) , 
+      (data_item RESTORE) , 
+      (data_item RUN) , 
+      (data_item ERL) , 
+      (data_item ""))) \n statement \n statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Seps$) = 
+      (expr 
+        (expr 
+          (literal " ,:=<>
+            ()")) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 9)) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id InitKeyTable))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id GetFileNames))) \n 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (text_label 
+          (untyped_id FileErr1))))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call InputFile$)) FOR 
+      (open_mode INPUT) AS 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (line_number 0)))) \n 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 7)))) : 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Working")) ;)) : 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 23)))) : 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal " . . .")))) : 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 7)))) : 
+  (statement 
+    (print_statement PRINT)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id BuildTable))) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call InputFile$)) FOR 
+      (open_mode INPUT) AS 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (text_label 
+          (untyped_id FileErr2))))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call OutputFile$)) FOR 
+      (open_mode OUTPUT) AS 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (line_number 0)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id GenOutFile))) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)) , # 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call OutputFile$)) <> 
+        (expr 
+          (literal "CON"))) THEN 
+      (if_inline_action 
+        (statement 
+          (call_statement 
+            (untyped_id CLS)))))) \n statement \n 
+  (statement 
+    (end_statement END)) \n statement \n 
+  (label 
+    (text_label 
+      (untyped_id FileErr1)) :) statement \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "      Invalid file name")))) : 
+  (statement 
+    (print_statement PRINT)) \n 
+  (statement 
+    (input_statement INPUT "      New input file name 
+      (ENTER to terminate): " , 
+      (variable_or_function_call InputFile$))) \n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call InputFile$)) = 
+        (expr 
+          (literal ""))) THEN 
+      (if_inline_action 
+        (statement 
+          (end_statement END))))) \n 
+  (label 
+    (text_label 
+      (untyped_id FileErr2)) :) statement \n 
+  (statement 
+    (input_statement INPUT "      Output file name 
+      (ENTER to print to screen) :" , 
+      (variable_or_function_call OutputFile$))) \n 
+  (statement 
+    (print_statement PRINT)) \n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call OutputFile$)) = 
+            (expr 
+              (literal ""))) )) THEN 
+      (if_inline_action 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call OutputFile$) = 
+            (expr 
+              (literal "CON"))))))) \n 
+  (if_block_statement IF 
+    (expr 
+      (expr 
+        (variable_or_function_call TmpFile$)) = 
+      (expr 
+        (literal ""))) THEN \n 
+    (then_block 
+      (statement 
+        (resume_statement RESUME)) \n) 
+    (else_block_statement ELSE 
+      (else_block statement \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call TmpFile$) = 
+            (expr 
+              (literal "")))) \n 
+        (statement 
+          (resume_statement RESUME NEXT)) \n)) 
+    (end_if_statement END IF)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id BuildTable) STATIC 
+    (block \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr NOT 
+              (expr 
+                (variable_or_function_call EOF 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 1)) )))))) 
+          (block \n statement \n 
+            (statement 
+              (line_input_statement LINE INPUT 
+                (file_number # 
+                  (expr 
+                    (literal 1))) , 
+                (variable_or_function_call InLin$))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Token$) = 
+                (expr 
+                  (variable_or_function_call GetToken$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call InLin$)) , 
+                        (expr 
+                          (variable_or_function_call Seps$)) )))))) \n 
+            (statement 
+              (do_loop_statement DO 
+                (do_condition WHILE 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Token$)) <> 
+                        (expr 
+                          (literal ""))) ))) 
+                (block \n 
+                  (statement 
+                    (for_next_statement FOR KeyIndex = 
+                      (expr 
+                        (literal 1)) TO 
+                      (expr 
+                        (variable_or_function_call KeyWordCount)) 
+                      (block \n statement \n 
+                        (if_block_statement IF 
+                          (expr 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call KeyWordTable$ 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (variable_or_function_call KeyIndex)) )))) = 
+                                (expr 
+                                  (variable_or_function_call UCASE$ 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (variable_or_function_call Token$)) ))))) )) THEN \n 
+                          (then_block statement \n 
+                            (statement 
+                              (assignment_statement 
+                                (variable_or_function_call Token$) = 
+                                (expr 
+                                  (variable_or_function_call GetToken$ 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (literal "")) , 
+                                        (expr 
+                                          (variable_or_function_call Seps$)) )))))) \n statement \n statement \n statement \n statement \n 
+                            (statement 
+                              (do_loop_statement DO 
+                                (do_condition WHILE 
+                                  (expr 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call IsDigit 
+                                          (args_or_indices 
+                                            ( 
+                                              (expr 
+                                                (variable_or_function_call LEFT$ 
+                                                  (args_or_indices 
+                                                    ( 
+                                                      (expr 
+                                                        (variable_or_function_call Token$)) , 
+                                                      (expr 
+                                                        (literal 1)) )))) )))) ))) 
+                                (block \n 
+                                  (statement 
+                                    (assignment_statement 
+                                      (variable_or_function_call LineCount) = 
+                                      (expr 
+                                        (expr 
+                                          (variable_or_function_call LineCount)) + 
+                                        (expr 
+                                          (literal 1))))) \n 
+                                  (statement 
+                                    (assignment_statement 
+                                      (variable_or_function_call LineTable! 
+                                        (args_or_indices 
+                                          ( 
+                                            (expr 
+                                              (variable_or_function_call LineCount)) ))) = 
+                                      (expr 
+                                        (variable_or_function_call VAL 
+                                          (args_or_indices 
+                                            ( 
+                                              (expr 
+                                                (variable_or_function_call Token$)) )))))) \n 
+                                  (statement 
+                                    (assignment_statement 
+                                      (variable_or_function_call Token$) = 
+                                      (expr 
+                                        (variable_or_function_call GetToken$ 
+                                          (args_or_indices 
+                                            ( 
+                                              (expr 
+                                                (literal "")) , 
+                                              (expr 
+                                                (variable_or_function_call Seps$)) )))))) \n 
+                                  (statement 
+                                    (if_inline_statement IF 
+                                      (expr 
+                                        (expr 
+                                          (variable_or_function_call Token$)) <> 
+                                        (expr 
+                                          (literal ""))) THEN 
+                                      (if_inline_action 
+                                        (statement 
+                                          (assignment_statement 
+                                            (variable_or_function_call KeyIndex) = 
+                                            (expr 
+                                              (literal 0))))))) \n statement) LOOP)) \n) 
+                          (end_if_statement END IF)) \n statement) NEXT KeyIndex)) \n statement \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Token$) = 
+                      (expr 
+                        (variable_or_function_call GetToken$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (literal "")) , 
+                              (expr 
+                                (variable_or_function_call Seps$)) )))))) \n statement) LOOP)) \n statement) LOOP)) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id GenOutFile) STATIC 
+    (block \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Sep$) = 
+          (expr 
+            (expr 
+              (literal " ")) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal 9)) ))))))) \n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr NOT 
+              (expr 
+                (variable_or_function_call EOF 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 1)) )))))) 
+          (block \n 
+            (statement 
+              (line_input_statement LINE INPUT 
+                (file_number # 
+                  (expr 
+                    (literal 1))) , 
+                (variable_or_function_call InLin$))) \n 
+            (if_block_statement IF 
+              (expr 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call InLin$)) <> 
+                    (expr 
+                      (literal ""))) )) THEN \n 
+              (then_block statement \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Token$) = 
+                    (expr 
+                      (variable_or_function_call GetToken$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call InLin$)) , 
+                            (expr 
+                              (variable_or_function_call Sep$)) )))))) \n 
+                (if_block_statement IF 
+                  (expr 
+                    (variable_or_function_call IsDigit 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call LEFT$ 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call Token$)) , 
+                                  (expr 
+                                    (literal 1)) )))) )))) THEN \n 
+                  (then_block 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call LineNumber!) = 
+                        (expr 
+                          (variable_or_function_call VAL 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call Token$)) )))))) \n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call FoundNumber) = 
+                        (expr 
+                          (variable_or_function_call false)))) \n statement \n 
+                    (statement 
+                      (for_next_statement FOR index = 
+                        (expr 
+                          (literal 1)) TO 
+                        (expr 
+                          (variable_or_function_call LineCount)) 
+                        (block \n 
+                          (if_block_statement IF 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call LineNumber!)) = 
+                                  (expr 
+                                    (variable_or_function_call LineTable! 
+                                      (args_or_indices 
+                                        ( 
+                                          (expr 
+                                            (variable_or_function_call index)) ))))) )) THEN \n 
+                            (then_block 
+                              (statement 
+                                (assignment_statement 
+                                  (variable_or_function_call FoundNumber) = 
+                                  (expr 
+                                    (variable_or_function_call TRUE)))) \n) 
+                            (end_if_statement END IF)) \n statement) NEXT index)) \n statement \n 
+                    (if_block_statement IF 
+                      (expr 
+                        ( 
+                          (expr NOT 
+                            (expr 
+                              (variable_or_function_call FoundNumber))) )) THEN \n 
+                      (then_block 
+                        (statement 
+                          (assignment_statement 
+                            (variable_or_function_call Token$) = 
+                            (expr 
+                              (variable_or_function_call SPACE$ 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (builtin_function LEN 
+                                        ( 
+                                          (expr 
+                                            (variable_or_function_call Token$)) ))) )))))) \n 
+                        (statement 
+                          (mid_statement MID$ 
+                            ( 
+                              (variable_or_function_call InLin$) , 
+                              (expr 
+                                (variable_or_function_call StrSpn 
+                                  (args_or_indices 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call InLin$)) , 
+                                      (expr 
+                                        (variable_or_function_call Sep$)) )))) , 
+                              (expr 
+                                (builtin_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call Token$)) ))) ) = 
+                            (expr 
+                              (variable_or_function_call Token$)))) \n) 
+                      (end_if_statement END IF)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n) 
+                  (end_if_statement END IF)) \n) 
+              (end_if_statement END IF)) \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call OutputFile$)) = 
+                (expr 
+                  (literal "CON"))) THEN \n 
+              (then_block 
+                (statement 
+                  (print_statement PRINT 
+                    (expr 
+                      (variable_or_function_call InLin$)))) \n) 
+              (else_block_statement ELSE 
+                (else_block statement \n 
+                  (statement 
+                    (print_statement PRINT 
+                      (file_number # 
+                        (expr 
+                          (literal 2))) , 
+                      (expr 
+                        (variable_or_function_call InLin$)))) \n)) 
+              (end_if_statement END IF)) \n statement) LOOP)) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id GetFileNames) STATIC 
+    (block \n statement \n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal " Microsoft RemLine: Line Number Removal Utility")))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "       
+              (.BAS assumed if no extension given)")))) \n 
+      (statement 
+        (print_statement PRINT)) \n 
+      (statement 
+        (input_statement INPUT "      Input file name 
+          (ENTER to terminate): " , 
+          (variable_or_function_call InputFile$))) \n 
+      (statement 
+        (if_inline_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call InputFile$)) = 
+            (expr 
+              (literal ""))) THEN 
+          (if_inline_action 
+            (statement 
+              (end_statement END))))) \n 
+      (statement 
+        (input_statement INPUT "      Output file name 
+          (ENTER to print to screen): " , 
+          (variable_or_function_call OutputFile$))) \n 
+      (statement 
+        (print_statement PRINT)) \n 
+      (statement 
+        (if_inline_statement IF 
+          (expr 
+            ( 
+              (expr 
+                (expr 
+                  (variable_or_function_call OutputFile$)) = 
+                (expr 
+                  (literal ""))) )) THEN 
+          (if_inline_action 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call OutputFile$) = 
+                (expr 
+                  (literal "CON"))))))) \n statement \n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call INSTR 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call InputFile$)) , 
+                  (expr 
+                    (literal ".")) )))) = 
+          (expr 
+            (literal 0))) THEN \n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call InputFile$) = 
+              (expr 
+                (expr 
+                  (variable_or_function_call InputFile$)) + 
+                (expr 
+                  (literal ".BAS"))))) \n) 
+        (end_if_statement END IF)) \n statement \n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call INSTR 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call OutputFile$)) , 
+                  (expr 
+                    (literal ".")) )))) = 
+          (expr 
+            (literal 0))) THEN \n 
+        (then_block 
+          (statement 
+            (select_case_statement SELECT CASE 
+              (expr 
+                (variable_or_function_call OutputFile$)) 
+              (before_first_case \n) 
+              (case_block 
+                (case_statement CASE 
+                  (case_expr 
+                    (expr 
+                      (literal "CON"))) , 
+                  (case_expr 
+                    (expr 
+                      (literal "SCRN"))) , 
+                  (case_expr 
+                    (expr 
+                      (literal "PRN"))) , 
+                  (case_expr 
+                    (expr 
+                      (literal "COM1"))) , 
+                  (case_expr 
+                    (expr 
+                      (literal "COM2"))) , 
+                  (case_expr 
+                    (expr 
+                      (literal "LPT1"))) , 
+                  (case_expr 
+                    (expr 
+                      (literal "LPT2"))) , 
+                  (case_expr 
+                    (expr 
+                      (literal "LPT3")))) 
+                (block \n 
+                  (statement 
+                    (exit_statement EXIT SUB)) \n statement)) 
+              (case_block 
+                (case_statement CASE ELSE) 
+                (block \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call OutputFile$) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call OutputFile$)) + 
+                        (expr 
+                          (literal ".BAS"))))) \n statement)) 
+              (end_select_statement END SELECT))) \n) 
+        (end_if_statement END IF)) \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call InputFile$)) = 
+              (expr 
+                (variable_or_function_call OutputFile$)))) 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call TmpFile$) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call LEFT$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call InputFile$)) , 
+                          (expr 
+                            (variable_or_function_call INSTR 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call InputFile$)) , 
+                                  (expr 
+                                    (literal ".")) )))) )))) + 
+                  (expr 
+                    (literal "BAK"))))) \n 
+            (statement 
+              (on_error_statement ON ERROR GOTO 
+                (target 
+                  (text_label 
+                    (untyped_id FileErr1))))) \n 
+            (statement 
+              (name_statement NAME 
+                (expr 
+                  (variable_or_function_call InputFile$)) AS 
+                (expr 
+                  (variable_or_function_call TmpFile$)))) \n 
+            (statement 
+              (on_error_statement ON ERROR GOTO 
+                (target 
+                  (line_number 0)))) \n 
+            (statement 
+              (if_inline_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call TmpFile$)) <> 
+                  (expr 
+                    (literal ""))) THEN 
+                (if_inline_action 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call InputFile$) = 
+                      (expr 
+                        (variable_or_function_call TmpFile$))))))) \n statement) LOOP)) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (function_statement FUNCTION GetToken$ 
+    ( 
+      (parameter_list 
+        (parameter Search$) , 
+        (parameter Delim$)) ) STATIC 
+    (block \n statement \n statement \n statement \n statement \n 
+      (if_block_statement IF 
+        (expr 
+          ( 
+            (expr 
+              (expr 
+                (variable_or_function_call Search$)) <> 
+              (expr 
+                (literal ""))) )) THEN \n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call BegPos) = 
+              (expr 
+                (literal 1)))) \n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call SaveStr$) = 
+              (expr 
+                (variable_or_function_call Search$)))) \n) 
+        (end_if_statement END IF)) \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NewPos) = 
+          (expr 
+            (variable_or_function_call StrSpn 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (builtin_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call SaveStr$)) , 
+                        (expr 
+                          (variable_or_function_call BegPos)) , 
+                        (expr 
+                          (builtin_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call SaveStr$)) ))) ))) , 
+                  (expr 
+                    (variable_or_function_call Delim$)) )))))) \n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call NewPos)) THEN \n 
+        (then_block statement \n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call BegPos) = 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call NewPos)) + 
+                  (expr 
+                    (variable_or_function_call BegPos))) - 
+                (expr 
+                  (literal 1))))) \n) 
+        (else_block_statement ELSE 
+          (else_block statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call GetToken$) = 
+                (expr 
+                  (literal "")))) \n 
+            (statement 
+              (exit_statement EXIT FUNCTION)) \n)) 
+        (end_if_statement END IF)) \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NewPos) = 
+          (expr 
+            (variable_or_function_call StrBrk 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (builtin_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call SaveStr$)) , 
+                        (expr 
+                          (variable_or_function_call BegPos)) , 
+                        (expr 
+                          (builtin_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call SaveStr$)) ))) ))) , 
+                  (expr 
+                    (variable_or_function_call Delim$)) )))))) \n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call NewPos)) THEN \n 
+        (then_block statement \n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call NewPos) = 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call BegPos)) + 
+                  (expr 
+                    (variable_or_function_call NewPos))) - 
+                (expr 
+                  (literal 1))))) \n) 
+        (else_block_statement ELSE 
+          (else_block statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call NewPos) = 
+                (expr 
+                  (expr 
+                    (builtin_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call SaveStr$)) ))) + 
+                  (expr 
+                    (literal 1))))) \n)) 
+        (end_if_statement END IF)) \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call GetToken$) = 
+          (expr 
+            (builtin_function MID$ 
+              ( 
+                (expr 
+                  (variable_or_function_call SaveStr$)) , 
+                (expr 
+                  (variable_or_function_call BegPos)) , 
+                (expr 
+                  (expr 
+                    (variable_or_function_call NewPos)) - 
+                  (expr 
+                    (variable_or_function_call BegPos))) ))))) \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BegPos) = 
+          (expr 
+            (variable_or_function_call NewPos)))) \n statement \n statement) 
+    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id InitKeyTable) STATIC 
+    (block \n statement \n 
+      (statement 
+        (call_statement 
+          (untyped_id RESTORE) 
+          (call_argument_list 
+            (call_argument KeyData)))) \n 
+      (statement 
+        (for_next_statement FOR Count = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call KeyWordCount)) 
+          (block \n 
+            (statement 
+              (read_statement READ 
+                (variable_or_function_call KeyWord$))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call KeyWordTable$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Count)) ))) = 
+                (expr 
+                  (variable_or_function_call KeyWord$)))) \n statement) NEXT)) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (function_statement FUNCTION IsDigit 
+    ( 
+      (parameter_list 
+        (parameter Char$)) ) STATIC 
+    (block \n statement \n 
+      (if_block_statement IF 
+        (expr 
+          ( 
+            (expr 
+              (expr 
+                (variable_or_function_call Char$)) = 
+              (expr 
+                (literal ""))) )) THEN \n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call IsDigit) = 
+              (expr 
+                (variable_or_function_call false)))) \n) 
+        (else_block_statement ELSE 
+          (else_block statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call CharAsc) = 
+                (expr 
+                  (variable_or_function_call ASC 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Char$)) )))))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call IsDigit) = 
+                (expr 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call CharAsc)) >= 
+                        (expr 
+                          (variable_or_function_call ASC 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (literal "0")) ))))) )) AND 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call CharAsc)) <= 
+                        (expr 
+                          (variable_or_function_call ASC 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (literal "9")) ))))) ))))) \n)) 
+        (end_if_statement END IF)) \n statement \n statement) 
+    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (function_statement FUNCTION StrBrk 
+    ( 
+      (parameter_list 
+        (parameter InString$) , 
+        (parameter Separator$)) ) STATIC 
+    (block \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Ln) = 
+          (expr 
+            (builtin_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call InString$)) ))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BegPos) = 
+          (expr 
+            (literal 1)))) \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call INSTR 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Separator$)) , 
+                      (expr 
+                        (builtin_function MID$ 
+                          ( 
+                            (expr 
+                              (variable_or_function_call InString$)) , 
+                            (expr 
+                              (variable_or_function_call BegPos)) , 
+                            (expr 
+                              (literal 1)) ))) )))) = 
+              (expr 
+                (literal 0)))) 
+          (block \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call BegPos)) > 
+                (expr 
+                  (variable_or_function_call Ln))) THEN \n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call StrBrk) = 
+                    (expr 
+                      (literal 0)))) \n 
+                (statement 
+                  (exit_statement EXIT FUNCTION)) \n) 
+              (else_block_statement ELSE 
+                (else_block statement \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call BegPos) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call BegPos)) + 
+                        (expr 
+                          (literal 1))))) \n)) 
+              (end_if_statement END IF)) \n statement) LOOP)) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call StrBrk) = 
+          (expr 
+            (variable_or_function_call BegPos)))) \n statement \n statement) 
+    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (function_statement FUNCTION StrSpn% 
+    ( 
+      (parameter_list 
+        (parameter InString$) , 
+        (parameter Separator$)) ) STATIC 
+    (block \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Ln) = 
+          (expr 
+            (builtin_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call InString$)) ))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BegPos) = 
+          (expr 
+            (literal 1)))) \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr 
+              (variable_or_function_call INSTR 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Separator$)) , 
+                    (expr 
+                      (builtin_function MID$ 
+                        ( 
+                          (expr 
+                            (variable_or_function_call InString$)) , 
+                          (expr 
+                            (variable_or_function_call BegPos)) , 
+                          (expr 
+                            (literal 1)) ))) ))))) 
+          (block \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call BegPos)) > 
+                (expr 
+                  (variable_or_function_call Ln))) THEN \n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call StrSpn) = 
+                    (expr 
+                      (literal 0)))) \n 
+                (statement 
+                  (exit_statement EXIT FUNCTION)) \n) 
+              (else_block_statement ELSE 
+                (else_block statement \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call BegPos) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call BegPos)) + 
+                        (expr 
+                          (literal 1))))) \n)) 
+              (end_if_statement END IF)) \n statement) LOOP)) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call StrSpn) = 
+          (expr 
+            (variable_or_function_call BegPos)))) \n statement \n statement) 
+    (end_function_statement END FUNCTION)) \n <EOF>)

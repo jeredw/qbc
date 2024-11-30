@@ -1,0 +1,188 @@
+(program statement \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id Face) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Min$)) )) \r\n statement \r\n statement \r\n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 2)))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Min$) = 
+            (expr 
+              (builtin_function MID$ 
+                ( 
+                  (expr 
+                    (variable_or_function_call TIME$)) , 
+                  (expr 
+                    (literal 4)) , 
+                  (expr 
+                    (literal 2)) ))))) \r\n statement \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id Face) 
+            (call_argument_list 
+              (call_argument Min$)))) \r\n statement \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (block \r\n statement \r\n 
+              (statement 
+                (locate_statement LOCATE 
+                  (expr 
+                    (literal 2)) , 
+                  (expr 
+                    (literal 37)))) \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (variable_or_function_call TIME$)))) \r\n statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Test$) = 
+                  (expr 
+                    (variable_or_function_call INKEY$)))) \r\n statement) LOOP 
+            (do_condition WHILE 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Min$)) = 
+                  (expr 
+                    (builtin_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call TIME$)) , 
+                        (expr 
+                          (literal 4)) , 
+                        (expr 
+                          (literal 2)) )))) AND 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Test$)) = 
+                  (expr 
+                    (literal ""))))))) \r\n statement \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call Test$)) = 
+          (expr 
+            (literal "")))))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Face) 
+    ( 
+      (parameter_list 
+        (parameter Min$)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 23)) , 
+          (expr 
+            (literal 30)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Press any key to end")))) \r\n 
+      (statement 
+        (circle_statement CIRCLE 
+          ( 
+            (expr 
+              (literal 320)) , 
+            (expr 
+              (literal 100)) ) , 
+          (expr 
+            (literal 175)))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Hr) = 
+          (expr 
+            (variable_or_function_call VAL 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call TIME$)) )))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Min) = 
+          (expr 
+            (variable_or_function_call VAL 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Min$)) )))))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Little) = 
+          (expr 
+            (expr 
+              (literal 360)) - 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (expr 
+                      (literal 30)) * 
+                    (expr 
+                      (variable_or_function_call Hr))) + 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Min)) / 
+                    (expr 
+                      (literal 2)))) ))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Big) = 
+          (expr 
+            (expr 
+              (literal 360)) - 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (literal 6)) * 
+                  (expr 
+                    (variable_or_function_call Min))) ))))) \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id DRAW) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (expr 
+                  (expr 
+                    (literal "TA=")) + 
+                  (expr 
+                    (variable_or_function_call VARPTR$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Little)) ))))) + 
+                (expr 
+                  (literal "NU40"))))))) \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id DRAW) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (expr 
+                  (expr 
+                    (literal "TA=")) + 
+                  (expr 
+                    (variable_or_function_call VARPTR$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Big)) ))))) + 
+                (expr 
+                  (literal "NU70"))))))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

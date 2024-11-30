@@ -1,0 +1,83 @@
+(program statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (input_statement INPUT "File to be searched" ; 
+      (variable_or_function_call F$))) \r\n 
+  (statement 
+    (input_statement INPUT "Pattern to search for" ; 
+      (variable_or_function_call P$))) \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call F$)) FOR 
+      (open_mode INPUT) AS # 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr NOT 
+          (expr 
+            (variable_or_function_call EOF 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 1)) )))))) 
+      (block \r\n 
+        (statement 
+          (line_input_statement LINE INPUT 
+            (file_number # 
+              (expr 
+                (literal 1))) , 
+            (variable_or_function_call Test$))) \r\n 
+        (statement 
+          (call_statement CALL 
+            (untyped_id Linesearch) 
+            ( 
+              (call_argument_list 
+                (call_argument Test$) , 
+                (call_argument P$)) ))) \r\n statement) LOOP)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Linesearch) 
+    ( 
+      (parameter_list 
+        (parameter Test$) , 
+        (parameter P$)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Num) = 
+          (expr 
+            (expr 
+              (variable_or_function_call Num)) + 
+            (expr 
+              (literal 1))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call X) = 
+          (expr 
+            (variable_or_function_call INSTR 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Test$)) , 
+                  (expr 
+                    (variable_or_function_call P$)) )))))) \r\n 
+      (statement 
+        (if_inline_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call X)) > 
+            (expr 
+              (literal 0))) THEN 
+          (if_inline_action 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal "Line #")) ; 
+                (expr 
+                  (variable_or_function_call Num)) ; 
+                (expr 
+                  (literal ": ")) ; 
+                (expr 
+                  (variable_or_function_call Test$))))))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

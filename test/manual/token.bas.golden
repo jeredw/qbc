@@ -1,0 +1,215 @@
+(program statement \r\n statement \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE FUNCTION StrTok$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Source$) , 
+        (declare_parameter Delimiters$)) )) \r\n statement \r\n 
+  (statement 
+    (line_input_statement LINE INPUT "Enter string: " , 
+      (variable_or_function_call P$))) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Delimiters$) = 
+      (expr 
+        (expr 
+          (expr 
+            (literal " ,;:
+              ().?")) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 9)) ))))) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 34)) ))))))) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Token$) = 
+      (expr 
+        (variable_or_function_call StrTok$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call P$)) , 
+              (expr 
+                (variable_or_function_call Delimiters$)) )))))) \r\n 
+  (statement 
+    (while_wend_statement WHILE 
+      (expr 
+        (expr 
+          (variable_or_function_call Token$)) <> 
+        (expr 
+          (literal ""))) 
+      (block \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call Token$)))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Token$) = 
+            (expr 
+              (variable_or_function_call StrTok$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal "")) , 
+                    (expr 
+                      (variable_or_function_call Delimiters$)) )))))) \r\n statement) WEND)) \r\n statement \r\n 
+  (function_statement FUNCTION StrTok$ 
+    ( 
+      (parameter_list 
+        (parameter Srce$) , 
+        (parameter Delim$)) ) 
+    (block \r\n 
+      (statement 
+        (scope_statement STATIC 
+          (scope_variable Start%) , 
+          (scope_variable SaveStr$))) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Srce$)) <> 
+          (expr 
+            (literal ""))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call Start%) = 
+              (expr 
+                (literal 1)))) : 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call SaveStr$) = 
+              (expr 
+                (variable_or_function_call Srce$)))) \r\n) 
+        (end_if_statement END IF)) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BegPos%) = 
+          (expr 
+            (variable_or_function_call Start%)))) : 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Ln%) = 
+          (expr 
+            (builtin_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call SaveStr$)) ))))) \r\n statement \r\n 
+      (statement 
+        (while_wend_statement WHILE 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call BegPos%)) <= 
+              (expr 
+                (variable_or_function_call Ln%))) AND 
+            (expr 
+              (expr 
+                (variable_or_function_call INSTR 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Delim$)) , 
+                      (expr 
+                        (builtin_function MID$ 
+                          ( 
+                            (expr 
+                              (variable_or_function_call SaveStr$)) , 
+                            (expr 
+                              (variable_or_function_call BegPos%)) , 
+                            (expr 
+                              (literal 1)) ))) )))) <> 
+              (expr 
+                (literal 0)))) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call BegPos%) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call BegPos%)) + 
+                  (expr 
+                    (literal 1))))) \r\n statement) WEND)) \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call BegPos%)) > 
+          (expr 
+            (variable_or_function_call Ln%))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call StrTok$) = 
+              (expr 
+                (literal "")))) : 
+          (statement 
+            (exit_statement EXIT FUNCTION)) \r\n) 
+        (end_if_statement END IF)) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call EndPos%) = 
+          (expr 
+            (variable_or_function_call BegPos%)))) \r\n 
+      (statement 
+        (while_wend_statement WHILE 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call EndPos%)) <= 
+              (expr 
+                (variable_or_function_call Ln%))) AND 
+            (expr 
+              (expr 
+                (variable_or_function_call INSTR 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Delim$)) , 
+                      (expr 
+                        (builtin_function MID$ 
+                          ( 
+                            (expr 
+                              (variable_or_function_call SaveStr$)) , 
+                            (expr 
+                              (variable_or_function_call EndPos%)) , 
+                            (expr 
+                              (literal 1)) ))) )))) = 
+              (expr 
+                (literal 0)))) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call EndPos%) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call EndPos%)) + 
+                  (expr 
+                    (literal 1))))) \r\n statement) WEND)) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call StrTok$) = 
+          (expr 
+            (builtin_function MID$ 
+              ( 
+                (expr 
+                  (variable_or_function_call SaveStr$)) , 
+                (expr 
+                  (variable_or_function_call BegPos%)) , 
+                (expr 
+                  (expr 
+                    (variable_or_function_call EndPos%)) - 
+                  (expr 
+                    (variable_or_function_call BegPos%))) ))))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Start%) = 
+          (expr 
+            (variable_or_function_call EndPos%)))) \r\n statement \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n <EOF>)

@@ -1,0 +1,135 @@
+(program statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (input_statement INPUT "Decimal number 
+            (input number <= 0 to quit): " , 
+            (variable_or_function_call Decimal))) \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call Decimal)) <= 
+              (expr 
+                (literal 0))) THEN 
+            (if_inline_action 
+              (statement 
+                (exit_statement EXIT DO))))) \r\n 
+        (statement 
+          (input_statement INPUT "New base: " , 
+            (variable_or_function_call Newbase))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call N$) = 
+            (expr 
+              (literal "")))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call Decimal)) 
+            (expr 
+              (literal "base 10 equals ")) ;)) \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (do_condition WHILE 
+              (expr 
+                (expr 
+                  (variable_or_function_call Decimal)) > 
+                (expr 
+                  (literal 0)))) 
+            (block \r\n 
+              (statement 
+                (call_statement CALL 
+                  (untyped_id Convert) 
+                  ( 
+                    (call_argument_list 
+                      (call_argument Decimal) , 
+                      (call_argument Newbase)) ))) \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Decimal) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Decimal)) \ 
+                    (expr 
+                      (variable_or_function_call Newbase))))) \r\n statement) LOOP)) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call N$)) 
+            (expr 
+              (literal " base")) 
+            (expr 
+              (variable_or_function_call Newbase)))) \r\n 
+        (statement 
+          (print_statement PRINT)) \r\n statement) LOOP)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Convert) 
+    ( 
+      (parameter_list 
+        (parameter D) , 
+        (parameter Nb)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable N$))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call R) = 
+          (expr 
+            (expr 
+              (variable_or_function_call D)) MOD 
+            (expr 
+              (variable_or_function_call Nb))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (if_inline_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call R)) < 
+            (expr 
+              (literal 10))) THEN 
+          (if_inline_action 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Digit$) = 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call R)) + 
+                          (expr 
+                            (literal 48))) ))))))) ELSE 
+          (if_inline_action 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Digit$) = 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call R)) + 
+                          (expr 
+                            (literal 55))) ))))))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call N$) = 
+          (expr 
+            (expr 
+              (variable_or_function_call RIGHT$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Digit$)) , 
+                    (expr 
+                      (literal 1)) )))) + 
+            (expr 
+              (variable_or_function_call N$))))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

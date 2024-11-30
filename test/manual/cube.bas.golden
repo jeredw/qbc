@@ -1,0 +1,86 @@
+(program statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Plot$) = 
+      (expr 
+        (expr 
+          (literal "BR30 BU25 C1 R54 U45 L54 D45 BE20 P1,1 G20 C2 G20")) + 
+        (expr 
+          (literal "R54 E20 L54 BD5 P2,2 U5 C4 G20 U45 E20 D45 BL5 P4,4"))))) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call APage%) = 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call VPage%) = 
+      (expr 
+        (literal 0)))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Angle%) = 
+      (expr 
+        (literal 0)))) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (screen_statement SCREEN 
+            (expr 
+              (literal 7)) , , 
+            (expr 
+              (variable_or_function_call APage%)) , 
+            (expr 
+              (variable_or_function_call VPage%)))) \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS) 
+            (call_argument_list 
+              (call_argument 
+                (expr 
+                  (literal 1)))))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id DRAW) 
+            (call_argument_list 
+              (call_argument 
+                (expr 
+                  (expr 
+                    (expr 
+                      (literal "TA")) + 
+                    (expr 
+                      (variable_or_function_call STR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Angle%)) ))))) + 
+                  (expr 
+                    (variable_or_function_call Plot$))))))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Angle%) = 
+            (expr 
+              (expr 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Angle%)) + 
+                    (expr 
+                      (literal 15))) )) MOD 
+              (expr 
+                (literal 360))))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id SWAP) 
+            (call_argument_list 
+              (call_argument APage%) , 
+              (call_argument VPage%)))) \r\n statement \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \r\n statement \r\n 
+  (statement 
+    (end_statement END)) \r\n <EOF>)

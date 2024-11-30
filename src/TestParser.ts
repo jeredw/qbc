@@ -1,6 +1,6 @@
 import { CharStream, CommonTokenStream, BaseErrorListener } from "antlr4ng";
-import { QBasicLexer } from "../build/QBasicLexer.js";
-import { QBasicParser } from "../build/QBasicParser.js";
+import { QBasicLexer } from "../build/QBasicLexer.ts";
+import { QBasicParser } from "../build/QBasicParser.ts";
 
 class ThrowingErrorListener extends BaseErrorListener {
   override syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
@@ -9,8 +9,11 @@ class ThrowingErrorListener extends BaseErrorListener {
 }
 
 function parseProgram(text: string) {
-  const inputStream = CharStream.fromString(text);
+  const textWithNewline = text.endsWith('\n') ? text : text + '\n';
+  const inputStream = CharStream.fromString(textWithNewline);
   const lexer = new QBasicLexer(inputStream);
+  lexer.removeErrorListeners();
+  lexer.addErrorListener(new ThrowingErrorListener());
   const tokenStream = new CommonTokenStream(lexer);
   const parser = new QBasicParser(tokenStream);
   parser.removeErrorListeners();
@@ -53,9 +56,13 @@ async function runTests(tests: string[]) {
       });
       const child = diffCommand.spawn();
       const writer = child.stdin.getWriter();
-      writer.write(new TextEncoder().encode(output));
+      await writer.write(new TextEncoder().encode(output));
       writer.releaseLock();
-      await child.stdin.close();
+      try {
+        await child.stdin.close();
+      } catch {
+        // XXX Sometimes it's randomly closed already...
+      }
       const result = await child.output();
       const stdout = new TextDecoder().decode(result.stdout);
       const stderr = new TextDecoder().decode(result.stderr);

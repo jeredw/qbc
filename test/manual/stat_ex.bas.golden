@@ -1,0 +1,261 @@
+(program statement \r\n statement \r\n 
+  (statement 
+    (input_statement INPUT "Name of file" ; 
+      (variable_or_function_call F1$))) \r\n 
+  (statement 
+    (input_statement INPUT "String to replace" ; 
+      (variable_or_function_call Old$))) \r\n 
+  (statement 
+    (input_statement INPUT "Replace with" ; 
+      (variable_or_function_call Nw$))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Rep) = 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Num) = 
+      (expr 
+        (literal 0)))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call M) = 
+      (expr 
+        (builtin_function LEN 
+          ( 
+            (expr 
+              (variable_or_function_call Old$)) ))))) \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call F1$)) FOR 
+      (open_mode INPUT) AS # 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id Extension))) \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call F2$)) FOR 
+      (open_mode OUTPUT) AS # 
+      (expr 
+        (literal 2)))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr NOT 
+          (expr 
+            (variable_or_function_call EOF 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 1)) )))))) 
+      (block \r\n 
+        (statement 
+          (line_input_statement LINE INPUT 
+            (file_number # 
+              (expr 
+                (literal 1))) , 
+            (variable_or_function_call Temp$))) \r\n 
+        (statement 
+          (call_statement CALL 
+            (untyped_id Search))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (file_number # 
+              (expr 
+                (literal 2))) , 
+            (expr 
+              (variable_or_function_call Temp$)))) \r\n statement) LOOP)) \r\n 
+  (statement 
+    (close_statement CLOSE)) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "There were ")) ; 
+      (expr 
+        (variable_or_function_call Rep)) ; 
+      (expr 
+        (literal " substitutions in ")) ; 
+      (expr 
+        (variable_or_function_call Num)) ; 
+      (expr 
+        (literal " lines.")))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Substitutions are in file ")) ; 
+      (expr 
+        (variable_or_function_call F2$)))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Extension) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable F1$) , 
+          (scope_variable F2$))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Mark) = 
+          (expr 
+            (variable_or_function_call INSTR 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call F1$)) , 
+                  (expr 
+                    (literal ".")) )))))) \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Mark)) = 
+          (expr 
+            (literal 0))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call F2$) = 
+              (expr 
+                (expr 
+                  (variable_or_function_call F1$)) + 
+                (expr 
+                  (literal ".NEW"))))) \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call F2$) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call LEFT$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call F1$)) , 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call Mark)) - 
+                            (expr 
+                              (literal 1))) )))) + 
+                  (expr 
+                    (literal ".NEW"))))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Search) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable Temp$) , 
+          (scope_variable Old$) , 
+          (scope_variable Nw$) , 
+          (scope_variable Rep) , 
+          (scope_variable Num) , 
+          (scope_variable M))) \r\n 
+      (statement 
+        (scope_statement STATIC 
+          (scope_variable R))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Mark) = 
+          (expr 
+            (variable_or_function_call INSTR 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Temp$)) , 
+                  (expr 
+                    (variable_or_function_call Old$)) )))))) \r\n 
+      (statement 
+        (while_wend_statement WHILE 
+          (expr 
+            (variable_or_function_call Mark)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Part1$) = 
+                (expr 
+                  (variable_or_function_call LEFT$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Temp$)) , 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Mark)) - 
+                          (expr 
+                            (literal 1))) )))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Part2$) = 
+                (expr 
+                  (builtin_function MID$ 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Temp$)) , 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Mark)) + 
+                        (expr 
+                          (variable_or_function_call M))) ))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Temp$) = 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Part1$)) + 
+                    (expr 
+                      (variable_or_function_call Nw$))) + 
+                  (expr 
+                    (variable_or_function_call Part2$))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call R) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call R)) + 
+                  (expr 
+                    (literal 1))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Mark) = 
+                (expr 
+                  (variable_or_function_call INSTR 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Temp$)) , 
+                        (expr 
+                          (variable_or_function_call Old$)) )))))) \r\n statement) WEND)) \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Rep)) = 
+          (expr 
+            (variable_or_function_call R))) THEN \r\n 
+        (then_block 
+          (statement 
+            (exit_statement EXIT SUB)) \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Rep) = 
+                (expr 
+                  (variable_or_function_call R)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Num) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Num)) + 
+                  (expr 
+                    (literal 1))))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

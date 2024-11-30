@@ -1,0 +1,397 @@
+(program statement \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id DumpSym) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id SymStart) AS 
+          (type_name_for_declare_parameter INTEGER)) , 
+        (declare_parameter 
+          (untyped_id QHdrPos) AS 
+          (type_name_for_declare_parameter LONG))) )) \r\n statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id ExeHdr) \r\n 
+    (type_element 
+      (untyped_id other1) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 8)) \r\n) 
+    (type_element 
+      (untyped_id CParHdr) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id other2) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 10)) \r\n) 
+    (type_element 
+      (untyped_id IP) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id CS) AS 
+      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id QBHdr) \r\n 
+    (type_element 
+      (untyped_id QBHead) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 6)) \r\n) 
+    (type_element 
+      (untyped_id Magic) AS 
+      (type_name_for_type_element INTEGER) \r\n \r\n) 
+    (type_element 
+      (untyped_id SymStart) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id DatStart) AS 
+      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id QbSym) \r\n 
+    (type_element 
+      (untyped_id Flags) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id NameStart) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id other) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 4)) \r\n) END TYPE) \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id EHdr) AS 
+        (type_name 
+          (untyped_id ExeHdr))) , 
+      (dim_variable 
+        (untyped_id Qhdr) AS 
+        (type_name 
+          (untyped_id QBHdr))) , 
+      (dim_variable 
+        (untyped_id QHdrPos) AS 
+        (type_name LONG)))) \r\n statement \r\n 
+  (statement 
+    (input_statement INPUT "Enter QuickLibrary file name: " , 
+      (variable_or_function_call FileName$))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call FileName$) = 
+      (expr 
+        (variable_or_function_call UCASE$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call FileName$)) )))))) \r\n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call INSTR 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (variable_or_function_call FileName$)) , 
+                (expr 
+                  (literal ".QLB")) )))) = 
+        (expr 
+          (literal 0))) THEN 
+      (if_inline_action 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call FileName$) = 
+            (expr 
+              (expr 
+                (variable_or_function_call FileName$)) + 
+              (expr 
+                (literal ".QLB")))))))) \r\n statement \r\n 
+  (statement 
+    (input_statement INPUT "Enter output file name or press ENTER for screen: " , 
+      (variable_or_function_call OutFile$))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call OutFile$) = 
+      (expr 
+        (variable_or_function_call UCASE$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call OutFile$)) )))))) \r\n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call OutFile$)) = 
+        (expr 
+          (literal ""))) THEN 
+      (if_inline_action 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call OutFile$) = 
+            (expr 
+              (literal "CON"))))))) \r\n statement \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call FileName$)) FOR 
+      (open_mode BINARY) AS # 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call OutFile$)) FOR 
+      (open_mode OUTPUT) AS # 
+      (expr 
+        (literal 2)))) \r\n statement \r\n 
+  (statement 
+    (get_io_statement GET # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call EHdr))) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call QHdrPos) = 
+      (expr 
+        (expr 
+          (expr 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (variable_or_function_call EHdr.CParHdr)) + 
+                  (expr 
+                    (variable_or_function_call EHdr.CS))) )) * 
+            (expr 
+              (literal 16))) + 
+          (expr 
+            (variable_or_function_call EHdr.IP))) + 
+        (expr 
+          (literal 1))))) \r\n statement \r\n 
+  (statement 
+    (get_io_statement GET # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (variable_or_function_call QHdrPos)) , 
+      (variable_or_function_call Qhdr))) \r\n statement \r\n 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call Qhdr.Magic)) <> 
+        (expr 
+          (literal &H6C75))) THEN 
+      (if_inline_action 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Not a QB UserLibrary")))) : 
+        (statement 
+          (end_statement END))))) \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 2))) , 
+      (expr 
+        (literal "Code Symbols:")))) : 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 2))) ,)) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id DumpSym) 
+      (call_argument_list 
+        (call_argument Qhdr.SymStart) , 
+        (call_argument QHdrPos)))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 2))) ,)) \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 2))) , 
+      (expr 
+        (literal "Data Symbols:")))) : 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 2))) , 
+      (expr 
+        (literal "")))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id DumpSym) 
+      (call_argument_list 
+        (call_argument Qhdr.DatStart) , 
+        (call_argument QHdrPos)))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 2))) ,)) \r\n statement \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id DumpSym) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id SymStart) AS 
+          (type_name_for_parameter INTEGER)) , 
+        (parameter 
+          (untyped_id QHdrPos) AS 
+          (type_name_for_parameter LONG))) ) 
+    (block \r\n 
+      (statement 
+        (dim_statement DIM 
+          (dim_variable 
+            (untyped_id QlbSym) AS 
+            (type_name 
+              (untyped_id QbSym))))) \r\n 
+      (statement 
+        (dim_statement DIM 
+          (dim_variable 
+            (untyped_id NextSym) AS 
+            (type_name LONG)) , 
+          (dim_variable 
+            (untyped_id CurrentSym) AS 
+            (type_name LONG)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NextSym) = 
+          (expr 
+            (expr 
+              (variable_or_function_call QHdrPos)) + 
+            (expr 
+              (variable_or_function_call SymStart))))) \r\n 
+      (statement 
+        (get_io_statement GET # 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (variable_or_function_call NextSym)) , 
+          (variable_or_function_call QlbSym))) \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call NextSym) = 
+                (expr 
+                  (builtin_function SEEK 
+                    ( 
+                      (expr 
+                        (literal 1)) ))))) \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call CurrentSym) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call QHdrPos)) + 
+                  (expr 
+                    (variable_or_function_call QlbSym.NameStart))))) \r\n 
+            (statement 
+              (seek_statement SEEK # 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (variable_or_function_call CurrentSym)))) \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Prospect$) = 
+                (expr 
+                  (builtin_function INPUT$ 
+                    ( 
+                      (expr 
+                        (literal 40)) , 
+                      (expr 
+                        (literal 1)) ))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call SName$) = 
+                (expr 
+                  (variable_or_function_call LEFT$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Prospect$)) , 
+                        (expr 
+                          (variable_or_function_call INSTR 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call Prospect$)) , 
+                                (expr 
+                                  (variable_or_function_call CHR$ 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (literal 0)) )))) )))) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call LEFT$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call SName$)) , 
+                            (expr 
+                              (literal 2)) )))) <> 
+                    (expr 
+                      (literal "__"))) AND 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call LEFT$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call SName$)) , 
+                            (expr 
+                              (literal 1)) )))) <> 
+                    (expr 
+                      (literal "$")))) AND 
+                (expr 
+                  (expr 
+                    (variable_or_function_call UCASE$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call LEFT$ 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call SName$)) , 
+                                  (expr 
+                                    (literal 2)) )))) )))) <> 
+                  (expr 
+                    (literal "B$")))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (print_statement PRINT 
+                    (file_number # 
+                      (expr 
+                        (literal 2))) , 
+                    (expr 
+                      (expr 
+                        (literal "  ")) + 
+                      (expr 
+                        (variable_or_function_call SName$))))) \r\n) 
+              (end_if_statement END IF)) \r\n statement \r\n 
+            (statement 
+              (get_io_statement GET # 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (variable_or_function_call NextSym)) , 
+                (variable_or_function_call QlbSym))) \r\n statement) LOOP 
+          (do_condition WHILE 
+            (expr 
+              (variable_or_function_call QlbSym.Flags))))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n <EOF>)

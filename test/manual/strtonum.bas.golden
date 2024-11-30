@@ -1,0 +1,98 @@
+(program statement 
+  (declare_statement DECLARE FUNCTION Filter$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Txt$) , 
+        (declare_parameter FilterString$)) )) \r\n statement \r\n statement \r\n 
+  (statement 
+    (line_input_statement LINE INPUT "Enter a number with commas: " , 
+      (variable_or_function_call A$))) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CleanNum$) = 
+      (expr 
+        (variable_or_function_call Filter$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call A$)) , 
+              (expr 
+                (literal "0123456789.-")) )))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "The number's value = ")) ; 
+      (expr 
+        (variable_or_function_call VAL 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call CleanNum$)) )))))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION Filter$ 
+    ( 
+      (parameter_list 
+        (parameter Txt$) , 
+        (parameter FilterString$)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Temp$) = 
+          (expr 
+            (literal "")))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call TxtLength) = 
+          (expr 
+            (builtin_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call Txt$)) ))))) \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call TxtLength)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call C$) = 
+                (expr 
+                  (builtin_function MID$ 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Txt$)) , 
+                      (expr 
+                        (variable_or_function_call I)) , 
+                      (expr 
+                        (literal 1)) ))))) \r\n statement \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call INSTR 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call FilterString$)) , 
+                        (expr 
+                          (variable_or_function_call C$)) )))) <> 
+                (expr 
+                  (literal 0))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Temp$) = 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Temp$)) + 
+                      (expr 
+                        (variable_or_function_call C$))))) \r\n) 
+              (end_if_statement END IF)) \r\n statement) NEXT I)) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Filter$) = 
+          (expr 
+            (variable_or_function_call Temp$)))) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n <EOF>)

@@ -369,4 +369,5 @@ exposed to the program.
 
 - [QBasic help file](https://scruss.com/qbasic_hlp/T0002.html)
 - [QuickBasic help file](https://hwiegman.home.xs4all.nl/qb45-man/index.html)
+- [Example programs](https://github.com/InsaneJetman/classic-qbasic)
 - Tested against MS-DOS QBasic 1.1

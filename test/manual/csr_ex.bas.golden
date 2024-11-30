@@ -1,0 +1,63 @@
+(program statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 12)) , 
+      (expr 
+        (literal 40)))) \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id MsgNoMove) 
+      ( 
+        (call_argument_list 
+          (call_argument 
+            (expr 
+              (literal "A message not to be missed."))) , 
+          (call_argument 
+            (expr 
+              (literal 9))) , 
+          (call_argument 
+            (expr 
+              (literal 35)))) ))) \r\n 
+  (statement 
+    (input_statement INPUT "Enter anything to end: " , 
+      (variable_or_function_call A$))) \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id MsgNoMove) 
+    ( 
+      (parameter_list 
+        (parameter Msg$) , 
+        (parameter Row%) , 
+        (parameter Col%)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call CurRow%) = 
+          (expr 
+            (variable_or_function_call CSRLIN)))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call CurCol%) = 
+          (expr 
+            (variable_or_function_call POS 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 0)) )))))) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Row%)) , 
+          (expr 
+            (variable_or_function_call Col%)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call Msg$)) ;)) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call CurRow%)) , 
+          (expr 
+            (variable_or_function_call CurCol%)))) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

@@ -1,0 +1,152 @@
+(program statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Press ENTER to start.")))) \r\n 
+  (statement 
+    (input_statement INPUT ; "" , 
+      (variable_or_function_call A$))) \r\n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 7)))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call X) = 
+      (expr 
+        (literal 500)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Xdelta) = 
+      (expr 
+        (literal 50)))) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (do_condition WHILE 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call X)) < 
+                  (expr 
+                    (literal 525))) AND 
+                (expr 
+                  (expr 
+                    (variable_or_function_call X)) > 
+                  (expr 
+                    (literal 50))))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call X) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call X)) + 
+                    (expr 
+                      (variable_or_function_call Xdelta))))) \r\n 
+              (statement 
+                (call_statement CALL 
+                  (untyped_id Zoom) 
+                  ( 
+                    (call_argument_list 
+                      (call_argument X)) ))) \r\n 
+              (statement 
+                (for_next_statement FOR I = 
+                  (expr 
+                    (literal 1)) TO 
+                  (expr 
+                    (literal 1000)) 
+                  (block \r\n 
+                    (statement 
+                      (if_inline_statement IF 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call INKEY$)) <> 
+                          (expr 
+                            (literal ""))) THEN 
+                        (if_inline_action 
+                          (statement 
+                            (end_statement END))))) \r\n statement) NEXT)) \r\n statement) LOOP)) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call X) = 
+            (expr 
+              (expr 
+                (variable_or_function_call X)) - 
+              (expr 
+                (variable_or_function_call Xdelta))))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Xdelta) = 
+            (expr - 
+              (expr 
+                (variable_or_function_call Xdelta))))) \r\n statement) LOOP)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Zoom) 
+    ( 
+      (parameter_list 
+        (parameter X)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \r\n 
+      (statement 
+        (window_statement WINDOW 
+          ( 
+            (expr - 
+              (expr 
+                (variable_or_function_call X))) , 
+            (expr - 
+              (expr 
+                (variable_or_function_call X))) ) - 
+          ( 
+            (expr 
+              (variable_or_function_call X)) , 
+            (expr 
+              (variable_or_function_call X)) ))) \r\n 
+      (statement 
+        (line_statement LINE 
+          ( 
+            (expr - 
+              (expr 
+                (variable_or_function_call X))) , 
+            (expr - 
+              (expr 
+                (variable_or_function_call X))) ) - 
+          ( 
+            (expr 
+              (variable_or_function_call X)) , 
+            (expr 
+              (variable_or_function_call X)) ) , 
+          (expr 
+            (literal 1)) , 
+          (box_style B))) \r\n 
+      (statement 
+        (circle_statement CIRCLE 
+          ( 
+            (expr 
+              (literal 0)) , 
+            (expr 
+              (literal 0)) ) , 
+          (expr 
+            (literal 60)) , 
+          (expr 
+            (literal 1)) , , , 
+          (expr 
+            (literal .5)))) \r\n 
+      (statement 
+        (paint_statement PAINT 
+          ( 
+            (expr 
+              (literal 0)) , 
+            (expr 
+              (literal 0)) ) , 
+          (expr 
+            (literal 1)))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

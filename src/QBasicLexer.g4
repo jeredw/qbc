@@ -178,9 +178,13 @@ ID : [A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
 
 fragment TYPE_SIGIL: ('!' | '#' | '$' | '%' | '&') ;
 
+// The IDE doesn't support typing them, but QBASIC /RUN will combine '_'
+// continued lines.
+CONTINUED_LINE : '_' '\r'? '\n' -> skip ;
 NL : '\r'? '\n' ;
 COMMENT : '\'' -> skip, pushMode(COMMENT_MODE) ;
-WS : [ \t]+ -> skip ;
+// Some old DOS programs have explicit ctrl+Z EOF markers.
+WS : [ \t\u001a]+ -> skip ;
 
 // Use a mode to capture just text so it can be checked for metacommands.
 mode COMMENT_MODE;
@@ -200,9 +204,10 @@ NEXT_ID : ([A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
         | [Ff][A-MO-Za-mo-z0-9.][A-Za-z0-9.]* TYPE_SIGIL?
         | [Ff] TYPE_SIGIL?) -> type(ID)
         ;
+NEXT_CONTINUED_LINE : '_' '\r'? '\n' -> skip ;
 NEXT_NL : '\r'? '\n' -> type(NL), popMode ;
 NEXT_COLON : ':' -> type(COLON), popMode ;
-NEXT_WS : [ \t]+ -> skip ;
+NEXT_WS : [ \t\u001a]+ -> skip ;
 // Do not pushMode, so that COMMENT_MODE pops back to DEFAULT_MODE.
 NEXT_COMMENT : '\'' -> skip, mode(COMMENT_MODE) ;
 
@@ -222,4 +227,4 @@ DATA_UNQUOTED : ~[ \t,\n\r:]   // _ "x" _
               | ~[ \t,\n\r:]~[ \t,\n\r:] // _ "xy" _
               | ~[ \t,\n\r:]~[,\n\r:]+~[ \t,\n\r:] ; // _ "x_y_z" _
 // Whitespace before and after fields is ignored.
-DATA_WS : [ \t]+ -> skip ;
+DATA_WS : [ \t\u001a]+ -> skip ;

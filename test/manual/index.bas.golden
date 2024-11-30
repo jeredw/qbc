@@ -1,0 +1,1015 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment FALSE = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call FALSE))))))) \r\n statement \r\n statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id StockItem) \r\n 
+    (type_element 
+      (untyped_id PartNumber) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 6)) \r\n) 
+    (type_element 
+      (untyped_id Description) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 20)) \r\n) 
+    (type_element 
+      (untyped_id UnitPrice) AS 
+      (type_name_for_type_element SINGLE) \r\n) 
+    (type_element 
+      (untyped_id Quantity) AS 
+      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n statement \r\n statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id IndexType) \r\n 
+    (type_element 
+      (untyped_id RecordNumber) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id PartNumber) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 6)) \r\n) END TYPE) \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE FUNCTION Filter$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Prompt$)) )) \r\n statement 
+  (declare_statement DECLARE FUNCTION FindRecord% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter PartNumber$) , 
+        (declare_parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_declare_parameter 
+            (untyped_id StockItem)))) )) \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id AddRecord) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_declare_parameter 
+            (untyped_id StockItem)))) )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id InputRecord) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_declare_parameter 
+            (untyped_id StockItem)))) )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id PrintRecord) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_declare_parameter 
+            (untyped_id StockItem)))) )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id SortIndex) 
+    ( )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ShowPartNumbers) 
+    ( )) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id StockRecord) AS 
+        (type_name 
+          (untyped_id StockItem))) , 
+      (dim_variable 
+        (untyped_id Index) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 100))) )) AS 
+        (type_name 
+          (untyped_id IndexType))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "STOCK.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (builtin_function LEN 
+          ( 
+            (expr 
+              (variable_or_function_call StockRecord)) ))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call NumberOfRecords) = 
+      (expr 
+        (expr 
+          (variable_or_function_call LOF 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 1)) )))) \ 
+        (expr 
+          (builtin_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call StockRecord)) )))))) \r\n statement \r\n statement \r\n 
+  (if_block_statement IF 
+    (expr 
+      (expr 
+        (variable_or_function_call NumberOfRecords)) <> 
+      (expr 
+        (literal 0))) THEN \r\n 
+    (then_block 
+      (statement 
+        (for_next_statement FOR RecordNumber = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call NumberOfRecords)) 
+          (block \r\n statement \r\n statement \r\n 
+            (statement 
+              (get_io_statement GET # 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (variable_or_function_call RecordNumber)) , 
+                (variable_or_function_call StockRecord))) \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Index 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call RecordNumber)) )) . RecordNumber) = 
+                (expr 
+                  (variable_or_function_call RecordNumber)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Index 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call RecordNumber)) )) . PartNumber) = 
+                (expr 
+                  (variable_or_function_call StockRecord.PartNumber)))) \r\n statement) NEXT)) \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id SortIndex))) \r\n) 
+    (end_if_statement END IF)) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "
+                (A)dd records.")))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "
+                (L)ook up records.")))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "
+                (Q)uit program.")))) \r\n 
+        (statement 
+          (print_statement PRINT)) \r\n 
+        (statement 
+          (locate_statement LOCATE , , 
+            (expr 
+              (literal 1)))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Type your choice 
+                (A, L, or Q) here: ")) ;)) \r\n statement \r\n statement \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Choice$) = 
+                  (expr 
+                    (variable_or_function_call UCASE$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (builtin_function INPUT$ 
+                              ( 
+                                (expr 
+                                  (literal 1)) ))) )))))) \r\n statement) LOOP 
+            (do_condition WHILE 
+              (expr 
+                (expr 
+                  (variable_or_function_call INSTR 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal "ALQ")) , 
+                        (expr 
+                          (variable_or_function_call Choice$)) )))) = 
+                (expr 
+                  (literal 0)))))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (select_case_statement SELECT CASE 
+            (expr 
+              (variable_or_function_call Choice$)) 
+            (before_first_case \r\n) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (literal "A")))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id AddRecord) 
+                    (call_argument_list 
+                      (call_argument StockRecord)))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (literal "L")))) 
+              (block \r\n 
+                (if_block_statement IF 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call NumberOfRecords)) = 
+                    (expr 
+                      (literal 0))) THEN \r\n 
+                  (then_block 
+                    (statement 
+                      (print_statement PRINT)) : 
+                    (statement 
+                      (print_statement PRINT 
+                        (expr 
+                          (literal "No records in file yet. ")) ;)) \r\n 
+                    (statement 
+                      (print_statement PRINT 
+                        (expr 
+                          (literal "Press any key to continue.")) ;)) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call Pause$) = 
+                        (expr 
+                          (builtin_function INPUT$ 
+                            ( 
+                              (expr 
+                                (literal 1)) ))))) \r\n) 
+                  (else_block_statement ELSE 
+                    (else_block statement \r\n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id InputRecord) 
+                          (call_argument_list 
+                            (call_argument StockRecord)))) \r\n)) 
+                  (end_if_statement END IF)) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (literal "Q")))) 
+              (block \r\n statement)) 
+            (end_select_statement END SELECT))) \r\n statement) LOOP 
+      (do_condition UNTIL 
+        (expr 
+          (expr 
+            (variable_or_function_call Choice$)) = 
+          (expr 
+            (literal "Q")))))) \r\n statement \r\n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id AddRecord) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_parameter 
+            (untyped_id StockItem)))) ) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable 
+            (untyped_id Index) 
+            (array_declaration 
+              ( )) AS 
+            (type_name 
+              (untyped_id IndexType))) , 
+          (scope_variable NumberOfRecords))) \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id CLS))) \r\n 
+            (statement 
+              (input_statement INPUT "Part Number: " , 
+                (variable_or_function_call RecordVar.PartNumber))) \r\n 
+            (statement 
+              (input_statement INPUT "Description: " , 
+                (variable_or_function_call RecordVar.Description))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call RecordVar.UnitPrice) = 
+                (expr 
+                  (variable_or_function_call VAL 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Filter$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (literal "Unit Price : ")) )))) )))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call RecordVar.Quantity) = 
+                (expr 
+                  (variable_or_function_call VAL 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Filter$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (literal "Quantity   : ")) )))) )))))) \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call NumberOfRecords) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call NumberOfRecords)) + 
+                  (expr 
+                    (literal 1))))) \r\n statement \r\n 
+            (statement 
+              (put_io_statement PUT # 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (variable_or_function_call NumberOfRecords)) , 
+                (variable_or_function_call RecordVar))) \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Index 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call NumberOfRecords)) )) . RecordNumber) = 
+                (expr 
+                  (variable_or_function_call NumberOfRecords)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Index 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call NumberOfRecords)) )) . PartNumber) = 
+                (expr 
+                  (variable_or_function_call RecordVar.PartNumber)))) \r\n 
+            (statement 
+              (print_statement PRINT)) : 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal "Add another? ")) ;)) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call OK$) = 
+                (expr 
+                  (variable_or_function_call UCASE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (builtin_function INPUT$ 
+                            ( 
+                              (expr 
+                                (literal 1)) ))) )))))) \r\n statement) LOOP 
+          (do_condition WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call OK$)) = 
+              (expr 
+                (literal "Y")))))) \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id SortIndex))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION Filter$ 
+    ( 
+      (parameter_list 
+        (parameter Prompt$)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ValTemp2$) = 
+          (expr 
+            (literal "")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call Prompt$)) ;)) \r\n 
+      (statement 
+        (input_statement INPUT "" , 
+          (variable_or_function_call ValTemp1$))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call StringLength) = 
+          (expr 
+            (builtin_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call ValTemp1$)) ))))) \r\n 
+      (statement 
+        (for_next_statement FOR I% = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call StringLength)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Char$) = 
+                (expr 
+                  (builtin_function MID$ 
+                    ( 
+                      (expr 
+                        (variable_or_function_call ValTemp1$)) , 
+                      (expr 
+                        (variable_or_function_call I%)) , 
+                      (expr 
+                        (literal 1)) ))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call INSTR 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal ".0123456789")) , 
+                        (expr 
+                          (variable_or_function_call Char$)) )))) > 
+                (expr 
+                  (literal 0))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call ValTemp2$) = 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call ValTemp2$)) + 
+                      (expr 
+                        (variable_or_function_call Char$))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n) 
+              (elseif_block_statement ELSEIF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Char$)) = 
+                  (expr 
+                    (literal "l"))) THEN 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call ValTemp2$) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call ValTemp2$)) + 
+                        (expr 
+                          (literal "1"))))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement) NEXT I%)) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Filter$) = 
+          (expr 
+            (variable_or_function_call ValTemp2$)))) \r\n statement \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION FindRecord% 
+    ( 
+      (parameter_list 
+        (parameter Part$) , 
+        (parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_parameter 
+            (untyped_id StockItem)))) ) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable 
+            (untyped_id Index) 
+            (array_declaration 
+              ( )) AS 
+            (type_name 
+              (untyped_id IndexType))) , 
+          (scope_variable NumberOfRecords))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call TopRecord) = 
+          (expr 
+            (variable_or_function_call NumberOfRecords)))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BottomRecord) = 
+          (expr 
+            (literal 1)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition UNTIL 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (variable_or_function_call TopRecord)) < 
+                  (expr 
+                    (variable_or_function_call BottomRecord))) ))) 
+          (block \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Midpoint) = 
+                (expr 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call TopRecord)) + 
+                        (expr 
+                          (variable_or_function_call BottomRecord))) )) \ 
+                  (expr 
+                    (literal 2))))) \r\n statement \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Test$) = 
+                (expr 
+                  (variable_or_function_call RTRIM$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Index 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call Midpoint)) )) . PartNumber)) )))))) \r\n statement \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call Test$)) = 
+                (expr 
+                  (variable_or_function_call Part$))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (exit_statement EXIT DO)) \r\n statement \r\n statement \r\n statement \r\n) 
+              (elseif_block_statement ELSEIF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Part$)) > 
+                  (expr 
+                    (variable_or_function_call Test$))) THEN 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call BottomRecord) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Midpoint)) + 
+                        (expr 
+                          (literal 1))))) \r\n statement \r\n statement \r\n)) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call TopRecord) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Midpoint)) - 
+                        (expr 
+                          (literal 1))))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Test$)) = 
+          (expr 
+            (variable_or_function_call Part$))) THEN \r\n 
+        (then_block 
+          (statement 
+            (get_io_statement GET # 
+              (expr 
+                (literal 1)) , 
+              (expr 
+                (variable_or_function_call Index 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Midpoint)) )) . RecordNumber)) , 
+              (variable_or_function_call RecordVar))) \r\n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call FindRecord%) = 
+              (expr 
+                (variable_or_function_call TRUE)))) \r\n statement \r\n statement \r\n statement \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call FindRecord%) = 
+                (expr 
+                  (variable_or_function_call FALSE)))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id InputRecord) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_parameter 
+            (untyped_id StockItem)))) ) STATIC 
+    (block \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id ShowPartNumbers))) \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal "Type a part number listed above ")) ;)) \r\n 
+            (statement 
+              (input_statement INPUT "
+                (or Q to quit) and press <ENTER>: " , 
+                (variable_or_function_call Part$))) \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call UCASE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Part$)) )))) <> 
+                (expr 
+                  (literal "Q"))) THEN \r\n 
+              (then_block 
+                (if_block_statement IF 
+                  (expr 
+                    (variable_or_function_call FindRecord 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Part$)) , 
+                          (expr 
+                            (variable_or_function_call RecordVar)) )))) THEN \r\n 
+                  (then_block 
+                    (statement 
+                      (call_statement 
+                        (untyped_id PrintRecord) 
+                        (call_argument_list 
+                          (call_argument RecordVar)))) \r\n) 
+                  (else_block_statement ELSE 
+                    (else_block statement \r\n 
+                      (statement 
+                        (print_statement PRINT 
+                          (expr 
+                            (literal "Part not found.")))) \r\n)) 
+                  (end_if_statement END IF)) \r\n) 
+              (end_if_statement END IF)) \r\n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call STRING$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 40)) , 
+                        (expr 
+                          (literal "_")) )))))) \r\n statement) LOOP 
+          (do_condition WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call UCASE$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Part$)) )))) <> 
+              (expr 
+                (literal "Q")))))) \r\n statement \r\n 
+      (statement 
+        (view_print_statement VIEW PRINT)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id PrintRecord) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_parameter 
+            (untyped_id StockItem)))) ) STATIC 
+    (block \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Part Number: ")) ; 
+          (expr 
+            (variable_or_function_call RecordVar.PartNumber)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Description: ")) ; 
+          (expr 
+            (variable_or_function_call RecordVar.Description)))) \r\n 
+      (statement 
+        (print_using_statement PRINT USING 
+          (expr 
+            (literal "Unit Price :$$###.##")) ; 
+          (expr 
+            (variable_or_function_call RecordVar.UnitPrice)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Quantity   :")) ; 
+          (expr 
+            (variable_or_function_call RecordVar.Quantity)))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id ShowPartNumbers) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable 
+            (untyped_id Index) 
+            (array_declaration 
+              ( )) AS 
+            (type_name 
+              (untyped_id IndexType))) , 
+          (scope_variable NumberOfRecords))) \r\n statement \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment NUMCOLS = 
+            (const_expr 
+              (expr 
+                (literal 8)))) , 
+          (const_assignment COLWIDTH = 
+            (const_expr 
+              (expr 
+                (expr 
+                  (literal 80)) \ 
+                (expr 
+                  (variable_or_function_call NUMCOLS))))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ColumnLength) = 
+          (expr 
+            (variable_or_function_call NumberOfRecords)))) \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call ColumnLength)) MOD 
+              (expr 
+                (variable_or_function_call NUMCOLS)))) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call ColumnLength) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call ColumnLength)) + 
+                  (expr 
+                    (literal 1))))) \r\n statement) LOOP)) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ColumnLength) = 
+          (expr 
+            (expr 
+              (variable_or_function_call ColumnLength)) \ 
+            (expr 
+              (variable_or_function_call NUMCOLS))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Column) = 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call RecordNumber) = 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition UNTIL 
+            (expr 
+              (expr 
+                (variable_or_function_call RecordNumber)) > 
+              (expr 
+                (variable_or_function_call NumberOfRecords)))) 
+          (block \r\n 
+            (statement 
+              (for_next_statement FOR Row = 
+                (expr 
+                  (literal 1)) TO 
+                (expr 
+                  (variable_or_function_call ColumnLength)) 
+                (block \r\n 
+                  (statement 
+                    (locate_statement LOCATE 
+                      (expr 
+                        (variable_or_function_call Row)) , 
+                      (expr 
+                        (variable_or_function_call Column)))) \r\n 
+                  (statement 
+                    (print_statement PRINT 
+                      (expr 
+                        (variable_or_function_call Index 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call RecordNumber)) )) . PartNumber)))) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call RecordNumber) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call RecordNumber)) + 
+                        (expr 
+                          (literal 1))))) \r\n 
+                  (statement 
+                    (if_inline_statement IF 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call RecordNumber)) > 
+                        (expr 
+                          (variable_or_function_call NumberOfRecords))) THEN 
+                      (if_inline_action 
+                        (statement 
+                          (exit_statement EXIT FOR))))) \r\n statement) NEXT Row)) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Column) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Column)) + 
+                  (expr 
+                    (variable_or_function_call COLWIDTH))))) \r\n statement) LOOP)) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (expr 
+              (variable_or_function_call ColumnLength)) + 
+            (expr 
+              (literal 1))) , 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call STRING$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 80)) , 
+                  (expr 
+                    (literal "_")) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (view_print_statement VIEW PRINT 
+          (expr 
+            (expr 
+              (variable_or_function_call ColumnLength)) + 
+            (expr 
+              (literal 2))) TO 
+          (expr 
+            (literal 24)))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id SortIndex) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable 
+            (untyped_id Index) 
+            (array_declaration 
+              ( )) AS 
+            (type_name 
+              (untyped_id IndexType))) , 
+          (scope_variable NumberOfRecords))) \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Offset) = 
+          (expr 
+            (expr 
+              (variable_or_function_call NumberOfRecords)) \ 
+            (expr 
+              (literal 2))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call Offset)) > 
+              (expr 
+                (literal 0)))) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Limit) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call NumberOfRecords)) - 
+                  (expr 
+                    (variable_or_function_call Offset))))) \r\n 
+            (statement 
+              (do_loop_statement DO 
+                (block \r\n statement \r\n statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Switch) = 
+                      (expr 
+                        (variable_or_function_call FALSE)))) \r\n statement \r\n statement \r\n 
+                  (statement 
+                    (for_next_statement FOR I = 
+                      (expr 
+                        (literal 1)) TO 
+                      (expr 
+                        (variable_or_function_call Limit)) 
+                      (block \r\n 
+                        (if_block_statement IF 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call Index 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call I)) )) . PartNumber)) > 
+                            (expr 
+                              (variable_or_function_call Index 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (expr 
+                                        (variable_or_function_call I)) + 
+                                      (expr 
+                                        (variable_or_function_call Offset))) )) . PartNumber))) THEN \r\n 
+                          (then_block 
+                            (statement 
+                              (call_statement 
+                                (untyped_id SWAP) 
+                                (call_argument_list 
+                                  (call_argument Index 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (variable_or_function_call I)) ))) , 
+                                  (call_argument Index 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (expr 
+                                            (variable_or_function_call I)) + 
+                                          (expr 
+                                            (variable_or_function_call Offset))) )))))) \r\n 
+                            (statement 
+                              (assignment_statement 
+                                (variable_or_function_call Switch) = 
+                                (expr 
+                                  (variable_or_function_call I)))) \r\n) 
+                          (end_if_statement END IF)) \r\n statement) NEXT I)) \r\n statement \r\n statement \r\n statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Limit) = 
+                      (expr 
+                        (variable_or_function_call Switch)))) \r\n statement) LOOP 
+                (do_condition WHILE 
+                  (expr 
+                    (variable_or_function_call Switch))))) \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Offset) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Offset)) \ 
+                  (expr 
+                    (literal 2))))) \r\n statement) LOOP)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n <EOF>)

@@ -1,0 +1,157 @@
+(program statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id InitPalette) 
+    ( )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ChangePalette) 
+    ( )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id DrawEllipses) 
+    ( )) \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable PaletteArray 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 15))) ))))) \r\n statement \r\n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 8)))) \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id InitPalette))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id DrawEllipses))) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id ChangePalette))) \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \r\n statement \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id InitPalette) STATIC 
+    (block \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 0)) TO 
+          (expr 
+            (literal 15)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call PaletteArray 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) ))) = 
+                (expr 
+                  (variable_or_function_call I)))) \r\n statement) NEXT I)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id DrawEllipses) STATIC 
+    (block \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment ASPECT = 
+            (const_expr 
+              (expr 
+                (expr 
+                  (literal 1)) / 
+                (expr 
+                  (literal 3))))))) \r\n 
+      (statement 
+        (for_next_statement FOR ColorVal = 
+          (expr 
+            (literal 15)) TO 
+          (expr 
+            (literal 1)) STEP 
+          (expr - 
+            (expr 
+              (literal 1))) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Radius) = 
+                (expr 
+                  (expr 
+                    (literal 20)) * 
+                  (expr 
+                    (variable_or_function_call ColorVal))))) \r\n 
+            (statement 
+              (circle_statement CIRCLE 
+                ( 
+                  (expr 
+                    (literal 320)) , 
+                  (expr 
+                    (literal 100)) ) , 
+                (expr 
+                  (variable_or_function_call Radius)) , 
+                (expr 
+                  (variable_or_function_call ColorVal)) , , , 
+                (expr 
+                  (variable_or_function_call ASPECT)))) \r\n 
+            (statement 
+              (paint_statement PAINT 
+                ( 
+                  (expr 
+                    (literal 320)) , 
+                  (expr 
+                    (literal 100)) ) , 
+                (expr 
+                  (variable_or_function_call ColorVal)))) \r\n statement) NEXT)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id ChangePalette) STATIC 
+    (block \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (literal 15)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call PaletteArray 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) ))) = 
+                (expr 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call PaletteArray 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call I)) )))) MOD 
+                        (expr 
+                          (literal 15))) )) + 
+                  (expr 
+                    (literal 1))))) \r\n statement) NEXT I)) \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (palette_statement PALETTE USING 
+          (variable_or_function_call PaletteArray 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 0)) ))))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n <EOF>)

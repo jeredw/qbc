@@ -1,0 +1,2309 @@
+(program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \n statement \n statement \n statement 
+  (declare_statement DECLARE FUNCTION RandInt% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Lower) , 
+        (declare_parameter Upper)) )) \n statement \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id BoxInit) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id BubbleSort) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id CheckScreen) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id DrawFrame) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter TopSide) , 
+        (declare_parameter BottomSide) , 
+        (declare_parameter LeftSide) , 
+        (declare_parameter RightSide)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ElapsedTime) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter CurrentRow)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ExchangeSort) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id HeapSort) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id Initialize) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id InsertionSort) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id PercolateDown) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter MaxLevel)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id PercolateUp) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter MaxLevel)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id PrintOneBar) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Row)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id QuickSort) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Low) , 
+        (declare_parameter High)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id Reinitialize) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ShellSort) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id SortMenu) 
+    ( )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id SwapBars) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Row1) , 
+        (declare_parameter Row2)) )) \n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ToggleSound) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Row) , 
+        (declare_parameter Column)) )) \n statement \n statement \n statement 
+  (type_statement TYPE 
+    (untyped_id SortType) \n 
+    (type_element 
+      (untyped_id Length) AS 
+      (type_name_for_type_element INTEGER) \n \n) 
+    (type_element 
+      (untyped_id ColorVal) AS 
+      (type_name_for_type_element INTEGER) \n) 
+    (type_element 
+      (untyped_id BarString) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 43)) \n) END TYPE) \n statement \n statement \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment FALSE = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call FALSE))))) , 
+      (const_assignment LEFTCOLUMN = 
+        (const_expr 
+          (expr 
+            (literal 49)))))) \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment NUMOPTIONS = 
+        (const_expr 
+          (expr 
+            (literal 11)))) , 
+      (const_assignment NUMSORTS = 
+        (const_expr 
+          (expr 
+            (literal 6)))))) \n statement \n statement \n statement \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable 
+        (untyped_id SortArray) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 43))) )) AS 
+        (type_name 
+          (untyped_id SortType))) , 
+      (dim_variable 
+        (untyped_id SortBackup) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 43))) )) AS 
+        (type_name 
+          (untyped_id SortType))))) \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable 
+        (untyped_id OptionTitle) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (variable_or_function_call NUMOPTIONS))) )) AS 
+        (type_name 
+          (fixed_string STRING * 12))))) \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable 
+        (untyped_id StartTime) AS 
+        (type_name SINGLE)))) \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable Foreground) , 
+      (dim_variable Background) , 
+      (dim_variable NoSound) , 
+      (dim_variable Pause))) \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable Selection) , 
+      (dim_variable MaxRow) , 
+      (dim_variable InitRow) , 
+      (dim_variable MaxColors))) \n statement \n statement \n 
+  (statement 
+    (data_statement DATA 
+      (data_item Insertion) , 
+      (data_item Bubble) , 
+      (data_item Heap) , 
+      (data_item Exchange) , 
+      (data_item Shell) , 
+      (data_item Quick) , data_item)) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item Toggle Sound) , data_item , 
+      (data_item <   
+        (Slower)) , 
+      (data_item >   
+        (Faster)))) \n statement \n statement \n statement \n 
+  (statement 
+    (call_statement 
+      (untyped_id Initialize))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id SortMenu))) \n 
+  (statement 
+    (width_statement WIDTH 
+      (expr 
+        (literal 80)) , 
+      (expr 
+        (variable_or_function_call InitRow)))) \n 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 7)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (statement 
+    (end_statement END)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (label 
+    (text_label 
+      (untyped_id GetRow)) :) statement \n 
+  (if_block_statement IF 
+    (expr 
+      (expr 
+        (variable_or_function_call InitRow)) = 
+      (expr 
+        (literal 50))) THEN \n 
+    (then_block 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call InitRow) = 
+          (expr 
+            (literal 43)))) \n 
+      (statement 
+        (resume_statement RESUME)) \n) 
+    (else_block_statement ELSE 
+      (else_block statement \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call InitRow) = 
+            (expr 
+              (literal 25)))) \n 
+        (statement 
+          (resume_statement RESUME NEXT)) \n)) 
+    (end_if_statement END IF)) \n statement \n 
+  (label 
+    (text_label 
+      (untyped_id RowTrap)) :) statement \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call MaxRow) = 
+      (expr 
+        (literal 25)))) \n 
+  (statement 
+    (resume_statement RESUME)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id BoxInit) STATIC 
+    (block \n 
+      (statement 
+        (call_statement 
+          (untyped_id DrawFrame) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (literal 1))) , 
+            (call_argument 
+              (expr 
+                (literal 22))) , 
+            (call_argument 
+              (expr 
+                (expr 
+                  (variable_or_function_call LEFTCOLUMN)) - 
+                (expr 
+                  (literal 3)))) , 
+            (call_argument 
+              (expr 
+                (literal 78)))))) \n statement \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 3)) , 
+          (expr 
+            (expr 
+              (variable_or_function_call LEFTCOLUMN)) + 
+            (expr 
+              (literal 2))))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "QBasic Sorting Demo")) ;)) \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 5)))) \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (expr 
+              (variable_or_function_call NUMOPTIONS)) - 
+            (expr 
+              (literal 1))) 
+          (block \n 
+            (statement 
+              (locate_statement LOCATE , 
+                (expr 
+                  (variable_or_function_call LEFTCOLUMN)))) : 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call OptionTitle 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) )))))) \n statement) NEXT I)) \n statement \n statement \n statement \n 
+      (statement 
+        (if_inline_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call Pause)) > 
+            (expr 
+              (literal 1))) THEN 
+          (if_inline_action 
+            (statement 
+              (locate_statement LOCATE , 
+                (expr 
+                  (variable_or_function_call LEFTCOLUMN)))) : 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call OptionTitle 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call NUMOPTIONS)) )))) ;))))) \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NoSound) = 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call NoSound))))) \n 
+      (statement 
+        (call_statement 
+          (untyped_id ToggleSound) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (literal 12))) , 
+            (call_argument 
+              (expr 
+                (expr 
+                  (variable_or_function_call LEFTCOLUMN)) + 
+                (expr 
+                  (literal 12))))))) \n statement \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (expr 
+              (variable_or_function_call NUMOPTIONS)) + 
+            (expr 
+              (literal 6))) , 
+          (expr 
+            (variable_or_function_call LEFTCOLUMN)))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Type first character of")))) \n 
+      (statement 
+        (locate_statement LOCATE , 
+          (expr 
+            (variable_or_function_call LEFTCOLUMN)))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "choice 
+              ( I B H E S Q T < > )")))) \n 
+      (statement 
+        (locate_statement LOCATE , 
+          (expr 
+            (variable_or_function_call LEFTCOLUMN)))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "or ESC key to end program: ")) ;)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id BubbleSort) STATIC 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Limit) = 
+          (expr 
+            (variable_or_function_call MaxRow)))) \n 
+      (statement 
+        (do_loop_statement DO 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Switch) = 
+                (expr 
+                  (variable_or_function_call FALSE)))) \n 
+            (statement 
+              (for_next_statement FOR Row = 
+                (expr 
+                  (literal 1)) TO 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Limit)) - 
+                      (expr 
+                        (literal 1))) )) 
+                (block \n statement \n statement \n statement \n 
+                  (if_block_statement IF 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call SortArray 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call Row)) )) . Length)) > 
+                      (expr 
+                        (variable_or_function_call SortArray 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call Row)) + 
+                                (expr 
+                                  (literal 1))) )) . Length))) THEN \n 
+                    (then_block 
+                      (statement 
+                        (call_statement 
+                          (untyped_id SWAP) 
+                          (call_argument_list 
+                            (call_argument SortArray 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call Row)) ))) , 
+                            (call_argument SortArray 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call Row)) + 
+                                    (expr 
+                                      (literal 1))) )))))) \n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id SwapBars) 
+                          (call_argument_list 
+                            (call_argument Row) , 
+                            (call_argument 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call Row)) + 
+                                (expr 
+                                  (literal 1))))))) \n 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call Switch) = 
+                          (expr 
+                            (variable_or_function_call Row)))) \n) 
+                    (end_if_statement END IF)) \n statement) NEXT Row)) \n statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Limit) = 
+                (expr 
+                  (variable_or_function_call Switch)))) \n statement) LOOP 
+          (do_condition WHILE 
+            (expr 
+              (variable_or_function_call Switch))))) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id CheckScreen) STATIC 
+    (block \n statement \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call InitRow) = 
+          (expr 
+            (literal 50)))) \n 
+      (statement 
+        (on_error_statement ON ERROR GOTO 
+          (target 
+            (text_label 
+              (untyped_id GetRow))))) \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call InitRow)) , 
+          (expr 
+            (literal 1)))) \n statement \n statement \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 1)))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "x")))) \n 
+      (statement 
+        (def_seg_statement DEF SEG = 
+          (expr 
+            (literal &HB000)))) \n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call PEEK 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 0)) )))) <> 
+          (expr 
+            (variable_or_function_call ASC 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal "x")) ))))) THEN \n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call MaxColors) = 
+              (expr 
+                (literal 15)))) \n) 
+        (else_block_statement ELSE 
+          (else_block statement \n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)))) \n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal "y")))) \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call PEEK 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 0)) )))) <> 
+                (expr 
+                  (variable_or_function_call ASC 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal "y")) ))))) THEN \n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call MaxColors) = 
+                    (expr 
+                      (literal 15)))) \n) 
+              (else_block_statement ELSE 
+                (else_block statement \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call MaxColors) = 
+                      (expr 
+                        (literal 2)))) \n)) 
+              (end_if_statement END IF)) \n)) 
+        (end_if_statement END IF)) \n 
+      (statement 
+        (def_seg_statement DEF SEG)) \n statement \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call MaxRow) = 
+          (expr 
+            (literal 43)))) \n 
+      (statement 
+        (on_error_statement ON ERROR GOTO 
+          (target 
+            (text_label 
+              (untyped_id RowTrap))))) \n 
+      (statement 
+        (width_statement WIDTH 
+          (expr 
+            (literal 80)) , 
+          (expr 
+            (variable_or_function_call MaxRow)))) \n 
+      (statement 
+        (on_error_statement ON ERROR GOTO 
+          (target 
+            (line_number 0)))) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id DrawFrame) 
+    ( 
+      (parameter_list 
+        (parameter TopSide) , 
+        (parameter BottomSide) , 
+        (parameter LeftSide) , 
+        (parameter RightSide)) ) STATIC 
+    (block \n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment ULEFT = 
+            (const_expr 
+              (expr 
+                (literal 201)))) , 
+          (const_assignment URIGHT = 
+            (const_expr 
+              (expr 
+                (literal 187)))) , 
+          (const_assignment LLEFT = 
+            (const_expr 
+              (expr 
+                (literal 200)))) , 
+          (const_assignment LRIGHT = 
+            (const_expr 
+              (expr 
+                (literal 188)))))) \n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment VERTICAL = 
+            (const_expr 
+              (expr 
+                (literal 186)))) , 
+          (const_assignment HORIZONTAL = 
+            (const_expr 
+              (expr 
+                (literal 205)))))) \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call FrameWidth) = 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call RightSide)) - 
+              (expr 
+                (variable_or_function_call LeftSide))) - 
+            (expr 
+              (literal 1))))) \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call TopSide)) , 
+          (expr 
+            (variable_or_function_call LeftSide)))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call ULEFT)) )))) ; 
+          (expr 
+            (variable_or_function_call STRING$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call FrameWidth)) , 
+                  (expr 
+                    (variable_or_function_call HORIZONTAL)) )))) ; 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call URIGHT)) )))) ;)) \n 
+      (statement 
+        (for_next_statement FOR Row = 
+          (expr 
+            (expr 
+              (variable_or_function_call TopSide)) + 
+            (expr 
+              (literal 1))) TO 
+          (expr 
+            (expr 
+              (variable_or_function_call BottomSide)) - 
+            (expr 
+              (literal 1))) 
+          (block \n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (variable_or_function_call Row)) , 
+                (expr 
+                  (variable_or_function_call LeftSide)))) \n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call VERTICAL)) )))) ; 
+                (expr 
+                  (variable_or_function_call SPC 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call FrameWidth)) )))) ; 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call VERTICAL)) )))) ;)) \n statement) NEXT Row)) \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call BottomSide)) , 
+          (expr 
+            (variable_or_function_call LeftSide)))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call LLEFT)) )))) ; 
+          (expr 
+            (variable_or_function_call STRING$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call FrameWidth)) , 
+                  (expr 
+                    (variable_or_function_call HORIZONTAL)) )))) ; 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call LRIGHT)) )))) ;)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id ElapsedTime) 
+    ( 
+      (parameter_list 
+        (parameter CurrentRow)) ) STATIC 
+    (block \n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment FORMAT = 
+            (const_expr 
+              (expr 
+                (literal "  &###.### seconds  ")))))) \n statement \n statement \n statement \n 
+      (statement 
+        (color_statement COLOR 
+          (expr 
+            (variable_or_function_call Foreground)) , 
+          (expr 
+            (variable_or_function_call Background)))) \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (expr 
+              (variable_or_function_call Selection)) + 
+            (expr 
+              (literal 4))) , 
+          (expr 
+            (expr 
+              (variable_or_function_call LEFTCOLUMN)) - 
+            (expr 
+              (literal 2))))) \n 
+      (statement 
+        (print_using_statement PRINT USING 
+          (expr 
+            (variable_or_function_call FORMAT)) ; 
+          (expr 
+            (variable_or_function_call OptionTitle 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Selection)) )))) ; 
+          (expr 
+            (expr 
+              (builtin_function TIMER)) - 
+            (expr 
+              (variable_or_function_call StartTime))) ;)) \n statement \n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call NoSound)) THEN \n 
+        (then_block 
+          (statement 
+            (call_statement 
+              (untyped_id SOUND) 
+              (call_argument_list 
+                (call_argument 
+                  (expr 
+                    (literal 30000))) , 
+                (call_argument Pause)))) \n) 
+        (else_block_statement ELSE 
+          (else_block statement \n 
+            (statement 
+              (call_statement 
+                (untyped_id SOUND) 
+                (call_argument_list 
+                  (call_argument 
+                    (expr 
+                      (expr 
+                        (literal 60)) * 
+                      (expr 
+                        (variable_or_function_call CurrentRow)))) , 
+                  (call_argument Pause)))) \n)) 
+        (end_if_statement END IF)) \n statement \n 
+      (statement 
+        (color_statement COLOR 
+          (expr 
+            (variable_or_function_call MaxColors)) , 
+          (expr 
+            (literal 0)))) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id ExchangeSort) STATIC 
+    (block \n 
+      (statement 
+        (for_next_statement FOR Row = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call MaxRow)) 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call SmallestRow) = 
+                (expr 
+                  (variable_or_function_call Row)))) \n 
+            (statement 
+              (for_next_statement FOR J = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Row)) + 
+                  (expr 
+                    (literal 1))) TO 
+                (expr 
+                  (variable_or_function_call MaxRow)) 
+                (block \n 
+                  (if_block_statement IF 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call SortArray 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call J)) )) . Length)) < 
+                      (expr 
+                        (variable_or_function_call SortArray 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call SmallestRow)) )) . Length))) THEN \n 
+                    (then_block 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call SmallestRow) = 
+                          (expr 
+                            (variable_or_function_call J)))) \n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id ElapsedTime) 
+                          (call_argument_list 
+                            (call_argument J)))) \n) 
+                    (end_if_statement END IF)) \n statement) NEXT J)) \n statement \n statement \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call SmallestRow)) > 
+                (expr 
+                  (variable_or_function_call Row))) THEN \n 
+              (then_block 
+                (statement 
+                  (call_statement 
+                    (untyped_id SWAP) 
+                    (call_argument_list 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Row)) ))) , 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call SmallestRow)) )))))) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id SwapBars) 
+                    (call_argument_list 
+                      (call_argument Row) , 
+                      (call_argument SmallestRow)))) \n) 
+              (end_if_statement END IF)) \n statement) NEXT Row)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id HeapSort) STATIC 
+    (block \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 2)) TO 
+          (expr 
+            (variable_or_function_call MaxRow)) 
+          (block \n 
+            (statement 
+              (call_statement 
+                (untyped_id PercolateUp) 
+                (call_argument_list 
+                  (call_argument I)))) \n statement) NEXT I)) \n statement \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (variable_or_function_call MaxRow)) TO 
+          (expr 
+            (literal 2)) STEP 
+          (expr - 
+            (expr 
+              (literal 1))) 
+          (block \n 
+            (statement 
+              (call_statement 
+                (untyped_id SWAP) 
+                (call_argument_list 
+                  (call_argument SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 1)) ))) , 
+                  (call_argument SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) )))))) \n 
+            (statement 
+              (call_statement 
+                (untyped_id SwapBars) 
+                (call_argument_list 
+                  (call_argument 
+                    (expr 
+                      (literal 1))) , 
+                  (call_argument I)))) \n 
+            (statement 
+              (call_statement 
+                (untyped_id PercolateDown) 
+                (call_argument_list 
+                  (call_argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call I)) - 
+                      (expr 
+                        (literal 1))))))) \n statement) NEXT I)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id Initialize) STATIC 
+    (block \n 
+      (statement 
+        (dim_statement DIM 
+          (dim_variable TempArray 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 1)) TO 
+                  (expr 
+                    (literal 43))) ))))) \n statement \n 
+      (statement 
+        (call_statement 
+          (untyped_id CheckScreen))) \n statement \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call MaxRow)) 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call TempArray 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) ))) = 
+                (expr 
+                  (variable_or_function_call I)))) \n statement) NEXT I)) \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call MaxIndex) = 
+          (expr 
+            (variable_or_function_call MaxRow)))) \n statement \n 
+      (statement 
+        (call_statement 
+          (untyped_id RANDOMIZE) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (builtin_function TIMER)))))) \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call MaxRow)) 
+          (block \n statement \n statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Index) = 
+                (expr 
+                  (variable_or_function_call RandInt% 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 1)) , 
+                        (expr 
+                          (variable_or_function_call MaxIndex)) )))))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call BarLength) = 
+                (expr 
+                  (variable_or_function_call TempArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Index)) )))))) \n statement \n statement \n statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call TempArray 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Index)) ))) = 
+                (expr 
+                  (variable_or_function_call TempArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call MaxIndex)) )))))) \n statement \n statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call MaxIndex) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call MaxIndex)) - 
+                  (expr 
+                    (literal 1))))) \n statement \n statement \n statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call SortBackup 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) )) . Length) = 
+                (expr 
+                  (variable_or_function_call BarLength)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call SortBackup 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) )) . BarString) = 
+                (expr 
+                  (variable_or_function_call STRING$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call BarLength)) , 
+                        (expr 
+                          (literal 223)) )))))) \n statement \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call MaxColors)) > 
+                (expr 
+                  (literal 2))) THEN \n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call SortBackup 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call I)) )) . ColorVal) = 
+                    (expr 
+                      (expr 
+                        ( 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call BarLength)) MOD 
+                            (expr 
+                              (variable_or_function_call MaxColors))) )) + 
+                      (expr 
+                        (literal 1))))) \n) 
+              (else_block_statement ELSE 
+                (else_block statement \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call SortBackup 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call I)) )) . ColorVal) = 
+                      (expr 
+                        (variable_or_function_call MaxColors)))) \n)) 
+              (end_if_statement END IF)) \n statement) NEXT I)) \n statement \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call NUMOPTIONS)) 
+          (block \n 
+            (statement 
+              (read_statement READ 
+                (variable_or_function_call OptionTitle 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) ))))) \n statement) NEXT I)) \n statement \n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \n 
+      (statement 
+        (call_statement 
+          (untyped_id Reinitialize))) \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NoSound) = 
+          (expr 
+            (variable_or_function_call FALSE)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Pause) = 
+          (expr 
+            (literal 2)))) \n 
+      (statement 
+        (call_statement 
+          (untyped_id BoxInit))) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id InsertionSort) STATIC 
+    (block \n 
+      (statement 
+        (dim_statement DIM 
+          (dim_variable 
+            (untyped_id TempVal) AS 
+            (type_name 
+              (untyped_id SortType))))) \n 
+      (statement 
+        (for_next_statement FOR Row = 
+          (expr 
+            (literal 2)) TO 
+          (expr 
+            (variable_or_function_call MaxRow)) 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call TempVal) = 
+                (expr 
+                  (variable_or_function_call SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Row)) )))))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call TempLength) = 
+                (expr 
+                  (variable_or_function_call TempVal.Length)))) \n 
+            (statement 
+              (for_next_statement FOR J = 
+                (expr 
+                  (variable_or_function_call Row)) TO 
+                (expr 
+                  (literal 2)) STEP 
+                (expr - 
+                  (expr 
+                    (literal 1))) 
+                (block \n statement \n statement \n statement \n statement \n 
+                  (if_block_statement IF 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call SortArray 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call J)) - 
+                                (expr 
+                                  (literal 1))) )) . Length)) > 
+                      (expr 
+                        (variable_or_function_call TempLength))) THEN \n 
+                    (then_block 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call SortArray 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call J)) ))) = 
+                          (expr 
+                            (variable_or_function_call SortArray 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call J)) - 
+                                    (expr 
+                                      (literal 1))) )))))) \n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id PrintOneBar) 
+                          (call_argument_list 
+                            (call_argument J)))) \n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id ElapsedTime) 
+                          (call_argument_list 
+                            (call_argument J)))) \n statement \n statement \n) 
+                    (else_block_statement ELSE 
+                      (else_block statement \n 
+                        (statement 
+                          (exit_statement EXIT FOR)) \n)) 
+                    (end_if_statement END IF)) \n statement) NEXT J)) \n statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call SortArray 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call J)) ))) = 
+                (expr 
+                  (variable_or_function_call TempVal)))) \n 
+            (statement 
+              (call_statement 
+                (untyped_id PrintOneBar) 
+                (call_argument_list 
+                  (call_argument J)))) \n 
+            (statement 
+              (call_statement 
+                (untyped_id ElapsedTime) 
+                (call_argument_list 
+                  (call_argument J)))) \n statement) NEXT Row)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id PercolateDown) 
+    ( 
+      (parameter_list 
+        (parameter MaxLevel)) ) STATIC 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call I) = 
+          (expr 
+            (literal 1)))) \n statement \n statement \n statement \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Child) = 
+                (expr 
+                  (expr 
+                    (literal 2)) * 
+                  (expr 
+                    (variable_or_function_call I))))) \n statement \n statement \n 
+            (statement 
+              (if_inline_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Child)) > 
+                  (expr 
+                    (variable_or_function_call MaxLevel))) THEN 
+                (if_inline_action 
+                  (statement 
+                    (exit_statement EXIT DO))))) \n statement \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Child)) + 
+                  (expr 
+                    (literal 1))) <= 
+                (expr 
+                  (variable_or_function_call MaxLevel))) THEN \n 
+              (then_block 
+                (if_block_statement IF 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call Child)) + 
+                              (expr 
+                                (literal 1))) )) . Length)) > 
+                    (expr 
+                      (variable_or_function_call SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Child)) )) . Length))) THEN \n 
+                  (then_block 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call Child) = 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Child)) + 
+                          (expr 
+                            (literal 1))))) \n) 
+                  (end_if_statement END IF)) \n) 
+              (end_if_statement END IF)) \n statement \n statement \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) )) . Length)) < 
+                (expr 
+                  (variable_or_function_call SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Child)) )) . Length))) THEN \n 
+              (then_block 
+                (statement 
+                  (call_statement 
+                    (untyped_id SWAP) 
+                    (call_argument_list 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call I)) ))) , 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Child)) )))))) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id SwapBars) 
+                    (call_argument_list 
+                      (call_argument I) , 
+                      (call_argument Child)))) \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call I) = 
+                    (expr 
+                      (variable_or_function_call Child)))) \n statement \n statement \n statement \n) 
+              (else_block_statement ELSE 
+                (else_block statement \n 
+                  (statement 
+                    (exit_statement EXIT DO)) \n)) 
+              (end_if_statement END IF)) \n statement) LOOP)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id PercolateUp) 
+    ( 
+      (parameter_list 
+        (parameter MaxLevel)) ) STATIC 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call I) = 
+          (expr 
+            (variable_or_function_call MaxLevel)))) \n statement \n statement \n statement \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition UNTIL 
+            (expr 
+              (expr 
+                (variable_or_function_call I)) = 
+              (expr 
+                (literal 1)))) 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Parent) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call I)) \ 
+                  (expr 
+                    (literal 2))))) \n statement \n statement \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) )) . Length)) > 
+                (expr 
+                  (variable_or_function_call SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Parent)) )) . Length))) THEN \n 
+              (then_block 
+                (statement 
+                  (call_statement 
+                    (untyped_id SWAP) 
+                    (call_argument_list 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Parent)) ))) , 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call I)) )))))) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id SwapBars) 
+                    (call_argument_list 
+                      (call_argument Parent) , 
+                      (call_argument I)))) \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call I) = 
+                    (expr 
+                      (variable_or_function_call Parent)))) \n statement \n statement \n statement \n) 
+              (else_block_statement ELSE 
+                (else_block statement \n 
+                  (statement 
+                    (exit_statement EXIT DO)) \n)) 
+              (end_if_statement END IF)) \n statement) LOOP)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id PrintOneBar) 
+    ( 
+      (parameter_list 
+        (parameter Row)) ) STATIC 
+    (block \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Row)) , 
+          (expr 
+            (literal 1)))) \n 
+      (statement 
+        (color_statement COLOR 
+          (expr 
+            (variable_or_function_call SortArray 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Row)) )) . ColorVal)))) \n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call SortArray 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Row)) )) . BarString)) ;)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id QuickSort) 
+    ( 
+      (parameter_list 
+        (parameter Low) , 
+        (parameter High)) ) 
+    (block \n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Low)) < 
+          (expr 
+            (variable_or_function_call High))) THEN \n 
+        (then_block statement \n statement \n statement \n 
+          (if_block_statement IF 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call High)) - 
+                (expr 
+                  (variable_or_function_call Low))) = 
+              (expr 
+                (literal 1))) THEN \n 
+            (then_block 
+              (if_block_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call SortArray 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Low)) )) . Length)) > 
+                  (expr 
+                    (variable_or_function_call SortArray 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call High)) )) . Length))) THEN \n 
+                (then_block 
+                  (statement 
+                    (call_statement 
+                      (untyped_id SWAP) 
+                      (call_argument_list 
+                        (call_argument SortArray 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call Low)) ))) , 
+                        (call_argument SortArray 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call High)) )))))) \n 
+                  (statement 
+                    (call_statement 
+                      (untyped_id SwapBars) 
+                      (call_argument_list 
+                        (call_argument Low) , 
+                        (call_argument High)))) \n) 
+                (end_if_statement END IF)) \n) 
+            (else_block_statement ELSE 
+              (else_block statement \n statement \n statement \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call RandIndex) = 
+                    (expr 
+                      (variable_or_function_call RandInt% 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Low)) , 
+                            (expr 
+                              (variable_or_function_call High)) )))))) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id SWAP) 
+                    (call_argument_list 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call High)) ))) , 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call RandIndex)) )))))) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id SwapBars) 
+                    (call_argument_list 
+                      (call_argument High) , 
+                      (call_argument RandIndex)))) \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Partition) = 
+                    (expr 
+                      (variable_or_function_call SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call High)) )) . Length)))) \n 
+                (statement 
+                  (do_loop_statement DO 
+                    (block \n statement \n statement \n 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call I) = 
+                          (expr 
+                            (variable_or_function_call Low)))) : 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call J) = 
+                          (expr 
+                            (variable_or_function_call High)))) \n 
+                      (statement 
+                        (do_loop_statement DO 
+                          (do_condition WHILE 
+                            (expr 
+                              (expr 
+                                ( 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call I)) < 
+                                    (expr 
+                                      (variable_or_function_call J))) )) AND 
+                              (expr 
+                                ( 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call SortArray 
+                                        (args_or_indices 
+                                          ( 
+                                            (expr 
+                                              (variable_or_function_call I)) )) . Length)) <= 
+                                    (expr 
+                                      (variable_or_function_call Partition))) )))) 
+                          (block \n 
+                            (statement 
+                              (assignment_statement 
+                                (variable_or_function_call I) = 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call I)) + 
+                                  (expr 
+                                    (literal 1))))) \n statement) LOOP)) \n 
+                      (statement 
+                        (do_loop_statement DO 
+                          (do_condition WHILE 
+                            (expr 
+                              (expr 
+                                ( 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call J)) > 
+                                    (expr 
+                                      (variable_or_function_call I))) )) AND 
+                              (expr 
+                                ( 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call SortArray 
+                                        (args_or_indices 
+                                          ( 
+                                            (expr 
+                                              (variable_or_function_call J)) )) . Length)) >= 
+                                    (expr 
+                                      (variable_or_function_call Partition))) )))) 
+                          (block \n 
+                            (statement 
+                              (assignment_statement 
+                                (variable_or_function_call J) = 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call J)) - 
+                                  (expr 
+                                    (literal 1))))) \n statement) LOOP)) \n statement \n statement \n statement \n 
+                      (if_block_statement IF 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call I)) < 
+                          (expr 
+                            (variable_or_function_call J))) THEN \n 
+                        (then_block 
+                          (statement 
+                            (call_statement 
+                              (untyped_id SWAP) 
+                              (call_argument_list 
+                                (call_argument SortArray 
+                                  (args_or_indices 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call I)) ))) , 
+                                (call_argument SortArray 
+                                  (args_or_indices 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call J)) )))))) \n 
+                          (statement 
+                            (call_statement 
+                              (untyped_id SwapBars) 
+                              (call_argument_list 
+                                (call_argument I) , 
+                                (call_argument J)))) \n) 
+                        (end_if_statement END IF)) \n statement) LOOP 
+                    (do_condition WHILE 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call I)) < 
+                        (expr 
+                          (variable_or_function_call J)))))) \n statement \n statement \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id SWAP) 
+                    (call_argument_list 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call I)) ))) , 
+                      (call_argument SortArray 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call High)) )))))) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id SwapBars) 
+                    (call_argument_list 
+                      (call_argument I) , 
+                      (call_argument High)))) \n statement \n statement \n statement \n 
+                (if_block_statement IF 
+                  (expr 
+                    (expr 
+                      ( 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call I)) - 
+                          (expr 
+                            (variable_or_function_call Low))) )) < 
+                    (expr 
+                      ( 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call High)) - 
+                          (expr 
+                            (variable_or_function_call I))) ))) THEN \n 
+                  (then_block 
+                    (statement 
+                      (call_statement 
+                        (untyped_id QuickSort) 
+                        (call_argument_list 
+                          (call_argument Low) , 
+                          (call_argument 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call I)) - 
+                              (expr 
+                                (literal 1))))))) \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id QuickSort) 
+                        (call_argument_list 
+                          (call_argument 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call I)) + 
+                              (expr 
+                                (literal 1)))) , 
+                          (call_argument High)))) \n) 
+                  (else_block_statement ELSE 
+                    (else_block statement \n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id QuickSort) 
+                          (call_argument_list 
+                            (call_argument 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call I)) + 
+                                (expr 
+                                  (literal 1)))) , 
+                            (call_argument High)))) \n 
+                      (statement 
+                        (call_statement 
+                          (untyped_id QuickSort) 
+                          (call_argument_list 
+                            (call_argument Low) , 
+                            (call_argument 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call I)) - 
+                                (expr 
+                                  (literal 1))))))) \n)) 
+                  (end_if_statement END IF)) \n)) 
+            (end_if_statement END IF)) \n) 
+        (end_if_statement END IF)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (function_statement FUNCTION RandInt% 
+    ( 
+      (parameter_list 
+        (parameter Lower) , 
+        (parameter Upper)) ) STATIC 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call RandInt%) = 
+          (expr 
+            (expr 
+              (variable_or_function_call INT 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call RND)) * 
+                      (expr 
+                        ( 
+                          (expr 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call Upper)) - 
+                              (expr 
+                                (variable_or_function_call Lower))) + 
+                            (expr 
+                              (literal 1))) ))) )))) + 
+            (expr 
+              (variable_or_function_call Lower))))) \n statement) 
+    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id Reinitialize) STATIC 
+    (block \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call MaxRow)) 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call SortArray 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) ))) = 
+                (expr 
+                  (variable_or_function_call SortBackup 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) )))))) \n statement) NEXT I)) \n statement \n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call MaxRow)) 
+          (block \n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (variable_or_function_call I)) , 
+                (expr 
+                  (literal 1)))) \n 
+            (statement 
+              (color_statement COLOR 
+                (expr 
+                  (variable_or_function_call SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) )) . ColorVal)))) \n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call SortArray 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) )) . BarString)) ;)) \n statement) NEXT I)) \n statement \n 
+      (statement 
+        (color_statement COLOR 
+          (expr 
+            (variable_or_function_call MaxColors)) , 
+          (expr 
+            (literal 0)))) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id ShellSort) STATIC 
+    (block \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Offset) = 
+          (expr 
+            (expr 
+              (variable_or_function_call MaxRow)) \ 
+            (expr 
+              (literal 2))))) \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call Offset)) > 
+              (expr 
+                (literal 0)))) 
+          (block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Limit) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call MaxRow)) - 
+                  (expr 
+                    (variable_or_function_call Offset))))) \n 
+            (statement 
+              (do_loop_statement DO 
+                (block \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Switch) = 
+                      (expr 
+                        (variable_or_function_call FALSE)))) \n statement \n statement \n 
+                  (statement 
+                    (for_next_statement FOR Row = 
+                      (expr 
+                        (literal 1)) TO 
+                      (expr 
+                        (variable_or_function_call Limit)) 
+                      (block \n 
+                        (if_block_statement IF 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call SortArray 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call Row)) )) . Length)) > 
+                            (expr 
+                              (variable_or_function_call SortArray 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (expr 
+                                        (variable_or_function_call Row)) + 
+                                      (expr 
+                                        (variable_or_function_call Offset))) )) . Length))) THEN \n 
+                          (then_block 
+                            (statement 
+                              (call_statement 
+                                (untyped_id SWAP) 
+                                (call_argument_list 
+                                  (call_argument SortArray 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (variable_or_function_call Row)) ))) , 
+                                  (call_argument SortArray 
+                                    (args_or_indices 
+                                      ( 
+                                        (expr 
+                                          (expr 
+                                            (variable_or_function_call Row)) + 
+                                          (expr 
+                                            (variable_or_function_call Offset))) )))))) \n 
+                            (statement 
+                              (call_statement 
+                                (untyped_id SwapBars) 
+                                (call_argument_list 
+                                  (call_argument Row) , 
+                                  (call_argument 
+                                    (expr 
+                                      (expr 
+                                        (variable_or_function_call Row)) + 
+                                      (expr 
+                                        (variable_or_function_call Offset))))))) \n 
+                            (statement 
+                              (assignment_statement 
+                                (variable_or_function_call Switch) = 
+                                (expr 
+                                  (variable_or_function_call Row)))) \n) 
+                          (end_if_statement END IF)) \n statement) NEXT Row)) \n statement \n statement \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Limit) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Switch)) - 
+                        (expr 
+                          (variable_or_function_call Offset))))) \n statement) LOOP 
+                (do_condition WHILE 
+                  (expr 
+                    (variable_or_function_call Switch))))) \n statement \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Offset) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Offset)) \ 
+                  (expr 
+                    (literal 2))))) \n statement) LOOP)) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id SortMenu) STATIC 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Escape$) = 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 27)) )))))) \n statement \n statement \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Option$) = 
+          (expr 
+            (expr 
+              (literal "IBHESQ><T")) + 
+            (expr 
+              (variable_or_function_call Escape$))))) \n statement \n 
+      (statement 
+        (do_loop_statement DO 
+          (block \n statement \n statement \n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (expr 
+                    (variable_or_function_call NUMOPTIONS)) + 
+                  (expr 
+                    (literal 8))) , 
+                (expr 
+                  (expr 
+                    (variable_or_function_call LEFTCOLUMN)) + 
+                  (expr 
+                    (literal 27))) , 
+                (expr 
+                  (literal 1)))) \n statement \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Choice$) = 
+                (expr 
+                  (variable_or_function_call UCASE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (builtin_function INPUT$ 
+                            ( 
+                              (expr 
+                                (literal 1)) ))) )))))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Selection) = 
+                (expr 
+                  (variable_or_function_call INSTR 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Option$)) , 
+                        (expr 
+                          (variable_or_function_call Choice$)) )))))) \n statement \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Selection)) >= 
+                      (expr 
+                        (literal 1))) )) AND 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Selection)) <= 
+                      (expr 
+                        (variable_or_function_call NUMSORTS))) ))) THEN \n 
+              (then_block 
+                (statement 
+                  (call_statement 
+                    (untyped_id Reinitialize))) \n 
+                (statement 
+                  (locate_statement LOCATE , , 
+                    (expr 
+                      (literal 0)))) \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Foreground) = 
+                    (expr 
+                      (literal 0)))) \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Background) = 
+                    (expr 
+                      (literal 7)))) \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call StartTime) = 
+                    (expr 
+                      (builtin_function TIMER)))) \n) 
+              (end_if_statement END IF)) \n statement \n statement \n 
+            (statement 
+              (select_case_statement SELECT CASE 
+                (expr 
+                  (variable_or_function_call Choice$)) 
+                (before_first_case \n) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "I")))) 
+                  (block \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id InsertionSort))) \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "B")))) 
+                  (block \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id BubbleSort))) \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "H")))) 
+                  (block \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id HeapSort))) \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "E")))) 
+                  (block \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id ExchangeSort))) \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "S")))) 
+                  (block \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id ShellSort))) \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "Q")))) 
+                  (block \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id QuickSort) 
+                        (call_argument_list 
+                          (call_argument 
+                            (expr 
+                              (literal 1))) , 
+                          (call_argument MaxRow)))) \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal ">")))) 
+                  (block \n statement \n statement \n statement \n statement \n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call Pause) = 
+                        (expr 
+                          (expr 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (literal 2)) * 
+                                (expr 
+                                  (variable_or_function_call Pause))) )) / 
+                          (expr 
+                            (literal 3))))) \n statement \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id BoxInit))) \n statement \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "<")))) 
+                  (block \n statement \n statement \n statement \n statement \n 
+                    (statement 
+                      (if_inline_statement IF 
+                        (expr 
+                          (expr 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (literal 3)) * 
+                                  (expr 
+                                    (variable_or_function_call Pause))) )) / 
+                            (expr 
+                              (literal 2))) < 
+                          (expr 
+                            (literal 13000))) THEN 
+                        (if_inline_action 
+                          (statement 
+                            (assignment_statement 
+                              (variable_or_function_call Pause) = 
+                              (expr 
+                                (expr 
+                                  ( 
+                                    (expr 
+                                      (expr 
+                                        (literal 3)) * 
+                                      (expr 
+                                        (variable_or_function_call Pause))) )) / 
+                                (expr 
+                                  (literal 2)))))))) \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id BoxInit))) \n statement \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (literal "T")))) 
+                  (block \n 
+                    (statement 
+                      (call_statement 
+                        (untyped_id ToggleSound) 
+                        (call_argument_list 
+                          (call_argument 
+                            (expr 
+                              (literal 12))) , 
+                          (call_argument 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call LEFTCOLUMN)) + 
+                              (expr 
+                                (literal 12))))))) \n statement \n statement)) 
+                (case_block 
+                  (case_statement CASE 
+                    (case_expr 
+                      (expr 
+                        (variable_or_function_call Escape$)))) 
+                  (block \n statement \n statement \n statement \n 
+                    (statement 
+                      (exit_statement EXIT DO)) \n statement \n statement)) 
+                (case_block 
+                  (case_statement CASE ELSE) 
+                  (block \n statement \n statement \n statement)) 
+                (end_select_statement END SELECT))) \n statement \n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Selection)) >= 
+                      (expr 
+                        (literal 1))) )) AND 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Selection)) <= 
+                      (expr 
+                        (variable_or_function_call NUMSORTS))) ))) THEN \n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Foreground) = 
+                    (expr 
+                      (variable_or_function_call MaxColors)))) \n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Background) = 
+                    (expr 
+                      (literal 0)))) \n 
+                (statement 
+                  (call_statement 
+                    (untyped_id ElapsedTime) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (literal 0)))))) \n) 
+              (end_if_statement END IF)) \n statement \n statement) LOOP)) \n statement \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id SwapBars) 
+    ( 
+      (parameter_list 
+        (parameter Row1) , 
+        (parameter Row2)) ) STATIC 
+    (block \n 
+      (statement 
+        (call_statement 
+          (untyped_id PrintOneBar) 
+          (call_argument_list 
+            (call_argument Row1)))) \n 
+      (statement 
+        (call_statement 
+          (untyped_id PrintOneBar) 
+          (call_argument_list 
+            (call_argument Row2)))) \n 
+      (statement 
+        (call_statement 
+          (untyped_id ElapsedTime) 
+          (call_argument_list 
+            (call_argument Row1)))) \n statement) 
+    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+  (sub_statement SUB 
+    (untyped_id ToggleSound) 
+    ( 
+      (parameter_list 
+        (parameter Row) , 
+        (parameter Column)) ) STATIC 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NoSound) = 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call NoSound))))) \n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Row)) , 
+          (expr 
+            (variable_or_function_call Column)))) \n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call NoSound)) THEN \n 
+        (then_block 
+          (statement 
+            (print_statement PRINT 
+              (expr 
+                (literal ": OFF")) ;)) \n) 
+        (else_block_statement ELSE 
+          (else_block statement \n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal ": ON ")) ;)) \n)) 
+        (end_if_statement END IF)) \n statement) 
+    (end_sub_statement END SUB)) \n <EOF>)

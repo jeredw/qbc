@@ -1,0 +1,551 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment EOFTYPE = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment FILETYPE = 
+        (const_expr 
+          (expr 
+            (literal 1)))) , 
+      (const_assignment DIRTYPE = 
+        (const_expr 
+          (expr 
+            (literal 2)))) , 
+      (const_assignment ROOT = 
+        (const_expr 
+          (expr 
+            (literal "TWH")))))) \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ScanDir) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter PathSpec$) , 
+        (declare_parameter Level) , 
+        (declare_parameter FileSpec$) , 
+        (declare_parameter Row)) )) \r\n statement \r\n statement 
+  (declare_statement DECLARE FUNCTION MakeFileName$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Num)) )) \r\n statement 
+  (declare_statement DECLARE FUNCTION GetEntry$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter FileNum) , 
+        (declare_parameter EntryType)) )) \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \r\n 
+  (statement 
+    (input_statement INPUT "File to look for" ; 
+      (variable_or_function_call FileSpec$))) \r\n 
+  (statement 
+    (print_statement PRINT)) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Enter the directory where the search should start")))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "
+          (optional drive + directories). Press <ENTER> to begin")))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "the search in the root directory of the current drive.")))) \r\n 
+  (statement 
+    (print_statement PRINT)) \r\n 
+  (statement 
+    (input_statement INPUT "Starting directory" ; 
+      (variable_or_function_call PathSpec$))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call RightCh$) = 
+      (expr 
+        (variable_or_function_call RIGHT$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call PathSpec$)) , 
+              (expr 
+                (literal 1)) )))))) \r\n statement \r\n 
+  (if_block_statement IF 
+    (expr 
+      (expr 
+        (expr 
+          (expr 
+            (variable_or_function_call PathSpec$)) = 
+          (expr 
+            (literal ""))) OR 
+        (expr 
+          (expr 
+            (variable_or_function_call RightCh$)) = 
+          (expr 
+            (literal ":")))) OR 
+      (expr 
+        (expr 
+          (variable_or_function_call RightCh$)) <> 
+        (expr 
+          (literal "\")))) THEN \r\n 
+    (then_block 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call PathSpec$) = 
+          (expr 
+            (expr 
+              (variable_or_function_call PathSpec$)) + 
+            (expr 
+              (literal "\"))))) \r\n) 
+    (end_if_statement END IF)) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call FileSpec$) = 
+      (expr 
+        (variable_or_function_call UCASE$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call FileSpec$)) )))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call PathSpec$) = 
+      (expr 
+        (variable_or_function_call UCASE$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (variable_or_function_call PathSpec$)) )))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Level) = 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Row) = 
+      (expr 
+        (literal 3)))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id ScanDir) 
+      (call_argument_list 
+        (call_argument PathSpec$) , 
+        (call_argument Level) , 
+        (call_argument FileSpec$) , 
+        (call_argument Row)))) \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id KILL) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (expr 
+              (variable_or_function_call ROOT)) + 
+            (expr 
+              (literal ".*"))))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (expr 
+          (variable_or_function_call Row)) + 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Search complete.")))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION GetEntry$ 
+    ( 
+      (parameter_list 
+        (parameter FileNum) , 
+        (parameter EntryType)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (do_condition UNTIL 
+            (expr 
+              (variable_or_function_call EOF 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call FileNum)) ))))) 
+          (block \r\n 
+            (statement 
+              (line_input_statement LINE INPUT 
+                (file_number # 
+                  (expr 
+                    (variable_or_function_call FileNum))) , 
+                (variable_or_function_call EntryLine$))) \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call EntryLine$)) <> 
+                (expr 
+                  (literal ""))) THEN \r\n 
+              (then_block statement \r\n statement \r\n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call TestCh$) = 
+                    (expr 
+                      (variable_or_function_call LEFT$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call EntryLine$)) , 
+                            (expr 
+                              (literal 1)) )))))) \r\n 
+                (statement 
+                  (if_inline_statement IF 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call TestCh$)) <> 
+                        (expr 
+                          (literal " "))) AND 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call TestCh$)) <> 
+                        (expr 
+                          (literal ".")))) THEN 
+                    (if_inline_action 
+                      (statement 
+                        (exit_statement EXIT DO))))) \r\n) 
+              (end_if_statement END IF)) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call EOF 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (variable_or_function_call FileNum)) )))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call EntryType) = 
+              (expr 
+                (variable_or_function_call EOFTYPE)))) \r\n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call GetEntry$) = 
+              (expr 
+                (literal "")))) \r\n statement \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call EntryName$) = 
+                (expr 
+                  (variable_or_function_call RTRIM$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call LEFT$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call EntryLine$)) , 
+                                (expr 
+                                  (literal 8)) )))) )))))) \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call EntryExt$) = 
+                (expr 
+                  (variable_or_function_call RTRIM$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (builtin_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call EntryLine$)) , 
+                              (expr 
+                                (literal 10)) , 
+                              (expr 
+                                (literal 3)) ))) )))))) \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call EntryExt$)) <> 
+                (expr 
+                  (literal ""))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call GetEntry$) = 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call EntryName$)) + 
+                        (expr 
+                          (literal "."))) + 
+                      (expr 
+                        (variable_or_function_call EntryExt$))))) \r\n) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call GetEntry$) = 
+                      (expr 
+                        (variable_or_function_call EntryName$)))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (builtin_function MID$ 
+                    ( 
+                      (expr 
+                        (variable_or_function_call EntryLine$)) , 
+                      (expr 
+                        (literal 15)) , 
+                      (expr 
+                        (literal 3)) ))) = 
+                (expr 
+                  (literal "DIR"))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call EntryType) = 
+                    (expr 
+                      (variable_or_function_call DIRTYPE)))) \r\n) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call EntryType) = 
+                      (expr 
+                        (variable_or_function_call FILETYPE)))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement \r\n)) 
+        (end_if_statement END IF)) \r\n statement \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION MakeFileName$ 
+    ( 
+      (parameter_list 
+        (parameter Num)) ) STATIC 
+    (block \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call MakeFileName$) = 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call ROOT)) + 
+              (expr 
+                (literal "."))) + 
+            (expr 
+              (variable_or_function_call LTRIM$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call STR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Num)) )))) ))))))) \r\n statement \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id ScanDir) 
+    ( 
+      (parameter_list 
+        (parameter PathSpec$) , 
+        (parameter Level) , 
+        (parameter FileSpec$) , 
+        (parameter Row)) ) 
+    (block \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 1)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Now searching")) ; 
+          (expr 
+            (variable_or_function_call SPACE$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 50)) )))) ;)) \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 15)))) : 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call PathSpec$)) ;)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call TempSpec$) = 
+          (expr 
+            (variable_or_function_call MakeFileName$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Level)) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id SHELL) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (expr 
+                  (expr 
+                    (expr 
+                      (literal "DIR ")) + 
+                    (expr 
+                      (variable_or_function_call PathSpec$))) + 
+                  (expr 
+                    (literal " > "))) + 
+                (expr 
+                  (variable_or_function_call TempSpec$))))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call FileNum) = 
+          (expr 
+            (variable_or_function_call FREEFILE)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (open_statement OPEN 
+          (expr 
+            (variable_or_function_call TempSpec$)) FOR 
+          (open_mode INPUT) AS # 
+          (expr 
+            (variable_or_function_call FileNum)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call DirEntry$) = 
+                (expr 
+                  (variable_or_function_call GetEntry$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call FileNum)) , 
+                        (expr 
+                          (variable_or_function_call EntryType)) )))))) \r\n statement \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call EntryType)) = 
+                (expr 
+                  (variable_or_function_call FILETYPE))) THEN \r\n 
+              (then_block statement \r\n statement \r\n statement \r\n 
+                (if_block_statement IF 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call DirEntry$)) = 
+                    (expr 
+                      (variable_or_function_call FileSpec$))) THEN \r\n 
+                  (then_block 
+                    (statement 
+                      (locate_statement LOCATE 
+                        (expr 
+                          (variable_or_function_call Row)) , 
+                        (expr 
+                          (literal 1)))) : 
+                    (statement 
+                      (print_statement PRINT 
+                        (expr 
+                          (variable_or_function_call PathSpec$)) ; 
+                        (expr 
+                          (variable_or_function_call DirEntry$)) ;)) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call Row) = 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Row)) + 
+                          (expr 
+                            (literal 1))))) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call EntryType) = 
+                        (expr 
+                          (variable_or_function_call EOFTYPE)))) \r\n) 
+                  (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n) 
+              (elseif_block_statement ELSEIF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call EntryType)) = 
+                  (expr 
+                    (variable_or_function_call DIRTYPE))) THEN 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call NewPath$) = 
+                      (expr 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call PathSpec$)) + 
+                          (expr 
+                            (variable_or_function_call DirEntry$))) + 
+                        (expr 
+                          (literal "\"))))) \r\n 
+                  (statement 
+                    (call_statement 
+                      (untyped_id ScanDir) 
+                      (call_argument_list 
+                        (call_argument NewPath$) , 
+                        (call_argument 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call Level)) + 
+                            (expr 
+                              (literal 1)))) , 
+                        (call_argument FileSpec$) , 
+                        (call_argument Row)))) \r\n 
+                  (statement 
+                    (locate_statement LOCATE 
+                      (expr 
+                        (literal 1)) , 
+                      (expr 
+                        (literal 1)))) : 
+                  (statement 
+                    (print_statement PRINT 
+                      (expr 
+                        (literal "Now searching")) ; 
+                      (expr 
+                        (variable_or_function_call SPACE$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (literal 50)) )))) ;)) \r\n 
+                  (statement 
+                    (locate_statement LOCATE 
+                      (expr 
+                        (literal 1)) , 
+                      (expr 
+                        (literal 15)))) : 
+                  (statement 
+                    (print_statement PRINT 
+                      (expr 
+                        (variable_or_function_call PathSpec$)) ;)) \r\n)) 
+              (end_if_statement END IF)) \r\n statement \r\n statement) LOOP 
+          (do_condition UNTIL 
+            (expr 
+              (expr 
+                (variable_or_function_call EntryType)) = 
+              (expr 
+                (variable_or_function_call EOFTYPE)))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (close_statement CLOSE 
+          (expr 
+            (variable_or_function_call FileNum)))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n <EOF>)

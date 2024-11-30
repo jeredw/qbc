@@ -1,0 +1,591 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id MonthType) \r\n 
+    (type_element 
+      (untyped_id Number) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id MName) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 9)) \r\n) END TYPE) \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE FUNCTION IsLeapYear% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter N%)) )) \r\n statement 
+  (declare_statement DECLARE FUNCTION GetInput% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Prompt$) , 
+        (declare_parameter Row%) , 
+        (declare_parameter LowVal%) , 
+        (declare_parameter HighVal%)) )) \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id PrintCalendar) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Year%) , 
+        (declare_parameter Month%)) )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ComputeMonth) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Year%) , 
+        (declare_parameter Month%) , 
+        (declare_parameter StartDay%) , 
+        (declare_parameter TotalDays%)) )) \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id MonthData) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 12))) )) AS 
+        (type_name 
+          (untyped_id MonthType))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 12)) 
+      (block \r\n 
+        (statement 
+          (read_statement READ 
+            (variable_or_function_call MonthData 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call I)) )) . MName) , 
+            (variable_or_function_call MonthData 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call I)) )) . Number))) \r\n statement) NEXT)) \r\n statement \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n statement \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Year) = 
+            (expr 
+              (variable_or_function_call GetInput 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal "Year 
+                        (1899 to 2099): ")) , 
+                    (expr 
+                      (literal 1)) , 
+                    (expr 
+                      (literal 1899)) , 
+                    (expr 
+                      (literal 2099)) )))))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Month) = 
+            (expr 
+              (variable_or_function_call GetInput 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal "Month 
+                        (1 to 12): ")) , 
+                    (expr 
+                      (literal 2)) , 
+                    (expr 
+                      (literal 1)) , 
+                    (expr 
+                      (literal 12)) )))))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id PrintCalendar) 
+            (call_argument_list 
+              (call_argument Year) , 
+              (call_argument Month)))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (locate_statement LOCATE 
+            (expr 
+              (literal 13)) , 
+            (expr 
+              (literal 1)))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "New Date? ")) ;)) \r\n 
+        (statement 
+          (locate_statement LOCATE , , 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (literal 0)) , 
+            (expr 
+              (literal 13)))) \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Resp$) = 
+            (expr 
+              (builtin_function INPUT$ 
+                ( 
+                  (expr 
+                    (literal 1)) ))))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call Resp$)))) \r\n statement \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call UCASE$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Resp$)) )))) = 
+          (expr 
+            (literal "Y")))))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n 
+  (statement 
+    (data_statement DATA 
+      (data_item January) , 
+      (data_item 31) , 
+      (data_item February) , 
+      (data_item 28) , 
+      (data_item March) , 
+      (data_item 31))) \r\n 
+  (statement 
+    (data_statement DATA 
+      (data_item April) , 
+      (data_item 30) , 
+      (data_item May) , 
+      (data_item 31) , 
+      (data_item June) , 
+      (data_item 30) , 
+      (data_item July) , 
+      (data_item 31) , 
+      (data_item August) , 
+      (data_item 31))) \r\n 
+  (statement 
+    (data_statement DATA 
+      (data_item September) , 
+      (data_item 30) , 
+      (data_item October) , 
+      (data_item 31) , 
+      (data_item November) , 
+      (data_item 30) , 
+      (data_item December) , 
+      (data_item 31))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id ComputeMonth) 
+    ( 
+      (parameter_list 
+        (parameter Year) , 
+        (parameter Month) , 
+        (parameter StartDay) , 
+        (parameter TotalDays)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable 
+            (untyped_id MonthData) 
+            (array_declaration 
+              ( )) AS 
+            (type_name 
+              (untyped_id MonthType))))) \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment LEAP = 
+            (const_expr 
+              (expr 
+                (expr 
+                  (literal 366)) MOD 
+                (expr 
+                  (literal 7))))))) \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment NORMAL = 
+            (const_expr 
+              (expr 
+                (expr 
+                  (literal 365)) MOD 
+                (expr 
+                  (literal 7))))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NumDays) = 
+          (expr 
+            (literal 0)))) \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1899)) TO 
+          (expr 
+            (expr 
+              (variable_or_function_call Year)) - 
+            (expr 
+              (literal 1))) 
+          (block \r\n 
+            (if_block_statement IF 
+              (expr 
+                (variable_or_function_call IsLeapYear 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) )))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call NumDays) = 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call NumDays)) + 
+                      (expr 
+                        (variable_or_function_call LEAP))))) \r\n) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call NumDays) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call NumDays)) + 
+                        (expr 
+                          (variable_or_function_call NORMAL))))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement) NEXT)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (expr 
+              (variable_or_function_call Month)) - 
+            (expr 
+              (literal 1))) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call NumDays) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call NumDays)) + 
+                  (expr 
+                    (variable_or_function_call MonthData 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call I)) )) . Number))))) \r\n statement) NEXT)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call TotalDays) = 
+          (expr 
+            (variable_or_function_call MonthData 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call Month)) )) . Number)))) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call IsLeapYear 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (variable_or_function_call Year)) )))) THEN \r\n 
+        (then_block statement \r\n statement \r\n 
+          (if_block_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call Month)) > 
+              (expr 
+                (literal 2))) THEN \r\n 
+            (then_block 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call NumDays) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call NumDays)) + 
+                    (expr 
+                      (literal 1))))) \r\n statement \r\n statement \r\n) 
+            (elseif_block_statement ELSEIF 
+              (expr 
+                (expr 
+                  (variable_or_function_call Month)) = 
+                (expr 
+                  (literal 2))) THEN 
+              (else_block statement \r\n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call TotalDays) = 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call TotalDays)) + 
+                      (expr 
+                        (literal 1))))) \r\n statement \r\n)) 
+            (end_if_statement END IF)) \r\n) 
+        (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call StartDay) = 
+          (expr 
+            (expr 
+              (variable_or_function_call NumDays)) MOD 
+            (expr 
+              (literal 7))))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION GetInput 
+    ( 
+      (parameter_list 
+        (parameter Prompt$) , 
+        (parameter Row) , 
+        (parameter LowVal) , 
+        (parameter HighVal)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (variable_or_function_call Row)) , 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 0)) , 
+          (expr 
+            (literal 13)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call Prompt$)) ;)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Column) = 
+          (expr 
+            (variable_or_function_call POS 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 0)) )))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (variable_or_function_call Row)) , 
+                (expr 
+                  (variable_or_function_call Column)))) \r\n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call SPACE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 10)) )))))) \r\n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (variable_or_function_call Row)) , 
+                (expr 
+                  (variable_or_function_call Column)))) \r\n 
+            (statement 
+              (input_statement INPUT "" , 
+                (variable_or_function_call Value))) \r\n statement) LOOP 
+          (do_condition WHILE 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Value)) < 
+                    (expr 
+                      (variable_or_function_call LowVal))) OR 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Value)) > 
+                    (expr 
+                      (variable_or_function_call HighVal)))) ))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call GetInput) = 
+          (expr 
+            (variable_or_function_call Value)))) \r\n statement \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION IsLeapYear 
+    ( 
+      (parameter_list 
+        (parameter N)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call IsLeapYear) = 
+          (expr 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call N)) MOD 
+                      (expr 
+                        (literal 4))) = 
+                    (expr 
+                      (literal 0))) AND 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call N)) MOD 
+                      (expr 
+                        (literal 100))) <> 
+                    (expr 
+                      (literal 0)))) )) OR 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call N)) MOD 
+                    (expr 
+                      (literal 400))) = 
+                  (expr 
+                    (literal 0))) ))))) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id PrintCalendar) 
+    ( 
+      (parameter_list 
+        (parameter Year) , 
+        (parameter Month)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable 
+            (untyped_id MonthData) 
+            (array_declaration 
+              ( )) AS 
+            (type_name 
+              (untyped_id MonthType))))) \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id ComputeMonth) 
+          (call_argument_list 
+            (call_argument Year) , 
+            (call_argument Month) , 
+            (call_argument StartDay) , 
+            (call_argument TotalDays)))) \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Header$) = 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call RTRIM$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call MonthData 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call Month)) )) . MName)) )))) + 
+              (expr 
+                (literal ","))) + 
+            (expr 
+              (variable_or_function_call STR$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Year)) ))))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call LeftMargin) = 
+          (expr 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (literal 35)) - 
+                  (expr 
+                    (builtin_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Header$)) )))) )) \ 
+            (expr 
+              (literal 2))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call TAB 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call LeftMargin)) )))) ; 
+          (expr 
+            (variable_or_function_call Header$)))) \r\n 
+      (statement 
+        (print_statement PRINT)) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Su    M   Tu    W   Th    F   Sa")))) \r\n 
+      (statement 
+        (print_statement PRINT)) \r\n statement \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call LeftMargin) = 
+          (expr 
+            (expr 
+              (expr 
+                (literal 5)) * 
+              (expr 
+                (variable_or_function_call StartDay))) + 
+            (expr 
+              (literal 1))))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call TAB 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call LeftMargin)) )))) ;)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call TotalDays)) 
+          (block \r\n 
+            (statement 
+              (print_using_statement PRINT USING 
+                (expr 
+                  (literal "##   ")) ; 
+                (expr 
+                  (variable_or_function_call I)) ;)) \r\n statement \r\n statement \r\n statement \r\n 
+            (statement 
+              (if_inline_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call POS 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (literal 0)) )))) > 
+                  (expr 
+                    (literal 32))) THEN 
+                (if_inline_action 
+                  (statement 
+                    (print_statement PRINT))))) \r\n statement) NEXT)) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n <EOF>)

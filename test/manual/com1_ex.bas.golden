@@ -1,0 +1,97 @@
+(program statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable Values 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 50))) ))))) \r\n 
+  (statement 
+    (scope_statement COMMON 
+      (scope_variable Values 
+        (array_declaration 
+          ( ))) , 
+      (scope_variable NumValues))) \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Enter values one per line. Type 'END' to quit.")))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call NumValues) = 
+      (expr 
+        (literal 0)))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (input_statement INPUT "-> " , 
+            (variable_or_function_call N$))) \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call I)) >= 
+                (expr 
+                  (literal 50))) OR 
+              (expr 
+                (expr 
+                  (variable_or_function_call UCASE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call N$)) )))) = 
+                (expr 
+                  (literal "END")))) THEN 
+            (if_inline_action 
+              (statement 
+                (exit_statement EXIT DO))))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call NumValues) = 
+            (expr 
+              (expr 
+                (variable_or_function_call NumValues)) + 
+              (expr 
+                (literal 1))))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Values 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call NumValues)) ))) = 
+            (expr 
+              (variable_or_function_call VAL 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call N$)) )))))) \r\n statement) LOOP)) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Leaving COM1_EX.BAS to chain to COM2_EX.BAS")))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Press any key to chain... ")))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))) 
+      (block \r\n statement) LOOP)) \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CHAIN) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal "com2_ex")))))) \r\n statement \n <EOF>)

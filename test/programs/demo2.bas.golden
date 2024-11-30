@@ -1,0 +1,460 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (while_wend_statement WHILE 
+      (expr 
+        (expr 
+          (variable_or_function_call Q$)) <> 
+        (expr 
+          (literal "Q"))) 
+      (block \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Sound effects")))) : 
+        (statement 
+          (print_statement PRINT)) \r\n 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  B")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "ouncing")))) \r\n 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  F")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "alling")))) \r\n 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  K")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "laxon")))) \r\n 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  S")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "iren")))) \r\n 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 15)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "  Q")) ;)) : 
+        (statement 
+          (color_statement COLOR 
+            (expr 
+              (literal 7)) , 
+            (expr 
+              (literal 0)))) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "uit")))) \r\n 
+        (statement 
+          (print_statement PRINT)) : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Select: ")) ;)) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Q$) = 
+            (expr 
+              (literal " ")))) \r\n 
+        (statement 
+          (while_wend_statement WHILE 
+            (expr 
+              (expr 
+                (variable_or_function_call INSTR 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal "BFKSQbfksq")) , 
+                      (expr 
+                        (variable_or_function_call Q$)) )))) = 
+              (expr 
+                (literal 0))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Q$) = 
+                  (expr 
+                    (builtin_function INPUT$ 
+                      ( 
+                        (expr 
+                          (literal 1)) ))))) \r\n statement) WEND)) \r\n statement \r\n statement \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n 
+        (if_block_statement IF 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call Q$)) = 
+              (expr 
+                (literal "B"))) OR 
+            (expr 
+              (expr 
+                (variable_or_function_call Q$)) = 
+              (expr 
+                (literal "b")))) THEN \r\n 
+          (then_block 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal "Bouncing . . . ")))) \r\n 
+            (statement 
+              (call_statement CALL 
+                (untyped_id Bounce) 
+                ( 
+                  (call_argument_list 
+                    (call_argument 
+                      (expr 
+                        (literal 32767))) , 
+                    (call_argument 
+                      (expr 
+                        (literal 246)))) ))) \r\n) 
+          (elseif_block_statement ELSEIF 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call Q$)) = 
+                (expr 
+                  (literal "F"))) OR 
+              (expr 
+                (expr 
+                  (variable_or_function_call Q$)) = 
+                (expr 
+                  (literal "f")))) THEN 
+            (else_block statement \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Falling . . . ")))) \r\n 
+              (statement 
+                (call_statement CALL 
+                  (untyped_id Fall) 
+                  ( 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (literal 2000))) , 
+                      (call_argument 
+                        (expr 
+                          (literal 550))) , 
+                      (call_argument 
+                        (expr 
+                          (literal 500)))) ))) \r\n)) 
+          (elseif_block_statement ELSEIF 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call Q$)) = 
+                (expr 
+                  (literal "S"))) OR 
+              (expr 
+                (expr 
+                  (variable_or_function_call Q$)) = 
+                (expr 
+                  (literal "s")))) THEN 
+            (else_block statement \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Wailing . . .")))) \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal " . . . press any key to end.")))) \r\n 
+              (statement 
+                (call_statement CALL 
+                  (untyped_id Siren) 
+                  ( 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (literal 780))) , 
+                      (call_argument 
+                        (expr 
+                          (literal 650)))) ))) \r\n)) 
+          (elseif_block_statement ELSEIF 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call Q$)) = 
+                (expr 
+                  (literal "K"))) OR 
+              (expr 
+                (expr 
+                  (variable_or_function_call Q$)) = 
+                (expr 
+                  (literal "k")))) THEN 
+            (else_block statement \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Oscillating . . .")))) \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal " . . . press any key to end.")))) \r\n 
+              (statement 
+                (call_statement CALL 
+                  (untyped_id Klaxon) 
+                  ( 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (literal 987))) , 
+                      (call_argument 
+                        (expr 
+                          (literal 329)))) ))) \r\n)) 
+          (elseif_block_statement ELSEIF 
+            (expr 
+              (expr 
+                (variable_or_function_call Q$)) = 
+              (expr 
+                (literal "q"))) THEN 
+            (else_block statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Q$) = 
+                  (expr 
+                    (literal "Q")))) \r\n)) 
+          (end_if_statement END IF)) \r\n statement) WEND)) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Bounce) 
+    ( 
+      (parameter_list 
+        (parameter Hi) , 
+        (parameter Low)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (for_next_statement FOR Count = 
+          (expr 
+            (literal 60)) TO 
+          (expr 
+            (literal 1)) STEP 
+          (expr - 
+            (expr 
+              (literal 2))) 
+          (block \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id SOUND) 
+                (call_argument_list 
+                  (call_argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Low)) - 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Count)) / 
+                        (expr 
+                          (literal 2))))) , 
+                  (call_argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Count)) / 
+                      (expr 
+                        (literal 20))))))) \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id SOUND) 
+                (call_argument_list 
+                  (call_argument Hi) , 
+                  (call_argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Count)) / 
+                      (expr 
+                        (literal 15))))))) \r\n statement) NEXT)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Fall) 
+    ( 
+      (parameter_list 
+        (parameter Hi) , 
+        (parameter Low) , 
+        (parameter Del)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (for_next_statement FOR Count = 
+          (expr 
+            (variable_or_function_call Hi)) TO 
+          (expr 
+            (variable_or_function_call Low)) STEP 
+          (expr - 
+            (expr 
+              (literal 10))) 
+          (block \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id SOUND) 
+                (call_argument_list 
+                  (call_argument Count) , 
+                  (call_argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Del)) / 
+                      (expr 
+                        (variable_or_function_call Count))))))) \r\n statement) NEXT)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Klaxon) 
+    ( 
+      (parameter_list 
+        (parameter Hi) , 
+        (parameter Low)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (while_wend_statement WHILE 
+          (expr 
+            (expr 
+              (variable_or_function_call INKEY$)) = 
+            (expr 
+              (literal ""))) 
+          (block \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id SOUND) 
+                (call_argument_list 
+                  (call_argument Hi) , 
+                  (call_argument 
+                    (expr 
+                      (literal 5)))))) \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id SOUND) 
+                (call_argument_list 
+                  (call_argument Low) , 
+                  (call_argument 
+                    (expr 
+                      (literal 5)))))) \r\n statement) WEND)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Siren) 
+    ( 
+      (parameter_list 
+        (parameter Hi) , 
+        (parameter Rng)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (while_wend_statement WHILE 
+          (expr 
+            (expr 
+              (variable_or_function_call INKEY$)) = 
+            (expr 
+              (literal ""))) 
+          (block \r\n 
+            (statement 
+              (for_next_statement FOR Count = 
+                (expr 
+                  (variable_or_function_call Rng)) TO 
+                (expr - 
+                  (expr 
+                    (variable_or_function_call Rng))) STEP 
+                (expr - 
+                  (expr 
+                    (literal 4))) 
+                (block \r\n 
+                  (statement 
+                    (call_statement 
+                      (untyped_id SOUND) 
+                      (call_argument_list 
+                        (call_argument 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call Hi)) - 
+                            (expr 
+                              (variable_or_function_call ABS 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call Count)) )))))) , 
+                        (call_argument 
+                          (expr 
+                            (literal .3)))))) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Count) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Count)) - 
+                        (expr 
+                          (expr 
+                            (literal 2)) / 
+                          (expr 
+                            (variable_or_function_call Rng)))))) \r\n statement) NEXT)) \r\n statement) WEND)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n <EOF>)

@@ -1,0 +1,175 @@
+(program 
+  (statement 
+    (deftype_statement DEFLNG 
+      (letter_range A - Z))) \r\n 
+  (statement 
+    (line_input_statement LINE INPUT "File to search: " , 
+      (variable_or_function_call FileName$))) \r\n 
+  (statement 
+    (line_input_statement LINE INPUT "Pattern to search for: " , 
+      (variable_or_function_call Pattern$))) \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (variable_or_function_call FileName$)) FOR 
+      (open_mode BINARY) AS # 
+      (expr 
+        (literal 1)))) \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment PACKETSIZE = 
+        (const_expr 
+          (expr 
+            (literal 10000)))) , 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr - 
+            (expr 
+              (literal 1))))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call PatternLength%) = 
+      (expr 
+        (builtin_function LEN 
+          ( 
+            (expr 
+              (variable_or_function_call Pattern$)) ))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call FileLength) = 
+      (expr 
+        (variable_or_function_call LOF 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 1)) )))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call BytesLeft) = 
+      (expr 
+        (variable_or_function_call FileLength)))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call FileOffset) = 
+      (expr 
+        (literal 0)))) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call BytesLeft)) > 
+          (expr 
+            (variable_or_function_call PatternLength%)))) 
+      (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Buffer$) = 
+            (expr 
+              (builtin_function INPUT$ 
+                ( 
+                  (expr 
+                    (variable_or_function_call PACKETSIZE)) , # 
+                  (expr 
+                    (literal 1)) ))))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Start%) = 
+            (expr 
+              (literal 1)))) \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call StringPos%) = 
+                  (expr 
+                    (variable_or_function_call INSTR 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Start%)) , 
+                          (expr 
+                            (variable_or_function_call Buffer$)) , 
+                          (expr 
+                            (variable_or_function_call Pattern$)) )))))) \r\n 
+              (if_block_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call StringPos%)) > 
+                  (expr 
+                    (literal 0))) THEN \r\n 
+                (then_block statement \r\n statement \r\n statement \r\n 
+                  (statement 
+                    (print_statement PRINT 
+                      (expr 
+                        (literal "Found pattern at byte number")) ;)) \r\n 
+                  (statement 
+                    (print_statement PRINT 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call FileOffset)) + 
+                        (expr 
+                          (variable_or_function_call StringPos%))))) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Start%) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call StringPos%)) + 
+                        (expr 
+                          (literal 1))))) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call FoundIt%) = 
+                      (expr 
+                        (variable_or_function_call TRUE)))) \r\n) 
+                (end_if_statement END IF)) \r\n statement) LOOP 
+            (do_condition WHILE 
+              (expr 
+                (expr 
+                  (variable_or_function_call StringPos%)) > 
+                (expr 
+                  (literal 0)))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call FileOffset) = 
+            (expr 
+              (expr 
+                (builtin_function SEEK 
+                  ( 
+                    (expr 
+                      (literal 1)) ))) - 
+              (expr 
+                (variable_or_function_call PatternLength%))))) \r\n 
+        (statement 
+          (seek_statement SEEK # 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (expr 
+                (variable_or_function_call FileOffset)) + 
+              (expr 
+                (literal 1))))) \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call BytesLeft) = 
+            (expr 
+              (expr 
+                (variable_or_function_call FileLength)) - 
+              (expr 
+                (variable_or_function_call FileOffset))))) \r\n statement) LOOP)) \r\n statement \r\n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \r\n statement \r\n 
+  (statement 
+    (if_inline_statement IF 
+      (expr NOT 
+        (expr 
+          (variable_or_function_call FoundIt%))) THEN 
+      (if_inline_action 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Pattern not found."))))))) \r\n statement \r\n <EOF>)

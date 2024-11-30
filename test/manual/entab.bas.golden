@@ -1,0 +1,400 @@
+(program statement \r\n statement \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id SetTabPos) 
+    ( )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id StripCommand) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter CLine$)) )) \r\n statement \r\n statement \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement 
+  (declare_statement DECLARE FUNCTION ThisIsATab 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id Column) AS 
+          (type_name_for_declare_parameter INTEGER))) )) \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment MAXLINE = 
+        (const_expr 
+          (expr 
+            (literal 255)))))) \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment TABSPACE = 
+        (const_expr 
+          (expr 
+            (literal 8)))))) \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment NO = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment YES = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call NO))))))) \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable 
+        (untyped_id TabStops) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call MAXLINE))) )) AS 
+        (type_name INTEGER)))) \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id StripCommand) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            ( 
+              (expr 
+                (variable_or_function_call COMMAND$)) )))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id SetTabPos))) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call LastColumn) = 
+      (expr 
+        (literal 1)))) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call CurrentColumn) = 
+            (expr 
+              (variable_or_function_call LastColumn)))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call C$) = 
+                  (expr 
+                    (builtin_function INPUT$ 
+                      ( 
+                        (expr 
+                          (literal 1)) , # 
+                        (expr 
+                          (literal 1)) ))))) \r\n 
+              (statement 
+                (if_inline_statement IF 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call C$)) <> 
+                      (expr 
+                        (literal " "))) AND 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call C$)) <> 
+                      (expr 
+                        (variable_or_function_call CHR$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (literal 9)) )))))) THEN 
+                  (if_inline_action 
+                    (statement 
+                      (exit_statement EXIT DO))))) \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call CurrentColumn) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call CurrentColumn)) + 
+                    (expr 
+                      (literal 1))))) \r\n 
+              (if_block_statement IF 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call C$)) = 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (literal 9)) ))))) OR 
+                  (expr 
+                    (variable_or_function_call ThisIsATab 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call CurrentColumn)) ))))) THEN \r\n 
+                (then_block statement \r\n statement \r\n 
+                  (statement 
+                    (do_loop_statement DO 
+                      (do_condition WHILE 
+                        (expr NOT 
+                          (expr 
+                            (variable_or_function_call ThisIsATab 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call CurrentColumn)) )))))) 
+                      (block \r\n 
+                        (statement 
+                          (assignment_statement 
+                            (variable_or_function_call CurrentColumn) = 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call CurrentColumn)) + 
+                              (expr 
+                                (literal 1))))) \r\n statement) LOOP)) \r\n 
+                  (statement 
+                    (print_statement PRINT 
+                      (file_number # 
+                        (expr 
+                          (literal 2))) , 
+                      (expr 
+                        (variable_or_function_call CHR$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (literal 9)) )))) ;)) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call LastColumn) = 
+                      (expr 
+                        (variable_or_function_call CurrentColumn)))) \r\n) 
+                (end_if_statement END IF)) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (do_condition WHILE 
+              (expr 
+                (expr 
+                  (variable_or_function_call LastColumn)) < 
+                (expr 
+                  (variable_or_function_call CurrentColumn)))) 
+            (block \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (file_number # 
+                    (expr 
+                      (literal 2))) , 
+                  (expr 
+                    (literal " ")) ;)) \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call LastColumn) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call LastColumn)) + 
+                    (expr 
+                      (literal 1))))) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+        (statement 
+          (print_statement PRINT 
+            (file_number # 
+              (expr 
+                (literal 2))) , 
+            (expr 
+              (variable_or_function_call C$)) ;)) \r\n statement \r\n statement \r\n 
+        (if_block_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call C$)) = 
+            (expr 
+              (variable_or_function_call CHR$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal 10)) ))))) THEN \r\n 
+          (then_block 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call LastColumn) = 
+                (expr 
+                  (literal 1)))) \r\n) 
+          (else_block_statement ELSE 
+            (else_block statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call LastColumn) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call LastColumn)) + 
+                    (expr 
+                      (literal 1))))) \r\n)) 
+          (end_if_statement END IF)) \r\n statement \r\n statement) LOOP 
+      (do_condition UNTIL 
+        (expr 
+          (variable_or_function_call EOF 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) \r\n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)) , # 
+      (expr 
+        (literal 2)))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id SetTabPos) STATIC 
+    (block \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (literal 255)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call TabStops 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) ))) = 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        ( 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call I)) MOD 
+                            (expr 
+                              (variable_or_function_call TABSPACE))) )) = 
+                      (expr 
+                        (literal 1))) )))) \r\n statement) NEXT I)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id StripCommand) 
+    ( 
+      (parameter_list 
+        (parameter CommandLine$)) ) STATIC 
+    (block \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call CommandLine$)) = 
+          (expr 
+            (literal ""))) THEN \r\n 
+        (then_block 
+          (statement 
+            (input_statement INPUT "File to entab:   " , 
+              (variable_or_function_call InFileName$))) \r\n 
+          (statement 
+            (input_statement INPUT "Store entabbed file in:   " , 
+              (variable_or_function_call OutFileName$))) \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call SpacePos) = 
+                (expr 
+                  (variable_or_function_call INSTR 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call CommandLine$)) , 
+                        (expr 
+                          (literal " ")) )))))) \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call SpacePos)) > 
+                (expr 
+                  (literal 0))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call InFileName$) = 
+                    (expr 
+                      (variable_or_function_call LEFT$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call CommandLine$)) , 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call SpacePos)) - 
+                              (expr 
+                                (literal 1))) )))))) \r\n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call OutFileName$) = 
+                    (expr 
+                      (variable_or_function_call LTRIM$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (builtin_function MID$ 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call CommandLine$)) , 
+                                  (expr 
+                                    (variable_or_function_call SpacePos)) ))) )))))) \r\n) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call InFileName$) = 
+                      (expr 
+                        (variable_or_function_call CommandLine$)))) \r\n 
+                  (statement 
+                    (input_statement INPUT "Store entabbed file in:   " , 
+                      (variable_or_function_call OutFileName$))) \r\n)) 
+              (end_if_statement END IF)) \r\n)) 
+        (end_if_statement END IF)) \r\n 
+      (statement 
+        (open_statement OPEN 
+          (expr 
+            (variable_or_function_call InFileName$)) FOR 
+          (open_mode INPUT) AS # 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (open_statement OPEN 
+          (expr 
+            (variable_or_function_call OutFileName$)) FOR 
+          (open_mode OUTPUT) AS # 
+          (expr 
+            (literal 2)))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION ThisIsATab 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id LastColumn) AS 
+          (type_name_for_parameter INTEGER))) ) STATIC 
+    (block \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call LastColumn)) > 
+          (expr 
+            (variable_or_function_call MAXLINE))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call ThisIsATab) = 
+              (expr 
+                (variable_or_function_call YES)))) \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call ThisIsATab) = 
+                (expr 
+                  (variable_or_function_call TabStops 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call LastColumn)) )))))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n <EOF>)

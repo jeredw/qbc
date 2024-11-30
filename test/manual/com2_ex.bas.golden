@@ -1,0 +1,64 @@
+(program statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable X 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 50))) ))))) \r\n 
+  (statement 
+    (scope_statement COMMON 
+      (scope_variable X 
+        (array_declaration 
+          ( ))) , 
+      (scope_variable N))) \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT)) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Now executing file com2_ex.bas, reached through a CHAIN command")))) \r\n 
+  (if_block_statement IF 
+    (expr 
+      (expr 
+        (variable_or_function_call N)) > 
+      (expr 
+        (literal 0))) THEN \r\n 
+    (then_block 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Sum) = 
+          (expr 
+            (literal 0)))) \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call N)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Sum) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Sum)) + 
+                  (expr 
+                    (variable_or_function_call X 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call I)) ))))))) \r\n statement) NEXT I)) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "The average of the values is")) ; 
+          (expr 
+            (expr 
+              (variable_or_function_call Sum)) / 
+            (expr 
+              (variable_or_function_call N))))) \r\n) 
+    (end_if_statement END IF)) \r\n statement \n <EOF>)

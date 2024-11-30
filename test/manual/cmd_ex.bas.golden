@@ -1,0 +1,195 @@
+(program statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id Comline) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter N) , 
+        (declare_parameter A$ 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter Max)) )) \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable A$ 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 15))) ))))) \r\n statement \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id Comline) 
+      ( 
+        (call_argument_list 
+          (call_argument N) , 
+          (call_argument A$ 
+            ( )) , 
+          (call_argument 
+            (expr 
+              (literal 10)))) ))) \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Number of arguments = ")) ; 
+      (expr 
+        (variable_or_function_call N)))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Arguments are: ")))) \r\n 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (variable_or_function_call N)) 
+      (block : 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call A$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call I)) )))))) :) NEXT I)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Comline) 
+    ( 
+      (parameter_list 
+        (parameter NumArgs) , 
+        (parameter Args$ 
+          (array_declaration 
+            ( 1 ))) , 
+        (parameter MaxArgs)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment TRUE = 
+            (const_expr 
+              (expr - 
+                (expr 
+                  (literal 1))))) , 
+          (const_assignment FALSE = 
+            (const_expr 
+              (expr 
+                (literal 0)))))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NumArgs) = 
+          (expr 
+            (literal 0)))) : 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call In) = 
+          (expr 
+            (variable_or_function_call FALSE)))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Cl$) = 
+          (expr 
+            (variable_or_function_call COMMAND$)))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call L) = 
+          (expr 
+            (builtin_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call Cl$)) ))))) \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call L)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call C$) = 
+                (expr 
+                  (builtin_function MID$ 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Cl$)) , 
+                      (expr 
+                        (variable_or_function_call I)) , 
+                      (expr 
+                        (literal 1)) ))))) \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                ( 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call C$)) <> 
+                      (expr 
+                        (literal " "))) AND 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call C$)) <> 
+                      (expr 
+                        (variable_or_function_call CHR$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (literal 9)) )))))) )) THEN \r\n 
+              (then_block statement \r\n statement \r\n statement \r\n 
+                (if_block_statement IF 
+                  (expr NOT 
+                    (expr 
+                      (variable_or_function_call In))) THEN \r\n 
+                  (then_block statement \r\n statement \r\n 
+                    (statement 
+                      (if_inline_statement IF 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call NumArgs)) = 
+                          (expr 
+                            (variable_or_function_call MaxArgs))) THEN 
+                        (if_inline_action 
+                          (statement 
+                            (exit_statement EXIT FOR))))) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call NumArgs) = 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call NumArgs)) + 
+                          (expr 
+                            (literal 1))))) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call In) = 
+                        (expr 
+                          (variable_or_function_call TRUE)))) \r\n) 
+                  (end_if_statement END IF)) \r\n statement \r\n 
+                (statement 
+                  (assignment_statement 
+                    (variable_or_function_call Args$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call NumArgs)) ))) = 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Args$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call NumArgs)) )))) + 
+                      (expr 
+                        (variable_or_function_call C$))))) \r\n) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n statement \r\n statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call In) = 
+                      (expr 
+                        (variable_or_function_call FALSE)))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement) NEXT I)) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

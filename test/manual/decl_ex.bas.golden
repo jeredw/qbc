@@ -1,0 +1,132 @@
+(program statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id Sort) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id A) 
+          (array_declaration 
+            ( 1 )) AS 
+          (type_name_for_declare_parameter SINGLE)) , 
+        (declare_parameter 
+          (untyped_id N) AS 
+          (type_name_for_declare_parameter INTEGER))) )) \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable Array1 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 20))) ))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id RANDOMIZE) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (builtin_function TIMER)))))) \r\n 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 20)) 
+      (block \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Array1 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call I)) ))) = 
+            (expr 
+              (variable_or_function_call RND)))) \r\n statement) NEXT I)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id Sort) 
+      (call_argument_list 
+        (call_argument Array1 
+          ( )) , 
+        (call_argument 
+          (expr 
+            (literal 20 %)))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 20)) 
+      (block \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call Array1 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call I)) )))))) \r\n statement) NEXT I)) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Sort) 
+    ( 
+      (parameter_list 
+        (parameter A 
+          (array_declaration 
+            ( 1 ))) , 
+        (parameter N%)) ) STATIC 
+    (block \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (expr 
+              (variable_or_function_call N%)) - 
+            (expr 
+              (literal 1))) 
+          (block \r\n 
+            (statement 
+              (for_next_statement FOR J = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call I)) + 
+                  (expr 
+                    (literal 1))) TO 
+                (expr 
+                  (variable_or_function_call N%)) 
+                (block \r\n 
+                  (statement 
+                    (if_inline_statement IF 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call A 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call I)) )))) > 
+                        (expr 
+                          (variable_or_function_call A 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call J)) ))))) THEN 
+                      (if_inline_action 
+                        (statement 
+                          (call_statement 
+                            (untyped_id SWAP) 
+                            (call_argument_list 
+                              (call_argument A 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call I)) ))) , 
+                              (call_argument A 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call J)) ))))))))) \r\n statement) NEXT J)) \r\n statement) NEXT I)) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

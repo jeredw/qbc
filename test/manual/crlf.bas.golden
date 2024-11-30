@@ -1,0 +1,346 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n statement 
+  (declare_statement DECLARE FUNCTION Backup$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter FileName$)) )) \r\n statement \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment FALSE = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call FALSE))))))) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CarReturn$) = 
+      (expr 
+        (variable_or_function_call CHR$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 13)) )))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call LineFeed$) = 
+      (expr 
+        (variable_or_function_call CHR$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 10)) )))))) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id CLS))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (input_statement INPUT "Which file do you want to convert" ; 
+            (variable_or_function_call OutFile$))) \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call InFile$) = 
+            (expr 
+              (variable_or_function_call Backup$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call OutFile$)) )))))) \r\n statement \r\n 
+        (statement 
+          (on_error_statement ON ERROR GOTO 
+            (target 
+              (text_label 
+                (untyped_id ErrorHandler))))) \r\n statement \r\n 
+        (statement 
+          (name_statement NAME 
+            (expr 
+              (variable_or_function_call OutFile$)) AS 
+            (expr 
+              (variable_or_function_call InFile$)))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (on_error_statement ON ERROR GOTO 
+            (target 
+              (line_number 0)))) \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (open_statement OPEN 
+            (expr 
+              (variable_or_function_call InFile$)) FOR 
+            (open_mode INPUT) AS # 
+            (expr 
+              (literal 1)))) \r\n 
+        (statement 
+          (open_statement OPEN 
+            (expr 
+              (variable_or_function_call OutFile$)) FOR 
+            (open_mode OUTPUT) AS # 
+            (expr 
+              (literal 2)))) \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call PrevCarReturn) = 
+            (expr 
+              (variable_or_function_call FALSE)))) \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (do_condition UNTIL 
+              (expr 
+                (variable_or_function_call EOF 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 1)) ))))) 
+            (block \r\n statement \r\n statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call FileChar$) = 
+                  (expr 
+                    (builtin_function INPUT$ 
+                      ( 
+                        (expr 
+                          (literal 1)) , # 
+                        (expr 
+                          (literal 1)) ))))) \r\n statement \r\n 
+              (statement 
+                (select_case_statement SELECT CASE 
+                  (expr 
+                    (variable_or_function_call FileChar$)) 
+                  (before_first_case \r\n \r\n) 
+                  (case_block 
+                    (case_statement CASE 
+                      (case_expr 
+                        (expr 
+                          (variable_or_function_call CarReturn$)))) 
+                    (block \r\n statement \r\n statement \r\n statement \r\n 
+                      (if_block_statement IF 
+                        (expr 
+                          (variable_or_function_call PrevCarReturn)) THEN \r\n 
+                        (then_block 
+                          (statement 
+                            (assignment_statement 
+                              (variable_or_function_call FileChar$) = 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call LineFeed$)) + 
+                                (expr 
+                                  (variable_or_function_call FileChar$))))) \r\n) 
+                        (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call PrevCarReturn) = 
+                          (expr 
+                            (variable_or_function_call TRUE)))) \r\n statement \r\n statement)) 
+                  (case_block 
+                    (case_statement CASE 
+                      (case_expr 
+                        (expr 
+                          (variable_or_function_call LineFeed$)))) 
+                    (block \r\n statement \r\n statement \r\n statement \r\n 
+                      (if_block_statement IF 
+                        (expr NOT 
+                          (expr 
+                            (variable_or_function_call PrevCarReturn))) THEN \r\n 
+                        (then_block 
+                          (statement 
+                            (assignment_statement 
+                              (variable_or_function_call FileChar$) = 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call CarReturn$)) + 
+                                (expr 
+                                  (variable_or_function_call FileChar$))))) \r\n) 
+                        (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call PrevCarReturn) = 
+                          (expr 
+                            (variable_or_function_call FALSE)))) \r\n statement \r\n statement)) 
+                  (case_block 
+                    (case_statement CASE ELSE) 
+                    (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                      (if_block_statement IF 
+                        (expr 
+                          (variable_or_function_call PrevCarReturn)) THEN \r\n 
+                        (then_block 
+                          (statement 
+                            (assignment_statement 
+                              (variable_or_function_call PrevCarReturn) = 
+                              (expr 
+                                (variable_or_function_call FALSE)))) \r\n 
+                          (statement 
+                            (assignment_statement 
+                              (variable_or_function_call FileChar$) = 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call LineFeed$)) + 
+                                (expr 
+                                  (variable_or_function_call FileChar$))))) \r\n) 
+                        (end_if_statement END IF)) \r\n statement \r\n statement)) 
+                  (end_select_statement END SELECT))) \r\n statement \r\n statement \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (file_number # 
+                    (expr 
+                      (literal 2))) , 
+                  (expr 
+                    (variable_or_function_call FileChar$)) ;)) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (variable_or_function_call PrevCarReturn)) THEN 
+            (if_inline_action 
+              (statement 
+                (print_statement PRINT 
+                  (file_number # 
+                    (expr 
+                      (literal 2))) , 
+                  (expr 
+                    (variable_or_function_call LineFeed$)) ;))))) \r\n statement \r\n 
+        (statement 
+          (close_statement CLOSE)) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Another file 
+                (Y/N)?")))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call More$) = 
+            (expr 
+              (variable_or_function_call UCASE$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (builtin_function INPUT$ 
+                        ( 
+                          (expr 
+                            (literal 1)) ))) )))))) \r\n statement \r\n statement \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call More$)) = 
+          (expr 
+            (literal "Y")))))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n 
+  (label 
+    (text_label 
+      (untyped_id ErrorHandler)) :) statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment NOFILE = 
+        (const_expr 
+          (expr 
+            (literal 53)))) , 
+      (const_assignment FILEEXISTS = 
+        (const_expr 
+          (expr 
+            (literal 58)))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (select_case_statement SELECT CASE 
+      (expr 
+        (variable_or_function_call ERR)) 
+      (before_first_case \r\n) 
+      (case_block 
+        (case_statement CASE 
+          (case_expr 
+            (expr 
+              (variable_or_function_call NOFILE)))) 
+        (block \r\n statement \r\n 
+          (statement 
+            (print_statement PRINT 
+              (expr 
+                (literal "No such file in current directory.")))) \r\n 
+          (statement 
+            (input_statement INPUT "Enter new name: " , 
+              (variable_or_function_call OutFile$))) \r\n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call InFile$) = 
+              (expr 
+                (variable_or_function_call Backup$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call OutFile$)) )))))) \r\n 
+          (statement 
+            (resume_statement RESUME)) \r\n statement)) 
+      (case_block 
+        (case_statement CASE 
+          (case_expr 
+            (expr 
+              (variable_or_function_call FILEEXISTS)))) 
+        (block \r\n statement \r\n statement \r\n 
+          (statement 
+            (call_statement 
+              (untyped_id KILL) 
+              (call_argument_list 
+                (call_argument InFile$)))) \r\n 
+          (statement 
+            (resume_statement RESUME)) \r\n statement)) 
+      (case_block 
+        (case_statement CASE ELSE) 
+        (block \r\n statement \r\n 
+          (statement 
+            (on_error_statement ON ERROR GOTO 
+              (target 
+                (line_number 0)))) \r\n statement)) 
+      (end_select_statement END SELECT))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION Backup$ 
+    ( 
+      (parameter_list 
+        (parameter FileName$)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Extension) = 
+          (expr 
+            (variable_or_function_call INSTR 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call FileName$)) , 
+                  (expr 
+                    (literal ".")) )))))) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Extension)) > 
+          (expr 
+            (literal 0))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call Backup$) = 
+              (expr 
+                (expr 
+                  (variable_or_function_call LEFT$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call FileName$)) , 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Extension)) - 
+                          (expr 
+                            (literal 1))) )))) + 
+                (expr 
+                  (literal ".BAK"))))) \r\n statement \r\n statement \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Backup$) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call FileName$)) + 
+                  (expr 
+                    (literal ".BAK"))))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n <EOF>)

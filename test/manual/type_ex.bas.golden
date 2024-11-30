@@ -1,0 +1,309 @@
+(program statement \r\n statement \r\n statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id Card) \r\n 
+    (type_element 
+      (untyped_id Value) AS 
+      (type_name_for_type_element INTEGER) \r\n) 
+    (type_element 
+      (untyped_id Suit) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 9)) \r\n) END TYPE) \r\n statement \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id Deck) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 52))) )) AS 
+        (type_name 
+          (untyped_id Card))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id BuildDeck) 
+      ( 
+        (call_argument_list 
+          (call_argument Deck 
+            ( ))) ))) \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id Shuffle) 
+      ( 
+        (call_argument_list 
+          (call_argument Deck 
+            ( ))) ))) \r\n 
+  (statement 
+    (for_next_statement FOR I% = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 5)) 
+      (block \r\n 
+        (statement 
+          (call_statement CALL 
+            (untyped_id ShowCard) 
+            ( 
+              (call_argument_list 
+                (call_argument Deck 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I%)) )))) ))) \r\n statement) NEXT I%)) \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id BuildDeck) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id Deck) 
+          (array_declaration 
+            ( 1 )) AS 
+          (type_name_for_parameter 
+            (untyped_id Card)))) ) STATIC 
+    (block \r\n 
+      (statement 
+        (dim_statement DIM 
+          (dim_variable 
+            (untyped_id Suits) 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 4))) )) AS 
+            (type_name 
+              (fixed_string STRING * 9))))) \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Suits 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 1)) ))) = 
+          (expr 
+            (literal "Hearts")))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Suits 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 2)) ))) = 
+          (expr 
+            (literal "Clubs")))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Suits 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 3)) ))) = 
+          (expr 
+            (literal "Diamonds")))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Suits 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 4)) ))) = 
+          (expr 
+            (literal "Spades")))) \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I% = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (literal 4)) 
+          (block \r\n statement \r\n 
+            (statement 
+              (for_next_statement FOR J% = 
+                (expr 
+                  (literal 1)) TO 
+                (expr 
+                  (literal 13)) 
+                (block \r\n statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call CardNum%) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call J%)) + 
+                        (expr 
+                          (expr 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call I%)) - 
+                                (expr 
+                                  (literal 1))) )) * 
+                          (expr 
+                            (literal 13)))))) \r\n statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Deck 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call CardNum%)) )) . Value) = 
+                      (expr 
+                        (variable_or_function_call J%)))) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Deck 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call CardNum%)) )) . Suit) = 
+                      (expr 
+                        (variable_or_function_call Suits 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call I%)) )))))) \r\n statement) NEXT J%)) \r\n statement) NEXT I%)) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Shuffle) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id Deck) 
+          (array_declaration 
+            ( 1 )) AS 
+          (type_name_for_parameter 
+            (untyped_id Card)))) ) STATIC 
+    (block \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id RANDOMIZE) 
+          (call_argument_list 
+            (call_argument 
+              (expr 
+                (builtin_function TIMER)))))) \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I% = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (literal 1000)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call CardOne%) = 
+                (expr 
+                  (variable_or_function_call INT 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (literal 52)) * 
+                            (expr 
+                              (variable_or_function_call RND))) + 
+                          (expr 
+                            (literal 1))) )))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call CardTwo%) = 
+                (expr 
+                  (variable_or_function_call INT 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (literal 52)) * 
+                            (expr 
+                              (variable_or_function_call RND))) + 
+                          (expr 
+                            (literal 1))) )))))) \r\n statement \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id SWAP) 
+                (call_argument_list 
+                  (call_argument Deck 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call CardOne%)) ))) , 
+                  (call_argument Deck 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call CardTwo%)) )))))) \r\n statement) NEXT I%)) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id ShowCard) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id SingleCard) AS 
+          (type_name_for_parameter 
+            (untyped_id Card)))) ) STATIC 
+    (block \r\n statement \r\n 
+      (statement 
+        (select_case_statement SELECT CASE 
+          (expr 
+            (variable_or_function_call SingleCard.Value)) 
+          (before_first_case \r\n) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (literal 13)))) 
+            (block \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "King ")) ;)) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (literal 12)))) 
+            (block \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Queen")) ;)) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (literal 11)))) 
+            (block \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Jack ")) ;)) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (literal 1)))) 
+            (block \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Ace  ")) ;)) \r\n statement)) 
+          (case_block 
+            (case_statement CASE ELSE) 
+            (block \r\n 
+              (statement 
+                (print_using_statement PRINT USING 
+                  (expr 
+                    (literal "  ## ")) ; 
+                  (expr 
+                    (variable_or_function_call SingleCard.Value)) ;)) \r\n statement)) 
+          (end_select_statement END SELECT))) \r\n statement \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal " ")) ; 
+          (expr 
+            (variable_or_function_call SingleCard.Suit)))) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \n <EOF>)

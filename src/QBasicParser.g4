@@ -43,7 +43,8 @@ program
            | declare_statement
            | def_fn_statement
            | option_statement
-           | type_statement)* NL)* EOF
+           | type_statement)* NL)*
+    EOF
   ;
 
 // block matches statements in loops, procedures, and conditionals.
@@ -481,6 +482,8 @@ target
 // The ELSE binds to the innermost IF.
 if_inline_statement
   : IF expr THEN if_inline_action (ELSE if_inline_action)?
+// QBasic still parses this old BASICA/GW-BASIC syntax omitting THEN.
+  | IF expr goto_statement (ELSE if_inline_action)?
   ;
 
 if_inline_action
@@ -522,17 +525,17 @@ box_style
   ;
 
 line_input_statement
-  : LINE INPUT ';'? (STRING_LITERAL ';')? variable_or_function_call
+  : LINE INPUT ';'? (STRING_LITERAL (';' | COMMA))? variable_or_function_call
   | LINE INPUT file_number COMMA variable_or_function_call
   ;
 
 locate_statement
   : LOCATE 
-  | LOCATE row=expr
-    ( COMMA (column=expr)? COMMA (cursor=expr)? COMMA (start=expr)? COMMA stop=expr
-    | COMMA (column=expr)? COMMA (cursor=expr)? COMMA start=expr
-    | COMMA (column=expr)? COMMA cursor=expr
-    | COMMA column=expr )?
+    ( (row=expr)? COMMA (column=expr)? COMMA (cursor=expr)? COMMA (start=expr)? COMMA stop=expr
+    | (row=expr)? COMMA (column=expr)? COMMA (cursor=expr)? COMMA start=expr
+    | (row=expr)? COMMA (column=expr)? COMMA cursor=expr
+    | (row=expr)? COMMA column=expr
+    | (row=expr) )?
   ;
 
 lock_statement
@@ -620,6 +623,7 @@ paint_statement
 palette_statement
   : PALETTE attribute=expr COMMA color=expr
   | PALETTE USING arrayname=variable_or_function_call
+  | PALETTE
   ;
 
 play_statement
@@ -834,7 +838,8 @@ builtin_function
 
 // An argument list or set of array indices following an identifier,
 // either an array lookup or a function call.
-args_or_indices : '(' expr (COMMA expr)* ')';
+// May be empty for function calls with no arguments.
+args_or_indices : '(' (expr (COMMA expr)*)? ')';
 
 // Identifiers can contain '.', and '.' is also how to look up type elements.
 // *** This grammar always matches the longest possible token name as an

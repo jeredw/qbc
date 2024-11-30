@@ -1,0 +1,334 @@
+(program statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement 
+  (declare_statement DECLARE FUNCTION MHex$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id X) AS 
+          (type_name_for_declare_parameter INTEGER))) )) \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable Bytes 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 3))) ))))) \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Internal format of IEEE number 
+          (all values in hexadecimal)")))) \r\n 
+  (statement 
+    (print_statement PRINT)) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n statement \r\n statement \r\n 
+        (statement 
+          (input_statement INPUT "Enter a real number 
+            (or END to quit): " , 
+            (variable_or_function_call A$))) \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call UCASE$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call A$)) )))) = 
+              (expr 
+                (literal "END"))) THEN 
+            (if_inline_action 
+              (statement 
+                (exit_statement EXIT DO))))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call RealValue!) = 
+            (expr 
+              (variable_or_function_call VAL 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call A$)) )))))) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call AsLong&) = 
+            (expr 
+              (variable_or_function_call CVL 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call MKS$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call RealValue!)) )))) )))))) \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Strout$) = 
+            (expr 
+              (variable_or_function_call HEX$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call AsLong&)) )))))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Strout$) = 
+            (expr 
+              (expr 
+                (variable_or_function_call STRING$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (expr 
+                          (literal 8)) - 
+                        (expr 
+                          (builtin_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call Strout$)) )))) , 
+                      (expr 
+                        (literal "0")) )))) + 
+              (expr 
+                (variable_or_function_call Strout$))))) \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call SignBit&) = 
+            (expr 
+              (expr 
+                (variable_or_function_call AsLong&)) AND 
+              (expr 
+                (literal &H80000000))))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call AsLong&) = 
+            (expr 
+              (expr 
+                (variable_or_function_call AsLong&)) AND 
+              (expr 
+                (literal &H7FFFFFFF))))) \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (for_next_statement FOR I = 
+            (expr 
+              (literal 0)) TO 
+            (expr 
+              (literal 3)) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Bytes 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I)) ))) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call AsLong&)) AND 
+                    (expr 
+                      (literal &HFF &))))) \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call AsLong&) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call AsLong&)) \ 
+                    (expr 
+                      (literal 256 &))))) \r\n statement) NEXT I)) \r\n statement \r\n 
+        (statement 
+          (print_statement PRINT)) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Bytes in Memory")))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal " High    Low")))) \r\n 
+        (statement 
+          (for_next_statement FOR I = 
+            (expr 
+              (literal 1)) TO 
+            (expr 
+              (literal 7)) STEP 
+            (expr 
+              (literal 2)) 
+            (block \r\n 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal " ")) ; 
+                  (expr 
+                    (builtin_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Strout$)) , 
+                        (expr 
+                          (variable_or_function_call I)) , 
+                        (expr 
+                          (literal 2)) ))) ;)) \r\n statement) NEXT I)) \r\n 
+        (statement 
+          (print_statement PRINT)) : 
+        (statement 
+          (print_statement PRINT)) \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Sign) = 
+            (expr 
+              (variable_or_function_call ABS 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call SignBit&)) <> 
+                      (expr 
+                        (literal 0))) )))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Exponent) = 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call Bytes 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 3)) )))) * 
+                (expr 
+                  (literal 2))) + 
+              (expr 
+                (expr 
+                  (variable_or_function_call Bytes 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 2)) )))) \ 
+                (expr 
+                  (literal 128)))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Mant1) = 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Bytes 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (literal 2)) )))) OR 
+                  (expr 
+                    (literal &H80))) )))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal " Bit 31    Bits 30-23  Implied Bit & Bits 22-0")))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (literal "Sign Bit  Exponent Bits     Mantissa Bits")))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call TAB 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal 4)) )))) ; 
+            (expr 
+              (variable_or_function_call Sign)) ; 
+            (expr 
+              (variable_or_function_call TAB 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal 17)) )))) ; 
+            (expr 
+              (variable_or_function_call MHex$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Exponent)) )))) ;)) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (expr 
+              (variable_or_function_call TAB 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal 33)) )))) ; 
+            (expr 
+              (variable_or_function_call MHex$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Mant1)) )))) ; 
+            (expr 
+              (variable_or_function_call MHex$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Bytes 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (literal 1)) )))) )))) ; 
+            (expr 
+              (variable_or_function_call MHex$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Bytes 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (literal 0)) )))) )))))) \r\n 
+        (statement 
+          (print_statement PRINT)) \r\n statement \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION MHex$ 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id X) AS 
+          (type_name_for_parameter INTEGER))) ) STATIC 
+    (block \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call D$) = 
+          (expr 
+            (variable_or_function_call HEX$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call X)) )))))) \r\n 
+      (statement 
+        (if_inline_statement IF 
+          (expr 
+            (expr 
+              (builtin_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call D$)) ))) < 
+            (expr 
+              (literal 2))) THEN 
+          (if_inline_action 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call D$) = 
+                (expr 
+                  (expr 
+                    (literal "0")) + 
+                  (expr 
+                    (variable_or_function_call D$)))))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call MHex$) = 
+          (expr 
+            (variable_or_function_call D$)))) \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n <EOF>)

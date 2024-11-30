@@ -1,0 +1,669 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ShiftPalette) 
+    ( )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id WindowVals) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter WL%) , 
+        (declare_parameter WR%) , 
+        (declare_parameter WT%) , 
+        (declare_parameter WB%)) )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id ScreenTest) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter EM%) , 
+        (declare_parameter CR%) , 
+        (declare_parameter VL%) , 
+        (declare_parameter VR%) , 
+        (declare_parameter VT%) , 
+        (declare_parameter VB%)) )) \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment FALSE = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call FALSE))))))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment MAXLOOP = 
+        (const_expr 
+          (expr 
+            (literal 30)))) , 
+      (const_assignment MAXSIZE = 
+        (const_expr 
+          (expr 
+            (literal 1000000)))))) \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable PaletteArray 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 15))) ))))) \r\n 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (literal 15)) 
+      (block : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call PaletteArray 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call I)) ))) = 
+            (expr 
+              (variable_or_function_call I)))) :) NEXT I)) \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id WindowVals) 
+      (call_argument_list 
+        (call_argument WLeft) , 
+        (call_argument WRight) , 
+        (call_argument WTop) , 
+        (call_argument WBottom)))) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id ScreenTest) 
+      (call_argument_list 
+        (call_argument EgaMode) , 
+        (call_argument ColorRange) , 
+        (call_argument VLeft) , 
+        (call_argument VRight) , 
+        (call_argument VTop) , 
+        (call_argument VBottom)))) \r\n statement \r\n statement \r\n 
+  (statement 
+    (view_statement VIEW 
+      ( 
+        (expr 
+          (variable_or_function_call VLeft)) , 
+        (expr 
+          (variable_or_function_call VTop)) ) - 
+      ( 
+        (expr 
+          (variable_or_function_call VRight)) , 
+        (expr 
+          (variable_or_function_call VBottom)) ) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (variable_or_function_call ColorRange)))) \r\n 
+  (statement 
+    (window_statement WINDOW 
+      ( 
+        (expr 
+          (variable_or_function_call WLeft)) , 
+        (expr 
+          (variable_or_function_call WTop)) ) - 
+      ( 
+        (expr 
+          (variable_or_function_call WRight)) , 
+        (expr 
+          (variable_or_function_call WBottom)) ))) \r\n statement \r\n 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 24)) , 
+      (expr 
+        (literal 10)))) : 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Press any key to quit.")) ;)) \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call XLength) = 
+      (expr 
+        (expr 
+          (variable_or_function_call VRight)) - 
+        (expr 
+          (variable_or_function_call VLeft))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call YLength) = 
+      (expr 
+        (expr 
+          (variable_or_function_call VBottom)) - 
+        (expr 
+          (variable_or_function_call VTop))))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call ColorWidth) = 
+      (expr 
+        (expr 
+          (variable_or_function_call MAXLOOP)) \ 
+        (expr 
+          (variable_or_function_call ColorRange))))) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (for_next_statement FOR Y = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (variable_or_function_call YLength)) 
+      (block \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call LogicY) = 
+            (expr 
+              (variable_or_function_call PMAP 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Y)) , 
+                    (expr 
+                      (literal 3)) )))))) \r\n statement \r\n 
+        (statement 
+          (pset_statement PSET 
+            ( 
+              (expr 
+                (variable_or_function_call WLeft)) , 
+              (expr 
+                (variable_or_function_call LogicY)) ))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call OldColor) = 
+            (expr 
+              (literal 0)))) \r\n statement \r\n 
+        (statement 
+          (for_next_statement FOR X = 
+            (expr 
+              (literal 0)) TO 
+            (expr 
+              (variable_or_function_call XLength)) 
+            (block \r\n statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call LogicX) = 
+                  (expr 
+                    (variable_or_function_call PMAP 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call X)) , 
+                          (expr 
+                            (literal 2)) )))))) \r\n statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call MandelX&) = 
+                  (expr 
+                    (variable_or_function_call LogicX)))) \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call MandelY&) = 
+                  (expr 
+                    (variable_or_function_call LogicY)))) \r\n statement \r\n statement \r\n statement \r\n 
+              (statement 
+                (for_next_statement FOR I = 
+                  (expr 
+                    (literal 1)) TO 
+                  (expr 
+                    (variable_or_function_call MAXLOOP)) 
+                  (block \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call RealNum&) = 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call MandelX&)) * 
+                          (expr 
+                            (variable_or_function_call MandelX&))))) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call ImagNum&) = 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call MandelY&)) * 
+                          (expr 
+                            (variable_or_function_call MandelY&))))) \r\n 
+                    (statement 
+                      (if_inline_statement IF 
+                        (expr 
+                          (expr 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call RealNum&)) + 
+                                (expr 
+                                  (variable_or_function_call ImagNum&))) )) >= 
+                          (expr 
+                            (variable_or_function_call MAXSIZE))) THEN 
+                        (if_inline_action 
+                          (statement 
+                            (exit_statement EXIT FOR))))) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call MandelY&) = 
+                        (expr 
+                          (expr 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call MandelX&)) * 
+                                  (expr 
+                                    (variable_or_function_call MandelY&))) )) \ 
+                            (expr 
+                              (literal 250))) + 
+                          (expr 
+                            (variable_or_function_call LogicY))))) \r\n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call MandelX&) = 
+                        (expr 
+                          (expr 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call RealNum&)) - 
+                                  (expr 
+                                    (variable_or_function_call ImagNum&))) )) \ 
+                            (expr 
+                              (literal 500))) + 
+                          (expr 
+                            (variable_or_function_call LogicX))))) \r\n statement) NEXT I)) \r\n statement \r\n statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call PColor) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call I)) \ 
+                    (expr 
+                      (variable_or_function_call ColorWidth))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+              (if_block_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call PColor)) <> 
+                  (expr 
+                    (variable_or_function_call OldColor))) THEN \r\n 
+                (then_block 
+                  (statement 
+                    (line_statement LINE - 
+                      ( 
+                        (expr 
+                          (variable_or_function_call LogicX)) , 
+                        (expr 
+                          (variable_or_function_call LogicY)) ) , 
+                      (expr 
+                        ( 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call ColorRange)) - 
+                            (expr 
+                              (variable_or_function_call OldColor))) )))) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call OldColor) = 
+                      (expr 
+                        (variable_or_function_call PColor)))) \r\n) 
+                (end_if_statement END IF)) \r\n statement \r\n 
+              (statement 
+                (if_inline_statement IF 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call INKEY$)) <> 
+                    (expr 
+                      (literal ""))) THEN 
+                  (if_inline_action 
+                    (statement 
+                      (end_statement END))))) \r\n statement) NEXT X)) \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (line_statement LINE - 
+            ( 
+              (expr 
+                (variable_or_function_call LogicX)) , 
+              (expr 
+                (variable_or_function_call LogicY)) ) , 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (variable_or_function_call ColorRange)) - 
+                  (expr 
+                    (variable_or_function_call OldColor))) )))) \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (variable_or_function_call EgaMode)) THEN 
+            (if_inline_action 
+              (statement 
+                (call_statement 
+                  (untyped_id ShiftPalette)))))) \r\n statement) NEXT Y)) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n statement \r\n statement \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (variable_or_function_call EgaMode)) THEN 
+            (if_inline_action 
+              (statement 
+                (call_statement 
+                  (untyped_id ShiftPalette)))))) \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \r\n statement \r\n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) \r\n 
+  (statement 
+    (width_statement WIDTH 
+      (expr 
+        (literal 80)))) \r\n 
+  (statement 
+    (end_statement END)) \r\n statement \r\n 
+  (label 
+    (text_label 
+      (untyped_id BadScreen)) :) statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call EgaMode) = 
+      (expr 
+        (variable_or_function_call FALSE)))) \r\n 
+  (statement 
+    (resume_statement RESUME NEXT)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id ShiftPalette) STATIC 
+    (block \r\n 
+      (statement 
+        (scope_statement SHARED 
+          (scope_variable PaletteArray 
+            (array_declaration 
+              ( ))) , 
+          (scope_variable ColorRange))) \r\n statement \r\n 
+      (statement 
+        (for_next_statement FOR I = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call ColorRange)) 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call PaletteArray 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call I)) ))) = 
+                (expr 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call PaletteArray 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call I)) )))) MOD 
+                        (expr 
+                          (variable_or_function_call ColorRange))) )) + 
+                  (expr 
+                    (literal 1))))) \r\n statement) NEXT I)) \r\n 
+      (statement 
+        (palette_statement PALETTE USING 
+          (variable_or_function_call PaletteArray 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 0)) ))))) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id ScreenTest) 
+    ( 
+      (parameter_list 
+        (parameter EM) , 
+        (parameter CR) , 
+        (parameter VL) , 
+        (parameter VR) , 
+        (parameter VT) , 
+        (parameter VB)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call EM) = 
+          (expr 
+            (variable_or_function_call TRUE)))) \r\n 
+      (statement 
+        (on_error_statement ON ERROR GOTO 
+          (target 
+            (text_label 
+              (untyped_id BadScreen))))) \r\n 
+      (statement 
+        (screen_statement SCREEN 
+          (expr 
+            (literal 8)) , 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (on_error_statement ON ERROR GOTO 
+          (target 
+            (line_number 0)))) \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call EM)) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VL) = 
+              (expr 
+                (literal 110)))) : 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VR) = 
+              (expr 
+                (literal 529)))) \r\n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VT) = 
+              (expr 
+                (literal 5)))) : 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VB) = 
+              (expr 
+                (literal 179)))) \r\n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call CR) = 
+              (expr 
+                (literal 15)))) \r\n statement \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (screen_statement SCREEN 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VL) = 
+                (expr 
+                  (literal 55)))) : 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VR) = 
+                (expr 
+                  (literal 264)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VT) = 
+                (expr 
+                  (literal 5)))) : 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VB) = 
+                (expr 
+                  (literal 179)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call CR) = 
+                (expr 
+                  (literal 3)))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id WindowVals) 
+    ( 
+      (parameter_list 
+        (parameter WL) , 
+        (parameter WR) , 
+        (parameter WT) , 
+        (parameter WB)) ) STATIC 
+    (block \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "This program prints the graphic representation of")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "the complete Mandelbrot Set. The default window is")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "from 
+              (-1000,625) to 
+              (250,-625). To zoom in on part")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "of the figure, input coordinates inside this window.")))) \r\n 
+      (statement 
+        (print_statement PRINT)) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Press <ENTER> to see the default window. Press any")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "other key to input your own window coordinates: ")) ;)) \r\n 
+      (statement 
+        (locate_statement LOCATE , , 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Resp$) = 
+          (expr 
+            (builtin_function INPUT$ 
+              ( 
+                (expr 
+                  (literal 1)) ))))) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Resp$)) <> 
+          (expr 
+            (variable_or_function_call CHR$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 13)) ))))) THEN \r\n 
+        (then_block 
+          (statement 
+            (print_statement PRINT)) \r\n 
+          (statement 
+            (input_statement INPUT "X coordinate of upper left corner: " , 
+              (variable_or_function_call WL))) \r\n 
+          (statement 
+            (do_loop_statement DO 
+              (block \r\n 
+                (statement 
+                  (input_statement INPUT "X coordinate of lower right corner: " , 
+                    (variable_or_function_call WR))) \r\n 
+                (if_block_statement IF 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call WR)) <= 
+                    (expr 
+                      (variable_or_function_call WL))) THEN \r\n 
+                  (then_block 
+                    (statement 
+                      (print_statement PRINT 
+                        (expr 
+                          (literal "Right corner must be greater than left corner.")))) \r\n) 
+                  (end_if_statement END IF)) \r\n statement) LOOP 
+              (do_condition WHILE 
+                (expr 
+                  (expr 
+                    (variable_or_function_call WR)) <= 
+                  (expr 
+                    (variable_or_function_call WL)))))) \r\n 
+          (statement 
+            (input_statement INPUT "Y coordinate of upper left corner: " , 
+              (variable_or_function_call WT))) \r\n 
+          (statement 
+            (do_loop_statement DO 
+              (block \r\n 
+                (statement 
+                  (input_statement INPUT "Y coordinate of lower right corner: " , 
+                    (variable_or_function_call WB))) \r\n 
+                (if_block_statement IF 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call WB)) >= 
+                    (expr 
+                      (variable_or_function_call WT))) THEN \r\n 
+                  (then_block 
+                    (statement 
+                      (print_statement PRINT 
+                        (expr 
+                          (literal "Bottom corner must be less than top corner.")))) \r\n) 
+                  (end_if_statement END IF)) \r\n statement) LOOP 
+              (do_condition WHILE 
+                (expr 
+                  (expr 
+                    (variable_or_function_call WB)) >= 
+                  (expr 
+                    (variable_or_function_call WT)))))) \r\n statement \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call WL) = 
+                (expr - 
+                  (expr 
+                    (literal 1000))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call WR) = 
+                (expr 
+                  (literal 250)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call WT) = 
+                (expr 
+                  (literal 625)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call WB) = 
+                (expr - 
+                  (expr 
+                    (literal 625))))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n <EOF>)

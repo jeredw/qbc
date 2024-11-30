@@ -1,0 +1,1136 @@
+(program statement \r\n statement 
+  (type_statement TYPE 
+    (untyped_id TitleType) \r\n 
+    (type_element 
+      (untyped_id MainTitle) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 40)) \r\n) 
+    (type_element 
+      (untyped_id XTitle) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 40)) \r\n) 
+    (type_element 
+      (untyped_id YTitle) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 18)) \r\n) END TYPE) \r\n statement \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id InputTitles) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id T) AS 
+          (type_name_for_declare_parameter 
+            (untyped_id TitleType)))) )) \r\n statement 
+  (declare_statement DECLARE FUNCTION DrawGraph$ 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id T) AS 
+          (type_name_for_declare_parameter 
+            (untyped_id TitleType))) , 
+        (declare_parameter Label$ 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter Value! 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter N%)) )) \r\n statement 
+  (declare_statement DECLARE FUNCTION InputData% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Label$ 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter Value! 
+          (array_declaration 
+            ( )))) )) \r\n statement \r\n statement \r\n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id Titles) AS 
+        (type_name 
+          (untyped_id TitleType))) , 
+      (dim_variable Label$ 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 5))) ))) , 
+      (dim_variable Value 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 5))) ))))) \r\n statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment FALSE = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call FALSE))))))) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (call_statement 
+            (untyped_id InputTitles) 
+            (call_argument_list 
+              (call_argument Titles)))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call N%) = 
+            (expr 
+              (variable_or_function_call InputData% 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Label$ 
+                        (args_or_indices 
+                          ( )))) , 
+                    (expr 
+                      (variable_or_function_call Value 
+                        (args_or_indices 
+                          ( )))) )))))) \r\n 
+        (if_block_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call N%)) <> 
+            (expr 
+              (variable_or_function_call FALSE))) THEN \r\n 
+          (then_block 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call NewGraph$) = 
+                (expr 
+                  (variable_or_function_call DrawGraph$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Titles)) , 
+                        (expr 
+                          (variable_or_function_call Label$ 
+                            (args_or_indices 
+                              ( )))) , 
+                        (expr 
+                          (variable_or_function_call Value 
+                            (args_or_indices 
+                              ( )))) , 
+                        (expr 
+                          (variable_or_function_call N%)) )))))) \r\n) 
+          (end_if_statement END IF)) \r\n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call NewGraph$)) = 
+          (expr 
+            (literal "Y")))))) \r\n statement \r\n 
+  (statement 
+    (end_statement END)) \r\n 
+  (statement 
+    (rem_statement REM)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION DrawGraph$ 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id T) AS 
+          (type_name_for_parameter 
+            (untyped_id TitleType))) , 
+        (parameter Label$ 
+          (array_declaration 
+            ( ))) , 
+        (parameter Value 
+          (array_declaration 
+            ( ))) , 
+        (parameter N%)) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment GRAPHTOP = 
+            (const_expr 
+              (expr 
+                (literal 24)))) , 
+          (const_assignment GRAPHBOTTOM = 
+            (const_expr 
+              (expr 
+                (literal 171)))))) \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment GRAPHLEFT = 
+            (const_expr 
+              (expr 
+                (literal 48)))) , 
+          (const_assignment GRAPHRIGHT = 
+            (const_expr 
+              (expr 
+                (literal 624)))))) \r\n 
+      (statement 
+        (const_statement CONST 
+          (const_assignment YLENGTH = 
+            (const_expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call GRAPHBOTTOM)) - 
+                (expr 
+                  (variable_or_function_call GRAPHTOP))))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YMax) = 
+          (expr 
+            (literal 0)))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YMin) = 
+          (expr 
+            (literal 0)))) \r\n 
+      (statement 
+        (for_next_statement FOR I% = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call N%)) 
+          (block \r\n 
+            (statement 
+              (if_inline_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Value 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call I%)) )))) < 
+                  (expr 
+                    (variable_or_function_call YMin))) THEN 
+                (if_inline_action 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call YMin) = 
+                      (expr 
+                        (variable_or_function_call Value 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call I%)) ))))))))) \r\n 
+            (statement 
+              (if_inline_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Value 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call I%)) )))) > 
+                  (expr 
+                    (variable_or_function_call YMax))) THEN 
+                (if_inline_action 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call YMax) = 
+                      (expr 
+                        (variable_or_function_call Value 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call I%)) ))))))))) \r\n statement) NEXT I%)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BarWidth) = 
+          (expr 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (variable_or_function_call GRAPHRIGHT)) - 
+                  (expr 
+                    (variable_or_function_call GRAPHLEFT))) )) / 
+            (expr 
+              (variable_or_function_call N%))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BarSpace) = 
+          (expr 
+            (expr 
+              (literal .2)) * 
+            (expr 
+              (variable_or_function_call BarWidth))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call BarWidth) = 
+          (expr 
+            (expr 
+              (variable_or_function_call BarWidth)) - 
+            (expr 
+              (variable_or_function_call BarSpace))))) \r\n statement \r\n 
+      (statement 
+        (screen_statement SCREEN 
+          (expr 
+            (literal 2)))) \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (line_statement LINE 
+          ( 
+            (expr 
+              (variable_or_function_call GRAPHLEFT)) , 
+            (expr 
+              (variable_or_function_call GRAPHTOP)) ) - 
+          ( 
+            (expr 
+              (variable_or_function_call GRAPHLEFT)) , 
+            (expr 
+              (variable_or_function_call GRAPHBOTTOM)) ) , 
+          (expr 
+            (literal 1)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Start%) = 
+          (expr 
+            (expr 
+              (literal 44)) - 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (builtin_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call RTRIM$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call T.MainTitle)) )))) ))) / 
+                  (expr 
+                    (literal 2))) ))))) \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 2)) , 
+          (expr 
+            (variable_or_function_call Start%)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call RTRIM$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call T.MainTitle)) )))) ;)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Start%) = 
+          (expr 
+            (variable_or_function_call CINT 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (expr 
+                      (literal 13)) - 
+                    (expr 
+                      (expr 
+                        (builtin_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call RTRIM$ 
+                                (args_or_indices 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call T.YTitle)) )))) ))) / 
+                      (expr 
+                        (literal 2)))) )))))) \r\n 
+      (statement 
+        (for_next_statement FOR I% = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (builtin_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call RTRIM$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call T.YTitle)) )))) ))) 
+          (block \r\n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Start%)) + 
+                    (expr 
+                      (variable_or_function_call I%))) - 
+                  (expr 
+                    (literal 1))) , 
+                (expr 
+                  (literal 1)))) \r\n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (builtin_function MID$ 
+                    ( 
+                      (expr 
+                        (variable_or_function_call T.YTitle)) , 
+                      (expr 
+                        (variable_or_function_call I%)) , 
+                      (expr 
+                        (literal 1)) ))) ;)) \r\n statement) NEXT I%)) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call ABS 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call YMax)) )))) > 
+          (expr 
+            (variable_or_function_call ABS 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call YMin)) ))))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call Power) = 
+              (expr 
+                (variable_or_function_call YMax)))) \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Power) = 
+                (expr 
+                  (variable_or_function_call YMin)))) \r\n)) 
+        (end_if_statement END IF)) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Power) = 
+          (expr 
+            (variable_or_function_call CINT 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call LOG 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call ABS 
+                                  (args_or_indices 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call Power)) )))) / 
+                              (expr 
+                                (literal 100))) )))) / 
+                    (expr 
+                      (variable_or_function_call LOG 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (literal 10)) ))))) )))))) \r\n 
+      (statement 
+        (if_inline_statement IF 
+          (expr 
+            (expr 
+              (variable_or_function_call Power)) < 
+            (expr 
+              (literal 0))) THEN 
+          (if_inline_action 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Power) = 
+                (expr 
+                  (literal 0))))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ScaleFactor) = 
+          (expr 
+            (expr 
+              (literal 10)) ^ 
+            (expr 
+              (variable_or_function_call Power))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YMax) = 
+          (expr 
+            (variable_or_function_call CINT 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call YMax)) / 
+                    (expr 
+                      (variable_or_function_call ScaleFactor))) )))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YMin) = 
+          (expr 
+            (variable_or_function_call CINT 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call YMin)) / 
+                    (expr 
+                      (variable_or_function_call ScaleFactor))) )))))) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call Power)) <> 
+          (expr 
+            (literal 0))) THEN \r\n 
+        (then_block 
+          (statement 
+            (locate_statement LOCATE 
+              (expr 
+                (literal 3)) , 
+              (expr 
+                (literal 2)))) \r\n 
+          (statement 
+            (print_statement PRINT 
+              (expr 
+                (literal "x 10^")) ; 
+              (expr 
+                (variable_or_function_call LTRIM$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call STR$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (variable_or_function_call Power)) )))) )))))) \r\n) 
+        (end_if_statement END IF)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (line_statement LINE 
+          ( 
+            (expr 
+              (expr 
+                (variable_or_function_call GRAPHLEFT)) - 
+              (expr 
+                (literal 3))) , 
+            (expr 
+              (variable_or_function_call GRAPHTOP)) ) - STEP 
+          ( 
+            (expr 
+              (literal 3)) , 
+            (expr 
+              (literal 0)) ))) \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 4)) , 
+          (expr 
+            (literal 2)))) \r\n 
+      (statement 
+        (print_using_statement PRINT USING 
+          (expr 
+            (literal "####")) ; 
+          (expr 
+            (variable_or_function_call YMax)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (line_statement LINE 
+          ( 
+            (expr 
+              (expr 
+                (variable_or_function_call GRAPHLEFT)) - 
+              (expr 
+                (literal 3))) , 
+            (expr 
+              (variable_or_function_call GRAPHBOTTOM)) ) - STEP 
+          ( 
+            (expr 
+              (literal 3)) , 
+            (expr 
+              (literal 0)) ))) \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 22)) , 
+          (expr 
+            (literal 2)))) \r\n 
+      (statement 
+        (print_using_statement PRINT USING 
+          (expr 
+            (literal "####")) ; 
+          (expr 
+            (variable_or_function_call YMin)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YMax) = 
+          (expr 
+            (expr 
+              (variable_or_function_call YMax)) * 
+            (expr 
+              (variable_or_function_call ScaleFactor))))) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YMin) = 
+          (expr 
+            (expr 
+              (variable_or_function_call YMin)) * 
+            (expr 
+              (variable_or_function_call ScaleFactor))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Start%) = 
+          (expr 
+            (expr 
+              (literal 44)) - 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (builtin_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call RTRIM$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call T.XTitle)) )))) ))) / 
+                  (expr 
+                    (literal 2))) ))))) \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 25)) , 
+          (expr 
+            (variable_or_function_call Start%)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (variable_or_function_call RTRIM$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call T.XTitle)) )))) ;)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call YRange) = 
+          (expr 
+            (expr 
+              (variable_or_function_call YMax)) - 
+            (expr 
+              (variable_or_function_call YMin))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Tile$) = 
+          (expr 
+            (expr 
+              (expr 
+                (expr 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call CHR$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (literal 1)) )))) + 
+                        (expr 
+                          (variable_or_function_call CHR$ 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (literal 2)) ))))) + 
+                      (expr 
+                        (variable_or_function_call CHR$ 
+                          (args_or_indices 
+                            ( 
+                              (expr 
+                                (literal 4)) ))))) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (literal 8)) ))))) + 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (literal 16)) ))))) + 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (literal 32)) ))))) + 
+              (expr 
+                (variable_or_function_call CHR$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (literal 64)) ))))) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                (args_or_indices 
+                  ( 
+                    (expr 
+                      (literal 128)) ))))))) \r\n statement \r\n statement \r\n 
+      (if_block_statement IF 
+        (expr 
+          (expr 
+            (variable_or_function_call YMin)) < 
+          (expr 
+            (literal 0))) THEN \r\n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call Bottom) = 
+              (expr 
+                (expr 
+                  (variable_or_function_call GRAPHBOTTOM)) - 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (expr 
+                          ( 
+                            (expr - 
+                              (expr 
+                                (variable_or_function_call YMin))) )) / 
+                        (expr 
+                          (variable_or_function_call YRange))) * 
+                      (expr 
+                        (variable_or_function_call YLENGTH))) ))))) \r\n 
+          (statement 
+            (locate_statement LOCATE 
+              (expr 
+                (expr 
+                  (variable_or_function_call INT 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (expr 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call Bottom)) - 
+                                (expr 
+                                  (literal 1))) )) / 
+                          (expr 
+                            (literal 8))) )))) + 
+                (expr 
+                  (literal 1))) , 
+              (expr 
+                (literal 5)))) \r\n 
+          (statement 
+            (print_statement PRINT 
+              (expr 
+                (literal "0")) ;)) \r\n) 
+        (else_block_statement ELSE 
+          (else_block statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Bottom) = 
+                (expr 
+                  (variable_or_function_call GRAPHBOTTOM)))) \r\n)) 
+        (end_if_statement END IF)) \r\n statement \r\n statement \r\n 
+      (statement 
+        (line_statement LINE 
+          ( 
+            (expr 
+              (expr 
+                (variable_or_function_call GRAPHLEFT)) - 
+              (expr 
+                (literal 3))) , 
+            (expr 
+              (variable_or_function_call Bottom)) ) - 
+          ( 
+            (expr 
+              (variable_or_function_call GRAPHRIGHT)) , 
+            (expr 
+              (variable_or_function_call Bottom)) ))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Start%) = 
+          (expr 
+            (expr 
+              (variable_or_function_call GRAPHLEFT)) + 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (variable_or_function_call BarSpace)) / 
+                  (expr 
+                    (literal 2))) ))))) \r\n 
+      (statement 
+        (for_next_statement FOR I% = 
+          (expr 
+            (literal 1)) TO 
+          (expr 
+            (variable_or_function_call N%)) 
+          (block \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call BarMid) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Start%)) + 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call BarWidth)) / 
+                        (expr 
+                          (literal 2))) ))))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call CharMid) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call INT 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call BarMid)) - 
+                                  (expr 
+                                    (literal 1))) )) / 
+                            (expr 
+                              (literal 8))) )))) + 
+                  (expr 
+                    (literal 1))))) \r\n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 23)) , 
+                (expr 
+                  (expr 
+                    (variable_or_function_call CharMid)) - 
+                  (expr 
+                    (variable_or_function_call INT 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (expr 
+                              (builtin_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call RTRIM$ 
+                                      (args_or_indices 
+                                        ( 
+                                          (expr 
+                                            (variable_or_function_call Label$ 
+                                              (args_or_indices 
+                                                ( 
+                                                  (expr 
+                                                    (variable_or_function_call I%)) )))) )))) ))) / 
+                            (expr 
+                              (literal 2))) ))))))) \r\n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (variable_or_function_call Label$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call I%)) )))) ;)) \r\n statement \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call BarHeight) = 
+                (expr 
+                  (expr 
+                    ( 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call Value 
+                            (args_or_indices 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call I%)) )))) / 
+                        (expr 
+                          (variable_or_function_call YRange))) )) * 
+                  (expr 
+                    (variable_or_function_call YLENGTH))))) \r\n 
+            (statement 
+              (line_statement LINE 
+                ( 
+                  (expr 
+                    (variable_or_function_call Start%)) , 
+                  (expr 
+                    (variable_or_function_call Bottom)) ) - STEP 
+                ( 
+                  (expr 
+                    (variable_or_function_call BarWidth)) , 
+                  (expr - 
+                    (expr 
+                      (variable_or_function_call BarHeight))) ) , , 
+                (box_style B))) \r\n 
+            (statement 
+              (paint_statement PAINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call BarMid)) , 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Bottom)) - 
+                    (expr 
+                      ( 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call BarHeight)) / 
+                          (expr 
+                            (literal 2))) ))) ) , 
+                (expr 
+                  (variable_or_function_call Tile$)) , 
+                (expr 
+                  (literal 1)))) \r\n statement \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call Start%) = 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Start%)) + 
+                    (expr 
+                      (variable_or_function_call BarWidth))) + 
+                  (expr 
+                    (variable_or_function_call BarSpace))))) \r\n statement) NEXT I%)) \r\n statement \r\n 
+      (statement 
+        (locate_statement LOCATE 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 1)) , 
+          (expr 
+            (literal 1)))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "New graph? ")) ;)) \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call DrawGraph$) = 
+          (expr 
+            (variable_or_function_call UCASE$ 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (builtin_function INPUT$ 
+                      ( 
+                        (expr 
+                          (literal 1)) ))) )))))) \r\n statement \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (function_statement FUNCTION InputData% 
+    ( 
+      (parameter_list 
+        (parameter Label$ 
+          (array_declaration 
+            ( ))) , 
+        (parameter Value 
+          (array_declaration 
+            ( )))) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call NumData%) = 
+          (expr 
+            (literal 0)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (call_statement 
+          (untyped_id CLS))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "Enter data for up to 5 bars:")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "   * Enter the label and value for each bar.")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "   * Values can be negative.")))) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "   * Enter a blank label to stop.")))) \r\n 
+      (statement 
+        (print_statement PRINT)) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "After viewing the graph, press any key ")) ;)) \r\n 
+      (statement 
+        (print_statement PRINT 
+          (expr 
+            (literal "to end the program.")))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Done%) = 
+          (expr 
+            (variable_or_function_call FALSE)))) \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call NumData%) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call NumData%)) + 
+                  (expr 
+                    (literal 1))))) \r\n 
+            (statement 
+              (print_statement PRINT)) \r\n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal "Bar
+                    (")) ; 
+                  (expr 
+                    (variable_or_function_call LTRIM$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call STR$ 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call NumData%)) )))) )))) ; 
+                  (expr 
+                    (literal "):")))) \r\n 
+            (statement 
+              (input_statement INPUT ; "        Label? " , 
+                (variable_or_function_call Label$ 
+                  (args_or_indices 
+                    ( 
+                      (expr 
+                        (variable_or_function_call NumData%)) ))))) \r\n statement \r\n statement \r\n 
+            (if_block_statement IF 
+              (expr 
+                (expr 
+                  (variable_or_function_call Label$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call NumData%)) )))) <> 
+                (expr 
+                  (literal ""))) THEN \r\n 
+              (then_block 
+                (statement 
+                  (locate_statement LOCATE , 
+                    (expr 
+                      (literal 35)))) \r\n 
+                (statement 
+                  (input_statement INPUT "Value? " , 
+                    (variable_or_function_call Value 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call NumData%)) ))))) \r\n statement \r\n statement \r\n statement \r\n) 
+              (else_block_statement ELSE 
+                (else_block statement \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call NumData%) = 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call NumData%)) - 
+                        (expr 
+                          (literal 1))))) \r\n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Done%) = 
+                      (expr 
+                        (variable_or_function_call TRUE)))) \r\n)) 
+              (end_if_statement END IF)) \r\n statement) LOOP 
+          (do_condition UNTIL 
+            (expr 
+              (expr 
+                ( 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call NumData%)) = 
+                    (expr 
+                      (literal 5))) )) OR 
+              (expr 
+                (variable_or_function_call Done%)))))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call InputData%) = 
+          (expr 
+            (variable_or_function_call NumData%)))) \r\n statement \r\n statement) 
+    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id InputTitles) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id T) AS 
+          (type_name_for_parameter 
+            (untyped_id TitleType)))) ) STATIC 
+    (block \r\n statement \r\n statement \r\n 
+      (statement 
+        (screen_statement SCREEN 
+          (expr 
+            (literal 0)) , 
+          (expr 
+            (literal 0)))) \r\n statement \r\n statement \r\n 
+      (statement 
+        (do_loop_statement DO 
+          (block \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id CLS))) \r\n 
+            (statement 
+              (input_statement INPUT "Enter main graph title: " , 
+                (variable_or_function_call T.MainTitle))) \r\n 
+            (statement 
+              (input_statement INPUT "Enter X-Axis title    : " , 
+                (variable_or_function_call T.XTitle))) \r\n 
+            (statement 
+              (input_statement INPUT "Enter Y-Axis title    : " , 
+                (variable_or_function_call T.YTitle))) \r\n statement \r\n statement \r\n 
+            (statement 
+              (locate_statement LOCATE 
+                (expr 
+                  (literal 7)) , 
+                (expr 
+                  (literal 1)))) \r\n 
+            (statement 
+              (print_statement PRINT 
+                (expr 
+                  (literal "OK 
+                    (Y to continue, N to change)? ")) ;)) \r\n 
+            (statement 
+              (locate_statement LOCATE , , 
+                (expr 
+                  (literal 1)))) \r\n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call OK$) = 
+                (expr 
+                  (variable_or_function_call UCASE$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (builtin_function INPUT$ 
+                            ( 
+                              (expr 
+                                (literal 1)) ))) )))))) \r\n statement) LOOP 
+          (do_condition UNTIL 
+            (expr 
+              (expr 
+                (variable_or_function_call OK$)) = 
+              (expr 
+                (literal "Y")))))) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n <EOF>)

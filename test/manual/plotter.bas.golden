@@ -1,0 +1,329 @@
+(program statement \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment UP = 
+        (const_expr 
+          (expr 
+            (literal 72)))) , 
+      (const_assignment DOWN = 
+        (const_expr 
+          (expr 
+            (literal 80)))) , 
+      (const_assignment LFT = 
+        (const_expr 
+          (expr 
+            (literal 75)))) , 
+      (const_assignment RGHT = 
+        (const_expr 
+          (expr 
+            (literal 77)))))) \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment UPLFT = 
+        (const_expr 
+          (expr 
+            (literal 71)))) , 
+      (const_assignment UPRGHT = 
+        (const_expr 
+          (expr 
+            (literal 73)))) , 
+      (const_assignment DOWNLFT = 
+        (const_expr 
+          (expr 
+            (literal 79)))) , 
+      (const_assignment DOWNRGHT = 
+        (const_expr 
+          (expr 
+            (literal 81)))))) \r\n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment SPACEBAR = 
+        (const_expr 
+          (expr 
+            (literal " ")))))) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Null$) = 
+      (expr 
+        (variable_or_function_call CHR$ 
+          (args_or_indices 
+            ( 
+              (expr 
+                (literal 0)) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Plot$) = 
+      (expr 
+        (literal "")))) \r\n statement \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Use the cursor movement keys to draw lines.")))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Press the spacebar to toggle line drawing on and off.")))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (expr 
+        (literal "Press <ENTER> to begin. Press q to end the program.")))) \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block :) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \r\n statement \r\n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n 
+        (statement 
+          (select_case_statement SELECT CASE 
+            (expr 
+              (variable_or_function_call KeyVal$)) 
+            (before_first_case \r\n) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call UP)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C1 U2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call DOWN)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C1 D2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call LFT)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C2 L2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call RGHT)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C2 R2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call UPLFT)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C3 H2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call UPRGHT)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C3 E2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call DOWNLFT)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C3 G2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call Null$)) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        (args_or_indices 
+                          ( 
+                            (expr 
+                              (variable_or_function_call DOWNRGHT)) ))))))) 
+              (block \r\n 
+                (statement 
+                  (call_statement 
+                    (untyped_id DRAW) 
+                    (call_argument_list 
+                      (call_argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call Plot$)) + 
+                          (expr 
+                            (literal "C3 F2"))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE 
+                (case_expr 
+                  (expr 
+                    (variable_or_function_call SPACEBAR)))) 
+              (block \r\n 
+                (statement 
+                  (if_inline_statement IF 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Plot$)) = 
+                      (expr 
+                        (literal ""))) THEN 
+                    (if_inline_action 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call Plot$) = 
+                          (expr 
+                            (literal "B "))))) ELSE 
+                    (if_inline_action 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call Plot$) = 
+                          (expr 
+                            (literal ""))))))) \r\n statement)) 
+            (case_block 
+              (case_statement CASE ELSE) 
+              (block \r\n statement \r\n statement \r\n statement \r\n statement)) 
+            (end_select_statement END SELECT))) \r\n statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call KeyVal$) = 
+            (expr 
+              (variable_or_function_call INKEY$)))) \r\n statement \r\n statement) LOOP 
+      (do_condition UNTIL 
+        (expr 
+          (expr 
+            (variable_or_function_call KeyVal$)) = 
+          (expr 
+            (literal "q")))))) \r\n statement \r\n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) \r\n 
+  (statement 
+    (width_statement WIDTH 
+      (expr 
+        (literal 80)))) \r\n 
+  (statement 
+    (end_statement END)) \r\n <EOF>)
