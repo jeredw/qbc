@@ -215,8 +215,8 @@ keywords as arguments - it's probably easier just to parse those.
 | `OUT`            | Statement   | -       |
 | `OUTPUT`         | Keyword     | ✅      |
 | `PAINT`          | Statement   | ✅      |
-| `PALETTE`        | Statement   | ⛔      |
-| `PALETTE USING`  | Statement   | ⛔      |
+| `PALETTE`        | Statement   | ✅      |
+| `PALETTE USING`  | Statement   | ✅      |
 | `PCOPY`          | Statement   | -       |
 | `PEEK`           | Function    | -       |
 | `PEN`            | Function    | ✅      |

@@ -1,0 +1,14 @@
+(program 
+  (statement 
+    (palette_statement palette 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal &h3f3f3f)))) \n 
+  (statement 
+    (palette_statement palette using 
+      (variable_or_function_call pal# 
+        (args_or_indices 
+          ( 
+            (expr 
+              (literal 4)) ))))) \n <EOF>)

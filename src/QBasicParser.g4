@@ -107,6 +107,7 @@ statement
   | open_statement
   | open_legacy_statement
   | paint_statement
+  | palette_statement
   | play_statement
   | print_statement
   | print_using_statement
@@ -615,6 +616,11 @@ paint_statement
     |COMMA                 COMMA bordercolor=expr
 // This fails at runtime because there's no tile, but parses.
     |COMMA                 COMMA                  COMMA background=expr)?
+  ;
+
+palette_statement
+  : PALETTE attribute=expr COMMA color=expr
+  | PALETTE USING arrayname=variable_or_function_call
   ;
 
 play_statement

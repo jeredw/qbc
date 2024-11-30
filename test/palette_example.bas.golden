@@ -1,0 +1,104 @@
+(program statement \n 
+  (statement 
+    (palette_statement PALETTE 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id SCREEN) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 1)))))) \n 
+  (statement 
+    (for_next_statement FOR i% = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (literal 3)) 
+      (block : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call a% 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (variable_or_function_call i%)) ))) = 
+            (expr 
+              (variable_or_function_call i%)))) :) NEXT i%)) \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 138)) , 
+        (expr 
+          (literal 35)) ) - 
+      ( 
+        (expr 
+          (literal 288)) , 
+        (expr 
+          (literal 165)) ) , 
+      (expr 
+        (literal 3)) , 
+      (box_style BF))) \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 20)) , 
+        (expr 
+          (literal 10)) ) - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (literal 2)) , 
+      (box_style BF))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n 
+        (statement 
+          (for_next_statement FOR i% = 
+            (expr 
+              (literal 0)) TO 
+            (expr 
+              (literal 3)) 
+            (block \n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call a% 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call i%)) ))) = 
+                  (expr 
+                    (expr 
+                      ( 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call a% 
+                              (args_or_indices 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call i%)) )))) + 
+                          (expr 
+                            (literal 1))) )) MOD 
+                    (expr 
+                      (literal 16))))) \n statement) NEXT i%)) \n 
+        (statement 
+          (palette_statement PALETTE USING 
+            (variable_or_function_call a% 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 0)) ))))) \n statement) LOOP 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n <EOF>)

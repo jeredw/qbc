@@ -121,6 +121,7 @@ OUTPUT : [Oo][Uu][Tt][Pp][Uu][Tt] ;
 OR : [Oo][Rr] ;
 ON : [Oo][Nn] ;
 PAINT : [Pp][Aa][Ii][Nn][Tt] ;
+PALETTE : [Pp][Aa][Ll][Ee][Tt][Tt][Ee] ;
 PEN : [Pp][Ee][Nn] ;
 PLAY : [Pp][Ll][Aa][Yy] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
