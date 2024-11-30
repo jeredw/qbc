@@ -1,0 +1,33 @@
+(program 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 15)) , 
+        (expr 
+          (literal 10)) ))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 15)) , 
+        (expr 
+          (literal 10)) ) , 
+      (expr 
+        (literal 15)))) \n <EOF>)

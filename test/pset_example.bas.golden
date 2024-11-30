@@ -1,0 +1,36 @@
+(program statement \n 
+  (statement 
+    (call_statement 
+      (untyped_id SCREEN) 
+      (call_argument_list 
+        (call_argument 
+          (expr 
+            (literal 1)))))) \n 
+  (statement 
+    (for_next_statement FOR i% = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (literal 320)) 
+      (block \n 
+        (statement 
+          (pset_statement PSET 
+            ( 
+              (expr 
+                (variable_or_function_call i%)) , 
+              (expr 
+                (literal 100)) ))) \n 
+        (statement 
+          (for_next_statement FOR delay% = 
+            (expr 
+              (literal 1)) TO 
+            (expr 
+              (literal 100)) 
+            (block :) NEXT delay%)) \n 
+        (statement 
+          (preset_statement PRESET 
+            ( 
+              (expr 
+                (variable_or_function_call i%)) , 
+              (expr 
+                (literal 100)) ))) \n statement) NEXT i%)) \n <EOF>)

@@ -109,8 +109,10 @@ statement
   | paint_statement
   | palette_statement
   | play_statement
+  | preset_statement
   | print_statement
   | print_using_statement
+  | pset_statement
   | put_graphics_statement
   | put_io_statement
   | read_statement
@@ -627,6 +629,10 @@ play_statement
   : PLAY expr
   ;
 
+preset_statement
+  : PRESET STEP? '(' x=expr COMMA y=expr ')' (COMMA color=expr)?
+  ;
+
 // PRINT accepts an optional file handle and then zero or more expressions
 // separated by a ',' or ';'. There can be a trailing ',' or ';' even if
 // there is no other argument.  The IDE inserts a ';' between expressions that
@@ -641,6 +647,10 @@ print_statement
 // separator.
 print_using_statement
   : PRINT (file_number COMMA)? USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
+  ;
+
+pset_statement
+  : PSET STEP? '(' x=expr COMMA y=expr ')' (COMMA color=expr)?
   ;
 
 put_graphics_statement

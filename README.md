@@ -227,11 +227,10 @@ keywords as arguments - it's probably easier just to parse those.
 | `PMAP`           | Function    | -       |
 | `POKE`           | Statement   | -       |
 | `POS`            | Function    | -       |
-| `PRESET`         | Statement   | ⛔      |
-| `PRESET`         | Statement   | ⛔      |
+| `PRESET`         | Statement   | ✅      |
 | `PRINT`          | Statement   | ✅      |
 | `PRINT USING`    | Statement   | ✅      |
-| `PSET`           | Statement   | ⛔      |
+| `PSET`           | Statement   | ✅      |
 | `PUT` I/O        | Statement   | ✅      |
 | `PUT` Graphics   | Statement   | ✅      |
 | `RANDOM`         | Keyword     | ✅      |
