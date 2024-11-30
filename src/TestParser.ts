@@ -1,9 +1,17 @@
-import { CharStream, CommonTokenStream, BaseErrorListener } from "antlr4ng";
 import { QBasicLexer } from "../build/QBasicLexer.ts";
 import { QBasicParser } from "../build/QBasicParser.ts";
+import {
+  ATNSimulator,
+  BaseErrorListener,
+  CharStream,
+  CommonTokenStream,
+  Recognizer,
+  RecognitionException,
+  Token,
+} from "antlr4ng";
 
 class ThrowingErrorListener extends BaseErrorListener {
-  override syntaxError(recognizer, offendingSymbol, line, column, msg, e) {
+  override syntaxError<S extends Token, T extends ATNSimulator>(_recognizer: Recognizer<T>, offendingSymbol: S | null, line: number, column: number, msg: string, _e: RecognitionException | null): void {
     throw `${line}:${column} ${offendingSymbol}: ${msg}`;
   }
 }
@@ -23,7 +31,7 @@ function parseProgram(text: string) {
 }
 
 function prettyPrint(tree: string): string {
-  const output = [];
+  const output: string[] = [];
   let depth = 0;
   for (let i = 0; i < tree.length; i++) {
     const ch = tree.charAt(i);
@@ -49,10 +57,10 @@ async function runTests(tests: string[]) {
       const input = Deno.readTextFileSync(testPath);
       const output = prettyPrint(parseProgram(input));
       const diffCommand = new Deno.Command('diff', {
-         args: ['-du', goldenPath, '-'],
-         stdin: 'piped',
-         stdout: 'piped',
-         stderr: 'piped'
+        args: ['-du', goldenPath, '-'],
+        stdin: 'piped',
+        stdout: 'piped',
+        stderr: 'piped'
       });
       const child = diffCommand.spawn();
       const writer = child.stdin.getWriter();
@@ -80,7 +88,7 @@ async function runTests(tests: string[]) {
       if (confirm('gild?')) {
         Deno.writeTextFileSync(goldenPath, output);
       }
-    } catch (err: string) {
+    } catch (err: unknown) {
       console.log(`${testPath} errors\n${err}`);
     }
   }
