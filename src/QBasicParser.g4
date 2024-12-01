@@ -66,6 +66,12 @@ block
 label
   : (line_number | text_label COLON) ;
 
+// QBasic recognizes line numbers up to 40 digits long, suggesting even numeric
+// labels are just a relaxed case of IDs.  This grammar doesn't impose a limit.
+// *** Labels or line numbers must be distinct.
+line_number : DIGITS ;
+text_label : untyped_id | untyped_fnid;
+
 statement
   : assignment_statement
   | call_statement
@@ -470,9 +476,6 @@ goto_statement
   : GOTO target
   ;
 
-// *** Labels or line numbers must be distinct.
-line_number : DIGITS ;
-text_label : untyped_id | untyped_fnid;
 target
   : line_number
   | text_label

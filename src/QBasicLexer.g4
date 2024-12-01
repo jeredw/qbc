@@ -171,12 +171,20 @@ XOR : [Xx][Oo][Rr] ;
 // allowed in many places where IDs are allowed.
 FNID : [Ff][Nn][A-Za-z][A-Za-z0-9.]* TYPE_SIGIL? ;
 // ID matches identifier names not starting with FN.
+// QBasic enforces that IDs are at most 40 characters long, but this grammar
+// does not have a limit.
 ID : [A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
    | [Ff][A-MO-Za-mo-z0-9.][A-Za-z0-9.]* TYPE_SIGIL?
    | [Ff] TYPE_SIGIL?
    ;
 
-fragment TYPE_SIGIL: ('!' | '#' | '$' | '%' | '&') ;
+fragment TYPE_SIGIL :
+  ( '!'   // Single-precision float
+  | '#'   // Double-precision float
+  | '$'   // String
+  | '%'   // Integer (16 bits)
+  | '&' ) // Long integer (32 bits)
+  ;
 
 // The IDE doesn't support typing them, but QBASIC /RUN will combine '_'
 // continued lines.
@@ -190,6 +198,8 @@ WS : [ \t\u001a]+ -> skip ;
 mode COMMENT_MODE;
 
 // *** Should be checked for $STATIC and $DYNAMIC.
+// QBasic also parses $INCLUDE, but shows an error "Advanced feature
+// unavailable".
 COMMENT_TEXT : ~[\r\n]+ -> channel(HIDDEN) ;
 // The final NL must be passed through to terminate REM statements.
 COMMENT_NL : '\r'? '\n' -> type(NL), popMode ;
