@@ -1,3 +1,5 @@
+DECLARE SUB DirectionKey (Choice$, TopCard%, LastCard%)
+DECLARE SUB Alarm ()
 '* QCards - A simple database using a cardfile user interface.
 '* Each record in the database is represented by a card. The user
 '* can scroll through the cards using normal scrolling keys.
@@ -53,7 +55,7 @@ CONST NPERSON = 0, NNOTE = 1, NMONTH = 2, NDAY = 3, NYEAR = 4, NPHONE = 5
 CONST NSTREET = 6, NCITY = 7, NSTATE = 8, NZIP = 9, NFIELDS = NZIP + 1
 
 ' Declare user-defined type (a data structure) for random-access file records.
-TYPE PERSON
+TYPE Person
     CardNum     AS INTEGER          'First element is card number
     Names       AS STRING * 37      'Names (in order for alphabetical sort)
     Note        AS STRING * 31      'Note about person
@@ -75,12 +77,12 @@ DECLARE SUB AsciiKey (Choice$, TopCard%, LastCard%)
 DECLARE SUB CleanUp (LastCard%)
 DECLARE SUB ClearHelp ()
 DECLARE SUB DrawCards ()
-DECLARE SUB EditCard (Card AS PERSON)
+DECLARE SUB EditCard (Card AS Person)
 DECLARE SUB InitIndex (LastCard%)
-DECLARE SUB PrintLabel (Card AS PERSON)
+DECLARE SUB PrintLabel (Card AS Person)
 DECLARE SUB SortIndex (SortField%, LastCard%)
 DECLARE SUB ShowViewHelp ()
-DECLARE SUB ShowTopCard (WorkCard AS PERSON)
+DECLARE SUB ShowTopCard (WorkCard AS Person)
 DECLARE SUB ShowEditHelp ()
 DECLARE SUB ShowCmdLine ()
 DECLARE SUB ShowCards (TopCard%, LastCard%)
@@ -94,23 +96,23 @@ DECLARE FUNCTION SelectField% ()
 ' Procedure declarations end here.
 
 ' Define temporary Index() array to illustrate QCARDS screen.
-REDIM SHARED Index(1) AS PERSON
+REDIM SHARED Index(1) AS Person
 
 ' Define a dummy record as a work card.
-DIM Card AS PERSON
+DIM Card AS Person
 
 '*************** Declarations and definitions end here ********************
 
 ' The execution-sequence logic of QCARDS begins here.
 
 ' Open data file QCARDS.DAT for random access using file #1
-
+OPEN "QCARDS.DAT" FOR RANDOM AS #1 LEN = LEN(Card)
 
 
 ' To count records in file, divide the length of the file by the
 ' length of a single record; use integer division (\) instead of
 ' normal division (/). Assign the resulting value to LastCard.
-
+LastCard = LOF(1) \ LEN(Card)
 
 
 ' Redefine the Index array to hold the records in the file plus
@@ -124,8 +126,9 @@ DIM Card AS PERSON
 ' message if the memory available is not sufficient. If no
 ' error is detected, the error trap is turned off following the
 ' REDIM statement.
-
-
+ON ERROR GOTO MemoryErr
+REDIM SHARED Index(1 TO LastCard + 20) AS Person
+ON ERROR GOTO 0
 
 ' Use the block IF...THEN...ELSE statement to decide whether
 ' to load the records from the disk file QCARDS.DAT into the
@@ -137,9 +140,13 @@ DIM Card AS PERSON
 ' file yet. If there are no records in the file, the ELSE
 ' clause is executed. The code between ELSE and END IF starts
 ' the Index() array at card 1.
-
-
-
+IF LastCard <> 0 THEN
+  CALL InitIndex(LastCard)
+ELSE
+  Card.CardNum = 1
+  Index(1) = Card
+  PUT #1, 1, Card
+END IF
 
 ' Use the DrawCards procedure to initialize the screen
 ' and draw the cards. Then, set the first card as the top
@@ -148,8 +155,9 @@ DIM Card AS PERSON
 ' ShowCards places all the data for TopCard on the front
 ' card on the screen, then it places the top-line
 ' information (the person's name) on the remaining cards.
-
-
+CALL DrawCards
+TopCard = 1
+CALL ShowCards(TopCard, LastCard)
 
 
 ' Keep the picture on the screen forever with an unconditional
@@ -157,7 +165,7 @@ DIM Card AS PERSON
 ' the next code line. The LOOP part goes just before the END
 ' statement. This loop encloses the central logic that lets
 ' a user interact with QCARDS.
-
+DO
 
 
 
@@ -169,7 +177,9 @@ DIM Card AS PERSON
 ' null (that is a zero-length) string, represented by "".
 ' When a key is pressed, INKEY$ returns a string with a
 ' length greater than zero, and the loop terminates.
-
+  DO
+    Choice$ = INKEY$
+  LOOP WHILE Choice$ = ""
 
 
 
@@ -194,16 +204,24 @@ DIM Card AS PERSON
 ' leaving a value that may correspond to one of the DIRECTION
 ' keys. Use a SELECT CASE construction to respond to those key-
 ' presses that represent numeric-keypad DIRECTION keys.
-
+  IF LEN(Choice$) = 1 THEN
+    CALL AsciiKey(Choice$, TopCard, LastCard)
+  ELSE
+    Choice$ = RIGHT$(Choice$, 1)
+    CALL DirectionKey(Choice$, TopCard, LastCard)
+  END IF
 
 
 ' Adjust the cards according to the key pressed by the user,
 ' then call the ShowCards procedure to show adjusted stack.
-
+IF TopCard < 1 THEN TopCard = LastCard + TopCard
+IF TopCard > LastCard THEN TopCard = TopCard - LastCard
+IF TopCard <= 0 THEN TopCard = 1
+CALL ShowCards(TopCard, LastCard)
 
 
 ' This is the bottom of the unconditional DO loop.
-
+LOOP
 
 END
 
@@ -288,6 +306,12 @@ DATA 22, 29, 2                      : ' State
 DATA 22, 38, 5                      : ' Zip
 DATA 0, 0, 0
 
+SUB Alarm
+FOR Tone = 600 TO 2000 STEP 40
+  SOUND Tone, Tone / 7000
+NEXT Tone
+END SUB
+
 '*
 '* AsciiKey - Handles ASCII keys. You can add new commands by
 '* assigning keys and actions here and adding them to the command
@@ -299,7 +323,7 @@ DATA 0, 0, 0
 '*         LastCard - the number of records
 '*
 SUB AsciiKey (UserChoice$, TopCard%, LastCard%)
-DIM WorkCard AS PERSON
+DIM WorkCard AS Person
 
     SELECT CASE UserChoice$
         ' Edit the current card.
@@ -436,6 +460,25 @@ SUB ClearHelp
 
 END SUB
 
+SUB DirectionKey (Choice$, TopCard%, LastCard%)
+  SELECT CASE Choice$
+    CASE CHR$(DOWN)
+      TopCard = TopCard - 1
+    CASE CHR$(UP)
+      TopCard = TopCard + 1
+    CASE CHR$(PGDN)
+      TopCard = TopCard - CARDSPERSCREEN
+    CASE CHR$(PGUP)
+      TopCard = TopCard + CARDSPERSCREEN
+    CASE CHR$(HOME)
+      TopCard = LastCard
+    CASE CHR$(ENDK)
+      TopCard = 1
+    CASE ELSE
+      CALL Alarm
+  END SELECT
+END SUB
+
 '*
 '* DrawCards - Initializes screen by setting the color, setting the width
 '* and height, clearing the screen, and hiding the cursor. Then writes card
@@ -474,7 +517,7 @@ END SUB
 '* Return: Since Card is passed by reference, the edited version is
 '*         effectively returned.
 '*
-SUB EditCard (Card AS PERSON)
+SUB EditCard (Card AS Person)
 
     ' Set NextFlag and continue editing each field.
     ' NextFlag is cleared when the user presses ENTER.
@@ -796,7 +839,7 @@ END FUNCTION
 '*
 FUNCTION FindCard% (TopCard%, LastCard%)
 
-STATIC TmpCard AS PERSON, NotFirst
+STATIC TmpCard AS Person, NotFirst
 
     ' Initialize string fields to null on the first call. (Note that the
     ' variables TmpCard and NotFirst, declared STATIC above, retain their
@@ -919,7 +962,7 @@ END FUNCTION
 '* Input:  File "QCARDS.DAT"
 '*
 SUB InitIndex (LastCard) STATIC
-DIM Card AS PERSON
+DIM Card AS Person
 
     FOR Record = 1 TO LastCard
     
@@ -950,7 +993,7 @@ END SUB
 '*
 '* Output: Printer
 '*
-SUB PrintLabel (Card AS PERSON)
+SUB PrintLabel (Card AS Person)
 
     LPRINT Card.Names
     LPRINT Card.Street
@@ -1146,7 +1189,7 @@ END SUB
 '*
 '* Output: Screen
 '*
-SUB ShowTopCard (WorkCard AS PERSON)
+SUB ShowTopCard (WorkCard AS Person)
 
     ' Display each field of current card.
     RESTORE FieldPositions

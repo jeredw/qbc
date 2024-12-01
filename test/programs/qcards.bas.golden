@@ -1,4 +1,14 @@
-(program statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+(program statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id DirectionKey) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter Choice$) , 
+        (declare_parameter TopCard%) , 
+        (declare_parameter LastCard%)) )) \r\n statement 
+  (declare_statement DECLARE SUB 
+    (untyped_id Alarm) 
+    ( )) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \r\n statement \r\n statement \r\n 
@@ -266,7 +276,7 @@
             (expr 
               (literal 1))))))) \r\n statement \r\n statement \r\n statement 
   (type_statement TYPE 
-    (untyped_id PERSON) \r\n 
+    (untyped_id Person) \r\n 
     (type_element 
       (untyped_id CardNum) AS 
       (type_name_for_type_element INTEGER) \r\n) 
@@ -332,7 +342,7 @@
         (declare_parameter 
           (untyped_id Card) AS 
           (type_name_for_declare_parameter 
-            (untyped_id PERSON)))) )) \r\n statement 
+            (untyped_id Person)))) )) \r\n statement 
   (declare_statement DECLARE SUB 
     (untyped_id InitIndex) 
     ( 
@@ -345,7 +355,7 @@
         (declare_parameter 
           (untyped_id Card) AS 
           (type_name_for_declare_parameter 
-            (untyped_id PERSON)))) )) \r\n statement 
+            (untyped_id Person)))) )) \r\n statement 
   (declare_statement DECLARE SUB 
     (untyped_id SortIndex) 
     ( 
@@ -362,7 +372,7 @@
         (declare_parameter 
           (untyped_id WorkCard) AS 
           (type_name_for_declare_parameter 
-            (untyped_id PERSON)))) )) \r\n statement 
+            (untyped_id Person)))) )) \r\n statement 
   (declare_statement DECLARE SUB 
     (untyped_id ShowEditHelp) 
     ( )) \r\n statement 
@@ -405,13 +415,226 @@
               (expr 
                 (literal 1))) )) AS 
         (type_name 
-          (untyped_id PERSON))))) \r\n statement \r\n statement \r\n 
+          (untyped_id Person))))) \r\n statement \r\n statement \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
         (untyped_id Card) AS 
         (type_name 
-          (untyped_id PERSON))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+          (untyped_id Person))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "QCARDS.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (builtin_function LEN 
+          ( 
+            (expr 
+              (variable_or_function_call Card)) ))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call LastCard) = 
+      (expr 
+        (expr 
+          (variable_or_function_call LOF 
+            (args_or_indices 
+              ( 
+                (expr 
+                  (literal 1)) )))) \ 
+        (expr 
+          (builtin_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call Card)) )))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (text_label 
+          (untyped_id MemoryErr))))) \r\n 
+  (statement 
+    (dim_statement REDIM SHARED 
+      (dim_variable 
+        (untyped_id Index) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (expr 
+                  (variable_or_function_call LastCard)) + 
+                (expr 
+                  (literal 20)))) )) AS 
+        (type_name 
+          (untyped_id Person))))) \r\n 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (line_number 0)))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (if_block_statement IF 
+    (expr 
+      (expr 
+        (variable_or_function_call LastCard)) <> 
+      (expr 
+        (literal 0))) THEN \r\n 
+    (then_block 
+      (statement 
+        (call_statement CALL 
+          (untyped_id InitIndex) 
+          ( 
+            (call_argument_list 
+              (call_argument LastCard)) ))) \r\n) 
+    (else_block_statement ELSE 
+      (else_block statement \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Card.CardNum) = 
+            (expr 
+              (literal 1)))) \r\n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Index 
+              (args_or_indices 
+                ( 
+                  (expr 
+                    (literal 1)) ))) = 
+            (expr 
+              (variable_or_function_call Card)))) \r\n 
+        (statement 
+          (put_io_statement PUT # 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (literal 1)) , 
+            (variable_or_function_call Card))) \r\n)) 
+    (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id DrawCards))) \r\n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call TopCard) = 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id ShowCards) 
+      ( 
+        (call_argument_list 
+          (call_argument TopCard) , 
+          (call_argument LastCard)) ))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+  (statement 
+    (do_loop_statement DO 
+      (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (do_loop_statement DO 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Choice$) = 
+                  (expr 
+                    (variable_or_function_call INKEY$)))) \r\n statement) LOOP 
+            (do_condition WHILE 
+              (expr 
+                (expr 
+                  (variable_or_function_call Choice$)) = 
+                (expr 
+                  (literal "")))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (if_block_statement IF 
+          (expr 
+            (expr 
+              (builtin_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call Choice$)) ))) = 
+            (expr 
+              (literal 1))) THEN \r\n 
+          (then_block 
+            (statement 
+              (call_statement CALL 
+                (untyped_id AsciiKey) 
+                ( 
+                  (call_argument_list 
+                    (call_argument Choice$) , 
+                    (call_argument TopCard) , 
+                    (call_argument LastCard)) ))) \r\n) 
+          (else_block_statement ELSE 
+            (else_block statement \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Choice$) = 
+                  (expr 
+                    (variable_or_function_call RIGHT$ 
+                      (args_or_indices 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Choice$)) , 
+                          (expr 
+                            (literal 1)) )))))) \r\n 
+              (statement 
+                (call_statement CALL 
+                  (untyped_id DirectionKey) 
+                  ( 
+                    (call_argument_list 
+                      (call_argument Choice$) , 
+                      (call_argument TopCard) , 
+                      (call_argument LastCard)) ))) \r\n)) 
+          (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call TopCard)) < 
+              (expr 
+                (literal 1))) THEN 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call LastCard)) + 
+                    (expr 
+                      (variable_or_function_call TopCard)))))))) \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call TopCard)) > 
+              (expr 
+                (variable_or_function_call LastCard))) THEN 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call TopCard)) - 
+                    (expr 
+                      (variable_or_function_call LastCard)))))))) \r\n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call TopCard)) <= 
+              (expr 
+                (literal 0))) THEN 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (literal 1))))))) \r\n 
+        (statement 
+          (call_statement CALL 
+            (untyped_id ShowCards) 
+            ( 
+              (call_argument_list 
+                (call_argument TopCard) , 
+                (call_argument LastCard)) ))) \r\n statement \r\n statement \r\n statement \r\n statement) LOOP)) \r\n statement \r\n 
   (statement 
     (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
   (label 
@@ -630,7 +853,31 @@
     (data_statement DATA 
       (data_item 0) , 
       (data_item 0) , 
-      (data_item 0))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (data_item 0))) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id Alarm) 
+    (block \r\n 
+      (statement 
+        (for_next_statement FOR Tone = 
+          (expr 
+            (literal 600)) TO 
+          (expr 
+            (literal 2000)) STEP 
+          (expr 
+            (literal 40)) 
+          (block \r\n 
+            (statement 
+              (call_statement 
+                (untyped_id SOUND) 
+                (call_argument_list 
+                  (call_argument Tone) , 
+                  (call_argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call Tone)) / 
+                      (expr 
+                        (literal 7000))))))) \r\n statement) NEXT Tone)) \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
   (sub_statement SUB 
     (untyped_id AsciiKey) 
     ( 
@@ -644,7 +891,7 @@
           (dim_variable 
             (untyped_id WorkCard) AS 
             (type_name 
-              (untyped_id PERSON))))) \r\n statement \r\n 
+              (untyped_id Person))))) \r\n statement \r\n 
       (statement 
         (select_case_statement SELECT CASE 
           (expr 
@@ -1200,6 +1447,129 @@
                 ( 
                   (expr 
                     (literal 80)) )))) ;)) \r\n statement \r\n statement) 
+    (end_sub_statement END SUB)) \r\n statement \r\n 
+  (sub_statement SUB 
+    (untyped_id DirectionKey) 
+    ( 
+      (parameter_list 
+        (parameter Choice$) , 
+        (parameter TopCard%) , 
+        (parameter LastCard%)) ) 
+    (block \r\n 
+      (statement 
+        (select_case_statement SELECT CASE 
+          (expr 
+            (variable_or_function_call Choice$)) 
+          (before_first_case \r\n) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call DOWN)) )))))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call TopCard)) - 
+                    (expr 
+                      (literal 1))))) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call UP)) )))))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call TopCard)) + 
+                    (expr 
+                      (literal 1))))) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call PGDN)) )))))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call TopCard)) - 
+                    (expr 
+                      (variable_or_function_call CARDSPERSCREEN))))) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call PGUP)) )))))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call TopCard)) + 
+                    (expr 
+                      (variable_or_function_call CARDSPERSCREEN))))) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call HOME)) )))))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (variable_or_function_call LastCard)))) \r\n statement)) 
+          (case_block 
+            (case_statement CASE 
+              (case_expr 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    (args_or_indices 
+                      ( 
+                        (expr 
+                          (variable_or_function_call ENDK)) )))))) 
+            (block \r\n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call TopCard) = 
+                  (expr 
+                    (literal 1)))) \r\n statement)) 
+          (case_block 
+            (case_statement CASE ELSE) 
+            (block \r\n 
+              (statement 
+                (call_statement CALL 
+                  (untyped_id Alarm))) \r\n statement)) 
+          (end_select_statement END SELECT))) \r\n statement) 
     (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
   (sub_statement SUB 
     (untyped_id DrawCards) 
@@ -1263,7 +1633,7 @@
         (parameter 
           (untyped_id Card) AS 
           (type_name_for_parameter 
-            (untyped_id PERSON)))) ) 
+            (untyped_id Person)))) ) 
     (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
       (statement 
         (assignment_statement 
@@ -2576,7 +2946,7 @@
           (scope_variable 
             (untyped_id TmpCard) AS 
             (type_name 
-              (untyped_id PERSON))) , 
+              (untyped_id Person))) , 
           (scope_variable NotFirst))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
       (if_block_statement IF 
         (expr 
@@ -3117,7 +3487,7 @@
           (dim_variable 
             (untyped_id Card) AS 
             (type_name 
-              (untyped_id PERSON))))) \r\n statement \r\n 
+              (untyped_id Person))))) \r\n statement \r\n 
       (statement 
         (for_next_statement FOR Record = 
           (expr 
@@ -3239,7 +3609,7 @@
         (parameter 
           (untyped_id Card) AS 
           (type_name_for_parameter 
-            (untyped_id PERSON)))) ) 
+            (untyped_id Person)))) ) 
     (block \r\n statement \r\n 
       (statement 
         (lprint_statement LPRINT 
@@ -3794,7 +4164,7 @@
         (parameter 
           (untyped_id WorkCard) AS 
           (type_name_for_parameter 
-            (untyped_id PERSON)))) ) 
+            (untyped_id Person)))) ) 
     (block \r\n statement \r\n statement \r\n 
       (statement 
         (call_statement 
