@@ -1,14 +1,16 @@
 {
   "type": "module",
   "dependencies": {
-    "antlr4ng": "^3.0.9"
+    "antlr4ng": "^3.0.10",
+    "antlr4ng-cli": "^2.0.0"
   },
   "devDependencies": {
-    "antlr4ng-cli": "^2.0.0",
     "esbuild": "^0.24.0",
     "esbuild-plugin-tsc": "^0.4.0"
   },
   "scripts": {
-    "build": "esbuild build/Shell.ts --bundle --sourcemap --outfile=build/out.js"
+    "build": "./scripts/build.sh",
+    "serve": "node ./scripts/serve.js",
+    "test": "deno run --allow-write --allow-read --allow-run ./scripts/TestParser.ts test/**/*.bas"
   }
 }

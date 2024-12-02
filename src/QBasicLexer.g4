@@ -38,16 +38,14 @@ PROBABLY_SINGLE_PRECISION_NUMBER
   | [0-9]+ E_EXPONENT '!'?
   | [0-9]+ '!'
   ;
-fragment
-E_EXPONENT : [eE] [-+]? [0-9]+ ;
+fragment E_EXPONENT : [eE] [-+]? [0-9]+ ;
 // If a decimal number has a 'd' exponent or a '#' it's a double.
 DOUBLE_PRECISION_NUMBER
   : [0-9]+ '.' [0-9]* (D_EXPONENT | '#')
   | '.' [0-9]+ (D_EXPONENT | '#')
   | [0-9]+ (D_EXPONENT | '#')
   ;
-fragment
-D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
+fragment D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
 STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords
