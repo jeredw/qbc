@@ -801,27 +801,28 @@ write_statement
   ;
 
 expr
-  : '(' expr ')'
-  | expr '^' expr  // Unusually, ^ is left-associative.
+  : '(' expr ')'           # ParenExpr
+// Unusually, ^ is left-associative.
+  | expr '^' expr          # ExponentExpr
 // *** QBasic doesn't have unary plus, but the IDE accepts it and drops it.
-  | '+' expr
-  | '-' expr
-  | expr ('*' | '/') expr
-  | expr '\\' expr
-  | expr MOD expr
-  | expr ('+' | '-') expr
-  | expr ('=' | '>' | '<' | '<>' | '<=' | '>=') expr
-  | NOT expr
-  | expr AND expr
-  | expr OR expr
-  | expr XOR expr
-  | expr EQV expr
-  | expr IMP expr
-  | builtin_function
-  | literal
+  | '+' expr               # UnaryPlusExpr
+  | '-' expr               # UnaryMinusExpr
+  | expr ('*' | '/') expr  # MultiplyDivideExpr
+  | expr '\\' expr         # IntegerDivideExpr
+  | expr MOD expr          # ModExpr
+  | expr ('+' | '-') expr  # PlusMinusExpr
+  | expr ('=' | '>' | '<' | '<>' | '<=' | '>=') expr # ComparisonExpr
+  | NOT expr               # NotExpr
+  | expr AND expr          # AndExpr
+  | expr OR expr           # OrExpr
+  | expr XOR expr          # XorExpr
+  | expr EQV expr          # EqvExpr
+  | expr IMP expr          # ImpExpr
+  | builtin_function       # BuiltinExpr
+  | literal                # ValueExpr
 // *** A variable with an array index is syntactically the same as a function
 // call, so semantic analysis needs to distinguish those cases later.
-  | variable_or_function_call
+  | variable_or_function_call # VarCallExpr
   ;
 
 // These functions use keywords or special syntax like file numbers so can't

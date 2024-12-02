@@ -1,10 +1,51 @@
+:root {
+  --qbc-black: #000000;
+  --qbc-blue: #000080;
+  --qbc-green: #008000;
+  --qbc-cyan: #008080;
+  --qbc-red: #800000;
+  --qbc-magenta: #800080;
+  --qbc-brown: #808000;
+  --qbc-light-gray: #c0c0c0;
+  --qbc-dark-gray: #808080;
+  --qbc-high-blue: #0000ff;
+  --qbc-high-green: #00ff00;
+  --qbc-high-cyan: #00ffff;
+  --qbc-high-red: #ff0000;
+  --qbc-high-magenta: #ff00ff;
+  --qbc-yellow: #ffff00;
+  --qbc-white: #ffffff;
+}
+
 @font-face {
   font-family: 'Web IBM VGA 8x16';
   font-style: normal;
   font-weight: 400;
-  src: url(woff/web_ibm_vga_8x16.woff) format('woff');
+  src: url(web_ibm_vga_8x16.woff) format('woff');
+}
+
+* {
+  margin: 0;
+  padding: 0;
 }
 
 body {
+  background: var(--qbc-black);
+  color: var(--qbc-light-gray);
   font-family: 'Web IBM VGA 8x16';
+}
+
+.code-pane {
+  box-sizing: content-box;
+  background: var(--qbc-blue);
+  /* 80 rows by 25 columns */
+  width: 640px;
+  height: 400px;
+  padding: 4px;
+  white-space: pre;
+  border: 1px solid var(--qbc-gray);
+}
+
+.code-pane:focus {
+  outline: none;
 }
