@@ -33,9 +33,9 @@ OCTAL : '&' [oO] [0-7]+ ;
 PROBABLY_SINGLE_PRECISION_NUMBER
 // The IDE expands scientific notation into '!' decimals for numbers
 // with 6 or fewer digits, but the language accepts exponents.
-  : [0-9]+ '.' [0-9]* E_EXPONENT? '!'?
-  | '.' [0-9]+ E_EXPONENT? '!'?
-  | [0-9]+ E_EXPONENT '!'?
+  : [0-9]+ '.' [0-9]* (E_EXPONENT | '!')?
+  | '.' [0-9]+ (E_EXPONENT | '!')?
+  | [0-9]+ (E_EXPONENT | '!')?
   | [0-9]+ '!'
   ;
 fragment E_EXPONENT : [eE] [-+]? [0-9]+ ;
@@ -45,7 +45,7 @@ DOUBLE_PRECISION_NUMBER
   | '.' [0-9]+ (D_EXPONENT | '#')
   | [0-9]+ (D_EXPONENT | '#')
   ;
-fragment D_EXPONENT : [dD] [-+]? [0-9]+ '#'?;
+fragment D_EXPONENT : [dD] [-+]? [0-9]+ ;
 STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
 // Keywords

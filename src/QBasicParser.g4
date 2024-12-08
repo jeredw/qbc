@@ -929,9 +929,12 @@ untyped_id: ID ;
 untyped_fnid: FNID ;
 
 literal
-// If a floating point constant isn't explicitly marked as single or double and
-// is representable in single precision, it will be single precision, otherwise
-// double precision.
+// If a floating point constant isn't explicitly marked as single or double,
+// it's stored as single if it has 7 or fewer digits, else double.
+// If you type 0000000.1, the IDE turns it into .1#, but 000000.1 stays single
+// precision, so this is a lexical check.
+// The IDE tries really hard to prevent explicit ! literals from existing...
+// If you type 1.2345678!, the IDE automatically writes it as 1.234568.
   : PROBABLY_SINGLE_PRECISION_NUMBER
   | DOUBLE_PRECISION_NUMBER
 // The IDE has all kinds of behavior for integer constants.
@@ -941,6 +944,9 @@ literal
 // - Strips unary '+' from expressions in general, not just numbers, so no
 //   need to handle that here.
 // - Strips leading zeros, so accept those.
+// If you type "2147483648" with no sigil the IDE turns it into 2147483648#
+// "PRINT -32768%" gives an 'Illegal number' error, so the minus isn't parsed as
+// part of the literal.
   | (DIGITS | HEX | OCTAL) ('%' | '&')?
   | STRING_LITERAL
   ;
