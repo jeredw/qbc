@@ -1,0 +1,36 @@
+(program 
+  (label 
+    (line_number 10)) 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call foo)))) \n 
+  (function_statement 
+    (label 
+      (line_number 20)) function foo 
+    ( ) 
+    (block \n 
+      (statement 
+        (if_inline_statement if 
+          (expr 
+            (expr 
+              (variable_or_function_call i)) = 
+            (expr 
+              (literal 1))) then 
+          (if_inline_action 
+            (statement 
+              (exit_statement exit function))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call i) = 
+          (expr 
+            (literal 1)))) \n 
+      (statement 
+        (print_statement print 
+          (expr 
+            (literal "hi")))) \n 
+      (statement 
+        (goto_statement goto 
+          (target 
+            (line_number 20)))) \n statement) 
+    (end_function_statement end function)) \n <EOF>)

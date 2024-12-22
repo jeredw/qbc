@@ -1,31 +1,33 @@
 import { QBasicLexer } from "../build/QBasicLexer.ts";
 import { QBasicParser } from "../build/QBasicParser.ts";
-import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ExpressionListener } from "./ExpressionListener.ts";
 import {
   CharStream,
   CommonTokenStream,
+  ParseTreeWalker,
 } from "antlr4ng";
+import { StatementChunker } from "./StatementChunker.ts";
 
-export class Interpreter extends QBasicParserListener {
+export class Interpreter {
   expressionListener = new ExpressionListener();
 
-  constructor() {
-    super();
-  }
-
   public run(text: string) {
+    // Add a trailing newline so the final statement has a terminator.
     const textWithNewline = text.endsWith('\n') ? text : text + '\n';
     const inputStream = CharStream.fromString(textWithNewline);
     const lexer = new QBasicLexer(inputStream);
     const tokenStream = new CommonTokenStream(lexer);
     const parser = new QBasicParser(tokenStream);
-    parser.addParseListener(this);
-    parser.addParseListener(this.expressionListener);
-    parser.program();
-  }
-
-  override exitPrint_statement = (ctx: Print_statementContext) => {
-    console.log(this.expressionListener.getResult());
+    // Parse the program first to check correct syntax.
+    const tree = parser.program();
+    const statementChunker = new StatementChunker();
+    ParseTreeWalker.DEFAULT.walk(statementChunker, tree);
+    statementChunker.checkAllTargetsDefined();
+    for (const statement of statementChunker.statements) {
+      console.log(statement);
+      ParseTreeWalker.DEFAULT.walk(new ExpressionListener(), statement);
+    }
+    
+    //console.log(this.expressionListener.getResult());
   }
 }

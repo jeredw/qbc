@@ -14,15 +14,15 @@ export class ExpressionListener extends QBasicParserListener {
     super();
   }
 
-  public getResult() {
+  getResult() {
     return this.pop();
   }
 
-  push(v: values.Value) {
+  private push(v: values.Value) {
     this.stack.push(v);
   }
 
-  pop(): values.Value {
+  private pop(): values.Value {
     if (this.stack.length == 0) {
       throw new Error('stack underflow while evaluating expression');
     }

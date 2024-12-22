@@ -30,15 +30,17 @@ options {
 // of IF (so you can't write "ELSE IF" instead of ELSEIF for example).  This is
 // a real restriction that QBasic enforces.
 program
-  : (label?
-      (statement
-       | declare_statement
-       | def_fn_statement
-       | function_statement
-       | if_block_statement
-       | option_statement
-       | sub_statement
-       | type_statement)
+  // Any line can begin with a label, but labels on FUNCTION or SUB are bound
+  // within the procedure body and not the program toplevel so are matched
+  // within those statements.
+	: (( label? statement
+     | label? declare_statement
+     | label? def_fn_statement
+     | function_statement
+     | label? if_block_statement
+     | label? option_statement
+     | sub_statement
+     | label? type_statement)
       (COLON statement
            | declare_statement
            | def_fn_statement
@@ -165,7 +167,7 @@ declare_parameter
 // *** The IDE automatically corrects "DEF FN x" to "DEF FNx", so we'll also
 // match a separate token form of DEF FN and merge that into FN+name later.
 def_fn_statement
-  : DEF (FNID | FN ID) ('(' def_fn_parameter_list? ')')?
+  : DEF (name=FNID | FN name=ID) ('(' def_fn_parameter_list? ')')?
     ('=' expr
      | block
        END DEF)
@@ -185,7 +187,7 @@ def_fn_parameter
 
 // IDE drops empty '()' parameter lists.
 function_statement
-  : FUNCTION ID ('(' parameter_list? ')')? STATIC?
+  : label? FUNCTION name=ID ('(' parameter_list? ')')? STATIC?
     block
     end_function_statement
   ;
@@ -250,7 +252,7 @@ option_statement
 
 // IDE drops empty '()' parameter lists.
 sub_statement
-  : SUB untyped_id ('(' parameter_list? ')')? STATIC?
+  : label? SUB name=untyped_id ('(' parameter_list? ')')? STATIC?
     block
     end_sub_statement
   ;
@@ -678,6 +680,7 @@ rem_statement
   ;
 
 // A special kind of return statement just for ON ERROR handlers.
+// *** RESUME is illegal inside procedures or def fns.
 resume_statement
   : RESUME (NEXT | target)?;
 

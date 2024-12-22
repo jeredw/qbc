@@ -35,15 +35,18 @@ body {
   font-family: 'Web IBM VGA 8x16';
 }
 
-.code-pane {
-  box-sizing: content-box;
+.code-box {
   background: var(--qbc-blue);
+  padding: 8px;
+  border: 1px solid var(--qbc-gray);
+}
+
+.code-pane {
   /* 80 rows by 25 columns */
   width: 640px;
   height: 400px;
-  padding: 4px;
   white-space: pre;
-  border: 1px solid var(--qbc-gray);
+  overflow: auto;
 }
 
 .code-pane:focus {
