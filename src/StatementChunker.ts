@@ -37,7 +37,7 @@ export class StatementChunker extends QBasicParserListener {
     context.targets.forEach((target, statementIndex) => {
       if (!context.labels.has(target)) {
         const statement = context.statements[statementIndex];
-        throw new ParseError(statement, "Label not defined");
+        throw new ParseError(statement.start!, "Label not defined");
       }
     });
   }
@@ -45,7 +45,7 @@ export class StatementChunker extends QBasicParserListener {
   override enterLabel = (ctx: LabelContext) => {
     const label = this.canonicalizeLabel(ctx.getText());
     if (this._allLabels.has(label)) {
-      throw new ParseError(ctx, 'Duplicate label');
+      throw new ParseError(ctx.start!, 'Duplicate label');
     }
     this._allLabels.add(label);
     this._context.labels.set(label, this._context.statements.length);

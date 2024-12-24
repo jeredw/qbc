@@ -1,24 +1,24 @@
-import {ParserRuleContext} from "antlr4ng"
+import { Token } from "antlr4ng"
 
 /** Semantic errors detected at parse time. */
 export class ParseError extends Error {
-  parseContext: ParserRuleContext;
+  offendingSymbol: Token;
 
-  constructor(parseContext: ParserRuleContext, message: string, ...params: any[]) {
+  constructor(offendingSymbol: Token, message: string, ...params: any[]) {
     super(...params);
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, ParseError);
     }
     this.name = "ParseError";
-    this.parseContext = parseContext;
+    this.offendingSymbol = offendingSymbol;
     this.message = message;
   }
 
   get location() {
-    const start = this.parseContext.start!;
-    const line = start.line;
-    const column = start.column;
-    const length = start.text?.length;
-    return {line, column, length};
+    return {
+      line: this.offendingSymbol.line,
+      column: this.offendingSymbol.column,
+      length: this.offendingSymbol.text?.length
+    };
   }
 }
