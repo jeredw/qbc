@@ -17,9 +17,6 @@ class Shell {
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
     this.runButton.addEventListener('click', () => this.run());
-    this.codePane.addEventListener('input', () => {
-      this.clearErrors();
-    });
     this.error = this.codePane.querySelector('.error');
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (document.activeElement != this.codePane) {
@@ -43,11 +40,13 @@ class Shell {
           e.preventDefault();
           return false;
       }
+      this.clearErrors();
       console.log(e);
     });
   }
 
   run() {
+    this.clearErrors();
     const text = this.codePane.innerText;
     try {
       this.interpreter.run(text);
@@ -99,7 +98,9 @@ class Shell {
 }
 
 function errorHtml(programText: string, message: string) {
-  return `<span class="error">${programText}<div class="tooltip-text">↑ ${message}</div></span>`;
+  return `<span class="error">${programText}` +
+    `<div class="tooltip-text" contenteditable="false">↑ ${message}</div>` +
+    `</span>`;
 }
 
 function insertText(editor: HTMLElement, text: string) {
