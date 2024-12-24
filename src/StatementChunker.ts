@@ -2,10 +2,11 @@ import { LabelContext } from "../build/QBasicParser.js";
 import { Def_fn_statementContext, Exit_statementContext, Function_statementContext, TargetContext } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTree } from "antlr4ng";
+import { ParseError } from "./Errors.ts";
 
 interface Context {
   labels: Map<string, number>;
-  statements: ParseTree[];
+  statements: ParserRuleContext[];
   targets: Map<number, string>;
 }
 
@@ -33,29 +34,32 @@ export class StatementChunker extends QBasicParserListener {
   }
 
   private checkTargets(context: Context) {
-    context.targets.forEach((target, _statement) => {
+    context.targets.forEach((target, statementIndex) => {
       if (!context.labels.has(target)) {
-        throw new Error("Label not defined");
+        const statement = context.statements[statementIndex];
+        throw new ParseError(statement, "Label not defined");
       }
     });
   }
 
   override enterLabel = (ctx: LabelContext) => {
-    let label = ctx.getText();
-    if (label.endsWith(':')) {
-      label = label.substring(0, label.length - 1);
-    }
+    const label = this.canonicalizeLabel(ctx.getText());
     if (this._allLabels.has(label)) {
-      throw new Error('Duplicate label');
+      throw new ParseError(ctx, 'Duplicate label');
     }
     this._allLabels.add(label);
     this._context.labels.set(label, this._context.statements.length);
   }
 
   override enterTarget = (ctx: TargetContext) => {
-    const label = ctx.getText();
+    const label = this.canonicalizeLabel(ctx.getText());
     const statementIndex = this._context.statements.length - 1;
     this._context.targets.set(statementIndex, label);
+  }
+
+  private canonicalizeLabel(label: string): string {
+    const stripped = label.endsWith(':') ?  label.substring(0, label.length - 1) : label;
+    return stripped.toLowerCase();
   }
 
   private statement = (ctx: ParserRuleContext) => {

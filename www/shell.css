@@ -1,13 +1,13 @@
 :root {
   --qbc-black: #000000;
-  --qbc-blue: #000080;
-  --qbc-green: #008000;
-  --qbc-cyan: #008080;
-  --qbc-red: #800000;
-  --qbc-magenta: #800080;
-  --qbc-brown: #808000;
+  --qbc-blue: #0000b0;
+  --qbc-green: #00b000;
+  --qbc-cyan: #00b0b0;
+  --qbc-red: #b00000;
+  --qbc-magenta: #b000b0;
+  --qbc-brown: #b08000;
   --qbc-light-gray: #c0c0c0;
-  --qbc-dark-gray: #808080;
+  --qbc-dark-gray: #b0b0b0;
   --qbc-high-blue: #0000ff;
   --qbc-high-green: #00ff00;
   --qbc-high-cyan: #00ffff;
@@ -33,22 +33,58 @@ body {
   background: var(--qbc-black);
   color: var(--qbc-light-gray);
   font-family: 'Web IBM VGA 8x16';
+  font-size: 22px;
+}
+
+.toolbar {
+  background: var(--qbc-light-gray);
+  width: 644px;
+  padding: 0 8px;
+}
+
+button {
+  background: var(--qbc-light-gray);
+  color: var(--qbc-black);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: normal;
+  border: none;
+  margin: 0;
+  padding: 0 4px;
+}
+
+button:active {
+  background: var(--qbc-black);
+  color: var(--qbc-light-gray);
 }
 
 .code-box {
   background: var(--qbc-blue);
-  padding: 8px;
-  border: 1px solid var(--qbc-gray);
+  padding: 8px 4px;
+  width: 652px;
+}
+
+.code-pane::selection {
+  background: var(--qbc-light-gray);
+  color: var(--qbc-blue);
 }
 
 .code-pane {
   /* 80 rows by 25 columns */
   width: 640px;
   height: 400px;
+  padding: 8px 4px;
+  border-color: var(--qbc-light-gray);
+  border-style: solid;
+  border-width: 1px 1.6px;
   white-space: pre;
   overflow: auto;
 }
 
 .code-pane:focus {
   outline: none;
+}
+
+.error {
+  background: var(--qbc-red);
 }

@@ -65,12 +65,19 @@ block
     label? (statement | if_block_statement) (COLON statement)*
   ;
 
+// Used to define labels.
 label
   : (line_number | text_label COLON) ;
 
+// Used to reference labels.
+target
+  : line_number
+  | text_label
+  ;
+
 // QBasic recognizes line numbers up to 40 digits long, suggesting even numeric
 // labels are just a relaxed case of IDs.  This grammar doesn't impose a limit.
-// *** Labels or line numbers must be distinct.
+// *** Labels or line numbers must be globally distinct.
 line_number : DIGITS ;
 text_label : untyped_id | untyped_fnid;
 
@@ -476,11 +483,6 @@ gosub_statement
 // GOTO can't jump into or out of subroutines.
 goto_statement
   : GOTO target
-  ;
-
-target
-  : line_number
-  | text_label
   ;
 
 // IF has a concise inline form that can occur anywhere.
