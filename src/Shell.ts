@@ -5,18 +5,22 @@ const TAB_STOPS = 8;
 
 class Shell {
   private root: HTMLElement;
-  private codePane: HTMLElement;
   private interpreter: Interpreter;
-  private error: HTMLElement;
+
+  private codePane: HTMLElement;
+  private error: HTMLElement | null;
+  private runButton: HTMLElement;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.interpreter = new Interpreter();
-    this.codePane = root.querySelector('.code-pane');
-    this.error = this.codePane.querySelector('.error');
+    this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
+    this.runButton = assertHTMLElement(root.querySelector('.run-button'));
+    this.runButton.addEventListener('click', () => this.run());
     this.codePane.addEventListener('input', () => {
       this.clearErrors();
     });
+    this.error = this.codePane.querySelector('.error');
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (document.activeElement != this.codePane) {
         return;
@@ -37,8 +41,6 @@ class Shell {
       }
       console.log(e);
     });
-    const runButton = root.querySelector('.run-button');
-    runButton.addEventListener('click', () => this.run());
   }
 
   run() {
@@ -87,7 +89,7 @@ class Shell {
 
 function insertText(editor, text) {
   const selection = window.getSelection();
-  if (!selection.rangeCount) {
+  if (!selection?.rangeCount) {
     return;
   }
   const range = selection.getRangeAt(0);
@@ -114,5 +116,12 @@ function expandTab(editor: HTMLElement, range: Range, text: string) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const shell = new Shell(document.querySelector('.shell'));
+  const shell = new Shell(assertHTMLElement(document.querySelector('.shell')));
 });
+
+function assertHTMLElement(element: Element | null): HTMLElement {
+  if (!(element instanceof HTMLElement)) {
+    throw new Error("expecting element");
+  }
+  return element;
+}
