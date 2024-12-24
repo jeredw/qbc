@@ -42,6 +42,13 @@ body {
   padding: 0 8px;
 }
 
+.status-line {
+  color: var(--qbc-white);
+  background: var(--qbc-cyan);
+  width: 644px;
+  padding: 0 8px;
+}
+
 button {
   background: var(--qbc-light-gray);
   color: var(--qbc-black);
@@ -86,5 +93,16 @@ button:active {
 }
 
 .error {
-  background: var(--qbc-red);
+  position: relative;
+  text-decoration: 2px var(--qbc-red) wavy underline;
+}
+
+.error .tooltip-text {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  background: var(--qbc-magenta);
+  color: var(--qbc-white);
+  border: 2px dotted var(--qbc-blue);
+  padding-right: 8px;
 }

@@ -27,16 +27,20 @@ class Shell {
       }
       switch (e.key) {
         case 'Enter':
-          // Default behavior is to insert <br> nodes.
-          insertText(this.codePane, '\n');
+          if (e.altKey || e.metaKey) {
+            setTimeout(() => this.run());
+          } else {
+            // Default behavior is to insert <br> nodes.
+            insertText(this.codePane, '\n');
+            this.clearErrors();
+          }
           e.preventDefault();
-          this.clearErrors();
           return false;
         case 'Tab':
           // Default behavior is to switch focus.
           insertText(this.codePane, '\t');
-          e.preventDefault();
           this.clearErrors();
+          e.preventDefault();
           return false;
       }
       console.log(e);
@@ -57,7 +61,8 @@ class Shell {
   private clearErrors() {
     if (this.error) {
       this.error.classList.remove('error');
-      this.error.removeAttribute('title');
+      const tooltip = this.error.querySelector('.tooltip-text');
+      tooltip?.remove();
       this.error = null;
     }
   }
@@ -65,15 +70,21 @@ class Shell {
   private markError(line: number, column: number, length: number, message: string) {
     const text = this.codePane.innerText;
     const lines = text.split('\n');
-    const beforeErrorText = lines[line].substr(0, column);
-    const errorText = lines[line].substr(column, length);
-    const afterErrorText = lines[line].substr(column + length);
-    lines[line] = `${beforeErrorText}<span class="error">${errorText}</span>${afterErrorText}`;
+    const beforeErrorText = lines[line].slice(0, column);
+    const errorText = lines[line].slice(column, column + length);
+    const afterErrorText = lines[line].slice(column + length);
+    lines[line] = `${beforeErrorText}${errorHtml(errorText, message)}${afterErrorText}`;
     this.codePane.innerHTML = lines.join('\n');
     this.error = this.codePane.querySelector('.error');
     if (this.error) {
-      this.error.setAttribute('title', message);
       this.error.scrollIntoView();
+      const selection = window.getSelection();
+      if (selection) {
+        const range = new Range();
+        range.setStartBefore(this.error);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
     }
   }
 
@@ -87,7 +98,11 @@ class Shell {
   }
 }
 
-function insertText(editor, text) {
+function errorHtml(programText: string, message: string) {
+  return `<span class="error">${programText}<div class="tooltip-text">↑ ${message}</div></span>`;
+}
+
+function insertText(editor: HTMLElement, text: string) {
   const selection = window.getSelection();
   if (!selection?.rangeCount) {
     return;
@@ -96,7 +111,11 @@ function insertText(editor, text) {
   range.collapse();
   const expandedText = expandTab(editor, range, text);
   const node = document.createTextNode(expandedText);
+  const anchor = document.createElement('span');
+  range.insertNode(anchor);
   range.insertNode(node);
+  anchor.scrollIntoView();
+  anchor.remove();
   range.setStartAfter(node);
 }
 
