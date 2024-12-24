@@ -97,7 +97,13 @@ button:active {
   text-decoration: 2px var(--qbc-red) wavy underline;
 }
 
-.error .tooltip-text {
+@keyframes fade-in {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
+.tooltip-text {
+  animation: fade-in 100ms ease-in;
   position: absolute;
   z-index: 1;
   left: 0;

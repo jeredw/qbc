@@ -109,7 +109,7 @@ function insertText(editor: HTMLElement, text: string) {
   }
   const range = selection.getRangeAt(0);
   range.collapse();
-  const expandedText = expandTab(editor, range, text);
+  const expandedText = expandText(editor, range, text);
   const node = document.createTextNode(expandedText);
   const anchor = document.createElement('span');
   range.insertNode(anchor);
@@ -119,9 +119,9 @@ function insertText(editor: HTMLElement, text: string) {
   range.setStartAfter(node);
 }
 
-// Convert tabs into the appropriate number of spaces.
-function expandTab(editor: HTMLElement, range: Range, text: string) {
+function expandText(editor: HTMLElement, range: Range, text: string) {
   if (text == '\t') {
+    // Convert tabs to the appropriate number of spaces.
     const beforeRange = range.cloneRange();
     beforeRange.selectNodeContents(editor);
     beforeRange.setEnd(range.endContainer, range.endOffset);
@@ -130,6 +130,15 @@ function expandTab(editor: HTMLElement, range: Range, text: string) {
     const offsetInLine = offset - beforeText.lastIndexOf('\n');
     const spacesToTab = TAB_STOPS - ((offsetInLine - 1) % TAB_STOPS);
     return " ".repeat(spacesToTab);
+  }
+  if (text == '\n') {
+    // Need two newlines at the end of the input.
+    const afterRange = range.cloneRange();
+    afterRange.selectNodeContents(editor);
+    afterRange.setStart(range.endContainer, range.endOffset);
+    if (afterRange.toString().length == 0) {
+      return "\n\n";
+    }
   }
   return text;
 }
