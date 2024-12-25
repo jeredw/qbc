@@ -38,12 +38,12 @@
               (expr 
                 (builtin_function TIMER)) - 
               (expr 
-                (variable_or_function_call StartTime))))) \n statement) WEND)) \n 
+                (variable_or_function_call StartTime))))) \n) WEND)) \n 
   (statement 
-    (end_statement END)) \n statement \n 
+    (end_statement END)) \n \n 
   (label 
     (text_label 
-      (untyped_id TimeUpdate)) :) statement \n 
+      (untyped_id TimeUpdate)) :) \n 
   (statement 
     (locate_statement LOCATE 
       (expr 

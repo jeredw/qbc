@@ -1,4 +1,4 @@
-(program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+(program \n \n \n \n \n \n \n \n 
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \n 
@@ -96,7 +96,7 @@
         (declare_parameter Lower) , 
         (declare_parameter Upper) , 
         (declare_parameter Current) , 
-        (declare_parameter Inc)) )) \n statement \n statement \n 
+        (declare_parameter Inc)) )) \n \n \n 
   (statement 
     (const_statement CONST 
       (const_assignment PI = 
@@ -129,7 +129,7 @@
       (const_assignment TCOL = 
         (const_expr 
           (expr 
-            (literal 60)))))) \n statement \n statement \n 
+            (literal 60)))))) \n \n \n 
   (statement 
     (const_statement CONST 
       (const_assignment RNDM = 
@@ -148,7 +148,7 @@
       (const_assignment CONTINUE = 
         (const_expr 
           (expr 
-            (literal 1)))))) \n statement \n statement \n 
+            (literal 1)))))) \n \n \n 
   (statement 
     (const_statement CONST 
       (const_assignment VGA = 
@@ -190,7 +190,7 @@
       (const_assignment CGA = 
         (const_expr 
           (expr 
-            (literal 1)))))) \n statement \n statement \n 
+            (literal 1)))))) \n \n \n 
   (type_statement TYPE 
     (untyped_id Tile) \n 
     (type_element 
@@ -228,7 +228,7 @@
       (type_name_for_type_element SINGLE) \n) 
     (type_element 
       (untyped_id TColor) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n \n \n 
   (type_statement TYPE 
     (untyped_id Config) \n 
     (type_element 
@@ -251,13 +251,13 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id TROW) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n \n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
         (untyped_id VC) AS 
         (type_name 
-          (untyped_id Config))))) \n statement \n statement \n 
+          (untyped_id Config))))) \n \n \n 
   (type_statement TYPE 
     (untyped_id TORUS) \n 
     (type_element 
@@ -281,7 +281,7 @@
         (fixed_string STRING * 3)) \n) 
     (type_element 
       (untyped_id Delay) AS 
-      (type_name_for_type_element SINGLE) \n) END TYPE) \n statement \n 
+      (type_name_for_type_element SINGLE) \n) END TYPE) \n \n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -290,7 +290,7 @@
           (untyped_id TORUS))) , 
       (dim_variable 
         (untyped_id Max) AS 
-        (type_name INTEGER)))) \n statement \n statement \n 
+        (type_name INTEGER)))) \n \n \n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -302,7 +302,7 @@
                 (literal 0)) TO 
               (expr 
                 (literal 300))) )) AS 
-        (type_name LONG)))) \n statement \n statement \n 
+        (type_name LONG)))) \n \n \n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -313,7 +313,7 @@
         (type_name INTEGER)) , 
       (dim_variable 
         (untyped_id Available) AS 
-        (type_name STRING)))) \n statement \n statement \n statement \n statement \n 
+        (type_name STRING)))) \n \n \n \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call TOR.Thick) = 
@@ -343,7 +343,7 @@
     (assignment_statement 
       (variable_or_function_call TOR.YDegree) = 
       (expr 
-        (literal 165)))) \n statement \n statement \n 
+        (literal 165)))) \n \n \n 
   (statement 
     (call_statement 
       (untyped_id GetConfig))) \n 
@@ -351,16 +351,16 @@
     (assignment_statement 
       (variable_or_function_call VC.Scrn) = 
       (expr 
-        (variable_or_function_call BestMode)))) \n statement \n 
+        (variable_or_function_call BestMode)))) \n \n 
   (statement 
     (do_loop_statement DO 
       (do_condition WHILE 
         (expr 
           (variable_or_function_call TRUE))) 
-      (block \n statement \n statement \n 
+      (block \n \n \n 
         (statement 
           (call_statement 
-            (untyped_id TorusDefine))) \n statement \n statement \n 
+            (untyped_id TorusDefine))) \n \n \n 
         (statement 
           (do_loop_statement DO 
             (block \n 
@@ -376,7 +376,7 @@
                     (expr 
                       (variable_or_function_call TOR.Panel)) * 
                     (expr 
-                      (variable_or_function_call TOR.Sect))))) \n statement \n statement \n 
+                      (variable_or_function_call TOR.Sect))))) \n \n \n 
               (statement 
                 (dim_statement REDIM 
                   (dim_variable 
@@ -391,12 +391,12 @@
                               (variable_or_function_call Max)) - 
                             (expr 
                               (literal 1)))) )) AS 
-                    (type_name INTEGER)))) \n statement \n 
+                    (type_name INTEGER)))) \n \n 
               (statement 
                 (on_error_statement ON ERROR GOTO 
                   (target 
                     (text_label 
-                      (untyped_id MemErr))))) \n statement \n 
+                      (untyped_id MemErr))))) \n \n 
               (statement 
                 (dim_statement REDIM 
                   (dim_variable 
@@ -416,13 +416,13 @@
               (statement 
                 (on_error_statement ON ERROR GOTO 
                   (target 
-                    (line_number 0)))) \n statement) LOOP 
+                    (line_number 0)))) \n) LOOP 
             (do_condition UNTIL 
               (expr 
                 (expr 
                   (variable_or_function_call Tmp)) = 
                 (expr 
-                  (variable_or_function_call TOR.Panel)))))) \n statement \n statement \n 
+                  (variable_or_function_call TOR.Panel)))))) \n \n \n 
         (statement 
           (for_next_statement FOR Til = 
             (expr 
@@ -441,7 +441,7 @@
                         (expr 
                           (variable_or_function_call Til)) ))) = 
                   (expr 
-                    (variable_or_function_call Til)))) \n statement) NEXT)) \n statement \n statement \n 
+                    (variable_or_function_call Til)))) \n) NEXT)) \n \n \n 
         (statement 
           (call_statement 
             (untyped_id Message) 
@@ -454,13 +454,13 @@
             (untyped_id TorusCalc) 
             (call_argument_list 
               (call_argument T 
-                ( ))))) \n statement \n statement \n 
+                ( ))))) \n \n \n 
         (statement 
           (call_statement 
             (untyped_id TorusColor) 
             (call_argument_list 
               (call_argument T 
-                ( ))))) \n statement \n statement \n 
+                ( ))))) \n \n \n 
         (statement 
           (call_statement 
             (untyped_id Message) 
@@ -480,14 +480,14 @@
                   (expr 
                     (variable_or_function_call Max)) - 
                   (expr 
-                    (literal 1))))))) \n statement \n statement \n 
+                    (literal 1))))))) \n \n \n 
         (statement 
           (screen_statement SCREEN 
             (expr 
-              (variable_or_function_call VC.Scrn)))) \n statement \n statement \n 
+              (variable_or_function_call VC.Scrn)))) \n \n \n 
         (statement 
           (call_statement 
-            (untyped_id SetPalette))) \n statement \n statement \n statement \n 
+            (untyped_id SetPalette))) \n \n \n \n 
         (statement 
           (window_statement WINDOW 
             ( 
@@ -517,7 +517,7 @@
                 (expr 
                   (variable_or_function_call TOR.Thick)) + 
                 (expr 
-                  (literal 1))) ))) \n statement \n statement \n 
+                  (literal 1))) ))) \n \n \n 
         (statement 
           (call_statement 
             (untyped_id TorusDraw) 
@@ -525,7 +525,7 @@
               (call_argument T 
                 ( )) , 
               (call_argument Index 
-                ( ))))) \n statement \n statement \n 
+                ( ))))) \n \n \n 
         (statement 
           (do_loop_statement DO 
             (do_condition WHILE 
@@ -548,7 +548,7 @@
                 (call_statement 
                   (untyped_id TorusRotate) 
                   (call_argument_list 
-                    (call_argument CONTINUE)))) \n statement) LOOP)) \n 
+                    (call_argument CONTINUE)))) \n) LOOP)) \n 
         (statement 
           (screen_statement SCREEN 
             (expr 
@@ -556,18 +556,18 @@
         (statement 
           (width_statement WIDTH 
             (expr 
-              (literal 80)))) \n statement) LOOP)) \n statement \n statement \n 
+              (literal 80)))) \n) LOOP)) \n \n \n 
   (statement 
     (width_statement WIDTH 
       (expr 
         (literal 80)) , 
       (expr 
-        (variable_or_function_call InitRows)))) \n statement \n 
+        (variable_or_function_call InitRows)))) \n \n 
   (statement 
-    (end_statement END)) \n statement \n statement \n 
+    (end_statement END)) \n \n \n 
   (label 
     (text_label 
-      (untyped_id VideoErr)) :) statement \n 
+      (untyped_id VideoErr)) :) \n 
   (statement 
     (select_case_statement SELECT CASE 
       (expr 
@@ -588,7 +588,7 @@
             (assignment_statement 
               (variable_or_function_call Available) = 
               (expr 
-                (literal "12BD")))) \n statement)) 
+                (literal "12BD")))) \n)) 
       (case_block 
         (case_statement CASE 
           (case_expr 
@@ -604,7 +604,7 @@
             (assignment_statement 
               (variable_or_function_call Available) = 
               (expr 
-                (literal "12789")))) \n statement)) 
+                (literal "12789")))) \n)) 
       (case_block 
         (case_statement CASE 
           (case_expr 
@@ -620,7 +620,7 @@
             (assignment_statement 
               (variable_or_function_call Available) = 
               (expr 
-                (literal "12")))) \n statement)) 
+                (literal "12")))) \n)) 
       (case_block 
         (case_statement CASE 
           (case_expr 
@@ -636,7 +636,7 @@
             (assignment_statement 
               (variable_or_function_call Available) = 
               (expr 
-                (literal "A")))) \n statement)) 
+                (literal "A")))) \n)) 
       (case_block 
         (case_statement CASE 
           (case_expr 
@@ -652,7 +652,7 @@
             (assignment_statement 
               (variable_or_function_call Available) = 
               (expr 
-                (literal "3")))) \n statement)) 
+                (literal "3")))) \n)) 
       (case_block 
         (case_statement CASE ELSE) 
         (block \n 
@@ -661,13 +661,13 @@
               (expr 
                 (literal "Sorry. Graphics not available. Can't run Torus.")))) \n 
           (statement 
-            (end_statement END)) \n statement)) 
+            (end_statement END)) \n)) 
       (end_select_statement END SELECT))) \n 
   (statement 
-    (resume_statement RESUME)) \n statement \n statement \n 
+    (resume_statement RESUME)) \n \n \n 
   (label 
     (text_label 
-      (untyped_id EGAErr)) :) statement \n 
+      (untyped_id EGAErr)) :) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call BestMode) = 
@@ -679,10 +679,10 @@
       (expr 
         (literal "12789")))) \n 
   (statement 
-    (resume_statement RESUME NEXT)) \n statement \n statement \n 
+    (resume_statement RESUME NEXT)) \n \n \n 
   (label 
     (text_label 
-      (untyped_id MemErr)) :) statement \n 
+      (untyped_id MemErr)) :) \n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -745,10 +745,10 @@
         (expr 
           (literal 1))))) \n 
   (statement 
-    (resume_statement RESUME NEXT)) \n statement \n statement \n 
+    (resume_statement RESUME NEXT)) \n \n \n 
   (label 
     (text_label 
-      (untyped_id RowErr)) :) statement \n 
+      (untyped_id RowErr)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -764,7 +764,7 @@
       (statement 
         (resume_statement RESUME)) \n) 
     (else_block_statement ELSE 
-      (else_block statement \n 
+      (else_block \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call InitRows) = 
@@ -772,14 +772,14 @@
               (literal 25)))) \n 
         (statement 
           (resume_statement RESUME NEXT)) \n)) 
-    (end_if_statement END IF)) \n statement \n statement \n statement \n statement \n statement \n 
+    (end_if_statement END IF)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id CountTiles) 
     ( 
       (parameter_list 
         (parameter T1) , 
         (parameter T2)) ) STATIC 
-    (block \n statement \n statement \n 
+    (block \n \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -796,7 +796,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (literal 19)) )))) ;)) \n statement \n 
+                    (literal 19)) )))) ;)) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -835,13 +835,13 @@
                 (literal " ###")) ; 
               (expr 
                 (variable_or_function_call T2)) ;)) \n) 
-        (end_if_statement END IF)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
   (function_statement FUNCTION DegToRad! 
     ( 
       (parameter_list 
         (parameter Degrees)) ) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call DegToRad!) = 
@@ -857,14 +857,14 @@
                   (expr 
                     (variable_or_function_call PI))) )) / 
             (expr 
-              (literal 360))))) \n statement \n statement) 
-    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+              (literal 360))))) \n \n) 
+    (end_function_statement END FUNCTION)) \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id Delay) 
     ( 
       (parameter_list 
         (parameter Seconds!)) ) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Begin!) = 
@@ -894,8 +894,8 @@
                         (variable_or_function_call Begin!))) < 
                     (expr 
                       (literal 0))) )))) 
-          (block \n statement) LOOP)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+          (block \n) LOOP)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id GetConfig) STATIC 
     (block \n 
@@ -909,7 +909,7 @@
             (type_name INTEGER)) , 
           (scope_variable 
             (untyped_id Available) AS 
-            (type_name STRING)))) \n statement \n statement \n statement \n 
+            (type_name STRING)))) \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call InitRows) = 
@@ -925,7 +925,7 @@
           (expr 
             (variable_or_function_call InitRows)) , 
           (expr 
-            (literal 1)))) \n statement \n statement \n 
+            (literal 1)))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BestMode) = 
@@ -935,16 +935,16 @@
         (assignment_statement 
           (variable_or_function_call Available) = 
           (expr 
-            (literal "12789BCD")))) \n statement \n 
+            (literal "12789BCD")))) \n \n 
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
             (text_label 
-              (untyped_id VideoErr))))) \n statement \n 
+              (untyped_id VideoErr))))) \n \n 
       (statement 
         (screen_statement SCREEN 
           (expr 
-            (variable_or_function_call BestMode)))) \n statement \n 
+            (variable_or_function_call BestMode)))) \n \n 
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
@@ -963,11 +963,11 @@
                 (expr 
                   (literal 8)) , , 
                 (expr 
-                  (literal 1))))))) \n statement \n 
+                  (literal 1))))))) \n \n 
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
-            (line_number 0)))) \n statement \n statement \n 
+            (line_number 0)))) \n \n \n 
       (statement 
         (screen_statement SCREEN 
           (expr 
@@ -979,8 +979,8 @@
           (expr 
             (literal 80)) , 
           (expr 
-            (literal 25)))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (literal 25)))) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n 
   (function_statement FUNCTION Inside 
     ( 
       (parameter_list 
@@ -1002,7 +1002,7 @@
             (type_name SINGLE)) , 
           (dim_variable 
             (untyped_id Lowest) AS 
-            (type_name SINGLE)))) \n statement \n 
+            (type_name SINGLE)))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Border) = 
@@ -1010,7 +1010,7 @@
             (expr 
               (variable_or_function_call VC.Atribs)) - 
             (expr 
-              (literal 1))))) \n statement \n statement \n statement \n statement \n statement \n 
+              (literal 1))))) \n \n \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T.xc) = 
@@ -1068,7 +1068,7 @@
                         (expr 
                           (variable_or_function_call T.y2))) )) / 
                   (expr 
-                    (literal 2))) ))))) \n statement \n statement \n 
+                    (literal 2))) ))))) \n \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -1089,7 +1089,7 @@
                 (variable_or_function_call FALSE)))) \n 
           (statement 
             (exit_statement EXIT FUNCTION)) \n) 
-        (end_if_statement END IF)) \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Highest) = 
@@ -1177,7 +1177,7 @@
               (assignment_statement 
                 (variable_or_function_call Lowest) = 
                 (expr 
-                  (variable_or_function_call T.y4))))))) \n statement \n statement \n 
+                  (variable_or_function_call T.y4))))))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call X) = 
@@ -1226,7 +1226,7 @@
                   (expr 
                     (variable_or_function_call Lowest)) , 
                   (expr 
-                    (literal 1)) )))))) \n statement \n statement \n statement \n statement \n 
+                    (literal 1)) )))))) \n \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call IsUp) = 
@@ -1236,7 +1236,7 @@
         (assignment_statement 
           (variable_or_function_call IsDown) = 
           (expr 
-            (variable_or_function_call FALSE)))) \n statement \n 
+            (variable_or_function_call FALSE)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -1255,7 +1255,7 @@
                   (expr 
                     (variable_or_function_call YD)) + 
                   (expr 
-                    (literal 1))))) \n statement \n statement \n 
+                    (literal 1))))) \n \n \n 
             (if_block_statement IF 
               (expr NOT 
                 (expr 
@@ -1286,7 +1286,7 @@
                           (variable_or_function_call IsUp) = 
                           (expr 
                             (variable_or_function_call TRUE))))))) \n) 
-              (end_if_statement END IF)) \n statement \n statement \n 
+              (end_if_statement END IF)) \n \n \n 
             (if_block_statement IF 
               (expr NOT 
                 (expr 
@@ -1317,7 +1317,7 @@
                           (variable_or_function_call IsDown) = 
                           (expr 
                             (variable_or_function_call TRUE))))))) \n) 
-              (end_if_statement END IF)) \n statement \n statement \n 
+              (end_if_statement END IF)) \n \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -1332,7 +1332,7 @@
                       (variable_or_function_call TRUE)))) \n 
                 (statement 
                   (exit_statement EXIT FUNCTION)) \n) 
-              (end_if_statement END IF)) \n statement \n statement) LOOP 
+              (end_if_statement END IF)) \n \n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
@@ -1353,8 +1353,8 @@
         (assignment_statement 
           (variable_or_function_call Inside) = 
           (expr 
-            (variable_or_function_call FALSE)))) \n statement \n statement) 
-    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n 
+            (variable_or_function_call FALSE)))) \n \n) 
+    (end_function_statement END FUNCTION)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id Message) 
     ( 
@@ -1366,7 +1366,7 @@
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
-              (untyped_id Config))))) \n statement \n 
+              (untyped_id Config))))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -1406,8 +1406,8 @@
       (statement 
         (color_statement COLOR 
           (expr 
-            (literal 7)))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (literal 7)))) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
   (function_statement FUNCTION Rotated 
     ( 
       (parameter_list 
@@ -1415,7 +1415,7 @@
         (parameter Upper) , 
         (parameter Current) , 
         (parameter Inc)) ) 
-    (block \n statement \n statement \n 
+    (block \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Current) = 
@@ -1423,7 +1423,7 @@
             (expr 
               (variable_or_function_call Current)) + 
             (expr 
-              (variable_or_function_call Inc))))) \n statement \n statement \n 
+              (variable_or_function_call Inc))))) \n \n \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -1454,8 +1454,8 @@
         (assignment_statement 
           (variable_or_function_call Rotated) = 
           (expr 
-            (variable_or_function_call Current)))) \n statement \n statement) 
-    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (variable_or_function_call Current)))) \n \n) 
+    (end_function_statement END FUNCTION)) \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id SetConfig) 
     ( 
@@ -1472,7 +1472,7 @@
               (untyped_id Config))) , 
           (scope_variable 
             (untyped_id BestMode) AS 
-            (type_name INTEGER)))) \n statement \n 
+            (type_name INTEGER)))) \n \n 
       (statement 
         (select_case_statement SELECT CASE 
           (expr 
@@ -1503,7 +1503,7 @@
                       (expr 
                         (literal 0)))) \n) 
                 (else_block_statement ELSE 
-                  (else_block statement \n 
+                  (else_block \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call VC.Colors) = 
@@ -1534,7 +1534,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1560,7 +1560,7 @@
                       (expr 
                         (literal 0)))) \n) 
                 (else_block_statement ELSE 
-                  (else_block statement \n 
+                  (else_block \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call VC.Colors) = 
@@ -1591,7 +1591,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1627,7 +1627,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1663,7 +1663,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1699,7 +1699,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1749,7 +1749,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1785,13 +1785,13 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
                 (expr 
                   (literal 11)))) 
-            (block \n statement \n statement \n 
+            (block \n \n \n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call VC.Colors) = 
@@ -1821,7 +1821,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 30)))) \n statement)) 
+                    (literal 30)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1857,7 +1857,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 30)))) \n statement)) 
+                    (literal 30)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1893,7 +1893,7 @@
                 (assignment_statement 
                   (variable_or_function_call VC.TROW) = 
                   (expr 
-                    (literal 25)))) \n statement)) 
+                    (literal 25)))) \n)) 
           (case_block 
             (case_statement CASE ELSE) 
             (block \n 
@@ -1933,14 +1933,14 @@
                   (expr 
                     (literal 0)))) \n 
               (statement 
-                (exit_statement EXIT SUB)) \n statement)) 
+                (exit_statement EXIT SUB)) \n)) 
           (end_select_statement END SELECT))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call VC.Scrn) = 
           (expr 
-            (variable_or_function_call mode)))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+            (variable_or_function_call mode)))) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id SetPalette) STATIC 
     (block \n 
@@ -1954,7 +1954,7 @@
             (untyped_id Pal) 
             (array_declaration 
               ( )) AS 
-            (type_name LONG)))) \n statement \n statement \n 
+            (type_name LONG)))) \n \n \n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call VC.Colors)) THEN \n 
@@ -1978,7 +1978,7 @@
                   (case_expr 
                     (expr 
                       (literal 8)))) 
-                (block \n statement \n statement \n statement \n 
+                (block \n \n \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Index) = 
@@ -2046,13 +2046,13 @@
                                                 (expr 
                                                   (variable_or_function_call Index)) + 
                                                 (expr 
-                                                  (literal 1))))) \n statement) NEXT)) \n statement) NEXT)) \n statement) NEXT)) \n statement) NEXT)) \n statement)) 
+                                                  (literal 1))))) \n) NEXT)) \n) NEXT)) \n) NEXT)) \n) NEXT)) \n)) 
               (case_block 
                 (case_statement CASE 
                   (case_expr 
                     (expr 
                       (literal 9)))) 
-                (block \n statement \n statement \n statement \n statement \n 
+                (block \n \n \n \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Index) = 
@@ -2146,7 +2146,7 @@
                                                             (expr 
                                                               (variable_or_function_call Index)) + 
                                                             (expr 
-                                                              (literal 1))))) \n statement) NEXT)) \n statement) NEXT)) \n statement) NEXT)) \n statement) NEXT)) \n statement) NEXT)) \n statement) NEXT)) \n statement)) 
+                                                              (literal 1))))) \n) NEXT)) \n) NEXT)) \n) NEXT)) \n) NEXT)) \n) NEXT)) \n) NEXT)) \n)) 
               (case_block 
                 (case_statement CASE 
                   (case_expr 
@@ -2158,7 +2158,7 @@
                   (case_expr 
                     (expr 
                       (literal 13)))) 
-                (block \n statement \n statement \n statement \n statement \n 
+                (block \n \n \n \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Index) = 
@@ -2223,11 +2223,11 @@
                                           (expr 
                                             (variable_or_function_call Index)) + 
                                           (expr 
-                                            (literal 1))))) \n statement) NEXT)) \n statement) NEXT)) \n statement) NEXT)) \n statement)) 
+                                            (literal 1))))) \n) NEXT)) \n) NEXT)) \n) NEXT)) \n)) 
               (case_block 
                 (case_statement CASE ELSE) 
-                (block \n statement)) 
-              (end_select_statement END SELECT))) \n statement \n 
+                (block \n)) 
+              (end_select_statement END SELECT))) \n \n 
           (statement 
             (if_inline_statement IF 
               (expr 
@@ -2241,8 +2241,8 @@
                     (untyped_id TorusRotate) 
                     (call_argument_list 
                       (call_argument RNDM))))))) \n) 
-        (end_if_statement END IF)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TileDraw) 
     ( 
@@ -2261,7 +2261,7 @@
           (scope_variable 
             (untyped_id TOR) AS 
             (type_name 
-              (untyped_id TORUS))))) \n statement \n statement \n 
+              (untyped_id TORUS))))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Border) = 
@@ -2269,14 +2269,14 @@
             (expr 
               (variable_or_function_call VC.Atribs)) - 
             (expr 
-              (literal 1))))) \n statement \n 
+              (literal 1))))) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
             (variable_or_function_call VC.Atribs)) = 
           (expr 
             (literal 2))) THEN \n 
-        (then_block statement \n 
+        (then_block \n 
           (statement 
             (line_statement LINE 
               ( 
@@ -2321,7 +2321,7 @@
           (statement 
             (exit_statement EXIT SUB)) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n statement \n statement \n 
+          (else_block \n \n \n 
             (statement 
               (line_statement LINE 
                 ( 
@@ -2363,7 +2363,7 @@
                     (variable_or_function_call T.y1)) ) , 
                 (expr 
                   (variable_or_function_call Border)))) \n)) 
-        (end_if_statement END IF)) \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n \n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call Inside 
@@ -2371,14 +2371,14 @@
               ( 
                 (expr 
                   (variable_or_function_call T)) )))) THEN \n 
-        (then_block statement \n 
+        (then_block \n 
           (statement 
             (preset_statement PRESET 
               ( 
                 (expr 
                   (variable_or_function_call T.xc)) , 
                 (expr 
-                  (variable_or_function_call T.yc)) ))) \n statement \n 
+                  (variable_or_function_call T.yc)) ))) \n \n 
           (statement 
             (paint_statement PAINT STEP 
               ( 
@@ -2389,7 +2389,7 @@
               (expr 
                 (variable_or_function_call BACK)) , 
               (expr 
-                (variable_or_function_call Border)))) \n statement \n 
+                (variable_or_function_call Border)))) \n \n 
           (statement 
             (paint_statement PAINT STEP 
               ( 
@@ -2401,7 +2401,7 @@
                 (variable_or_function_call T.TColor)) , 
               (expr 
                 (variable_or_function_call Border)))) \n) 
-        (end_if_statement END IF)) \n statement \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -2415,13 +2415,13 @@
               (expr 
                 (variable_or_function_call BACK)))) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n 
+          (else_block \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Border) = 
                 (expr 
                   (variable_or_function_call T.TColor)))) \n)) 
-        (end_if_statement END IF)) \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -2462,11 +2462,11 @@
             (expr 
               (variable_or_function_call T.y1)) ) , 
           (expr 
-            (variable_or_function_call Border)))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+            (variable_or_function_call Border)))) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (statement 
     (deftype_statement DEFSNG 
-      (letter_range A - Z))) \n statement \n statement \n statement \n statement \n 
+      (letter_range A - Z))) \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TorusCalc) 
     ( 
@@ -2494,7 +2494,7 @@
             (type_name INTEGER)) , 
           (dim_variable 
             (untyped_id YPanel) AS 
-            (type_name INTEGER)))) \n statement \n statement \n 
+            (type_name INTEGER)))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call XRot) = 
@@ -2548,7 +2548,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call YRot)) )))))) \n statement \n statement \n 
+                    (variable_or_function_call YRot)) )))))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call XInc) = 
@@ -2570,7 +2570,7 @@
               (expr 
                 (variable_or_function_call PI))) / 
             (expr 
-              (variable_or_function_call TOR.Panel))))) \n statement \n statement \n statement \n statement \n 
+              (variable_or_function_call TOR.Panel))))) \n \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call FirstY) = 
@@ -2583,7 +2583,7 @@
                   (expr 
                     (literal 1))) )) * 
             (expr 
-              (variable_or_function_call CYRot))))) \n statement \n statement \n 
+              (variable_or_function_call CYRot))))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
@@ -2592,7 +2592,7 @@
                 (expr 
                   (literal 0)) )) . x1) = 
           (expr 
-            (variable_or_function_call FirstY)))) \n statement \n 
+            (variable_or_function_call FirstY)))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
@@ -2604,7 +2604,7 @@
                   (expr 
                     (literal 1))) )) . x2) = 
           (expr 
-            (variable_or_function_call FirstY)))) \n statement \n 
+            (variable_or_function_call FirstY)))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
@@ -2616,7 +2616,7 @@
                   (expr 
                     (literal 1))) )) . x3) = 
           (expr 
-            (variable_or_function_call FirstY)))) \n statement \n 
+            (variable_or_function_call FirstY)))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
@@ -2628,7 +2628,7 @@
                   (expr 
                     (variable_or_function_call TOR.Sect))) )) . x4) = 
           (expr 
-            (variable_or_function_call FirstY)))) \n statement \n statement \n statement \n 
+            (variable_or_function_call FirstY)))) \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
@@ -2673,7 +2673,7 @@
                   (expr 
                     (variable_or_function_call TOR.Sect))) )) . y4) = 
           (expr 
-            (literal 0)))) \n statement \n statement \n 
+            (literal 0)))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
@@ -2691,7 +2691,7 @@
                     (expr 
                       (literal 1))) ))) * 
             (expr 
-              (variable_or_function_call SYRot))))) \n statement \n statement \n statement \n statement \n 
+              (variable_or_function_call SYRot))))) \n \n \n \n \n 
       (statement 
         (for_next_statement FOR XSect = 
           (expr 
@@ -2701,7 +2701,7 @@
               (variable_or_function_call TOR.Sect)) - 
             (expr 
               (literal 1))) 
-          (block \n statement \n statement \n 
+          (block \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call sx) = 
@@ -2785,7 +2785,7 @@
                         (expr 
                           (variable_or_function_call sx)) * 
                         (expr 
-                          (variable_or_function_call CYRot))) ))))) \n statement \n 
+                          (variable_or_function_call CYRot))) ))))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -2839,7 +2839,7 @@
                         (expr 
                           (variable_or_function_call XSect))) )) . x4) = 
                 (expr 
-                  (variable_or_function_call ssx)))) \n statement \n 
+                  (variable_or_function_call ssx)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -2893,7 +2893,7 @@
                         (expr 
                           (variable_or_function_call XSect))) )) . y4) = 
                 (expr 
-                  (variable_or_function_call sy)))) \n statement \n 
+                  (variable_or_function_call sy)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -2915,7 +2915,7 @@
                         (expr 
                           (variable_or_function_call sx)) * 
                         (expr 
-                          (variable_or_function_call SYRot))) ))))) \n statement) NEXT)) \n statement \n statement \n statement \n statement \n statement \n 
+                          (variable_or_function_call SYRot))) ))))) \n) NEXT)) \n \n \n \n \n \n 
       (statement 
         (for_next_statement FOR YPanel = 
           (expr 
@@ -2925,7 +2925,7 @@
               (variable_or_function_call TOR.Panel)) - 
             (expr 
               (literal 1))) 
-          (block \n statement \n statement \n 
+          (block \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call sx) = 
@@ -2989,7 +2989,7 @@
                         (expr 
                           (variable_or_function_call sx)) * 
                         (expr 
-                          (variable_or_function_call CYRot))) ))))) \n statement \n statement \n statement \n 
+                          (variable_or_function_call CYRot))) ))))) \n \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -3001,7 +3001,7 @@
                         (expr 
                           (variable_or_function_call YPanel))) )) . x1) = 
                 (expr 
-                  (variable_or_function_call ssx)))) \n statement \n 
+                  (variable_or_function_call ssx)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -3021,7 +3021,7 @@
                         (expr 
                           (literal 1))) )) . x2) = 
                 (expr 
-                  (variable_or_function_call ssx)))) \n statement \n 
+                  (variable_or_function_call ssx)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -3036,7 +3036,7 @@
                         (expr 
                           (literal 1))) )) . x3) = 
                 (expr 
-                  (variable_or_function_call ssx)))) \n statement \n 
+                  (variable_or_function_call ssx)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -3053,7 +3053,7 @@
                               (expr 
                                 (literal 1))) ))) )) . x4) = 
                 (expr 
-                  (variable_or_function_call ssx)))) \n statement \n statement \n 
+                  (variable_or_function_call ssx)))) \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -3117,7 +3117,7 @@
                               (expr 
                                 (literal 1))) ))) )) . y4) = 
                 (expr 
-                  (variable_or_function_call sy)))) \n statement \n statement \n 
+                  (variable_or_function_call sy)))) \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
@@ -3142,7 +3142,7 @@
                         (expr 
                           (variable_or_function_call sx)) * 
                         (expr 
-                          (variable_or_function_call SYRot))) ))))) \n statement \n statement \n statement \n 
+                          (variable_or_function_call SYRot))) ))))) \n \n \n \n 
             (statement 
               (for_next_statement FOR XSect = 
                 (expr 
@@ -3152,13 +3152,13 @@
                     (variable_or_function_call TOR.Sect)) - 
                   (expr 
                     (literal 1))) 
-                (block \n statement \n statement \n 
+                (block \n \n \n 
                   (statement 
                     (call_statement 
                       (untyped_id CountTiles) 
                       (call_argument_list 
                         (call_argument XSect) , 
-                        (call_argument YPanel)))) \n statement \n 
+                        (call_argument YPanel)))) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call ty) = 
@@ -3270,7 +3270,7 @@
                               (expr 
                                 (variable_or_function_call sx)) * 
                               (expr 
-                                (variable_or_function_call CYRot))) ))))) \n statement \n 
+                                (variable_or_function_call CYRot))) ))))) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
@@ -3346,7 +3346,7 @@
                               (expr 
                                 (variable_or_function_call XSect))) )) . x4) = 
                       (expr 
-                        (variable_or_function_call ssx)))) \n statement \n 
+                        (variable_or_function_call ssx)))) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
@@ -3422,7 +3422,7 @@
                               (expr 
                                 (variable_or_function_call XSect))) )) . y4) = 
                       (expr 
-                        (variable_or_function_call sy)))) \n statement \n 
+                        (variable_or_function_call sy)))) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
@@ -3450,7 +3450,7 @@
                               (expr 
                                 (variable_or_function_call sx)) * 
                               (expr 
-                                (variable_or_function_call SYRot))) ))))) \n statement) NEXT)) \n statement) NEXT)) \n statement \n 
+                                (variable_or_function_call SYRot))) ))))) \n) NEXT)) \n) NEXT)) \n \n 
       (statement 
         (call_statement 
           (untyped_id CountTiles) 
@@ -3462,11 +3462,11 @@
             (call_argument 
               (expr - 
                 (expr 
-                  (literal 1))))))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+                  (literal 1))))))) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement \n statement \n statement \n statement \n 
+      (letter_range A - Z))) \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TorusColor) 
     ( 
@@ -3486,7 +3486,7 @@
               (untyped_id Config))) , 
           (scope_variable 
             (untyped_id Max) AS 
-            (type_name INTEGER)))) \n statement \n statement \n 
+            (type_name INTEGER)))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call LastAtr) = 
@@ -3499,7 +3499,7 @@
         (assignment_statement 
           (variable_or_function_call Atr) = 
           (expr 
-            (literal 1)))) \n statement \n statement \n 
+            (literal 1)))) \n \n \n 
       (statement 
         (for_next_statement FOR Til = 
           (expr 
@@ -3525,7 +3525,7 @@
                     (expr 
                       (literal 1)))) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Atr) = 
@@ -3543,8 +3543,8 @@
                       (expr 
                         (variable_or_function_call Til)) )) . TColor) = 
                 (expr 
-                  (variable_or_function_call Atr)))) \n statement) NEXT)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                  (variable_or_function_call Atr)))) \n) NEXT)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TorusDefine) STATIC 
     (block \n 
@@ -3560,7 +3560,7 @@
               (untyped_id TORUS))) , 
           (scope_variable 
             (untyped_id Available) AS 
-            (type_name STRING)))) \n statement \n statement \n 
+            (type_name STRING)))) \n \n \n 
       (statement 
         (const_statement CONST 
           (const_assignment ENTER = 
@@ -3602,7 +3602,7 @@
           (const_assignment ROW = 
             (const_expr 
               (expr 
-                (literal 9)))))) \n statement \n statement \n 
+                (literal 9)))))) \n \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3662,7 +3662,7 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (literal "ESCAPE .................. Quit Torus")))) \n statement \n statement \n 
+            (literal "ESCAPE .................. Quit Torus")))) \n \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3674,7 +3674,7 @@
           (expr 
             (literal 1)) , 
           (expr 
-            (literal 12)))) \n statement \n 
+            (literal 12)))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3696,7 +3696,7 @@
           (expr 
             (literal "[ # ]")) ; 
           (expr 
-            (variable_or_function_call TOR.Thick)) ;)) \n statement \n 
+            (variable_or_function_call TOR.Thick)) ;)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3724,7 +3724,7 @@
           (expr 
             (literal "[ ## ]")) ; 
           (expr 
-            (variable_or_function_call TOR.Panel)) ;)) \n statement \n 
+            (variable_or_function_call TOR.Panel)) ;)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3752,7 +3752,7 @@
           (expr 
             (literal "[ ## ]")) ; 
           (expr 
-            (variable_or_function_call TOR.Sect)) ;)) \n statement \n 
+            (variable_or_function_call TOR.Sect)) ;)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3780,7 +3780,7 @@
           (expr 
             (literal "[ ### ]")) ; 
           (expr 
-            (variable_or_function_call TOR.XDegree)) ;)) \n statement \n 
+            (variable_or_function_call TOR.XDegree)) ;)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3808,7 +3808,7 @@
           (expr 
             (literal "[ ### ]")) ; 
           (expr 
-            (variable_or_function_call TOR.YDegree)) ;)) \n statement \n 
+            (variable_or_function_call TOR.YDegree)) ;)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3836,7 +3836,7 @@
           (expr 
             (literal "[ & ] ")) ; 
           (expr 
-            (variable_or_function_call TOR.Bord)) ;)) \n statement \n 
+            (variable_or_function_call TOR.Bord)) ;)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3864,7 +3864,7 @@
           (expr 
             (literal "[ ## ]")) ; 
           (expr 
-            (variable_or_function_call VC.Scrn)))) \n statement \n statement \n 
+            (variable_or_function_call VC.Scrn)))) \n \n \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -3886,10 +3886,10 @@
               (assignment_statement 
                 (variable_or_function_call Fields) = 
                 (expr 
-                  (literal 12))))))) \n statement \n statement \n 
+                  (literal 12))))))) \n \n \n 
       (statement 
         (do_loop_statement DO 
-          (block \n statement \n 
+          (block \n \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -3901,7 +3901,7 @@
                   (expr 
                     (variable_or_function_call COL2)) + 
                   (expr 
-                    (literal 2))))) \n statement \n 
+                    (literal 2))))) \n \n 
             (statement 
               (do_loop_statement DO 
                 (block \n 
@@ -3909,7 +3909,7 @@
                     (assignment_statement 
                       (variable_or_function_call K$) = 
                       (expr 
-                        (variable_or_function_call INKEY$)))) \n statement) LOOP 
+                        (variable_or_function_call INKEY$)))) \n) LOOP 
                 (do_condition WHILE 
                   (expr 
                     (expr 
@@ -3930,7 +3930,7 @@
                                 (expr 
                                   (variable_or_function_call K$)) , 
                                 (expr 
-                                  (literal 1)) )))) )))))) \n statement \n 
+                                  (literal 1)) )))) )))))) \n \n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3941,12 +3941,12 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call ESCAPE)))) 
-                  (block \n statement \n 
+                  (block \n \n 
                     (label 
                       (text_label 
                         (untyped_id CLS)) :) 
                     (statement 
-                      (end_statement END)) \n statement)) 
+                      (end_statement END)) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -3955,7 +3955,7 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call DOWNARROW)))) 
-                  (block \n statement \n 
+                  (block \n \n 
                     (statement 
                       (if_inline_statement IF 
                         (expr 
@@ -3990,7 +3990,7 @@
                                 (expr 
                                   (variable_or_function_call Fld)) , 
                                 (expr 
-                                  (variable_or_function_call Inc)) )))))) \n statement)) 
+                                  (variable_or_function_call Inc)) )))))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -3999,7 +3999,7 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call LEFTARROW)))) 
-                  (block \n statement \n 
+                  (block \n \n 
                     (statement 
                       (if_inline_statement IF 
                         (expr 
@@ -4030,7 +4030,7 @@
                             (case_expr 
                               (expr 
                                 (literal 0)))) 
-                          (block \n statement \n 
+                          (block \n \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call TOR.Thick) = 
@@ -4055,13 +4055,13 @@
                                 (expr 
                                   (literal "#")) ; 
                                 (expr 
-                                  (variable_or_function_call TOR.Thick)))) \n statement)) 
+                                  (variable_or_function_call TOR.Thick)))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
                               (expr 
                                 (literal 2)))) 
-                          (block \n statement \n 
+                          (block \n \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call TOR.Panel) = 
@@ -4082,13 +4082,13 @@
                                 (expr 
                                   (literal "##")) ; 
                                 (expr 
-                                  (variable_or_function_call TOR.Panel)))) \n statement)) 
+                                  (variable_or_function_call TOR.Panel)))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
                               (expr 
                                 (literal 4)))) 
-                          (block \n statement \n 
+                          (block \n \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call TOR.Sect) = 
@@ -4109,13 +4109,13 @@
                                 (expr 
                                   (literal "##")) ; 
                                 (expr 
-                                  (variable_or_function_call TOR.Sect)))) \n statement)) 
+                                  (variable_or_function_call TOR.Sect)))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
                               (expr 
                                 (literal 6)))) 
-                          (block \n statement \n 
+                          (block \n \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call TOR.XDegree) = 
@@ -4141,13 +4141,13 @@
                                 (expr 
                                   (literal "###")) ; 
                                 (expr 
-                                  (variable_or_function_call TOR.XDegree)))) \n statement)) 
+                                  (variable_or_function_call TOR.XDegree)))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
                               (expr 
                                 (literal 8)))) 
-                          (block \n statement \n 
+                          (block \n \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call TOR.YDegree) = 
@@ -4173,13 +4173,13 @@
                                 (expr 
                                   (literal "###")) ; 
                                 (expr 
-                                  (variable_or_function_call TOR.YDegree)))) \n statement)) 
+                                  (variable_or_function_call TOR.YDegree)))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
                               (expr 
                                 (literal 10)))) 
-                          (block \n statement \n 
+                          (block \n \n 
                             (if_block_statement IF 
                               (expr 
                                 (expr 
@@ -4200,7 +4200,7 @@
                                         (expr 
                                           (literal "NO")))) \n) 
                                   (else_block_statement ELSE 
-                                    (else_block statement \n 
+                                    (else_block \n 
                                       (statement 
                                         (assignment_statement 
                                           (variable_or_function_call TOR.Bord) = 
@@ -4211,13 +4211,13 @@
                             (statement 
                               (print_statement PRINT 
                                 (expr 
-                                  (variable_or_function_call TOR.Bord)))) \n statement)) 
+                                  (variable_or_function_call TOR.Bord)))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
                               (expr 
                                 (literal 12)))) 
-                          (block \n statement \n 
+                          (block \n \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call I) = 
@@ -4275,26 +4275,26 @@
                                 (expr 
                                   (literal "##")) ; 
                                 (expr 
-                                  (variable_or_function_call VC.Scrn)))) \n statement)) 
+                                  (variable_or_function_call VC.Scrn)))) \n)) 
                         (case_block 
                           (case_statement CASE ELSE) 
-                          (block \n statement)) 
-                        (end_select_statement END SELECT))) \n statement)) 
+                          (block \n)) 
+                        (end_select_statement END SELECT))) \n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
-                  (block \n statement)) 
-                (end_select_statement END SELECT))) \n statement \n 
+                  (block \n)) 
+                (end_select_statement END SELECT))) \n \n 
             (statement 
               (call_statement 
                 (untyped_id SetConfig) 
                 (call_argument_list 
-                  (call_argument VC.Scrn)))) \n statement \n statement) LOOP 
+                  (call_argument VC.Scrn)))) \n \n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call Ky)) = 
               (expr 
-                (variable_or_function_call ENTER)))))) \n statement \n statement \n 
+                (variable_or_function_call ENTER)))))) \n \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4302,7 +4302,7 @@
           (expr 
             (literal 1)) , 
           (expr 
-            (literal 0)))) \n statement \n statement \n 
+            (literal 0)))) \n \n \n 
       (statement 
         (select_case_statement SELECT CASE 
           (expr 
@@ -4318,7 +4318,7 @@
                 (assignment_statement 
                   (variable_or_function_call TOR.Delay) = 
                   (expr 
-                    (literal .3)))) \n statement)) 
+                    (literal .3)))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -4341,7 +4341,7 @@
                 (assignment_statement 
                   (variable_or_function_call TOR.Delay) = 
                   (expr 
-                    (literal 0)))) \n statement)) 
+                    (literal 0)))) \n)) 
           (case_block 
             (case_statement CASE ELSE) 
             (block \n 
@@ -4349,16 +4349,16 @@
                 (assignment_statement 
                   (variable_or_function_call TOR.Delay) = 
                   (expr 
-                    (literal .05)))) \n statement)) 
-          (end_select_statement END SELECT))) \n statement \n statement \n 
+                    (literal .05)))) \n)) 
+          (end_select_statement END SELECT))) \n \n \n 
       (statement 
         (call_statement 
           (untyped_id RANDOMIZE) 
           (call_argument_list 
             (call_argument 
               (expr 
-                (builtin_function TIMER)))))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                (builtin_function TIMER)))))) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TorusDraw) 
     ( 
@@ -4379,7 +4379,7 @@
         (scope_statement SHARED 
           (scope_variable 
             (untyped_id Max) AS 
-            (type_name INTEGER)))) \n statement \n 
+            (type_name INTEGER)))) \n \n 
       (statement 
         (for_next_statement FOR Til = 
           (expr 
@@ -4402,8 +4402,8 @@
                             (args_or_indices 
                               ( 
                                 (expr 
-                                  (variable_or_function_call Til)) )))) )))))) \n statement) NEXT)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                                  (variable_or_function_call Til)) )))) )))))) \n) NEXT)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TorusRotate) 
     ( 
@@ -4448,11 +4448,11 @@
         (dim_statement DIM 
           (dim_variable 
             (untyped_id Temp) AS 
-            (type_name LONG)))) \n statement \n statement \n 
+            (type_name LONG)))) \n \n \n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call VC.Colors)) THEN \n 
-        (then_block statement \n statement \n statement \n 
+        (then_block \n \n \n 
           (statement 
             (select_case_statement SELECT CASE 
               (expr 
@@ -4475,7 +4475,7 @@
                                 (expr 
                                   (variable_or_function_call RND)) * 
                                 (expr 
-                                  (variable_or_function_call VC.Colors))) )))))) \n statement)) 
+                                  (variable_or_function_call VC.Colors))) )))))) \n)) 
               (case_block 
                 (case_statement CASE 
                   (case_expr 
@@ -4486,7 +4486,7 @@
                     (assignment_statement 
                       (variable_or_function_call FirstClr) = 
                       (expr 
-                        (literal 0)))) \n statement)) 
+                        (literal 0)))) \n)) 
               (case_block 
                 (case_statement CASE ELSE) 
                 (block \n 
@@ -4497,8 +4497,8 @@
                         (expr 
                           (variable_or_function_call FirstClr)) - 
                         (expr 
-                          (literal 1))))) \n statement)) 
-              (end_select_statement END SELECT))) \n statement \n statement \n 
+                          (literal 1))))) \n)) 
+              (end_select_statement END SELECT))) \n \n \n 
           (if_block_statement IF 
             (expr 
               (expr 
@@ -4518,7 +4518,7 @@
                     (expr 
                       (literal 1))))) \n) 
             (else_block_statement ELSE 
-              (else_block statement \n 
+              (else_block \n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call LastClr) = 
@@ -4527,7 +4527,7 @@
                         (variable_or_function_call VC.Colors)) - 
                       (expr 
                         (literal 1))))) \n)) 
-            (end_if_statement END IF)) \n statement \n statement \n 
+            (end_if_statement END IF)) \n \n \n 
           (statement 
             (if_inline_statement IF 
               (expr 
@@ -4546,14 +4546,14 @@
                   (assignment_statement 
                     (variable_or_function_call FirstClr) = 
                     (expr 
-                      (variable_or_function_call LastClr))))))) \n statement \n statement \n 
+                      (variable_or_function_call LastClr))))))) \n \n \n 
           (if_block_statement IF 
             (expr 
               (expr 
                 (variable_or_function_call VC.Atribs)) = 
               (expr 
                 (literal 2))) THEN \n 
-            (then_block statement \n 
+            (then_block \n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call LastAtr) = 
@@ -4563,7 +4563,7 @@
                     (expr 
                       (literal 1))))) \n) 
             (else_block_statement ELSE 
-              (else_block statement \n statement \n 
+              (else_block \n \n 
                 (if_block_statement IF 
                   (expr 
                     (expr 
@@ -4580,7 +4580,7 @@
                         (expr 
                           (variable_or_function_call LastClr)))) \n) 
                   (else_block_statement ELSE 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call LastAtr) = 
@@ -4590,7 +4590,7 @@
                             (expr 
                               (literal 2))))) \n)) 
                   (end_if_statement END IF)) \n)) 
-            (end_if_statement END IF)) \n statement \n statement \n 
+            (end_if_statement END IF)) \n \n \n 
           (statement 
             (assignment_statement 
               (variable_or_function_call Work) = 
@@ -4636,15 +4636,15 @@
                         (assignment_statement 
                           (variable_or_function_call Work) = 
                           (expr 
-                            (variable_or_function_call LastClr))))))) \n statement) NEXT)) \n statement \n) 
-        (end_if_statement END IF)) \n statement \n statement \n 
+                            (variable_or_function_call LastClr))))))) \n) NEXT)) \n \n) 
+        (end_if_statement END IF)) \n \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
             (variable_or_function_call VC.Atribs)) = 
           (expr 
             (literal 2))) THEN \n 
-        (then_block statement \n statement \n 
+        (then_block \n \n 
           (statement 
             (for_next_statement FOR I = 
               (expr 
@@ -4663,7 +4663,7 @@
                           (expr 
                             (variable_or_function_call I)) )) . TColor) = 
                     (expr 
-                      (variable_or_function_call Toggle)))) \n statement) NEXT)) \n statement \n 
+                      (variable_or_function_call Toggle)))) \n) NEXT)) \n \n 
           (statement 
             (call_statement 
               (untyped_id TorusDraw) 
@@ -4671,7 +4671,7 @@
                 (call_argument T 
                   ( )) , 
                 (call_argument Index 
-                  ( ))))) \n statement \n 
+                  ( ))))) \n \n 
           (statement 
             (assignment_statement 
               (variable_or_function_call Toggle) = 
@@ -4684,8 +4684,8 @@
                       (expr 
                         (literal 1))) )) MOD 
                 (expr 
-                  (literal 2))))) \n statement \n) 
-        (end_if_statement END IF)) \n statement \n statement \n statement \n 
+                  (literal 2))))) \n \n) 
+        (end_if_statement END IF)) \n \n \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -4726,8 +4726,8 @@
                   (literal 2))))) \n 
           (statement 
             (exit_statement EXIT SUB)) \n) 
-        (end_if_statement END IF)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TorusSort) 
     ( 
@@ -4752,14 +4752,14 @@
         (dim_statement DIM 
           (dim_variable 
             (untyped_id Partition) AS 
-            (type_name SINGLE)))) \n statement \n 
+            (type_name SINGLE)))) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
             (variable_or_function_call Low)) < 
           (expr 
             (variable_or_function_call High))) THEN \n 
-        (then_block statement \n statement \n 
+        (then_block \n \n 
           (if_block_statement IF 
             (expr 
               (expr 
@@ -4815,7 +4815,7 @@
                                 (variable_or_function_call High)) )))))) \n) 
                 (end_if_statement END IF)) \n) 
             (else_block_statement ELSE 
-              (else_block statement \n statement \n 
+              (else_block \n \n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call RandIndex) = 
@@ -4871,7 +4871,7 @@
                                 (args_or_indices 
                                   ( 
                                     (expr 
-                                      (variable_or_function_call High)) )))) )) . z1)))) \n statement \n 
+                                      (variable_or_function_call High)) )))) )) . z1)))) \n \n 
                 (statement 
                   (do_loop_statement DO 
                     (block \n 
@@ -4884,7 +4884,7 @@
                         (assignment_statement 
                           (variable_or_function_call J) = 
                           (expr 
-                            (variable_or_function_call High)))) \n statement \n 
+                            (variable_or_function_call High)))) \n \n 
                       (statement 
                         (do_loop_statement DO 
                           (do_condition WHILE 
@@ -4919,7 +4919,7 @@
                                   (expr 
                                     (variable_or_function_call I)) + 
                                   (expr 
-                                    (literal 1))))) \n statement) LOOP)) \n statement \n 
+                                    (literal 1))))) \n) LOOP)) \n \n 
                       (statement 
                         (do_loop_statement DO 
                           (do_condition WHILE 
@@ -4954,7 +4954,7 @@
                                   (expr 
                                     (variable_or_function_call J)) - 
                                   (expr 
-                                    (literal 1))))) \n statement) LOOP)) \n statement \n 
+                                    (literal 1))))) \n) LOOP)) \n \n 
                       (if_block_statement IF 
                         (expr 
                           (expr 
@@ -4982,13 +4982,13 @@
                                     ( 
                                       (expr 
                                         (variable_or_function_call J)) )))))) \n) 
-                        (end_if_statement END IF)) \n statement) LOOP 
+                        (end_if_statement END IF)) \n) LOOP 
                     (do_condition WHILE 
                       (expr 
                         (expr 
                           (variable_or_function_call I)) < 
                         (expr 
-                          (variable_or_function_call J)))))) \n statement \n statement \n 
+                          (variable_or_function_call J)))))) \n \n \n 
                 (statement 
                   (call_statement 
                     (untyped_id CountTiles) 
@@ -5049,7 +5049,7 @@
                                 (literal 1)))) , 
                           (call_argument High)))) \n) 
                   (else_block_statement ELSE 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (call_statement 
                           (untyped_id TorusSort) 
@@ -5074,5 +5074,5 @@
                                   (literal 1))))))) \n)) 
                   (end_if_statement END IF)) \n)) 
             (end_if_statement END IF)) \n) 
-        (end_if_statement END IF)) \n statement \n statement) 
+        (end_if_statement END IF)) \n \n) 
     (end_sub_statement END SUB)) \n <EOF>)

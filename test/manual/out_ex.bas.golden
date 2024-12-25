@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n statement \r\n 
+(program \r\n \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment WHOLE = 
@@ -103,14 +103,14 @@
       ( 
         (call_argument_list 
           (call_argument C1) , 
-          (call_argument WHOLE)) ))) \r\n statement \r\n 
+          (call_argument WHOLE)) ))) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Sounds) 
     ( 
       (parameter_list 
         (parameter Freq!) , 
         (parameter Length!)) ) STATIC 
-    (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Clicks%) = 
@@ -138,7 +138,7 @@
             (expr 
               (variable_or_function_call Clicks%)) \ 
             (expr 
-              (literal 256))))) \r\n statement \r\n 
+              (literal 256))))) \r\n \r\n 
       (statement 
         (call_statement 
           (untyped_id OUT) 
@@ -148,7 +148,7 @@
                 (literal 67))) , 
             (call_argument 
               (expr 
-                (literal 182)))))) \r\n statement \r\n 
+                (literal 182)))))) \r\n \r\n 
       (statement 
         (call_statement 
           (untyped_id OUT) 
@@ -164,7 +164,7 @@
             (call_argument 
               (expr 
                 (literal 66))) , 
-            (call_argument HiByte%)))) \r\n statement \r\n 
+            (call_argument HiByte%)))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SpkrOn%) = 
@@ -184,14 +184,14 @@
             (call_argument 
               (expr 
                 (literal 97))) , 
-            (call_argument SpkrOn%)))) \r\n statement \r\n 
+            (call_argument SpkrOn%)))) \r\n \r\n 
       (statement 
         (for_next_statement FOR I! = 
           (expr 
             (literal 1)) TO 
           (expr 
             (variable_or_function_call Length!)) 
-          (block :) NEXT I!)) \r\n statement \r\n 
+          (block :) NEXT I!)) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SpkrOff%) = 
@@ -211,5 +211,5 @@
             (call_argument 
               (expr 
                 (literal 97))) , 
-            (call_argument SpkrOff%)))) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \n <EOF>)
+            (call_argument SpkrOff%)))) \r\n) 
+    (end_sub_statement END SUB)) \r\n \n <EOF>)

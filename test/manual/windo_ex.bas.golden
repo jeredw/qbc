@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n statement \r\n 
+(program \r\n \r\n \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -23,7 +23,7 @@
     (assignment_statement 
       (variable_or_function_call Xdelta) = 
       (expr 
-        (literal 50)))) \r\n statement \r\n 
+        (literal 50)))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -72,7 +72,7 @@
                             (literal ""))) THEN 
                         (if_inline_action 
                           (statement 
-                            (end_statement END))))) \r\n statement) NEXT)) \r\n statement) LOOP)) \r\n 
+                            (end_statement END))))) \r\n) NEXT)) \r\n) LOOP)) \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call X) = 
@@ -86,7 +86,7 @@
             (variable_or_function_call Xdelta) = 
             (expr - 
               (expr 
-                (variable_or_function_call Xdelta))))) \r\n statement) LOOP)) \r\n statement \r\n 
+                (variable_or_function_call Xdelta))))) \r\n) LOOP)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Zoom) 
     ( 
@@ -148,5 +148,5 @@
             (expr 
               (literal 0)) ) , 
           (expr 
-            (literal 1)))) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \n <EOF>)
+            (literal 1)))) \r\n) 
+    (end_sub_statement END SUB)) \r\n \n <EOF>)

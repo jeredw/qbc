@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n statement \r\n 
+(program \r\n \r\n \r\n 
   (def_fn_statement DEF FNFactorial# 
     ( 
       (def_fn_parameter_list 
@@ -27,12 +27,12 @@
                   (expr 
                     (variable_or_function_call Tmp#)) * 
                   (expr 
-                    (variable_or_function_call I))))) \r\n statement) NEXT I)) \r\n 
+                    (variable_or_function_call I))))) \r\n) NEXT I)) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call FNFactorial#) = 
           (expr 
-            (variable_or_function_call Tmp#)))) \r\n statement) END DEF) \r\n statement \r\n 
+            (variable_or_function_call Tmp#)))) \r\n) END DEF) \r\n \r\n 
   (statement 
     (input_statement INPUT "Enter a number: " , 
       (variable_or_function_call Num))) \r\n 
@@ -47,4 +47,4 @@
           (args_or_indices 
             ( 
               (expr 
-                (variable_or_function_call Num)) )))))) \r\n statement \n <EOF>)
+                (variable_or_function_call Num)) )))))) \r\n \n <EOF>)

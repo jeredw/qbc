@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+(program \r\n \r\n \r\n \r\n \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -21,7 +21,7 @@
               (literal 35)))) ))) \r\n 
   (statement 
     (input_statement INPUT "Enter anything to end: " , 
-      (variable_or_function_call A$))) \r\n statement \r\n statement \r\n statement \r\n 
+      (variable_or_function_call A$))) \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id MsgNoMove) 
     ( 
@@ -29,12 +29,12 @@
         (parameter Msg$) , 
         (parameter Row%) , 
         (parameter Col%)) ) STATIC 
-    (block \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call CurRow%) = 
           (expr 
-            (variable_or_function_call CSRLIN)))) \r\n statement \r\n 
+            (variable_or_function_call CSRLIN)))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call CurCol%) = 
@@ -43,7 +43,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (literal 0)) )))))) \r\n statement \r\n 
+                    (literal 0)) )))))) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -53,11 +53,11 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (variable_or_function_call Msg$)) ;)) \r\n statement \r\n 
+            (variable_or_function_call Msg$)) ;)) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
             (variable_or_function_call CurRow%)) , 
           (expr 
-            (variable_or_function_call CurCol%)))) \r\n statement \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \n <EOF>)
+            (variable_or_function_call CurCol%)))) \r\n \r\n) 
+    (end_sub_statement END SUB)) \r\n \n <EOF>)

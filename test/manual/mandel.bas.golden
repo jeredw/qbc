@@ -1,7 +1,7 @@
 (program 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n statement \r\n 
+      (letter_range A - Z))) \r\n \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id ShiftPalette) 
     ( )) \r\n 
@@ -22,7 +22,7 @@
         (declare_parameter VL%) , 
         (declare_parameter VR%) , 
         (declare_parameter VT%) , 
-        (declare_parameter VB%)) )) \r\n statement \r\n 
+        (declare_parameter VB%)) )) \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -33,7 +33,7 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call FALSE))))))) \r\n statement \r\n statement \r\n 
+              (variable_or_function_call FALSE))))))) \r\n \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment MAXLOOP = 
@@ -43,7 +43,7 @@
       (const_assignment MAXSIZE = 
         (const_expr 
           (expr 
-            (literal 1000000)))))) \r\n statement \r\n 
+            (literal 1000000)))))) \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable PaletteArray 
@@ -67,7 +67,7 @@
                   (expr 
                     (variable_or_function_call I)) ))) = 
             (expr 
-              (variable_or_function_call I)))) :) NEXT I)) \r\n statement \r\n statement \r\n 
+              (variable_or_function_call I)))) :) NEXT I)) \r\n \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id WindowVals) 
@@ -75,7 +75,7 @@
         (call_argument WLeft) , 
         (call_argument WRight) , 
         (call_argument WTop) , 
-        (call_argument WBottom)))) \r\n statement \r\n statement \r\n statement \r\n 
+        (call_argument WBottom)))) \r\n \r\n \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id ScreenTest) 
@@ -85,7 +85,7 @@
         (call_argument VLeft) , 
         (call_argument VRight) , 
         (call_argument VTop) , 
-        (call_argument VBottom)))) \r\n statement \r\n statement \r\n 
+        (call_argument VBottom)))) \r\n \r\n \r\n 
   (statement 
     (view_statement VIEW 
       ( 
@@ -113,7 +113,7 @@
         (expr 
           (variable_or_function_call WRight)) , 
         (expr 
-          (variable_or_function_call WBottom)) ))) \r\n statement \r\n 
+          (variable_or_function_call WBottom)) ))) \r\n \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -123,7 +123,7 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (literal "Press any key to quit.")) ;)) \r\n statement \r\n 
+        (literal "Press any key to quit.")) ;)) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call XLength) = 
@@ -147,14 +147,14 @@
         (expr 
           (variable_or_function_call MAXLOOP)) \ 
         (expr 
-          (variable_or_function_call ColorRange))))) \r\n statement \r\n statement \r\n statement \r\n 
+          (variable_or_function_call ColorRange))))) \r\n \r\n \r\n \r\n 
   (statement 
     (for_next_statement FOR Y = 
       (expr 
         (literal 0)) TO 
       (expr 
         (variable_or_function_call YLength)) 
-      (block \r\n statement \r\n 
+      (block \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call LogicY) = 
@@ -165,7 +165,7 @@
                     (expr 
                       (variable_or_function_call Y)) , 
                     (expr 
-                      (literal 3)) )))))) \r\n statement \r\n 
+                      (literal 3)) )))))) \r\n \r\n 
         (statement 
           (pset_statement PSET 
             ( 
@@ -177,14 +177,14 @@
           (assignment_statement 
             (variable_or_function_call OldColor) = 
             (expr 
-              (literal 0)))) \r\n statement \r\n 
+              (literal 0)))) \r\n \r\n 
         (statement 
           (for_next_statement FOR X = 
             (expr 
               (literal 0)) TO 
             (expr 
               (variable_or_function_call XLength)) 
-            (block \r\n statement \r\n 
+            (block \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call LogicX) = 
@@ -195,7 +195,7 @@
                           (expr 
                             (variable_or_function_call X)) , 
                           (expr 
-                            (literal 2)) )))))) \r\n statement \r\n 
+                            (literal 2)) )))))) \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call MandelX&) = 
@@ -205,7 +205,7 @@
                 (assignment_statement 
                   (variable_or_function_call MandelY&) = 
                   (expr 
-                    (variable_or_function_call LogicY)))) \r\n statement \r\n statement \r\n statement \r\n 
+                    (variable_or_function_call LogicY)))) \r\n \r\n \r\n \r\n 
               (statement 
                 (for_next_statement FOR I = 
                   (expr 
@@ -275,7 +275,7 @@
                             (expr 
                               (literal 500))) + 
                           (expr 
-                            (variable_or_function_call LogicX))))) \r\n statement) NEXT I)) \r\n statement \r\n statement \r\n 
+                            (variable_or_function_call LogicX))))) \r\n) NEXT I)) \r\n \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call PColor) = 
@@ -283,7 +283,7 @@
                     (expr 
                       (variable_or_function_call I)) \ 
                     (expr 
-                      (variable_or_function_call ColorWidth))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                      (variable_or_function_call ColorWidth))))) \r\n \r\n \r\n \r\n \r\n 
               (if_block_statement IF 
                 (expr 
                   (expr 
@@ -310,7 +310,7 @@
                       (variable_or_function_call OldColor) = 
                       (expr 
                         (variable_or_function_call PColor)))) \r\n) 
-                (end_if_statement END IF)) \r\n statement \r\n 
+                (end_if_statement END IF)) \r\n \r\n 
               (statement 
                 (if_inline_statement IF 
                   (expr 
@@ -320,7 +320,7 @@
                       (literal ""))) THEN 
                   (if_inline_action 
                     (statement 
-                      (end_statement END))))) \r\n statement) NEXT X)) \r\n statement \r\n statement \r\n statement \r\n 
+                      (end_statement END))))) \r\n) NEXT X)) \r\n \r\n \r\n \r\n 
         (statement 
           (line_statement LINE - 
             ( 
@@ -334,7 +334,7 @@
                   (expr 
                     (variable_or_function_call ColorRange)) - 
                   (expr 
-                    (variable_or_function_call OldColor))) )))) \r\n statement \r\n statement \r\n statement \r\n 
+                    (variable_or_function_call OldColor))) )))) \r\n \r\n \r\n \r\n 
         (statement 
           (if_inline_statement IF 
             (expr 
@@ -342,10 +342,10 @@
             (if_inline_action 
               (statement 
                 (call_statement 
-                  (untyped_id ShiftPalette)))))) \r\n statement) NEXT Y)) \r\n statement \r\n 
+                  (untyped_id ShiftPalette)))))) \r\n) NEXT Y)) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
-      (block \r\n statement \r\n statement \r\n 
+      (block \r\n \r\n \r\n 
         (statement 
           (if_inline_statement IF 
             (expr 
@@ -353,13 +353,13 @@
             (if_inline_action 
               (statement 
                 (call_statement 
-                  (untyped_id ShiftPalette)))))) \r\n statement) LOOP 
+                  (untyped_id ShiftPalette)))))) \r\n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \r\n statement \r\n 
+            (literal "")))))) \r\n \r\n 
   (statement 
     (screen_statement SCREEN 
       (expr 
@@ -371,17 +371,17 @@
       (expr 
         (literal 80)))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n 
   (label 
     (text_label 
-      (untyped_id BadScreen)) :) statement \r\n 
+      (untyped_id BadScreen)) :) \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call EgaMode) = 
       (expr 
         (variable_or_function_call FALSE)))) \r\n 
   (statement 
-    (resume_statement RESUME NEXT)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (resume_statement RESUME NEXT)) \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id ShiftPalette) STATIC 
     (block \r\n 
@@ -390,7 +390,7 @@
           (scope_variable PaletteArray 
             (array_declaration 
               ( ))) , 
-          (scope_variable ColorRange))) \r\n statement \r\n 
+          (scope_variable ColorRange))) \r\n \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -418,15 +418,15 @@
                         (expr 
                           (variable_or_function_call ColorRange))) )) + 
                   (expr 
-                    (literal 1))))) \r\n statement) NEXT I)) \r\n 
+                    (literal 1))))) \r\n) NEXT I)) \r\n 
       (statement 
         (palette_statement PALETTE USING 
           (variable_or_function_call PaletteArray 
             (args_or_indices 
               ( 
                 (expr 
-                  (literal 0)) ))))) \r\n statement \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                  (literal 0)) ))))) \r\n \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id ScreenTest) 
     ( 
@@ -457,7 +457,7 @@
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
-            (line_number 0)))) \r\n statement \r\n 
+            (line_number 0)))) \r\n \r\n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call EM)) THEN \r\n 
@@ -486,9 +486,9 @@
             (assignment_statement 
               (variable_or_function_call CR) = 
               (expr 
-                (literal 15)))) \r\n statement \r\n) 
+                (literal 15)))) \r\n \r\n) 
         (else_block_statement ELSE 
-          (else_block statement \r\n 
+          (else_block \r\n 
             (statement 
               (screen_statement SCREEN 
                 (expr 
@@ -520,8 +520,8 @@
                 (variable_or_function_call CR) = 
                 (expr 
                   (literal 3)))) \r\n)) 
-        (end_if_statement END IF)) \r\n statement \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (end_if_statement END IF)) \r\n \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id WindowVals) 
     ( 
@@ -573,7 +573,7 @@
             (builtin_function INPUT$ 
               ( 
                 (expr 
-                  (literal 1)) ))))) \r\n statement \r\n statement \r\n 
+                  (literal 1)) ))))) \r\n \r\n \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -607,7 +607,7 @@
                       (print_statement PRINT 
                         (expr 
                           (literal "Right corner must be greater than left corner.")))) \r\n) 
-                  (end_if_statement END IF)) \r\n statement) LOOP 
+                  (end_if_statement END IF)) \r\n) LOOP 
               (do_condition WHILE 
                 (expr 
                   (expr 
@@ -634,15 +634,15 @@
                       (print_statement PRINT 
                         (expr 
                           (literal "Bottom corner must be less than top corner.")))) \r\n) 
-                  (end_if_statement END IF)) \r\n statement) LOOP 
+                  (end_if_statement END IF)) \r\n) LOOP 
               (do_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call WB)) >= 
                   (expr 
-                    (variable_or_function_call WT)))))) \r\n statement \r\n) 
+                    (variable_or_function_call WT)))))) \r\n \r\n) 
         (else_block_statement ELSE 
-          (else_block statement \r\n 
+          (else_block \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call WL) = 
@@ -665,5 +665,5 @@
                 (expr - 
                   (expr 
                     (literal 625))))) \r\n)) 
-        (end_if_statement END IF)) \r\n statement) 
+        (end_if_statement END IF)) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

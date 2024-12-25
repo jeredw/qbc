@@ -1,4 +1,4 @@
-(program statement \r\n 
+(program \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -9,14 +9,14 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call FALSE))))))) \r\n statement \r\n 
+              (variable_or_function_call FALSE))))))) \r\n \r\n 
   (declare_statement DECLARE FUNCTION GetFileName$ 
-    ( )) \r\n statement \r\n statement \r\n statement \r\n 
+    ( )) \r\n \r\n \r\n \r\n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
         (text_label 
-          (untyped_id ErrorProc))))) \r\n statement \r\n 
+          (untyped_id ErrorProc))))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -27,12 +27,12 @@
               (variable_or_function_call FALSE)))) \r\n 
         (statement 
           (call_statement 
-            (untyped_id CLS))) \r\n statement \r\n 
+            (untyped_id CLS))) \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call FileName$) = 
             (expr 
-              (variable_or_function_call GetFileName$)))) \r\n statement \r\n 
+              (variable_or_function_call GetFileName$)))) \r\n \r\n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -43,7 +43,7 @@
             (statement 
               (end_statement END)) \r\n) 
           (else_block_statement ELSE 
-            (else_block statement \r\n statement \r\n statement \r\n statement \r\n 
+            (else_block \r\n \r\n \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call FileNum) = 
@@ -56,12 +56,12 @@
                   (open_mode INPUT) AS 
                   (expr 
                     (variable_or_function_call FileNum)))) \r\n)) 
-          (end_if_statement END IF)) \r\n statement \r\n 
+          (end_if_statement END IF)) \r\n \r\n 
         (if_block_statement IF 
           (expr NOT 
             (expr 
               (variable_or_function_call Restart))) THEN \r\n 
-          (then_block statement \r\n statement \r\n 
+          (then_block \r\n \r\n 
             (statement 
               (line_input_statement LINE INPUT "Enter string to locate: " , 
                 (variable_or_function_call LocString$))) \r\n 
@@ -73,7 +73,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call LocString$)) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+                          (variable_or_function_call LocString$)) )))))) \r\n \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call LineNum) = 
@@ -89,13 +89,13 @@
                           ( 
                             (expr 
                               (variable_or_function_call FileNum)) )))))) 
-                (block \r\n statement \r\n statement \r\n 
+                (block \r\n \r\n \r\n 
                   (statement 
                     (line_input_statement LINE INPUT 
                       (file_number # 
                         (expr 
                           (variable_or_function_call FileNum))) , 
-                      (variable_or_function_call LineBuffer$))) \r\n statement \r\n statement \r\n statement \r\n 
+                      (variable_or_function_call LineBuffer$))) \r\n \r\n \r\n \r\n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
@@ -121,7 +121,7 @@
                             (variable_or_function_call LineNum)) , 
                           (expr 
                             (variable_or_function_call LineBuffer$)))) \r\n) 
-                    (end_if_statement END IF)) \r\n statement \r\n 
+                    (end_if_statement END IF)) \r\n \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call LineNum) = 
@@ -129,23 +129,23 @@
                         (expr 
                           (variable_or_function_call LineNum)) + 
                         (expr 
-                          (literal 1))))) \r\n statement) LOOP)) \r\n statement \r\n 
+                          (literal 1))))) \r\n) LOOP)) \r\n \r\n 
             (statement 
               (close_statement CLOSE 
                 (expr 
-                  (variable_or_function_call FileNum)))) \r\n statement \r\n) 
-          (end_if_statement END IF)) \r\n statement) LOOP 
+                  (variable_or_function_call FileNum)))) \r\n \r\n) 
+          (end_if_statement END IF)) \r\n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call Restart)) = 
           (expr 
-            (variable_or_function_call TRUE)))))) \r\n statement \r\n 
+            (variable_or_function_call TRUE)))))) \r\n \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n 
   (label 
     (text_label 
-      (untyped_id ErrorProc)) :) statement \r\n statement \r\n 
+      (untyped_id ErrorProc)) :) \r\n \r\n 
   (statement 
     (select_case_statement SELECT CASE 
       (expr 
@@ -156,24 +156,24 @@
           (case_expr 
             (expr 
               (literal 64)))) 
-        (block : statement \r\n 
+        (block : \r\n 
           (statement 
             (print_statement PRINT 
               (expr 
-                (literal "** ERROR - Invalid file name")))) \r\n statement \r\n statement \r\n 
+                (literal "** ERROR - Invalid file name")))) \r\n \r\n \r\n 
           (statement 
             (assignment_statement 
               (variable_or_function_call FileName$) = 
               (expr 
-                (variable_or_function_call GetFileName$)))) \r\n statement \r\n statement \r\n 
+                (variable_or_function_call GetFileName$)))) \r\n \r\n \r\n 
           (statement 
-            (resume_statement RESUME)) \r\n statement \r\n statement)) 
+            (resume_statement RESUME)) \r\n \r\n)) 
       (case_block 
         (case_statement CASE 
           (case_expr 
             (expr 
               (literal 71)))) 
-        (block : statement \r\n 
+        (block : \r\n 
           (statement 
             (print_statement PRINT 
               (expr 
@@ -205,31 +205,31 @@
                       (literal "C"))) THEN \r\n 
                   (then_block 
                     (statement 
-                      (resume_statement RESUME)) \r\n statement \r\n) 
+                      (resume_statement RESUME)) \r\n \r\n) 
                   (elseif_block_statement ELSEIF 
                     (expr 
                       (expr 
                         (variable_or_function_call Char$)) = 
                       (expr 
                         (literal "R"))) THEN 
-                    (else_block statement \r\n 
+                    (else_block \r\n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call Restart) = 
                           (expr 
                             (variable_or_function_call TRUE)))) \r\n 
                       (statement 
-                        (resume_statement RESUME NEXT)) \r\n statement \r\n)) 
+                        (resume_statement RESUME NEXT)) \r\n \r\n)) 
                   (elseif_block_statement ELSEIF 
                     (expr 
                       (expr 
                         (variable_or_function_call Char$)) = 
                       (expr 
                         (literal "Q"))) THEN 
-                    (else_block statement \r\n 
+                    (else_block \r\n 
                       (statement 
                         (end_statement END)) \r\n)) 
-                  (end_if_statement END IF)) \r\n statement) LOOP)) \r\n statement \r\n statement)) 
+                  (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n)) 
       (case_block 
         (case_statement CASE 
           (case_expr 
@@ -238,7 +238,7 @@
           (case_expr 
             (expr 
               (literal 76)))) 
-        (block : statement \r\n 
+        (block : \r\n 
           (statement 
             (print_statement PRINT 
               (expr 
@@ -249,15 +249,15 @@
               (expr 
                 (variable_or_function_call GetFileName$)))) \r\n 
           (statement 
-            (resume_statement RESUME)) \r\n statement \r\n statement)) 
+            (resume_statement RESUME)) \r\n \r\n)) 
       (case_block 
         (case_statement CASE ELSE) 
-        (block : statement \r\n statement \r\n statement \r\n statement \r\n 
+        (block : \r\n \r\n \r\n \r\n 
           (statement 
             (on_error_statement ON ERROR GOTO 
               (target 
-                (line_number 0)))) \r\n statement)) 
-      (end_select_statement END SELECT))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                (line_number 0)))) \r\n)) 
+      (end_select_statement END SELECT))) \r\n \r\n \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION GetFileName$ STATIC 
     (block \r\n 
       (statement 
@@ -268,5 +268,5 @@
         (assignment_statement 
           (variable_or_function_call GetFileName$) = 
           (expr 
-            (variable_or_function_call FTemp$)))) \r\n statement) 
+            (variable_or_function_call FTemp$)))) \r\n) 
     (end_function_statement END FUNCTION)) \r\n <EOF>)

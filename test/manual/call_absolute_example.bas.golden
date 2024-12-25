@@ -1,4 +1,4 @@
-(program statement \n 
+(program \n 
   (statement 
     (dim_statement DIM 
       (dim_variable a% 
@@ -47,12 +47,12 @@
                                     (literal 0)) )))) )))) + 
                   (expr 
                     (variable_or_function_call i%)))) , 
-              (call_argument d%)))) \n statement) NEXT i%)) \n 
+              (call_argument d%)))) \n) NEXT i%)) \n 
   (statement 
     (data_statement DATA 
       (data_item 205) , 
       (data_item 5) , 
-      (data_item 203))) : statement \n statement \n 
+      (data_item 203))) : \n \n 
   (statement 
     (call_absolute_statement CALL ABSOLUTE 
       ( 

@@ -33,7 +33,7 @@ program
   // Any line can begin with a label, but labels on FUNCTION or SUB are bound
   // within the procedure body and not the program toplevel so are matched
   // within those statements.
-	: (( label? statement
+	: (( label? statement?
      | label? declare_statement
      | label? def_fn_statement
      | function_statement
@@ -41,7 +41,7 @@ program
      | label? option_statement
      | sub_statement
      | label? type_statement)
-      (COLON ( statement
+      (COLON ( statement?
              | declare_statement
              | def_fn_statement
              | option_statement
@@ -53,16 +53,16 @@ program
 // It does not allow some statements only allowed at the top level.
 block
 // blocks can go on one line, like START : block : END
-  : (COLON statement)* COLON
+  : (COLON statement?)* COLON
 // blocks can also span many lines, like
 // START: {block...
 // ...
 // ...}: END
-  | (COLON statement)* NL
-    (label? (statement | if_block_statement) (COLON statement)* NL)*
+  | (COLON statement?)* NL
+    (label? (statement? | if_block_statement) (COLON statement?)* NL)*
 // Match block ending keyword in the parent statement, then match NL
 // in the parent block or program.
-    label? (statement | if_block_statement) (COLON statement)*
+    label? (statement? | if_block_statement) (COLON statement?)*
   ;
 
 // Used to define labels.
@@ -150,8 +150,6 @@ statement
   | width_statement
   | window_statement
   | write_statement
-// Statements can be empty after line labels, before or between :.
-  |
   ;
 
 declare_statement
@@ -218,7 +216,7 @@ array_declaration
 // Statements after END FUNCTION on the same line are silently dropped!
 // program should consume the final NL or EOL.
 end_function_statement
-  : label? END FUNCTION (COLON statement)*
+  : label? END FUNCTION (COLON statement?)*
   ;
 
 if_block_statement
@@ -244,12 +242,12 @@ end_if_statement
   ;
 
 then_block
-  : (label? (statement | if_block_statement) (COLON statement)* NL)*
+  : (label? (statement? | if_block_statement) (COLON statement?)* NL)*
   ;
 
 else_block
-  : statement (COLON statement)* NL
-    (label? (statement | if_block_statement) (COLON statement)* NL)*
+  : statement? (COLON statement?)* NL
+    (label? (statement? | if_block_statement) (COLON statement?)* NL)*
   ;
 
 // *** DIGITS must be 0 or 1, but that will be checked later.
@@ -267,7 +265,7 @@ sub_statement
 // Statements after END SUB on the same line are silently dropped!
 // program should consume the final NL or EOL.
 end_sub_statement
-  : label? END SUB (COLON statement)*
+  : label? END SUB (COLON statement?)*
   ;
 
 type_statement
@@ -494,7 +492,7 @@ if_inline_statement
   ;
 
 if_inline_action
-  : statement (COLON statement)*
+  : statement (COLON statement?)*
   | line_number  // Implicit GOTO
   ;
 

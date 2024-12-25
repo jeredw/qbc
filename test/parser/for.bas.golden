@@ -9,7 +9,7 @@
         (statement 
           (print_statement print 
             (expr 
-              (literal "hi")))) \n statement) next i)) \n 
+              (literal "hi")))) \n) next i)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -19,7 +19,7 @@
       (expr - 
         (expr 
           (literal 1))) 
-      (block \n statement) next)) \n 
+      (block \n) next)) \n 
   (statement 
     (for_next_statement for a = 
       (expr 
@@ -33,7 +33,7 @@
               (literal 1)) to 
             (expr 
               (literal 5)) 
-            (block \n statement) next b)) \n statement) next a)) \n 
+            (block \n) next b)) \n) next a)) \n 
   (statement 
     (for_next_statement for a = 
       (expr 
@@ -47,7 +47,7 @@
               (literal 1)) to 
             (expr 
               (literal 5)) 
-            (block \n statement) next b))) , a)) \n 
+            (block \n) next b))) , a)) \n 
   (statement 
     (print_statement print 
       (expr 
@@ -66,7 +66,7 @@
         (statement 
           (print_statement print 
             (expr 
-              (literal "foo")))) : statement) next)) \n 
+              (literal "foo")))) :) next)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 

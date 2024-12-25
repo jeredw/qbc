@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n statement \r\n 
+(program \r\n \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable Values 
@@ -14,7 +14,7 @@
       (scope_variable Values 
         (array_declaration 
           ( ))) , 
-      (scope_variable NumValues))) \r\n statement \r\n 
+      (scope_variable NumValues))) \r\n \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -70,7 +70,7 @@
                 (args_or_indices 
                   ( 
                     (expr 
-                      (variable_or_function_call N$)) )))))) \r\n statement) LOOP)) \r\n 
+                      (variable_or_function_call N$)) )))))) \r\n) LOOP)) \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -87,11 +87,11 @@
             (variable_or_function_call INKEY$)) = 
           (expr 
             (literal "")))) 
-      (block \r\n statement) LOOP)) \r\n statement \r\n 
+      (block \r\n) LOOP)) \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id CHAIN) 
       (call_argument_list 
         (call_argument 
           (expr 
-            (literal "com2_ex")))))) \r\n statement \n <EOF>)
+            (literal "com2_ex")))))) \r\n \n <EOF>)

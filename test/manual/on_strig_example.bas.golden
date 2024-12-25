@@ -1,4 +1,4 @@
-(program statement \n 
+(program \n 
   (statement 
     (on_event_gosub_statement ON STRIG 
       ( 
@@ -30,10 +30,10 @@
                     (literal 27)) )))))) 
       (block :) LOOP)) \n 
   (statement 
-    (end_statement END)) \n statement \n 
+    (end_statement END)) \n \n 
   (label 
     (text_label 
-      (untyped_id Handler)) :) statement \n 
+      (untyped_id Handler)) :) \n 
   (statement 
     (print_statement PRINT 
       (expr 

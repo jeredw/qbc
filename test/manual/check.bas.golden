@@ -19,13 +19,13 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call FALSE))))))) \r\n statement \r\n statement \r\n 
+              (variable_or_function_call FALSE))))))) \r\n \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \r\n 
   (statement 
     (input_statement INPUT "Type starting balance, then press <ENTER>: " , 
-      (variable_or_function_call Balance))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (variable_or_function_call Balance))) \r\n \r\n \r\n \r\n \r\n 
   (statement 
     (for_next_statement FOR TransacNum% = 
       (expr 
@@ -70,7 +70,7 @@
                   (literal 1))))) \r\n 
           (statement 
             (exit_statement EXIT FOR)) \r\n) 
-        (end_if_statement END IF)) \r\n statement) NEXT)) \r\n statement \r\n statement \r\n statement \r\n (statement 
+        (end_if_statement END IF)) \r\n) NEXT)) \r\n \r\n \r\n \r\n (statement 
   (assignment_statement 
     (variable_or_function_call Limit%) = 
     (expr 
@@ -93,7 +93,7 @@
                   (variable_or_function_call Limit%)) - 
                 (expr 
                   (literal 1))) )) 
-          (block \r\n statement \r\n statement \r\n statement \r\n 
+          (block \r\n \r\n \r\n \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -134,7 +134,7 @@
                     (variable_or_function_call Swaps%) = 
                     (expr 
                       (variable_or_function_call I%)))) \r\n) 
-              (end_if_statement END IF)) \r\n statement) NEXT I%)) \r\n statement \r\n statement \r\n 
+              (end_if_statement END IF)) \r\n) NEXT I%)) \r\n \r\n \r\n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -144,10 +144,10 @@
               (assignment_statement 
                 (variable_or_function_call Limit%) = 
                 (expr 
-                  (variable_or_function_call Swaps%))))))) \r\n statement \r\n statement \r\n statement) LOOP 
+                  (variable_or_function_call Swaps%))))))) \r\n \r\n \r\n) LOOP 
     (do_condition WHILE 
       (expr 
-        (variable_or_function_call Swaps%))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n (statement 
+        (variable_or_function_call Swaps%))))) \r\n \r\n \r\n \r\n \r\n (statement 
   (for_next_statement FOR I% = 
     (expr 
       (literal 1)) TO 
@@ -185,7 +185,7 @@
                       (variable_or_function_call I%)) )))) < 
             (expr 
               (literal 0))) THEN 
-          (else_block statement \r\n 
+          (else_block \r\n 
             (statement 
               (print_using_statement PRINT USING 
                 (expr 
@@ -196,7 +196,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call I%)) )))))) \r\n)) 
-        (end_if_statement END IF)) \r\n statement \r\n statement \r\n 
+        (end_if_statement END IF)) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Balance) = 
@@ -208,7 +208,7 @@
                 (args_or_indices 
                   ( 
                     (expr 
-                      (variable_or_function_call I%)) ))))))) \r\n statement) NEXT I%)) \r\n statement \r\n statement \r\n (statement 
+                      (variable_or_function_call I%)) ))))))) \r\n) NEXT I%)) \r\n \r\n \r\n (statement 
   (print_statement PRINT)) \r\n (statement 
   (print_statement PRINT 
     (expr 

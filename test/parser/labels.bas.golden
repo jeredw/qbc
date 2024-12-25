@@ -1,9 +1,9 @@
 (program 
   (label 
     (text_label 
-      (untyped_id Hello)) :) statement \n 
+      (untyped_id Hello)) :) \n 
   (label 
-    (line_number 20)) statement \n 
+    (line_number 20)) \n 
   (statement 
     (goto_statement goto 
       (target 
@@ -34,7 +34,7 @@
         (line_number 20)))) \n 
   (label 
     (text_label 
-      (untyped_id bar)) :) statement : statement : 
+      (untyped_id bar)) :) : : 
   (statement 
     (goto_statement goto 
       (target 
@@ -54,4 +54,4 @@
       (target 
         (line_number 20)))) \n 
   (label 
-    (line_number 50)) statement \n <EOF>)
+    (line_number 50)) \n <EOF>)

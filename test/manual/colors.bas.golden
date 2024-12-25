@@ -2,7 +2,7 @@
   (statement 
     (screen_statement SCREEN 
       (expr 
-        (literal 1)))) \r\n statement \r\n 
+        (literal 1)))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Esc$) = 
@@ -11,7 +11,7 @@
           (args_or_indices 
             ( 
               (expr 
-                (literal 27)) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+                (literal 27)) )))))) \r\n \r\n \r\n \r\n 
   (statement 
     (for_next_statement FOR ColorVal = 
       (expr 
@@ -49,7 +49,7 @@
               (expr 
                 (variable_or_function_call Y)) + 
               (expr 
-                (literal 51))))) \r\n statement) NEXT ColorVal)) \r\n statement \r\n 
+                (literal 51))))) \r\n) NEXT ColorVal)) \r\n \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -63,13 +63,13 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (literal "Press any other key to continue.")))) \r\n statement \r\n statement \r\n 
+        (literal "Press any other key to continue.")))) \r\n \r\n \r\n 
   (statement 
     (view_print_statement VIEW PRINT 
       (expr 
         (literal 23)) TO 
       (expr 
-        (literal 23)))) \r\n statement \r\n 
+        (literal 23)))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -80,7 +80,7 @@
               (literal 1)))) \r\n 
         (statement 
           (do_loop_statement DO 
-            (block \r\n statement \r\n statement \r\n 
+            (block \r\n \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call PaletteVal) = 
@@ -88,7 +88,7 @@
                     (expr 
                       (literal 1)) - 
                     (expr 
-                      (variable_or_function_call PaletteVal))))) \r\n statement \r\n statement \r\n 
+                      (variable_or_function_call PaletteVal))))) \r\n \r\n \r\n 
               (statement 
                 (color_statement COLOR 
                   (expr 
@@ -104,7 +104,7 @@
                   (expr 
                     (literal "Palette =")) ; 
                   (expr 
-                    (variable_or_function_call PaletteVal)) ;)) \r\n statement \r\n 
+                    (variable_or_function_call PaletteVal)) ;)) \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Pause$) = 
@@ -114,7 +114,7 @@
                         (expr 
                           (literal 1)) ))))) \r\n 
               (statement 
-                (print_statement PRINT)) \r\n statement \r\n statement \r\n statement \r\n statement) LOOP 
+                (print_statement PRINT)) \r\n \r\n \r\n \r\n) LOOP 
             (do_condition UNTIL 
               (expr 
                 (expr 
@@ -126,7 +126,7 @@
                   (expr 
                     (variable_or_function_call Pause$)) = 
                   (expr 
-                    (variable_or_function_call Esc$))))))) \r\n statement \r\n 
+                    (variable_or_function_call Esc$))))))) \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call BackGroundVal) = 
@@ -134,7 +134,7 @@
               (expr 
                 (variable_or_function_call BackGroundVal)) + 
               (expr 
-                (literal 1))))) \r\n statement \r\n statement \r\n statement \r\n statement) LOOP 
+                (literal 1))))) \r\n \r\n \r\n \r\n) LOOP 
       (do_condition UNTIL 
         (expr 
           (expr 
@@ -146,7 +146,7 @@
             (expr 
               (variable_or_function_call Pause$)) = 
             (expr 
-              (variable_or_function_call Esc$))))))) \r\n statement \r\n 
+              (variable_or_function_call Esc$))))))) \r\n \r\n 
   (statement 
     (screen_statement SCREEN 
       (expr 

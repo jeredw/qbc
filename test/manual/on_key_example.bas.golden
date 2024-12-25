@@ -1,4 +1,4 @@
-(program statement \n 
+(program \n 
   (statement 
     (const_statement CONST 
       (const_assignment ESC = 
@@ -52,12 +52,12 @@
             (expr 
               (literal "Press Esc to stop, Ctrl+S to pause.")))) \n 
         (statement 
-          (print_statement PRINT)) \n statement) WEND)) \n 
+          (print_statement PRINT)) \n) WEND)) \n 
   (statement 
-    (end_statement END)) \n statement \n 
+    (end_statement END)) \n \n 
   (label 
     (text_label 
-      (untyped_id PauseHandler)) :) statement \n 
+      (untyped_id PauseHandler)) :) \n 
   (statement 
     (call_statement 
       (untyped_id SLEEP) 

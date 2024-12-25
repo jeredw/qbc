@@ -5,7 +5,7 @@
       (declare_parameter_list 
         (declare_parameter A! 
           (array_declaration 
-            ( )))) )) \r\n statement \r\n statement \r\n statement \r\n 
+            ( )))) )) \r\n \r\n \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable A 
@@ -48,7 +48,7 @@
                     (expr 
                       (variable_or_function_call I%)) + 
                     (expr 
-                      (variable_or_function_call J%))))) \r\n statement) NEXT J%)) \r\n statement) NEXT I%)) \r\n 
+                      (variable_or_function_call J%))))) \r\n) NEXT J%)) \r\n) NEXT I%)) \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id PRNTMAT) 
@@ -57,7 +57,7 @@
           (call_argument A 
             ( ))) ))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id PRNTMAT) 
     ( 
@@ -115,9 +115,9 @@
                               (expr 
                                 (variable_or_function_call J%)) )))) ; 
                       (expr 
-                        (literal " ")) ;)) \r\n statement) NEXT J%)) \r\n 
+                        (literal " ")) ;)) \r\n) NEXT J%)) \r\n 
             (statement 
               (print_statement PRINT)) : 
             (statement 
-              (print_statement PRINT)) \r\n statement) NEXT I%)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n <EOF>)
+              (print_statement PRINT)) \r\n) NEXT I%)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n <EOF>)

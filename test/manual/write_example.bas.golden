@@ -29,7 +29,7 @@
               (variable_or_function_call Age$)))) \n 
         (statement 
           (input_statement INPUT "Add another entry" ; 
-            (variable_or_function_call R$))) \n statement) LOOP 
+            (variable_or_function_call R$))) \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -43,7 +43,7 @@
   (statement 
     (close_statement CLOSE # 
       (expr 
-        (literal 1)))) \n statement \n 
+        (literal 1)))) \n \n 
   (statement 
     (open_statement OPEN 
       (expr 
@@ -83,7 +83,7 @@
             (expr 
               (variable_or_function_call Rec1$)) , 
             (expr 
-              (variable_or_function_call Rec2$)))) \n statement) LOOP)) \n 
+              (variable_or_function_call Rec2$)))) \n) LOOP)) \n 
   (statement 
     (close_statement CLOSE # 
       (expr 

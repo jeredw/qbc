@@ -1,4 +1,4 @@
-(program statement \r\n 
+(program \r\n 
   (type_statement TYPE 
     (untyped_id TitleType) \r\n 
     (type_element 
@@ -12,7 +12,7 @@
     (type_element 
       (untyped_id YTitle) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 18)) \r\n) END TYPE) \r\n statement \r\n 
+        (fixed_string STRING * 18)) \r\n) END TYPE) \r\n \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id InputTitles) 
     ( 
@@ -43,7 +43,7 @@
             ( ))) , 
         (declare_parameter Value! 
           (array_declaration 
-            ( )))) )) \r\n statement \r\n statement \r\n 
+            ( )))) )) \r\n \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -65,7 +65,7 @@
               (expr 
                 (literal 1)) TO 
               (expr 
-                (literal 5))) ))))) \r\n statement \r\n 
+                (literal 5))) ))))) \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -76,7 +76,7 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call FALSE))))))) \r\n statement \r\n 
+              (variable_or_function_call FALSE))))))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -126,17 +126,17 @@
                               ( )))) , 
                         (expr 
                           (variable_or_function_call N%)) )))))) \r\n) 
-          (end_if_statement END IF)) \r\n statement) LOOP 
+          (end_if_statement END IF)) \r\n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call NewGraph$)) = 
           (expr 
-            (literal "Y")))))) \r\n statement \r\n 
+            (literal "Y")))))) \r\n \r\n 
   (statement 
     (end_statement END)) \r\n 
   (statement 
-    (rem_statement REM)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (rem_statement REM)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION DrawGraph$ 
     ( 
       (parameter_list 
@@ -151,7 +151,7 @@
           (array_declaration 
             ( ))) , 
         (parameter N%)) ) STATIC 
-    (block \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n 
       (statement 
         (const_statement CONST 
           (const_assignment GRAPHTOP = 
@@ -180,7 +180,7 @@
                 (expr 
                   (variable_or_function_call GRAPHBOTTOM)) - 
                 (expr 
-                  (variable_or_function_call GRAPHTOP))))))) \r\n statement \r\n statement \r\n 
+                  (variable_or_function_call GRAPHTOP))))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call YMax) = 
@@ -239,7 +239,7 @@
                           (args_or_indices 
                             ( 
                               (expr 
-                                (variable_or_function_call I%)) ))))))))) \r\n statement) NEXT I%)) \r\n statement \r\n statement \r\n 
+                                (variable_or_function_call I%)) ))))))))) \r\n) NEXT I%)) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BarWidth) = 
@@ -268,14 +268,14 @@
             (expr 
               (variable_or_function_call BarWidth)) - 
             (expr 
-              (variable_or_function_call BarSpace))))) \r\n statement \r\n 
+              (variable_or_function_call BarSpace))))) \r\n \r\n 
       (statement 
         (screen_statement SCREEN 
           (expr 
             (literal 2)))) \r\n 
       (statement 
         (call_statement 
-          (untyped_id CLS))) \r\n statement \r\n statement \r\n 
+          (untyped_id CLS))) \r\n \r\n \r\n 
       (statement 
         (line_statement LINE 
           ( 
@@ -289,7 +289,7 @@
             (expr 
               (variable_or_function_call GRAPHBOTTOM)) ) , 
           (expr 
-            (literal 1)))) \r\n statement \r\n statement \r\n 
+            (literal 1)))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Start%) = 
@@ -323,7 +323,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call T.MainTitle)) )))) ;)) \r\n statement \r\n statement \r\n 
+                    (variable_or_function_call T.MainTitle)) )))) ;)) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Start%) = 
@@ -382,7 +382,7 @@
                       (expr 
                         (variable_or_function_call I%)) , 
                       (expr 
-                        (literal 1)) ))) ;)) \r\n statement) NEXT I%)) \r\n statement \r\n statement \r\n 
+                        (literal 1)) ))) ;)) \r\n) NEXT I%)) \r\n \r\n \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -404,7 +404,7 @@
               (expr 
                 (variable_or_function_call YMax)))) \r\n) 
         (else_block_statement ELSE 
-          (else_block statement \r\n 
+          (else_block \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Power) = 
@@ -450,7 +450,7 @@
               (assignment_statement 
                 (variable_or_function_call Power) = 
                 (expr 
-                  (literal 0))))))) \r\n statement \r\n statement \r\n 
+                  (literal 0))))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ScaleFactor) = 
@@ -482,7 +482,7 @@
                     (expr 
                       (variable_or_function_call YMin)) / 
                     (expr 
-                      (variable_or_function_call ScaleFactor))) )))))) \r\n statement \r\n statement \r\n 
+                      (variable_or_function_call ScaleFactor))) )))))) \r\n \r\n \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -510,7 +510,7 @@
                             ( 
                               (expr 
                                 (variable_or_function_call Power)) )))) )))))) \r\n) 
-        (end_if_statement END IF)) \r\n statement \r\n statement \r\n 
+        (end_if_statement END IF)) \r\n \r\n \r\n 
       (statement 
         (line_statement LINE 
           ( 
@@ -537,7 +537,7 @@
           (expr 
             (literal "####")) ; 
           (expr 
-            (variable_or_function_call YMax)))) \r\n statement \r\n statement \r\n 
+            (variable_or_function_call YMax)))) \r\n \r\n \r\n 
       (statement 
         (line_statement LINE 
           ( 
@@ -564,7 +564,7 @@
           (expr 
             (literal "####")) ; 
           (expr 
-            (variable_or_function_call YMin)))) \r\n statement \r\n statement \r\n 
+            (variable_or_function_call YMin)))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call YMax) = 
@@ -580,7 +580,7 @@
             (expr 
               (variable_or_function_call YMin)) * 
             (expr 
-              (variable_or_function_call ScaleFactor))))) \r\n statement \r\n statement \r\n 
+              (variable_or_function_call ScaleFactor))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Start%) = 
@@ -614,7 +614,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call T.XTitle)) )))) ;)) \r\n statement \r\n statement \r\n 
+                    (variable_or_function_call T.XTitle)) )))) ;)) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call YRange) = 
@@ -622,7 +622,7 @@
             (expr 
               (variable_or_function_call YMax)) - 
             (expr 
-              (variable_or_function_call YMin))))) \r\n statement \r\n statement \r\n 
+              (variable_or_function_call YMin))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Tile$) = 
@@ -680,7 +680,7 @@
                 (args_or_indices 
                   ( 
                     (expr 
-                      (literal 128)) ))))))) \r\n statement \r\n statement \r\n 
+                      (literal 128)) ))))))) \r\n \r\n \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -733,13 +733,13 @@
               (expr 
                 (literal "0")) ;)) \r\n) 
         (else_block_statement ELSE 
-          (else_block statement \r\n 
+          (else_block \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Bottom) = 
                 (expr 
                   (variable_or_function_call GRAPHBOTTOM)))) \r\n)) 
-        (end_if_statement END IF)) \r\n statement \r\n statement \r\n 
+        (end_if_statement END IF)) \r\n \r\n \r\n 
       (statement 
         (line_statement LINE 
           ( 
@@ -754,7 +754,7 @@
             (expr 
               (variable_or_function_call GRAPHRIGHT)) , 
             (expr 
-              (variable_or_function_call Bottom)) ))) \r\n statement \r\n statement \r\n 
+              (variable_or_function_call Bottom)) ))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Start%) = 
@@ -774,7 +774,7 @@
             (literal 1)) TO 
           (expr 
             (variable_or_function_call N%)) 
-          (block \r\n statement \r\n statement \r\n 
+          (block \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call BarMid) = 
@@ -842,7 +842,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call I%)) )))) ;)) \r\n statement \r\n statement \r\n 
+                          (variable_or_function_call I%)) )))) ;)) \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call BarHeight) = 
@@ -892,7 +892,7 @@
                 (expr 
                   (variable_or_function_call Tile$)) , 
                 (expr 
-                  (literal 1)))) \r\n statement \r\n 
+                  (literal 1)))) \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Start%) = 
@@ -903,7 +903,7 @@
                     (expr 
                       (variable_or_function_call BarWidth))) + 
                   (expr 
-                    (variable_or_function_call BarSpace))))) \r\n statement) NEXT I%)) \r\n statement \r\n 
+                    (variable_or_function_call BarSpace))))) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -927,8 +927,8 @@
                     (builtin_function INPUT$ 
                       ( 
                         (expr 
-                          (literal 1)) ))) )))))) \r\n statement \r\n statement) 
-    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                          (literal 1)) ))) )))))) \r\n \r\n) 
+    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION InputData% 
     ( 
       (parameter_list 
@@ -938,12 +938,12 @@
         (parameter Value 
           (array_declaration 
             ( )))) ) STATIC 
-    (block \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NumData%) = 
           (expr 
-            (literal 0)))) \r\n statement \r\n statement \r\n 
+            (literal 0)))) \r\n \r\n \r\n 
       (statement 
         (call_statement 
           (untyped_id CLS))) \r\n 
@@ -972,7 +972,7 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (literal "to end the program.")))) \r\n statement \r\n statement \r\n 
+            (literal "to end the program.")))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Done%) = 
@@ -1014,7 +1014,7 @@
                   (args_or_indices 
                     ( 
                       (expr 
-                        (variable_or_function_call NumData%)) ))))) \r\n statement \r\n statement \r\n 
+                        (variable_or_function_call NumData%)) ))))) \r\n \r\n \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -1036,9 +1036,9 @@
                       (args_or_indices 
                         ( 
                           (expr 
-                            (variable_or_function_call NumData%)) ))))) \r\n statement \r\n statement \r\n statement \r\n) 
+                            (variable_or_function_call NumData%)) ))))) \r\n \r\n \r\n \r\n) 
               (else_block_statement ELSE 
-                (else_block statement \r\n 
+                (else_block \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call NumData%) = 
@@ -1052,7 +1052,7 @@
                       (variable_or_function_call Done%) = 
                       (expr 
                         (variable_or_function_call TRUE)))) \r\n)) 
-              (end_if_statement END IF)) \r\n statement) LOOP 
+              (end_if_statement END IF)) \r\n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
@@ -1063,13 +1063,13 @@
                     (expr 
                       (literal 5))) )) OR 
               (expr 
-                (variable_or_function_call Done%)))))) \r\n statement \r\n statement \r\n 
+                (variable_or_function_call Done%)))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call InputData%) = 
           (expr 
-            (variable_or_function_call NumData%)))) \r\n statement \r\n statement) 
-    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+            (variable_or_function_call NumData%)))) \r\n \r\n) 
+    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id InputTitles) 
     ( 
@@ -1078,13 +1078,13 @@
           (untyped_id T) AS 
           (type_name_for_parameter 
             (untyped_id TitleType)))) ) STATIC 
-    (block \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n 
       (statement 
         (screen_statement SCREEN 
           (expr 
             (literal 0)) , 
           (expr 
-            (literal 0)))) \r\n statement \r\n statement \r\n 
+            (literal 0)))) \r\n \r\n \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n 
@@ -1099,7 +1099,7 @@
                 (variable_or_function_call T.XTitle))) \r\n 
             (statement 
               (input_statement INPUT "Enter Y-Axis title    : " , 
-                (variable_or_function_call T.YTitle))) \r\n statement \r\n statement \r\n 
+                (variable_or_function_call T.YTitle))) \r\n \r\n \r\n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -1126,11 +1126,11 @@
                           (builtin_function INPUT$ 
                             ( 
                               (expr 
-                                (literal 1)) ))) )))))) \r\n statement) LOOP 
+                                (literal 1)) ))) )))))) \r\n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call OK$)) = 
               (expr 
-                (literal "Y")))))) \r\n statement) 
+                (literal "Y")))))) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

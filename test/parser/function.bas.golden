@@ -1,6 +1,6 @@
 (program 
   (function_statement function x 
-    (block \n statement) 
+    (block \n) 
     (end_function_statement end function)) \n 
   (function_statement function y$ 
     (block :) 
@@ -16,7 +16,7 @@
       (statement 
         (print_statement print 
           (expr 
-            (literal "ok")))) : statement) 
+            (literal "ok")))) :) 
     (end_function_statement end function : 
       (statement 
         (print_statement print 
@@ -31,7 +31,7 @@
         (parameter KeywordTypes 
           (array_declaration 
             ( )))) ) 
-    (block \n statement) 
+    (block \n) 
     (end_function_statement end function)) \n 
   (function_statement function hooray 
     (block : 
@@ -42,7 +42,7 @@
       (statement 
         (print_statement print 
           (expr 
-            (literal "stuff")))) : statement) 
+            (literal "stuff")))) :) 
     (end_function_statement end function)) \n 
   (function_statement function empty 
     ( ) 

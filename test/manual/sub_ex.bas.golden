@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n statement \r\n 
+(program \r\n \r\n \r\n 
   (statement 
     (input_statement INPUT "File to be searched" ; 
       (variable_or_function_call F$))) \r\n 
@@ -35,7 +35,7 @@
             ( 
               (call_argument_list 
                 (call_argument Test$) , 
-                (call_argument P$)) ))) \r\n statement) LOOP)) \r\n statement \r\n 
+                (call_argument P$)) ))) \r\n) LOOP)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Linesearch) 
     ( 
@@ -79,5 +79,5 @@
                 (expr 
                   (literal ": ")) ; 
                 (expr 
-                  (variable_or_function_call Test$))))))) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \n <EOF>)
+                  (variable_or_function_call Test$))))))) \r\n) 
+    (end_sub_statement END SUB)) \r\n \n <EOF>)

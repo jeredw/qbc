@@ -1,4 +1,4 @@
-(program statement \n statement \n statement \n 
+(program \n \n \n 
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \n 
@@ -11,7 +11,7 @@
         (literal "class.dat")) FOR 
       (open_mode INPUT) AS # 
       (expr 
-        (literal 1)))) \n statement \n 
+        (literal 1)))) \n \n 
   (statement 
     (do_loop_statement DO 
       (do_condition WHILE 
@@ -50,7 +50,7 @@
             (expr 
               (variable_or_function_call Count)) ; 
             (expr 
-              (variable_or_function_call Score)))) \n statement) LOOP)) \n 
+              (variable_or_function_call Score)))) \n) LOOP)) \n 
   (statement 
     (print_statement PRINT)) \n 
   (statement 

@@ -1,12 +1,12 @@
-(program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+(program \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement \n statement \n 
+      (letter_range A - Z))) \n \n \n 
   (declare_statement DECLARE FUNCTION RandInt% 
     ( 
       (declare_parameter_list 
         (declare_parameter Lower) , 
-        (declare_parameter Upper)) )) \n statement \n 
+        (declare_parameter Upper)) )) \n \n 
   (declare_statement DECLARE SUB 
     (untyped_id BoxInit) 
     ( )) \n 
@@ -82,7 +82,7 @@
     ( 
       (declare_parameter_list 
         (declare_parameter Row) , 
-        (declare_parameter Column)) )) \n statement \n statement \n 
+        (declare_parameter Column)) )) \n \n \n 
   (type_statement TYPE 
     (untyped_id SortType) \n 
     (type_element 
@@ -94,7 +94,7 @@
     (type_element 
       (untyped_id BarString) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 43)) \n) END TYPE) \n statement \n statement \n 
+        (fixed_string STRING * 43)) \n) END TYPE) \n \n \n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -119,7 +119,7 @@
       (const_assignment NUMSORTS = 
         (const_expr 
           (expr 
-            (literal 6)))))) \n statement \n statement \n statement \n 
+            (literal 6)))))) \n \n \n \n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable 
@@ -173,7 +173,7 @@
       (dim_variable Selection) , 
       (dim_variable MaxRow) , 
       (dim_variable InitRow) , 
-      (dim_variable MaxColors))) \n statement \n statement \n 
+      (dim_variable MaxColors))) \n \n \n 
   (statement 
     (data_statement DATA 
       (data_item Insertion) , 
@@ -188,7 +188,7 @@
       (data_item <   
         (Slower)) , 
       (data_item >   
-        (Faster)))) \n statement \n statement \n statement \n 
+        (Faster)))) \n \n \n \n 
   (statement 
     (call_statement 
       (untyped_id Initialize))) \n 
@@ -211,10 +211,10 @@
     (call_statement 
       (untyped_id CLS))) \n 
   (statement 
-    (end_statement END)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+    (end_statement END)) \n \n \n \n \n \n \n \n 
   (label 
     (text_label 
-      (untyped_id GetRow)) :) statement \n 
+      (untyped_id GetRow)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -230,7 +230,7 @@
       (statement 
         (resume_statement RESUME)) \n) 
     (else_block_statement ELSE 
-      (else_block statement \n 
+      (else_block \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call InitRow) = 
@@ -238,17 +238,17 @@
               (literal 25)))) \n 
         (statement 
           (resume_statement RESUME NEXT)) \n)) 
-    (end_if_statement END IF)) \n statement \n 
+    (end_if_statement END IF)) \n \n 
   (label 
     (text_label 
-      (untyped_id RowTrap)) :) statement \n 
+      (untyped_id RowTrap)) :) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call MaxRow) = 
       (expr 
         (literal 25)))) \n 
   (statement 
-    (resume_statement RESUME)) \n statement \n statement \n statement \n statement \n statement \n 
+    (resume_statement RESUME)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id BoxInit) STATIC 
     (block \n 
@@ -270,7 +270,7 @@
                   (literal 3)))) , 
             (call_argument 
               (expr 
-                (literal 78)))))) \n statement \n 
+                (literal 78)))))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -309,7 +309,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call I)) )))))) \n statement) NEXT I)) \n statement \n statement \n statement \n 
+                          (variable_or_function_call I)) )))))) \n) NEXT I)) \n \n \n \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -329,7 +329,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call NUMOPTIONS)) )))) ;))))) \n statement \n statement \n 
+                          (variable_or_function_call NUMOPTIONS)) )))) ;))))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NoSound) = 
@@ -348,7 +348,7 @@
                 (expr 
                   (variable_or_function_call LEFTCOLUMN)) + 
                 (expr 
-                  (literal 12))))))) \n statement \n 
+                  (literal 12))))))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -378,8 +378,8 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (literal "or ESC key to end program: ")) ;)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (literal "or ESC key to end program: ")) ;)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id BubbleSort) STATIC 
     (block \n 
@@ -407,7 +407,7 @@
                         (variable_or_function_call Limit)) - 
                       (expr 
                         (literal 1))) )) 
-                (block \n statement \n statement \n statement \n 
+                (block \n \n \n \n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
@@ -459,19 +459,19 @@
                           (variable_or_function_call Switch) = 
                           (expr 
                             (variable_or_function_call Row)))) \n) 
-                    (end_if_statement END IF)) \n statement) NEXT Row)) \n statement \n statement \n 
+                    (end_if_statement END IF)) \n) NEXT Row)) \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Limit) = 
                 (expr 
-                  (variable_or_function_call Switch)))) \n statement) LOOP 
+                  (variable_or_function_call Switch)))) \n) LOOP 
           (do_condition WHILE 
             (expr 
-              (variable_or_function_call Switch))))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+              (variable_or_function_call Switch))))) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id CheckScreen) STATIC 
-    (block \n statement \n statement \n statement \n 
+    (block \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call InitRow) = 
@@ -487,7 +487,7 @@
           (expr 
             (variable_or_function_call InitRow)) , 
           (expr 
-            (literal 1)))) \n statement \n statement \n 
+            (literal 1)))) \n \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -523,7 +523,7 @@
               (expr 
                 (literal 15)))) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n 
+          (else_block \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -555,7 +555,7 @@
                     (expr 
                       (literal 15)))) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call MaxColors) = 
@@ -564,7 +564,7 @@
               (end_if_statement END IF)) \n)) 
         (end_if_statement END IF)) \n 
       (statement 
-        (def_seg_statement DEF SEG)) \n statement \n statement \n statement \n 
+        (def_seg_statement DEF SEG)) \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call MaxRow) = 
@@ -584,8 +584,8 @@
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
-            (line_number 0)))) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (line_number 0)))) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id DrawFrame) 
     ( 
@@ -622,7 +622,7 @@
           (const_assignment HORIZONTAL = 
             (const_expr 
               (expr 
-                (literal 205)))))) \n statement \n 
+                (literal 205)))))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call FrameWidth) = 
@@ -700,7 +700,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call VERTICAL)) )))) ;)) \n statement) NEXT Row)) \n 
+                          (variable_or_function_call VERTICAL)) )))) ;)) \n) NEXT Row)) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -728,8 +728,8 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call LRIGHT)) )))) ;)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                    (variable_or_function_call LRIGHT)) )))) ;)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id ElapsedTime) 
     ( 
@@ -741,7 +741,7 @@
           (const_assignment FORMAT = 
             (const_expr 
               (expr 
-                (literal "  &###.### seconds  ")))))) \n statement \n statement \n statement \n 
+                (literal "  &###.### seconds  ")))))) \n \n \n \n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -774,7 +774,7 @@
             (expr 
               (builtin_function TIMER)) - 
             (expr 
-              (variable_or_function_call StartTime))) ;)) \n statement \n 
+              (variable_or_function_call StartTime))) ;)) \n \n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call NoSound)) THEN \n 
@@ -788,7 +788,7 @@
                     (literal 30000))) , 
                 (call_argument Pause)))) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n 
+          (else_block \n 
             (statement 
               (call_statement 
                 (untyped_id SOUND) 
@@ -800,14 +800,14 @@
                       (expr 
                         (variable_or_function_call CurrentRow)))) , 
                   (call_argument Pause)))) \n)) 
-        (end_if_statement END IF)) \n statement \n 
+        (end_if_statement END IF)) \n \n 
       (statement 
         (color_statement COLOR 
           (expr 
             (variable_or_function_call MaxColors)) , 
           (expr 
-            (literal 0)))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (literal 0)))) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id ExchangeSort) STATIC 
     (block \n 
@@ -858,7 +858,7 @@
                           (untyped_id ElapsedTime) 
                           (call_argument_list 
                             (call_argument J)))) \n) 
-                    (end_if_statement END IF)) \n statement) NEXT J)) \n statement \n statement \n statement \n 
+                    (end_if_statement END IF)) \n) NEXT J)) \n \n \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -886,8 +886,8 @@
                     (call_argument_list 
                       (call_argument Row) , 
                       (call_argument SmallestRow)))) \n) 
-              (end_if_statement END IF)) \n statement) NEXT Row)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+              (end_if_statement END IF)) \n) NEXT Row)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id HeapSort) STATIC 
     (block \n 
@@ -902,7 +902,7 @@
               (call_statement 
                 (untyped_id PercolateUp) 
                 (call_argument_list 
-                  (call_argument I)))) \n statement) NEXT I)) \n statement \n 
+                  (call_argument I)))) \n) NEXT I)) \n \n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -944,8 +944,8 @@
                       (expr 
                         (variable_or_function_call I)) - 
                       (expr 
-                        (literal 1))))))) \n statement) NEXT I)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+                        (literal 1))))))) \n) NEXT I)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id Initialize) STATIC 
     (block \n 
@@ -958,10 +958,10 @@
                   (expr 
                     (literal 1)) TO 
                   (expr 
-                    (literal 43))) ))))) \n statement \n 
+                    (literal 43))) ))))) \n \n 
       (statement 
         (call_statement 
-          (untyped_id CheckScreen))) \n statement \n 
+          (untyped_id CheckScreen))) \n \n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -977,12 +977,12 @@
                       (expr 
                         (variable_or_function_call I)) ))) = 
                 (expr 
-                  (variable_or_function_call I)))) \n statement) NEXT I)) \n statement \n 
+                  (variable_or_function_call I)))) \n) NEXT I)) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call MaxIndex) = 
           (expr 
-            (variable_or_function_call MaxRow)))) \n statement \n 
+            (variable_or_function_call MaxRow)))) \n \n 
       (statement 
         (call_statement 
           (untyped_id RANDOMIZE) 
@@ -996,7 +996,7 @@
             (literal 1)) TO 
           (expr 
             (variable_or_function_call MaxRow)) 
-          (block \n statement \n statement \n statement \n 
+          (block \n \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Index) = 
@@ -1016,7 +1016,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call Index)) )))))) \n statement \n statement \n statement \n statement \n 
+                          (variable_or_function_call Index)) )))))) \n \n \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call TempArray 
@@ -1029,7 +1029,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call MaxIndex)) )))))) \n statement \n statement \n statement \n 
+                          (variable_or_function_call MaxIndex)) )))))) \n \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call MaxIndex) = 
@@ -1037,7 +1037,7 @@
                   (expr 
                     (variable_or_function_call MaxIndex)) - 
                   (expr 
-                    (literal 1))))) \n statement \n statement \n statement \n statement \n 
+                    (literal 1))))) \n \n \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call SortBackup 
@@ -1061,7 +1061,7 @@
                         (expr 
                           (variable_or_function_call BarLength)) , 
                         (expr 
-                          (literal 223)) )))))) \n statement \n statement \n 
+                          (literal 223)) )))))) \n \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -1087,7 +1087,7 @@
                       (expr 
                         (literal 1))))) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call SortBackup 
@@ -1097,7 +1097,7 @@
                               (variable_or_function_call I)) )) . ColorVal) = 
                       (expr 
                         (variable_or_function_call MaxColors)))) \n)) 
-              (end_if_statement END IF)) \n statement) NEXT I)) \n statement \n 
+              (end_if_statement END IF)) \n) NEXT I)) \n \n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -1111,13 +1111,13 @@
                   (args_or_indices 
                     ( 
                       (expr 
-                        (variable_or_function_call I)) ))))) \n statement) NEXT I)) \n statement \n 
+                        (variable_or_function_call I)) ))))) \n) NEXT I)) \n \n 
       (statement 
         (call_statement 
           (untyped_id CLS))) \n 
       (statement 
         (call_statement 
-          (untyped_id Reinitialize))) \n statement \n 
+          (untyped_id Reinitialize))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NoSound) = 
@@ -1130,8 +1130,8 @@
             (literal 2)))) \n 
       (statement 
         (call_statement 
-          (untyped_id BoxInit))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+          (untyped_id BoxInit))) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id InsertionSort) STATIC 
     (block \n 
@@ -1171,7 +1171,7 @@
                 (expr - 
                   (expr 
                     (literal 1))) 
-                (block \n statement \n statement \n statement \n statement \n 
+                (block \n \n \n \n \n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
@@ -1211,12 +1211,12 @@
                         (call_statement 
                           (untyped_id ElapsedTime) 
                           (call_argument_list 
-                            (call_argument J)))) \n statement \n statement \n) 
+                            (call_argument J)))) \n \n \n) 
                     (else_block_statement ELSE 
-                      (else_block statement \n 
+                      (else_block \n 
                         (statement 
                           (exit_statement EXIT FOR)) \n)) 
-                    (end_if_statement END IF)) \n statement) NEXT J)) \n statement \n statement \n 
+                    (end_if_statement END IF)) \n) NEXT J)) \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call SortArray 
@@ -1235,8 +1235,8 @@
               (call_statement 
                 (untyped_id ElapsedTime) 
                 (call_argument_list 
-                  (call_argument J)))) \n statement) NEXT Row)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+                  (call_argument J)))) \n) NEXT Row)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id PercolateDown) 
     ( 
@@ -1247,7 +1247,7 @@
         (assignment_statement 
           (variable_or_function_call I) = 
           (expr 
-            (literal 1)))) \n statement \n statement \n statement \n statement \n 
+            (literal 1)))) \n \n \n \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -1258,7 +1258,7 @@
                   (expr 
                     (literal 2)) * 
                   (expr 
-                    (variable_or_function_call I))))) \n statement \n statement \n 
+                    (variable_or_function_call I))))) \n \n \n 
             (statement 
               (if_inline_statement IF 
                 (expr 
@@ -1268,7 +1268,7 @@
                     (variable_or_function_call MaxLevel))) THEN 
                 (if_inline_action 
                   (statement 
-                    (exit_statement EXIT DO))))) \n statement \n statement \n 
+                    (exit_statement EXIT DO))))) \n \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -1306,7 +1306,7 @@
                           (expr 
                             (literal 1))))) \n) 
                   (end_if_statement END IF)) \n) 
-              (end_if_statement END IF)) \n statement \n statement \n statement \n 
+              (end_if_statement END IF)) \n \n \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -1346,13 +1346,13 @@
                   (assignment_statement 
                     (variable_or_function_call I) = 
                     (expr 
-                      (variable_or_function_call Child)))) \n statement \n statement \n statement \n) 
+                      (variable_or_function_call Child)))) \n \n \n \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (exit_statement EXIT DO)) \n)) 
-              (end_if_statement END IF)) \n statement) LOOP)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+              (end_if_statement END IF)) \n) LOOP)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id PercolateUp) 
     ( 
@@ -1363,7 +1363,7 @@
         (assignment_statement 
           (variable_or_function_call I) = 
           (expr 
-            (variable_or_function_call MaxLevel)))) \n statement \n statement \n statement \n statement \n 
+            (variable_or_function_call MaxLevel)))) \n \n \n \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -1380,7 +1380,7 @@
                   (expr 
                     (variable_or_function_call I)) \ 
                   (expr 
-                    (literal 2))))) \n statement \n statement \n statement \n 
+                    (literal 2))))) \n \n \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -1420,13 +1420,13 @@
                   (assignment_statement 
                     (variable_or_function_call I) = 
                     (expr 
-                      (variable_or_function_call Parent)))) \n statement \n statement \n statement \n) 
+                      (variable_or_function_call Parent)))) \n \n \n \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (exit_statement EXIT DO)) \n)) 
-              (end_if_statement END IF)) \n statement) LOOP)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+              (end_if_statement END IF)) \n) LOOP)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id PrintOneBar) 
     ( 
@@ -1454,8 +1454,8 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call Row)) )) . BarString)) ;)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                    (variable_or_function_call Row)) )) . BarString)) ;)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id QuickSort) 
     ( 
@@ -1469,7 +1469,7 @@
             (variable_or_function_call Low)) < 
           (expr 
             (variable_or_function_call High))) THEN \n 
-        (then_block statement \n statement \n statement \n 
+        (then_block \n \n \n 
           (if_block_statement IF 
             (expr 
               (expr 
@@ -1517,7 +1517,7 @@
                         (call_argument High)))) \n) 
                 (end_if_statement END IF)) \n) 
             (else_block_statement ELSE 
-              (else_block statement \n statement \n statement \n 
+              (else_block \n \n \n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call RandIndex) = 
@@ -1560,7 +1560,7 @@
                               (variable_or_function_call High)) )) . Length)))) \n 
                 (statement 
                   (do_loop_statement DO 
-                    (block \n statement \n statement \n 
+                    (block \n \n \n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call I) = 
@@ -1601,7 +1601,7 @@
                                   (expr 
                                     (variable_or_function_call I)) + 
                                   (expr 
-                                    (literal 1))))) \n statement) LOOP)) \n 
+                                    (literal 1))))) \n) LOOP)) \n 
                       (statement 
                         (do_loop_statement DO 
                           (do_condition WHILE 
@@ -1632,7 +1632,7 @@
                                   (expr 
                                     (variable_or_function_call J)) - 
                                   (expr 
-                                    (literal 1))))) \n statement) LOOP)) \n statement \n statement \n statement \n 
+                                    (literal 1))))) \n) LOOP)) \n \n \n \n 
                       (if_block_statement IF 
                         (expr 
                           (expr 
@@ -1660,13 +1660,13 @@
                               (call_argument_list 
                                 (call_argument I) , 
                                 (call_argument J)))) \n) 
-                        (end_if_statement END IF)) \n statement) LOOP 
+                        (end_if_statement END IF)) \n) LOOP 
                     (do_condition WHILE 
                       (expr 
                         (expr 
                           (variable_or_function_call I)) < 
                         (expr 
-                          (variable_or_function_call J)))))) \n statement \n statement \n 
+                          (variable_or_function_call J)))))) \n \n \n 
                 (statement 
                   (call_statement 
                     (untyped_id SWAP) 
@@ -1686,7 +1686,7 @@
                     (untyped_id SwapBars) 
                     (call_argument_list 
                       (call_argument I) , 
-                      (call_argument High)))) \n statement \n statement \n statement \n 
+                      (call_argument High)))) \n \n \n \n 
                 (if_block_statement IF 
                   (expr 
                     (expr 
@@ -1727,7 +1727,7 @@
                                 (literal 1)))) , 
                           (call_argument High)))) \n) 
                   (else_block_statement ELSE 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (call_statement 
                           (untyped_id QuickSort) 
@@ -1752,8 +1752,8 @@
                                   (literal 1))))))) \n)) 
                   (end_if_statement END IF)) \n)) 
             (end_if_statement END IF)) \n) 
-        (end_if_statement END IF)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+        (end_if_statement END IF)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (function_statement FUNCTION RandInt% 
     ( 
       (parameter_list 
@@ -1782,8 +1782,8 @@
                             (expr 
                               (literal 1))) ))) )))) + 
             (expr 
-              (variable_or_function_call Lower))))) \n statement) 
-    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n 
+              (variable_or_function_call Lower))))) \n) 
+    (end_function_statement END FUNCTION)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id Reinitialize) STATIC 
     (block \n 
@@ -1806,7 +1806,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call I)) )))))) \n statement) NEXT I)) \n statement \n 
+                          (variable_or_function_call I)) )))))) \n) NEXT I)) \n \n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -1835,17 +1835,17 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call I)) )) . BarString)) ;)) \n statement) NEXT I)) \n statement \n 
+                          (variable_or_function_call I)) )) . BarString)) ;)) \n) NEXT I)) \n \n 
       (statement 
         (color_statement COLOR 
           (expr 
             (variable_or_function_call MaxColors)) , 
           (expr 
-            (literal 0)))) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (literal 0)))) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id ShellSort) STATIC 
-    (block \n statement \n statement \n 
+    (block \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Offset) = 
@@ -1853,7 +1853,7 @@
             (expr 
               (variable_or_function_call MaxRow)) \ 
             (expr 
-              (literal 2))))) \n statement \n 
+              (literal 2))))) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -1878,7 +1878,7 @@
                     (assignment_statement 
                       (variable_or_function_call Switch) = 
                       (expr 
-                        (variable_or_function_call FALSE)))) \n statement \n statement \n 
+                        (variable_or_function_call FALSE)))) \n \n \n 
                   (statement 
                     (for_next_statement FOR Row = 
                       (expr 
@@ -1937,7 +1937,7 @@
                                 (variable_or_function_call Switch) = 
                                 (expr 
                                   (variable_or_function_call Row)))) \n) 
-                          (end_if_statement END IF)) \n statement) NEXT Row)) \n statement \n statement \n 
+                          (end_if_statement END IF)) \n) NEXT Row)) \n \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Limit) = 
@@ -1945,10 +1945,10 @@
                         (expr 
                           (variable_or_function_call Switch)) - 
                         (expr 
-                          (variable_or_function_call Offset))))) \n statement) LOOP 
+                          (variable_or_function_call Offset))))) \n) LOOP 
                 (do_condition WHILE 
                   (expr 
-                    (variable_or_function_call Switch))))) \n statement \n statement \n 
+                    (variable_or_function_call Switch))))) \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Offset) = 
@@ -1956,8 +1956,8 @@
                   (expr 
                     (variable_or_function_call Offset)) \ 
                   (expr 
-                    (literal 2))))) \n statement) LOOP)) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                    (literal 2))))) \n) LOOP)) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id SortMenu) STATIC 
     (block \n 
@@ -1969,7 +1969,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (literal 27)) )))))) \n statement \n statement \n 
+                    (literal 27)) )))))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Option$) = 
@@ -1977,10 +1977,10 @@
             (expr 
               (literal "IBHESQ><T")) + 
             (expr 
-              (variable_or_function_call Escape$))))) \n statement \n 
+              (variable_or_function_call Escape$))))) \n \n 
       (statement 
         (do_loop_statement DO 
-          (block \n statement \n statement \n 
+          (block \n \n \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -1994,7 +1994,7 @@
                   (expr 
                     (literal 27))) , 
                 (expr 
-                  (literal 1)))) \n statement \n 
+                  (literal 1)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Choice$) = 
@@ -2017,7 +2017,7 @@
                         (expr 
                           (variable_or_function_call Option$)) , 
                         (expr 
-                          (variable_or_function_call Choice$)) )))))) \n statement \n statement \n 
+                          (variable_or_function_call Choice$)) )))))) \n \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -2057,7 +2057,7 @@
                     (variable_or_function_call StartTime) = 
                     (expr 
                       (builtin_function TIMER)))) \n) 
-              (end_if_statement END IF)) \n statement \n statement \n 
+              (end_if_statement END IF)) \n \n \n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -2071,7 +2071,7 @@
                   (block \n 
                     (statement 
                       (call_statement 
-                        (untyped_id InsertionSort))) \n statement)) 
+                        (untyped_id InsertionSort))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2080,7 +2080,7 @@
                   (block \n 
                     (statement 
                       (call_statement 
-                        (untyped_id BubbleSort))) \n statement)) 
+                        (untyped_id BubbleSort))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2089,7 +2089,7 @@
                   (block \n 
                     (statement 
                       (call_statement 
-                        (untyped_id HeapSort))) \n statement)) 
+                        (untyped_id HeapSort))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2098,7 +2098,7 @@
                   (block \n 
                     (statement 
                       (call_statement 
-                        (untyped_id ExchangeSort))) \n statement)) 
+                        (untyped_id ExchangeSort))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2107,7 +2107,7 @@
                   (block \n 
                     (statement 
                       (call_statement 
-                        (untyped_id ShellSort))) \n statement)) 
+                        (untyped_id ShellSort))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2121,13 +2121,13 @@
                           (call_argument 
                             (expr 
                               (literal 1))) , 
-                          (call_argument MaxRow)))) \n statement)) 
+                          (call_argument MaxRow)))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
                       (expr 
                         (literal ">")))) 
-                  (block \n statement \n statement \n statement \n statement \n 
+                  (block \n \n \n \n \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call Pause) = 
@@ -2140,16 +2140,16 @@
                                 (expr 
                                   (variable_or_function_call Pause))) )) / 
                           (expr 
-                            (literal 3))))) \n statement \n 
+                            (literal 3))))) \n \n 
                     (statement 
                       (call_statement 
-                        (untyped_id BoxInit))) \n statement \n statement)) 
+                        (untyped_id BoxInit))) \n \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
                       (expr 
                         (literal "<")))) 
-                  (block \n statement \n statement \n statement \n statement \n 
+                  (block \n \n \n \n \n 
                     (statement 
                       (if_inline_statement IF 
                         (expr 
@@ -2181,7 +2181,7 @@
                                   (literal 2)))))))) \n 
                     (statement 
                       (call_statement 
-                        (untyped_id BoxInit))) \n statement \n statement)) 
+                        (untyped_id BoxInit))) \n \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2200,19 +2200,19 @@
                               (expr 
                                 (variable_or_function_call LEFTCOLUMN)) + 
                               (expr 
-                                (literal 12))))))) \n statement \n statement)) 
+                                (literal 12))))))) \n \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
                       (expr 
                         (variable_or_function_call Escape$)))) 
-                  (block \n statement \n statement \n statement \n 
+                  (block \n \n \n \n 
                     (statement 
-                      (exit_statement EXIT DO)) \n statement \n statement)) 
+                      (exit_statement EXIT DO)) \n \n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
-                  (block \n statement \n statement \n statement)) 
-                (end_select_statement END SELECT))) \n statement \n 
+                  (block \n \n \n)) 
+                (end_select_statement END SELECT))) \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -2247,8 +2247,8 @@
                       (call_argument 
                         (expr 
                           (literal 0)))))) \n) 
-              (end_if_statement END IF)) \n statement \n statement) LOOP)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+              (end_if_statement END IF)) \n \n) LOOP)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id SwapBars) 
     ( 
@@ -2270,8 +2270,8 @@
         (call_statement 
           (untyped_id ElapsedTime) 
           (call_argument_list 
-            (call_argument Row1)))) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n 
+            (call_argument Row1)))) \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id ToggleSound) 
     ( 
@@ -2300,10 +2300,10 @@
               (expr 
                 (literal ": OFF")) ;)) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n 
+          (else_block \n 
             (statement 
               (print_statement PRINT 
                 (expr 
                   (literal ": ON ")) ;)) \n)) 
-        (end_if_statement END IF)) \n statement) 
+        (end_if_statement END IF)) \n) 
     (end_sub_statement END SUB)) \n <EOF>)

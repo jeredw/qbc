@@ -1,4 +1,4 @@
-(program statement \n 
+(program \n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
@@ -12,7 +12,7 @@
       (call_argument_list 
         (call_argument 
           (expr 
-            (literal "a:\")))))) \n statement \n 
+            (literal "a:\")))))) \n \n 
   (label 
     (line_number 20)) 
   (statement 
@@ -43,10 +43,10 @@
   (statement 
     (error_statement ERROR 
       (expr 
-        (literal 57)))) \n statement \n 
+        (literal 57)))) \n \n 
   (label 
     (text_label 
-      (untyped_id Handler)) :) statement \n 
+      (untyped_id Handler)) :) \n 
   (statement 
     (print_statement PRINT)) \n 
   (statement 
@@ -81,15 +81,15 @@
               (expr 
                 (variable_or_function_call ERDEV)))) \n 
           (statement 
-            (resume_statement RESUME NEXT)) \n statement)) 
+            (resume_statement RESUME NEXT)) \n)) 
       (case_block 
         (case_statement CASE 
           (case_expr 
             (expr 
               (literal 11)))) 
-        (block \n statement \n 
+        (block \n \n 
           (statement 
-            (resume_statement RESUME)) \n statement)) 
+            (resume_statement RESUME)) \n)) 
       (case_block 
         (case_statement CASE ELSE) 
         (block \n 
@@ -98,5 +98,5 @@
               (expr 
                 (literal "Unexpected error, ending program.")))) \n 
           (statement 
-            (end_statement END)) \n statement)) 
+            (end_statement END)) \n)) 
       (end_select_statement END SELECT))) \n <EOF>)

@@ -1,4 +1,4 @@
-(program statement \r\n 
+(program \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Plot$) = 
@@ -6,7 +6,7 @@
         (expr 
           (literal "BR30 BU25 C1 R54 U45 L54 D45 BE20 P1,1 G20 C2 G20")) + 
         (expr 
-          (literal "R54 E20 L54 BD5 P2,2 U5 C4 G20 U45 E20 D45 BL5 P4,4"))))) \r\n statement \r\n 
+          (literal "R54 E20 L54 BD5 P2,2 U5 C4 G20 U45 E20 D45 BL5 P4,4"))))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call APage%) = 
@@ -21,10 +21,10 @@
     (assignment_statement 
       (variable_or_function_call Angle%) = 
       (expr 
-        (literal 0)))) \r\n statement \r\n 
+        (literal 0)))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
-      (block \r\n statement \r\n statement \r\n statement \r\n 
+      (block \r\n \r\n \r\n \r\n 
         (statement 
           (screen_statement SCREEN 
             (expr 
@@ -39,7 +39,7 @@
             (call_argument_list 
               (call_argument 
                 (expr 
-                  (literal 1)))))) \r\n statement \r\n statement \r\n 
+                  (literal 1)))))) \r\n \r\n \r\n 
         (statement 
           (call_statement 
             (untyped_id DRAW) 
@@ -56,7 +56,7 @@
                             (expr 
                               (variable_or_function_call Angle%)) ))))) + 
                   (expr 
-                    (variable_or_function_call Plot$))))))) \r\n statement \r\n statement \r\n 
+                    (variable_or_function_call Plot$))))))) \r\n \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Angle%) = 
@@ -69,18 +69,18 @@
                     (expr 
                       (literal 15))) )) MOD 
               (expr 
-                (literal 360))))) \r\n statement \r\n statement \r\n 
+                (literal 360))))) \r\n \r\n \r\n 
         (statement 
           (call_statement 
             (untyped_id SWAP) 
             (call_argument_list 
               (call_argument APage%) , 
-              (call_argument VPage%)))) \r\n statement \r\n statement) LOOP 
+              (call_argument VPage%)))) \r\n \r\n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \r\n statement \r\n 
+            (literal "")))))) \r\n \r\n 
   (statement 
     (end_statement END)) \r\n <EOF>)

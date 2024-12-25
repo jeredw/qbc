@@ -8,7 +8,7 @@
           (untyped_id baz) as 
           (type_name_for_parameter string)) , 
         (parameter quux)) ) static 
-    (block \n statement) 
+    (block \n) 
     (end_sub_statement end sub)) \n 
   (sub_statement sub 
     (untyped_id bar) 
@@ -29,7 +29,7 @@
             (literal "wow")))))) \n 
   (sub_statement sub 
     (untyped_id quux) static 
-    (block \n statement) 
+    (block \n) 
     (end_sub_statement end sub)) \n 
   (sub_statement sub 
     (untyped_id quux2) 
@@ -41,10 +41,10 @@
       (statement 
         (print_statement print 
           (expr 
-            (literal "stuff")))) : statement) 
+            (literal "stuff")))) :) 
     (end_sub_statement end sub)) \n 
   (sub_statement sub 
     (untyped_id empty) 
     ( ) 
     (block :) 
-    (end_sub_statement end sub)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n <EOF>)
+    (end_sub_statement end sub)) \n \n \n \n \n \n \n \n \n \n <EOF>)

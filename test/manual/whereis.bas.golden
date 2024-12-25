@@ -1,7 +1,7 @@
 (program 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n statement \r\n statement \r\n 
+      (letter_range A - Z))) \r\n \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment EOFTYPE = 
@@ -19,7 +19,7 @@
       (const_assignment ROOT = 
         (const_expr 
           (expr 
-            (literal "TWH")))))) \r\n statement \r\n 
+            (literal "TWH")))))) \r\n \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id ScanDir) 
     ( 
@@ -27,7 +27,7 @@
         (declare_parameter PathSpec$) , 
         (declare_parameter Level) , 
         (declare_parameter FileSpec$) , 
-        (declare_parameter Row)) )) \r\n statement \r\n 
+        (declare_parameter Row)) )) \r\n \r\n 
   (declare_statement DECLARE FUNCTION MakeFileName$ 
     ( 
       (declare_parameter_list 
@@ -36,7 +36,7 @@
     ( 
       (declare_parameter_list 
         (declare_parameter FileNum) , 
-        (declare_parameter EntryType)) )) \r\n statement \r\n 
+        (declare_parameter EntryType)) )) \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \r\n 
@@ -65,7 +65,7 @@
       (variable_or_function_call PathSpec$))) \r\n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \r\n statement \r\n 
+      (untyped_id CLS))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call RightCh$) = 
@@ -76,7 +76,7 @@
               (expr 
                 (variable_or_function_call PathSpec$)) , 
               (expr 
-                (literal 1)) )))))) \r\n statement \r\n 
+                (literal 1)) )))))) \r\n \r\n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -104,7 +104,7 @@
               (variable_or_function_call PathSpec$)) + 
             (expr 
               (literal "\"))))) \r\n) 
-    (end_if_statement END IF)) \r\n statement \r\n 
+    (end_if_statement END IF)) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call FileSpec$) = 
@@ -132,7 +132,7 @@
     (assignment_statement 
       (variable_or_function_call Row) = 
       (expr 
-        (literal 3)))) \r\n statement \r\n statement \r\n 
+        (literal 3)))) \r\n \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id ScanDir) 
@@ -140,7 +140,7 @@
         (call_argument PathSpec$) , 
         (call_argument Level) , 
         (call_argument FileSpec$) , 
-        (call_argument Row)))) \r\n statement \r\n 
+        (call_argument Row)))) \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id KILL) 
@@ -150,7 +150,7 @@
             (expr 
               (variable_or_function_call ROOT)) + 
             (expr 
-              (literal ".*"))))))) \r\n statement \r\n statement \r\n 
+              (literal ".*"))))))) \r\n \r\n \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -165,13 +165,13 @@
       (expr 
         (literal "Search complete.")))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION GetEntry$ 
     ( 
       (parameter_list 
         (parameter FileNum) , 
         (parameter EntryType)) ) STATIC 
-    (block \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -194,7 +194,7 @@
                   (variable_or_function_call EntryLine$)) <> 
                 (expr 
                   (literal ""))) THEN \r\n 
-              (then_block statement \r\n statement \r\n 
+              (then_block \r\n \r\n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call TestCh$) = 
@@ -222,7 +222,7 @@
                     (if_inline_action 
                       (statement 
                         (exit_statement EXIT DO))))) \r\n) 
-              (end_if_statement END IF)) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+              (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n \r\n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call EOF 
@@ -240,9 +240,9 @@
             (assignment_statement 
               (variable_or_function_call GetEntry$) = 
               (expr 
-                (literal "")))) \r\n statement \r\n) 
+                (literal "")))) \r\n \r\n) 
         (else_block_statement ELSE 
-          (else_block statement \r\n statement \r\n statement \r\n 
+          (else_block \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call EntryName$) = 
@@ -257,7 +257,7 @@
                                 (expr 
                                   (variable_or_function_call EntryLine$)) , 
                                 (expr 
-                                  (literal 8)) )))) )))))) \r\n statement \r\n statement \r\n 
+                                  (literal 8)) )))) )))))) \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call EntryExt$) = 
@@ -293,13 +293,13 @@
                       (expr 
                         (variable_or_function_call EntryExt$))))) \r\n) 
               (else_block_statement ELSE 
-                (else_block statement \r\n 
+                (else_block \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call GetEntry$) = 
                       (expr 
                         (variable_or_function_call EntryName$)))) \r\n)) 
-              (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n 
+              (end_if_statement END IF)) \r\n \r\n \r\n \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -320,20 +320,20 @@
                     (expr 
                       (variable_or_function_call DIRTYPE)))) \r\n) 
               (else_block_statement ELSE 
-                (else_block statement \r\n 
+                (else_block \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call EntryType) = 
                       (expr 
                         (variable_or_function_call FILETYPE)))) \r\n)) 
-              (end_if_statement END IF)) \r\n statement \r\n)) 
-        (end_if_statement END IF)) \r\n statement \r\n statement) 
-    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+              (end_if_statement END IF)) \r\n \r\n)) 
+        (end_if_statement END IF)) \r\n \r\n) 
+    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION MakeFileName$ 
     ( 
       (parameter_list 
         (parameter Num)) ) STATIC 
-    (block \r\n statement \r\n 
+    (block \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call MakeFileName$) = 
@@ -352,8 +352,8 @@
                         (args_or_indices 
                           ( 
                             (expr 
-                              (variable_or_function_call Num)) )))) ))))))) \r\n statement \r\n statement) 
-    (end_function_statement END FUNCTION)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                              (variable_or_function_call Num)) )))) ))))))) \r\n \r\n) 
+    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id ScanDir) 
     ( 
@@ -362,7 +362,7 @@
         (parameter Level) , 
         (parameter FileSpec$) , 
         (parameter Row)) ) 
-    (block \r\n statement \r\n 
+    (block \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -388,7 +388,7 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (variable_or_function_call PathSpec$)) ;)) \r\n statement \r\n statement \r\n 
+            (variable_or_function_call PathSpec$)) ;)) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call TempSpec$) = 
@@ -397,7 +397,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call Level)) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+                    (variable_or_function_call Level)) )))))) \r\n \r\n \r\n \r\n 
       (statement 
         (call_statement 
           (untyped_id SHELL) 
@@ -413,22 +413,22 @@
                   (expr 
                     (literal " > "))) + 
                 (expr 
-                  (variable_or_function_call TempSpec$))))))) \r\n statement \r\n statement \r\n 
+                  (variable_or_function_call TempSpec$))))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call FileNum) = 
           (expr 
-            (variable_or_function_call FREEFILE)))) \r\n statement \r\n statement \r\n 
+            (variable_or_function_call FREEFILE)))) \r\n \r\n \r\n 
       (statement 
         (open_statement OPEN 
           (expr 
             (variable_or_function_call TempSpec$)) FOR 
           (open_mode INPUT) AS # 
           (expr 
-            (variable_or_function_call FileNum)))) \r\n statement \r\n statement \r\n 
+            (variable_or_function_call FileNum)))) \r\n \r\n \r\n 
       (statement 
         (do_loop_statement DO 
-          (block \r\n statement \r\n statement \r\n 
+          (block \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call DirEntry$) = 
@@ -439,14 +439,14 @@
                         (expr 
                           (variable_or_function_call FileNum)) , 
                         (expr 
-                          (variable_or_function_call EntryType)) )))))) \r\n statement \r\n statement \r\n 
+                          (variable_or_function_call EntryType)) )))))) \r\n \r\n \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
                   (variable_or_function_call EntryType)) = 
                 (expr 
                   (variable_or_function_call FILETYPE))) THEN \r\n 
-              (then_block statement \r\n statement \r\n statement \r\n 
+              (then_block \r\n \r\n \r\n 
                 (if_block_statement IF 
                   (expr 
                     (expr 
@@ -479,14 +479,14 @@
                         (variable_or_function_call EntryType) = 
                         (expr 
                           (variable_or_function_call EOFTYPE)))) \r\n) 
-                  (end_if_statement END IF)) \r\n statement \r\n statement \r\n statement \r\n) 
+                  (end_if_statement END IF)) \r\n \r\n \r\n \r\n) 
               (elseif_block_statement ELSEIF 
                 (expr 
                   (expr 
                     (variable_or_function_call EntryType)) = 
                   (expr 
                     (variable_or_function_call DIRTYPE))) THEN 
-                (else_block statement \r\n 
+                (else_block \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call NewPath$) = 
@@ -537,15 +537,15 @@
                     (print_statement PRINT 
                       (expr 
                         (variable_or_function_call PathSpec$)) ;)) \r\n)) 
-              (end_if_statement END IF)) \r\n statement \r\n statement) LOOP 
+              (end_if_statement END IF)) \r\n \r\n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call EntryType)) = 
               (expr 
-                (variable_or_function_call EOFTYPE)))))) \r\n statement \r\n statement \r\n 
+                (variable_or_function_call EOFTYPE)))))) \r\n \r\n \r\n 
       (statement 
         (close_statement CLOSE 
           (expr 
-            (variable_or_function_call FileNum)))) \r\n statement) 
+            (variable_or_function_call FileNum)))) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

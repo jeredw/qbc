@@ -14,7 +14,7 @@
     (data_statement DATA 
       (data_item Add) , 
       (data_item Delete) , 
-      (data_item Quit))) \n statement \n 
+      (data_item Quit))) \n \n 
   (statement 
     (for_next_statement FOR I = 
       (expr 
@@ -45,7 +45,7 @@
                   (args_or_indices 
                     ( 
                       (expr 
-                        (literal 13)) ))))))) \n statement) NEXT I)) \n statement \n 
+                        (literal 13)) ))))))) \n) NEXT I)) \n \n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -68,7 +68,7 @@
         (literal "           Quit 
           (F3)")))) : 
   (statement 
-    (print_statement PRINT)) \n statement \n 
+    (print_statement PRINT)) \n \n 
   (statement 
     (do_loop_statement DO 
       (block \n 
@@ -132,7 +132,7 @@
                 (statement 
                   (print_statement PRINT 
                     (expr 
-                      (variable_or_function_call R$)) ;)) \n statement)) 
+                      (variable_or_function_call R$)) ;)) \n)) 
             (case_block 
               (case_statement CASE 
                 (case_expr 
@@ -140,7 +140,7 @@
                     (literal "Quit")))) 
               (block \n 
                 (statement 
-                  (exit_statement EXIT DO)) \n statement)) 
+                  (exit_statement EXIT DO)) \n)) 
             (case_block 
               (case_statement CASE ELSE) 
               (block \n 
@@ -153,5 +153,5 @@
                 (statement 
                   (print_statement PRINT 
                     (expr 
-                      (literal "Enter first word or press key.")))) \n statement)) 
-            (end_select_statement END SELECT))) \n statement) LOOP)) \n <EOF>)
+                      (literal "Enter first word or press key.")))) \n)) 
+            (end_select_statement END SELECT))) \n) LOOP)) \n <EOF>)

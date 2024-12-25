@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n 
+(program \r\n \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id CapsOn) 
     ( )) \r\n 
@@ -11,7 +11,7 @@
       (declare_parameter_list 
         (declare_parameter R%) , 
         (declare_parameter C%) , 
-        (declare_parameter M$)) )) \r\n statement \r\n 
+        (declare_parameter M$)) )) \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \r\n 
@@ -83,14 +83,14 @@
     (call_statement 
       (untyped_id CLS))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id CapsOn) STATIC 
-    (block \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (literal 0)))) \r\n statement \r\n 
+            (literal 0)))) \r\n \r\n 
       (statement 
         (call_statement 
           (untyped_id POKE) 
@@ -107,17 +107,17 @@
                         (expr 
                           (literal &H0417)) )))) OR 
                 (expr 
-                  (literal &H40))))))) \r\n statement \r\n 
+                  (literal &H40))))))) \r\n \r\n 
       (statement 
-        (def_seg_statement DEF SEG)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n 
+        (def_seg_statement DEF SEG)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id CapsOff) STATIC 
-    (block \r\n statement \r\n 
+    (block \r\n \r\n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (literal 0)))) \r\n statement \r\n 
+            (literal 0)))) \r\n \r\n 
       (statement 
         (call_statement 
           (untyped_id POKE) 
@@ -136,8 +136,8 @@
                 (expr 
                   (literal &HBF))))))) \r\n 
       (statement 
-        (def_seg_statement DEF SEG)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n 
+        (def_seg_statement DEF SEG)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id PrntMsg) 
     ( 
@@ -145,7 +145,7 @@
         (parameter Row%) , 
         (parameter Col%) , 
         (parameter Message$)) ) STATIC 
-    (block \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call CurRow%) = 
@@ -169,11 +169,11 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (variable_or_function_call Message$)) ;)) \r\n statement \r\n 
+            (variable_or_function_call Message$)) ;)) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
             (variable_or_function_call CurRow%)) , 
           (expr 
-            (variable_or_function_call CurCol%)))) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \n <EOF>)
+            (variable_or_function_call CurCol%)))) \r\n) 
+    (end_sub_statement END SUB)) \r\n \n <EOF>)

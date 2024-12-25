@@ -1,7 +1,7 @@
-(program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+(program \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement \n statement \n 
+      (letter_range A - Z))) \n \n \n 
   (declare_statement DECLARE FUNCTION GetToken$ 
     ( 
       (declare_parameter_list 
@@ -32,7 +32,7 @@
     ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id InitKeyTable) 
-    ( )) \n statement \n statement \n 
+    ( )) \n \n \n 
   (statement 
     (const_statement CONST 
       (const_assignment TRUE = 
@@ -51,7 +51,7 @@
       (const_assignment MaxLines = 
         (const_expr 
           (expr 
-            (literal 400)))))) \n statement \n 
+            (literal 400)))))) \n \n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable LineTable! 
@@ -68,7 +68,7 @@
       (dim_variable Seps$) , 
       (dim_variable InputFile$) , 
       (dim_variable OutputFile$) , 
-      (dim_variable TmpFile$))) \n statement \n statement \n 
+      (dim_variable TmpFile$))) \n \n \n 
   (statement 
     (const_statement CONST 
       (const_assignment KeyWordCount = 
@@ -82,10 +82,10 @@
           ( 
             (dim_subscript 
               (expr 
-                (variable_or_function_call KeyWordCount))) ))))) \n statement \n 
+                (variable_or_function_call KeyWordCount))) ))))) \n \n 
   (label 
     (text_label 
-      (untyped_id KeyData)) :) statement \n 
+      (untyped_id KeyData)) :) \n 
   (statement 
     (data_statement DATA 
       (data_item THEN) , 
@@ -97,7 +97,7 @@
       (data_item RESTORE) , 
       (data_item RUN) , 
       (data_item ERL) , 
-      (data_item ""))) \n statement \n statement \n 
+      (data_item ""))) \n \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Seps$) = 
@@ -204,12 +204,12 @@
       (if_inline_action 
         (statement 
           (call_statement 
-            (untyped_id CLS)))))) \n statement \n 
+            (untyped_id CLS)))))) \n \n 
   (statement 
-    (end_statement END)) \n statement \n 
+    (end_statement END)) \n \n 
   (label 
     (text_label 
-      (untyped_id FileErr1)) :) statement \n 
+      (untyped_id FileErr1)) :) \n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \n 
@@ -235,7 +235,7 @@
           (end_statement END))))) \n 
   (label 
     (text_label 
-      (untyped_id FileErr2)) :) statement \n 
+      (untyped_id FileErr2)) :) \n 
   (statement 
     (input_statement INPUT "      Output file name 
       (ENTER to print to screen) :" , 
@@ -267,7 +267,7 @@
       (statement 
         (resume_statement RESUME)) \n) 
     (else_block_statement ELSE 
-      (else_block statement \n 
+      (else_block \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call TmpFile$) = 
@@ -275,10 +275,10 @@
               (literal "")))) \n 
         (statement 
           (resume_statement RESUME NEXT)) \n)) 
-    (end_if_statement END IF)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+    (end_if_statement END IF)) \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id BuildTable) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -289,7 +289,7 @@
                     ( 
                       (expr 
                         (literal 1)) )))))) 
-          (block \n statement \n 
+          (block \n \n 
             (statement 
               (line_input_statement LINE INPUT 
                 (file_number # 
@@ -324,7 +324,7 @@
                         (literal 1)) TO 
                       (expr 
                         (variable_or_function_call KeyWordCount)) 
-                      (block \n statement \n 
+                      (block \n \n 
                         (if_block_statement IF 
                           (expr 
                             ( 
@@ -341,7 +341,7 @@
                                       ( 
                                         (expr 
                                           (variable_or_function_call Token$)) ))))) )) THEN \n 
-                          (then_block statement \n 
+                          (then_block \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call Token$) = 
@@ -352,7 +352,7 @@
                                         (expr 
                                           (literal "")) , 
                                         (expr 
-                                          (variable_or_function_call Seps$)) )))))) \n statement \n statement \n statement \n statement \n 
+                                          (variable_or_function_call Seps$)) )))))) \n \n \n \n \n 
                             (statement 
                               (do_loop_statement DO 
                                 (do_condition WHILE 
@@ -415,8 +415,8 @@
                                           (assignment_statement 
                                             (variable_or_function_call KeyIndex) = 
                                             (expr 
-                                              (literal 0))))))) \n statement) LOOP)) \n) 
-                          (end_if_statement END IF)) \n statement) NEXT KeyIndex)) \n statement \n 
+                                              (literal 0))))))) \n) LOOP)) \n) 
+                          (end_if_statement END IF)) \n) NEXT KeyIndex)) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Token$) = 
@@ -427,11 +427,11 @@
                               (expr 
                                 (literal "")) , 
                               (expr 
-                                (variable_or_function_call Seps$)) )))))) \n statement) LOOP)) \n statement) LOOP)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                                (variable_or_function_call Seps$)) )))))) \n) LOOP)) \n) LOOP)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id GenOutFile) STATIC 
-    (block \n statement \n statement \n 
+    (block \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Sep$) = 
@@ -469,7 +469,7 @@
                       (variable_or_function_call InLin$)) <> 
                     (expr 
                       (literal ""))) )) THEN \n 
-              (then_block statement \n 
+              (then_block \n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call Token$) = 
@@ -508,7 +508,7 @@
                       (assignment_statement 
                         (variable_or_function_call FoundNumber) = 
                         (expr 
-                          (variable_or_function_call false)))) \n statement \n 
+                          (variable_or_function_call false)))) \n \n 
                     (statement 
                       (for_next_statement FOR index = 
                         (expr 
@@ -534,7 +534,7 @@
                                   (variable_or_function_call FoundNumber) = 
                                   (expr 
                                     (variable_or_function_call TRUE)))) \n) 
-                            (end_if_statement END IF)) \n statement) NEXT index)) \n statement \n 
+                            (end_if_statement END IF)) \n) NEXT index)) \n \n 
                     (if_block_statement IF 
                       (expr 
                         ( 
@@ -573,9 +573,9 @@
                                       (variable_or_function_call Token$)) ))) ) = 
                             (expr 
                               (variable_or_function_call Token$)))) \n) 
-                      (end_if_statement END IF)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n) 
+                      (end_if_statement END IF)) \n \n \n \n \n \n \n \n \n \n \n \n \n \n) 
                   (end_if_statement END IF)) \n) 
-              (end_if_statement END IF)) \n statement \n 
+              (end_if_statement END IF)) \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -588,7 +588,7 @@
                     (expr 
                       (variable_or_function_call InLin$)))) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (print_statement PRINT 
                       (file_number # 
@@ -596,11 +596,11 @@
                           (literal 2))) , 
                       (expr 
                         (variable_or_function_call InLin$)))) \n)) 
-              (end_if_statement END IF)) \n statement) LOOP)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+              (end_if_statement END IF)) \n) LOOP)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id GetFileNames) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (call_statement 
           (untyped_id CLS))) \n 
@@ -649,7 +649,7 @@
               (assignment_statement 
                 (variable_or_function_call OutputFile$) = 
                 (expr 
-                  (literal "CON"))))))) \n statement \n 
+                  (literal "CON"))))))) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -671,7 +671,7 @@
                   (variable_or_function_call InputFile$)) + 
                 (expr 
                   (literal ".BAS"))))) \n) 
-        (end_if_statement END IF)) \n statement \n 
+        (end_if_statement END IF)) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -718,7 +718,7 @@
                       (literal "LPT3")))) 
                 (block \n 
                   (statement 
-                    (exit_statement EXIT SUB)) \n statement)) 
+                    (exit_statement EXIT SUB)) \n)) 
               (case_block 
                 (case_statement CASE ELSE) 
                 (block \n 
@@ -729,9 +729,9 @@
                         (expr 
                           (variable_or_function_call OutputFile$)) + 
                         (expr 
-                          (literal ".BAS"))))) \n statement)) 
+                          (literal ".BAS"))))) \n)) 
               (end_select_statement END SELECT))) \n) 
-        (end_if_statement END IF)) \n statement \n 
+        (end_if_statement END IF)) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -788,14 +788,14 @@
                     (assignment_statement 
                       (variable_or_function_call InputFile$) = 
                       (expr 
-                        (variable_or_function_call TmpFile$))))))) \n statement) LOOP)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                        (variable_or_function_call TmpFile$))))))) \n) LOOP)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (function_statement FUNCTION GetToken$ 
     ( 
       (parameter_list 
         (parameter Search$) , 
         (parameter Delim$)) ) STATIC 
-    (block \n statement \n statement \n statement \n statement \n 
+    (block \n \n \n \n \n 
       (if_block_statement IF 
         (expr 
           ( 
@@ -815,7 +815,7 @@
               (variable_or_function_call SaveStr$) = 
               (expr 
                 (variable_or_function_call Search$)))) \n) 
-        (end_if_statement END IF)) \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NewPos) = 
@@ -840,7 +840,7 @@
       (if_block_statement IF 
         (expr 
           (variable_or_function_call NewPos)) THEN \n 
-        (then_block statement \n 
+        (then_block \n 
           (statement 
             (assignment_statement 
               (variable_or_function_call BegPos) = 
@@ -853,7 +853,7 @@
                 (expr 
                   (literal 1))))) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n statement \n 
+          (else_block \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GetToken$) = 
@@ -861,7 +861,7 @@
                   (literal "")))) \n 
             (statement 
               (exit_statement EXIT FUNCTION)) \n)) 
-        (end_if_statement END IF)) \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NewPos) = 
@@ -886,7 +886,7 @@
       (if_block_statement IF 
         (expr 
           (variable_or_function_call NewPos)) THEN \n 
-        (then_block statement \n 
+        (then_block \n 
           (statement 
             (assignment_statement 
               (variable_or_function_call NewPos) = 
@@ -899,7 +899,7 @@
                 (expr 
                   (literal 1))))) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n statement \n 
+          (else_block \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call NewPos) = 
@@ -911,7 +911,7 @@
                           (variable_or_function_call SaveStr$)) ))) + 
                   (expr 
                     (literal 1))))) \n)) 
-        (end_if_statement END IF)) \n statement \n 
+        (end_if_statement END IF)) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call GetToken$) = 
@@ -926,16 +926,16 @@
                   (expr 
                     (variable_or_function_call NewPos)) - 
                   (expr 
-                    (variable_or_function_call BegPos))) ))))) \n statement \n 
+                    (variable_or_function_call BegPos))) ))))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BegPos) = 
           (expr 
-            (variable_or_function_call NewPos)))) \n statement \n statement) 
-    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (variable_or_function_call NewPos)))) \n \n) 
+    (end_function_statement END FUNCTION)) \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id InitKeyTable) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (call_statement 
           (untyped_id RESTORE) 
@@ -959,13 +959,13 @@
                       (expr 
                         (variable_or_function_call Count)) ))) = 
                 (expr 
-                  (variable_or_function_call KeyWord$)))) \n statement) NEXT)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+                  (variable_or_function_call KeyWord$)))) \n) NEXT)) \n \n) 
+    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (function_statement FUNCTION IsDigit 
     ( 
       (parameter_list 
         (parameter Char$)) ) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (if_block_statement IF 
         (expr 
           ( 
@@ -981,7 +981,7 @@
               (expr 
                 (variable_or_function_call false)))) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n 
+          (else_block \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call CharAsc) = 
@@ -1017,14 +1017,14 @@
                               ( 
                                 (expr 
                                   (literal "9")) ))))) ))))) \n)) 
-        (end_if_statement END IF)) \n statement \n statement) 
-    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+        (end_if_statement END IF)) \n \n) 
+    (end_function_statement END FUNCTION)) \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (function_statement FUNCTION StrBrk 
     ( 
       (parameter_list 
         (parameter InString$) , 
         (parameter Separator$)) ) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Ln) = 
@@ -1037,7 +1037,7 @@
         (assignment_statement 
           (variable_or_function_call BegPos) = 
           (expr 
-            (literal 1)))) \n statement \n 
+            (literal 1)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -1075,7 +1075,7 @@
                 (statement 
                   (exit_statement EXIT FUNCTION)) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call BegPos) = 
@@ -1084,19 +1084,19 @@
                           (variable_or_function_call BegPos)) + 
                         (expr 
                           (literal 1))))) \n)) 
-              (end_if_statement END IF)) \n statement) LOOP)) \n 
+              (end_if_statement END IF)) \n) LOOP)) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call StrBrk) = 
           (expr 
-            (variable_or_function_call BegPos)))) \n statement \n statement) 
-    (end_function_statement END FUNCTION)) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (variable_or_function_call BegPos)))) \n \n) 
+    (end_function_statement END FUNCTION)) \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (function_statement FUNCTION StrSpn% 
     ( 
       (parameter_list 
         (parameter InString$) , 
         (parameter Separator$)) ) STATIC 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Ln) = 
@@ -1109,7 +1109,7 @@
         (assignment_statement 
           (variable_or_function_call BegPos) = 
           (expr 
-            (literal 1)))) \n statement \n 
+            (literal 1)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -1144,7 +1144,7 @@
                 (statement 
                   (exit_statement EXIT FUNCTION)) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call BegPos) = 
@@ -1153,10 +1153,10 @@
                           (variable_or_function_call BegPos)) + 
                         (expr 
                           (literal 1))))) \n)) 
-              (end_if_statement END IF)) \n statement) LOOP)) \n 
+              (end_if_statement END IF)) \n) LOOP)) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call StrSpn) = 
           (expr 
-            (variable_or_function_call BegPos)))) \n statement \n statement) 
+            (variable_or_function_call BegPos)))) \n \n) 
     (end_function_statement END FUNCTION)) \n <EOF>)

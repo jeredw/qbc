@@ -5,11 +5,11 @@
     (deftype_statement DEFINT 
       (letter_range A - Z))) \r\n 
   (label 
-    (line_number 10)) statement \r\n 
+    (line_number 10)) \r\n 
   (label 
-    (line_number 15)) statement \r\n 
+    (line_number 15)) \r\n 
   (label 
-    (line_number 20)) statement \r\n 
+    (line_number 20)) \r\n 
   (label 
     (line_number 25)) 
   (statement 
@@ -224,9 +224,9 @@
               (target 
                 (line_number 500))))) \r\n 
         (label 
-          (line_number 95)) statement) WEND)) \r\n 
+          (line_number 95))) WEND)) \r\n 
   (label 
-    (line_number 100)) statement \r\n 
+    (line_number 100)) \r\n 
   (label 
     (line_number 105)) 
   (statement 
@@ -292,13 +292,13 @@
                   (expr 
                     (literal 15))))))) \r\n 
         (label 
-          (line_number 130)) statement) NEXT COUNT)) \r\n 
+          (line_number 130))) NEXT COUNT)) \r\n 
   (label 
     (line_number 135)) 
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 200)) statement \r\n 
+    (line_number 200)) \r\n 
   (label 
     (line_number 205)) 
   (statement 
@@ -348,13 +348,13 @@
                   (expr 
                     (variable_or_function_call COUNT))))))) \r\n 
         (label 
-          (line_number 225)) statement) NEXT COUNT)) \r\n 
+          (line_number 225))) NEXT COUNT)) \r\n 
   (label 
     (line_number 230)) 
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 300)) statement \r\n 
+    (line_number 300)) \r\n 
   (label 
     (line_number 305)) 
   (statement 
@@ -408,13 +408,13 @@
                 (expr 
                   (literal 5)))))) \r\n 
         (label 
-          (line_number 330)) statement) WEND)) \r\n 
+          (line_number 330))) WEND)) \r\n 
   (label 
     (line_number 335)) 
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 400)) statement \r\n 
+    (line_number 400)) \r\n 
   (label 
     (line_number 405)) 
   (statement 
@@ -495,16 +495,16 @@
                       (expr 
                         (variable_or_function_call RANGE)))))) \r\n 
               (label 
-                (line_number 440)) statement) NEXT COUNT)) \r\n 
+                (line_number 440))) NEXT COUNT)) \r\n 
         (label 
-          (line_number 445)) statement) WEND)) \r\n 
+          (line_number 445))) WEND)) \r\n 
   (label 
     (line_number 450)) 
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 500)) statement \r\n 
+    (line_number 500)) \r\n 
   (label 
     (line_number 505)) 
   (statement 
-    (end_statement END)) \r\n statement \r\n <EOF>)
+    (end_statement END)) \r\n \r\n <EOF>)

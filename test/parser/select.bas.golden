@@ -10,13 +10,13 @@
           (statement 
             (print_statement print 
               (expr 
-                (literal "huh")))) \n statement)) 
+                (literal "huh")))) \n)) 
       (case_block 
         (case_statement case 
           (case_expr is >= 
             (expr 
               (literal 5)))) 
-        (block \n statement)) 
+        (block \n)) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -28,7 +28,7 @@
           (case_expr 
             (expr 
               (literal 4)))) 
-        (block \n statement)) 
+        (block \n)) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -41,7 +41,7 @@
               (literal 5)) to 
             (expr 
               (literal 7)))) 
-        (block \n statement)) 
+        (block \n)) 
       (end_select_statement end select))) \n 
   (statement 
     (select_case_statement select case 
@@ -70,7 +70,7 @@
             (print_statement print 
               (expr 
                 (literal "hi")))) :)) 
-      (end_select_statement end select))) \n statement \n 
+      (end_select_statement end select))) \n \n 
   (statement 
     (select_case_statement select case 
       (expr 
@@ -97,8 +97,8 @@
           (statement 
             (print_statement print 
               (expr 
-                (literal "bye")))) \n statement)) 
-      (end_select_statement end select))) \n statement \n 
+                (literal "bye")))) \n)) 
+      (end_select_statement end select))) \n \n 
   (statement 
     (select_case_statement select case 
       (expr 
@@ -110,8 +110,8 @@
           (if_block_statement if 
             (expr 
               (variable_or_function_call foo)) then \n then_block 
-            (end_if_statement end if)) \n statement)) 
-      (end_select_statement end select))) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (end_if_statement end if)) \n)) 
+      (end_select_statement end select))) \n \n \n \n \n \n \n \n 
   (statement 
     (select_case_statement select case 
       (expr 
@@ -133,11 +133,11 @@
                   (case_expr 
                     (expr 
                       (literal 42)))) 
-                (block \n statement)) 
+                (block \n)) 
               (case_block 
                 (case_statement case else) 
-                (block \n statement)) 
-              (end_select_statement end select))) \n statement)) 
+                (block \n)) 
+              (end_select_statement end select))) \n)) 
       (case_block 
         (case_statement case else) 
         (block \n 
@@ -146,5 +146,5 @@
               (expr 
                 (variable_or_function_call k)) 
               (before_first_case \n) 
-              (end_select_statement end select))) \n statement)) 
+              (end_select_statement end select))) \n)) 
       (end_select_statement end select))) \n <EOF>)

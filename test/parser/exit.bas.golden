@@ -3,7 +3,7 @@
     (do_loop_statement do 
       (block \n 
         (statement 
-          (exit_statement exit do)) \n statement) loop)) \n 
+          (exit_statement exit do)) \n) loop)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -20,19 +20,19 @@
           (then_block 
             (statement 
               (exit_statement exit for)) \n) 
-          (end_if_statement end if)) \n statement) next i)) \n 
+          (end_if_statement end if)) \n) next i)) \n 
   (sub_statement sub 
     (untyped_id blah) 
     (block \n 
       (statement 
-        (exit_statement exit sub)) \n statement) 
+        (exit_statement exit sub)) \n) 
     (end_sub_statement end sub)) \n 
   (function_statement function ok 
     (block \n 
       (statement 
-        (exit_statement exit function)) \n statement) 
+        (exit_statement exit function)) \n) 
     (end_function_statement end function)) \n 
   (def_fn_statement def fnfoo 
     (block \n 
       (statement 
-        (exit_statement exit def)) \n statement) end def) \n <EOF>)
+        (exit_statement exit def)) \n) end def) \n <EOF>)

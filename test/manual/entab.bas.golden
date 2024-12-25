@@ -1,4 +1,4 @@
-(program statement \r\n statement \r\n statement \r\n statement \r\n 
+(program \r\n \r\n \r\n \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id SetTabPos) 
     ( )) \r\n 
@@ -6,7 +6,7 @@
     (untyped_id StripCommand) 
     ( 
       (declare_parameter_list 
-        (declare_parameter CLine$)) )) \r\n statement \r\n statement \r\n 
+        (declare_parameter CLine$)) )) \r\n \r\n \r\n 
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \r\n 
@@ -15,7 +15,7 @@
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id Column) AS 
-          (type_name_for_declare_parameter INTEGER))) )) \r\n statement \r\n 
+          (type_name_for_declare_parameter INTEGER))) )) \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment MAXLINE = 
@@ -38,7 +38,7 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call NO))))))) \r\n statement \r\n 
+              (variable_or_function_call NO))))))) \r\n \r\n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable 
@@ -48,7 +48,7 @@
             (dim_subscript 
               (expr 
                 (variable_or_function_call MAXLINE))) )) AS 
-        (type_name INTEGER)))) \r\n statement \r\n 
+        (type_name INTEGER)))) \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id StripCommand) 
@@ -57,23 +57,23 @@
           (expr 
             ( 
               (expr 
-                (variable_or_function_call COMMAND$)) )))))) \r\n statement \r\n statement \r\n 
+                (variable_or_function_call COMMAND$)) )))))) \r\n \r\n \r\n 
   (statement 
     (call_statement 
-      (untyped_id SetTabPos))) \r\n statement \r\n 
+      (untyped_id SetTabPos))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call LastColumn) = 
       (expr 
-        (literal 1)))) \r\n statement \r\n 
+        (literal 1)))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
-      (block \r\n statement \r\n 
+      (block \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call CurrentColumn) = 
             (expr 
-              (variable_or_function_call LastColumn)))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+              (variable_or_function_call LastColumn)))) \r\n \r\n \r\n \r\n \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n 
@@ -132,7 +132,7 @@
                         ( 
                           (expr 
                             (variable_or_function_call CurrentColumn)) ))))) THEN \r\n 
-                (then_block statement \r\n statement \r\n 
+                (then_block \r\n \r\n 
                   (statement 
                     (do_loop_statement DO 
                       (do_condition WHILE 
@@ -151,7 +151,7 @@
                               (expr 
                                 (variable_or_function_call CurrentColumn)) + 
                               (expr 
-                                (literal 1))))) \r\n statement) LOOP)) \r\n 
+                                (literal 1))))) \r\n) LOOP)) \r\n 
                   (statement 
                     (print_statement PRINT 
                       (file_number # 
@@ -168,7 +168,7 @@
                       (variable_or_function_call LastColumn) = 
                       (expr 
                         (variable_or_function_call CurrentColumn)))) \r\n) 
-                (end_if_statement END IF)) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+                (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n \r\n 
         (statement 
           (do_loop_statement DO 
             (do_condition WHILE 
@@ -192,14 +192,14 @@
                     (expr 
                       (variable_or_function_call LastColumn)) + 
                     (expr 
-                      (literal 1))))) \r\n statement) LOOP)) \r\n statement \r\n statement \r\n 
+                      (literal 1))))) \r\n) LOOP)) \r\n \r\n \r\n 
         (statement 
           (print_statement PRINT 
             (file_number # 
               (expr 
                 (literal 2))) , 
             (expr 
-              (variable_or_function_call C$)) ;)) \r\n statement \r\n statement \r\n 
+              (variable_or_function_call C$)) ;)) \r\n \r\n \r\n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -217,7 +217,7 @@
                 (expr 
                   (literal 1)))) \r\n) 
           (else_block_statement ELSE 
-            (else_block statement \r\n 
+            (else_block \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call LastColumn) = 
@@ -226,7 +226,7 @@
                       (variable_or_function_call LastColumn)) + 
                     (expr 
                       (literal 1))))) \r\n)) 
-          (end_if_statement END IF)) \r\n statement \r\n statement) LOOP 
+          (end_if_statement END IF)) \r\n \r\n) LOOP 
       (do_condition UNTIL 
         (expr 
           (variable_or_function_call EOF 
@@ -241,7 +241,7 @@
       (expr 
         (literal 2)))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id SetTabPos) STATIC 
     (block \r\n 
@@ -270,8 +270,8 @@
                             (expr 
                               (variable_or_function_call TABSPACE))) )) = 
                       (expr 
-                        (literal 1))) )))) \r\n statement) NEXT I)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n 
+                        (literal 1))) )))) \r\n) NEXT I)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id StripCommand) 
     ( 
@@ -292,7 +292,7 @@
             (input_statement INPUT "Store entabbed file in:   " , 
               (variable_or_function_call OutFileName$))) \r\n) 
         (else_block_statement ELSE 
-          (else_block statement \r\n 
+          (else_block \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call SpacePos) = 
@@ -340,7 +340,7 @@
                                   (expr 
                                     (variable_or_function_call SpacePos)) ))) )))))) \r\n) 
               (else_block_statement ELSE 
-                (else_block statement \r\n 
+                (else_block \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call InFileName$) = 
@@ -364,8 +364,8 @@
             (variable_or_function_call OutFileName$)) FOR 
           (open_mode OUTPUT) AS # 
           (expr 
-            (literal 2)))) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n 
+            (literal 2)))) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION ThisIsATab 
     ( 
       (parameter_list 
@@ -386,7 +386,7 @@
               (expr 
                 (variable_or_function_call YES)))) \r\n) 
         (else_block_statement ELSE 
-          (else_block statement \r\n 
+          (else_block \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call ThisIsATab) = 
@@ -396,5 +396,5 @@
                       ( 
                         (expr 
                           (variable_or_function_call LastColumn)) )))))) \r\n)) 
-        (end_if_statement END IF)) \r\n statement) 
+        (end_if_statement END IF)) \r\n) 
     (end_function_statement END FUNCTION)) \r\n <EOF>)

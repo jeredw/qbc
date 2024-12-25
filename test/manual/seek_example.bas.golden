@@ -17,7 +17,7 @@
           (put_io_statement PUT # 
             (expr 
               (literal 1)) , , 
-            (variable_or_function_call i%))) \n statement) NEXT i%)) \n 
+            (variable_or_function_call i%))) \n) NEXT i%)) \n 
   (statement 
     (seek_statement SEEK # 
       (expr 

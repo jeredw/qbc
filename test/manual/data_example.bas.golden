@@ -1,9 +1,9 @@
-(program statement \n 
+(program \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call C$) = 
       (expr 
-        (variable_or_function_call DATE$)))) \n statement \n statement \n 
+        (variable_or_function_call DATE$)))) \n \n \n 
   (statement 
     (for_next_statement FOR I% = 
       (expr 
@@ -17,7 +17,7 @@
       (block \n 
         (statement 
           (read_statement READ 
-            (variable_or_function_call Month$))) \n statement) NEXT)) \n 
+            (variable_or_function_call Month$))) \n) NEXT)) \n 
   (statement 
     (data_statement DATA 
       (data_item January) , 
@@ -33,7 +33,7 @@
       (data_item September) , 
       (data_item October) , 
       (data_item November) , 
-      (data_item December))) \n statement \n statement \n 
+      (data_item December))) \n \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Day$) = 
@@ -70,7 +70,7 @@
                     (expr 
                       (variable_or_function_call Day$)) , 
                     (expr 
-                      (literal 1)) ))))))))) \n statement \n 
+                      (literal 1)) ))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Year$) = 
@@ -81,7 +81,7 @@
               (expr 
                 (variable_or_function_call C$)) , 
               (expr 
-                (literal 4)) )))))) \n statement \n 
+                (literal 4)) )))))) \n \n 
   (statement 
     (print_statement PRINT 
       (expr 

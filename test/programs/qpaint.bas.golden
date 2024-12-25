@@ -50,7 +50,7 @@
     ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id setup) 
-    ( )) \n statement \n 
+    ( )) \n \n 
   (statement 
     (key_statement KEY 
       (expr 
@@ -154,7 +154,7 @@
                 (expr 
                   (literal 161)) )))) + 
         (expr 
-          (literal "H"))))) \n statement \n 
+          (literal "H"))))) \n \n 
   (statement 
     (on_event_gosub_statement ON KEY 
       ( 
@@ -242,7 +242,7 @@
           (literal 22)) ) GOSUB 
       (target 
         (text_label 
-          (untyped_id drawup))))) \n statement \n 
+          (untyped_id drawup))))) \n \n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable coltabx) , 
@@ -267,7 +267,7 @@
                 (literal 1000))) ))))) \n 
   (statement 
     (dim_statement DIM SHARED 
-      (dim_variable overflag))) \n statement \n 
+      (dim_variable overflag))) \n \n 
   (statement 
     (const_statement CONST 
       (const_assignment false = 
@@ -277,14 +277,14 @@
       (const_assignment true = 
         (const_expr 
           (expr 
-            (literal 1)))))) \n statement \n 
+            (literal 1)))))) \n \n 
   (statement 
     (screen_statement SCREEN 
       (expr 
         (literal 13)))) \n 
   (statement 
     (call_statement 
-      (untyped_id setup))) \n statement \n 
+      (untyped_id setup))) \n \n 
   (statement 
     (event_control_statement KEY 
       ( 
@@ -339,7 +339,7 @@
     (event_control_statement KEY 
       ( 
         (expr 
-          (literal 22)) ) ON)) \n statement \n 
+          (literal 22)) ) ON)) \n \n 
   (statement 
     (assignment_statement LET 
       (variable_or_function_call xpos) = 
@@ -397,7 +397,7 @@
           (expr 
             (literal 1))) ) , 
       (expr 
-        (literal 0)))) \n statement \n 
+        (literal 0)))) \n \n 
   (statement 
     (assignment_statement LET 
       (variable_or_function_call col) = 
@@ -437,20 +437,20 @@
           (literal 193)) ) , 
       (expr 
         (literal 10)) , 
-      (box_style B))) \n statement \n 
+      (box_style B))) \n \n 
   (statement 
     (assignment_statement LET 
       (variable_or_function_call drawflag) = 
       (expr 
-        (variable_or_function_call true)))) \n statement \n 
+        (variable_or_function_call true)))) \n \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement \n 
+      (block \n \n 
         (statement 
           (assignment_statement LET 
             (variable_or_function_call keyb$) = 
             (expr 
-              (variable_or_function_call INKEY$)))) \n statement \n 
+              (variable_or_function_call INKEY$)))) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -479,7 +479,7 @@
                   (call_statement CALL 
                     (untyped_id restoremenu))) \n) 
               (end_if_statement END IF)) \n) 
-          (end_if_statement END IF)) \n statement \n 
+          (end_if_statement END IF)) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -606,7 +606,7 @@
             (statement 
               (call_statement CALL 
                 (untyped_id restoremenu))) \n) 
-          (end_if_statement END IF)) \n statement \n 
+          (end_if_statement END IF)) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -730,7 +730,7 @@
                 ( 
                   (expr 
                     (literal 22)) ) ON)) \n) 
-          (end_if_statement END IF)) \n statement \n 
+          (end_if_statement END IF)) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -855,7 +855,7 @@
             (statement 
               (call_statement CALL 
                 (untyped_id restoremenu))) \n) 
-          (end_if_statement END IF)) \n statement \n 
+          (end_if_statement END IF)) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -979,7 +979,7 @@
                 ( 
                   (expr 
                     (literal 22)) ) OFF)) \n) 
-          (end_if_statement END IF)) \n statement \n 
+          (end_if_statement END IF)) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -1045,7 +1045,7 @@
                         (variable_or_function_call lineflag)) = 
                       (expr 
                         (literal 3))) THEN 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (assignment_statement LET 
                           (variable_or_function_call line2x) = 
@@ -1201,7 +1201,7 @@
                                   (variable_or_function_call line1y)) = 
                                 (expr 
                                   (variable_or_function_call line2y))) THEN 
-                              (else_block statement \n 
+                              (else_block \n 
                                 (statement 
                                   (if_inline_statement IF 
                                     (expr 
@@ -1216,7 +1216,7 @@
                                           (expr 
                                             (variable_or_function_call col))))))) \n)) 
                             (else_block_statement ELSE 
-                              (else_block statement \n 
+                              (else_block \n 
                                 (if_block_statement IF 
                                   (expr 
                                     (expr 
@@ -1252,7 +1252,7 @@
                                           (variable_or_function_call ypos)) = 
                                         (expr 
                                           (variable_or_function_call line2y)))) THEN 
-                                    (else_block statement \n 
+                                    (else_block \n 
                                       (statement 
                                         (assignment_statement LET 
                                           (variable_or_function_call under2) = 
@@ -1270,7 +1270,7 @@
                                           (variable_or_function_call xpos)) = 
                                         (expr 
                                           (variable_or_function_call line2x)))) THEN 
-                                    (else_block statement \n 
+                                    (else_block \n 
                                       (statement 
                                         (assignment_statement LET 
                                           (variable_or_function_call under3) = 
@@ -1310,7 +1310,7 @@
                         (variable_or_function_call erasetype)) = 
                       (expr 
                         (literal 1)))) ))) THEN 
-            (else_block statement \n 
+            (else_block \n 
               (statement 
                 (if_inline_statement IF 
                   (expr 
@@ -1330,7 +1330,7 @@
                 (variable_or_function_call eraseflag)) > 
               (expr 
                 (literal 0))) THEN 
-            (else_block statement \n 
+            (else_block \n 
               (if_block_statement IF 
                 (expr 
                   (expr 
@@ -1389,7 +1389,7 @@
                           (variable_or_function_call eraseflag)) = 
                         (expr 
                           (literal 3))) THEN 
-                      (else_block statement \n 
+                      (else_block \n 
                         (statement 
                           (assignment_statement LET 
                             (variable_or_function_call line2x) = 
@@ -1479,7 +1479,7 @@
                                 (variable_or_function_call line1y)) = 
                               (expr 
                                 (variable_or_function_call line2y))) THEN 
-                            (else_block statement \n 
+                            (else_block \n 
                               (statement 
                                 (if_inline_statement IF 
                                   (expr 
@@ -1494,7 +1494,7 @@
                                         (expr 
                                           (variable_or_function_call col))))))) \n)) 
                           (else_block_statement ELSE 
-                            (else_block statement \n 
+                            (else_block \n 
                               (if_block_statement IF 
                                 (expr 
                                   (expr 
@@ -1530,7 +1530,7 @@
                                         (variable_or_function_call ypos)) = 
                                       (expr 
                                         (variable_or_function_call line2y)))) THEN 
-                                  (else_block statement \n 
+                                  (else_block \n 
                                     (statement 
                                       (assignment_statement LET 
                                         (variable_or_function_call under2) = 
@@ -1548,7 +1548,7 @@
                                         (variable_or_function_call xpos)) = 
                                       (expr 
                                         (variable_or_function_call line2x)))) THEN 
-                                  (else_block statement \n 
+                                  (else_block \n 
                                     (statement 
                                       (assignment_statement LET 
                                         (variable_or_function_call under3) = 
@@ -1567,7 +1567,7 @@
                               (literal 0)))) \n)) 
                     (end_if_statement END IF)) \n) 
                 (end_if_statement END IF)) \n)) 
-          (end_if_statement END IF)) \n statement \n 
+          (end_if_statement END IF)) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -1623,7 +1623,7 @@
                 (variable_or_function_call under3) = 
                 (expr 
                   (literal 255)))) \n) 
-          (end_if_statement END IF)) \n statement \n statement) LOOP 
+          (end_if_statement END IF)) \n \n) LOOP 
       (do_condition UNTIL 
         (expr 
           (expr 
@@ -1633,7 +1633,7 @@
                   (expr 
                     (variable_or_function_call keyb$)) )))) = 
           (expr 
-            (literal "q")))))) \n statement \n 
+            (literal "q")))))) \n \n 
   (statement 
     (call_statement 
       (untyped_id savecheck))) \n 
@@ -1642,12 +1642,12 @@
       (untyped_id endscreen))) \n 
   (statement 
     (call_statement 
-      (untyped_id SYSTEM))) \n statement \n 
+      (untyped_id SYSTEM))) \n \n 
   (statement 
-    (rem_statement REM)) \n statement \n 
+    (rem_statement REM)) \n \n 
   (label 
     (text_label 
-      (untyped_id moveleft)) :) statement \n 
+      (untyped_id moveleft)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -1770,10 +1770,10 @@
             (literal 0)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id moveright)) :) statement \n 
+      (untyped_id moveright)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -1896,10 +1896,10 @@
             (literal 0)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id movedown)) :) statement \n 
+      (untyped_id movedown)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2022,10 +2022,10 @@
             (literal 0)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id moveup)) :) statement \n 
+      (untyped_id moveup)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2148,10 +2148,10 @@
             (literal 0)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id colorleft)) :) statement \n 
+      (untyped_id colorleft)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2278,10 +2278,10 @@
             (variable_or_function_call true)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id colorright)) :) statement \n 
+      (untyped_id colorright)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2408,10 +2408,10 @@
             (variable_or_function_call true)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id colorup)) :) statement \n 
+      (untyped_id colorup)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2538,10 +2538,10 @@
             (variable_or_function_call true)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id colordown)) :) statement \n 
+      (untyped_id colordown)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2668,10 +2668,10 @@
             (variable_or_function_call true)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id drawleft)) :) statement \n 
+      (untyped_id drawleft)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2804,10 +2804,10 @@
             (variable_or_function_call col)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id drawright)) :) statement \n 
+      (untyped_id drawright)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -2940,10 +2940,10 @@
             (variable_or_function_call col)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id drawdown)) :) statement \n 
+      (untyped_id drawdown)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -3076,10 +3076,10 @@
             (variable_or_function_call col)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id drawup)) :) statement \n 
+      (untyped_id drawup)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -3212,10 +3212,10 @@
             (variable_or_function_call col)))) \n) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id lineup)) :) statement \n 
+      (untyped_id lineup)) :) \n 
   (statement 
     (if_inline_statement IF 
       (expr 
@@ -3238,10 +3238,10 @@
       (expr 
         (variable_or_function_call true)))) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id linedown)) :) statement \n 
+      (untyped_id linedown)) :) \n 
   (statement 
     (if_inline_statement IF 
       (expr 
@@ -3264,10 +3264,10 @@
       (expr 
         (variable_or_function_call true)))) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id eraserleft)) :) statement \n 
+      (untyped_id eraserleft)) :) \n 
   (statement 
     (assignment_statement LET 
       (variable_or_function_call change) = 
@@ -3279,10 +3279,10 @@
       (expr 
         (literal 1)))) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id eraserright)) :) statement \n 
+      (untyped_id eraserright)) :) \n 
   (statement 
     (assignment_statement LET 
       (variable_or_function_call change) = 
@@ -3294,10 +3294,10 @@
       (expr 
         (literal 2)))) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id getimage)) :) statement \n 
+      (untyped_id getimage)) :) \n 
   (statement 
     (if_inline_statement IF 
       (expr 
@@ -3339,7 +3339,7 @@
         (call_argument_list 
           (call_argument ok)) ))) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
       (untyped_id picmenul)) :) 
@@ -3359,20 +3359,20 @@
       (expr 
         (literal 2)))) : 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id filecheckF3)) :) statement \n 
+      (untyped_id filecheckF3)) :) \n 
   (statement 
     (assignment_statement LET 
       (variable_or_function_call overflag) = 
       (expr 
         (variable_or_function_call false)))) \n 
   (statement 
-    (resume_statement RESUME NEXT)) \n statement \n statement \n 
+    (resume_statement RESUME NEXT)) \n \n \n 
   (label 
     (text_label 
-      (untyped_id scrolup)) :) statement \n 
+      (untyped_id scrolup)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -3425,7 +3425,7 @@
           (variable_or_function_call listbeg)) > 
         (expr 
           (literal 1))) THEN 
-      (else_block statement \n 
+      (else_block \n 
         (statement 
           (assignment_statement LET 
             (variable_or_function_call listbeg) = 
@@ -3441,10 +3441,10 @@
               (variable_or_function_call true)))) \n)) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id scroldown)) :) statement \n 
+      (untyped_id scroldown)) :) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -3509,7 +3509,7 @@
             (literal 6))) < 
         (expr 
           (variable_or_function_call gfxlistmax))) THEN 
-      (else_block statement \n 
+      (else_block \n 
         (statement 
           (assignment_statement LET 
             (variable_or_function_call listbeg) = 
@@ -3525,10 +3525,10 @@
               (variable_or_function_call true)))) \n)) 
     (end_if_statement END IF)) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id loadfile)) :) statement \n 
+      (untyped_id loadfile)) :) \n 
   (statement 
     (call_statement CALL 
       (untyped_id loadsub) 
@@ -3540,21 +3540,21 @@
           (call_argument gfxlistmax) , 
           (call_argument change)) ))) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (label 
     (text_label 
-      (untyped_id savefile)) :) statement \n 
+      (untyped_id savefile)) :) \n 
   (statement 
     (call_statement CALL 
       (untyped_id savesub))) \n 
   (statement 
-    (return_statement RETURN)) \n statement \n 
+    (return_statement RETURN)) \n \n 
   (sub_statement SUB 
     (untyped_id changecolor) 
     ( 
       (parameter_list 
         (parameter change)) ) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (on_event_gosub_statement ON KEY 
           ( 
@@ -3641,12 +3641,12 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 22)) ) OFF)) \n statement \n 
+              (literal 22)) ) OFF)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call change) = 
           (expr 
-            (variable_or_function_call false)))) \n statement \n 
+            (variable_or_function_call false)))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -3676,7 +3676,7 @@
               (literal 196)) ) , 
           (expr 
             (literal 0)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call y) = 
@@ -3774,7 +3774,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) NEXT)) \n statement \n 
+                      (literal 8)))))) \n) NEXT)) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -3807,7 +3807,7 @@
                 (literal 8))) ) , 
           (expr 
             (literal 0)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -3837,7 +3837,7 @@
               (literal 164)) ) , 
           (expr 
             (literal 10)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -3852,7 +3852,7 @@
               (literal 146)) ) , 
           (expr 
             (literal 10)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -3872,7 +3872,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 18)) ) ON)) \n statement \n 
+              (literal 18)) ) ON)) \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -3933,7 +3933,7 @@
                               (expr 
                                 (literal 1))) )))) ;)) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (print_statement PRINT 
                       (expr 
@@ -3992,7 +3992,7 @@
                     (expr 
                       (literal "  ")))) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (print_statement PRINT 
                       (expr 
@@ -4041,7 +4041,7 @@
                                   (literal 1))) )))) ; 
                       (expr 
                         (literal "  ")))) \n)) 
-              (end_if_statement END IF)) \n statement \n 
+              (end_if_statement END IF)) \n \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -4084,7 +4084,7 @@
                     (variable_or_function_call change) = 
                     (expr 
                       (variable_or_function_call false)))) \n) 
-              (end_if_statement END IF)) \n statement \n statement) LOOP 
+              (end_if_statement END IF)) \n \n) LOOP 
           (do_condition WHILE 
             (expr 
               (expr 
@@ -4094,7 +4094,7 @@
                   (args_or_indices 
                     ( 
                       (expr 
-                        (literal 13)) )))))))) \n statement \n 
+                        (literal 13)) )))))))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4127,7 +4127,7 @@
                 (literal 8))) ) , 
           (expr 
             (literal 7)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (on_event_gosub_statement ON KEY 
           ( 
@@ -4194,8 +4194,8 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 22)) ) ON)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+              (literal 22)) ) ON)) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id clearscreen) 
     (block \n 
@@ -4256,8 +4256,8 @@
               (expr 
                 (literal 1))) ) , 
           (expr 
-            (literal 0)))) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+            (literal 0)))) \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id endscreen) 
     (block \n 
@@ -4268,7 +4268,7 @@
               ( 
                 (dim_subscript 
                   (expr 
-                    (literal 2000))) ))))) \n statement \n 
+                    (literal 2000))) ))))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4455,8 +4455,8 @@
             (expr 
               (literal 85)) ) , 
           (expr 
-            (literal 120)))) \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+            (literal 120)))) \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id erasesub) 
     ( 
@@ -4471,7 +4471,7 @@
               ( 
                 (dim_subscript 
                   (expr 
-                    (literal 1000))) ))))) \n statement \n 
+                    (literal 1000))) ))))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -4526,7 +4526,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 22)) ) OFF)) \n statement \n 
+              (literal 22)) ) OFF)) \n \n 
       (statement 
         (on_event_gosub_statement ON KEY 
           ( 
@@ -4542,7 +4542,7 @@
               (literal 16)) ) GOSUB 
           (target 
             (text_label 
-              (untyped_id eraserright))))) \n statement \n 
+              (untyped_id eraserright))))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call erasetype) = 
@@ -4552,7 +4552,7 @@
         (assignment_statement LET 
           (variable_or_function_call change) = 
           (expr 
-            (variable_or_function_call true)))) \n statement \n 
+            (variable_or_function_call true)))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4595,7 +4595,7 @@
               (literal 196)) ) , 
           (expr 
             (literal 0)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call x) = 
@@ -4663,7 +4663,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) LOOP)) \n statement \n 
+                      (literal 8)))))) \n) LOOP)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call y) = 
@@ -4761,7 +4761,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) NEXT)) \n statement \n 
+                      (literal 8)))))) \n) NEXT)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4771,7 +4771,7 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (literal "Choose Eraser:")))) \n statement \n 
+            (literal "Choose Eraser:")))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4801,12 +4801,12 @@
               (literal 153)) ) , 
           (expr 
             (literal 6)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call dot) = 
           (expr 
-            (literal 1)))) \n statement \n 
+            (literal 1)))) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -4846,7 +4846,7 @@
                     (expr 
                       (literal 0)))) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (pset_statement PSET 
                       ( 
@@ -4892,7 +4892,7 @@
                   (expr 
                     (variable_or_function_call dot)) + 
                   (expr 
-                    (literal 1))))) \n statement) NEXT)) \n statement \n 
+                    (literal 1))))) \n) NEXT)) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -4932,7 +4932,7 @@
                     (expr 
                       (literal 0)))) \n) 
               (else_block_statement ELSE 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (pset_statement PSET 
                       ( 
@@ -4978,7 +4978,7 @@
                   (expr 
                     (variable_or_function_call dot)) + 
                   (expr 
-                    (literal 1))))) \n statement) NEXT)) \n statement \n 
+                    (literal 1))))) \n) NEXT)) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -4988,7 +4988,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 16)) ) ON)) \n statement \n 
+              (literal 16)) ) ON)) \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -5037,7 +5037,7 @@
                           (literal 0)) , 
                         (box_style B))) \n) 
                   (else_block_statement ELSE 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (line_statement LINE 
                           ( 
@@ -5074,7 +5074,7 @@
                     (variable_or_function_call change) = 
                     (expr 
                       (variable_or_function_call false)))) \n) 
-              (end_if_statement END IF)) \n statement) LOOP 
+              (end_if_statement END IF)) \n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
@@ -5084,7 +5084,7 @@
                   (args_or_indices 
                     ( 
                       (expr 
-                        (literal 13)) )))))))) \n statement \n 
+                        (literal 13)) )))))))) \n \n 
       (statement 
         (on_event_gosub_statement ON KEY 
           ( 
@@ -5100,7 +5100,7 @@
               (literal 16)) ) GOSUB 
           (target 
             (text_label 
-              (untyped_id moveright))))) \n statement \n 
+              (untyped_id moveright))))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -5125,7 +5125,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 18)) ) ON)) \n statement \n 
+              (literal 18)) ) ON)) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -5153,14 +5153,14 @@
               ( 
                 (expr 
                   (literal 22)) ) ON)) \n) 
-        (end_if_statement END IF)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+        (end_if_statement END IF)) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id getpic) 
     ( 
       (parameter_list 
         (parameter ok)) ) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -5215,7 +5215,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 22)) ) OFF)) \n statement \n 
+              (literal 22)) ) OFF)) \n \n 
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
@@ -5225,7 +5225,7 @@
         (assignment_statement LET 
           (variable_or_function_call overflag) = 
           (expr 
-            (variable_or_function_call true)))) \n statement \n 
+            (variable_or_function_call true)))) \n \n 
       (statement 
         (dim_statement DIM 
           (dim_variable txt 
@@ -5243,12 +5243,12 @@
                   (expr 
                     (literal 1)) TO 
                   (expr 
-                    (literal 8))) ))))) \n statement \n 
+                    (literal 8))) ))))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call ok) = 
           (expr 
-            (literal 1)))) \n statement \n 
+            (literal 1)))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call text$ 
@@ -5311,7 +5311,7 @@
                 (expr 
                   (literal 7)) ))) = 
           (expr 
-            (literal "W")))) \n statement \n 
+            (literal "W")))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -5354,12 +5354,12 @@
               (literal 196)) ) , 
           (expr 
             (literal 0)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call x) = 
           (expr 
-            (literal 158)))) \n statement \n 
+            (literal 158)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -5422,7 +5422,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) LOOP)) \n statement \n 
+                      (literal 8)))))) \n) LOOP)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call y) = 
@@ -5520,7 +5520,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) NEXT)) \n statement \n 
+                      (literal 8)))))) \n) NEXT)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -5551,7 +5551,7 @@
         (print_statement PRINT 
           (expr 
             (literal "
-              (100 X 80 MAX)")))) \n statement \n 
+              (100 X 80 MAX)")))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -5566,7 +5566,7 @@
               (literal 166)) ) , 
           (expr 
             (literal 10)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -5592,7 +5592,7 @@
               (literal 174)) ) , 
           (expr 
             (literal 10)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -5612,12 +5612,12 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 18)) ) ON)) \n statement \n 
+              (literal 18)) ) ON)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call coord) = 
           (expr 
-            (literal 1)))) \n statement \n 
+            (literal 1)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -5649,7 +5649,7 @@
                           (expr 
                             (literal 1))))) \n) 
                   (else_block_statement ELSE 
-                    (else_block statement \n 
+                    (else_block \n 
                       (if_block_statement IF 
                         (expr 
                           (expr 
@@ -5672,7 +5672,7 @@
                                 (expr 
                                   (literal 1))))) \n) 
                         (else_block_statement ELSE 
-                          (else_block statement \n 
+                          (else_block \n 
                             (statement 
                               (goto_statement GOTO 
                                 (target 
@@ -5713,7 +5713,7 @@
                         (variable_or_function_call coord)) = 
                       (expr 
                         (literal 3))) THEN 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (assignment_statement LET 
                           (variable_or_function_call line2x) = 
@@ -5793,7 +5793,7 @@
                                 (untyped_id SWAP) 
                                 (call_argument_list 
                                   (call_argument line1y) , 
-                                  (call_argument line2y))))))) \n statement \n 
+                                  (call_argument line2y))))))) \n \n 
                       (statement 
                         (assignment_statement LET 
                           (variable_or_function_call xlength) = 
@@ -5831,7 +5831,7 @@
                             (expr 
                               (variable_or_function_call arraylength)) + 
                             (expr 
-                              (literal 4))))) \n statement \n 
+                              (literal 4))))) \n \n 
                       (statement 
                         (dim_statement DIM 
                           (dim_variable image 
@@ -5910,10 +5910,10 @@
                           (expr 
                             (literal 0)))) \n)) 
                   (end_if_statement END IF)) \n) 
-              (end_if_statement END IF)) \n statement \n 
+              (end_if_statement END IF)) \n \n 
             (label 
               (text_label 
-                (untyped_id nopress)) :) statement \n 
+                (untyped_id nopress)) :) \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -5956,7 +5956,7 @@
                               (expr 
                                 (literal 15)) ) OFF)) \n) 
                       (else_block_statement ELSE 
-                        (else_block statement \n 
+                        (else_block \n 
                           (statement 
                             (event_control_statement KEY 
                               ( 
@@ -5964,7 +5964,7 @@
                                   (literal 16)) ) OFF)) \n)) 
                       (end_if_statement END IF)) \n) 
                   (else_block_statement ELSE 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (event_control_statement KEY 
                           ( 
@@ -6011,7 +6011,7 @@
                               (expr 
                                 (literal 18)) ) OFF)) \n) 
                       (else_block_statement ELSE 
-                        (else_block statement \n 
+                        (else_block \n 
                           (statement 
                             (event_control_statement KEY 
                               ( 
@@ -6019,7 +6019,7 @@
                                   (literal 17)) ) OFF)) \n)) 
                       (end_if_statement END IF)) \n) 
                   (else_block_statement ELSE 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (event_control_statement KEY 
                           ( 
@@ -6031,7 +6031,7 @@
                             (expr 
                               (literal 18)) ) ON)) \n)) 
                   (end_if_statement END IF)) \n) 
-              (end_if_statement END IF)) \n statement) LOOP 
+              (end_if_statement END IF)) \n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
@@ -6047,7 +6047,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (literal 27)) ))))))))) \n statement \n 
+                          (literal 27)) ))))))))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -6067,14 +6067,14 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 18)) ) OFF)) \n statement \n 
+              (literal 18)) ) OFF)) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
             (variable_or_function_call coord)) = 
           (expr 
             (literal 3))) THEN \n 
-        (then_block statement \n 
+        (then_block \n 
           (statement 
             (on_event_gosub_statement ON KEY 
               ( 
@@ -6090,7 +6090,7 @@
                   (literal 16)) ) GOSUB 
               (target 
                 (text_label 
-                  (untyped_id picmenur))))) \n statement \n 
+                  (untyped_id picmenur))))) \n \n 
           (statement 
             (line_statement LINE 
               ( 
@@ -6129,7 +6129,7 @@
                         (args_or_indices 
                           ( 
                             (expr 
-                              (variable_or_function_call x)) )))))) \n statement) NEXT)) \n 
+                              (variable_or_function_call x)) )))))) \n) NEXT)) \n 
           (statement 
             (line_statement LINE 
               ( 
@@ -6144,7 +6144,7 @@
                   (literal 170)) ) , 
               (expr 
                 (literal 10)) , 
-              (box_style B))) \n statement \n 
+              (box_style B))) \n \n 
           (statement 
             (locate_statement LOCATE 
               (expr 
@@ -6247,7 +6247,7 @@
                           (literal 8))) , 
                       (call_argument 
                         (expr 
-                          (literal 8)))))) \n statement) LOOP 
+                          (literal 8)))))) \n) LOOP 
               (do_condition UNTIL 
                 (expr 
                   (expr 
@@ -6315,13 +6315,13 @@
                           (literal 8))) , 
                       (call_argument 
                         (expr 
-                          (literal 8)))))) \n statement) LOOP 
+                          (literal 8)))))) \n) LOOP 
               (do_condition UNTIL 
                 (expr 
                   (expr 
                     (variable_or_function_call x)) = 
                   (expr 
-                    (literal 185)))))) \n statement \n 
+                    (literal 185)))))) \n \n 
           (statement 
             (locate_statement LOCATE 
               (expr 
@@ -6424,7 +6424,7 @@
                           (literal 8))) , 
                       (call_argument 
                         (expr 
-                          (literal 8)))))) \n statement) LOOP 
+                          (literal 8)))))) \n) LOOP 
               (do_condition UNTIL 
                 (expr 
                   (expr 
@@ -6492,13 +6492,13 @@
                           (literal 8))) , 
                       (call_argument 
                         (expr 
-                          (literal 8)))))) \n statement) LOOP 
+                          (literal 8)))))) \n) LOOP 
               (do_condition UNTIL 
                 (expr 
                   (expr 
                     (variable_or_function_call x)) = 
                   (expr 
-                    (literal 225)))))) \n statement \n 
+                    (literal 225)))))) \n \n 
           (statement 
             (for_next_statement FOR x = 
               (expr 
@@ -6529,7 +6529,7 @@
                       (literal 1)) TO 
                     (expr 
                       (literal 750)) 
-                    (block :) NEXT)) \n statement) NEXT)) \n 
+                    (block :) NEXT)) \n) NEXT)) \n 
           (statement 
             (for_next_statement FOR x = 
               (expr 
@@ -6560,7 +6560,7 @@
                       (literal 1)) TO 
                     (expr 
                       (literal 750)) 
-                    (block :) NEXT)) \n statement) NEXT)) \n 
+                    (block :) NEXT)) \n) NEXT)) \n 
           (statement 
             (for_next_statement FOR x = 
               (expr 
@@ -6591,7 +6591,7 @@
                       (literal 1)) TO 
                     (expr 
                       (literal 750)) 
-                    (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                    (block :) NEXT)) \n) NEXT)) \n \n 
           (statement 
             (event_control_statement KEY 
               ( 
@@ -6601,7 +6601,7 @@
             (event_control_statement KEY 
               ( 
                 (expr 
-                  (literal 16)) ) ON)) \n statement \n 
+                  (literal 16)) ) ON)) \n \n 
           (statement 
             (do_loop_statement DO 
               (block \n 
@@ -6662,7 +6662,7 @@
                         (variable_or_function_call ok)) = 
                       (expr 
                         (literal 2))) THEN 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (paint_statement PAINT 
                           ( 
@@ -6707,7 +6707,7 @@
                             (literal 7)) , 
                           (expr 
                             (literal 10)))) \n)) 
-                  (end_if_statement END IF)) \n statement) LOOP 
+                  (end_if_statement END IF)) \n) LOOP 
               (do_condition UNTIL 
                 (expr 
                   (expr 
@@ -6717,7 +6717,7 @@
                       (args_or_indices 
                         ( 
                           (expr 
-                            (literal 13)) )))))))) \n statement \n 
+                            (literal 13)) )))))))) \n \n 
           (statement 
             (on_event_gosub_statement ON KEY 
               ( 
@@ -6824,7 +6824,7 @@
                               (call_argument 
                                 (expr 
                                   (literal 8)))))) \n) 
-                      (end_if_statement END IF)) \n statement) NEXT)) \n statement \n 
+                      (end_if_statement END IF)) \n) NEXT)) \n \n 
               (statement 
                 (locate_statement LOCATE 
                   (expr 
@@ -6924,7 +6924,7 @@
                       (literal 158)) ) , 
                   (expr 
                     (literal 10)) , 
-                  (box_style B))) \n statement \n 
+                  (box_style B))) \n \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -6955,7 +6955,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n 
+                        (block :) NEXT)) \n) NEXT)) \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -6986,7 +6986,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n 
+                        (block :) NEXT)) \n) NEXT)) \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7017,7 +7017,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n 
+                        (block :) NEXT)) \n) NEXT)) \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7048,7 +7048,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                        (block :) NEXT)) \n) NEXT)) \n \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7079,7 +7079,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n 
+                        (block :) NEXT)) \n) NEXT)) \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7110,7 +7110,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n 
+                        (block :) NEXT)) \n) NEXT)) \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7141,7 +7141,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                        (block :) NEXT)) \n) NEXT)) \n \n 
               (statement 
                 (assignment_statement LET 
                   (variable_or_function_call name$) = 
@@ -7274,7 +7274,7 @@
                                     (variable_or_function_call name$)) ))) > 
                             (expr 
                               (literal 0)))) THEN 
-                        (else_block statement \n 
+                        (else_block \n 
                           (statement 
                             (assignment_statement LET 
                               (variable_or_function_call name$) = 
@@ -7316,7 +7316,7 @@
                             (print_statement PRINT 
                               (expr 
                                 (variable_or_function_call name$)))) \n)) 
-                      (end_if_statement END IF)) \n statement) LOOP 
+                      (end_if_statement END IF)) \n) LOOP 
                   (do_condition UNTIL 
                     (expr 
                       (expr 
@@ -7335,7 +7335,7 @@
                               (expr 
                                 (variable_or_function_call name$)) ))) > 
                         (expr 
-                          (literal 0))))))) \n statement \n 
+                          (literal 0))))))) \n \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7364,7 +7364,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n 
+                        (block :) NEXT)) \n) NEXT)) \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7393,7 +7393,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n 
+                        (block :) NEXT)) \n) NEXT)) \n 
               (statement 
                 (for_next_statement FOR x = 
                   (expr 
@@ -7422,7 +7422,7 @@
                           (literal 1)) TO 
                         (expr 
                           (literal 500)) 
-                        (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                        (block :) NEXT)) \n) NEXT)) \n \n 
               (statement 
                 (assignment_statement LET 
                   (variable_or_function_call address$) = 
@@ -7448,7 +7448,7 @@
                       (literal 1))) , 
                   (variable_or_function_call a))) \n 
               (statement 
-                (close_statement CLOSE)) \n statement \n 
+                (close_statement CLOSE)) \n \n 
               (if_block_statement IF 
                 (expr 
                   (expr 
@@ -7480,7 +7480,7 @@
                           (literal 174)) ) , 
                       (expr 
                         (literal 10)) , 
-                      (box_style B))) \n statement \n 
+                      (box_style B))) \n \n 
                   (statement 
                     (for_next_statement FOR x = 
                       (expr 
@@ -7511,7 +7511,7 @@
                               (literal 1)) TO 
                             (expr 
                               (literal 1250)) 
-                            (block :) NEXT)) \n statement) NEXT)) \n 
+                            (block :) NEXT)) \n) NEXT)) \n 
                   (statement 
                     (for_next_statement FOR x = 
                       (expr 
@@ -7542,7 +7542,7 @@
                               (literal 1)) TO 
                             (expr 
                               (literal 1250)) 
-                            (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                            (block :) NEXT)) \n) NEXT)) \n \n 
                   (statement 
                     (assignment_statement LET 
                       (variable_or_function_call cont$) = 
@@ -7578,7 +7578,7 @@
                               (builtin_function INPUT$ 
                                 ( 
                                   (expr 
-                                    (literal 1)) ))))) \n statement) LOOP)) \n statement \n 
+                                    (literal 1)) ))))) \n) LOOP)) \n \n 
                   (statement 
                     (if_inline_statement IF 
                       (expr 
@@ -7595,7 +7595,7 @@
                           (goto_statement GOTO 
                             (target 
                               (text_label 
-                                (untyped_id dontoverwrite)))))))) \n statement \n 
+                                (untyped_id dontoverwrite)))))))) \n \n 
                   (statement 
                     (assignment_statement LET 
                       (variable_or_function_call x) = 
@@ -7684,7 +7684,7 @@
                                   (literal 8))) , 
                               (call_argument 
                                 (expr 
-                                  (literal 8)))))) \n statement) LOOP)) \n statement \n 
+                                  (literal 8)))))) \n) LOOP)) \n \n 
                   (statement 
                     (locate_statement LOCATE 
                       (expr 
@@ -7716,14 +7716,14 @@
                       (call_argument_list 
                         (call_argument 
                           (expr 
-                            (literal 2)))))) \n statement \n 
+                            (literal 2)))))) \n \n 
                   (statement 
                     (goto_statement GOTO 
                       (target 
                         (text_label 
                           (untyped_id contsave))))) \n) 
                 (else_block_statement ELSE 
-                  (else_block statement \n statement \n 
+                  (else_block \n \n 
                     (statement 
                       (locate_statement LOCATE 
                         (expr 
@@ -7748,7 +7748,7 @@
                             (literal 174)) ) , 
                         (expr 
                           (literal 10)) , 
-                        (box_style B))) \n statement \n 
+                        (box_style B))) \n \n 
                     (statement 
                       (for_next_statement FOR x = 
                         (expr 
@@ -7779,7 +7779,7 @@
                                 (literal 1)) TO 
                               (expr 
                                 (literal 1250)) 
-                              (block :) NEXT)) \n statement) NEXT)) \n 
+                              (block :) NEXT)) \n) NEXT)) \n 
                     (statement 
                       (for_next_statement FOR x = 
                         (expr 
@@ -7810,17 +7810,17 @@
                                 (literal 1)) TO 
                               (expr 
                                 (literal 1250)) 
-                              (block :) NEXT)) \n statement) NEXT)) \n 
+                              (block :) NEXT)) \n) NEXT)) \n 
                     (statement 
                       (call_statement 
                         (untyped_id SLEEP) 
                         (call_argument_list 
                           (call_argument 
                             (expr 
-                              (literal 2)))))) \n statement \n 
+                              (literal 2)))))) \n \n 
                     (label 
                       (text_label 
-                        (untyped_id contsave)) :) statement \n 
+                        (untyped_id contsave)) :) \n 
                     (statement 
                       (def_seg_statement DEF SEG = 
                         (expr 
@@ -7843,7 +7843,7 @@
                               (literal 0))) , 
                           (call_argument arraylength)))) \n 
                     (statement 
-                      (def_seg_statement DEF SEG)) \n statement \n 
+                      (def_seg_statement DEF SEG)) \n \n 
                     (statement 
                       (for_next_statement FOR x = 
                         (expr 
@@ -7927,7 +7927,7 @@
                                     (call_argument 
                                       (expr 
                                         (literal 8)))))) \n) 
-                            (end_if_statement END IF)) \n statement) NEXT)) \n statement \n 
+                            (end_if_statement END IF)) \n) NEXT)) \n \n 
                     (statement 
                       (assignment_statement LET 
                         (variable_or_function_call text$ 
@@ -7999,7 +7999,7 @@
                               (expr 
                                 (literal 8)) ))) = 
                         (expr 
-                          (literal "A")))) \n statement \n 
+                          (literal "A")))) \n \n 
                     (statement 
                       (locate_statement LOCATE 
                         (expr 
@@ -8146,7 +8146,7 @@
                             (literal 174)) ) , 
                         (expr 
                           (literal 10)) , 
-                        (box_style B))) \n statement \n 
+                        (box_style B))) \n \n 
                     (statement 
                       (line_statement LINE 
                         ( 
@@ -8185,7 +8185,7 @@
                                   (args_or_indices 
                                     ( 
                                       (expr 
-                                        (variable_or_function_call x)) )))))) \n statement) NEXT)) \n 
+                                        (variable_or_function_call x)) )))))) \n) NEXT)) \n 
                     (statement 
                       (line_statement LINE 
                         ( 
@@ -8200,7 +8200,7 @@
                             (literal 178)) ) , 
                         (expr 
                           (literal 10)) , 
-                        (box_style B))) \n statement \n 
+                        (box_style B))) \n \n 
                     (statement 
                       (line_statement LINE 
                         ( 
@@ -8368,7 +8368,7 @@
                           (expr 
                             (literal 180)) ) , 
                         (expr 
-                          (literal 10)))) \n statement \n 
+                          (literal 10)))) \n \n 
                     (statement 
                       (assignment_statement LET 
                         (variable_or_function_call cont$) = 
@@ -8376,7 +8376,7 @@
                           (builtin_function INPUT$ 
                             ( 
                               (expr 
-                                (literal 1)) ))))) \n statement \n 
+                                (literal 1)) ))))) \n \n 
                     (statement 
                       (for_next_statement FOR x = 
                         (expr 
@@ -8478,7 +8478,7 @@
                                     (call_argument 
                                       (expr 
                                         (literal 8)))))) \n) 
-                            (end_if_statement END IF)) \n statement) NEXT)) \n statement \n 
+                            (end_if_statement END IF)) \n) NEXT)) \n \n 
                     (statement 
                       (locate_statement LOCATE 
                         (expr 
@@ -8600,7 +8600,7 @@
                 (end_if_statement END IF)) \n) 
             (end_if_statement END IF)) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n 
+          (else_block \n 
             (statement 
               (if_inline_statement IF 
                 (expr 
@@ -8621,10 +8621,10 @@
             (statement 
               (call_statement CALL 
                 (untyped_id restoremenu))) \n)) 
-        (end_if_statement END IF)) \n statement \n 
+        (end_if_statement END IF)) \n \n 
       (label 
         (text_label 
-          (untyped_id dontoverwrite)) :) statement \n 
+          (untyped_id dontoverwrite)) :) \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -8641,7 +8641,7 @@
           (if_inline_action 
             (statement 
               (call_statement CALL 
-                (untyped_id restoremenu)))))) \n statement \n 
+                (untyped_id restoremenu)))))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -8698,15 +8698,15 @@
             (expr 
               (literal 22)) ) ON)) \n 
       (statement 
-        (close_statement CLOSE)) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+        (close_statement CLOSE)) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id linechoose) 
     ( 
       (parameter_list 
         (parameter linetype) , 
         (parameter change)) ) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (dim_statement DIM 
           (dim_variable txt 
@@ -8755,7 +8755,7 @@
               (literal 18)) ) GOSUB 
           (target 
             (text_label 
-              (untyped_id lineup))))) \n statement \n 
+              (untyped_id lineup))))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call linetype) = 
@@ -8765,7 +8765,7 @@
         (assignment_statement LET 
           (variable_or_function_call change) = 
           (expr 
-            (variable_or_function_call false)))) \n statement \n 
+            (variable_or_function_call false)))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -8808,12 +8808,12 @@
               (literal 196)) ) , 
           (expr 
             (literal 0)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call x) = 
           (expr 
-            (literal 126)))) \n statement \n 
+            (literal 126)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -8876,7 +8876,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) LOOP)) \n statement \n 
+                      (literal 8)))))) \n) LOOP)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call y) = 
@@ -8974,7 +8974,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) NEXT)) \n statement \n statement \n 
+                      (literal 8)))))) \n) NEXT)) \n \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -8989,7 +8989,7 @@
               (literal 131)) ) , 
           (expr 
             (literal 7)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -9033,7 +9033,7 @@
               (literal 156)) ) , 
           (expr 
             (literal 10)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -9107,7 +9107,7 @@
                         (variable_or_function_call linetype)) = 
                       (expr 
                         (literal 2))) THEN 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (line_statement LINE 
                           ( 
@@ -9159,7 +9159,7 @@
                         (variable_or_function_call linetype)) = 
                       (expr 
                         (literal 3))) THEN 
-                    (else_block statement \n 
+                    (else_block \n 
                       (statement 
                         (line_statement LINE 
                           ( 
@@ -9206,7 +9206,7 @@
                             (literal 7)) , 
                           (box_style B))) \n)) 
                   (end_if_statement END IF)) \n) 
-              (end_if_statement END IF)) \n statement) LOOP 
+              (end_if_statement END IF)) \n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
@@ -9216,7 +9216,7 @@
                   (args_or_indices 
                     ( 
                       (expr 
-                        (literal 13)) )))))))) \n statement \n 
+                        (literal 13)) )))))))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -9257,8 +9257,8 @@
               (literal 18)) ) GOSUB 
           (target 
             (text_label 
-              (untyped_id moveup))))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+              (untyped_id moveup))))) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id loadsub) 
     ( 
@@ -9268,7 +9268,7 @@
         (parameter scrolpos) , 
         (parameter gfxlistmax) , 
         (parameter change)) ) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -9323,7 +9323,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 22)) ) OFF)) \n statement \n 
+              (literal 22)) ) OFF)) \n \n 
       (statement 
         (dim_statement DIM 
           (dim_variable txt 
@@ -9331,7 +9331,7 @@
               ( 
                 (dim_subscript 
                   (expr 
-                    (literal 1000))) ))))) \n statement \n 
+                    (literal 1000))) ))))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -9374,12 +9374,12 @@
               (literal 196)) ) , 
           (expr 
             (literal 0)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call x) = 
           (expr 
-            (literal 150)))) \n statement \n 
+            (literal 150)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -9442,7 +9442,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) LOOP)) \n statement \n 
+                      (literal 8)))))) \n) LOOP)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call y) = 
@@ -9540,7 +9540,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) NEXT)) \n statement \n 
+                      (literal 8)))))) \n) NEXT)) \n \n 
       (statement 
         (on_event_gosub_statement ON KEY 
           ( 
@@ -9556,7 +9556,7 @@
               (literal 18)) ) GOSUB 
           (target 
             (text_label 
-              (untyped_id scrolup))))) \n statement \n 
+              (untyped_id scrolup))))) \n \n 
       (statement 
         (dim_statement DIM 
           (dim_variable savefile 
@@ -9574,7 +9574,7 @@
                   (expr 
                     (literal 0)) TO 
                   (expr 
-                    (literal 640))) ))))) \n statement \n 
+                    (literal 640))) ))))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call listbeg) = 
@@ -9589,7 +9589,7 @@
         (assignment_statement LET 
           (variable_or_function_call scrolposy) = 
           (expr 
-            (literal 135)))) \n statement \n 
+            (literal 135)))) \n \n 
       (statement 
         (call_statement 
           (untyped_id SHELL) 
@@ -9617,7 +9617,7 @@
                         (expr 
                           (literal 1)) )))) , 
                 (expr 
-                  (literal 1)) ))))) \n statement \n 
+                  (literal 1)) ))))) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -9675,7 +9675,7 @@
                               (literal 8))) , 
                           (expr 
                             (literal 12)) ))))) \n) 
-              (end_if_statement END IF)) \n statement) NEXT x)) \n statement \n 
+              (end_if_statement END IF)) \n) NEXT x)) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -9704,7 +9704,7 @@
                     (variable_or_function_call x) = 
                     (expr 
                       (literal 640)))) \n) 
-              (end_if_statement END IF)) \n statement) NEXT x)) \n 
+              (end_if_statement END IF)) \n) NEXT x)) \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -9720,7 +9720,7 @@
               (goto_statement GOTO 
                 (target 
                   (text_label 
-                    (untyped_id endsub)))))))) \n statement \n 
+                    (untyped_id endsub)))))))) \n \n 
       (statement 
         (for_next_statement FOR z = 
           (expr 
@@ -9776,7 +9776,7 @@
                                       (variable_or_function_call a)) + 
                                     (expr 
                                       (literal 1))) )))))) \n) 
-                    (end_if_statement END IF)) \n statement) NEXT)) \n statement) NEXT)) \n statement \n 
+                    (end_if_statement END IF)) \n) NEXT)) \n) NEXT)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -9814,7 +9814,7 @@
               (literal 126)) ) , 
           (expr 
             (literal 0)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (put_graphics_statement PUT 
           ( 
@@ -9822,7 +9822,7 @@
               (literal 181)) , 
             (expr 
               (literal 122)) ) , 
-          (variable_or_function_call txt))) \n statement \n 
+          (variable_or_function_call txt))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -9866,7 +9866,7 @@
               (literal 178)) ) , 
           (expr 
             (literal 10)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -9972,7 +9972,7 @@
           (expr 
             (literal 10)) , 
           (expr 
-            (literal 10)))) \n statement \n 
+            (literal 10)))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call tabdown) = 
@@ -10009,7 +10009,7 @@
                   (expr 
                     (variable_or_function_call tabdown)) + 
                   (expr 
-                    (literal 1))))) \n statement) NEXT x)) \n 
+                    (literal 1))))) \n) NEXT x)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -10027,7 +10027,7 @@
                 (literal 8))) ) , 
           (expr 
             (literal 1)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -10053,7 +10053,7 @@
                     (gosub_statement GOSUB 
                       (target 
                         (text_label 
-                          (untyped_id restoremenu)))))))) \n statement) LOOP 
+                          (untyped_id restoremenu)))))))) \n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
@@ -10090,7 +10090,7 @@
               (goto_statement GOTO 
                 (target 
                   (text_label 
-                    (untyped_id endsub)))))))) \n statement \n 
+                    (untyped_id endsub)))))))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call file$) = 
@@ -10150,7 +10150,7 @@
               (expr 
                 (literal "."))) + 
             (expr 
-              (variable_or_function_call file2$))))) \n statement \n 
+              (variable_or_function_call file2$))))) \n \n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
@@ -10172,7 +10172,7 @@
               (expr 
                 (literal 0)))))) \n 
       (statement 
-        (def_seg_statement DEF SEG)) \n statement \n 
+        (def_seg_statement DEF SEG)) \n \n 
       (statement 
         (put_graphics_statement PUT 
           ( 
@@ -10185,10 +10185,10 @@
         (goto_statement GOTO 
           (target 
             (text_label 
-              (untyped_id endsub))))) \n statement \n 
+              (untyped_id endsub))))) \n \n 
       (label 
         (text_label 
-          (untyped_id restoremenu)) :) statement \n 
+          (untyped_id restoremenu)) :) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call tabdown) = 
@@ -10225,7 +10225,7 @@
                   (expr 
                     (variable_or_function_call tabdown)) + 
                   (expr 
-                    (literal 1))))) \n statement) NEXT x)) \n 
+                    (literal 1))))) \n) NEXT x)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -10268,22 +10268,22 @@
               (expr 
                 (literal 8)))))) \n 
       (statement 
-        (return_statement RETURN)) \n statement \n 
+        (return_statement RETURN)) \n \n 
       (label 
         (text_label 
-          (untyped_id endsub)) :) statement \n 
+          (untyped_id endsub)) :) \n 
       (statement 
-        (close_statement CLOSE)) \n statement \n 
+        (close_statement CLOSE)) \n \n 
       (statement 
         (call_statement 
           (untyped_id KILL) 
           (call_argument_list 
             (call_argument 
               (expr 
-                (literal "c:\qpaint\dir.tem")))))) \n statement \n 
+                (literal "c:\qpaint\dir.tem")))))) \n \n 
       (statement 
         (call_statement CALL 
-          (untyped_id restoremenu))) \n statement \n 
+          (untyped_id restoremenu))) \n \n 
       (statement 
         (on_event_gosub_statement ON KEY 
           ( 
@@ -10299,7 +10299,7 @@
               (literal 18)) ) GOSUB 
           (target 
             (text_label 
-              (untyped_id moveup))))) \n statement \n 
+              (untyped_id moveup))))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -10354,7 +10354,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 22)) ) ON)) \n statement \n 
+              (literal 22)) ) ON)) \n \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -10387,11 +10387,11 @@
               (expr 
                 (literal 1))) ) , 
           (expr 
-            (literal 0)))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+            (literal 0)))) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id noload) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -10433,11 +10433,11 @@
           (call_argument_list 
             (call_argument 
               (expr 
-                (literal 5)))))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+                (literal 5)))))) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id restoremenu) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -10521,7 +10521,7 @@
                       (call_argument 
                         (expr 
                           (literal 8)))))) \n) 
-              (end_if_statement END IF)) \n statement) NEXT)) \n statement \n 
+              (end_if_statement END IF)) \n) NEXT)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -10639,8 +10639,8 @@
               (literal 176)) , 
             (expr 
               (literal 184)) ) , 
-          (variable_or_function_call cleartxt))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+          (variable_or_function_call cleartxt))) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id savecheck) 
     (block \n 
@@ -10659,7 +10659,7 @@
               ( 
                 (dim_subscript 
                   (expr 
-                    (literal 2000))) ))))) \n statement \n 
+                    (literal 2000))) ))))) \n \n 
       (statement 
         (get_graphics_statement GET 
           ( 
@@ -10859,14 +10859,14 @@
             (expr 
               (literal 85)) ) , 
           (expr 
-            (literal 120)))) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
+            (literal 120)))) \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
       (label 
         (text_label 
-          (untyped_id endit)) :) statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+          (untyped_id endit)) :) \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id savesub) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (dim_statement DIM 
           (dim_variable savefile 
@@ -10953,7 +10953,7 @@
               (expr 
                 (literal 1))) ) , 
           (expr 
-            (literal 0)))) \n statement \n 
+            (literal 0)))) \n \n 
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
@@ -10963,7 +10963,7 @@
         (assignment_statement LET 
           (variable_or_function_call overflag) = 
           (expr 
-            (variable_or_function_call true)))) \n statement \n 
+            (variable_or_function_call true)))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -11018,7 +11018,7 @@
         (event_control_statement KEY 
           ( 
             (expr 
-              (literal 22)) ) OFF)) \n statement \n 
+              (literal 22)) ) OFF)) \n \n 
       (statement 
         (dim_statement DIM 
           (dim_variable txt 
@@ -11026,7 +11026,7 @@
               ( 
                 (dim_subscript 
                   (expr 
-                    (literal 1000))) ))))) \n statement \n 
+                    (literal 1000))) ))))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11069,12 +11069,12 @@
               (literal 196)) ) , 
           (expr 
             (literal 0)) , 
-          (box_style BF))) \n statement \n 
+          (box_style BF))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call x) = 
           (expr 
-            (literal 142)))) \n statement \n 
+            (literal 142)))) \n \n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -11137,7 +11137,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) LOOP)) \n statement \n 
+                      (literal 8)))))) \n) LOOP)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call y) = 
@@ -11235,7 +11235,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) NEXT)) \n statement \n 
+                      (literal 8)))))) \n) NEXT)) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11386,7 +11386,7 @@
             (expr 
               (literal 136)) ) , 
           (expr 
-            (literal 10)))) \n statement \n 
+            (literal 10)))) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call cont$) = 
@@ -11422,7 +11422,7 @@
                   (builtin_function INPUT$ 
                     ( 
                       (expr 
-                        (literal 1)) ))))) \n statement) LOOP)) \n 
+                        (literal 1)) ))))) \n) LOOP)) \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -11439,7 +11439,7 @@
               (goto_statement GOTO 
                 (target 
                   (text_label 
-                    (untyped_id endsave)))))))) \n statement \n 
+                    (untyped_id endsave)))))))) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11523,7 +11523,7 @@
                       (call_argument 
                         (expr 
                           (literal 8)))))) \n) 
-              (end_if_statement END IF)) \n statement) NEXT)) \n statement \n 
+              (end_if_statement END IF)) \n) NEXT)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -11623,7 +11623,7 @@
               (literal 158)) ) , 
           (expr 
             (literal 10)) , 
-          (box_style B))) \n statement \n 
+          (box_style B))) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11654,7 +11654,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n 
+                (block :) NEXT)) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11685,7 +11685,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n 
+                (block :) NEXT)) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11716,7 +11716,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n 
+                (block :) NEXT)) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11747,7 +11747,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                (block :) NEXT)) \n) NEXT)) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11778,7 +11778,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n 
+                (block :) NEXT)) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11809,7 +11809,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n 
+                (block :) NEXT)) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11840,7 +11840,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                (block :) NEXT)) \n) NEXT)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call name$) = 
@@ -11973,7 +11973,7 @@
                             (variable_or_function_call name$)) ))) > 
                     (expr 
                       (literal 0)))) THEN 
-                (else_block statement \n 
+                (else_block \n 
                   (statement 
                     (assignment_statement LET 
                       (variable_or_function_call name$) = 
@@ -12015,7 +12015,7 @@
                     (print_statement PRINT 
                       (expr 
                         (variable_or_function_call name$)))) \n)) 
-              (end_if_statement END IF)) \n statement) LOOP 
+              (end_if_statement END IF)) \n) LOOP 
           (do_condition UNTIL 
             (expr 
               (expr 
@@ -12034,7 +12034,7 @@
                       (expr 
                         (variable_or_function_call name$)) ))) > 
                 (expr 
-                  (literal 0))))))) \n statement \n 
+                  (literal 0))))))) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -12063,7 +12063,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n 
+                (block :) NEXT)) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -12092,7 +12092,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n 
+                (block :) NEXT)) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -12121,7 +12121,7 @@
                   (literal 1)) TO 
                 (expr 
                   (literal 500)) 
-                (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                (block :) NEXT)) \n) NEXT)) \n \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call address$) = 
@@ -12147,7 +12147,7 @@
               (literal 1))) , 
           (variable_or_function_call a))) \n 
       (statement 
-        (close_statement CLOSE)) \n statement \n 
+        (close_statement CLOSE)) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -12179,7 +12179,7 @@
                   (literal 174)) ) , 
               (expr 
                 (literal 10)) , 
-              (box_style B))) \n statement \n 
+              (box_style B))) \n \n 
           (statement 
             (for_next_statement FOR x = 
               (expr 
@@ -12210,7 +12210,7 @@
                       (literal 1)) TO 
                     (expr 
                       (literal 1250)) 
-                    (block :) NEXT)) \n statement) NEXT)) \n 
+                    (block :) NEXT)) \n) NEXT)) \n 
           (statement 
             (for_next_statement FOR x = 
               (expr 
@@ -12241,7 +12241,7 @@
                       (literal 1)) TO 
                     (expr 
                       (literal 1250)) 
-                    (block :) NEXT)) \n statement) NEXT)) \n statement \n 
+                    (block :) NEXT)) \n) NEXT)) \n \n 
           (statement 
             (assignment_statement LET 
               (variable_or_function_call cont$) = 
@@ -12277,7 +12277,7 @@
                       (builtin_function INPUT$ 
                         ( 
                           (expr 
-                            (literal 1)) ))))) \n statement) LOOP)) \n statement \n 
+                            (literal 1)) ))))) \n) LOOP)) \n \n 
           (statement 
             (if_inline_statement IF 
               (expr 
@@ -12294,7 +12294,7 @@
                   (goto_statement GOTO 
                     (target 
                       (text_label 
-                        (untyped_id endsave)))))))) \n statement \n 
+                        (untyped_id endsave)))))))) \n \n 
           (statement 
             (assignment_statement LET 
               (variable_or_function_call x) = 
@@ -12383,7 +12383,7 @@
                           (literal 8))) , 
                       (call_argument 
                         (expr 
-                          (literal 8)))))) \n statement) LOOP)) \n statement \n 
+                          (literal 8)))))) \n) LOOP)) \n \n 
           (statement 
             (locate_statement LOCATE 
               (expr 
@@ -12415,17 +12415,17 @@
                 (literal 1)) TO 
               (expr 
                 (literal 2500)) 
-              (block :) NEXT)) \n statement \n 
+              (block :) NEXT)) \n \n 
           (statement 
             (goto_statement GOTO 
               (target 
                 (text_label 
                   (untyped_id contsave1))))) \n) 
         (else_block_statement ELSE 
-          (else_block statement \n 
+          (else_block \n 
             (label 
               (text_label 
-                (untyped_id contsave1)) :) statement \n 
+                (untyped_id contsave1)) :) \n 
             (statement 
               (def_seg_statement DEF SEG = 
                 (expr 
@@ -12450,7 +12450,7 @@
                     (expr 
                       (literal 13140)))))) \n 
             (statement 
-              (def_seg_statement DEF SEG)) \n statement \n 
+              (def_seg_statement DEF SEG)) \n \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -12475,7 +12475,7 @@
                     (literal 174)) ) , 
                 (expr 
                   (literal 10)) , 
-                (box_style B))) \n statement \n 
+                (box_style B))) \n \n 
             (statement 
               (for_next_statement FOR x = 
                 (expr 
@@ -12506,7 +12506,7 @@
                         (literal 1)) TO 
                       (expr 
                         (literal 1250)) 
-                      (block :) NEXT)) \n statement) NEXT)) \n 
+                      (block :) NEXT)) \n) NEXT)) \n 
             (statement 
               (for_next_statement FOR x = 
                 (expr 
@@ -12537,14 +12537,14 @@
                         (literal 1)) TO 
                       (expr 
                         (literal 1250)) 
-                      (block :) NEXT)) \n statement) NEXT)) \n)) 
-        (end_if_statement END IF)) \n statement \n 
+                      (block :) NEXT)) \n) NEXT)) \n)) 
+        (end_if_statement END IF)) \n \n 
       (label 
         (text_label 
-          (untyped_id endsave)) :) statement \n 
+          (untyped_id endsave)) :) \n 
       (statement 
         (call_statement CALL 
-          (untyped_id restoremenu))) \n statement \n 
+          (untyped_id restoremenu))) \n \n 
       (statement 
         (event_control_statement KEY 
           ( 
@@ -12601,7 +12601,7 @@
             (expr 
               (literal 22)) ) ON)) \n 
       (statement 
-        (close_statement CLOSE)) \n statement \n 
+        (close_statement CLOSE)) \n \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -12634,11 +12634,11 @@
               (expr 
                 (literal 1))) ) , 
           (expr 
-            (literal 0)))) \n statement \n statement) 
-    (end_sub_statement END SUB)) \n statement \n 
+            (literal 0)))) \n \n) 
+    (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id setup) 
-    (block \n statement \n 
+    (block \n \n 
       (statement 
         (dim_statement DIM 
           (dim_variable txt 
@@ -12650,7 +12650,7 @@
       (statement 
         (color_statement COLOR 
           (expr 
-            (literal 10)))) \n statement \n 
+            (literal 10)))) \n \n 
       (statement 
         (print_statement PRINT 
           (expr 
@@ -12685,7 +12685,7 @@
               (literal 120)) , 
             (expr 
               (literal 15)) ) , 
-          (variable_or_function_call cleartxt))) \n statement \n 
+          (variable_or_function_call cleartxt))) \n \n 
       (statement 
         (call_statement 
           (untyped_id CLS))) \n 
@@ -12710,7 +12710,7 @@
                   (expr 
                     (literal 65535)) * 
                   (expr 
-                    (literal 35))) ))))) \n statement \n 
+                    (literal 35))) ))))) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -12818,7 +12818,7 @@
           (expr 
             (literal 255)) , 
           (expr 
-            (literal 10)))) \n statement \n 
+            (literal 10)))) \n \n 
       (statement 
         (put_graphics_statement PUT 
           ( 
@@ -12826,7 +12826,7 @@
               (literal 10)) , 
             (expr 
               (literal 185)) ) , 
-          (variable_or_function_call txt))) \n statement \n 
+          (variable_or_function_call txt))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -12944,7 +12944,7 @@
               (literal 176)) , 
             (expr 
               (literal 184)) ) , 
-          (variable_or_function_call cleartxt))) \n statement \n 
+          (variable_or_function_call cleartxt))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call yd) = 
@@ -13009,7 +13009,7 @@
                                     (expr 
                                       (variable_or_function_call y)) ) , 
                                   (expr 
-                                    (variable_or_function_call col)))) \n statement) NEXT)) \n 
+                                    (variable_or_function_call col)))) \n) NEXT)) \n 
                         (statement 
                           (assignment_statement 
                             (variable_or_function_call xd) = 
@@ -13017,12 +13017,12 @@
                               (expr 
                                 (variable_or_function_call xd)) + 
                               (expr 
-                                (literal 8))))) \n statement) NEXT)) \n 
+                                (literal 8))))) \n) NEXT)) \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call xd) = 
                       (expr 
-                        (literal 8)))) \n statement) NEXT)) \n 
+                        (literal 8)))) \n) NEXT)) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call yd) = 
@@ -13061,7 +13061,7 @@
                       (literal 8))) , 
                   (call_argument 
                     (expr 
-                      (literal 8)))))) \n statement) NEXT)) \n statement \n 
+                      (literal 8)))))) \n) NEXT)) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -13130,7 +13130,7 @@
                                           (expr 
                                             (literal 1))) )))) ))) - 
                           (expr 
-                            (literal 1))) )))))) \n statement) NEXT)) \n statement \n 
+                            (literal 1))) )))))) \n) NEXT)) \n \n 
       (statement 
         (get_graphics_statement GET 
           ( 
@@ -13166,7 +13166,7 @@
               (literal 138)) , 
             (expr 
               (literal 7)) ) , 
-          (variable_or_function_call txt))) \n statement \n 
+          (variable_or_function_call txt))) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -13223,7 +13223,7 @@
                   (expr 
                     (literal 150)) ) , 
                 (expr 
-                  (literal 10)))) \n statement) NEXT)) \n 
+                  (literal 10)))) \n) NEXT)) \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -13253,7 +13253,7 @@
                                 (expr 
                                   (variable_or_function_call x)) )))) , 
                         (expr 
-                          (literal 1)) )))))) \n statement) NEXT)) \n statement \n 
+                          (literal 1)) )))))) \n) NEXT)) \n \n 
       (statement 
         (get_graphics_statement GET 
           ( 
@@ -13289,5 +13289,5 @@
               (literal 9)) , 
             (expr 
               (literal 153)) ) , 
-          (variable_or_function_call txt))) \n statement \n statement) 
+          (variable_or_function_call txt))) \n \n) 
     (end_sub_statement END SUB)) \n <EOF>)

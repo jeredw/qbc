@@ -38,10 +38,10 @@
             (literal "")))) 
       (block :) LOOP)) \n 
   (statement 
-    (end_statement END)) \n statement \n 
+    (end_statement END)) \n \n 
   (label 
     (text_label 
-      (untyped_id Background)) :) statement \n 
+      (untyped_id Background)) :) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call i%) = 

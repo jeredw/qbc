@@ -11,7 +11,7 @@
         (statement 
           (print_statement print 
             (expr 
-              (literal "hi")))) \n statement) loop 
+              (literal "hi")))) \n) loop 
       (do_condition while 
         (expr 
           (literal 0))))) \n 
@@ -25,16 +25,16 @@
           (goto_statement goto 
             (target 
               (text_label 
-                (untyped_id out))))) \n statement) loop)) \n 
+                (untyped_id out))))) \n) loop)) \n 
   (label 
-    (line_number 10)) statement \n 
+    (line_number 10)) \n 
   (statement 
     (do_loop_statement do 
       (block \n 
         (statement 
           (goto_statement goto 
             (target 
-              (line_number 20)))) \n statement) loop)) \n 
+              (line_number 20)))) \n) loop)) \n 
   (statement 
     (do_loop_statement do 
       (do_condition until 
@@ -49,7 +49,7 @@
             (target 
               (line_number 30)))) :) loop)) \n 
   (label 
-    (line_number 30)) statement \n 
+    (line_number 30)) \n 
   (statement 
     (print_statement print 
       (expr 
@@ -58,13 +58,13 @@
     (do_loop_statement do 
       (block \n 
         (label 
-          (line_number 40)) statement : 
+          (line_number 40)) : 
         (statement 
           (goto_statement goto 
             (target 
-              (line_number 50)))) : statement) loop)) \n 
+              (line_number 50)))) :) loop)) \n 
   (label 
-    (line_number 50)) statement \n 
+    (line_number 50)) \n 
   (statement 
     (print_statement print 
       (expr 
@@ -76,22 +76,22 @@
           (do_loop_statement do 
             (block \n 
               (label 
-                (line_number 60)) statement : 
+                (line_number 60)) : 
               (statement 
                 (goto_statement goto 
                   (target 
-                    (line_number 70)))) : statement) loop)) :) loop)) \n 
+                    (line_number 70)))) :) loop)) :) loop)) \n 
   (label 
-    (line_number 70)) statement \n 
+    (line_number 70)) \n 
   (statement 
     (do_loop_statement do 
       (block \n 
         (statement 
           (do_loop_statement do 
-            (block \n statement \n statement) loop 
+            (block \n \n) loop 
             (do_condition while 
               (expr 
-                (variable_or_function_call j))))) \n statement) loop 
+                (variable_or_function_call j))))) \n) loop 
       (do_condition until 
         (expr 
           (variable_or_function_call i))))) \n <EOF>)

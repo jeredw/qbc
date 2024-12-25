@@ -3,10 +3,10 @@
     ( 
       (declare_parameter_list 
         (declare_parameter Txt$) , 
-        (declare_parameter FilterString$)) )) \r\n statement \r\n statement \r\n 
+        (declare_parameter FilterString$)) )) \r\n \r\n \r\n 
   (statement 
     (line_input_statement LINE INPUT "Enter a number with commas: " , 
-      (variable_or_function_call A$))) \r\n statement \r\n statement \r\n statement \r\n 
+      (variable_or_function_call A$))) \r\n \r\n \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call CleanNum$) = 
@@ -17,7 +17,7 @@
               (expr 
                 (variable_or_function_call A$)) , 
               (expr 
-                (literal "0123456789.-")) )))))) \r\n statement \r\n statement \r\n 
+                (literal "0123456789.-")) )))))) \r\n \r\n \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -29,7 +29,7 @@
               (expr 
                 (variable_or_function_call CleanNum$)) )))))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION Filter$ 
     ( 
       (parameter_list 
@@ -48,7 +48,7 @@
             (builtin_function LEN 
               ( 
                 (expr 
-                  (variable_or_function_call Txt$)) ))))) \r\n statement \r\n 
+                  (variable_or_function_call Txt$)) ))))) \r\n \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -67,7 +67,7 @@
                       (expr 
                         (variable_or_function_call I)) , 
                       (expr 
-                        (literal 1)) ))))) \r\n statement \r\n statement \r\n 
+                        (literal 1)) ))))) \r\n \r\n \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -89,10 +89,10 @@
                         (variable_or_function_call Temp$)) + 
                       (expr 
                         (variable_or_function_call C$))))) \r\n) 
-              (end_if_statement END IF)) \r\n statement) NEXT I)) \r\n statement \r\n 
+              (end_if_statement END IF)) \r\n) NEXT I)) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Filter$) = 
           (expr 
-            (variable_or_function_call Temp$)))) \r\n statement) 
+            (variable_or_function_call Temp$)))) \r\n) 
     (end_function_statement END FUNCTION)) \r\n <EOF>)

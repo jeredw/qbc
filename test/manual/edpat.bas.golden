@@ -12,7 +12,7 @@
     (untyped_id ShowPattern) 
     ( 
       (declare_parameter_list 
-        (declare_parameter OK$)) )) \r\n statement \r\n 
+        (declare_parameter OK$)) )) \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable Bit% 
@@ -25,7 +25,7 @@
                 (literal 7))) ))) , 
       (dim_variable Pattern$) , 
       (dim_variable Esc$) , 
-      (dim_variable PatternSize%))) \r\n statement \r\n 
+      (dim_variable PatternSize%))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -39,21 +39,21 @@
           (call_statement 
             (untyped_id ShowPattern) 
             (call_argument_list 
-              (call_argument OK$)))) \r\n statement) LOOP 
+              (call_argument OK$)))) \r\n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call OK$)) = 
           (expr 
-            (literal "Y")))))) \r\n statement \r\n 
+            (literal "Y")))))) \r\n \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id DrawPattern) STATIC 
     (block \r\n 
       (statement 
         (scope_statement SHARED 
-          (scope_variable Pattern$))) \r\n statement \r\n 
+          (scope_variable Pattern$))) \r\n \r\n 
       (statement 
         (view_statement VIEW 
           ( 
@@ -80,8 +80,8 @@
           (expr 
             (variable_or_function_call Pattern$)))) \r\n 
       (statement 
-        (view_statement VIEW)) \r\n statement \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+        (view_statement VIEW)) \r\n \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id EditPattern) STATIC 
     (block \r\n 
@@ -92,7 +92,7 @@
           (scope_variable Bit% 
             (array_declaration 
               ( ))) , 
-          (scope_variable PatternSize%))) \r\n statement \r\n 
+          (scope_variable PatternSize%))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ByteNum%) = 
@@ -111,10 +111,10 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (literal 0)) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+                    (literal 0)) )))))) \r\n \r\n \r\n \r\n 
       (statement 
         (do_loop_statement DO 
-          (block \r\n statement \r\n statement \r\n 
+          (block \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call X%) = 
@@ -145,7 +145,7 @@
                         (expr 
                           (literal 2))) )) * 
                   (expr 
-                    (literal 8))))) \r\n statement \r\n statement \r\n 
+                    (literal 8))))) \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call State%) = 
@@ -158,7 +158,7 @@
                   (literal 0)))) \r\n 
             (statement 
               (do_loop_statement DO 
-                (block \r\n statement \r\n statement \r\n 
+                (block \r\n \r\n \r\n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
@@ -185,7 +185,7 @@
                             (expr 
                               (literal 1)) - 
                             (expr 
-                              (variable_or_function_call State%))))) \r\n statement \r\n statement \r\n 
+                              (variable_or_function_call State%))))) \r\n \r\n \r\n 
                       (statement 
                         (line_statement LINE 
                           ( 
@@ -207,18 +207,18 @@
                           (expr 
                             (variable_or_function_call State%)) , 
                           (box_style B))) \r\n) 
-                    (end_if_statement END IF)) \r\n statement \r\n 
+                    (end_if_statement END IF)) \r\n \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Check$) = 
                       (expr 
-                        (variable_or_function_call INKEY$)))) \r\n statement \r\n statement) LOOP 
+                        (variable_or_function_call INKEY$)))) \r\n \r\n) LOOP 
                 (do_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call Check$)) = 
                     (expr 
-                      (literal "")))))) \r\n statement \r\n statement \r\n 
+                      (literal "")))))) \r\n \r\n \r\n 
             (statement 
               (line_statement LINE 
                 ( 
@@ -239,7 +239,7 @@
                     (literal 8)) ) , 
                 (expr 
                   (literal 0)) , 
-                (box_style B))) \r\n statement \r\n 
+                (box_style B))) \r\n \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -256,7 +256,7 @@
                                 (literal 27)) )))))) 
                   (block \r\n 
                     (statement 
-                      (exit_statement EXIT SUB)) \r\n statement \r\n statement)) 
+                      (exit_statement EXIT SUB)) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -266,7 +266,7 @@
                             ( 
                               (expr 
                                 (literal 32)) )))))) 
-                  (block \r\n statement \r\n statement \r\n statement \r\n 
+                  (block \r\n \r\n \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrentByte%) = 
@@ -306,7 +306,7 @@
                             (args_or_indices 
                               ( 
                                 (expr 
-                                  (variable_or_function_call CurrentByte%)) )))))) \r\n statement \r\n statement \r\n 
+                                  (variable_or_function_call CurrentByte%)) )))))) \r\n \r\n \r\n 
                     (if_block_statement IF 
                       (expr 
                         (expr 
@@ -329,7 +329,7 @@
                             (expr 
                               (literal 1)))) \r\n) 
                       (else_block_statement ELSE 
-                        (else_block statement \r\n 
+                        (else_block \r\n 
                           (statement 
                             (assignment_statement 
                               (variable_or_function_call CurrentColor%) = 
@@ -356,7 +356,7 @@
                             (literal 4)) ) , 
                         (expr 
                           (variable_or_function_call CurrentColor%)) , 
-                        (box_style BF))) \r\n statement \r\n statement)) 
+                        (box_style BF))) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -369,7 +369,7 @@
                   (block \r\n 
                     (statement 
                       (call_statement 
-                        (untyped_id DrawPattern))) \r\n statement \r\n statement)) 
+                        (untyped_id DrawPattern))) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -382,7 +382,7 @@
                               ( 
                                 (expr 
                                   (literal 75)) ))))))) 
-                  (block \r\n statement \r\n 
+                  (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call BitNum%) = 
@@ -403,7 +403,7 @@
                             (assignment_statement 
                               (variable_or_function_call BitNum%) = 
                               (expr 
-                                (literal 0))))))) \r\n statement \r\n statement)) 
+                                (literal 0))))))) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -416,7 +416,7 @@
                               ( 
                                 (expr 
                                   (literal 77)) ))))))) 
-                  (block \r\n statement \r\n 
+                  (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call BitNum%) = 
@@ -437,7 +437,7 @@
                             (assignment_statement 
                               (variable_or_function_call BitNum%) = 
                               (expr 
-                                (literal 7))))))) \r\n statement \r\n statement)) 
+                                (literal 7))))))) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -450,7 +450,7 @@
                               ( 
                                 (expr 
                                   (literal 72)) ))))))) 
-                  (block \r\n statement \r\n 
+                  (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call ByteNum%) = 
@@ -471,7 +471,7 @@
                             (assignment_statement 
                               (variable_or_function_call ByteNum%) = 
                               (expr 
-                                (variable_or_function_call PatternSize%))))))) \r\n statement \r\n statement)) 
+                                (variable_or_function_call PatternSize%))))))) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -484,7 +484,7 @@
                               ( 
                                 (expr 
                                   (literal 80)) ))))))) 
-                  (block \r\n statement \r\n 
+                  (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call ByteNum%) = 
@@ -505,12 +505,12 @@
                             (assignment_statement 
                               (variable_or_function_call ByteNum%) = 
                               (expr 
-                                (literal 1))))))) \r\n statement \r\n statement)) 
+                                (literal 1))))))) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
-                  (block \r\n statement \r\n statement \r\n statement \r\n statement)) 
-                (end_select_statement END SELECT))) \r\n statement) LOOP)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                  (block \r\n \r\n \r\n \r\n)) 
+                (end_select_statement END SELECT))) \r\n) LOOP)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Initialize) STATIC 
     (block \r\n 
@@ -521,7 +521,7 @@
           (scope_variable Bit% 
             (array_declaration 
               ( ))) , 
-          (scope_variable PatternSize%))) \r\n statement \r\n 
+          (scope_variable PatternSize%))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Esc$) = 
@@ -530,7 +530,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (literal 27)) )))))) \r\n statement \r\n statement \r\n 
+                    (literal 27)) )))))) \r\n \r\n \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
@@ -549,10 +549,10 @@
                   (expr 
                     (literal 2)) ^ 
                   (expr 
-                    (variable_or_function_call I%))))) \r\n statement) NEXT I%)) \r\n statement \r\n 
+                    (variable_or_function_call I%))))) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (call_statement 
-          (untyped_id CLS))) \r\n statement \r\n statement \r\n 
+          (untyped_id CLS))) \r\n \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -585,7 +585,7 @@
                   (literal 38)))) \r\n 
             (statement 
               (input_statement INPUT "" , 
-                (variable_or_function_call PatternSize%))) \r\n statement) LOOP 
+                (variable_or_function_call PatternSize%))) \r\n) LOOP 
           (do_condition WHILE 
             (expr 
               (expr 
@@ -597,7 +597,7 @@
                 (expr 
                   (variable_or_function_call PatternSize%)) > 
                 (expr 
-                  (literal 16))))))) \r\n statement \r\n statement \r\n 
+                  (literal 16))))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Pattern$) = 
@@ -608,11 +608,11 @@
                   (expr 
                     (variable_or_function_call PatternSize%)) , 
                   (expr 
-                    (literal 255)) )))))) \r\n statement \r\n 
+                    (literal 255)) )))))) \r\n \r\n 
       (statement 
         (screen_statement SCREEN 
           (expr 
-            (literal 2)))) \r\n statement \r\n statement \r\n 
+            (literal 2)))) \r\n \r\n \r\n 
       (statement 
         (line_statement LINE 
           ( 
@@ -650,7 +650,7 @@
             (expr 
               (literal 302)) , 
             (expr 
-              (literal 199)) ))) \r\n statement \r\n statement \r\n 
+              (literal 199)) ))) \r\n \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -670,14 +670,14 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (literal "Pattern View")))) \r\n statement \r\n statement \r\n 
+            (literal "Pattern View")))) \r\n \r\n \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
             (literal 1)) TO 
           (expr 
             (variable_or_function_call PatternSize%)) 
-          (block \r\n statement \r\n statement \r\n 
+          (block \r\n \r\n \r\n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -692,7 +692,7 @@
                 (expr 
                   (literal "##:")) ; 
                 (expr 
-                  (variable_or_function_call I%)))) \r\n statement \r\n statement \r\n 
+                  (variable_or_function_call I%)))) \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call X%) = 
@@ -740,10 +740,10 @@
                         (expr 
                           (variable_or_function_call X%)) + 
                         (expr 
-                          (literal 16))))) \r\n statement) NEXT J%)) \r\n statement) NEXT I%)) \r\n statement \r\n 
+                          (literal 16))))) \r\n) NEXT J%)) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (call_statement 
-          (untyped_id DrawPattern))) \r\n statement \r\n 
+          (untyped_id DrawPattern))) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -765,8 +765,8 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (literal "ESC.........................Quits")) ;)) \r\n statement \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+            (literal "ESC.........................Quits")) ;)) \r\n \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id ShowPattern) 
     ( 
@@ -776,7 +776,7 @@
       (statement 
         (scope_statement SHARED 
           (scope_variable Pattern$) , 
-          (scope_variable PatternSize%))) \r\n statement \r\n statement \r\n 
+          (scope_variable PatternSize%))) \r\n \r\n \r\n 
       (statement 
         (screen_statement SCREEN 
           (expr 
@@ -786,13 +786,13 @@
       (statement 
         (width_statement WIDTH 
           (expr 
-            (literal 80)))) \r\n statement \r\n 
+            (literal 80)))) \r\n \r\n 
       (statement 
         (print_statement PRINT 
           (expr 
             (literal "The following characters make up your pattern:")))) \r\n 
       (statement 
-        (print_statement PRINT)) \r\n statement \r\n statement \r\n 
+        (print_statement PRINT)) \r\n \r\n \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
@@ -832,7 +832,7 @@
                                   (expr 
                                     (variable_or_function_call PatternByte%)) )))) )))) ; 
                   (expr 
-                    (literal ")")))) \r\n statement) NEXT I%)) \r\n statement \r\n 
+                    (literal ")")))) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (print_statement PRINT)) \r\n 
       (statement 
@@ -854,5 +854,5 @@
                     (builtin_function INPUT$ 
                       ( 
                         (expr 
-                          (literal 1)) ))) )))))) \r\n statement) 
+                          (literal 1)) ))) )))))) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

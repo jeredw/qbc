@@ -6,7 +6,7 @@
           (while_wend_statement while 
             (expr 
               (literal 1)) 
-            (block \n statement) wend)) : statement) loop)) \n 
+            (block \n) wend)) :) loop)) \n 
   (statement 
     (while_wend_statement while 
       (expr 
@@ -14,4 +14,4 @@
       (block \n 
         (statement 
           (do_loop_statement do 
-            (block \n statement) loop)) \n statement) wend)) \n <EOF>)
+            (block \n) loop)) \n) wend)) \n <EOF>)

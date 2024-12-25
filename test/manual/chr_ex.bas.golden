@@ -1,7 +1,7 @@
-(program statement \r\n statement \r\n 
+(program \r\n \r\n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n statement \r\n 
+      (letter_range A - Z))) \r\n \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id DBox) 
@@ -37,7 +37,7 @@
             (expr 
               (literal 50)))) ))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment ULEFTC = 
@@ -65,7 +65,7 @@
       (const_assignment LRIGHTC = 
         (const_expr 
           (expr 
-            (literal 188)))))) \r\n statement \r\n 
+            (literal 188)))))) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id DBox) 
     ( 
@@ -74,7 +74,7 @@
         (parameter Ucol%) , 
         (parameter Lrow%) , 
         (parameter Lcol%)) ) STATIC 
-    (block \r\n statement \r\n 
+    (block \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -124,7 +124,7 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call URIGHTC)) )))) ;)) \r\n statement \r\n 
+                    (variable_or_function_call URIGHTC)) )))) ;)) \r\n \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -163,7 +163,7 @@
                     (args_or_indices 
                       ( 
                         (expr 
-                          (variable_or_function_call VERTICAL)) )))) ;)) \r\n statement) NEXT I)) \r\n statement \r\n 
+                          (variable_or_function_call VERTICAL)) )))) ;)) \r\n) NEXT I)) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -213,5 +213,5 @@
               (args_or_indices 
                 ( 
                   (expr 
-                    (variable_or_function_call LRIGHTC)) )))) ;)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \n <EOF>)
+                    (variable_or_function_call LRIGHTC)) )))) ;)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \n <EOF>)

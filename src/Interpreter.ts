@@ -1,5 +1,5 @@
 import { QBasicLexer } from "../build/QBasicLexer.ts";
-import { Do_loop_statementContext, QBasicParser } from "../build/QBasicParser.ts";
+import { Do_loop_statementContext, For_next_statementContext, QBasicParser } from "../build/QBasicParser.ts";
 import { ExpressionListener } from "./ExpressionListener.ts";
 import {
   ATNSimulator,
@@ -68,12 +68,17 @@ class ParseErrorListener extends BaseErrorListener {
           throw new ParseError(antlrError!.ctx!.start!, "FOR without NEXT");
         case "WEND":
           throw new ParseError(antlrError!.ctx!.start!, "WHILE without WEND");
+        case "LOOP":
+          throw new ParseError(antlrError!.ctx!.start!, "DO without LOOP");
         case "ID":
           // Non-variable cases are probably "missing ID".
           throw new ParseError(token, "Expected: variable");
         default:
           throw new ParseError(token, `Expected: ${expecting}`);
       }
+    }
+    if (/^extraneous input ([^ ])+ expecting {COLON, NL}/.test(message)) {
+      throw new ParseError(token, "Expecting: end-of-statement");
     }
     if (/^no viable alternative at input/.test(message)) {
       console.error(antlrMessage);

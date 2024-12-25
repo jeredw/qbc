@@ -1,4 +1,4 @@
-(program statement \n 
+(program \n 
   (statement 
     (const_statement CONST 
       (const_assignment HTAB = 
@@ -8,7 +8,7 @@
       (const_assignment LFEED = 
         (const_expr 
           (expr 
-            (literal 10)))))) \n statement \n 
+            (literal 10)))))) \n \n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \n 
@@ -35,7 +35,7 @@
                 ( 
                   (expr 
                     (literal 1)) )))))) 
-      (block \n statement \n statement \n 
+      (block \n \n \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call S$) = 
@@ -45,7 +45,7 @@
                   (expr 
                     (literal 1)) , # 
                   (expr 
-                    (literal 1)) ))))) \n statement \n statement \n statement \n 
+                    (literal 1)) ))))) \n \n \n \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call C) = 
@@ -57,7 +57,7 @@
                       (expr 
                         (variable_or_function_call S$)) )))) AND 
               (expr 
-                (literal &H7F))))) \n statement \n 
+                (literal &H7F))))) \n \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -93,6 +93,6 @@
                       ( 
                         (expr 
                           (variable_or_function_call C)) )))) ;)) \n) 
-          (end_if_statement END IF)) \n statement \n statement) LOOP)) \n 
+          (end_if_statement END IF)) \n \n) LOOP)) \n 
   (statement 
-    (end_statement END)) \n statement \n <EOF>)
+    (end_statement END)) \n \n <EOF>)

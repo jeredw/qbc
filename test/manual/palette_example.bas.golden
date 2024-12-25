@@ -1,4 +1,4 @@
-(program statement \n 
+(program \n 
   (statement 
     (palette_statement PALETTE 
       (expr 
@@ -85,14 +85,14 @@
                           (expr 
                             (literal 1))) )) MOD 
                     (expr 
-                      (literal 16))))) \n statement) NEXT i%)) \n 
+                      (literal 16))))) \n) NEXT i%)) \n 
         (statement 
           (palette_statement PALETTE USING 
             (variable_or_function_call a% 
               (args_or_indices 
                 ( 
                   (expr 
-                    (literal 0)) ))))) \n statement) LOOP 
+                    (literal 0)) ))))) \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 

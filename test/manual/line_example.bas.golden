@@ -2,17 +2,17 @@
   (statement 
     (screen_statement SCREEN 
       (expr 
-        (literal 1)))) \n statement \n 
+        (literal 1)))) \n \n 
   (statement 
     (line_statement LINE - 
       ( 
         (expr 
           (variable_or_function_call X2)) , 
         (expr 
-          (variable_or_function_call Y2)) ))) \n statement \n statement \n statement \n 
+          (variable_or_function_call Y2)) ))) \n \n \n \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement) LOOP 
+      (block \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -33,10 +33,10 @@
         (expr 
           (literal 319)) , 
         (expr 
-          (literal 199)) ))) \n statement \n 
+          (literal 199)) ))) \n \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement) LOOP 
+      (block \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -57,10 +57,10 @@
         (expr 
           (literal 319)) , 
         (expr 
-          (literal 100)) ))) \n statement \n 
+          (literal 100)) ))) \n \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement) LOOP 
+      (block \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -86,7 +86,7 @@
         (literal 2)))) \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement) LOOP 
+      (block \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -119,10 +119,10 @@
               (expr 
                 (variable_or_function_call X)) AND 
               (expr 
-                (literal 1))))) \n statement) NEXT)) \n 
+                (literal 1))))) \n) NEXT)) \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement) LOOP 
+      (block \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -144,10 +144,10 @@
           (literal 100)) , 
         (expr 
           (literal 100)) ) , , 
-      (box_style B))) \n statement \n statement \n 
+      (box_style B))) \n \n \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement) LOOP 
+      (block \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -171,10 +171,10 @@
           (literal 200)) ) , 
       (expr 
         (literal 2)) , 
-      (box_style BF))) \n statement \n statement \n 
+      (box_style BF))) \n \n \n 
   (statement 
     (do_loop_statement DO 
-      (block \n statement) LOOP 
+      (block \n) LOOP 
       (do_condition WHILE 
         (expr 
           (expr 
@@ -199,4 +199,4 @@
       (expr 
         (literal 3)) , , 
       (expr 
-        (literal &HFF00)))) \n statement \n statement \n statement \n <EOF>)
+        (literal &HFF00)))) \n \n \n \n <EOF>)

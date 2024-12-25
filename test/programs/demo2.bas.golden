@@ -1,7 +1,7 @@
 (program 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (letter_range A - Z))) \r\n \r\n \r\n \r\n \r\n 
   (statement 
     (while_wend_statement WHILE 
       (expr 
@@ -124,7 +124,7 @@
         (statement 
           (print_statement PRINT 
             (expr 
-              (literal "Select: ")) ;)) \r\n statement \r\n statement \r\n 
+              (literal "Select: ")) ;)) \r\n \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Q$) = 
@@ -151,7 +151,7 @@
                     (builtin_function INPUT$ 
                       ( 
                         (expr 
-                          (literal 1)) ))))) \r\n statement) WEND)) \r\n statement \r\n statement \r\n 
+                          (literal 1)) ))))) \r\n) WEND)) \r\n \r\n \r\n 
         (statement 
           (call_statement 
             (untyped_id CLS))) \r\n 
@@ -195,7 +195,7 @@
                   (variable_or_function_call Q$)) = 
                 (expr 
                   (literal "f")))) THEN 
-            (else_block statement \r\n 
+            (else_block \r\n 
               (statement 
                 (print_statement PRINT 
                   (expr 
@@ -226,7 +226,7 @@
                   (variable_or_function_call Q$)) = 
                 (expr 
                   (literal "s")))) THEN 
-            (else_block statement \r\n 
+            (else_block \r\n 
               (statement 
                 (print_statement PRINT 
                   (expr 
@@ -258,7 +258,7 @@
                   (variable_or_function_call Q$)) = 
                 (expr 
                   (literal "k")))) THEN 
-            (else_block statement \r\n 
+            (else_block \r\n 
               (statement 
                 (print_statement PRINT 
                   (expr 
@@ -284,15 +284,15 @@
                 (variable_or_function_call Q$)) = 
               (expr 
                 (literal "q"))) THEN 
-            (else_block statement \r\n 
+            (else_block \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Q$) = 
                   (expr 
                     (literal "Q")))) \r\n)) 
-          (end_if_statement END IF)) \r\n statement) WEND)) \r\n 
+          (end_if_statement END IF)) \r\n) WEND)) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Bounce) 
     ( 
@@ -339,8 +339,8 @@
                       (expr 
                         (variable_or_function_call Count)) / 
                       (expr 
-                        (literal 15))))))) \r\n statement) NEXT)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+                        (literal 15))))))) \r\n) NEXT)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Fall) 
     ( 
@@ -369,8 +369,8 @@
                       (expr 
                         (variable_or_function_call Del)) / 
                       (expr 
-                        (variable_or_function_call Count))))))) \r\n statement) NEXT)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+                        (variable_or_function_call Count))))))) \r\n) NEXT)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Klaxon) 
     ( 
@@ -401,8 +401,8 @@
                   (call_argument Low) , 
                   (call_argument 
                     (expr 
-                      (literal 5)))))) \r\n statement) WEND)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+                      (literal 5)))))) \r\n) WEND)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Siren) 
     ( 
@@ -456,5 +456,5 @@
                           (expr 
                             (literal 2)) / 
                           (expr 
-                            (variable_or_function_call Rng)))))) \r\n statement) NEXT)) \r\n statement) WEND)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n <EOF>)
+                            (variable_or_function_call Rng)))))) \r\n) NEXT)) \r\n) WEND)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n <EOF>)

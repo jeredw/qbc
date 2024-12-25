@@ -25,13 +25,13 @@
                           (literal 27)) )))))) THEN 
             (if_inline_action 
               (statement 
-                (exit_statement EXIT DO))))) \n statement) LOOP)) \n 
+                (exit_statement EXIT DO))))) \n) LOOP)) \n 
   (statement 
     (do_loop_statement DO 
       (block \n 
         (statement 
           (call_statement 
-            (untyped_id BEEP))) \n statement) LOOP 
+            (untyped_id BEEP))) \n) LOOP 
       (do_condition WHILE 
         (expr 
           (builtin_function STRIG 

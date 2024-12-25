@@ -11,7 +11,7 @@
   (statement 
     (screen_statement SCREEN 
       (expr 
-        (literal 1)))) \n statement \n 
+        (literal 1)))) \n \n 
   (statement 
     (circle_statement CIRCLE 
       ( 
@@ -48,7 +48,7 @@
       (expr 
         (literal 2)) , 
       (expr 
-        (literal 1)))) \n statement \n 
+        (literal 1)))) \n \n 
   (statement 
     (line_statement LINE 
       ( 
@@ -93,7 +93,7 @@
       (expr 
         (literal 1)) , 
       (expr 
-        (literal 2)))) \n statement \n 
+        (literal 2)))) \n \n 
   (statement 
     (circle_statement CIRCLE 
       ( 
@@ -145,4 +145,4 @@
               (expr 
                 (variable_or_function_call Y)) ) , 
             (expr 
-              (literal 0)))) \n statement) NEXT)) \n <EOF>)
+              (literal 0)))) \n) NEXT)) \n <EOF>)

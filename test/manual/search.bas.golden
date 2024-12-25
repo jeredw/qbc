@@ -14,7 +14,7 @@
         (variable_or_function_call FileName$)) FOR 
       (open_mode BINARY) AS # 
       (expr 
-        (literal 1)))) \r\n statement \r\n 
+        (literal 1)))) \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment PACKETSIZE = 
@@ -52,7 +52,7 @@
     (assignment_statement 
       (variable_or_function_call FileOffset) = 
       (expr 
-        (literal 0)))) \r\n statement \r\n statement \r\n statement \r\n 
+        (literal 0)))) \r\n \r\n \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (do_condition WHILE 
@@ -61,7 +61,7 @@
             (variable_or_function_call BytesLeft)) > 
           (expr 
             (variable_or_function_call PatternLength%)))) 
-      (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (block \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Buffer$) = 
@@ -71,7 +71,7 @@
                   (expr 
                     (variable_or_function_call PACKETSIZE)) , # 
                   (expr 
-                    (literal 1)) ))))) \r\n statement \r\n statement \r\n 
+                    (literal 1)) ))))) \r\n \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Start%) = 
@@ -99,7 +99,7 @@
                     (variable_or_function_call StringPos%)) > 
                   (expr 
                     (literal 0))) THEN \r\n 
-                (then_block statement \r\n statement \r\n statement \r\n 
+                (then_block \r\n \r\n \r\n 
                   (statement 
                     (print_statement PRINT 
                       (expr 
@@ -124,13 +124,13 @@
                       (variable_or_function_call FoundIt%) = 
                       (expr 
                         (variable_or_function_call TRUE)))) \r\n) 
-                (end_if_statement END IF)) \r\n statement) LOOP 
+                (end_if_statement END IF)) \r\n) LOOP 
             (do_condition WHILE 
               (expr 
                 (expr 
                   (variable_or_function_call StringPos%)) > 
                 (expr 
-                  (literal 0)))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                  (literal 0)))))) \r\n \r\n \r\n \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call FileOffset) = 
@@ -150,7 +150,7 @@
               (expr 
                 (variable_or_function_call FileOffset)) + 
               (expr 
-                (literal 1))))) \r\n statement \r\n 
+                (literal 1))))) \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call BytesLeft) = 
@@ -158,11 +158,11 @@
               (expr 
                 (variable_or_function_call FileLength)) - 
               (expr 
-                (variable_or_function_call FileOffset))))) \r\n statement) LOOP)) \r\n statement \r\n 
+                (variable_or_function_call FileOffset))))) \r\n) LOOP)) \r\n \r\n 
   (statement 
     (close_statement CLOSE # 
       (expr 
-        (literal 1)))) \r\n statement \r\n 
+        (literal 1)))) \r\n \r\n 
   (statement 
     (if_inline_statement IF 
       (expr NOT 
@@ -172,4 +172,4 @@
         (statement 
           (print_statement PRINT 
             (expr 
-              (literal "Pattern not found."))))))) \r\n statement \r\n <EOF>)
+              (literal "Pattern not found."))))))) \r\n \r\n <EOF>)

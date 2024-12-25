@@ -5,14 +5,14 @@
         (declare_parameter WLeft) , 
         (declare_parameter WRight) , 
         (declare_parameter WTop) , 
-        (declare_parameter WBottom)) )) \r\n statement \r\n 
+        (declare_parameter WBottom)) )) \r\n \r\n 
   (statement 
     (screen_statement SCREEN 
       (expr 
         (literal 2)))) \r\n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \r\n statement \r\n statement \r\n 
+      (untyped_id CLS))) \r\n \r\n \r\n 
   (statement 
     (view_statement VIEW 
       ( 
@@ -26,13 +26,13 @@
         (expr 
           (literal 190)) ) , , 
       (expr 
-        (literal 1)))) \r\n statement \r\n 
+        (literal 1)))) \r\n \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment PI = 
         (const_expr 
           (expr 
-            (literal 3.141592653589#)))))) \r\n statement \r\n statement \r\n statement \r\n 
+            (literal 3.141592653589#)))))) \r\n \r\n \r\n \r\n 
   (statement 
     (window_statement WINDOW 
       ( 
@@ -46,7 +46,7 @@
         (expr 
           (literal 3.56)) , 
         (expr 
-          (literal 1.01)) ))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+          (literal 1.01)) ))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call WLeft) = 
@@ -68,7 +68,7 @@
       (variable_or_function_call WBottom) = 
       (expr - 
         (expr 
-          (literal .07))))) \r\n statement \r\n statement \r\n statement \r\n 
+          (literal .07))))) \r\n \r\n \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call ArraySize%) = 
@@ -83,7 +83,7 @@
               (expr 
                 (variable_or_function_call WTop)) , 
               (expr 
-                (variable_or_function_call WBottom)) )))))) \r\n statement \r\n 
+                (variable_or_function_call WBottom)) )))))) \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -95,7 +95,7 @@
                 (literal 1)) TO 
               (expr 
                 (variable_or_function_call ArraySize%))) )) AS 
-        (type_name INTEGER)))) \r\n statement \r\n statement \r\n 
+        (type_name INTEGER)))) \r\n \r\n \r\n 
   (statement 
     (circle_statement CIRCLE 
       ( 
@@ -111,7 +111,7 @@
         (expr 
           (literal 0)) , 
         (expr 
-          (literal 0)) ))) \r\n statement \r\n statement \r\n 
+          (literal 0)) ))) \r\n \r\n \r\n 
   (statement 
     (get_graphics_statement GET 
       ( 
@@ -127,7 +127,7 @@
       (variable_or_function_call Array))) \r\n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \r\n statement \r\n statement \r\n 
+      (untyped_id CLS))) \r\n \r\n \r\n 
   (statement 
     (line_statement LINE 
       ( 
@@ -180,7 +180,7 @@
         (expr 
           (literal .5)) ) , 
       (expr 
-        (variable_or_function_call Pattern$)))) \r\n statement \r\n 
+        (variable_or_function_call Pattern$)))) \r\n \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -190,7 +190,7 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (literal "Press any key to end")))) \r\n statement \r\n statement \r\n 
+        (literal "Press any key to end")))) \r\n \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call StepSize) = 
@@ -206,7 +206,7 @@
     (assignment_statement 
       (variable_or_function_call Decay) = 
       (expr 
-        (literal 1)))) \r\n statement \r\n 
+        (literal 1)))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -224,7 +224,7 @@
               (variable_or_function_call EndLoop)) STEP 
             (expr 
               (variable_or_function_call StepSize)) 
-            (block \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+            (block \r\n \r\n \r\n \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Y) = 
@@ -260,7 +260,7 @@
                           (expr 
                             (variable_or_function_call Decay)) * 
                           (expr 
-                            (literal .9)))))))) \r\n statement \r\n statement \r\n 
+                            (literal .9)))))))) \r\n \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Esc$) = 
@@ -281,7 +281,7 @@
                         (literal .01)))) THEN 
                   (if_inline_action 
                     (statement 
-                      (exit_statement EXIT FOR))))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+                      (exit_statement EXIT FOR))))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
               (statement 
                 (put_graphics_statement PUT 
                   ( 
@@ -289,7 +289,7 @@
                       (variable_or_function_call X)) , 
                     (expr 
                       (variable_or_function_call Y)) ) , 
-                  (variable_or_function_call Array) , PSET)) \r\n statement) NEXT X)) \r\n statement \r\n statement \r\n 
+                  (variable_or_function_call Array) , PSET)) \r\n) NEXT X)) \r\n \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call StepSize) = 
@@ -301,7 +301,7 @@
             (variable_or_function_call StartLoop) = 
             (expr - 
               (expr 
-                (variable_or_function_call StartLoop))))) \r\n statement) LOOP 
+                (variable_or_function_call StartLoop))))) \r\n) LOOP 
       (do_condition UNTIL 
         (expr 
           (expr 
@@ -313,7 +313,7 @@
             (expr 
               (variable_or_function_call Decay)) < 
             (expr 
-              (literal .01))))))) \r\n statement \r\n 
+              (literal .01))))))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Pause$) = 
@@ -335,7 +335,7 @@
         (parameter WRight) , 
         (parameter WTop) , 
         (parameter WBottom)) ) STATIC 
-    (block \r\n statement \r\n statement \r\n statement \r\n 
+    (block \r\n \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call VLeft) = 
@@ -379,7 +379,7 @@
                   (expr 
                     (variable_or_function_call WBottom)) , 
                   (expr 
-                    (literal 1)) )))))) \r\n statement \r\n statement \r\n statement \r\n 
+                    (literal 1)) )))))) \r\n \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call RectHeight) = 
@@ -409,7 +409,7 @@
                       (expr 
                         (variable_or_function_call VLeft))) )))) + 
             (expr 
-              (literal 1))))) \r\n statement \r\n statement \r\n 
+              (literal 1))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ByteSize) = 
@@ -432,7 +432,7 @@
                               (expr 
                                 (literal 7))) )) / 
                         (expr 
-                          (literal 8))) )))))))) \r\n statement \r\n statement \r\n 
+                          (literal 8))) )))))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call GetArraySize) = 
@@ -443,5 +443,5 @@
               (expr 
                 (literal 2))) + 
             (expr 
-              (literal 1))))) \r\n statement) 
+              (literal 1))))) \r\n) 
     (end_function_statement END FUNCTION)) \r\n <EOF>)

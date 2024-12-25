@@ -26,7 +26,7 @@
         (declare_parameter Low%)) )) \r\n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n statement \r\n 
+      (letter_range A - Z))) \r\n \r\n \r\n \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -144,7 +144,7 @@
         (statement 
           (print_statement PRINT 
             (expr 
-              (literal "Select: ")) ;)) \r\n statement \r\n statement \r\n 
+              (literal "Select: ")) ;)) \r\n \r\n \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n 
@@ -159,7 +159,7 @@
                             (builtin_function INPUT$ 
                               ( 
                                 (expr 
-                                  (literal 1)) ))) )))))) \r\n statement) LOOP 
+                                  (literal 1)) ))) )))))) \r\n) LOOP 
             (do_condition WHILE 
               (expr 
                 (expr 
@@ -171,7 +171,7 @@
                         (expr 
                           (variable_or_function_call Q$)) )))) = 
                 (expr 
-                  (literal 0)))))) \r\n statement \r\n statement \r\n 
+                  (literal 0)))))) \r\n \r\n \r\n 
         (statement 
           (call_statement 
             (untyped_id CLS))) \r\n 
@@ -199,7 +199,7 @@
                           (literal 32767))) , 
                       (call_argument 
                         (expr 
-                          (literal 246)))))) \r\n statement)) 
+                          (literal 246)))))) \r\n)) 
             (case_block 
               (case_statement CASE 
                 (case_expr IS = 
@@ -222,7 +222,7 @@
                           (literal 550))) , 
                       (call_argument 
                         (expr 
-                          (literal 500)))))) \r\n statement)) 
+                          (literal 500)))))) \r\n)) 
             (case_block 
               (case_statement CASE 
                 (case_expr IS = 
@@ -246,7 +246,7 @@
                           (literal 780))) , 
                       (call_argument 
                         (expr 
-                          (literal 650)))))) \r\n statement)) 
+                          (literal 650)))))) \r\n)) 
             (case_block 
               (case_statement CASE 
                 (case_expr IS = 
@@ -270,11 +270,11 @@
                           (literal 987))) , 
                       (call_argument 
                         (expr 
-                          (literal 329)))))) \r\n statement)) 
+                          (literal 329)))))) \r\n)) 
             (case_block 
               (case_statement CASE ELSE) 
-              (block \r\n statement)) 
-            (end_select_statement END SELECT))) \r\n statement) LOOP 
+              (block \r\n)) 
+            (end_select_statement END SELECT))) \r\n) LOOP 
       (do_condition UNTIL 
         (expr 
           (expr 
@@ -282,7 +282,7 @@
           (expr 
             (literal "Q")))))) \r\n 
   (statement 
-    (end_statement END)) \r\n statement \r\n statement \r\n 
+    (end_statement END)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Bounce) 
     ( 
@@ -329,8 +329,8 @@
                       (expr 
                         (variable_or_function_call Count)) / 
                       (expr 
-                        (literal 15))))))) \r\n statement) NEXT Count)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+                        (literal 15))))))) \r\n) NEXT Count)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Fall) 
     ( 
@@ -359,8 +359,8 @@
                       (expr 
                         (variable_or_function_call Del)) / 
                       (expr 
-                        (variable_or_function_call Count))))))) \r\n statement) NEXT Count)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+                        (variable_or_function_call Count))))))) \r\n) NEXT Count)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Klaxon) 
     ( 
@@ -392,8 +392,8 @@
                   (call_argument Low) , 
                   (call_argument 
                     (expr 
-                      (literal 5)))))) \r\n statement) LOOP)) \r\n statement) 
-    (end_sub_statement END SUB)) \r\n statement \r\n statement \r\n 
+                      (literal 5)))))) \r\n) LOOP)) \r\n) 
+    (end_sub_statement END SUB)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Siren) 
     ( 
@@ -448,5 +448,5 @@
                           (expr 
                             (literal 2)) / 
                           (expr 
-                            (variable_or_function_call Range)))))) \r\n statement) NEXT Count)) \r\n statement) LOOP)) \r\n statement) 
+                            (variable_or_function_call Range)))))) \r\n) NEXT Count)) \r\n) LOOP)) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)
