@@ -19,7 +19,7 @@
       (const_assignment ROOT = 
         (const_expr 
           (expr 
-            (literal "TWH")))))) \r\n statement \r\n statement 
+            (literal "TWH")))))) \r\n statement \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id ScanDir) 
     ( 
@@ -27,11 +27,11 @@
         (declare_parameter PathSpec$) , 
         (declare_parameter Level) , 
         (declare_parameter FileSpec$) , 
-        (declare_parameter Row)) )) \r\n statement \r\n statement 
+        (declare_parameter Row)) )) \r\n statement \r\n 
   (declare_statement DECLARE FUNCTION MakeFileName$ 
     ( 
       (declare_parameter_list 
-        (declare_parameter Num)) )) \r\n statement 
+        (declare_parameter Num)) )) \r\n 
   (declare_statement DECLARE FUNCTION GetEntry$ 
     ( 
       (declare_parameter_list 

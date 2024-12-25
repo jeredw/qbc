@@ -242,7 +242,7 @@
       (const_assignment TABCHAR = 
         (const_expr 
           (expr 
-            (literal 9)))))) \n statement \n statement \n statement 
+            (literal 9)))))) \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id KeyMap) \n 
     (type_element 
@@ -250,7 +250,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id Oct) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n 
   (type_statement TYPE 
     (untyped_id SongElement) \n 
     (type_element 
@@ -261,7 +261,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id Dur) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n 
   (type_statement TYPE 
     (untyped_id SongIndexCard) \n 
     (type_element 
@@ -277,7 +277,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id Offset) AS 
-      (type_name_for_type_element LONG) \n) END TYPE) \n statement \n statement 
+      (type_name_for_type_element LONG) \n) END TYPE) \n statement \n 
   (type_statement TYPE 
     (untyped_id FileHeader) \n 
     (type_element 
@@ -285,60 +285,60 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id NextNote) AS 
-      (type_name_for_type_element LONG) \n) END TYPE) \n statement \n statement \n statement 
+      (type_name_for_type_element LONG) \n) END TYPE) \n statement \n statement \n 
   (declare_statement DECLARE FUNCTION ConfirmDelete% 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE FUNCTION GetNote$ 
     ( 
       (declare_parameter_list 
-        (declare_parameter Note%)) )) \n statement 
+        (declare_parameter Note%)) )) \n 
   (declare_statement DECLARE FUNCTION SaveChanges% 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE FUNCTION SimpleEdit% 
     ( 
       (declare_parameter_list 
         (declare_parameter row%) , 
         (declare_parameter col%) , 
         (declare_parameter text$) , 
-        (declare_parameter MaxLen%)) )) \n statement 
+        (declare_parameter MaxLen%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter text$) , 
-        (declare_parameter row%)) )) \n statement 
+        (declare_parameter row%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id ChangeTempo) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Inc%)) )) \n statement 
+        (declare_parameter Inc%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id ClearMenuScreen) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Title$)) )) \n statement 
+        (declare_parameter Title$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id CreateSongFile) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DeleteSong) 
     ( 
       (declare_parameter_list 
-        (declare_parameter SongNo%)) )) \n statement 
+        (declare_parameter SongNo%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayChanges) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayGameTitle) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayIntro) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayMenuText) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Menu%)) )) \n statement 
+        (declare_parameter Menu%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawBox) 
     ( 
@@ -347,69 +347,69 @@
         (declare_parameter c1%) , 
         (declare_parameter r2%) , 
         (declare_parameter c2%) , 
-        (declare_parameter Title$)) )) \n statement 
+        (declare_parameter Title$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawKeyboard) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawNote) 
     ( 
       (declare_parameter_list 
         (declare_parameter Note%) , 
         (declare_parameter Octave%) , 
-        (declare_parameter Action%)) )) \n statement 
+        (declare_parameter Action%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id EditSong) 
     ( 
       (declare_parameter_list 
-        (declare_parameter SongNo%)) )) \n statement 
+        (declare_parameter SongNo%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id ErrorMessage) 
     ( 
       (declare_parameter_list 
-        (declare_parameter msg$)) )) \n statement 
+        (declare_parameter msg$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GetNameAndSave) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id InitFreq) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id LoadDefaultSong) 
     ( 
       (declare_parameter_list 
-        (declare_parameter num%)) )) \n statement 
+        (declare_parameter num%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id LoadSong) 
     ( 
       (declare_parameter_list 
-        (declare_parameter SongNo%)) )) \n statement 
+        (declare_parameter SongNo%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id MainMenu) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id PlayNote) 
     ( 
       (declare_parameter_list 
         (declare_parameter Note%) , 
         (declare_parameter Octave%) , 
-        (declare_parameter Duration#)) )) \n statement 
+        (declare_parameter Duration#)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id PlaySong) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id RecordMenu) 
     ( 
       (declare_parameter_list 
-        (declare_parameter NoSave%)) )) \n statement 
+        (declare_parameter NoSave%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id RecordMode) 
     ( 
       (declare_parameter_list 
-        (declare_parameter NoSave%)) )) \n statement 
+        (declare_parameter NoSave%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id SaveSong) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TimeDelay) 
     ( 

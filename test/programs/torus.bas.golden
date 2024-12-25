@@ -1,16 +1,16 @@
 (program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement 
+      (letter_range A - Z))) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GetConfig) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id SetPalette) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TorusDefine) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TorusCalc) 
     ( 
@@ -19,7 +19,7 @@
           (untyped_id T) 
           (array_declaration 
             ( )) AS 
-          (type_name_for_declare_parameter ANY))) )) \n statement 
+          (type_name_for_declare_parameter ANY))) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TorusColor) 
     ( 
@@ -28,13 +28,13 @@
           (untyped_id T) 
           (array_declaration 
             ( )) AS 
-          (type_name_for_declare_parameter ANY))) )) \n statement 
+          (type_name_for_declare_parameter ANY))) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TorusSort) 
     ( 
       (declare_parameter_list 
         (declare_parameter Low) , 
-        (declare_parameter High)) )) \n statement 
+        (declare_parameter High)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TorusDraw) 
     ( 
@@ -46,50 +46,50 @@
           (type_name_for_declare_parameter ANY)) , 
         (declare_parameter Index 
           (array_declaration 
-            ( )))) )) \n statement 
+            ( )))) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TileDraw) 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id T) AS 
-          (type_name_for_declare_parameter ANY))) )) \n statement 
+          (type_name_for_declare_parameter ANY))) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TorusRotate) 
     ( 
       (declare_parameter_list 
-        (declare_parameter First)) )) \n statement 
+        (declare_parameter First)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Delay) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Seconds!)) )) \n statement 
+        (declare_parameter Seconds!)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id CountTiles) 
     ( 
       (declare_parameter_list 
         (declare_parameter T1) , 
-        (declare_parameter T2)) )) \n statement 
+        (declare_parameter T2)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Message) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Text$)) )) \n statement 
+        (declare_parameter Text$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id SetConfig) 
     ( 
       (declare_parameter_list 
-        (declare_parameter mode)) )) \n statement 
+        (declare_parameter mode)) )) \n 
   (declare_statement DECLARE FUNCTION Inside 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id T) AS 
-          (type_name_for_declare_parameter ANY))) )) \n statement 
+          (type_name_for_declare_parameter ANY))) )) \n 
   (declare_statement DECLARE FUNCTION DegToRad! 
     ( 
       (declare_parameter_list 
-        (declare_parameter Degrees)) )) \n statement 
+        (declare_parameter Degrees)) )) \n 
   (declare_statement DECLARE FUNCTION Rotated 
     ( 
       (declare_parameter_list 
@@ -190,7 +190,7 @@
       (const_assignment CGA = 
         (const_expr 
           (expr 
-            (literal 1)))))) \n statement \n statement \n statement 
+            (literal 1)))))) \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id Tile) \n 
     (type_element 
@@ -228,7 +228,7 @@
       (type_name_for_type_element SINGLE) \n) 
     (type_element 
       (untyped_id TColor) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id Config) \n 
     (type_element 
@@ -257,7 +257,7 @@
       (dim_variable 
         (untyped_id VC) AS 
         (type_name 
-          (untyped_id Config))))) \n statement \n statement \n statement 
+          (untyped_id Config))))) \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id TORUS) \n 
     (type_element 

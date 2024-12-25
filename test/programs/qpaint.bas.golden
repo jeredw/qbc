@@ -1,38 +1,38 @@
-(program statement 
+(program 
   (declare_statement DECLARE SUB 
     (untyped_id endscreen) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id savecheck) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id noload) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id clearscreen) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id changecolor) 
     ( 
       (declare_parameter_list 
-        (declare_parameter change)) )) \n statement 
+        (declare_parameter change)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id erasesub) 
     ( 
       (declare_parameter_list 
         (declare_parameter change!) , 
-        (declare_parameter erasetype!)) )) \n statement 
+        (declare_parameter erasetype!)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id getpic) 
     ( 
       (declare_parameter_list 
-        (declare_parameter ok)) )) \n statement 
+        (declare_parameter ok)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id linechoose) 
     ( 
       (declare_parameter_list 
         (declare_parameter linetype!) , 
-        (declare_parameter change!)) )) \n statement 
+        (declare_parameter change!)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id loadsub) 
     ( 
@@ -41,13 +41,13 @@
         (declare_parameter scrolposy) , 
         (declare_parameter scrolpos) , 
         (declare_parameter gfxlistmax) , 
-        (declare_parameter change)) )) \n statement 
+        (declare_parameter change)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id restoremenu) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id savesub) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id setup) 
     ( )) \n statement \n 

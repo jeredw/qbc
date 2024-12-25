@@ -1,4 +1,4 @@
-(program statement 
+(program 
   (type_statement type 
     (untyped_id thing) \n \n \n 
     (type_element 
@@ -12,24 +12,24 @@
     (type_element 
       (untyped_id z) as 
       (type_name_for_type_element 
-        (untyped_id anotherthing)) \n) end type) \n statement 
+        (untyped_id anotherthing)) \n) end type) \n 
   (type_statement type 
     (untyped_id foo) : 
     (type_element 
       (untyped_id a) as 
       (type_name_for_type_element 
-        (fixed_string string * 2)) :) end type) : statement 
+        (fixed_string string * 2)) :) end type) : 
   (type_statement type 
     (untyped_id bar) : 
     (type_element 
       (untyped_id a) as 
       (type_name_for_type_element 
-        (fixed_string string * 4)) :) end type) \n statement 
+        (fixed_string string * 4)) :) end type) \n 
   (type_statement type 
     (untyped_id baz) : : 
     (type_element 
       (untyped_id a) as 
-      (type_name_for_type_element integer) :) end type) \n statement 
+      (type_name_for_type_element integer) :) end type) \n 
   (type_statement type 
     (untyped_id whoa) \n 
     (type_element 
@@ -37,7 +37,7 @@
       (type_name_for_type_element integer) :) 
     (type_element 
       (untyped_id b) as 
-      (type_name_for_type_element integer) \n) end type) \n statement 
+      (type_name_for_type_element integer) \n) end type) \n 
   (type_statement type 
     (untyped_id yep) \n 
     (type_element 

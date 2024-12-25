@@ -257,32 +257,32 @@
       (const_assignment RESOLUTION = 
         (const_expr 
           (expr 
-            (literal 100)))))) \n statement \n statement \n statement 
+            (literal 100)))))) \n statement \n statement \n 
   (declare_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter Text$) , 
-        (declare_parameter Row)) )) \n statement 
+        (declare_parameter Row)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DestroyStarbase) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Z)) )) \n statement 
+        (declare_parameter Z)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayIntro) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayGameTitle) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayChanges) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id EraseMissileTrail) 
     ( 
       (declare_parameter_list 
-        (declare_parameter MNum)) )) \n statement 
+        (declare_parameter MNum)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Explode) 
     ( 
@@ -290,30 +290,30 @@
         (declare_parameter Chosen) , 
         (declare_parameter X) , 
         (declare_parameter Y) , 
-        (declare_parameter WMissiles)) )) \n statement 
+        (declare_parameter WMissiles)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GameOver) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id HorizontalScroll) 
     ( 
       (declare_parameter_list 
         (declare_parameter M$) , 
-        (declare_parameter Row)) )) \n statement 
+        (declare_parameter Row)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id InitScreen) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id InitFirebases) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Keys) 
     ( 
       (declare_parameter_list 
-        (declare_parameter TurnKeysOn)) )) \n statement 
+        (declare_parameter TurnKeysOn)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id KeyPause) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id LaunchMissile) 
     ( 
@@ -322,25 +322,25 @@
         (declare_parameter XStart) , 
         (declare_parameter YStart) , 
         (declare_parameter XFinish) , 
-        (declare_parameter YFinish)) )) \n statement 
+        (declare_parameter YFinish)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id NewMissile) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id NewStarbase) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id NewInterceptor) 
     ( 
       (declare_parameter_list 
         (declare_parameter X) , 
-        (declare_parameter Y)) )) \n statement 
+        (declare_parameter Y)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id StopMissile) 
     ( 
       (declare_parameter_list 
         (declare_parameter Chosen) , 
-        (declare_parameter WMissiles)) )) \n statement 
+        (declare_parameter WMissiles)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id UpdateMissiles) 
     ( 
@@ -349,19 +349,19 @@
         (declare_parameter Finish) , 
         (declare_parameter WMissiles) , 
         (declare_parameter NumOfTimes) , 
-        (declare_parameter WColor)) )) \n statement 
+        (declare_parameter WColor)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id UpdateExplosions) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id UpdateTarget) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id UpdateScore) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id WaveComplete) 
-    ( )) \n statement \n statement \n statement 
+    ( )) \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id Missile) \n 
     (type_element 
@@ -399,7 +399,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id YMajor) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n 
   (type_statement TYPE 
     (untyped_id GenericPos) \n 
     (type_element 
@@ -416,7 +416,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id OldY) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n 
   (type_statement TYPE 
     (untyped_id xplode) \n 
     (type_element 

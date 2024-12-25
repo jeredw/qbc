@@ -68,7 +68,7 @@ class Shell {
 
   private markError(line: number, column: number, length: number, message: string) {
     const text = this.codePane.innerText;
-    const lines = text.split('\n');
+    const lines = (text + '\n').split('\n');
     const beforeErrorText = lines[line].slice(0, column);
     const errorText = lines[line].slice(column, column + length);
     const afterErrorText = lines[line].slice(column + length);

@@ -12,7 +12,7 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call FALSE))))))) \r\n statement \r\n statement \r\n statement 
+              (variable_or_function_call FALSE))))))) \r\n statement \r\n statement \r\n 
   (type_statement TYPE 
     (untyped_id StockItem) \r\n 
     (type_element 
@@ -28,7 +28,7 @@
       (type_name_for_type_element SINGLE) \r\n) 
     (type_element 
       (untyped_id Quantity) AS 
-      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n statement \r\n statement \r\n statement 
+      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n statement \r\n statement \r\n 
   (type_statement TYPE 
     (untyped_id IndexType) \r\n 
     (type_element 
@@ -37,11 +37,11 @@
     (type_element 
       (untyped_id PartNumber) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 6)) \r\n) END TYPE) \r\n statement \r\n statement \r\n statement 
+        (fixed_string STRING * 6)) \r\n) END TYPE) \r\n statement \r\n statement \r\n 
   (declare_statement DECLARE FUNCTION Filter$ 
     ( 
       (declare_parameter_list 
-        (declare_parameter Prompt$)) )) \r\n statement 
+        (declare_parameter Prompt$)) )) \r\n 
   (declare_statement DECLARE FUNCTION FindRecord% 
     ( 
       (declare_parameter_list 
@@ -49,7 +49,7 @@
         (declare_parameter 
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
-            (untyped_id StockItem)))) )) \r\n statement \r\n statement 
+            (untyped_id StockItem)))) )) \r\n statement \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id AddRecord) 
     ( 
@@ -57,7 +57,7 @@
         (declare_parameter 
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
-            (untyped_id StockItem)))) )) \r\n statement 
+            (untyped_id StockItem)))) )) \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id InputRecord) 
     ( 
@@ -65,7 +65,7 @@
         (declare_parameter 
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
-            (untyped_id StockItem)))) )) \r\n statement 
+            (untyped_id StockItem)))) )) \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id PrintRecord) 
     ( 
@@ -73,10 +73,10 @@
         (declare_parameter 
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
-            (untyped_id StockItem)))) )) \r\n statement 
+            (untyped_id StockItem)))) )) \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id SortIndex) 
-    ( )) \r\n statement 
+    ( )) \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id ShowPartNumbers) 
     ( )) \r\n statement \r\n statement \r\n statement \r\n 

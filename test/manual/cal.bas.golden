@@ -1,7 +1,7 @@
 (program 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n statement 
+      (letter_range A - Z))) \r\n statement \r\n statement \r\n statement \r\n 
   (type_statement TYPE 
     (untyped_id MonthType) \r\n 
     (type_element 
@@ -10,24 +10,24 @@
     (type_element 
       (untyped_id MName) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 9)) \r\n) END TYPE) \r\n statement \r\n statement \r\n statement 
+        (fixed_string STRING * 9)) \r\n) END TYPE) \r\n statement \r\n statement \r\n 
   (declare_statement DECLARE FUNCTION IsLeapYear% 
     ( 
       (declare_parameter_list 
-        (declare_parameter N%)) )) \r\n statement 
+        (declare_parameter N%)) )) \r\n 
   (declare_statement DECLARE FUNCTION GetInput% 
     ( 
       (declare_parameter_list 
         (declare_parameter Prompt$) , 
         (declare_parameter Row%) , 
         (declare_parameter LowVal%) , 
-        (declare_parameter HighVal%)) )) \r\n statement \r\n statement 
+        (declare_parameter HighVal%)) )) \r\n statement \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id PrintCalendar) 
     ( 
       (declare_parameter_list 
         (declare_parameter Year%) , 
-        (declare_parameter Month%)) )) \r\n statement 
+        (declare_parameter Month%)) )) \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id ComputeMonth) 
     ( 

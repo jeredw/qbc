@@ -1,5 +1,5 @@
 import { QBasicLexer } from "../build/QBasicLexer.ts";
-import { QBasicParser } from "../build/QBasicParser.ts";
+import { Do_loop_statementContext, QBasicParser } from "../build/QBasicParser.ts";
 import { ExpressionListener } from "./ExpressionListener.ts";
 import {
   ATNSimulator,
@@ -51,11 +51,35 @@ class ParseErrorListener extends BaseErrorListener {
     line: number,
     charPositionInLine: number,
     antlrMessage: string | null,
-    _e: RecognitionException | null): void {
+    antlrError: RecognitionException | null): void {
     const token = offendingSymbol as Token;
     const message = antlrMessage || "Parse error";
-    if (/^mismatched input ([^ ]+) expecting {NEXT, NEXT_WITH_MANDATORY_ID}/.test(message)) {
-      throw new ParseError(_e!.ctx!.start!, "FOR without NEXT");
+    if (/^missing ID at /.test(message)) {
+      throw new ParseError(token, "Expected: identifier");
+    }
+    const mismatchedInput = message.match(/^mismatched input ([^ ]+) expecting (.*)$/);
+    if (mismatchedInput && mismatchedInput[2]) {
+      const expecting = mismatchedInput[2];
+      if (expecting.startsWith("{'\(', '\-', '\+'")) {
+        throw new ParseError(token, "Expected: expression");
+      }
+      switch (expecting) {
+        case "{NEXT, NEXT_WITH_MANDATORY_ID}": 
+          throw new ParseError(antlrError!.ctx!.start!, "FOR without NEXT");
+        case "WEND":
+          throw new ParseError(antlrError!.ctx!.start!, "WHILE without WEND");
+        case "ID":
+          // Non-variable cases are probably "missing ID".
+          throw new ParseError(token, "Expected: variable");
+        default:
+          throw new ParseError(token, `Expected: ${expecting}`);
+      }
+    }
+    if (/^no viable alternative at input/.test(message)) {
+      console.error(antlrMessage);
+      if (antlrError?.ctx instanceof Do_loop_statementContext) {
+        throw new ParseError(antlrError!.ctx!.start, "DO without LOOP");
+      }
     }
     throw new ParseError(token, message);
   }

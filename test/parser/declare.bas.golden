@@ -1,6 +1,6 @@
-(program statement 
+(program 
   (declare_statement declare sub 
-    (untyped_id foo)) \n statement 
+    (untyped_id foo)) \n 
   (declare_statement declare sub 
     (untyped_id foo2) 
     ( 
@@ -9,17 +9,17 @@
           (untyped_id x) as 
           (type_name_for_declare_parameter string)) , 
         (declare_parameter y$) , 
-        (declare_parameter z%)) )) \n statement 
+        (declare_parameter z%)) )) \n 
   (declare_statement declare function bar% 
     ( 
       (declare_parameter_list 
-        (declare_parameter y%)) )) \n statement 
+        (declare_parameter y%)) )) \n 
   (declare_statement declare function baz 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement declare sub 
-    (untyped_id a)) : statement 
+    (untyped_id a)) : 
   (declare_statement declare sub 
-    (untyped_id b)) \n statement 
+    (untyped_id b)) \n 
   (declare_statement declare sub 
     (untyped_id s) 
     ( 

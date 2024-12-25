@@ -1,7 +1,7 @@
 (program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement \n statement \n statement 
+      (letter_range A - Z))) \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id snakeBody) \n 
     (type_element 
@@ -9,7 +9,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id col) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id snaketype) \n 
     (type_element 
@@ -38,7 +38,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id alive) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id arenaType) \n 
     (type_element 
@@ -49,12 +49,12 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id sister) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement \n 
   (declare_statement DECLARE SUB 
     (untyped_id SpacePause) 
     ( 
       (declare_parameter_list 
-        (declare_parameter text$)) )) \n statement 
+        (declare_parameter text$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id PrintScore) 
     ( 
@@ -63,10 +63,10 @@
         (declare_parameter score1%) , 
         (declare_parameter score2%) , 
         (declare_parameter lives1%) , 
-        (declare_parameter lives2%)) )) \n statement 
+        (declare_parameter lives2%)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Intro) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GetInputs) 
     ( 
@@ -74,39 +74,39 @@
         (declare_parameter NumPlayers) , 
         (declare_parameter speed) , 
         (declare_parameter diff$) , 
-        (declare_parameter monitor$)) )) \n statement 
+        (declare_parameter monitor$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawScreen) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id PlayNibbles) 
     ( 
       (declare_parameter_list 
         (declare_parameter NumPlayers) , 
         (declare_parameter speed) , 
-        (declare_parameter diff$)) )) \n statement 
+        (declare_parameter diff$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Set) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter col) , 
-        (declare_parameter acolor)) )) \n statement 
+        (declare_parameter acolor)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
-        (declare_parameter text$)) )) \n statement 
+        (declare_parameter text$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DoIntro) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Initialize) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id SparklePause) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Level) 
     ( 
@@ -117,10 +117,10 @@
           (array_declaration 
             ( )) AS 
           (type_name_for_declare_parameter 
-            (untyped_id snaketype)))) )) \n statement 
+            (untyped_id snaketype)))) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id InitColors) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id EraseSnake) 
     ( 
@@ -135,9 +135,9 @@
           (array_declaration 
             ( )) AS 
           (type_name_for_declare_parameter ANY)) , 
-        (declare_parameter snakeNum%)) )) \n statement 
+        (declare_parameter snakeNum%)) )) \n 
   (declare_statement DECLARE FUNCTION StillWantsToPlay 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE FUNCTION PointIsThere 
     ( 
       (declare_parameter_list 

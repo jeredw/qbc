@@ -1,35 +1,35 @@
 (program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement \n statement \n statement 
+      (letter_range A - Z))) \n statement \n statement \n 
   (declare_statement DECLARE FUNCTION GetToken$ 
     ( 
       (declare_parameter_list 
         (declare_parameter Search$) , 
-        (declare_parameter Delim$)) )) \n statement 
+        (declare_parameter Delim$)) )) \n 
   (declare_statement DECLARE FUNCTION StrSpn% 
     ( 
       (declare_parameter_list 
         (declare_parameter InString$) , 
-        (declare_parameter Separator$)) )) \n statement 
+        (declare_parameter Separator$)) )) \n 
   (declare_statement DECLARE FUNCTION StrBrk% 
     ( 
       (declare_parameter_list 
         (declare_parameter InString$) , 
-        (declare_parameter Separator$)) )) \n statement 
+        (declare_parameter Separator$)) )) \n 
   (declare_statement DECLARE FUNCTION IsDigit% 
     ( 
       (declare_parameter_list 
-        (declare_parameter Char$)) )) \n statement 
+        (declare_parameter Char$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GetFileNames) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id BuildTable) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GenOutFile) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id InitKeyTable) 
     ( )) \n statement \n statement \n 

@@ -1,4 +1,4 @@
-(program statement \r\n statement 
+(program statement \r\n 
   (type_statement TYPE 
     (untyped_id TitleType) \r\n 
     (type_element 
@@ -12,7 +12,7 @@
     (type_element 
       (untyped_id YTitle) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 18)) \r\n) END TYPE) \r\n statement \r\n statement 
+        (fixed_string STRING * 18)) \r\n) END TYPE) \r\n statement \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id InputTitles) 
     ( 
@@ -20,7 +20,7 @@
         (declare_parameter 
           (untyped_id T) AS 
           (type_name_for_declare_parameter 
-            (untyped_id TitleType)))) )) \r\n statement 
+            (untyped_id TitleType)))) )) \r\n 
   (declare_statement DECLARE FUNCTION DrawGraph$ 
     ( 
       (declare_parameter_list 
@@ -34,7 +34,7 @@
         (declare_parameter Value! 
           (array_declaration 
             ( ))) , 
-        (declare_parameter N%)) )) \r\n statement 
+        (declare_parameter N%)) )) \r\n 
   (declare_statement DECLARE FUNCTION InputData% 
     ( 
       (declare_parameter_list 

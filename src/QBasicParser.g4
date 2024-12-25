@@ -41,11 +41,11 @@ program
      | label? option_statement
      | sub_statement
      | label? type_statement)
-      (COLON statement
-           | declare_statement
-           | def_fn_statement
-           | option_statement
-           | type_statement)* NL)*
+      (COLON ( statement
+             | declare_statement
+             | def_fn_statement
+             | option_statement
+             | type_statement))* NL)*
     EOF
   ;
 

@@ -1,8 +1,8 @@
 (program 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement 
-  (option_statement OPTION BASE 1) \n statement \n statement 
+      (letter_range A - Z))) \n 
+  (option_statement OPTION BASE 1) \n statement \n 
   (declare_statement DECLARE FUNCTION CheckPath% 
     ( 
       (declare_parameter_list 
@@ -12,54 +12,54 @@
         (declare_parameter j) , 
         (declare_parameter JBound) , 
         (declare_parameter JStep) , 
-        (declare_parameter Opponent)) )) \n statement 
+        (declare_parameter Opponent)) )) \n 
   (declare_statement DECLARE FUNCTION ValidMove% 
     ( 
       (declare_parameter_list 
-        (declare_parameter Opponent)) )) \n statement 
+        (declare_parameter Opponent)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id ComputerMove) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayHelp) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DisplayMsg) 
     ( 
       (declare_parameter_list 
-        (declare_parameter a$)) )) \n statement 
+        (declare_parameter a$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawCursor) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
-        (declare_parameter col)) )) \n statement 
+        (declare_parameter col)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawGamePiece) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter col) , 
-        (declare_parameter PieceColor)) )) \n statement 
+        (declare_parameter PieceColor)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GameOver) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id InitGame) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id TakeBlocks) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter col) , 
-        (declare_parameter player)) )) \n statement 
+        (declare_parameter player)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id UpdateScore) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id UserMove) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawGameBoard) 
     ( )) \n statement \n 
@@ -183,7 +183,7 @@
       (const_assignment SPACE = 
         (const_expr 
           (expr 
-            (literal 32)))))) \n statement \n statement 
+            (literal 32)))))) \n statement \n 
   (type_statement TYPE 
     (untyped_id GameGrid) \n 
     (type_element 
@@ -197,7 +197,7 @@
       (type_name_for_type_element INTEGER) \n) 
     (type_element 
       (untyped_id cy) AS 
-      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n statement 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n statement \n 
   (type_statement TYPE 
     (untyped_id GameStatus) \n 
     (type_element 

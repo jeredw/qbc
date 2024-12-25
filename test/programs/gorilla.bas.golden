@@ -1,50 +1,50 @@
 (program statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n statement \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n statement \n statement \n statement 
+      (letter_range A - Z))) \n statement \n statement \n 
   (declare_statement DECLARE SUB 
     (untyped_id DoSun) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Mouth)) )) \n statement 
+        (declare_parameter Mouth)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id SetScreen) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id EndGame) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter Row) , 
-        (declare_parameter Text$)) )) \n statement 
+        (declare_parameter Text$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Intro) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id SparklePause) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GetInputs) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player1$) , 
         (declare_parameter Player2$) , 
-        (declare_parameter NumGames)) )) \n statement 
+        (declare_parameter NumGames)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id PlayGame) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player1$) , 
         (declare_parameter Player2$) , 
-        (declare_parameter NumGames)) )) \n statement 
+        (declare_parameter NumGames)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DoExplosion) 
     ( 
       (declare_parameter_list 
         (declare_parameter x#) , 
-        (declare_parameter y#)) )) \n statement 
+        (declare_parameter y#)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id MakeCityScape) 
     ( 
@@ -53,7 +53,7 @@
           (untyped_id BCoor) 
           (array_declaration 
             ( )) AS 
-          (type_name_for_declare_parameter ANY))) )) \n statement 
+          (type_name_for_declare_parameter ANY))) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id PlaceGorillas) 
     ( 
@@ -62,7 +62,7 @@
           (untyped_id BCoor) 
           (array_declaration 
             ( )) AS 
-          (type_name_for_declare_parameter ANY))) )) \n statement 
+          (type_name_for_declare_parameter ANY))) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id UpdateScores) 
     ( 
@@ -71,33 +71,33 @@
           (array_declaration 
             ( ))) , 
         (declare_parameter PlayerNum) , 
-        (declare_parameter Results)) )) \n statement 
+        (declare_parameter Results)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawGorilla) 
     ( 
       (declare_parameter_list 
         (declare_parameter x) , 
         (declare_parameter y) , 
-        (declare_parameter arms)) )) \n statement 
+        (declare_parameter arms)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id GorillaIntro) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player1$) , 
-        (declare_parameter Player2$)) )) \n statement 
+        (declare_parameter Player2$)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id Rest) 
     ( 
       (declare_parameter_list 
-        (declare_parameter t#)) )) \n statement 
+        (declare_parameter t#)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id VictoryDance) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Player)) )) \n statement 
+        (declare_parameter Player)) )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id ClearGorillas) 
-    ( )) \n statement 
+    ( )) \n 
   (declare_statement DECLARE SUB 
     (untyped_id DrawBan) 
     ( 
@@ -105,32 +105,32 @@
         (declare_parameter xc#) , 
         (declare_parameter yc#) , 
         (declare_parameter r) , 
-        (declare_parameter bc)) )) \n statement 
+        (declare_parameter bc)) )) \n 
   (declare_statement DECLARE FUNCTION Scl 
     ( 
       (declare_parameter_list 
-        (declare_parameter n!)) )) \n statement 
+        (declare_parameter n!)) )) \n 
   (declare_statement DECLARE FUNCTION GetNum# 
     ( 
       (declare_parameter_list 
         (declare_parameter Row) , 
-        (declare_parameter Col)) )) \n statement 
+        (declare_parameter Col)) )) \n 
   (declare_statement DECLARE FUNCTION DoShot 
     ( 
       (declare_parameter_list 
         (declare_parameter PlayerNum) , 
         (declare_parameter x) , 
-        (declare_parameter y)) )) \n statement 
+        (declare_parameter y)) )) \n 
   (declare_statement DECLARE FUNCTION ExplodeGorilla 
     ( 
       (declare_parameter_list 
         (declare_parameter x#) , 
-        (declare_parameter y#)) )) \n statement 
+        (declare_parameter y#)) )) \n 
   (declare_statement DECLARE FUNCTION Getn# 
     ( 
       (declare_parameter_list 
         (declare_parameter Row) , 
-        (declare_parameter Col)) )) \n statement 
+        (declare_parameter Col)) )) \n 
   (declare_statement DECLARE FUNCTION PlotShot 
     ( 
       (declare_parameter_list 
@@ -138,9 +138,9 @@
         (declare_parameter StartY) , 
         (declare_parameter Angle#) , 
         (declare_parameter Velocity) , 
-        (declare_parameter PlayerNum)) )) \n statement 
+        (declare_parameter PlayerNum)) )) \n 
   (declare_statement DECLARE FUNCTION CalcDelay! 
-    ( )) \n statement \n statement \n statement \n statement \n statement \n statement 
+    ( )) \n statement \n statement \n statement \n statement \n statement \n 
   (type_statement TYPE 
     (untyped_id XYPoint) \n 
     (type_element 
@@ -345,7 +345,7 @@
     (dim_statement DIM SHARED 
       (dim_variable 
         (untyped_id MachSpeed) AS 
-        (type_name SINGLE)))) \n statement \n statement 
+        (type_name SINGLE)))) \n statement \n 
   (def_fn_statement DEF FnRan 
     ( 
       (def_fn_parameter_list 
