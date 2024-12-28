@@ -1,4 +1,4 @@
-import { LabelContext } from "../build/QBasicParser.js";
+import { Implicit_goto_targetContext, LabelContext } from "../build/QBasicParser.js";
 import { Def_fn_statementContext, Exit_statementContext, Function_statementContext, TargetContext } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTree } from "antlr4ng";
@@ -37,7 +37,7 @@ export class StatementChunker extends QBasicParserListener {
     context.targets.forEach((target, statementIndex) => {
       if (!context.labels.has(target)) {
         const statement = context.statements[statementIndex];
-        throw new ParseError(statement.start!, "Label not defined");
+        throw ParseError.fromToken(statement.start!, "Label not defined");
       }
     });
   }
@@ -45,13 +45,20 @@ export class StatementChunker extends QBasicParserListener {
   override enterLabel = (ctx: LabelContext) => {
     const label = this.canonicalizeLabel(ctx.getText());
     if (this._allLabels.has(label)) {
-      throw new ParseError(ctx.start!, 'Duplicate label');
+      throw ParseError.fromToken(ctx.start!, 'Duplicate label');
     }
     this._allLabels.add(label);
     this._context.labels.set(label, this._context.statements.length);
   }
 
   override enterTarget = (ctx: TargetContext) => {
+    const label = this.canonicalizeLabel(ctx.getText());
+    const statementIndex = this._context.statements.length - 1;
+    this._context.targets.set(statementIndex, label);
+  }
+
+  override enterImplicit_goto_target = (ctx: Implicit_goto_targetContext) => {
+    this._context.statements.push(ctx);
     const label = this.canonicalizeLabel(ctx.getText());
     const statementIndex = this._context.statements.length - 1;
     this._context.targets.set(statementIndex, label);

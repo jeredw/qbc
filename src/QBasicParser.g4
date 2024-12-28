@@ -489,9 +489,9 @@ goto_statement
 // IF has a concise inline form that can occur anywhere.
 // The ELSE binds to the innermost IF.
 if_inline_statement
-  : IF expr THEN if_inline_action (ELSE if_inline_action)?
+  : IF expr THEN then=if_inline_action (ELSE else=if_inline_action)?
 // QBasic still parses this old BASICA/GW-BASIC syntax omitting THEN.
-  | IF expr goto_statement (ELSE if_inline_action)?
+  | IF expr goto_statement (ELSE else=if_inline_action)?
   ;
 
 if_inline_action

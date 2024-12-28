@@ -43,7 +43,10 @@ export class Interpreter {
   }
 }
 
-// Throw an error that will be displayed in the shell.
+// Throw an error that will be displayed in the shell by hackily rewriting ANTLR
+// error messages.  ANTLR's errors are decent, but nowhere near as nice as we
+// could get with a handwritten parser... we may want to just switch it out for
+// a handwritten parser eventually.
 class ParseErrorListener extends BaseErrorListener {
   public override syntaxError<T extends ATNSimulator>(
     recognizer: Recognizer<T> | null,
@@ -52,40 +55,49 @@ class ParseErrorListener extends BaseErrorListener {
     charPositionInLine: number,
     antlrMessage: string | null,
     antlrError: RecognitionException | null): void {
-    const token = offendingSymbol as Token;
     const message = antlrMessage || "Parse error";
+    if (offendingSymbol == null) {
+      if (/^token recognition error at: '"/.test(message)) {
+        throw ParseError.fromLineAndPosition(line, charPositionInLine, `missing '"'`);
+      }
+      throw ParseError.fromLineAndPosition(line, charPositionInLine, message);
+    }
+    const token = offendingSymbol as Token;
     if (/^missing ID at /.test(message)) {
-      throw new ParseError(token, "Expected: identifier");
+      throw ParseError.fromToken(token, "Expected: identifier");
     }
     const mismatchedInput = message.match(/^mismatched input ([^ ]+) expecting (.*)$/);
     if (mismatchedInput && mismatchedInput[2]) {
       const expecting = mismatchedInput[2];
       if (expecting.startsWith("{'\(', '\-', '\+'")) {
-        throw new ParseError(token, "Expected: expression");
+        throw ParseError.fromToken(token, "Expected: expression");
       }
       switch (expecting) {
         case "{NEXT, NEXT_WITH_MANDATORY_ID}": 
-          throw new ParseError(antlrError!.ctx!.start!, "FOR without NEXT");
+          throw ParseError.fromToken(antlrError!.ctx!.start!, "FOR without NEXT");
         case "WEND":
-          throw new ParseError(antlrError!.ctx!.start!, "WHILE without WEND");
+          throw ParseError.fromToken(antlrError!.ctx!.start!, "WHILE without WEND");
         case "LOOP":
-          throw new ParseError(antlrError!.ctx!.start!, "DO without LOOP");
+          throw ParseError.fromToken(antlrError!.ctx!.start!, "DO without LOOP");
         case "ID":
           // Non-variable cases are probably "missing ID".
-          throw new ParseError(token, "Expected: variable");
+          throw ParseError.fromToken(token, "Expected: variable");
         default:
-          throw new ParseError(token, `Expected: ${expecting}`);
+          throw ParseError.fromToken(token, `Expected: ${expecting}`);
       }
     }
     if (/^extraneous input ([^ ])+ expecting {COLON, NL}/.test(message)) {
-      throw new ParseError(token, "Expecting: end-of-statement");
+      throw ParseError.fromToken(token, "Expecting: end-of-statement");
+    }
+    if (/^extraneous input 'else' expecting /.test(message)) {
+      throw ParseError.fromToken(token, "ELSE without IF");
     }
     if (/^no viable alternative at input/.test(message)) {
       console.error(antlrMessage);
       if (antlrError?.ctx instanceof Do_loop_statementContext) {
-        throw new ParseError(antlrError!.ctx!.start, "DO without LOOP");
+        throw ParseError.fromToken(antlrError!.ctx!.start!, "DO without LOOP");
       }
     }
-    throw new ParseError(token, message);
+    throw ParseError.fromToken(token, message);
   }
 }
