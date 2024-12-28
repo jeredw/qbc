@@ -19,4 +19,4 @@ end if
 40 print "yes ok"
 50 else print "baz": print "quux"
 60 end if: print "ok"
-if foo then
+if foo then yow

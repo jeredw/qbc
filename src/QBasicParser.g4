@@ -74,6 +74,9 @@ target
   : line_number
   | text_label
   ;
+implicit_goto_target
+  : line_number
+  ;
 
 // QBasic recognizes line numbers up to 40 digits long, suggesting even numeric
 // labels are just a relaxed case of IDs.  This grammar doesn't impose a limit.
@@ -493,7 +496,7 @@ if_inline_statement
 
 if_inline_action
   : statement (COLON statement?)*
-  | line_number  // Implicit GOTO
+  | implicit_goto_target
   ;
 
 // The IDE does not seem to automatically insert missing ','s for INPUT the way
