@@ -1,23 +1,25 @@
 import {
   Def_fn_statementContext,
-  Exit_statementContext,
   Function_statementContext,
   Fixed_stringContext,
   Implicit_goto_targetContext,
   LabelContext,
+  Sub_statementContext,
   TargetContext,
   Type_elementContext,
   Type_name_for_type_elementContext,
   Type_statementContext,
   Untyped_fnidContext,
-  Untyped_idContext
+  Untyped_idContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
-import { ParserRuleContext, ParseTree, Token } from "antlr4ng";
+import { ParserRuleContext, ParseTree, TerminalNode, Token } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
 import { QBasicType, Type, UserDefinedType, UserDefinedTypeElement } from "./Types.ts";
+import { Procedure } from "./Procedures.ts"
 
-interface Context {
+interface ProgramChunk {
+  procedure?: Procedure;
   statements: ParserRuleContext[];
   targets: Map<number, string>;
   labels: Map<string, number>;
@@ -26,14 +28,14 @@ interface Context {
 export class ProgramChunker extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
   private _types: Map<string, UserDefinedType> = new Map();
-  private _procedures: Map<string, Context> = new Map();
-  private _topLevel: Context;
-  private _context: Context;
+  private _procedures: Map<string, ProgramChunk> = new Map();
+  private _topLevel: ProgramChunk;
+  private _chunk: ProgramChunk;
 
   constructor() {
     super();
-    this._topLevel = this.makeContext();
-    this._context = this._topLevel;
+    this._topLevel = this.makeProgramChunk();
+    this._chunk = this._topLevel;
   }
 
   get statements() {
@@ -47,10 +49,10 @@ export class ProgramChunker extends QBasicParserListener {
     }
   }
 
-  private checkTargets(context: Context) {
-    context.targets.forEach((target, statementIndex) => {
-      if (!context.labels.has(target)) {
-        const statement = context.statements[statementIndex];
+  private checkTargets(chunk: ProgramChunk) {
+    chunk.targets.forEach((target, statementIndex) => {
+      if (!chunk.labels.has(target)) {
+        const statement = chunk.statements[statementIndex];
         throw ParseError.fromToken(statement.start!, "Label not defined");
       }
     });
@@ -59,23 +61,23 @@ export class ProgramChunker extends QBasicParserListener {
   override enterLabel = (ctx: LabelContext) => {
     const label = this.canonicalizeLabel(ctx);
     if (this._allLabels.has(label)) {
-      throw ParseError.fromToken(ctx.start!, 'Duplicate label');
+      throw ParseError.fromToken(ctx.start!, "Duplicate label");
     }
     this._allLabels.add(label);
-    this._context.labels.set(label, this._context.statements.length);
+    this._chunk.labels.set(label, this._chunk.statements.length);
   }
 
   override enterTarget = (ctx: TargetContext) => {
     const label = this.canonicalizeLabel(ctx);
-    const statementIndex = this._context.statements.length - 1;
-    this._context.targets.set(statementIndex, label);
+    const statementIndex = this._chunk.statements.length - 1;
+    this._chunk.targets.set(statementIndex, label);
   }
 
   override enterImplicit_goto_target = (ctx: Implicit_goto_targetContext) => {
-    this._context.statements.push(ctx);
+    this._chunk.statements.push(ctx);
     const label = this.canonicalizeLabel(ctx);
-    const statementIndex = this._context.statements.length - 1;
-    this._context.targets.set(statementIndex, label);
+    const statementIndex = this._chunk.statements.length - 1;
+    this._chunk.targets.set(statementIndex, label);
   }
 
   private canonicalizeLabel(ctx: ParserRuleContext): string {
@@ -85,42 +87,61 @@ export class ProgramChunker extends QBasicParserListener {
   }
 
   private statement = (ctx: ParserRuleContext) => {
-    this._context.statements.push(ctx);
+    this._chunk.statements.push(ctx);
   }
 
   private procedure = (ctx: ParserRuleContext) => {
     this.statement(ctx);
-    this._context = this.makeContext();
+    this._chunk = this.makeProgramChunk();
   }
 
-  private exitProcedure(name: string) {
-    this._procedures.set(name, this._context);
-    this._context = this._topLevel;
+  private exitProcedure = (_ctx: ParserRuleContext) => {
+    const name = this._chunk.procedure!.name;
+    this._procedures.set(name, this._chunk);
+    this._chunk = this._topLevel;
   }
 
-  private makeContext(): Context {
-    return {labels: new Map(), statements: [], targets: new Map()};
+  private makeProgramChunk(procedure?: Procedure): ProgramChunk {
+    return {labels: new Map(), statements: [], targets: new Map(), procedure};
   }
 
-  override enterFunction_statement = this.procedure;
-  override enterDef_fn_statement = this.procedure;
-  override enterSub_statement = this.procedure;
-
-  override exitFunction_statement = (ctx: Function_statementContext) => {
-    this.exitProcedure(ctx._name.text);
-  }
-
-  override exitDef_fn_statement = (ctx: Def_fn_statementContext) => {
-    let name = ctx._name.text;
-    if (!name.toLowerCase().startsWith('fn')) {
-      name = `fn${name}`;
+  override enterFunction_statement = (ctx: Function_statementContext) => {
+    const nameCtx = ctx.children[1] as TerminalNode;
+    const [name, sigil] = splitSigil(nameCtx.getText().toLowerCase());
+    if (this._procedures.has(name)) {
+      throw ParseError.fromToken(nameCtx.symbol, "Duplicate definition");
     }
-    this.exitProcedure(name);
+    this.statement(ctx);
+    this._chunk = this.makeProgramChunk({name, arguments: []});
   }
 
-  override exitSub_statement = (ctx: Exit_statementContext) => {
-    this.exitProcedure(this._name.text);
+  override exitFunction_statement = this.exitProcedure;
+
+  override enterDef_fn_statement = (ctx: Def_fn_statementContext) => {
+    const rawName = ctx._name!.text!.toLowerCase();
+    // Correct "def fn foo" to "def fnfoo".
+    const name = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
+    // Note that any sigil is included in the name of a def fn.
+    if (this._procedures.has(name)) {
+      throw ParseError.fromToken(ctx._name!, "Duplicate definition");
+    }
+    this.statement(ctx);
+    this._chunk = this.makeProgramChunk({name, arguments: []});
   }
+
+  override exitDef_fn_statement = this.exitProcedure;
+
+  override enterSub_statement = (ctx: Sub_statementContext) => {
+    const nameCtx = ctx.children[1] as ParserRuleContext;
+    const name = getUntypedId(nameCtx);
+    if (this._procedures.has(name)) {
+      throw ParseError.fromToken(nameCtx.start!, "Duplicate definition");
+    }
+    this.statement(ctx);
+    this._chunk = this.makeProgramChunk({name, arguments: []});
+  }
+
+  override exitSub_statement = this.exitProcedure;
 
   override enterStatement = this.statement;
   override enterDeclare_statement = this.statement;
@@ -135,7 +156,7 @@ export class ProgramChunker extends QBasicParserListener {
   override enterEnd_if_statement = this.statement;
 
   override enterType_statement = (ctx: Type_statementContext) => {
-    this._context.statements.push(ctx);
+    this._chunk.statements.push(ctx);
     const name = getUntypedId(ctx.children[1], /* allowPeriods= */ false);
     const elements: UserDefinedTypeElement[] = [];
     for (const child of ctx.children) {
@@ -198,12 +219,21 @@ function getUntypedId(tree: ParseTree, allowPeriods: boolean = true): string {
   if (!allowPeriods && id.includes('.')) {
       throw ParseError.fromToken(idCtx.start!, "Identifier cannot include period");
   }
-  return id;
+  return id.toLowerCase();
 }
 
 function checkUntyped(name: string, ctx: ParserRuleContext, message: string) {
-  if (/[!#$%&]$/.test(name)) {
+  const [_, sigil] = splitSigil(name);
+  if (sigil) {
     throw ParseError.fromToken(ctx.start!, message);
   }
   return name;
+}
+
+function splitSigil(name: string): [string, string] {
+  const lastChar = name.slice(-1);
+  if ("!#$%&".includes(lastChar)) {
+    return [name.slice(0, -1), lastChar];
+  }
+  return [name, ""];
 }

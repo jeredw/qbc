@@ -172,6 +172,9 @@ declare_parameter
 // Many rules can't match identifiers that start with FN, so we explicitly
 // split FN-prefixed IDs out of ID into a separate FNID token.
 //
+// Note that unlike functions, DEF FNs may differ only in return type, so FNfoo$
+// and FNfoo% are different.
+//
 // *** The IDE automatically corrects "DEF FN x" to "DEF FNx", so we'll also
 // match a separate token form of DEF FN and merge that into FN+name later.
 def_fn_statement
