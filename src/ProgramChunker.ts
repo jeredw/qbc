@@ -1,9 +1,14 @@
 import {
   Def_fn_statementContext,
-  Function_statementContext,
+  Deftype_statementContext,
+  Do_loop_statementContext,
+  Exit_statementContext,
   Fixed_stringContext,
+  For_next_statementContext,
+  Function_statementContext,
   Implicit_goto_targetContext,
   LabelContext,
+  Letter_rangeContext,
   Sub_statementContext,
   TargetContext,
   Type_elementContext,
@@ -11,17 +16,22 @@ import {
   Type_statementContext,
   Untyped_fnidContext,
   Untyped_idContext,
-  Deftype_statementContext,
-  Letter_rangeContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
-import { ParserRuleContext, ParseTree, TerminalNode, Token } from "antlr4ng";
+import { ParserRuleContext, ParseTree, TerminalNode } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
-import { QBasicType, Type, UserDefinedType, UserDefinedTypeElement, typeOfName, typeOfDefType } from "./Types.ts";
+import {
+  QBasicType,
+  Type,
+  UserDefinedType,
+  UserDefinedTypeElement,
+  typeOfDefType,
+  typeOfName,
+  typeOfSigil,
+} from "./Types.ts";
 import { Procedure } from "./Procedures.ts"
 
 interface ProgramChunk {
-  procedure?: Procedure;
   statements: ParserRuleContext[];
   targets: Map<number, string>;
   labels: Map<string, number>;
@@ -32,6 +42,13 @@ export class ProgramChunker extends QBasicParserListener {
   private _types: Map<string, UserDefinedType> = new Map();
   private _firstCharToDefaultType: Map<string, Type> = new Map();
   private _procedures: Map<string, ProgramChunk> = new Map();
+  private _fns: Map<QBasicType, Map<string, ProgramChunk>> = new Map([
+    [QBasicType.SINGLE, new Map()],
+    [QBasicType.DOUBLE, new Map()],
+    [QBasicType.STRING, new Map()],
+    [QBasicType.INTEGER, new Map()],
+    [QBasicType.LONG, new Map()],
+  ]);
   private _topLevel: ProgramChunk;
   private _chunk: ProgramChunk;
 
@@ -89,18 +106,8 @@ export class ProgramChunker extends QBasicParserListener {
     return checkUntyped(stripped.toLowerCase(), ctx, "Expected: label or line number");
   }
 
-  private statement = (ctx: ParserRuleContext) => {
-    this._chunk.statements.push(ctx);
-  }
-
-  private exitProcedure = (_ctx: ParserRuleContext) => {
-    const name = this._chunk.procedure!.name;
-    this._procedures.set(name, this._chunk);
-    this._chunk = this._topLevel;
-  }
-
   private makeProgramChunk(procedure?: Procedure): ProgramChunk {
-    return {labels: new Map(), statements: [], targets: new Map(), procedure};
+    return {labels: new Map(), statements: [], targets: new Map()};
   }
 
   override enterFunction_statement = (ctx: Function_statementContext) => {
@@ -109,25 +116,27 @@ export class ProgramChunker extends QBasicParserListener {
     if (this._procedures.has(name)) {
       throw ParseError.fromToken(nameCtx.symbol, "Duplicate definition");
     }
-    this.statement(ctx);
-    this._chunk = this.makeProgramChunk({name, arguments: []});
+    const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    this._chunk = this.makeProgramChunk({name, returnType, arguments: []});
+    this._procedures.set(name, this._chunk);
   }
-
-  override exitFunction_statement = this.exitProcedure;
 
   override enterDef_fn_statement = (ctx: Def_fn_statementContext) => {
     const rawName = ctx._name!.text!.toLowerCase();
     // Correct "def fn foo" to "def fnfoo".
-    const name = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
+    const fnPrefixed = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
+    const [name, sigil] = splitSigil(fnPrefixed);
+    const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const table = this._fns.get(returnType.qbasicType)!;
     // Note that any sigil is included in the name of a def fn.
-    if (this._procedures.has(name)) {
+    if (table.has(name)) {
       throw ParseError.fromToken(ctx._name!, "Duplicate definition");
     }
-    this.statement(ctx);
-    this._chunk = this.makeProgramChunk({name, arguments: []});
+    // Labels on def fn refer to the defining statement in the toplevel.
+    this._chunk.statements.push(ctx);
+    this._chunk = this.makeProgramChunk({name, returnType, arguments: []});
+    table.set(name, this._chunk);
   }
-
-  override exitDef_fn_statement = this.exitProcedure;
 
   override enterSub_statement = (ctx: Sub_statementContext) => {
     const nameCtx = ctx.children[1] as ParserRuleContext;
@@ -135,11 +144,21 @@ export class ProgramChunker extends QBasicParserListener {
     if (this._procedures.has(name)) {
       throw ParseError.fromToken(nameCtx.start!, "Duplicate definition");
     }
-    this.statement(ctx);
     this._chunk = this.makeProgramChunk({name, arguments: []});
+    this._procedures.set(name, this._chunk);
   }
 
+  private exitProcedure = (_ctx: ParserRuleContext) => {
+    this._chunk = this._topLevel;
+  }
+
+  override exitFunction_statement = this.exitProcedure;
+  override exitDef_fn_statement = this.exitProcedure;
   override exitSub_statement = this.exitProcedure;
+
+  private statement = (ctx: ParserRuleContext) => {
+    this._chunk.statements.push(ctx);
+  }
 
   override enterStatement = this.statement;
   override enterDeclare_statement = this.statement;
@@ -153,26 +172,56 @@ export class ProgramChunker extends QBasicParserListener {
   override enterEnd_sub_statement = this.statement;
   override enterEnd_if_statement = this.statement;
 
+  override enterExit_statement = (ctx: Exit_statementContext) => {
+    const blockType = ctx.children[1].getText().toLowerCase();
+    switch (blockType) {
+      case "def":
+        if (!hasParent(ctx, Def_fn_statementContext)) {
+          throw ParseError.fromToken(ctx.start!, "EXIT DEF not within DEF FN");
+        }
+        break;
+      case "do":
+        if (!hasParent(ctx, Do_loop_statementContext)) {
+          throw ParseError.fromToken(ctx.start!, "EXIT DO not within DO...LOOP");
+        }
+        break;
+      case "for":
+        if (!hasParent(ctx, For_next_statementContext)) {
+          throw ParseError.fromToken(ctx.start!, "EXIT FOR not within FOR...NEXT");
+        }
+        break;
+      case "function":
+        if (!hasParent(ctx, Function_statementContext)) {
+          throw ParseError.fromToken(ctx.start!, "EXIT FUNCTION not within FUNCTION");
+        }
+        break;
+      case "sub":
+        if (!hasParent(ctx, Sub_statementContext)) {
+          throw ParseError.fromToken(ctx.start!, "EXIT SUB not within SUB");
+        }
+        break;
+      default:
+        throw new Error("invalid block type");
+    }
+  }
+
   override enterDeftype_statement = (ctx: Deftype_statementContext) => {
     const keyword = ctx.children[0].getText();
     const type = typeOfDefType(keyword);
-    const parseRangeEnd = (text: string) => {
-      const lower = text.toLowerCase();
-      return lower.startsWith('fn') ? lower.slice(2, 3) : lower.slice(0, 1);
-    };
     for (const child of ctx.children) {
       if (!(child instanceof Letter_rangeContext)) {
         continue;
       }
       const letterRange = child as Letter_rangeContext;
-      const start = parseRangeEnd(letterRange.children[0].getText());
-      const end = letterRange.children.length == 3 ?
-        parseRangeEnd(letterRange.children[2].getText()) :
-        start;
+      const first = firstCharOfId(letterRange.children[0].getText()).charCodeAt(0);
+      // Ranges can be just a single character.
+      const second = letterRange.children.length == 3 ?
+        firstCharOfId(letterRange.children[2].getText()).charCodeAt(0) :
+        first;
       // Ranges may be flipped.
-      const firstChar = Math.min(start.charCodeAt(0), end.charCodeAt(0));
-      const lastChar = Math.max(start.charCodeAt(0), end.charCodeAt(0));
-      for (let i = firstChar; i <= lastChar; i++) {
+      const start = Math.min(first, second);
+      const end = Math.max(first, second);
+      for (let i = start; i <= end; i++) {
         this._firstCharToDefaultType.set(String.fromCharCode(i), type);
       }
     }
@@ -218,6 +267,16 @@ export class ProgramChunker extends QBasicParserListener {
     }
     return typeOfName(child.getText());
   }
+
+  private getDefaultType(name: string): Type {
+    const type = this._firstCharToDefaultType.get(firstCharOfId(name));
+    return type ?? {qbasicType: QBasicType.SINGLE};
+  }
+}
+
+function firstCharOfId(name: string) {
+  const lower = name.toLowerCase();
+  return lower.startsWith('fn') ? name.slice(2, 1) : name.slice(0, 1);
 }
 
 function getUntypedId(tree: ParseTree, allowPeriods: boolean = true): string {
@@ -246,4 +305,18 @@ function splitSigil(name: string): [string, string] {
     return [name.slice(0, -1), lastChar];
   }
   return [name, ""];
+}
+
+type RuleConstructor<T extends ParserRuleContext> = { new (ctx: ParserRuleContext | null, rule: number): T }
+
+function hasParent<T extends ParserRuleContext>(
+  ctx: ParserRuleContext,
+  constructor: RuleConstructor<T>): boolean {
+  while (ctx.parent) {
+    if (ctx.parent instanceof constructor) {
+      return true;
+    }
+    ctx = ctx.parent;
+  }
+  return false;
 }

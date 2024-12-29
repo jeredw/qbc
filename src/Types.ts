@@ -1,16 +1,12 @@
 export enum QBasicType {
   ERROR,  // Sentinel value for errors.
-  STRING,
   SINGLE,
   DOUBLE,
+  STRING,
   INTEGER,
   LONG,
   FIXED_STRING,
   RECORD,
-}
-
-export interface StringType {
-  qbasicType: QBasicType.STRING;
 }
 
 export interface SingleType {
@@ -19,6 +15,10 @@ export interface SingleType {
 
 export interface DoubleType {
   qbasicType: QBasicType.DOUBLE;
+}
+
+export interface StringType {
+  qbasicType: QBasicType.STRING;
 }
 
 export interface IntegerType {
@@ -78,11 +78,11 @@ export function typeOfName(typeName: string): Type {
 
 export function typeOfDefType(keyword: string): Type {
   switch (keyword.toLowerCase()) {
-    case 'defint': return {qbasicType: QBasicType.INTEGER};
-    case 'deflng': return {qbasicType: QBasicType.LONG};
     case 'defsng': return {qbasicType: QBasicType.SINGLE};
     case 'defdbl': return {qbasicType: QBasicType.DOUBLE};
     case 'defstr': return {qbasicType: QBasicType.STRING};
+    case 'defint': return {qbasicType: QBasicType.INTEGER};
+    case 'deflng': return {qbasicType: QBasicType.LONG};
   }
   throw new Error("Invalid keyword");
 }
