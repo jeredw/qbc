@@ -12,7 +12,7 @@ import {
   Token,
 } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
-import { StatementChunker } from "./StatementChunker.ts";
+import { ProgramChunker } from "./ProgramChunker.ts";
 
 export class Interpreter {
   expressionListener = new ExpressionListener();
@@ -31,10 +31,10 @@ export class Interpreter {
     parser.addErrorListener(parseErrorListener);
     // Parse the program first to check correct syntax.
     const tree = parser.program();
-    const statementChunker = new StatementChunker();
-    ParseTreeWalker.DEFAULT.walk(statementChunker, tree);
-    statementChunker.checkAllTargetsDefined();
-    for (const statement of statementChunker.statements) {
+    const programChunker = new ProgramChunker();
+    ParseTreeWalker.DEFAULT.walk(programChunker, tree);
+    programChunker.checkAllTargetsDefined();
+    for (const statement of programChunker.statements) {
       console.log(statement);
       ParseTreeWalker.DEFAULT.walk(new ExpressionListener(), statement);
     }

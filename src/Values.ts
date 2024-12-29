@@ -1,11 +1,4 @@
-export enum QBasicType {
-  ERROR,  // Sentinel value for errors.
-  STRING,
-  SINGLE,
-  DOUBLE,
-  INTEGER,
-  LONG,
-}
+import { QBasicType, UserDefinedType } from './Types.ts'
 
 export type ErrorValue = {
   qbasicType: QBasicType.ERROR;
@@ -13,7 +6,7 @@ export type ErrorValue = {
 }
 
 export type StringValue = {
-  qbasicType: QBasicType.STRING;
+  qbasicType: QBasicType.STRING | QBasicType.FIXED_STRING;
   string: string;
 };
 
@@ -37,16 +30,23 @@ export type LongValue = {
   number: number;
 }
 
+export type RecordValue = {
+  qbasicType: QBasicType.RECORD;
+  userDefinedType: UserDefinedType;
+  elementValues: Map<string, Value>;
+}
+
 export type NumericValue =
-  SingleValue |
-  DoubleValue |
-  IntegerValue |
-  LongValue;
+  | SingleValue
+  | DoubleValue
+  | IntegerValue
+  | LongValue;
 
 export type Value =
-  ErrorValue |
-  StringValue |
-  NumericValue;
+  | ErrorValue
+  | StringValue
+  | NumericValue
+  | RecordValue;
 
 export function isError(value: Value): value is ErrorValue {
   return 'errorMessage' in value;

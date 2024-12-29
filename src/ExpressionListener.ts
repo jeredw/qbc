@@ -6,6 +6,7 @@ import {
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext } from "antlr4ng";
 import * as values from "./Values.ts";
+import { QBasicType } from "./Types.ts";
 
 export class ExpressionListener extends QBasicParserListener {
   stack: values.Value[] = [];
@@ -73,11 +74,11 @@ export class ExpressionListener extends QBasicParserListener {
       this.push(values.TYPE_MISMATCH);
       return;
     }
-    if (a.qbasicType == values.QBasicType.INTEGER) {
+    if (a.qbasicType == QBasicType.INTEGER) {
       this.push(values.integer(~a.number));
       return;
     }
-    if (a.qbasicType == values.QBasicType.LONG) {
+    if (a.qbasicType == QBasicType.LONG) {
       this.push(values.long(~a.number));
       return;
     }
@@ -249,7 +250,7 @@ function evaluateStringBinaryOperator(op: string, a: values.StringValue, b: valu
 
 function withIntegerCast(a: values.NumericValue, b: values.NumericValue, fn: (a: values.NumericValue, b: values.NumericValue) => values.Value): values.Value {
   const bothOperandsAreShortIntegers =
-    a.qbasicType == values.QBasicType.INTEGER && b.qbasicType == values.QBasicType.INTEGER;
+    a.qbasicType == QBasicType.INTEGER && b.qbasicType == QBasicType.INTEGER;
   const integerType = bothOperandsAreShortIntegers ? values.integer : values.long;
   const castA = integerType(Math.round(a.number));
   const castB = integerType(Math.round(b.number));
