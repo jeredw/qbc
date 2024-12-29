@@ -3,7 +3,7 @@ import { Type } from "./Types.ts"
 export interface Variable {
   type: Type;
   name: string;
-  dimensions: ArrayBounds[];
+  arrayDimensions?: ArrayBounds[];
 }
 
 export interface ArrayBounds {

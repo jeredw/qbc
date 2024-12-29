@@ -198,7 +198,7 @@ def_fn_parameter
 
 // IDE drops empty '()' parameter lists.
 function_statement
-  : label? FUNCTION name=ID ('(' parameter_list? ')')? STATIC?
+  : label? FUNCTION ID ('(' parameter_list? ')')? STATIC?
     block
     end_function_statement
   ;
@@ -409,7 +409,7 @@ deftype_statement
 // down to the first letter, so we'll parse this liberally and deal with it
 // later. Note that DEFINT fna-fnb turns into DEFINT a-b, so fn prefixes are
 // evidently stripped.
-letter_range: (ID | FNID) ('-' (ID | FNID))? ;
+letter_range: first=(ID | FNID) ('-' second=(ID | FNID))? ;
 
 dim_statement
   : DIM SHARED? dim_variable (COMMA dim_variable)*

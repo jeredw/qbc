@@ -1,4 +1,4 @@
-export enum QBasicType {
+export enum TypeTag {
   ERROR,  // Sentinel value for errors.
   SINGLE,
   DOUBLE,
@@ -7,30 +7,32 @@ export enum QBasicType {
   LONG,
   FIXED_STRING,
   RECORD,
+  ARRAY,
+  ANY,
 }
 
 export interface SingleType {
-  qbasicType: QBasicType.SINGLE;
+  tag: TypeTag.SINGLE;
 }
 
 export interface DoubleType {
-  qbasicType: QBasicType.DOUBLE;
+  tag: TypeTag.DOUBLE;
 }
 
 export interface StringType {
-  qbasicType: QBasicType.STRING;
+  tag: TypeTag.STRING;
 }
 
 export interface IntegerType {
-  qbasicType: QBasicType.INTEGER;
+  tag: TypeTag.INTEGER;
 }
 
 export interface LongType {
-  qbasicType: QBasicType.LONG;
+  tag: TypeTag.LONG;
 }
 
 export interface FixedStringType {
-  qbasicType: QBasicType.FIXED_STRING;
+  tag: TypeTag.FIXED_STRING;
   maxLength: number;
 }
 
@@ -40,9 +42,19 @@ export interface UserDefinedTypeElement {
 }
 
 export interface UserDefinedType {
-  qbasicType: QBasicType.RECORD;
+  tag: TypeTag.RECORD;
   name: string;
   elements: UserDefinedTypeElement[];
+}
+
+export interface ArrayType {
+  tag: TypeTag.ARRAY;
+  elementType: Type;
+  // Array variables have dimensions, but types don't.
+}
+
+export interface AnyType {
+  tag: TypeTag.ANY;
 }
 
 export type Type =
@@ -52,37 +64,40 @@ export type Type =
   | IntegerType
   | LongType
   | FixedStringType
-  | UserDefinedType;
+  | UserDefinedType
+  | ArrayType
+  | AnyType;
 
 export function typeOfSigil(sigil: string): Type {
   switch (sigil) {
-    case '!': return {qbasicType: QBasicType.SINGLE};
-    case '#': return {qbasicType: QBasicType.DOUBLE};
-    case '$': return {qbasicType: QBasicType.STRING};
-    case '%': return {qbasicType: QBasicType.INTEGER};
-    case '&': return {qbasicType: QBasicType.LONG};
+    case '!': return {tag: TypeTag.SINGLE};
+    case '#': return {tag: TypeTag.DOUBLE};
+    case '$': return {tag: TypeTag.STRING};
+    case '%': return {tag: TypeTag.INTEGER};
+    case '&': return {tag: TypeTag.LONG};
   }
   throw new Error("Invalid type sigil");
 }
 
 export function typeOfName(typeName: string): Type {
   switch (typeName.toLowerCase()) {
-    case 'single': return {qbasicType: QBasicType.SINGLE};
-    case 'double': return {qbasicType: QBasicType.DOUBLE};
-    case 'string': return {qbasicType: QBasicType.STRING};
-    case 'integer': return {qbasicType: QBasicType.INTEGER};
-    case 'long': return {qbasicType: QBasicType.LONG};
+    case 'single': return {tag: TypeTag.SINGLE};
+    case 'double': return {tag: TypeTag.DOUBLE};
+    case 'string': return {tag: TypeTag.STRING};
+    case 'integer': return {tag: TypeTag.INTEGER};
+    case 'long': return {tag: TypeTag.LONG};
+    case 'any': return {tag: TypeTag.ANY};
   }
   throw new Error("Invalid type name");
 }
 
 export function typeOfDefType(keyword: string): Type {
   switch (keyword.toLowerCase()) {
-    case 'defsng': return {qbasicType: QBasicType.SINGLE};
-    case 'defdbl': return {qbasicType: QBasicType.DOUBLE};
-    case 'defstr': return {qbasicType: QBasicType.STRING};
-    case 'defint': return {qbasicType: QBasicType.INTEGER};
-    case 'deflng': return {qbasicType: QBasicType.LONG};
+    case 'defsng': return {tag: TypeTag.SINGLE};
+    case 'defdbl': return {tag: TypeTag.DOUBLE};
+    case 'defstr': return {tag: TypeTag.STRING};
+    case 'defint': return {tag: TypeTag.INTEGER};
+    case 'deflng': return {tag: TypeTag.LONG};
   }
   throw new Error("Invalid keyword");
 }

@@ -1,4 +1,6 @@
 import {
+  Def_fn_parameter_listContext,
+  Def_fn_parameterContext,
   Def_fn_statementContext,
   Deftype_statementContext,
   Do_loop_statementContext,
@@ -8,11 +10,10 @@ import {
   Function_statementContext,
   Implicit_goto_targetContext,
   LabelContext,
-  Letter_rangeContext,
+  Parameter_listContext,
+  ParameterContext,
   Sub_statementContext,
   TargetContext,
-  Type_elementContext,
-  Type_name_for_type_elementContext,
   Type_statementContext,
   Untyped_fnidContext,
   Untyped_idContext,
@@ -21,7 +22,7 @@ import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTree, TerminalNode } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
 import {
-  QBasicType,
+  TypeTag,
   Type,
   UserDefinedType,
   UserDefinedTypeElement,
@@ -30,11 +31,13 @@ import {
   typeOfSigil,
 } from "./Types.ts";
 import { Procedure } from "./Procedures.ts"
+import { Variable } from "./Variables.ts";
 
 interface ProgramChunk {
   statements: ParserRuleContext[];
   targets: Map<number, string>;
   labels: Map<string, number>;
+  procedure?: Procedure;
 }
 
 export class ProgramChunker extends QBasicParserListener {
@@ -42,12 +45,12 @@ export class ProgramChunker extends QBasicParserListener {
   private _types: Map<string, UserDefinedType> = new Map();
   private _firstCharToDefaultType: Map<string, Type> = new Map();
   private _procedures: Map<string, ProgramChunk> = new Map();
-  private _fns: Map<QBasicType, Map<string, ProgramChunk>> = new Map([
-    [QBasicType.SINGLE, new Map()],
-    [QBasicType.DOUBLE, new Map()],
-    [QBasicType.STRING, new Map()],
-    [QBasicType.INTEGER, new Map()],
-    [QBasicType.LONG, new Map()],
+  private _fns: Map<TypeTag, Map<string, ProgramChunk>> = new Map([
+    [TypeTag.SINGLE, new Map()],
+    [TypeTag.DOUBLE, new Map()],
+    [TypeTag.STRING, new Map()],
+    [TypeTag.INTEGER, new Map()],
+    [TypeTag.LONG, new Map()],
   ]);
   private _topLevel: ProgramChunk;
   private _chunk: ProgramChunk;
@@ -107,17 +110,18 @@ export class ProgramChunker extends QBasicParserListener {
   }
 
   private makeProgramChunk(procedure?: Procedure): ProgramChunk {
-    return {labels: new Map(), statements: [], targets: new Map()};
+    return {labels: new Map(), statements: [], targets: new Map(), procedure};
   }
 
   override enterFunction_statement = (ctx: Function_statementContext) => {
-    const nameCtx = ctx.children[1] as TerminalNode;
-    const [name, sigil] = splitSigil(nameCtx.getText().toLowerCase());
+    const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
     if (this._procedures.has(name)) {
-      throw ParseError.fromToken(nameCtx.symbol, "Duplicate definition");
+      throw ParseError.fromToken(ctx.ID().symbol, "Duplicate definition");
     }
     const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    this._chunk = this.makeProgramChunk({name, returnType, arguments: []});
+    const parameters = this.parseParameterList(ctx.parameter_list());
+    const staticStorage = !!ctx.STATIC();
+    this._chunk = this.makeProgramChunk({name, returnType, parameters, staticStorage});
     this._procedures.set(name, this._chunk);
   }
 
@@ -127,24 +131,26 @@ export class ProgramChunker extends QBasicParserListener {
     const fnPrefixed = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
     const [name, sigil] = splitSigil(fnPrefixed);
     const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    const table = this._fns.get(returnType.qbasicType)!;
+    const table = this._fns.get(returnType.tag)!;
     // Note that any sigil is included in the name of a def fn.
     if (table.has(name)) {
       throw ParseError.fromToken(ctx._name!, "Duplicate definition");
     }
     // Labels on def fn refer to the defining statement in the toplevel.
     this._chunk.statements.push(ctx);
-    this._chunk = this.makeProgramChunk({name, returnType, arguments: []});
+    const parameters = this.parseDefFnParameterList(ctx.def_fn_parameter_list());
+    this._chunk = this.makeProgramChunk({name, returnType, parameters});
     table.set(name, this._chunk);
   }
 
   override enterSub_statement = (ctx: Sub_statementContext) => {
-    const nameCtx = ctx.children[1] as ParserRuleContext;
-    const name = getUntypedId(nameCtx);
+    const name = getUntypedId(ctx.untyped_id());
     if (this._procedures.has(name)) {
-      throw ParseError.fromToken(nameCtx.start!, "Duplicate definition");
+      throw ParseError.fromToken(ctx.untyped_id().start!, "Duplicate definition");
     }
-    this._chunk = this.makeProgramChunk({name, arguments: []});
+    const parameters = this.parseParameterList(ctx.parameter_list());
+    const staticStorage = !!ctx.STATIC();
+    this._chunk = this.makeProgramChunk({name, parameters, staticStorage});
     this._procedures.set(name, this._chunk);
   }
 
@@ -173,50 +179,39 @@ export class ProgramChunker extends QBasicParserListener {
   override enterEnd_if_statement = this.statement;
 
   override enterExit_statement = (ctx: Exit_statementContext) => {
-    const blockType = ctx.children[1].getText().toLowerCase();
-    switch (blockType) {
-      case "def":
-        if (!hasParent(ctx, Def_fn_statementContext)) {
-          throw ParseError.fromToken(ctx.start!, "EXIT DEF not within DEF FN");
-        }
-        break;
-      case "do":
-        if (!hasParent(ctx, Do_loop_statementContext)) {
-          throw ParseError.fromToken(ctx.start!, "EXIT DO not within DO...LOOP");
-        }
-        break;
-      case "for":
-        if (!hasParent(ctx, For_next_statementContext)) {
-          throw ParseError.fromToken(ctx.start!, "EXIT FOR not within FOR...NEXT");
-        }
-        break;
-      case "function":
-        if (!hasParent(ctx, Function_statementContext)) {
-          throw ParseError.fromToken(ctx.start!, "EXIT FUNCTION not within FUNCTION");
-        }
-        break;
-      case "sub":
-        if (!hasParent(ctx, Sub_statementContext)) {
-          throw ParseError.fromToken(ctx.start!, "EXIT SUB not within SUB");
-        }
-        break;
-      default:
-        throw new Error("invalid block type");
+    if (ctx.DEF()) {
+      if (!hasParent(ctx, Def_fn_statementContext)) {
+        throw ParseError.fromToken(ctx.start!, "EXIT DEF not within DEF FN");
+      }
+    } else if (ctx.DO()) {
+      if (!hasParent(ctx, Do_loop_statementContext)) {
+       throw ParseError.fromToken(ctx.start!, "EXIT DO not within DO...LOOP");
+      }
+    } else if (ctx.FOR()) {
+      if (!hasParent(ctx, For_next_statementContext)) {
+        throw ParseError.fromToken(ctx.start!, "EXIT FOR not within FOR...NEXT");
+      }
+    } else if (ctx.FUNCTION()) {
+      if (!hasParent(ctx, Function_statementContext)) {
+        throw ParseError.fromToken(ctx.start!, "EXIT FUNCTION not within FUNCTION");
+      }
+    } else if (ctx.SUB()) {
+      if (!hasParent(ctx, Sub_statementContext)) {
+        throw ParseError.fromToken(ctx.start!, "EXIT SUB not within SUB");
+      }
+    } else {
+      throw new Error("invalid block type");
     }
   }
 
   override enterDeftype_statement = (ctx: Deftype_statementContext) => {
     const keyword = ctx.children[0].getText();
     const type = typeOfDefType(keyword);
-    for (const child of ctx.children) {
-      if (!(child instanceof Letter_rangeContext)) {
-        continue;
-      }
-      const letterRange = child as Letter_rangeContext;
-      const first = firstCharOfId(letterRange.children[0].getText()).charCodeAt(0);
+    for (const letterRange of ctx.letter_range()) {
+      const first = firstCharOfId(letterRange._first!.text!).charCodeAt(0);
       // Ranges can be just a single character.
-      const second = letterRange.children.length == 3 ?
-        firstCharOfId(letterRange.children[2].getText()).charCodeAt(0) :
+      const second = letterRange._second ?
+        firstCharOfId(letterRange._second.text!).charCodeAt(0) :
         first;
       // Ranges may be flipped.
       const start = Math.min(first, second);
@@ -229,22 +224,41 @@ export class ProgramChunker extends QBasicParserListener {
 
   override enterType_statement = (ctx: Type_statementContext) => {
     this._chunk.statements.push(ctx);
-    const name = getUntypedId(ctx.children[1], /* allowPeriods= */ false);
+    const nameCtx = ctx.untyped_id() ?? ctx.untyped_fnid();
+    const name = getUntypedId(nameCtx!, /* allowPeriods= */ false);
     const elements: UserDefinedTypeElement[] = [];
-    for (const child of ctx.children) {
-      if (!(child instanceof Type_elementContext)) {
-        continue;
-      }
-      const elementCtx = child as Type_elementContext;
-      const elementName = getUntypedId(elementCtx.children[0], /* allowPeriods= */ false);
-      const typeNameCtx = elementCtx.children[2];
-      if (!(typeNameCtx instanceof Type_name_for_type_elementContext)) {
-        throw ParseError.fromToken(elementCtx.start!, "Expecting type name");
-      }
+    for (const elementCtx of ctx.type_element()) {
+      const elementNameCtx = elementCtx.untyped_id() ?? elementCtx.untyped_fnid();
+      const elementName = getUntypedId(elementNameCtx!, /* allowPeriods= */ false);
+      const typeNameCtx = elementCtx.type_name_for_type_element();
       const elementType = this.getType(typeNameCtx);
       elements.push({name: elementName, type: elementType});
     }
-    this._types.set(name, {qbasicType: QBasicType.RECORD, name, elements});
+    this._types.set(name, {tag: TypeTag.RECORD, name, elements});
+  }
+
+  private parseParameterList(ctx: Parameter_listContext | null): Variable[] {
+    return ctx?.parameter().map((param) => this.parseParameter(param)) ?? [];
+  }
+
+  private parseDefFnParameterList(ctx: Def_fn_parameter_listContext | null): Variable[] {
+    return ctx?.def_fn_parameter().map((param) => this.parseParameter(param)) ?? [];
+  }
+
+  private parseParameter(ctx: ParameterContext | Def_fn_parameterContext): Variable {
+    const nameCtx = ctx.untyped_id();
+    const rawName = nameCtx ? getUntypedId(nameCtx) : ctx.ID()!.getText();
+    const [name, sigil] = splitSigil(rawName);
+    const asTypeCtx = ctx instanceof ParameterContext ?
+      ctx.type_name_for_parameter() :
+      ctx.type_name_for_def_fn_parameter();
+    const typeSpec: Type = sigil ? typeOfSigil(sigil) :
+      asTypeCtx ? this.getType(asTypeCtx) :
+      {tag: TypeTag.ANY};
+    const type: Type = (ctx instanceof ParameterContext && ctx.array_declaration()) ?
+      {tag: TypeTag.ARRAY, elementType: typeSpec} :
+      typeSpec;
+    return {type, name};
   }
 
   private getType(ctx: ParserRuleContext): Type {
@@ -263,14 +277,14 @@ export class ProgramChunker extends QBasicParserListener {
     if (child instanceof Fixed_stringContext) {
       const fixedString = child as Fixed_stringContext;
       const maxLength = parseInt(fixedString.DIGITS()!.getText(), 10);
-      return {qbasicType: QBasicType.FIXED_STRING, maxLength};
+      return {tag: TypeTag.FIXED_STRING, maxLength};
     }
     return typeOfName(child.getText());
   }
 
   private getDefaultType(name: string): Type {
     const type = this._firstCharToDefaultType.get(firstCharOfId(name));
-    return type ?? {qbasicType: QBasicType.SINGLE};
+    return type ?? {tag: TypeTag.SINGLE};
   }
 }
 
@@ -279,14 +293,10 @@ function firstCharOfId(name: string) {
   return lower.startsWith('fn') ? name.slice(2, 1) : name.slice(0, 1);
 }
 
-function getUntypedId(tree: ParseTree, allowPeriods: boolean = true): string {
-  if (!(tree instanceof Untyped_idContext || tree instanceof Untyped_fnidContext)) {
-    throw new Error("Expecting identifier");
-  }
-  const idCtx = tree as ParserRuleContext;
-  const id = checkUntyped(idCtx.getText(), idCtx, "Identifier cannot end with %, &, !, # or $");
+function getUntypedId(ctx: Untyped_idContext | Untyped_fnidContext, allowPeriods: boolean = true): string {
+  const id = checkUntyped(ctx.getText(), ctx, "Identifier cannot end with %, &, !, # or $");
   if (!allowPeriods && id.includes('.')) {
-      throw ParseError.fromToken(idCtx.start!, "Identifier cannot include period");
+      throw ParseError.fromToken(ctx.start!, "Identifier cannot include period");
   }
   return id.toLowerCase();
 }

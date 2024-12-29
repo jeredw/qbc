@@ -1,37 +1,37 @@
-import { QBasicType, UserDefinedType } from './Types.ts'
+import { TypeTag, UserDefinedType } from './Types.ts'
 
 export type ErrorValue = {
-  qbasicType: QBasicType.ERROR;
+  tag: TypeTag.ERROR;
   errorMessage: string
 }
 
 export type StringValue = {
-  qbasicType: QBasicType.STRING | QBasicType.FIXED_STRING;
+  tag: TypeTag.STRING | TypeTag.FIXED_STRING;
   string: string;
 };
 
 export type SingleValue = {
-  qbasicType: QBasicType.SINGLE;
+  tag: TypeTag.SINGLE;
   number: number;
 };
 
 export type DoubleValue = {
-  qbasicType: QBasicType.DOUBLE;
+  tag: TypeTag.DOUBLE;
   number: number;
 };
 
 export type IntegerValue = {
-  qbasicType: QBasicType.INTEGER;
+  tag: TypeTag.INTEGER;
   number: number;
 }
 
 export type LongValue = {
-  qbasicType: QBasicType.LONG;
+  tag: TypeTag.LONG;
   number: number;
 }
 
 export type RecordValue = {
-  qbasicType: QBasicType.RECORD;
+  tag: TypeTag.RECORD;
   userDefinedType: UserDefinedType;
   elementValues: Map<string, Value>;
 }
@@ -61,61 +61,61 @@ export function isNumeric(value: Value): value is NumericValue {
 }
 
 export function numericTypeOf(a: NumericValue): (number: number) => Value {
-  switch (a.qbasicType) {
-    case QBasicType.SINGLE: return single;
-    case QBasicType.DOUBLE: return double;
-    case QBasicType.INTEGER: return integer;
-    case QBasicType.LONG: return long;
+  switch (a.tag) {
+    case TypeTag.SINGLE: return single;
+    case TypeTag.DOUBLE: return double;
+    case TypeTag.INTEGER: return integer;
+    case TypeTag.LONG: return long;
   }
 }
 
 export function mostPreciseType(a: NumericValue, b: NumericValue): (number: number) => Value {
-  if (a.qbasicType == QBasicType.DOUBLE || b.qbasicType == QBasicType.DOUBLE) {
+  if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
     return double;
   }
-  if (a.qbasicType == QBasicType.SINGLE || b.qbasicType == QBasicType.SINGLE) {
+  if (a.tag == TypeTag.SINGLE || b.tag == TypeTag.SINGLE) {
     return single;
   }
-  if (a.qbasicType == QBasicType.LONG || b.qbasicType == QBasicType.LONG) {
+  if (a.tag == TypeTag.LONG || b.tag == TypeTag.LONG) {
     return long;
   }
   return integer;
 }
 
 export function error(errorMessage: string = ""): ErrorValue {
-  return {qbasicType: QBasicType.ERROR, errorMessage};
+  return {tag: TypeTag.ERROR, errorMessage};
 }
 
 export function string(string: string = ""): Value {
-  return {qbasicType: QBasicType.STRING, string};
+  return {tag: TypeTag.STRING, string};
 }
 
 export function single(number: number): Value {
   if (!isFinite(number) || number < -1.401298e-45 || number > 3.402823e+38) {
     return OVERFLOW;
   }
-  return {qbasicType: QBasicType.SINGLE, number};
+  return {tag: TypeTag.SINGLE, number};
 }
 
 export function double(number: number): Value {
   if (!isFinite(number)) {
     return OVERFLOW;
   }
-  return {qbasicType: QBasicType.DOUBLE, number};
+  return {tag: TypeTag.DOUBLE, number};
 }
 
 export function integer(number: number): Value {
   if (number < -32768 || number > 32767) {
     return OVERFLOW;
   }
-  return {qbasicType: QBasicType.INTEGER, number};
+  return {tag: TypeTag.INTEGER, number};
 }
 
 export function long(number: number): Value {
   if (number < -2147483648 || number > 2147483647) {
     return OVERFLOW;
   }
-  return {qbasicType: QBasicType.LONG, number};
+  return {tag: TypeTag.LONG, number};
 }
 
 export function boolean(test: boolean): Value {

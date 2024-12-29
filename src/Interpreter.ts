@@ -33,6 +33,7 @@ export class Interpreter {
     const tree = parser.program();
     const programChunker = new ProgramChunker();
     ParseTreeWalker.DEFAULT.walk(programChunker, tree);
+    console.log(programChunker);
     programChunker.checkAllTargetsDefined();
     for (const statement of programChunker.statements) {
       console.log(statement);
