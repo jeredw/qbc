@@ -54,7 +54,7 @@ export type Type =
   | FixedStringType
   | UserDefinedType;
 
-function typeOfSigil(sigil: string): Type {
+export function typeOfSigil(sigil: string): Type {
   switch (sigil) {
     case '!': return {qbasicType: QBasicType.SINGLE};
     case '#': return {qbasicType: QBasicType.DOUBLE};
@@ -63,4 +63,26 @@ function typeOfSigil(sigil: string): Type {
     case '&': return {qbasicType: QBasicType.LONG};
   }
   throw new Error("Invalid type sigil");
+}
+
+export function typeOfName(typeName: string): Type {
+  switch (typeName.toLowerCase()) {
+    case 'single': return {qbasicType: QBasicType.SINGLE};
+    case 'double': return {qbasicType: QBasicType.DOUBLE};
+    case 'string': return {qbasicType: QBasicType.STRING};
+    case 'integer': return {qbasicType: QBasicType.INTEGER};
+    case 'long': return {qbasicType: QBasicType.LONG};
+  }
+  throw new Error("Invalid type name");
+}
+
+export function typeOfDefType(keyword: string): Type {
+  switch (keyword.toLowerCase()) {
+    case 'defint': return {qbasicType: QBasicType.INTEGER};
+    case 'deflng': return {qbasicType: QBasicType.LONG};
+    case 'defsng': return {qbasicType: QBasicType.SINGLE};
+    case 'defdbl': return {qbasicType: QBasicType.DOUBLE};
+    case 'defstr': return {qbasicType: QBasicType.STRING};
+  }
+  throw new Error("Invalid keyword");
 }

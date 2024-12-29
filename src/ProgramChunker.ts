@@ -11,11 +11,13 @@ import {
   Type_statementContext,
   Untyped_fnidContext,
   Untyped_idContext,
+  Deftype_statementContext,
+  Letter_rangeContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTree, TerminalNode, Token } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
-import { QBasicType, Type, UserDefinedType, UserDefinedTypeElement } from "./Types.ts";
+import { QBasicType, Type, UserDefinedType, UserDefinedTypeElement, typeOfName, typeOfDefType } from "./Types.ts";
 import { Procedure } from "./Procedures.ts"
 
 interface ProgramChunk {
@@ -28,6 +30,7 @@ interface ProgramChunk {
 export class ProgramChunker extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
   private _types: Map<string, UserDefinedType> = new Map();
+  private _firstCharToDefaultType: Map<string, Type> = new Map();
   private _procedures: Map<string, ProgramChunk> = new Map();
   private _topLevel: ProgramChunk;
   private _chunk: ProgramChunk;
@@ -90,11 +93,6 @@ export class ProgramChunker extends QBasicParserListener {
     this._chunk.statements.push(ctx);
   }
 
-  private procedure = (ctx: ParserRuleContext) => {
-    this.statement(ctx);
-    this._chunk = this.makeProgramChunk();
-  }
-
   private exitProcedure = (_ctx: ParserRuleContext) => {
     const name = this._chunk.procedure!.name;
     this._procedures.set(name, this._chunk);
@@ -155,6 +153,31 @@ export class ProgramChunker extends QBasicParserListener {
   override enterEnd_sub_statement = this.statement;
   override enterEnd_if_statement = this.statement;
 
+  override enterDeftype_statement = (ctx: Deftype_statementContext) => {
+    const keyword = ctx.children[0].getText();
+    const type = typeOfDefType(keyword);
+    const parseRangeEnd = (text: string) => {
+      const lower = text.toLowerCase();
+      return lower.startsWith('fn') ? lower.slice(2, 3) : lower.slice(0, 1);
+    };
+    for (const child of ctx.children) {
+      if (!(child instanceof Letter_rangeContext)) {
+        continue;
+      }
+      const letterRange = child as Letter_rangeContext;
+      const start = parseRangeEnd(letterRange.children[0].getText());
+      const end = letterRange.children.length == 3 ?
+        parseRangeEnd(letterRange.children[2].getText()) :
+        start;
+      // Ranges may be flipped.
+      const firstChar = Math.min(start.charCodeAt(0), end.charCodeAt(0));
+      const lastChar = Math.max(start.charCodeAt(0), end.charCodeAt(0));
+      for (let i = firstChar; i <= lastChar; i++) {
+        this._firstCharToDefaultType.set(String.fromCharCode(i), type);
+      }
+    }
+  }
+
   override enterType_statement = (ctx: Type_statementContext) => {
     this._chunk.statements.push(ctx);
     const name = getUntypedId(ctx.children[1], /* allowPeriods= */ false);
@@ -193,20 +216,7 @@ export class ProgramChunker extends QBasicParserListener {
       const maxLength = parseInt(fixedString.DIGITS()!.getText(), 10);
       return {qbasicType: QBasicType.FIXED_STRING, maxLength};
     }
-    switch (child.getText().toLowerCase()) {
-      case 'single':
-        return {qbasicType: QBasicType.SINGLE};
-      case 'double':
-        return {qbasicType: QBasicType.DOUBLE};
-      case 'integer':
-        return {qbasicType: QBasicType.INTEGER};
-      case 'long':
-        return {qbasicType: QBasicType.LONG};
-      case 'string':
-        return {qbasicType: QBasicType.STRING};
-      default:
-        throw ParseError.fromToken(ctx.start!, "Expecting type");
-    }
+    return typeOfName(child.getText());
   }
 }
 
