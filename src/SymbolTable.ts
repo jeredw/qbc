@@ -1,5 +1,6 @@
 import { Procedure } from "./Procedures";
 import { splitSigil, Type, TypeTag } from "./Types";
+import { Value } from "./Values";
 import { Variable } from "./Variables";
 
 export class SymbolTable {
@@ -12,9 +13,14 @@ export class SymbolTable {
     [TypeTag.INTEGER, new Map()],
     [TypeTag.LONG, new Map()],
   ]);
+  private _constants: Map<string, Value> = new Map();
 
   constructor(parent?: SymbolTable) {
     this._parent = parent;
+  }
+
+  defineConstant(name: string, value: Value) {
+    this._constants.set(name, value);
   }
 
   defineProcedure(proc: Procedure) {

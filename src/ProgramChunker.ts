@@ -42,6 +42,7 @@ import {
 } from "./Types.ts";
 import { Procedure } from "./Procedures.ts"
 import { Variable } from "./Variables.ts";
+import { evaluateExpression } from "./Expressions.ts";
 
 interface ProgramChunk {
   statements: ParserRuleContext[];
@@ -264,6 +265,18 @@ export class ProgramChunker extends QBasicParserListener {
       elements.push({name: elementName, type: elementType});
     }
     this._types.set(name, {tag: TypeTag.RECORD, name, elements});
+  }
+
+  override enterConst_statement = (ctx: Const_statementContext) => {
+    for (const assignment of ctx.const_assignment()) {
+      const [name, sigil] = splitSigil(assignment.ID().getText());
+      const value = evaluateExpression({
+        symbols: this._chunk.symbols,
+        expr: assignment.const_expr().expr(),
+        constantExpression: true,
+      });
+      this._chunk.symbols.defineConstant(name, value);
+    }
   }
 
   private parseParameterList(ctx: Parameter_listContext | null): Variable[] {

@@ -2,17 +2,37 @@ import {
   UnaryMinusExprContext,
   ValueExprContext,
   NotExprContext,
+  ExprContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
-import { ParserRuleContext } from "antlr4ng";
+import { ParserRuleContext, ParseTreeWalker } from "antlr4ng";
 import * as values from "./Values.ts";
 import { TypeTag } from "./Types.ts";
+import { SymbolTable } from "./SymbolTable.ts";
 
-export class ExpressionListener extends QBasicParserListener {
-  stack: values.Value[] = [];
+export function evaluateExpression({
+  symbols,
+  expr,
+  constantExpression
+}: {
+  symbols: SymbolTable,
+  expr: ExprContext,
+  constantExpression?: boolean
+}): values.Value {
+  const expressionListener = new ExpressionListener(symbols, !!constantExpression);
+  ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
+  return expressionListener.getResult();
+}
 
-  constructor() {
+class ExpressionListener extends QBasicParserListener {
+  private _stack: values.Value[] = [];
+  private _symbols: SymbolTable;
+  private _constantExpression: boolean;
+
+  constructor(symbols: SymbolTable, constantExpression: boolean) {
     super();
+    this._symbols = symbols;
+    this._constantExpression = constantExpression;
   }
 
   getResult() {
@@ -20,14 +40,14 @@ export class ExpressionListener extends QBasicParserListener {
   }
 
   private push(v: values.Value) {
-    this.stack.push(v);
+    this._stack.push(v);
   }
 
   private pop(): values.Value {
-    if (this.stack.length == 0) {
+    if (this._stack.length == 0) {
       throw new Error('stack underflow while evaluating expression');
     }
-    return this.stack.pop()!;
+    return this._stack.pop()!;
   }
 
   binaryOperator = (ctx: ParserRuleContext) => {

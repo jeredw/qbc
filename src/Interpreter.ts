@@ -1,6 +1,5 @@
 import { QBasicLexer } from "../build/QBasicLexer.ts";
 import { Do_loop_statementContext, For_next_statementContext, QBasicParser } from "../build/QBasicParser.ts";
-import { ExpressionListener } from "./ExpressionListener.ts";
 import {
   ATNSimulator,
   BaseErrorListener,
@@ -15,8 +14,6 @@ import { ParseError } from "./Errors.ts";
 import { ProgramChunker } from "./ProgramChunker.ts";
 
 export class Interpreter {
-  expressionListener = new ExpressionListener();
-
   public run(text: string) {
     // Add a trailing newline so the final statement has a terminator.
     const textWithNewline = text.endsWith('\n') ? text : text + '\n';
@@ -37,10 +34,7 @@ export class Interpreter {
     programChunker.checkAllTargetsDefined();
     for (const statement of programChunker.statements) {
       console.log(statement);
-      ParseTreeWalker.DEFAULT.walk(new ExpressionListener(), statement);
     }
-    
-    //console.log(this.expressionListener.getResult());
   }
 }
 
