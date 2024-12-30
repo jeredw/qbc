@@ -93,6 +93,7 @@ statement
   | clear_statement
   | close_statement
   | color_statement
+  | common_statement
   | const_statement
   | data_statement
   | def_seg_statement
@@ -142,10 +143,11 @@ statement
   | resume_statement
   | return_statement
   | rset_statement
-  | scope_statement
   | screen_statement
   | seek_statement
   | select_case_statement
+  | shared_statement
+  | static_statement
   | stop_statement
   | unlock_statement
   | view_statement
@@ -364,6 +366,21 @@ color_statement
     ( (arg1=expr)? COMMA (arg2=expr)? COMMA (arg3=expr)
     | (arg1=expr)? COMMA (arg2=expr)
     | (arg1=expr)? )
+  ;
+
+common_statement
+  : COMMON SHARED? block_name? scope_variable (COMMA scope_variable)*
+  ;
+
+// The QBasic help file doesn't mention this, but it still parses this
+// QuickBasic syntax.
+block_name
+  : '/' ID? '/'
+  ;
+
+scope_variable
+  : untyped_id array_declaration? AS type_name
+  | ID array_declaration?
   ;
 
 const_statement
@@ -700,6 +717,17 @@ rset_statement
   : RSET variable_or_function_call '=' expr
   ;
 
+screen_statement
+  : SCREEN screenmode=expr
+    ( COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visualpage=expr
+    | COMMA (colorswitch=expr)? COMMA activepage=expr
+    | COMMA colorswitch=expr )?
+  ;
+
+seek_statement
+  : SEEK '#'? expr COMMA expr
+  ;
+
 // SELECT CASE matches CASE statements at the top level, but not inside nested
 // blocks (like nested IF...THEN).
 select_case_statement
@@ -732,34 +760,12 @@ end_select_statement
   : label? END SELECT
   ;
 
-// COMMON, SHARED, and STATIC declare variable scopes using the same syntax.
-// The syntax is similar to DIM but arrays aren't dimensioned.
-scope_statement
-  : COMMON SHARED? block_name? scope_variable (COMMA scope_variable)*
-  | SHARED scope_variable (COMMA scope_variable)*
-  | STATIC scope_variable (COMMA scope_variable)*
+shared_statement
+  : SHARED scope_variable (COMMA scope_variable)*
   ;
 
-// The QBasic help file doesn't mention this, but it still parses this
-// QuickBasic syntax.
-block_name
-  : '/' ID? '/'
-  ;
-
-scope_variable
-  : untyped_id array_declaration? AS type_name
-  | ID array_declaration?
-  ;
-
-screen_statement
-  : SCREEN screenmode=expr
-    ( COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visualpage=expr
-    | COMMA (colorswitch=expr)? COMMA activepage=expr
-    | COMMA colorswitch=expr )?
-  ;
-
-seek_statement
-  : SEEK '#'? expr COMMA expr
+static_statement
+  : STATIC scope_variable (COMMA scope_variable)*
   ;
 
 stop_statement

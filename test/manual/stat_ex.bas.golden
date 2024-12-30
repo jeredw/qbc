@@ -96,7 +96,7 @@
     (untyped_id Extension) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable F1$) , 
           (scope_variable F2$))) \r\n 
       (statement 
@@ -150,7 +150,7 @@
     (untyped_id Search) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable Temp$) , 
           (scope_variable Old$) , 
           (scope_variable Nw$) , 
@@ -158,7 +158,7 @@
           (scope_variable Num) , 
           (scope_variable M))) \r\n 
       (statement 
-        (scope_statement STATIC 
+        (static_statement STATIC 
           (scope_variable R))) \r\n 
       (statement 
         (assignment_statement 

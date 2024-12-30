@@ -194,7 +194,7 @@
         (parameter TotalDays)) ) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id MonthData) 
             (array_declaration 
@@ -467,7 +467,7 @@
         (parameter Month)) ) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id MonthData) 
             (array_declaration 

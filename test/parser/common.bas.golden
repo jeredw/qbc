@@ -1,6 +1,6 @@
 (program 
   (statement 
-    (scope_statement common shared 
+    (common_statement common shared 
       (scope_variable 
         (untyped_id wowzas) 
         (array_declaration 
@@ -8,7 +8,7 @@
         (type_name 
           (fixed_string string * 42))))) \n 
   (statement 
-    (scope_statement common 
+    (common_statement common 
       (scope_variable i) , 
       (scope_variable j) , 
       (scope_variable k) , 
@@ -16,7 +16,7 @@
         (array_declaration 
           ( ))))) \n 
   (statement 
-    (scope_statement common 
+    (common_statement common 
       (scope_variable a$) , 
       (scope_variable b$ 
         (array_declaration 
@@ -25,6 +25,6 @@
       (scope_variable y) , 
       (scope_variable z))) \n 
   (statement 
-    (scope_statement common 
+    (common_statement common 
       (block_name / Whatever /) 
       (scope_variable qq))) \n <EOF>)

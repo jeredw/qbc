@@ -52,7 +52,7 @@
     (untyped_id DrawPattern) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable Pattern$))) \r\n \r\n 
       (statement 
         (view_statement VIEW 
@@ -86,7 +86,7 @@
     (untyped_id EditPattern) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable Pattern$) , 
           (scope_variable Esc$) , 
           (scope_variable Bit% 
@@ -515,7 +515,7 @@
     (untyped_id Initialize) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable Pattern$) , 
           (scope_variable Esc$) , 
           (scope_variable Bit% 
@@ -774,7 +774,7 @@
         (parameter OK$)) ) STATIC 
     (block \r\n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable Pattern$) , 
           (scope_variable PatternSize%))) \r\n \r\n \r\n 
       (statement 

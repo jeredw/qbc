@@ -1,6 +1,6 @@
 (program 
   (statement 
-    (scope_statement static 
+    (static_statement static 
       (scope_variable 
         (untyped_id wowzas) 
         (array_declaration 
@@ -8,7 +8,7 @@
         (type_name 
           (fixed_string string * 42))))) \n 
   (statement 
-    (scope_statement static 
+    (static_statement static 
       (scope_variable i) , 
       (scope_variable j) , 
       (scope_variable k) , 
@@ -16,7 +16,7 @@
         (array_declaration 
           ( ))))) \n 
   (statement 
-    (scope_statement static 
+    (static_statement static 
       (scope_variable a$) , 
       (scope_variable b$ 
         (array_declaration 

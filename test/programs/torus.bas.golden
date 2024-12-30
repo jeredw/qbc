@@ -900,7 +900,7 @@
     (untyped_id GetConfig) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id InitRows) AS 
             (type_name INTEGER)) , 
@@ -990,7 +990,7 @@
             (untyped_id Tile)))) ) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -1362,7 +1362,7 @@
         (parameter Text$)) ) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -1465,7 +1465,7 @@
           (type_name_for_parameter INTEGER))) ) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -1945,7 +1945,7 @@
     (untyped_id SetPalette) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -2253,7 +2253,7 @@
             (untyped_id Tile)))) ) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -2479,7 +2479,7 @@
             (untyped_id Tile)))) ) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id TOR) AS 
             (type_name 
@@ -3479,7 +3479,7 @@
             (untyped_id Tile)))) ) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -3549,7 +3549,7 @@
     (untyped_id TorusDefine) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -4376,7 +4376,7 @@
           (type_name_for_parameter INTEGER))) ) 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id Max) AS 
             (type_name INTEGER)))) \n \n 
@@ -4411,7 +4411,7 @@
         (parameter First)) ) STATIC 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id VC) AS 
             (type_name 
@@ -4429,7 +4429,7 @@
             (untyped_id Max) AS 
             (type_name INTEGER)))) \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id T) 
             (array_declaration 
@@ -4736,7 +4736,7 @@
         (parameter High)) ) 
     (block \n 
       (statement 
-        (scope_statement SHARED 
+        (shared_statement SHARED 
           (scope_variable 
             (untyped_id T) 
             (array_declaration 

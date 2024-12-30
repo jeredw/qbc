@@ -1,4 +1,5 @@
 import {
+  Common_statementContext,
   Const_statementContext,
   Data_statementContext,
   Declare_statementContext,
@@ -17,7 +18,8 @@ import {
   Parameter_listContext,
   ParameterContext,
   Rem_statementContext,
-  Scope_statementContext,
+  Shared_statementContext,
+  Static_statementContext,
   Sub_statementContext,
   TargetContext,
   Type_statementContext,
@@ -48,6 +50,11 @@ interface ProgramChunk {
   symbols: SymbolTable;
 }
 
+/**
+ * This is a catch all semantic analysis pass that collects lists of statements
+ * into chunks corresponding to the main program or procedures.  Each program
+ * chunk has its own labels and symbol table.
+ */
 export class ProgramChunker extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
   private _types: Map<string, UserDefinedType> = new Map();
@@ -170,14 +177,6 @@ export class ProgramChunker extends QBasicParserListener {
   override exitDef_fn_statement = this.exitProcedure;
   override exitSub_statement = this.exitProcedure;
 
-  private checkNoExecutableStatements(ctx: ParserRuleContext) {
-    for (const statement of this._chunk.statements) {
-      if (!isNonExecutableStatement(statement)) {
-        throw ParseError.fromToken(ctx.start!, "COMMON and DECLARE must precede executable statements");
-      }
-    }
-  }
-
   private statement = (ctx: ParserRuleContext) => {
     this._chunk.statements.push(ctx);
   }
@@ -192,6 +191,14 @@ export class ProgramChunker extends QBasicParserListener {
   override enterElse_block_statement = this.statement;
   override enterEnd_sub_statement = this.statement;
   override enterEnd_if_statement = this.statement;
+
+  private checkNoExecutableStatements(ctx: ParserRuleContext) {
+    for (const statement of this._chunk.statements) {
+      if (!isNonExecutableStatement(statement)) {
+        throw ParseError.fromToken(ctx.start!, "COMMON and DECLARE must precede executable statements");
+      }
+    }
+  }
 
   override enterDeclare_statement = (ctx: ParserRuleContext) => {
     this.statement(ctx);
@@ -346,7 +353,7 @@ function hasParent<T extends ParserRuleContext>(
 }
 
 function isNonExecutableStatement(ctx: ParserRuleContext): boolean {
-  return ctx instanceof Scope_statementContext ||
+  return ctx instanceof Common_statementContext ||
     ctx instanceof Const_statementContext ||
     ctx instanceof Data_statementContext ||
     ctx instanceof Declare_statementContext ||
@@ -354,5 +361,7 @@ function isNonExecutableStatement(ctx: ParserRuleContext): boolean {
     // TODO: DIM (static only)
     ctx instanceof Option_statementContext ||
     ctx instanceof Rem_statementContext ||
+    ctx instanceof Shared_statementContext ||
+    ctx instanceof Static_statementContext ||
     ctx instanceof Type_statementContext;
 }
