@@ -1,4 +1,7 @@
 import {
+  Const_statementContext,
+  Data_statementContext,
+  Declare_statementContext,
   Def_fn_parameter_listContext,
   Def_fn_parameterContext,
   Def_fn_statementContext,
@@ -10,8 +13,11 @@ import {
   Function_statementContext,
   Implicit_goto_targetContext,
   LabelContext,
+  Option_statementContext,
   Parameter_listContext,
   ParameterContext,
+  Rem_statementContext,
+  Scope_statementContext,
   Sub_statementContext,
   TargetContext,
   Type_statementContext,
@@ -162,12 +168,19 @@ export class ProgramChunker extends QBasicParserListener {
   override exitDef_fn_statement = this.exitProcedure;
   override exitSub_statement = this.exitProcedure;
 
+  private checkNoExecutableStatements(ctx: ParserRuleContext) {
+    for (const statement of this._chunk.statements) {
+      if (!isNonExecutableStatement(statement)) {
+        throw ParseError.fromToken(ctx.start!, "COMMON and DECLARE must precede executable statements");
+      }
+    }
+  }
+
   private statement = (ctx: ParserRuleContext) => {
     this._chunk.statements.push(ctx);
   }
 
   override enterStatement = this.statement;
-  override enterDeclare_statement = this.statement;
   override enterIf_block_statement = this.statement;
   override enterOption_statement = this.statement;
   override enterCase_statement = this.statement;
@@ -177,6 +190,13 @@ export class ProgramChunker extends QBasicParserListener {
   override enterElse_block_statement = this.statement;
   override enterEnd_sub_statement = this.statement;
   override enterEnd_if_statement = this.statement;
+
+  override enterDeclare_statement = (ctx: ParserRuleContext) => {
+    this.statement(ctx);
+    // Mismatches between DECLARE statements and SUB/FUNCTION definitions are
+    // errors on the DECLARE statement, so they are checked during execution.
+    this.checkNoExecutableStatements(ctx);
+  }
 
   override enterExit_statement = (ctx: Exit_statementContext) => {
     if (ctx.DEF()) {
@@ -254,7 +274,7 @@ export class ProgramChunker extends QBasicParserListener {
       ctx.type_name_for_def_fn_parameter();
     const typeSpec: Type = sigil ? typeOfSigil(sigil) :
       asTypeCtx ? this.getType(asTypeCtx) :
-      {tag: TypeTag.ANY};
+      this.getDefaultType(name);
     const type: Type = (ctx instanceof ParameterContext && ctx.array_declaration()) ?
       {tag: TypeTag.ARRAY, elementType: typeSpec} :
       typeSpec;
@@ -329,4 +349,16 @@ function hasParent<T extends ParserRuleContext>(
     ctx = ctx.parent;
   }
   return false;
+}
+
+function isNonExecutableStatement(ctx: ParserRuleContext): boolean {
+  return ctx instanceof Scope_statementContext ||
+    ctx instanceof Const_statementContext ||
+    ctx instanceof Data_statementContext ||
+    ctx instanceof Declare_statementContext ||
+    ctx instanceof Deftype_statementContext ||
+    // TODO: DIM (static only)
+    ctx instanceof Option_statementContext ||
+    ctx instanceof Rem_statementContext ||
+    ctx instanceof Type_statementContext;
 }

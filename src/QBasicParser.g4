@@ -24,7 +24,8 @@ options {
 // SUB...END SUB). For simplicity, this grammar only allows SUBs at the top
 // level and errors on SUBs nested anywhere.
 //
-// TODO: DECLARE and COMMON have to come before other statements.
+// *** DECLARE and COMMON have to come before other statements.  This is easier
+// to check outside this grammar.
 //
 // Some statements must be the first statement on a line, like the block form
 // of IF (so you can't write "ELSE IF" instead of ELSEIF for example).  This is
