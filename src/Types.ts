@@ -101,3 +101,11 @@ export function typeOfDefType(keyword: string): Type {
   }
   throw new Error("Invalid keyword");
 }
+
+export function splitSigil(name: string): [string, string] {
+  const lastChar = name.slice(-1);
+  if ("!#$%&".includes(lastChar)) {
+    return [name.slice(0, -1), lastChar];
+  }
+  return [name, ""];
+}

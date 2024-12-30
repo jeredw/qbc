@@ -27,11 +27,13 @@ import {
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTree, TerminalNode } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
+import { SymbolTable } from "./SymbolTable.ts";
 import {
   TypeTag,
   Type,
   UserDefinedType,
   UserDefinedTypeElement,
+  splitSigil,
   typeOfDefType,
   typeOfName,
   typeOfSigil,
@@ -43,39 +45,29 @@ interface ProgramChunk {
   statements: ParserRuleContext[];
   targets: Map<number, string>;
   labels: Map<string, number>;
-  procedure?: Procedure;
+  symbols: SymbolTable;
 }
 
 export class ProgramChunker extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
   private _types: Map<string, UserDefinedType> = new Map();
   private _firstCharToDefaultType: Map<string, Type> = new Map();
-  private _procedures: Map<string, ProgramChunk> = new Map();
-  private _fns: Map<TypeTag, Map<string, ProgramChunk>> = new Map([
-    [TypeTag.SINGLE, new Map()],
-    [TypeTag.DOUBLE, new Map()],
-    [TypeTag.STRING, new Map()],
-    [TypeTag.INTEGER, new Map()],
-    [TypeTag.LONG, new Map()],
-  ]);
-  private _topLevel: ProgramChunk;
   private _chunk: ProgramChunk;
+  private _chunkList: ProgramChunk[];
 
   constructor() {
     super();
-    this._topLevel = this.makeProgramChunk();
-    this._chunk = this._topLevel;
+    const topLevel = this.makeProgramChunk(new SymbolTable());
+    this._chunk = topLevel;
+    this._chunkList = [topLevel];
   }
 
   get statements() {
-    return this._topLevel.statements;
+    return this._chunkList[0].statements;
   }
 
   checkAllTargetsDefined() {
-    this.checkTargets(this._topLevel);
-    for (const proc of this._procedures.values()) {
-      this.checkTargets(proc);
-    }
+    this._chunkList.forEach((chunk) => this.checkTargets(chunk));
   }
 
   private checkTargets(chunk: ProgramChunk) {
@@ -115,20 +107,24 @@ export class ProgramChunker extends QBasicParserListener {
     return checkUntyped(stripped.toLowerCase(), ctx, "Expected: label or line number");
   }
 
-  private makeProgramChunk(procedure?: Procedure): ProgramChunk {
-    return {labels: new Map(), statements: [], targets: new Map(), procedure};
+  private makeProgramChunk(symbols: SymbolTable): ProgramChunk {
+    return {labels: new Map(), statements: [], targets: new Map(), symbols};
   }
 
   override enterFunction_statement = (ctx: Function_statementContext) => {
     const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
-    if (this._procedures.has(name)) {
+    if (this._chunk.symbols.has(name)) {
       throw ParseError.fromToken(ctx.ID().symbol, "Duplicate definition");
     }
-    const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    const parameters = this.parseParameterList(ctx.parameter_list());
-    const staticStorage = !!ctx.STATIC();
-    this._chunk = this.makeProgramChunk({name, returnType, parameters, staticStorage});
-    this._procedures.set(name, this._chunk);
+    this._chunk.symbols.defineProcedure({
+      name,
+      returnType: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
+      parameters: this.parseParameterList(ctx.parameter_list()),
+      staticStorage: !!ctx.STATIC(),
+      programChunkIndex: this._chunkList.length,
+    });
+    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
+    this._chunkList.push(this._chunk);
   }
 
   override enterDef_fn_statement = (ctx: Def_fn_statementContext) => {
@@ -137,31 +133,37 @@ export class ProgramChunker extends QBasicParserListener {
     const fnPrefixed = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
     const [name, sigil] = splitSigil(fnPrefixed);
     const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    const table = this._fns.get(returnType.tag)!;
-    // Note that any sigil is included in the name of a def fn.
-    if (table.has(name)) {
+    if (this._chunk.symbols.hasFn(name, returnType.tag)) {
       throw ParseError.fromToken(ctx._name!, "Duplicate definition");
     }
     // Labels on def fn refer to the defining statement in the toplevel.
     this._chunk.statements.push(ctx);
-    const parameters = this.parseDefFnParameterList(ctx.def_fn_parameter_list());
-    this._chunk = this.makeProgramChunk({name, returnType, parameters});
-    table.set(name, this._chunk);
+    this._chunk.symbols.defineFn({
+      name,
+      returnType,
+      parameters: this.parseDefFnParameterList(ctx.def_fn_parameter_list()),
+      programChunkIndex: this._chunkList.length,
+    });
+    this._chunk = this.makeProgramChunk(this._chunk.symbols);
   }
 
   override enterSub_statement = (ctx: Sub_statementContext) => {
     const name = getUntypedId(ctx.untyped_id());
-    if (this._procedures.has(name)) {
+    if (this._chunk.symbols.has(name)) {
       throw ParseError.fromToken(ctx.untyped_id().start!, "Duplicate definition");
     }
-    const parameters = this.parseParameterList(ctx.parameter_list());
-    const staticStorage = !!ctx.STATIC();
-    this._chunk = this.makeProgramChunk({name, parameters, staticStorage});
-    this._procedures.set(name, this._chunk);
+    this._chunk.symbols.defineProcedure({
+      name,
+      parameters: this.parseParameterList(ctx.parameter_list()),
+      staticStorage: !!ctx.STATIC(),
+      programChunkIndex: this._chunkList.length
+    });
+    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
+    this._chunkList.push(this._chunk);
   }
 
   private exitProcedure = (_ctx: ParserRuleContext) => {
-    this._chunk = this._topLevel;
+    this._chunk = this._chunkList[0];
   }
 
   override exitFunction_statement = this.exitProcedure;
@@ -327,14 +329,6 @@ function checkUntyped(name: string, ctx: ParserRuleContext, message: string) {
     throw ParseError.fromToken(ctx.start!, message);
   }
   return name;
-}
-
-function splitSigil(name: string): [string, string] {
-  const lastChar = name.slice(-1);
-  if ("!#$%&".includes(lastChar)) {
-    return [name.slice(0, -1), lastChar];
-  }
-  return [name, ""];
 }
 
 type RuleConstructor<T extends ParserRuleContext> = { new (ctx: ParserRuleContext | null, rule: number): T }
