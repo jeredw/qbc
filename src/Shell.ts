@@ -1,5 +1,6 @@
 import { Interpreter } from './Interpreter.ts';
 import { ParseError } from "./Errors.ts";
+import { TextScreen } from './Screen.ts';
 
 const TAB_STOPS = 8;
 
@@ -11,9 +12,14 @@ class Shell {
   private error: HTMLElement | null;
   private runButton: HTMLElement;
 
+  private screen: TextScreen;
+
   constructor(root: HTMLElement) {
     this.root = root;
-    this.interpreter = new Interpreter();
+    this.screen = new TextScreen(80, 25);
+    this.root.appendChild(this.screen.canvas);
+    requestAnimationFrame(this.updateScreen);
+    this.interpreter = new Interpreter(this.screen);
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
     this.runButton.addEventListener('click', () => this.run());
@@ -57,6 +63,11 @@ class Shell {
         throw error;
       }
     }
+  }
+
+  private updateScreen = () => {
+    this.screen.render();
+    requestAnimationFrame(this.updateScreen);
   }
 
   private clearErrors() {

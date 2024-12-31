@@ -17,6 +17,7 @@ import {
   Option_statementContext,
   Parameter_listContext,
   ParameterContext,
+  ProgramContext,
   Rem_statementContext,
   Shared_statementContext,
   Static_statementContext,
@@ -75,7 +76,7 @@ export class ProgramChunker extends QBasicParserListener {
     return this._chunkList[0].statements;
   }
 
-  checkAllTargetsDefined() {
+  override exitProgram = (_ctx: ProgramContext) => {
     this._chunkList.forEach((chunk) => this.checkTargets(chunk));
   }
 

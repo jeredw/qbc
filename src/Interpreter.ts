@@ -12,8 +12,15 @@ import {
 } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
 import { ProgramChunker } from "./ProgramChunker.ts";
+import { TextScreen } from "./Screen.ts";
 
 export class Interpreter {
+  private screen: TextScreen;
+
+  constructor(screen: TextScreen) {
+    this.screen = screen;
+  }
+
   public run(text: string) {
     // Add a trailing newline so the final statement has a terminator.
     const textWithNewline = text.endsWith('\n') ? text : text + '\n';
@@ -30,10 +37,9 @@ export class Interpreter {
     const tree = parser.program();
     const programChunker = new ProgramChunker();
     ParseTreeWalker.DEFAULT.walk(programChunker, tree);
-    console.log(programChunker);
-    programChunker.checkAllTargetsDefined();
+    this.screen.print("The quick brown fox jumps over the lazy dog.");
     for (const statement of programChunker.statements) {
-      console.log(statement);
+      //console.log(statement);
     }
   }
 }
