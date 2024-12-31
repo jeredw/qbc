@@ -43,6 +43,7 @@ import {
 import { Procedure } from "./Procedures.ts"
 import { Variable } from "./Variables.ts";
 import { evaluateExpression } from "./Expressions.ts";
+import { cast, isError } from "./Values.ts";
 
 interface ProgramChunk {
   statements: ParserRuleContext[];
@@ -274,7 +275,11 @@ export class ProgramChunker extends QBasicParserListener {
         symbols: this._chunk.symbols,
         expr: assignment.const_expr().expr(),
         constantExpression: true,
+        ...(sigil ? {resultType: typeOfSigil(sigil)} : {}),
       });
+      if (isError(value)) {
+        throw ParseError.fromToken(assignment.ID().symbol, value.errorMessage);
+      }
       this._chunk.symbols.defineConstant(name, value);
     }
   }

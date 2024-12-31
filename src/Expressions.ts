@@ -1,27 +1,33 @@
 import {
+  ExprContext,
+  ExponentExprContext,
+  NotExprContext,
   UnaryMinusExprContext,
   ValueExprContext,
-  NotExprContext,
-  ExprContext,
+  VarCallExprContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
-import { ParserRuleContext, ParseTreeWalker } from "antlr4ng";
+import { ParserRuleContext, ParseTreeWalker, TerminalNode } from "antlr4ng";
 import * as values from "./Values.ts";
-import { TypeTag } from "./Types.ts";
+import { splitSigil, Type, typeOfSigil, TypeTag } from "./Types.ts";
 import { SymbolTable } from "./SymbolTable.ts";
+import { ParseError } from "./Errors.ts";
 
 export function evaluateExpression({
   symbols,
   expr,
-  constantExpression
+  constantExpression,
+  resultType
 }: {
   symbols: SymbolTable,
   expr: ExprContext,
-  constantExpression?: boolean
+  constantExpression?: boolean,
+  resultType?: Type
 }): values.Value {
   const expressionListener = new ExpressionListener(symbols, !!constantExpression);
   ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
-  return expressionListener.getResult();
+  const result = expressionListener.getResult();
+  return resultType ? values.cast(result, resultType) : result;
 }
 
 class ExpressionListener extends QBasicParserListener {
@@ -50,16 +56,18 @@ class ExpressionListener extends QBasicParserListener {
     return this._stack.pop()!;
   }
 
-  binaryOperator = (ctx: ParserRuleContext) => {
+  private binaryOperator = (ctx: ParserRuleContext) => {
     const op = ctx.getChild(1)!.getText();
     const b = this.pop();
     const a = this.pop();
     if (values.isNumeric(a) && values.isNumeric(b)) {
       this.push(evaluateNumericBinaryOperator(op, a, b));
     } else if (values.isString(a) && values.isString(b)) {
+      if (this._constantExpression && op == '+') {
+        throw ParseError.fromToken(ctx.start!, "Illegal function call");
+      }
       this.push(evaluateStringBinaryOperator(op, a, b));
     // Propagate errors from earlier during evaluation.
-    // TODO: Record the first error, and reset it on statement boundaries.
     } else if (values.isError(a)) {
       this.push(a);
     } else if (values.isError(b)) {
@@ -70,8 +78,16 @@ class ExpressionListener extends QBasicParserListener {
   }
 
   // Skip parens.
-  override exitExponentExpr = this.binaryOperator;
+
+  override exitExponentExpr = (ctx: ExponentExprContext) => {
+    if (this._constantExpression) {
+      throw ParseError.fromToken(ctx.EXP().symbol, "Illegal function call");
+    }
+    this.binaryOperator(ctx);
+  }
+
   // Skip unary plus.
+
   override exitUnaryMinusExpr = (_ctx: UnaryMinusExprContext) => {
     const a = this.pop();
     if (!values.isNumeric(a)) {
@@ -117,8 +133,32 @@ class ExpressionListener extends QBasicParserListener {
     this.push(this.parseValue(ctx.getText()));
   }
 
+  override exitVarCallExpr = (dispatchCtx: VarCallExprContext) => {
+    const ctx = dispatchCtx.variable_or_function_call();
+    if (!this._constantExpression) {
+      throw new Error("unimplemented");
+    }
+    if (ctx.args_or_indices()) {
+      throw ParseError.fromToken(ctx.args_or_indices()!.LEFT_PAREN().symbol, "Invalid constant");
+    }
+    if (ctx.FNID()) {
+      // QBasic will actually try to lookup the fnid first and complain if it's not defined.
+      // But even if it is defined, it's not a constant.
+      throw ParseError.fromToken(ctx.FNID()!.symbol, "Invalid constant");
+    }
+    const [name, sigil] = ctx.ID(0)!.getText()
+    const value = this._symbols.lookupConstant(name);
+    if (!value) {
+      throw ParseError.fromToken(ctx.ID(0)!.symbol, "Invalid constant");
+    }
+    if (sigil && typeOfSigil(sigil).tag != value.tag) {
+      throw ParseError.fromToken(ctx.ID(0)!.symbol, "Duplicate definition");
+    }
+    this.push(value);
+  }
+
   parseValue(fullText: string): values.Value {
-    const [text, sigil] = stripSigil(fullText);
+    const [text, sigil] = splitSigil(fullText);
     if (text.startsWith('"') && text.endsWith('"')) {
       return values.string(text.substring(1, text.length - 1));
     }
@@ -183,11 +223,6 @@ function parseAmpConstant(text: string, base: number, sigil: string): values.Val
   return n > 0xffff ? values.long(n) : values.integer(n);
 }
 
-function stripSigil(text: string): [prefix: string, suffix: string] {
-  const [, prefix, sigil] = text.match(/(.*?)([$%&!#]?$)/)!;
-  return [prefix, sigil];
-}
-
 function evaluateNumericBinaryOperator(op: string, a: values.NumericValue, b: values.NumericValue): values.Value {
   const resultType = values.mostPreciseType(a, b);
   switch (op.toLowerCase()) {
@@ -198,7 +233,7 @@ function evaluateNumericBinaryOperator(op: string, a: values.NumericValue, b: va
     case '*':
       return resultType(a.number * b.number);
     case '/':
-      return b.number == 0 ? values.DIVISION_BY_ZERO : resultType(a.number / b.number);
+      return floatDivide(a, b);
     case '\\':
       return withIntegerCast(a, b, integerDivide);
     case 'mod':
@@ -233,6 +268,17 @@ function evaluateNumericBinaryOperator(op: string, a: values.NumericValue, b: va
     default:
       throw new Error(`Unknown operator ${op}`);
   }
+}
+
+function floatDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
+  if (b.number == 0) {
+    return values.DIVISION_BY_ZERO;
+  }
+  const result = a.number / b.number;
+  if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
+    return values.double(result);
+  }
+  return values.single(result);
 }
 
 function evaluateStringBinaryOperator(op: string, a: values.StringValue, b: values.StringValue): values.Value {

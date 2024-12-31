@@ -23,6 +23,10 @@ export class SymbolTable {
     this._constants.set(name, value);
   }
 
+  lookupConstant(name: string): Value | undefined {
+    return this._constants.get(name);
+  }
+
   defineProcedure(proc: Procedure) {
     this._procedures.set(proc.name, proc);
   }

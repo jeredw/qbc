@@ -41,7 +41,7 @@ class Shell {
           return false;
       }
       this.clearErrors();
-      console.log(e);
+      // console.log(e);
     });
   }
 
@@ -53,6 +53,8 @@ class Shell {
     } catch (error: unknown) {
       if (error instanceof ParseError) {
         this.showParseError(error);
+      } else {
+        throw error;
       }
     }
   }

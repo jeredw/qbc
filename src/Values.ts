@@ -1,4 +1,4 @@
-import { TypeTag, UserDefinedType } from './Types.ts'
+import { Type, TypeTag, UserDefinedType } from './Types.ts'
 
 export type ErrorValue = {
   tag: TypeTag.ERROR;
@@ -32,8 +32,14 @@ export type LongValue = {
 
 export type RecordValue = {
   tag: TypeTag.RECORD;
-  userDefinedType: UserDefinedType;
-  elementValues: Map<string, Value>;
+  recordType: UserDefinedType;
+  elements: Map<string, Value>;
+}
+
+export type ArrayValue = {
+  tag: TypeTag.ARRAY;
+  arrayType: Type;
+  elements: Map<number, Value>;
 }
 
 export type NumericValue =
@@ -46,7 +52,8 @@ export type Value =
   | ErrorValue
   | StringValue
   | NumericValue
-  | RecordValue;
+  | RecordValue
+  | ArrayValue;
 
 export function isError(value: Value): value is ErrorValue {
   return 'errorMessage' in value;
@@ -82,6 +89,35 @@ export function mostPreciseType(a: NumericValue, b: NumericValue): (number: numb
   return integer;
 }
 
+export function cast(value: Value, desiredType: Type): Value {
+  if (value.tag == desiredType.tag &&
+      value.tag != TypeTag.RECORD &&
+      value.tag != TypeTag.ARRAY) {
+    return value;
+  }
+  switch (desiredType.tag) {
+    case TypeTag.SINGLE:
+      return isNumeric(value) ? single(value.number) : TYPE_MISMATCH;
+    case TypeTag.DOUBLE:
+      return isNumeric(value) ? double(value.number) : TYPE_MISMATCH;
+    case TypeTag.STRING:
+      return isString(value) ? string(value.string) : TYPE_MISMATCH;
+    case TypeTag.INTEGER:
+      return isNumeric(value) ? integer(value.number) : TYPE_MISMATCH;
+    case TypeTag.LONG:
+      return isNumeric(value) ? long(value.number) : TYPE_MISMATCH;
+    case TypeTag.FIXED_STRING:
+      return isString(value) ? string(value.string.slice(0, desiredType.maxLength - 1)) : TYPE_MISMATCH;
+    case TypeTag.RECORD:
+      return value.tag == TypeTag.RECORD && value.recordType.name == desiredType.name ?
+        value : TYPE_MISMATCH;
+    case TypeTag.ARRAY:
+      throw new Error("unimplemented");
+    case TypeTag.ANY:
+      return value;
+  }
+}
+
 export function error(errorMessage: string = ""): ErrorValue {
   return {tag: TypeTag.ERROR, errorMessage};
 }
@@ -108,14 +144,14 @@ export function integer(number: number): Value {
   if (number < -32768 || number > 32767) {
     return OVERFLOW;
   }
-  return {tag: TypeTag.INTEGER, number};
+  return {tag: TypeTag.INTEGER, number: Math.round(number)};
 }
 
 export function long(number: number): Value {
   if (number < -2147483648 || number > 2147483647) {
     return OVERFLOW;
   }
-  return {tag: TypeTag.LONG, number};
+  return {tag: TypeTag.LONG, number: Math.round(number)};
 }
 
 export function boolean(test: boolean): Value {
