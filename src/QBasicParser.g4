@@ -745,6 +745,7 @@ case_block
   : case_statement block
   ;
 
+// Labels before case statements are part of the preceding case block.
 case_statement
   : CASE case_expr (COMMA case_expr)*
 // CASE ELSE can occur anywhere in the SELECT body, even multiple times.

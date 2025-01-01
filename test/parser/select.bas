@@ -37,3 +37,11 @@ case else
   select case k
   end select
 end select
+select case foo
+  case is = 4
+    print "ok"
+bar: case 2 to 3
+    print "great"
+10 case else
+  print "wow"
+end select

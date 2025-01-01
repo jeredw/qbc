@@ -1,10 +1,6 @@
-import { ParserRuleContext } from "antlr4ng";
 import { Devices } from "./Devices";
-import { Program, ProgramChunk, Statement } from "./Programs";
-import { Goto_statementContext, Print_statementContext } from "../build/QBasicParser";
-import { ControlFlow, ControlFlowTag } from "./ControlFlow";
-import { evaluateExpression } from "./Expressions";
-import { isNumeric, isString } from "./Values";
+import { Program } from "./Programs";
+import { ControlFlowTag } from "./ControlFlow";
 
 export function invoke(devices: Devices, program: Program) {
   return new Invocation(devices, program);
@@ -65,20 +61,21 @@ export class Invocation {
     const {chunkIndex, statementIndex} = this.stack[this.stack.length - 1]!;
     const chunk = this.program.chunks[chunkIndex];
     const statement = chunk.statements[statementIndex];
-    const controlFlow = this.execute(chunk, statement);
-    switch (controlFlow.tag) {
-      case ControlFlowTag.INCREMENT:
-        if (statementIndex >= chunk.statements.length - 1) {
-          this.stack.pop();
-        } else {
-          this.stack[this.stack.length - 1] = {
-            chunkIndex, statementIndex: statementIndex + 1
-          };
-        }
-        break;
-      case ControlFlowTag.RETURN:
+    const controlFlow = statement.execute({
+      symbols: chunk.symbols,
+      devices: this.devices,
+    });
+    if (!controlFlow) {
+      if (statementIndex >= chunk.statements.length - 1) {
         this.stack.pop();
-        break;
+      } else {
+        this.stack[this.stack.length - 1] = {
+          chunkIndex, statementIndex: statementIndex + 1
+        };
+      }
+      return;
+    }
+    switch (controlFlow.tag) {
       case ControlFlowTag.GOTO:
         this.stack[this.stack.length - 1] = {
           chunkIndex,
@@ -97,26 +94,9 @@ export class Invocation {
           statementIndex: 0
         });
         break;
+      case ControlFlowTag.RETURN:
+        this.stack.pop();
+        break;
     }
-  }
-
-  private execute(chunk: ProgramChunk, statement: Statement): ControlFlow {
-    if (statement.rule instanceof Goto_statementContext) {
-      return {tag: ControlFlowTag.GOTO};
-    }
-    if (statement.rule instanceof Print_statementContext) {
-      const ctx = statement.rule as Print_statementContext;
-      for (const expr of ctx.expr()) {
-        const value = evaluateExpression({
-          expr, symbols: chunk.symbols
-        });
-        if (isNumeric(value)) {
-          this.devices.textScreen.print(value.number.toString(), true);
-        } else if (isString(value)) {
-          this.devices.textScreen.print(value.string, true);
-        }
-      }
-    }
-    return {tag: ControlFlowTag.INCREMENT};
   }
 }

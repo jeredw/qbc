@@ -147,4 +147,44 @@
                 (variable_or_function_call k)) 
               (before_first_case \n) 
               (end_select_statement end select))) \n)) 
+      (end_select_statement end select))) \n 
+  (statement 
+    (select_case_statement select case 
+      (expr 
+        (variable_or_function_call foo)) 
+      (before_first_case \n) 
+      (case_block 
+        (case_statement case 
+          (case_expr is = 
+            (expr 
+              (literal 4)))) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "ok")))) \n 
+          (label 
+            (text_label 
+              (untyped_id bar)) :))) 
+      (case_block 
+        (case_statement case 
+          (case_expr 
+            (expr 
+              (literal 2)) to 
+            (expr 
+              (literal 3)))) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "great")))) \n 
+          (label 
+            (line_number 10)))) 
+      (case_block 
+        (case_statement case else) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "wow")))) \n)) 
       (end_select_statement end select))) \n <EOF>)
