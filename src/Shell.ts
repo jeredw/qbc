@@ -1,16 +1,19 @@
-import { Interpreter } from './Interpreter.ts';
+import { Interpreter } from "./Interpreter.ts";
 import { ParseError } from "./Errors.ts";
-import { TextScreen } from './Screen.ts';
+import { TextScreen } from "./Screen.ts";
+import { Invocation } from "./Invocation.ts";
 
 const TAB_STOPS = 8;
 
 class Shell {
   private root: HTMLElement;
   private interpreter: Interpreter;
+  private invocation: Invocation | null = null;
 
   private codePane: HTMLElement;
   private error: HTMLElement | null;
   private runButton: HTMLElement;
+  private stopButton: HTMLElement;
 
   private screen: TextScreen;
 
@@ -19,10 +22,14 @@ class Shell {
     this.screen = new TextScreen(80, 25);
     this.root.appendChild(this.screen.canvas);
     requestAnimationFrame(this.updateScreen);
-    this.interpreter = new Interpreter(this.screen);
+    this.interpreter = new Interpreter({
+      textScreen: this.screen
+    });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
     this.runButton.addEventListener('click', () => this.run());
+    this.stopButton = assertHTMLElement(root.querySelector('.stop-button'));
+    this.stopButton.addEventListener('click', () => this.stop());
     this.error = this.codePane.querySelector('.error');
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (document.activeElement != this.codePane) {
@@ -31,7 +38,11 @@ class Shell {
       switch (e.key) {
         case 'Enter':
           if (e.altKey || e.metaKey) {
-            setTimeout(() => this.run());
+            if (!this.invocation || this.invocation.isStopped()) {
+              setTimeout(() => this.run());
+            } else {
+              setTimeout(() => this.stop());
+            }
           } else {
             // Default behavior is to insert <br> nodes.
             insertText(this.codePane, '\n');
@@ -47,15 +58,18 @@ class Shell {
           return false;
       }
       this.clearErrors();
-      // console.log(e);
+      console.log(e);
     });
   }
 
-  run() {
+  async run() {
     this.clearErrors();
     const text = this.codePane.innerText;
     try {
-      this.interpreter.run(text);
+      this.invocation = this.interpreter.run(text);
+      this.root.classList.add('running');
+      await this.invocation.restart();
+      this.root.classList.remove('running');
     } catch (error: unknown) {
       if (error instanceof ParseError) {
         this.showParseError(error);
@@ -63,6 +77,15 @@ class Shell {
         throw error;
       }
     }
+  }
+
+  step() {
+    this.invocation?.step();
+  }
+
+  stop() {
+    this.root.classList.remove('running');
+    this.invocation?.stop();
   }
 
   private updateScreen = () => {

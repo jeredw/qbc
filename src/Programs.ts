@@ -20,6 +20,7 @@ import {
   ProgramContext,
   Rem_statementContext,
   Shared_statementContext,
+  StatementContext,
   Static_statementContext,
   Sub_statementContext,
   TargetContext,
@@ -28,7 +29,7 @@ import {
   Untyped_idContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
-import { ParserRuleContext, ParseTree, TerminalNode } from "antlr4ng";
+import { ParserRuleContext, ParseTree, ParseTreeWalker } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
 import { SymbolTable } from "./SymbolTable.ts";
 import {
@@ -41,16 +42,31 @@ import {
   typeOfName,
   typeOfSigil,
 } from "./Types.ts";
-import { Procedure } from "./Procedures.ts"
 import { Variable } from "./Variables.ts";
 import { evaluateExpression } from "./Expressions.ts";
-import { cast, isError } from "./Values.ts";
+import { isError } from "./Values.ts";
 
-interface ProgramChunk {
-  statements: ParserRuleContext[];
-  targets: Map<number, string>;
-  labels: Map<string, number>;
+export interface Statement {
+  rule: ParserRuleContext;
+  targetIndex?: number;
+}
+
+export interface Program {
+  chunks: ProgramChunk[];
+  types: Map<string, UserDefinedType>;
+}
+
+export interface ProgramChunk {
+  statements: Statement[];
+  indexToTarget: Map<number, string>;
+  labelToIndex: Map<string, number>;
   symbols: SymbolTable;
+}
+
+export function analyze(tree: ParseTree): Program {
+  const chunker = new ProgramChunker();
+  ParseTreeWalker.DEFAULT.walk(chunker, tree);
+  return chunker.program;
 }
 
 /**
@@ -58,34 +74,38 @@ interface ProgramChunk {
  * into chunks corresponding to the main program or procedures.  Each program
  * chunk has its own labels and symbol table.
  */
-export class ProgramChunker extends QBasicParserListener {
+class ProgramChunker extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
-  private _types: Map<string, UserDefinedType> = new Map();
   private _firstCharToDefaultType: Map<string, Type> = new Map();
   private _chunk: ProgramChunk;
-  private _chunkList: ProgramChunk[];
+  private _program: Program;
 
   constructor() {
     super();
     const topLevel = this.makeProgramChunk(new SymbolTable());
     this._chunk = topLevel;
-    this._chunkList = [topLevel];
+    this._program = {
+      chunks: [topLevel],
+      types: new Map()
+    };
   }
 
-  get statements() {
-    return this._chunkList[0].statements;
+  get program() {
+    return this._program;
   }
 
   override exitProgram = (_ctx: ProgramContext) => {
-    this._chunkList.forEach((chunk) => this.checkTargets(chunk));
+    this._program.chunks.forEach((chunk) => this.assignTargets(chunk));
   }
 
-  private checkTargets(chunk: ProgramChunk) {
-    chunk.targets.forEach((target, statementIndex) => {
-      if (!chunk.labels.has(target)) {
-        const statement = chunk.statements[statementIndex];
-        throw ParseError.fromToken(statement.start!, "Label not defined");
+  private assignTargets(chunk: ProgramChunk) {
+    chunk.indexToTarget.forEach((target, statementIndex) => {
+      const statement = chunk.statements[statementIndex];
+      const targetIndex = chunk.labelToIndex.get(target);
+      if (targetIndex === undefined) {
+        throw ParseError.fromToken(statement.rule.start!, "Label not defined");
       }
+      statement.targetIndex = targetIndex;
     });
   }
 
@@ -95,20 +115,20 @@ export class ProgramChunker extends QBasicParserListener {
       throw ParseError.fromToken(ctx.start!, "Duplicate label");
     }
     this._allLabels.add(label);
-    this._chunk.labels.set(label, this._chunk.statements.length);
+    this._chunk.labelToIndex.set(label, this._chunk.statements.length);
   }
 
   override enterTarget = (ctx: TargetContext) => {
     const label = this.canonicalizeLabel(ctx);
     const statementIndex = this._chunk.statements.length - 1;
-    this._chunk.targets.set(statementIndex, label);
+    this._chunk.indexToTarget.set(statementIndex, label);
   }
 
   override enterImplicit_goto_target = (ctx: Implicit_goto_targetContext) => {
-    this._chunk.statements.push(ctx);
+    this._chunk.statements.push({rule: ctx});
     const label = this.canonicalizeLabel(ctx);
     const statementIndex = this._chunk.statements.length - 1;
-    this._chunk.targets.set(statementIndex, label);
+    this._chunk.indexToTarget.set(statementIndex, label);
   }
 
   private canonicalizeLabel(ctx: ParserRuleContext): string {
@@ -118,7 +138,7 @@ export class ProgramChunker extends QBasicParserListener {
   }
 
   private makeProgramChunk(symbols: SymbolTable): ProgramChunk {
-    return {labels: new Map(), statements: [], targets: new Map(), symbols};
+    return {statements: [], labelToIndex: new Map(), indexToTarget: new Map(), symbols};
   }
 
   override enterFunction_statement = (ctx: Function_statementContext) => {
@@ -131,10 +151,10 @@ export class ProgramChunker extends QBasicParserListener {
       returnType: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
       parameters: this.parseParameterList(ctx.parameter_list()),
       staticStorage: !!ctx.STATIC(),
-      programChunkIndex: this._chunkList.length,
+      programChunkIndex: this._program.chunks.length,
     });
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
-    this._chunkList.push(this._chunk);
+    this._program.chunks.push(this._chunk);
   }
 
   override enterDef_fn_statement = (ctx: Def_fn_statementContext) => {
@@ -147,14 +167,15 @@ export class ProgramChunker extends QBasicParserListener {
       throw ParseError.fromToken(ctx._name!, "Duplicate definition");
     }
     // Labels on def fn refer to the defining statement in the toplevel.
-    this._chunk.statements.push(ctx);
+    this._chunk.statements.push({rule: ctx});
     this._chunk.symbols.defineFn({
       name,
       returnType,
       parameters: this.parseDefFnParameterList(ctx.def_fn_parameter_list()),
-      programChunkIndex: this._chunkList.length,
+      programChunkIndex: this._program.chunks.length,
     });
     this._chunk = this.makeProgramChunk(this._chunk.symbols);
+    this._program.chunks.push(this._chunk);
   }
 
   override enterSub_statement = (ctx: Sub_statementContext) => {
@@ -166,14 +187,14 @@ export class ProgramChunker extends QBasicParserListener {
       name,
       parameters: this.parseParameterList(ctx.parameter_list()),
       staticStorage: !!ctx.STATIC(),
-      programChunkIndex: this._chunkList.length
+      programChunkIndex: this._program.chunks.length
     });
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
-    this._chunkList.push(this._chunk);
+    this._program.chunks.push(this._chunk);
   }
 
   private exitProcedure = (_ctx: ParserRuleContext) => {
-    this._chunk = this._chunkList[0];
+    this._chunk = this._program.chunks[0];
   }
 
   override exitFunction_statement = this.exitProcedure;
@@ -181,7 +202,9 @@ export class ProgramChunker extends QBasicParserListener {
   override exitSub_statement = this.exitProcedure;
 
   private statement = (ctx: ParserRuleContext) => {
-    this._chunk.statements.push(ctx);
+    const rule = ctx instanceof StatementContext ?
+      ctx.children[0] as ParserRuleContext : ctx;
+    this._chunk.statements.push({rule});
   }
 
   override enterStatement = this.statement;
@@ -197,7 +220,7 @@ export class ProgramChunker extends QBasicParserListener {
 
   private checkNoExecutableStatements(ctx: ParserRuleContext) {
     for (const statement of this._chunk.statements) {
-      if (!isNonExecutableStatement(statement)) {
+      if (!isNonExecutableStatement(statement.rule)) {
         throw ParseError.fromToken(ctx.start!, "COMMON and DECLARE must precede executable statements");
       }
     }
@@ -255,7 +278,7 @@ export class ProgramChunker extends QBasicParserListener {
   }
 
   override enterType_statement = (ctx: Type_statementContext) => {
-    this._chunk.statements.push(ctx);
+    this._chunk.statements.push({rule: ctx});
     const nameCtx = ctx.untyped_id() ?? ctx.untyped_fnid();
     const name = getUntypedId(nameCtx!, /* allowPeriods= */ false);
     const elements: UserDefinedTypeElement[] = [];
@@ -266,7 +289,7 @@ export class ProgramChunker extends QBasicParserListener {
       const elementType = this.getType(typeNameCtx);
       elements.push({name: elementName, type: elementType});
     }
-    this._types.set(name, {tag: TypeTag.RECORD, name, elements});
+    this._program.types.set(name, {tag: TypeTag.RECORD, name, elements});
   }
 
   override enterConst_statement = (ctx: Const_statementContext) => {
@@ -316,7 +339,7 @@ export class ProgramChunker extends QBasicParserListener {
     const child = ctx.children[0];
     if (child instanceof Untyped_idContext || child instanceof Untyped_fnidContext) {
       const typeName = getUntypedId(child, /* allowPeriods= */ false);
-      const type = this._types.get(typeName);
+      const type = this.program.types.get(typeName);
       if (!type) {
         throw ParseError.fromToken(ctx.start!, "Type not defined");
       }

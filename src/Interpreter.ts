@@ -1,27 +1,27 @@
 import { QBasicLexer } from "../build/QBasicLexer.ts";
-import { Do_loop_statementContext, For_next_statementContext, QBasicParser } from "../build/QBasicParser.ts";
+import { Do_loop_statementContext, QBasicParser } from "../build/QBasicParser.ts";
 import {
   ATNSimulator,
   BaseErrorListener,
   CharStream,
   CommonTokenStream,
-  ParseTreeWalker,
   RecognitionException,
   Recognizer,
   Token,
 } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
-import { ProgramChunker } from "./ProgramChunker.ts";
-import { TextScreen } from "./Screen.ts";
+import { analyze } from "./Programs.ts";
+import { Invocation, invoke } from "./Invocation.ts";
+import { Devices } from "./Devices.ts";
 
 export class Interpreter {
-  private screen: TextScreen;
+  private devices: Devices;
 
-  constructor(screen: TextScreen) {
-    this.screen = screen;
+  constructor(devices: Devices) {
+    this.devices = devices;
   }
 
-  public run(text: string) {
+  public run(text: string): Invocation {
     // Add a trailing newline so the final statement has a terminator.
     const textWithNewline = text.endsWith('\n') ? text : text + '\n';
     const inputStream = CharStream.fromString(textWithNewline);
@@ -35,12 +35,8 @@ export class Interpreter {
     parser.addErrorListener(parseErrorListener);
     // Parse the program first to check correct syntax.
     const tree = parser.program();
-    const programChunker = new ProgramChunker();
-    ParseTreeWalker.DEFAULT.walk(programChunker, tree);
-    this.screen.print("The quick brown fox jumps over the lazy dog.");
-    for (const statement of programChunker.statements) {
-      //console.log(statement);
-    }
+    const program = analyze(tree);
+    return invoke(this.devices, program);
   }
 }
 

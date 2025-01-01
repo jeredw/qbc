@@ -65,6 +65,19 @@ button:active {
   color: var(--qbc-light-gray);
 }
 
+.running .run-button,
+.running .run-hint {
+  display: none;
+}
+
+.stop-button, .stop-hint {
+  display: none;
+}
+.running .stop-button,
+.running .stop-hint {
+  display: block;
+}
+
 .code-box {
   background: var(--qbc-blue);
   padding: 8px 4px;
