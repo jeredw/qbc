@@ -1,4 +1,5 @@
 import { Token } from "antlr4ng"
+import { ErrorValue } from "./Values";
 
 /** Semantic errors detected at parse time. */
 export class ParseError extends Error {
@@ -7,7 +8,7 @@ export class ParseError extends Error {
   charPositionInLine: number;
   length: number;
 
-  constructor(offendingSymbol: Token | null, line: number, charPositionInLine: number, length: number, message: string, ...params: any[]) {
+  private constructor(offendingSymbol: Token | null, line: number, charPositionInLine: number, length: number, message: string, ...params: any[]) {
     super(...params);
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, ParseError);
@@ -44,5 +45,36 @@ export class ParseError extends Error {
       column: this.charPositionInLine,
       length: this.length,
     };
+  }
+}
+
+export class RuntimeError extends Error {
+  error: ErrorValue;
+  offendingSymbol: Token | null;
+  line: number;
+  charPositionInLine: number;
+  length: number;
+
+  private constructor(error: ErrorValue, offendingSymbol: Token | null, line: number, charPositionInLine: number, length: number, ...params: any[]) {
+    super(...params);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ParseError);
+    }
+    this.name = "RuntimeError";
+    this.error = error;
+    this.offendingSymbol = offendingSymbol;
+    this.line = line;
+    this.charPositionInLine = charPositionInLine;
+    this.length = length;
+    this.message = error.errorMessage;
+  }
+
+  static fromToken(offendingSymbol: Token, error: ErrorValue) {
+    return new RuntimeError(
+      error,
+      offendingSymbol,
+      offendingSymbol.line,
+      offendingSymbol.column,
+      offendingSymbol.text?.length ?? 1);
   }
 }

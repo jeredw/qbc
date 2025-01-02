@@ -52,6 +52,7 @@ class ProgramChunker extends QBasicParserListener {
   private _firstCharToDefaultType: Map<string, Type> = new Map();
   private _chunk: ProgramChunk;
   private _program: Program;
+  private _syntheticLabelIndex = 0;
 
   constructor() {
     super();
@@ -88,18 +89,22 @@ class ProgramChunker extends QBasicParserListener {
       throw ParseError.fromToken(ctx.start!, "Duplicate label");
     }
     this._allLabels.add(label);
-    this.addLabel(label);
+    this.addLabelForNextStatement(label);
+  }
+
+  private makeSyntheticLabel(): string {
+    return `_${this._syntheticLabelIndex++}`;
   }
 
   override enterTarget = (ctx: parser.TargetContext) => {
     const label = this.canonicalizeLabel(ctx);
-    this.addTarget(label, ctx);
+    this.setTargetForCurrentStatement(label, ctx);
   }
 
   override enterImplicit_goto_target = (ctx: parser.Implicit_goto_targetContext) => {
     this._chunk.statements.push(statements.goto());
     const label = this.canonicalizeLabel(ctx);
-    this.addTarget(label, ctx);
+    this.setTargetForCurrentStatement(label, ctx);
   }
 
   private canonicalizeLabel(ctx: ParserRuleContext): string {
@@ -178,10 +183,51 @@ class ProgramChunker extends QBasicParserListener {
 
   override enterEnd_function_statement = (ctx: parser.End_function_statementContext) => {}
   override enterEnd_sub_statement = (ctx: parser.End_sub_statementContext) => {}
-  override enterIf_block_statement = (ctx: parser.If_block_statementContext) => {}
-  override enterElseif_block_statement = (ctx: parser.Elseif_block_statementContext) => {}
-  override enterElse_block_statement = (ctx: parser.Else_block_statementContext) => {}
-  override enterEnd_if_statement = (ctx: parser.End_if_statementContext) => {}
+
+  override enterIf_block_statement = (ctx: parser.If_block_statementContext) => {
+    let prevBranch: ParserRuleContext = ctx;
+    const endIf = ctx.end_if_statement();
+    if (!endIf) {
+      throw new Error("missing end if");
+    }
+    endIf['$label'] = this.makeSyntheticLabel();
+    const labelBranch = (branch: ParserRuleContext) => {
+      const label = this.makeSyntheticLabel();
+      branch['$label'] = label;
+      prevBranch['$nextBranchLabel'] = label;
+      branch['$endIfLabel'] = endIf['$label'];
+      prevBranch = branch;
+    };
+    for (const elseIf of ctx.elseif_block_statement()) {
+      labelBranch(elseIf);
+    }
+    const elseBlock = ctx.else_block_statement();
+    if (elseBlock) {
+      labelBranch(elseBlock);
+    }
+    prevBranch['$nextBranchLabel'] = endIf['$label'];
+    this.addStatement(statements.if_(ctx.expr()));
+    this.setTargetForCurrentStatement(ctx['$nextBranchLabel'], ctx);
+  }
+
+  override enterElseif_block_statement = (ctx: parser.Elseif_block_statementContext) => {
+    this.addStatement(statements.goto());
+    this.setTargetForCurrentStatement(ctx['$endIfLabel'], ctx);
+    this.addLabelForNextStatement(ctx['$label']);
+    this.addStatement(statements.elseIf(ctx.expr()));
+    this.setTargetForCurrentStatement(ctx['$nextBranchLabel'], ctx);
+  }
+
+  override enterElse_block_statement = (ctx: parser.Else_block_statementContext) => {
+    this.addStatement(statements.goto());
+    this.setTargetForCurrentStatement(ctx['$endIfLabel'], ctx);
+    this.addLabelForNextStatement(ctx['$label']);
+  }
+
+  override enterEnd_if_statement = (ctx: parser.End_if_statementContext) => {
+    this.addLabelForNextStatement(ctx['$label']);
+  }
+
   override enterOption_statement = (ctx: parser.Option_statementContext) => {}
   override enterAssignment_statement = (ctx: parser.Assignment_statementContext) => {}
   override enterCall_statement = (ctx: parser.Call_statementContext) => {}
@@ -309,7 +355,7 @@ class ProgramChunker extends QBasicParserListener {
     }
     this.addStatement(statements.exit(returnFromProcedure));
     if (!returnFromProcedure) {
-      this.addTarget(`_exit{}`, ctx);
+      this.setTargetForCurrentStatement(ctx['$blockExitLabel'], ctx);
     }
   }
 
@@ -365,12 +411,12 @@ class ProgramChunker extends QBasicParserListener {
     this._chunk.statements.push(statement);
   }
 
-  private addTarget(label: string, ctx: ParserRuleContext) {
+  private setTargetForCurrentStatement(label: string, ctx: ParserRuleContext) {
     const currentStatementIndex = this._chunk.statements.length - 1;
     this._chunk.indexToTarget.set(currentStatementIndex, {label, token: ctx.start!});
   }
 
-  private addLabel(label: string) {
+  private addLabelForNextStatement(label: string) {
     const nextStatementIndex = this._chunk.statements.length;
     this._chunk.labelToIndex.set(label, nextStatementIndex);
   }

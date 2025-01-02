@@ -1,6 +1,7 @@
 import { Devices } from "./Devices";
 import { Program } from "./Programs";
 import { ControlFlowTag } from "./ControlFlow";
+import { RuntimeError } from "./Errors";
 
 export function invoke(devices: Devices, program: Program) {
   return new Invocation(devices, program);
@@ -61,42 +62,63 @@ export class Invocation {
     const {chunkIndex, statementIndex} = this.stack[this.stack.length - 1]!;
     const chunk = this.program.chunks[chunkIndex];
     const statement = chunk.statements[statementIndex];
-    const controlFlow = statement.execute({
-      symbols: chunk.symbols,
-      devices: this.devices,
-    });
-    if (!controlFlow) {
-      if (statementIndex >= chunk.statements.length - 1) {
-        this.stack.pop();
-      } else {
-        this.stack[this.stack.length - 1] = {
-          chunkIndex, statementIndex: statementIndex + 1
-        };
+    try {
+      const controlFlow = statement.execute({
+        symbols: chunk.symbols,
+        devices: this.devices,
+      });
+      if (!controlFlow) {
+        if (statementIndex >= chunk.statements.length - 1) {
+          this.stack.pop();
+        } else {
+          this.stack[this.stack.length - 1] = {
+            chunkIndex, statementIndex: statementIndex + 1
+          };
+        }
+        return;
       }
-      return;
-    }
-    switch (controlFlow.tag) {
-      case ControlFlowTag.GOTO:
-        this.stack[this.stack.length - 1] = {
-          chunkIndex,
-          statementIndex: statement.targetIndex!
-        };
-        break;
-      case ControlFlowTag.GOSUB:
-        this.stack.push({
-          chunkIndex,
-          statementIndex: statement.targetIndex!
-        });
-        break;
-      case ControlFlowTag.CALL:
-        this.stack.push({
-          chunkIndex: controlFlow.chunkIndex,
-          statementIndex: 0
-        });
-        break;
-      case ControlFlowTag.RETURN:
-        this.stack.pop();
-        break;
+      switch (controlFlow.tag) {
+        case ControlFlowTag.GOTO:
+          if (statement.targetIndex === undefined) {
+            throw new Error("missing target for GOTO")
+          }
+          if (statement.targetIndex >= chunk.statements.length) {
+            this.stack.pop();
+          } else {
+            this.stack[this.stack.length - 1] = {
+              chunkIndex,
+              statementIndex: statement.targetIndex
+            };
+          }
+          break;
+        case ControlFlowTag.GOSUB:
+          if (statement.targetIndex === undefined) {
+            throw new Error("missing target for GOSUB")
+          }
+          if (statement.targetIndex >= chunk.statements.length) {
+            this.stack.pop();
+          } else {
+            this.stack.push({
+              chunkIndex,
+              statementIndex: statement.targetIndex
+            });
+          }
+          break;
+        case ControlFlowTag.CALL:
+          this.stack.push({
+            chunkIndex: controlFlow.chunkIndex,
+            statementIndex: 0
+          });
+          break;
+        case ControlFlowTag.RETURN:
+          this.stack.pop();
+          break;
+      }
+    } catch (error: unknown) {
+      if (error instanceof RuntimeError) {
+        // TODO: ON ERROR dispatch.
+      }
+      throw error;
     }
   }
 }

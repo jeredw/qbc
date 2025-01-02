@@ -1,6 +1,7 @@
 import { DefFnStatement } from "./DefFn.ts";
 import { ExitStatement } from "./Exit.ts";
 import { GotoStatement } from "./Goto.ts";
+import { IfStatement } from "./IfTest.ts";
 import { PrintStatement } from "./Print.ts";
 import { Type } from "../Types";
 import * as parser from "../../build/QBasicParser";
@@ -15,6 +16,14 @@ export function exit(returnFromProcedure: boolean) {
 
 export function goto() {
   return new GotoStatement();
+}
+
+export function if_(expr: parser.ExprContext) {
+  return new IfStatement(expr);
+}
+
+export function elseIf(expr: parser.ExprContext) {
+  return new IfStatement(expr);
 }
 
 export function next() {
