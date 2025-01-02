@@ -1,10 +1,13 @@
 import { DefFnStatement } from "./DefFn.ts";
+import { GosubStatement } from "./Gosub.ts";
 import { GotoStatement } from "./Goto.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import { Type } from "../Types";
 import * as parser from "../../build/QBasicParser";
+import { ControlFlowTag } from "../ControlFlow.ts";
+import { Token } from "antlr4ng";
 
 export function defFn(name: string, returnType: Type) {
   return new DefFnStatement(name, returnType);
@@ -19,15 +22,15 @@ export function elseIf(expr: parser.ExprContext) {
 }
 
 export function endFunction() {
-  return new ReturnStatement();
+  return new ReturnStatement(ControlFlowTag.CALL);
 }
 
 export function endSub() {
-  return new ReturnStatement();
+  return new ReturnStatement(ControlFlowTag.CALL);
 }
 
 export function exitDef() {
-  return new ReturnStatement();
+  return new ReturnStatement(ControlFlowTag.CALL);
 }
 
 export function exitDo() {
@@ -39,15 +42,19 @@ export function exitFor() {
 }
 
 export function exitFunction() {
-  return new ReturnStatement();
+  return new ReturnStatement(ControlFlowTag.CALL);
 }
 
 export function exitSub() {
-  return new ReturnStatement();
+  return new ReturnStatement(ControlFlowTag.CALL);
 }
 
 export function goto() {
   return new GotoStatement();
+}
+
+export function gosub() {
+  return new GosubStatement();
 }
 
 export function if_(expr: parser.ExprContext) {
@@ -64,4 +71,8 @@ export function next() {
 
 export function print(ast: parser.Print_statementContext) {
   return new PrintStatement(ast);
+}
+
+export function return_(start: Token) {
+  return new ReturnStatement(ControlFlowTag.GOSUB, start);
 }

@@ -77,4 +77,12 @@ export class RuntimeError extends Error {
       offendingSymbol.column,
       offendingSymbol.text?.length ?? 1);
   }
+
+  get location() {
+    return {
+      line: this.line,
+      column: this.charPositionInLine,
+      length: this.length,
+    };
+  }
 }

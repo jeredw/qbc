@@ -7,24 +7,25 @@ export enum ControlFlowTag {
 }
 
 export interface Goto {
-  tag: ControlFlowTag.GOTO
+  tag: ControlFlowTag.GOTO;
 }
 
 export interface Gosub {
-  tag: ControlFlowTag.GOSUB
+  tag: ControlFlowTag.GOSUB;
 }
 
 export interface Call {
-  tag: ControlFlowTag.CALL
+  tag: ControlFlowTag.CALL;
   chunkIndex: number;
 }
 
 export interface Return {
-  tag: ControlFlowTag.RETURN
+  tag: ControlFlowTag.RETURN;
+  where: ControlFlowTag;
 }
 
 export interface Halt {
-  tag: ControlFlowTag.HALT
+  tag: ControlFlowTag.HALT;
 }
 
 export type ControlFlow =

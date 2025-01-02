@@ -287,7 +287,10 @@ class ProgramChunker extends QBasicParserListener {
 
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}
   override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {}
-  override enterGosub_statement = (ctx: parser.Gosub_statementContext) => {}
+
+  override enterGosub_statement = (ctx: parser.Gosub_statementContext) => {
+    this.addStatement(statements.gosub());
+  }
 
   override enterGoto_statement = (ctx: parser.Goto_statementContext) => {
     this.addStatement(statements.goto());
@@ -328,7 +331,11 @@ class ProgramChunker extends QBasicParserListener {
   override enterRead_statement = (ctx: parser.Read_statementContext) => {}
   override enterRem_statement = (ctx: parser.Rem_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
-  override enterReturn_statement = (ctx: parser.Return_statementContext) => {}
+
+  override enterReturn_statement = (ctx: parser.Return_statementContext) => {
+    this.addStatement(statements.return_(ctx.start!));
+  }
+
   override enterRset_statement = (ctx: parser.Rset_statementContext) => {}
   override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
   override enterSeek_statement = (ctx: parser.Seek_statementContext) => {}

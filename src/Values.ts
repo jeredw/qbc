@@ -167,4 +167,5 @@ export const
   ILLEGAL_NUMBER = error('Illegal number'),
   TYPE_MISMATCH = error('Type mismatch'),
   DIVISION_BY_ZERO = error('Division by zero'),
-  ILLEGAL_FUNCTION_CALL = error('Illegal function call');
+  ILLEGAL_FUNCTION_CALL = error('Illegal function call'),
+  RETURN_WITHOUT_GOSUB = error('RETURN without GOSUB');

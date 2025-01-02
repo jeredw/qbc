@@ -1,5 +1,5 @@
 import { Interpreter } from "./Interpreter.ts";
-import { ParseError } from "./Errors.ts";
+import { ParseError, RuntimeError } from "./Errors.ts";
 import { TextScreen } from "./Screen.ts";
 import { Invocation } from "./Invocation.ts";
 
@@ -69,13 +69,14 @@ class Shell {
       this.invocation = this.interpreter.run(text);
       this.root.classList.add('running');
       await this.invocation.restart();
-      this.root.classList.remove('running');
     } catch (error: unknown) {
-      if (error instanceof ParseError) {
-        this.showParseError(error);
+      if (error instanceof ParseError || error instanceof RuntimeError) {
+        this.showErrorMessage(error);
       } else {
         throw error;
       }
+    } finally {
+      this.root.classList.remove('running');
     }
   }
 
@@ -123,7 +124,7 @@ class Shell {
     }
   }
 
-  private showParseError(error: ParseError) {
+  private showErrorMessage(error: ParseError | RuntimeError) {
     const {line, column, length} = error.location;
     if (length) {
       this.clearErrors();

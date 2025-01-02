@@ -2,6 +2,8 @@ import { Devices } from "./Devices";
 import { Program } from "./Programs";
 import { ControlFlowTag } from "./ControlFlow";
 import { RuntimeError } from "./Errors";
+import { ReturnStatement } from "./statements/Return";
+import { RETURN_WITHOUT_GOSUB } from "./Values";
 
 export function invoke(devices: Devices, program: Program) {
   return new Invocation(devices, program);
@@ -10,6 +12,7 @@ export function invoke(devices: Devices, program: Program) {
 interface ProgramLocation {
   chunkIndex: number;
   statementIndex: number;
+  pusher?: ControlFlowTag;
 }
 
 export class Invocation {
@@ -47,7 +50,11 @@ export class Invocation {
   }
 
   restart(): Promise<void> {
-    this.stack = [{chunkIndex: 0, statementIndex: 0}];
+    const chunks = this.program.chunks;
+    this.stack = [];
+    if (chunks.length > 0 && chunks[0].statements.length > 0) {
+      this.stack.push({chunkIndex: 0, statementIndex: 0});
+    }
     return this.start();
   }
 
@@ -61,20 +68,19 @@ export class Invocation {
     }
     const {chunkIndex, statementIndex} = this.stack[this.stack.length - 1]!;
     const chunk = this.program.chunks[chunkIndex];
+    if (statementIndex >= chunk.statements.length) {
+      this.exitChunk();
+      this.step();
+      return;
+    }
     const statement = chunk.statements[statementIndex];
     try {
       const controlFlow = statement.execute({
         symbols: chunk.symbols,
         devices: this.devices,
       });
+      this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
-        if (statementIndex >= chunk.statements.length - 1) {
-          this.stack.pop();
-        } else {
-          this.stack[this.stack.length - 1] = {
-            chunkIndex, statementIndex: statementIndex + 1
-          };
-        }
         return;
       }
       switch (controlFlow.tag) {
@@ -82,36 +88,39 @@ export class Invocation {
           if (statement.targetIndex === undefined) {
             throw new Error("missing target for GOTO")
           }
-          if (statement.targetIndex >= chunk.statements.length) {
-            this.stack.pop();
-          } else {
-            this.stack[this.stack.length - 1] = {
-              chunkIndex,
-              statementIndex: statement.targetIndex
-            };
-          }
+          this.stack[this.stack.length - 1].statementIndex = statement.targetIndex;
           break;
         case ControlFlowTag.GOSUB:
           if (statement.targetIndex === undefined) {
             throw new Error("missing target for GOSUB")
           }
-          if (statement.targetIndex >= chunk.statements.length) {
-            this.stack.pop();
-          } else {
-            this.stack.push({
-              chunkIndex,
-              statementIndex: statement.targetIndex
-            });
-          }
+          this.stack.push({
+            chunkIndex,
+            statementIndex: statement.targetIndex,
+            pusher: ControlFlowTag.GOSUB
+          });
           break;
         case ControlFlowTag.CALL:
           this.stack.push({
             chunkIndex: controlFlow.chunkIndex,
-            statementIndex: 0
+            statementIndex: 0,
+            pusher: ControlFlowTag.CALL
           });
           break;
         case ControlFlowTag.RETURN:
-          this.stack.pop();
+          if (controlFlow.where == ControlFlowTag.GOSUB) {
+            if (this.stack[this.stack.length - 1].pusher != ControlFlowTag.GOSUB) {
+              const returnStatement = statement as ReturnStatement;
+              throw RuntimeError.fromToken(returnStatement.start!, RETURN_WITHOUT_GOSUB);
+            }
+            this.stack.pop();
+            if (statement.targetIndex !== undefined) {
+              // For RETURN to a specific label.
+              this.stack[this.stack.length - 1].statementIndex = statement.targetIndex;
+            }
+          } else if (controlFlow.where == ControlFlowTag.CALL) {
+            this.exitChunk();
+          }
           break;
       }
     } catch (error: unknown) {
@@ -119,6 +128,17 @@ export class Invocation {
         // TODO: ON ERROR dispatch.
       }
       throw error;
+    }
+  }
+
+  private exitChunk() {
+    this.discardGosubFrames();
+    this.stack.pop();
+  }
+
+  private discardGosubFrames() {
+    while (this.stack.length && this.stack[this.stack.length - 1].pusher == ControlFlowTag.GOSUB) {
+      this.stack.pop();
     }
   }
 }
