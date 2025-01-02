@@ -115,7 +115,7 @@
                           (literal 1)) ))))) \r\n 
               (statement 
                 (print_statement PRINT)) \r\n \r\n \r\n \r\n) LOOP 
-            (do_condition UNTIL 
+            (loop_condition UNTIL 
               (expr 
                 (expr 
                   (expr 
@@ -135,7 +135,7 @@
                 (variable_or_function_call BackGroundVal)) + 
               (expr 
                 (literal 1))))) \r\n \r\n \r\n \r\n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (expr 

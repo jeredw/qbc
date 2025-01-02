@@ -1258,7 +1258,7 @@
                           (variable_or_function_call j)) + 
                         (expr 
                           (literal 1))))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (expr 
@@ -1353,7 +1353,7 @@
                         (expr 
                           (literal 1))))) \n)) 
               (end_if_statement END IF)) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call i)) >= 
@@ -2271,7 +2271,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call kbd$)) = 
@@ -2310,7 +2310,7 @@
                           ( 
                             (expr 
                               (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call kbd$)) = 
@@ -2494,7 +2494,7 @@
                           (variable_or_function_call RtSide)) - 
                         (expr 
                           (literal 1))))) \n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call RtSide)) = 
@@ -2548,7 +2548,7 @@
                           (variable_or_function_call LtSide)) + 
                         (expr 
                           (literal 1))))) \n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call LtSide)) = 
@@ -4324,7 +4324,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -4429,7 +4429,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 ( 
@@ -4848,7 +4848,7 @@
                                                           ( 
                                                             (expr 
                                                               (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-                                              (do_condition UNTIL 
+                                              (loop_condition UNTIL 
                                                 (expr 
                                                   (expr 
                                                     (variable_or_function_call a$)) <> 
@@ -4920,7 +4920,7 @@
                                                           (variable_or_function_call CurBlock.Y)) + 
                                                         (expr 
                                                           (literal 1))))) \n) LOOP 
-                                                (do_condition WHILE 
+                                                (loop_condition WHILE 
                                                   (expr 
                                                     (expr 
                                                       (variable_or_function_call CheckFit)) = 
@@ -5051,7 +5051,7 @@
                                           (end_if_statement END IF)) \n) 
                                       (end_if_statement END IF)) \n)) 
                                 (end_if_statement END IF)) \n \n) LOOP 
-                            (do_condition UNTIL 
+                            (loop_condition UNTIL 
                               (expr 
                                 (expr 
                                   (builtin_function TIMER)) >= 
@@ -5114,7 +5114,7 @@
                             (variable_or_function_call OldBlock) = 
                             (expr 
                               (variable_or_function_call CurBlock)))) \n \n) LOOP 
-                      (do_condition UNTIL 
+                      (loop_condition UNTIL 
                         (expr 
                           (variable_or_function_call DoneWithThisBlock))))) \n \n 
                   (statement 
@@ -5283,7 +5283,7 @@
                                             ( 
                                               (expr 
                                                 (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-                                (do_condition UNTIL 
+                                (loop_condition UNTIL 
                                   (expr 
                                     (expr 
                                       (variable_or_function_call a$)) <> 
@@ -5309,7 +5309,7 @@
                                 (untyped_id RedrawControls))) \n)) 
                         (end_if_statement END IF)) \n) 
                     (end_if_statement END IF)) \n \n) LOOP)) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (variable_or_function_call GameOver))))) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n 

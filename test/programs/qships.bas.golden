@@ -1803,7 +1803,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call kbd$)) = 
@@ -1842,7 +1842,7 @@
                           ( 
                             (expr 
                               (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call kbd$)) = 
@@ -2707,7 +2707,7 @@
                                   (variable_or_function_call NumHold$)) , 
                                 (expr 
                                   (literal 2)) )))) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -2765,7 +2765,7 @@
       (statement 
         (do_loop_statement DO 
           (block :) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) <> 
@@ -3040,7 +3040,7 @@
                             ( 
                               (expr 
                                 (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call kbd$)) <> 
@@ -3118,7 +3118,7 @@
                                     ( 
                                       (expr 
                                         (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-                        (do_condition WHILE 
+                        (loop_condition WHILE 
                           (expr 
                             (expr 
                               (variable_or_function_call kbd$)) = 
@@ -3539,7 +3539,7 @@
                       (variable_or_function_call kbd$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call kbd$)) = 
@@ -3679,7 +3679,7 @@
                                     (variable_or_function_call temp$) = 
                                     (expr 
                                       (variable_or_function_call INKEY$)))) \n) LOOP 
-                              (do_condition WHILE 
+                              (loop_condition WHILE 
                                 (expr 
                                   (expr 
                                     (variable_or_function_call temp$)) <> 
@@ -3794,7 +3794,7 @@
                                     (variable_or_function_call temp$) = 
                                     (expr 
                                       (variable_or_function_call INKEY$)))) \n) LOOP 
-                              (do_condition WHILE 
+                              (loop_condition WHILE 
                                 (expr 
                                   (expr 
                                     (variable_or_function_call temp$)) <> 
@@ -4460,7 +4460,7 @@
                       (variable_or_function_call kbd$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call kbd$)) = 
@@ -5167,7 +5167,7 @@
                             (variable_or_function_call kbd$) = 
                             (expr 
                               (variable_or_function_call INKEY$)))) \n) LOOP 
-                      (do_condition UNTIL 
+                      (loop_condition UNTIL 
                         (expr 
                           (expr 
                             (variable_or_function_call kbd$)) = 
@@ -5309,7 +5309,7 @@
                                         (variable_or_function_call firstPlayer)) - 
                                       (expr 
                                         (literal 3))) )))))) \n \n) LOOP 
-                      (do_condition WHILE 
+                      (loop_condition WHILE 
                         (expr 
                           (expr 
                             (variable_or_function_call directHit)) = 
@@ -5502,7 +5502,7 @@
                             ( 
                               (expr 
                                 (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (expr 
@@ -5514,7 +5514,7 @@
                         (variable_or_function_call StillPlay$)) <> 
                       (expr 
                         (literal "N"))))))) \n \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call StillPlay$)) = 
@@ -6291,7 +6291,7 @@
                                   (literal 8))) / 
                               (expr 
                                 (variable_or_function_call cSeconds))))) \n) LOOP 
-                      (do_condition WHILE 
+                      (loop_condition WHILE 
                         (expr 
                           (expr 
                             (expr 

@@ -93,7 +93,7 @@
                 ( 
                   (expr 
                     (literal 0)) ))))) \n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call INKEY$)) = 

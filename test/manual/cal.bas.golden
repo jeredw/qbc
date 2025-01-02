@@ -142,7 +142,7 @@
           (print_statement PRINT 
             (expr 
               (variable_or_function_call Resp$)))) \r\n \r\n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call UCASE$ 
@@ -400,7 +400,7 @@
             (statement 
               (input_statement INPUT "" , 
                 (variable_or_function_call Value))) \r\n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               ( 
                 (expr 

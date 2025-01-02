@@ -214,7 +214,7 @@
                               ( 
                                 (expr 
                                   (literal 1)) ))) )))))) \r\n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr 
                 (expr 
                   (variable_or_function_call INSTR 
@@ -288,7 +288,7 @@
                     (literal "Q")))) 
               (block \r\n)) 
             (end_select_statement END SELECT))) \r\n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (variable_or_function_call Choice$)) = 
@@ -407,7 +407,7 @@
                             ( 
                               (expr 
                                 (literal 1)) ))) )))))) \r\n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call OK$)) = 
@@ -706,7 +706,7 @@
                           (literal 40)) , 
                         (expr 
                           (literal "_")) )))))) \r\n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call UCASE$ 
@@ -1001,7 +1001,7 @@
                       (variable_or_function_call Limit) = 
                       (expr 
                         (variable_or_function_call Switch)))) \r\n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (variable_or_function_call Switch))))) \r\n \r\n \r\n 
             (statement 

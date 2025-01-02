@@ -47,7 +47,7 @@
                       (variable_or_function_call Resp$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \r\n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call Resp$)) = 
@@ -107,7 +107,7 @@
   (statement 
     (do_loop_statement DO 
       (block \r\n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr NOT 
           (expr 
             (variable_or_function_call YesQues 

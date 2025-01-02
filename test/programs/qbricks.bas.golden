@@ -1420,7 +1420,7 @@
                                                 ( 
                                                   (expr 
                                                     (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-                                    (do_condition WHILE 
+                                    (loop_condition WHILE 
                                       (expr 
                                         (expr 
                                           (variable_or_function_call k$)) = 
@@ -1501,7 +1501,7 @@
                     (call_statement 
                       (untyped_id NewBall))) \n) 
                 (end_if_statement END IF)) \n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr 
                 (variable_or_function_call Again))))) \n \n 
         (statement 
@@ -3062,7 +3062,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call kbd$)) = 
@@ -3101,7 +3101,7 @@
                           ( 
                             (expr 
                               (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call kbd$)) = 
@@ -3954,7 +3954,7 @@
                           ( 
                             (expr 
                               (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (expr 
@@ -4298,7 +4298,7 @@
               (input_statement INPUT "How many players? 
                 (1 or 2) " , 
                 (variable_or_function_call PaddleHold$))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -4914,7 +4914,7 @@
                       (variable_or_function_call ClearKeyBuffer$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (builtin_function TIMER)) < 
@@ -5442,7 +5442,7 @@
                                     (literal 5))) )))) + 
                         (expr 
                           (variable_or_function_call STARTBRICKROW))))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (expr 

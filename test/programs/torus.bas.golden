@@ -417,7 +417,7 @@
                 (on_error_statement ON ERROR GOTO 
                   (target 
                     (line_number 0)))) \n) LOOP 
-            (do_condition UNTIL 
+            (loop_condition UNTIL 
               (expr 
                 (expr 
                   (variable_or_function_call Tmp)) = 
@@ -1333,7 +1333,7 @@
                 (statement 
                   (exit_statement EXIT FUNCTION)) \n) 
               (end_if_statement END IF)) \n \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 ( 
@@ -3910,7 +3910,7 @@
                       (variable_or_function_call K$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call K$)) = 
@@ -4289,7 +4289,7 @@
                 (untyped_id SetConfig) 
                 (call_argument_list 
                   (call_argument VC.Scrn)))) \n \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call Ky)) = 
@@ -4983,7 +4983,7 @@
                                       (expr 
                                         (variable_or_function_call J)) )))))) \n) 
                         (end_if_statement END IF)) \n) LOOP 
-                    (do_condition WHILE 
+                    (loop_condition WHILE 
                       (expr 
                         (expr 
                           (variable_or_function_call I)) < 

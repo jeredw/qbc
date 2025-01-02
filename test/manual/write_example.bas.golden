@@ -30,7 +30,7 @@
         (statement 
           (input_statement INPUT "Add another entry" ; 
             (variable_or_function_call R$))) \n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call UCASE$ 

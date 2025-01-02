@@ -49,7 +49,7 @@
                   (variable_or_function_call Test$) = 
                   (expr 
                     (variable_or_function_call INKEY$)))) \r\n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr 
                 (expr 
                   (expr 
@@ -68,7 +68,7 @@
                     (variable_or_function_call Test$)) = 
                   (expr 
                     (literal ""))))))) \r\n \r\n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call Test$)) = 

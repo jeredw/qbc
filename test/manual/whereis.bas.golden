@@ -538,7 +538,7 @@
                       (expr 
                         (variable_or_function_call PathSpec$)) ;)) \r\n)) 
               (end_if_statement END IF)) \r\n \r\n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call EntryType)) = 

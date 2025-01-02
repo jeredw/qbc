@@ -160,7 +160,7 @@
                               ( 
                                 (expr 
                                   (literal 1)) ))) )))))) \r\n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr 
                 (expr 
                   (variable_or_function_call INSTR 
@@ -275,7 +275,7 @@
               (case_statement CASE ELSE) 
               (block \r\n)) 
             (end_select_statement END SELECT))) \r\n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (variable_or_function_call Q$)) = 

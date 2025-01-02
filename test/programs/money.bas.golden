@@ -1130,7 +1130,7 @@
                       (variable_or_function_call Kbd$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call Kbd$)) <> 
@@ -1374,7 +1374,7 @@
                       (call_statement 
                         (untyped_id BEEP))) \n)) 
                 (end_select_statement END SELECT))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (variable_or_function_call finished))))) \n \n 
       (if_block_statement IF 
@@ -1634,7 +1634,7 @@
                       (expr 
                         (variable_or_function_call TRUE)))) \n)) 
               (end_if_statement END IF)) \n \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (variable_or_function_call ok))))) \n 
       (statement 
@@ -2471,7 +2471,7 @@
                       (variable_or_function_call Kbd$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) :) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call Kbd$)) <> 
@@ -2861,7 +2861,7 @@
                       (call_statement 
                         (untyped_id BEEP))) \n)) 
                 (end_select_statement END SELECT))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (variable_or_function_call finished))))) \n \n 
       (statement 
@@ -3344,7 +3344,7 @@
                         (variable_or_function_call start$) = 
                         (expr 
                           (literal "")))) \n) LOOP 
-                  (do_condition WHILE 
+                  (loop_condition WHILE 
                     (expr 
                       (expr 
                         (expr 
@@ -3507,7 +3507,7 @@
                         (variable_or_function_call start$) = 
                         (expr 
                           (literal "")))) \n) LOOP 
-                  (do_condition WHILE 
+                  (loop_condition WHILE 
                     (expr 
                       (expr 
                         (expr 
@@ -4875,7 +4875,7 @@
                               (untyped_id BEEP))) \n)) 
                       (end_select_statement END SELECT))) \n)) 
               (end_if_statement END IF)) \n \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (variable_or_function_call finished))))) \n \n 
       (statement 
@@ -6544,7 +6544,7 @@
                               ( )))) , 
                         (expr 
                           (variable_or_function_call TRUE)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call NewChoice)) = 
@@ -7968,7 +7968,7 @@
                       (variable_or_function_call Kbd$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) :) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call Kbd$)) <> 
@@ -8022,7 +8022,7 @@
                       (call_statement 
                         (untyped_id BEEP))) \n)) 
                 (end_select_statement END SELECT))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (variable_or_function_call finished))))) \n 
       (statement 
@@ -8081,7 +8081,7 @@
                 (variable_or_function_call Kbd$) = 
                 (expr 
                   (variable_or_function_call INKEY$)))) :) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (expr 
@@ -8939,7 +8939,7 @@
                 (variable_or_function_call Kbd$) = 
                 (expr 
                   (variable_or_function_call INKEY$)))) :) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (expr 

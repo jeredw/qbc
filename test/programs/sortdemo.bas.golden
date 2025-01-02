@@ -465,7 +465,7 @@
                 (variable_or_function_call Limit) = 
                 (expr 
                   (variable_or_function_call Switch)))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (variable_or_function_call Switch))))) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n 
@@ -1661,7 +1661,7 @@
                                 (call_argument I) , 
                                 (call_argument J)))) \n) 
                         (end_if_statement END IF)) \n) LOOP 
-                    (do_condition WHILE 
+                    (loop_condition WHILE 
                       (expr 
                         (expr 
                           (variable_or_function_call I)) < 
@@ -1946,7 +1946,7 @@
                           (variable_or_function_call Switch)) - 
                         (expr 
                           (variable_or_function_call Offset))))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (variable_or_function_call Switch))))) \n \n \n 
             (statement 

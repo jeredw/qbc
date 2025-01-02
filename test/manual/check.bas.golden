@@ -145,7 +145,7 @@
                 (variable_or_function_call Limit%) = 
                 (expr 
                   (variable_or_function_call Swaps%))))))) \r\n \r\n \r\n) LOOP 
-    (do_condition WHILE 
+    (loop_condition WHILE 
       (expr 
         (variable_or_function_call Swaps%))))) \r\n \r\n \r\n \r\n \r\n (statement 
   (for_next_statement FOR I% = 

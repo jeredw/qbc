@@ -354,7 +354,7 @@
               (statement 
                 (call_statement 
                   (untyped_id ShiftPalette)))))) \r\n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call INKEY$)) = 
@@ -608,7 +608,7 @@
                         (expr 
                           (literal "Right corner must be greater than left corner.")))) \r\n) 
                   (end_if_statement END IF)) \r\n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call WR)) <= 
@@ -635,7 +635,7 @@
                         (expr 
                           (literal "Bottom corner must be less than top corner.")))) \r\n) 
                   (end_if_statement END IF)) \r\n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call WB)) >= 

@@ -104,7 +104,7 @@
                             (call_argument DoLine$)))) \r\n) 
                     (end_if_statement END IF)) \r\n) 
                 (end_if_statement END IF)) \r\n) LOOP 
-            (do_condition UNTIL 
+            (loop_condition UNTIL 
               (expr 
                 (variable_or_function_call EOF 
                   (args_or_indices 
@@ -130,7 +130,7 @@
         (statement 
           (call_statement 
             (untyped_id CLS))) \r\n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (variable_or_function_call UCASE$ 

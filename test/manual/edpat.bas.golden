@@ -40,7 +40,7 @@
             (untyped_id ShowPattern) 
             (call_argument_list 
               (call_argument OK$)))) \r\n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call OK$)) = 
@@ -213,7 +213,7 @@
                       (variable_or_function_call Check$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \r\n \r\n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call Check$)) = 
@@ -586,7 +586,7 @@
             (statement 
               (input_statement INPUT "" , 
                 (variable_or_function_call PatternSize%))) \r\n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (expr 

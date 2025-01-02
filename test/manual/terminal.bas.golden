@@ -194,7 +194,7 @@
                             (expr 
                               (literal 29)) )))))) \r\n) 
               (end_if_statement END IF)) \r\n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (variable_or_function_call BackSpace))))) \r\n \r\n \r\n 
       (statement 
@@ -245,7 +245,7 @@
                               (expr 
                                 (literal 1))) )))))) \r\n) 
               (end_if_statement END IF)) \r\n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (variable_or_function_call LineFeed))))) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

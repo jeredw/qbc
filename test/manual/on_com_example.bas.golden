@@ -15,7 +15,7 @@
   (statement 
     (do_loop_statement DO 
       (block :) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call INKEY$)) = 

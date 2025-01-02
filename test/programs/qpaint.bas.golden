@@ -1624,7 +1624,7 @@
                 (expr 
                   (literal 255)))) \n) 
           (end_if_statement END IF)) \n \n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (variable_or_function_call LCASE$ 
@@ -4085,7 +4085,7 @@
                     (expr 
                       (variable_or_function_call false)))) \n) 
               (end_if_statement END IF)) \n \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) <> 
@@ -5075,7 +5075,7 @@
                     (expr 
                       (variable_or_function_call false)))) \n) 
               (end_if_statement END IF)) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) = 
@@ -6032,7 +6032,7 @@
                               (literal 18)) ) ON)) \n)) 
                   (end_if_statement END IF)) \n) 
               (end_if_statement END IF)) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -6248,7 +6248,7 @@
                       (call_argument 
                         (expr 
                           (literal 8)))))) \n) LOOP 
-              (do_condition UNTIL 
+              (loop_condition UNTIL 
                 (expr 
                   (expr 
                     (variable_or_function_call y)) = 
@@ -6316,7 +6316,7 @@
                       (call_argument 
                         (expr 
                           (literal 8)))))) \n) LOOP 
-              (do_condition UNTIL 
+              (loop_condition UNTIL 
                 (expr 
                   (expr 
                     (variable_or_function_call x)) = 
@@ -6425,7 +6425,7 @@
                       (call_argument 
                         (expr 
                           (literal 8)))))) \n) LOOP 
-              (do_condition UNTIL 
+              (loop_condition UNTIL 
                 (expr 
                   (expr 
                     (variable_or_function_call y)) = 
@@ -6493,7 +6493,7 @@
                       (call_argument 
                         (expr 
                           (literal 8)))))) \n) LOOP 
-              (do_condition UNTIL 
+              (loop_condition UNTIL 
                 (expr 
                   (expr 
                     (variable_or_function_call x)) = 
@@ -6708,7 +6708,7 @@
                           (expr 
                             (literal 10)))) \n)) 
                   (end_if_statement END IF)) \n) LOOP 
-              (do_condition UNTIL 
+              (loop_condition UNTIL 
                 (expr 
                   (expr 
                     (variable_or_function_call INKEY$)) = 
@@ -7317,7 +7317,7 @@
                               (expr 
                                 (variable_or_function_call name$)))) \n)) 
                       (end_if_statement END IF)) \n) LOOP 
-                  (do_condition UNTIL 
+                  (loop_condition UNTIL 
                     (expr 
                       (expr 
                         (expr 
@@ -9207,7 +9207,7 @@
                           (box_style B))) \n)) 
                   (end_if_statement END IF)) \n) 
               (end_if_statement END IF)) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) = 
@@ -10054,7 +10054,7 @@
                       (target 
                         (text_label 
                           (untyped_id restoremenu)))))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -12016,7 +12016,7 @@
                       (expr 
                         (variable_or_function_call name$)))) \n)) 
               (end_if_statement END IF)) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 

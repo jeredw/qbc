@@ -250,7 +250,7 @@
               (call_argument NumPlayers) , 
               (call_argument speed) , 
               (call_argument diff$)))) \n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (variable_or_function_call StillWantsToPlay))))) \n \n 
   (statement 
@@ -645,7 +645,7 @@
               (input_statement INPUT "How many players 
                 (1 or 2)" ; 
                 (variable_or_function_call num$))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -752,7 +752,7 @@
             (statement 
               (input_statement INPUT 
                 (variable_or_function_call gamespeed$))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -833,7 +833,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call diff$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -881,7 +881,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call monitor$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -2858,7 +2858,7 @@
                                             (variable_or_function_call numberRow)) , 
                                           (expr 
                                             (variable_or_function_call NumberCol)) )) . sister))))) \n) LOOP 
-                          (do_condition UNTIL 
+                          (loop_condition UNTIL 
                             (expr 
                               (expr NOT 
                                 (expr 
@@ -3895,7 +3895,7 @@
                                               (expr 
                                                 (variable_or_function_call a)) )) . scolor)))))) \n)) 
                           (end_if_statement END IF)) \n) NEXT a)) \n \n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (variable_or_function_call playerDied))))) \n \n 
             (statement 
@@ -4044,7 +4044,7 @@
                           ( 
                             (expr 
                               (literal 2)) )) . lives)))))) \n \n \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -4721,7 +4721,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 

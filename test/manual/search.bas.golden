@@ -125,7 +125,7 @@
                       (expr 
                         (variable_or_function_call TRUE)))) \r\n) 
                 (end_if_statement END IF)) \r\n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr 
                 (expr 
                   (variable_or_function_call StringPos%)) > 

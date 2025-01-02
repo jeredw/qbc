@@ -2,7 +2,7 @@
   (statement 
     (do_loop_statement do 
       (block :) loop 
-      (do_condition until 
+      (loop_condition until 
         (expr 
           (literal 0))))) \n 
   (statement 
@@ -12,7 +12,7 @@
           (print_statement print 
             (expr 
               (literal "hi")))) \n) loop 
-      (do_condition while 
+      (loop_condition while 
         (expr 
           (literal 0))))) \n 
   (statement 
@@ -89,9 +89,9 @@
         (statement 
           (do_loop_statement do 
             (block \n \n) loop 
-            (do_condition while 
+            (loop_condition while 
               (expr 
                 (variable_or_function_call j))))) \n) loop 
-      (do_condition until 
+      (loop_condition until 
         (expr 
           (variable_or_function_call i))))) \n <EOF>)

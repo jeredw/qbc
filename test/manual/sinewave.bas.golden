@@ -124,7 +124,7 @@
                         (expr 
                           (variable_or_function_call Y)) ))) \r\n \r\n) NEXT X)) \r\n) 
           (end_if_statement END IF)) \r\n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call Cycles)) > 

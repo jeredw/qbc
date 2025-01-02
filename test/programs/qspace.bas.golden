@@ -1192,7 +1192,7 @@
                                             (literal 1))))))) \n)) 
                             (end_select_statement END SELECT))) \n) 
                       (end_if_statement END IF)) \n \n) LOOP)) \n \n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr 
                 (expr 
                   (variable_or_function_call ContinueGame)) <> 
@@ -1313,7 +1313,7 @@
   (statement 
     (do_loop_statement DO 
       (block :) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (variable_or_function_call INKEY$)) <> 
@@ -1389,7 +1389,7 @@
                   ( 
                     (expr 
                       (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (variable_or_function_call a$)) <> 
@@ -2151,7 +2151,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call kbd$)) = 
@@ -2190,7 +2190,7 @@
                           ( 
                             (expr 
                               (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call kbd$)) = 
@@ -2469,7 +2469,7 @@
                     (variable_or_function_call XNum)) + 
                   (expr 
                     (literal 1))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call Explosion 
@@ -2736,7 +2736,7 @@
                     (variable_or_function_call MessageCount)) + 
                   (expr 
                     (literal 1))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (expr 
@@ -2783,7 +2783,7 @@
       (statement 
         (do_loop_statement DO 
           (block :) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) = 
@@ -2801,7 +2801,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (expr 
@@ -3224,7 +3224,7 @@
       (statement 
         (do_loop_statement DO 
           (block :) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) = 
@@ -3754,7 +3754,7 @@
                               (variable_or_function_call MaxStarbases))) )))) + 
                   (expr 
                     (literal 1))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call Starbase 
@@ -3982,7 +3982,7 @@
                             (variable_or_function_call TooClose) = 
                             (expr 
                               (variable_or_function_call TRUE))))))) \n) NEXT i)) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (expr 
@@ -5561,7 +5561,7 @@
       (statement 
         (do_loop_statement DO 
           (block :) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) = 

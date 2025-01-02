@@ -897,7 +897,7 @@
                     (variable_or_function_call i!)) + 
                   (expr 
                     (literal 1))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -3373,7 +3373,7 @@
                                   (variable_or_function_call game$)) , 
                                 (expr 
                                   (literal 2)) )))) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -3446,7 +3446,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call grav$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -4904,7 +4904,7 @@
                           (variable_or_function_call c)) + 
                         (expr 
                           (variable_or_function_call WDifh))))) \n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call c)) >= 
@@ -4935,7 +4935,7 @@
                     (variable_or_function_call CurBuilding)) + 
                   (expr 
                     (literal 1))))) \n \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call x)) > 
@@ -6239,7 +6239,7 @@
                                   ( 
                                     (expr 
                                       (literal 6)) ))))))) \n) LOOP 
-                    (do_condition UNTIL 
+                    (loop_condition UNTIL 
                       (expr 
                         (expr 
                           (variable_or_function_call Impact)) OR 
@@ -6390,7 +6390,7 @@
       (statement 
         (do_loop_statement DO 
           (block \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 

@@ -309,7 +309,7 @@
           (screen_statement SCREEN 
             (expr 
               (variable_or_function_call smode)))) \n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (expr 
             (variable_or_function_call vmode)) = 
@@ -413,13 +413,13 @@
                                         (variable_or_function_call a$) = 
                                         (expr 
                                           (variable_or_function_call INKEY$)))) \n) LOOP 
-                                  (do_condition UNTIL 
+                                  (loop_condition UNTIL 
                                     (expr 
                                       (expr 
                                         (variable_or_function_call a$)) <> 
                                       (expr 
                                         (literal "")))))) \n) LOOP 
-                            (do_condition UNTIL 
+                            (loop_condition UNTIL 
                               (expr 
                                 (expr 
                                   (variable_or_function_call ASC 
@@ -2463,7 +2463,7 @@
                   (expr 
                     (variable_or_function_call INKEY$)) , 
                   (expr 
-                    (literal 1)) )))) )))))) \n) LOOP (do_condition UNTIL (expr (expr 
+                    (literal 1)) )))) )))))) \n) LOOP (loop_condition UNTIL (expr (expr 
   (expr 
     (variable_or_function_call GS.stat)) = 
   (expr 
@@ -2988,7 +2988,7 @@
         (variable_or_function_call a$) = 
         (expr 
           (variable_or_function_call INKEY$)))) \n) LOOP 
-  (do_condition UNTIL 
+  (loop_condition UNTIL 
     (expr 
       (expr 
         (variable_or_function_call a$)) <> 
@@ -3354,7 +3354,7 @@
           (variable_or_function_call GS.stat) = 
           (expr 
             (variable_or_function_call QUIT)))) \n)) 
-  (end_select_statement END SELECT))) \n) LOOP (do_condition UNTIL (expr (expr 
+  (end_select_statement END SELECT))) \n) LOOP (loop_condition UNTIL (expr (expr 
   (expr 
     (variable_or_function_call GS.stat)) <> 
   (expr 

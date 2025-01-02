@@ -452,11 +452,15 @@ dim_subscript
 
 do_loop_statement
   : (DO do_condition) block LOOP
-  | DO block (LOOP do_condition)
+  | DO block (LOOP loop_condition)
   | DO block LOOP
   ;
 
 do_condition
+  : (WHILE expr | UNTIL expr)
+  ;
+
+loop_condition
   : (WHILE expr | UNTIL expr)
   ;
 

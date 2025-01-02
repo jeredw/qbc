@@ -391,7 +391,7 @@
                 (expr 
                   (variable_or_function_call NextSym)) , 
                 (variable_or_function_call QlbSym))) \r\n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (variable_or_function_call QlbSym.Flags))))) \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n <EOF>)

@@ -1476,7 +1476,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call i$)) <> 
@@ -3818,7 +3818,7 @@
                       (variable_or_function_call x$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call x$)) <> 
@@ -4567,7 +4567,7 @@
                       (variable_or_function_call k$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call k$)) = 
@@ -7792,7 +7792,7 @@
                 (variable_or_function_call i$) = 
                 (expr 
                   (variable_or_function_call INKEY$)))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call i$)) = 
@@ -8952,7 +8952,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 

@@ -227,7 +227,7 @@
                     (expr 
                       (literal 1))))) \r\n)) 
           (end_if_statement END IF)) \r\n \r\n) LOOP 
-      (do_condition UNTIL 
+      (loop_condition UNTIL 
         (expr 
           (variable_or_function_call EOF 
             (args_or_indices 

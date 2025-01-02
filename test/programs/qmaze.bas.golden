@@ -820,7 +820,7 @@
                     (statement 
                       (call_statement 
                         (untyped_id DisplayWinner))) \n) LOOP 
-                  (do_condition WHILE 
+                  (loop_condition WHILE 
                     (expr NOT 
                       (expr 
                         (variable_or_function_call GameOver)))))) \n \n 
@@ -847,7 +847,7 @@
                               ( 
                                 (expr 
                                   (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-                  (do_condition WHILE 
+                  (loop_condition WHILE 
                     (expr 
                       ( 
                         (expr 
@@ -874,7 +874,7 @@
                         (variable_or_function_call GameOver) = 
                         (expr 
                           (variable_or_function_call FALSE))))))) \n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr NOT 
                 (expr 
                   (variable_or_function_call GameOver)))))) \n \n 
@@ -1221,7 +1221,7 @@
                   ( 
                     (expr 
                       (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-      (do_condition WHILE 
+      (loop_condition WHILE 
         (expr 
           (expr 
             (variable_or_function_call k$)) = 
@@ -4314,7 +4314,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-          (do_condition WHILE 
+          (loop_condition WHILE 
             (expr 
               (expr 
                 (variable_or_function_call kbd$)) = 
@@ -4353,7 +4353,7 @@
                           ( 
                             (expr 
                               (variable_or_function_call INKEY$)) )))))) \n) LOOP 
-              (do_condition WHILE 
+              (loop_condition WHILE 
                 (expr 
                   (expr 
                     (variable_or_function_call kbd$)) = 
@@ -4653,7 +4653,7 @@
       (statement 
         (do_loop_statement DO 
           (block :) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call INKEY$)) = 
@@ -5318,7 +5318,7 @@
             (statement 
               (do_loop_statement DO 
                 (block :) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (builtin_function TIMER)) > 
@@ -5924,7 +5924,7 @@
               (input_statement INPUT "How many players? 
                 (1 or 2) " , 
                 (variable_or_function_call InputHold$))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -6029,7 +6029,7 @@
                                   (variable_or_function_call InputHold$)) , 
                                 (expr 
                                   (literal 1)) )))) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 ( 
@@ -6138,7 +6138,7 @@
                                   (variable_or_function_call InputHold$)) , 
                                 (expr 
                                   (literal 2)) )))) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 ( 
@@ -6267,7 +6267,7 @@
                       (expr - 
                         (expr 
                           (literal 1)))))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 ( 
@@ -6390,7 +6390,7 @@
                       ( 
                         (expr 
                           (variable_or_function_call InputHold$)) )))))) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 
@@ -8640,7 +8640,7 @@
             (statement 
               (do_loop_statement DO 
                 (block :) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       (variable_or_function_call INKEY$)) = 
@@ -8758,7 +8758,7 @@
                       (expr 
                         (variable_or_function_call TRUE)))) \n)) 
               (end_if_statement END IF)) \n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (expr 

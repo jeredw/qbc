@@ -537,7 +537,7 @@
                   (variable_or_function_call Choice$) = 
                   (expr 
                     (variable_or_function_call INKEY$)))) \r\n) LOOP 
-            (do_condition WHILE 
+            (loop_condition WHILE 
               (expr 
                 (expr 
                   (variable_or_function_call Choice$)) = 
@@ -2231,7 +2231,7 @@
                       (variable_or_function_call Choice$) = 
                       (expr 
                         (variable_or_function_call INKEY$)))) \r\n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call Choice$)) = 
@@ -3464,7 +3464,7 @@
                 (statement 
                   (exit_statement EXIT FUNCTION)) \r\n) 
               (end_if_statement END IF)) \r\n \r\n) LOOP 
-          (do_condition UNTIL 
+          (loop_condition UNTIL 
             (expr 
               (expr 
                 (variable_or_function_call Card)) = 
@@ -3745,7 +3745,7 @@
                                   ( 
                                     (expr 
                                       (literal 1)) ))) )))))) \r\n) LOOP 
-                (do_condition UNTIL 
+                (loop_condition UNTIL 
                   (expr 
                     (expr 
                       ( 
@@ -5016,7 +5016,7 @@
                       (variable_or_function_call Limit) = 
                       (expr 
                         (variable_or_function_call Switch)))) \r\n \r\n) LOOP 
-                (do_condition WHILE 
+                (loop_condition WHILE 
                   (expr 
                     (variable_or_function_call Switch))))) \r\n \r\n \r\n 
             (statement 
