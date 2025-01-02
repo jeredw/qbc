@@ -3,6 +3,7 @@ export enum ControlFlowTag {
   GOSUB,
   CALL,
   RETURN,
+  HALT,
 }
 
 export interface Goto {
@@ -22,8 +23,13 @@ export interface Return {
   tag: ControlFlowTag.RETURN
 }
 
+export interface Halt {
+  tag: ControlFlowTag.HALT
+}
+
 export type ControlFlow =
   | Goto
   | Gosub
   | Call
-  | Return;
+  | Return
+  | Halt;

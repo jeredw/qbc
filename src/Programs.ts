@@ -46,6 +46,8 @@ export function analyze(tree: ParseTree): Program {
  * This is a catch all semantic analysis pass that collects lists of statements
  * into chunks corresponding to the main program or procedures.  Each program
  * chunk has its own labels and symbol table.
+ * 
+ * Gotos are inserted to convert loops and blocks into linear code.
  */
 class ProgramChunker extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
@@ -143,9 +145,7 @@ class ProgramChunker extends QBasicParserListener {
     if (this._chunk.symbols.hasFn(name, returnType.tag)) {
       throw ParseError.fromToken(ctx._name!, "Duplicate definition");
     }
-    // Executing def fn marks it visible in the symbol table.  It is part of the
-    // current chunk's statement list, since labels on def fn refer to the
-    // defining statement in the top level.
+    // Executing def fn marks it visible in the symbol table.
     this.addStatement(statements.defFn(name, returnType));
     this._chunk.symbols.defineFn({
       name,
@@ -181,8 +181,15 @@ class ProgramChunker extends QBasicParserListener {
   override exitDef_fn_statement = this.exitProcedure;
   override exitSub_statement = this.exitProcedure;
 
-  override enterEnd_function_statement = (ctx: parser.End_function_statementContext) => {}
-  override enterEnd_sub_statement = (ctx: parser.End_sub_statementContext) => {}
+  // Emit explicit end statements for end function / end sub so that the strange
+  // behavior of ignoring END SUB : statements works.
+  override enterEnd_function_statement = (ctx: parser.End_function_statementContext) => {
+    this.addStatement(statements.endFunction());
+  }
+
+  override enterEnd_sub_statement = (ctx: parser.End_sub_statementContext) => {
+    this.addStatement(statements.endSub());
+  }
 
   override enterIf_block_statement = (ctx: parser.If_block_statementContext) => {
     let prevBranch: ParserRuleContext = ctx;
@@ -241,7 +248,34 @@ class ProgramChunker extends QBasicParserListener {
   override enterData_statement = (ctx: parser.Data_statementContext) => {}
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {}
-  override enterDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {}
+
+  override enterDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
+    ctx['$exitLabel'] = this.makeSyntheticLabel();
+    ctx['$topLabel'] = this.makeSyntheticLabel();
+    this.addLabelForNextStatement(ctx['$topLabel']);
+    const condition = ctx.do_condition();
+    if (condition) {
+      const isWhile = !!condition.WHILE();
+      const expr = condition.expr()!;
+      this.addStatement(statements.do_(isWhile, expr));
+      this.setTargetForCurrentStatement(ctx['$exitLabel'], ctx);
+    }
+  }
+
+  override exitDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
+    const condition = ctx.loop_condition();
+    if (condition) {
+      const isWhile = !!condition.WHILE();
+      const expr = condition.expr()!;
+      this.addStatement(statements.loop(isWhile, expr));
+      this.setTargetForCurrentStatement(ctx['$topLabel'], ctx);
+    } else {
+      this.addStatement(statements.goto());
+      this.setTargetForCurrentStatement(ctx['$topLabel'], ctx);
+    }
+    this.addLabelForNextStatement(ctx['$exitLabel']);
+  }
+
   override enterEnd_statement = (ctx: parser.End_statementContext) => {}
   override enterField_statement = (ctx: parser.Field_statementContext) => {}
 
@@ -326,36 +360,37 @@ class ProgramChunker extends QBasicParserListener {
   }
 
   override enterExit_statement = (ctx: parser.Exit_statementContext) => {
-    let returnFromProcedure = false;
     if (ctx.DEF()) {
-      if (!hasParent(ctx, parser.Def_fn_statementContext)) {
+      if (!findParent(ctx, parser.Def_fn_statementContext)) {
         throw ParseError.fromToken(ctx.start!, "EXIT DEF not within DEF FN");
       }
-      returnFromProcedure = true;
+      this.addStatement(statements.exitDef());
     } else if (ctx.DO()) {
-      if (!hasParent(ctx, parser.Do_loop_statementContext)) {
+      const doCtx = findParent(ctx, parser.Do_loop_statementContext);
+      if (!doCtx) {
        throw ParseError.fromToken(ctx.start!, "EXIT DO not within DO...LOOP");
       }
+      this.addStatement(statements.exitDo());
+      this.setTargetForCurrentStatement(doCtx['$exitLabel'], ctx);
     } else if (ctx.FOR()) {
-      if (!hasParent(ctx, parser.For_next_statementContext)) {
+      const forCtx = findParent(ctx, parser.For_next_statementContext);
+      if (!forCtx) {
         throw ParseError.fromToken(ctx.start!, "EXIT FOR not within FOR...NEXT");
       }
+      this.addStatement(statements.exitFor());
+      this.setTargetForCurrentStatement(forCtx['$exitLabel'], ctx);
     } else if (ctx.FUNCTION()) {
-      if (!hasParent(ctx, parser.Function_statementContext)) {
+      if (!findParent(ctx, parser.Function_statementContext)) {
         throw ParseError.fromToken(ctx.start!, "EXIT FUNCTION not within FUNCTION");
       }
-      returnFromProcedure = true;
+      this.addStatement(statements.exitFunction());
     } else if (ctx.SUB()) {
-      if (!hasParent(ctx, parser.Sub_statementContext)) {
+      if (!findParent(ctx, parser.Sub_statementContext)) {
         throw ParseError.fromToken(ctx.start!, "EXIT SUB not within SUB");
       }
-      returnFromProcedure = true;
+      this.addStatement(statements.exitSub());
     } else {
       throw new Error("invalid block type");
-    }
-    this.addStatement(statements.exit(returnFromProcedure));
-    if (!returnFromProcedure) {
-      this.setTargetForCurrentStatement(ctx['$blockExitLabel'], ctx);
     }
   }
 
@@ -495,14 +530,14 @@ function checkUntyped(name: string, ctx: ParserRuleContext, message: string) {
 
 type RuleConstructor<T extends ParserRuleContext> = { new (ctx: ParserRuleContext | null, rule: number): T }
 
-function hasParent<T extends ParserRuleContext>(
+function findParent<T extends ParserRuleContext>(
   ctx: ParserRuleContext,
-  constructor: RuleConstructor<T>): boolean {
+  constructor: RuleConstructor<T>): T | null {
   while (ctx.parent) {
     if (ctx.parent instanceof constructor) {
-      return true;
+      return ctx.parent;
     }
     ctx = ctx.parent;
   }
-  return false;
+  return null;
 }
