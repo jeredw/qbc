@@ -213,7 +213,7 @@ class ProgramChunker extends QBasicParserListener {
       labelBranch(elseBlock);
     }
     prevBranch['$nextBranchLabel'] = endIf['$label'];
-    this.addStatement(statements.if_(ctx.expr()));
+    this.addStatement(statements.if_(this.checkBoolean(ctx.expr())));
     this.setTargetForCurrentStatement(ctx['$nextBranchLabel'], ctx);
   }
 
@@ -221,7 +221,7 @@ class ProgramChunker extends QBasicParserListener {
     this.addStatement(statements.goto());
     this.setTargetForCurrentStatement(ctx['$endIfLabel'], ctx);
     this.addLabelForNextStatement(ctx['$label']);
-    this.addStatement(statements.elseIf(ctx.expr()));
+    this.addStatement(statements.elseIf(this.checkBoolean(ctx.expr())));
     this.setTargetForCurrentStatement(ctx['$nextBranchLabel'], ctx);
   }
 
@@ -256,7 +256,7 @@ class ProgramChunker extends QBasicParserListener {
     const condition = ctx.do_condition();
     if (condition) {
       const isWhile = !!condition.WHILE();
-      const expr = condition.expr()!;
+      const expr = this.checkBoolean(condition.expr()!);
       this.addStatement(statements.do_(isWhile, expr));
       this.setTargetForCurrentStatement(ctx['$exitLabel'], ctx);
     }
@@ -266,7 +266,7 @@ class ProgramChunker extends QBasicParserListener {
     const condition = ctx.loop_condition();
     if (condition) {
       const isWhile = !!condition.WHILE();
-      const expr = condition.expr()!;
+      const expr = this.checkBoolean(condition.expr()!);
       this.addStatement(statements.loop(isWhile, expr));
       this.setTargetForCurrentStatement(ctx['$topLabel'], ctx);
     } else {
@@ -511,6 +511,19 @@ class ProgramChunker extends QBasicParserListener {
   private getDefaultType(name: string): Type {
     const type = this._firstCharToDefaultType.get(firstCharOfId(name));
     return type ?? {tag: TypeTag.SINGLE};
+  }
+
+  private checkBoolean(expr: parser.ExprContext): parser.ExprContext {
+    const value = evaluateExpression({
+      expr,
+      symbols: this._chunk.symbols,
+      typeCheck: true,
+      resultType: {tag: TypeTag.LONG},
+    });
+    if (isError(value)) {
+      throw ParseError.fromToken(expr.start!, value.errorMessage);
+    }
+    return expr;
   }
 }
 

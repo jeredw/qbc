@@ -17,14 +17,16 @@ export function evaluateExpression({
   symbols,
   expr,
   constantExpression,
+  typeCheck,
   resultType
 }: {
   symbols: SymbolTable,
   expr: ExprContext,
   constantExpression?: boolean,
+  typeCheck?: boolean,
   resultType?: Type
 }): values.Value {
-  const expressionListener = new ExpressionListener(symbols, !!constantExpression);
+  const expressionListener = new ExpressionListener(symbols, !!constantExpression, !!typeCheck);
   ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
   const result = expressionListener.getResult();
   return resultType ? values.cast(result, resultType) : result;
@@ -34,11 +36,13 @@ class ExpressionListener extends QBasicParserListener {
   private _stack: values.Value[] = [];
   private _symbols: SymbolTable;
   private _constantExpression: boolean;
+  private _typeCheck: boolean;
 
-  constructor(symbols: SymbolTable, constantExpression: boolean) {
+  constructor(symbols: SymbolTable, constantExpression: boolean, typeCheck: boolean) {
     super();
     this._symbols = symbols;
     this._constantExpression = constantExpression;
+    this._typeCheck = typeCheck;
   }
 
   getResult() {
@@ -61,12 +65,12 @@ class ExpressionListener extends QBasicParserListener {
     const b = this.pop();
     const a = this.pop();
     if (values.isNumeric(a) && values.isNumeric(b)) {
-      this.push(evaluateNumericBinaryOperator(op, a, b));
+      this.push(this.evaluateNumericBinaryOperator(op, a, b));
     } else if (values.isString(a) && values.isString(b)) {
       if (this._constantExpression && op == '+') {
         throw ParseError.fromToken(ctx.start!, "Illegal function call");
       }
-      this.push(evaluateStringBinaryOperator(op, a, b));
+      this.push(this.evaluateStringBinaryOperator(op, a, b));
     // Propagate errors from earlier during evaluation.
     } else if (values.isError(a)) {
       this.push(a);
@@ -95,7 +99,7 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     // Note that k%=-32768:print -k% will overflow.
-    this.push(values.numericTypeOf(a)(-a.number));
+    this.push(values.numericTypeOf(a)(this.check(-a.number)));
   }
 
   override exitMultiplyDivideExpr = this.binaryOperator;
@@ -111,16 +115,16 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     if (a.tag == TypeTag.INTEGER) {
-      this.push(values.integer(~a.number));
+      this.push(values.integer(this.check(~a.number)));
       return;
     }
     if (a.tag == TypeTag.LONG) {
-      this.push(values.long(~a.number));
+      this.push(values.long(this.check(~a.number)));
       return;
     }
     // Cast a to long first to detect overflow.
-    const _ = values.long(a.number);
-    this.push(values.long(~a.number));
+    const _ = values.long(this.check(a.number));
+    this.push(values.long(this.check(~a.number)));
   }
 
   override exitAndExpr = this.binaryOperator;
@@ -157,7 +161,7 @@ class ExpressionListener extends QBasicParserListener {
     this.push(value);
   }
 
-  parseValue(fullText: string): values.Value {
+  private parseValue(fullText: string): values.Value {
     const [text, sigil] = splitSigil(fullText);
     if (text.startsWith('"') && text.endsWith('"')) {
       return values.string(text.substring(1, text.length - 1));
@@ -172,6 +176,119 @@ class ExpressionListener extends QBasicParserListener {
       return parseIntegerConstant(text, sigil);
     }
     return parseFloatConstant(text, sigil);
+  }
+
+  private evaluateNumericBinaryOperator(op: string, a: values.NumericValue, b: values.NumericValue): values.Value {
+    const resultType = values.mostPreciseType(a, b);
+    switch (op.toLowerCase()) {
+      case '+':
+        return resultType(this.check(a.number + b.number));
+      case '-':
+        return resultType(this.check(a.number - b.number));
+      case '*':
+        return resultType(this.check(a.number * b.number));
+      case '/':
+        return this.floatDivide(a, b);
+      case '\\':
+        return withIntegerCast(a, b, this.integerDivide);
+      case 'mod':
+        return withIntegerCast(a, b, this.integerRemainder);
+      case '^':
+        if (a.number == 0 && b.number < 0 && !this._typeCheck) {
+          return values.ILLEGAL_FUNCTION_CALL;
+        }
+        return resultType(this.check(Math.pow(a.number, b.number)));
+      case '=':
+        return values.boolean(a.number == b.number);
+      case '<':
+        return values.boolean(a.number < b.number);
+      case '<=':
+        return values.boolean(a.number <= b.number);
+      case '<>':
+        return values.boolean(a.number != b.number);
+      case '>=':
+        return values.boolean(a.number >= b.number);
+      case '>':
+        return values.boolean(a.number > b.number);
+      case 'and':
+        return this.logicalOp(a, b, (a, b) => a & b);
+      case 'or':
+        return this.logicalOp(a, b, (a, b) => a | b);
+      case 'xor':
+        return this.logicalOp(a, b, (a, b) => a ^ b);
+      case 'eqv':
+        return this.logicalOp(a, b, (a, b) => ~(a ^ b));
+      case 'imp':
+        return this.logicalOp(a, b, (a, b) => ~a | b);
+      default:
+        throw new Error(`Unknown operator ${op}`);
+    }
+  }
+
+  private evaluateStringBinaryOperator(op: string, a: values.StringValue, b: values.StringValue): values.Value {
+    switch (op.toLowerCase()) {
+      case '+':
+        return values.string(a.string + b.string);
+      case '=':
+        return values.boolean(a.string == b.string);
+      case '<':
+        return values.boolean(a.string < b.string);
+      case '<=':
+        return values.boolean(a.string <= b.string);
+      case '<>':
+        return values.boolean(a.string != b.string);
+      case '>=':
+        return values.boolean(a.string >= b.string);
+      case '>':
+        return values.boolean(a.string > b.string);
+      case '-':
+      case '*':
+      case '/':
+      case '\\':
+      case 'mod':
+      case '^':
+      case 'and':
+      case 'or':
+      case 'xor':
+      case 'eqv':
+      case 'imp':
+        return values.TYPE_MISMATCH;
+      default:
+        throw new Error(`Unknown operator ${op}`);
+    }
+  }
+
+  private floatDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
+    if (b.number == 0 && !this._typeCheck) {
+      return values.DIVISION_BY_ZERO;
+    }
+    const result = this.check(a.number / b.number);
+    if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
+      return values.double(result);
+    }
+    return values.single(result);
+  }
+
+  private integerDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
+    if (b.number == 0 && !this._typeCheck) {
+      return values.DIVISION_BY_ZERO;
+    }
+    return values.numericTypeOf(a)(Math.floor(this.check(a.number / b.number)));
+  }
+
+  private integerRemainder(a: values.NumericValue, b: values.NumericValue): values.Value {
+    if (b.number == 0 && !this._typeCheck) {
+      return values.DIVISION_BY_ZERO;
+    }
+    return values.numericTypeOf(a)(this.check(a.number % b.number));
+  }
+
+  private logicalOp(a: values.NumericValue, b: values.NumericValue, op: (a: number, b: number) => number): values.Value {
+    return withIntegerCast(a, b, (a, b) => values.numericTypeOf(a)(this.check(op(a.number, b.number))));
+  }
+
+  private check(n: number): number {
+    return this._typeCheck ? 0 : n;
   }
 }
 
@@ -223,97 +340,6 @@ function parseAmpConstant(text: string, base: number, sigil: string): values.Val
   return n > 0xffff ? values.long(n) : values.integer(n);
 }
 
-function evaluateNumericBinaryOperator(op: string, a: values.NumericValue, b: values.NumericValue): values.Value {
-  const resultType = values.mostPreciseType(a, b);
-  switch (op.toLowerCase()) {
-    case '+':
-      return resultType(a.number + b.number);
-    case '-':
-      return resultType(a.number - b.number);
-    case '*':
-      return resultType(a.number * b.number);
-    case '/':
-      return floatDivide(a, b);
-    case '\\':
-      return withIntegerCast(a, b, integerDivide);
-    case 'mod':
-      return withIntegerCast(a, b, integerRemainder);
-    case '^':
-      if (a.number == 0 && b.number < 0) {
-        return values.ILLEGAL_FUNCTION_CALL;
-      }
-      return resultType(Math.pow(a.number, b.number));
-    case '=':
-      return values.boolean(a.number == b.number);
-    case '<':
-      return values.boolean(a.number < b.number);
-    case '<=':
-      return values.boolean(a.number <= b.number);
-    case '<>':
-      return values.boolean(a.number != b.number);
-    case '>=':
-      return values.boolean(a.number >= b.number);
-    case '>':
-      return values.boolean(a.number > b.number);
-    case 'and':
-      return logicalOp(a, b, (a, b) => a & b);
-    case 'or':
-      return logicalOp(a, b, (a, b) => a | b);
-    case 'xor':
-      return logicalOp(a, b, (a, b) => a ^ b);
-    case 'eqv':
-      return logicalOp(a, b, (a, b) => ~(a ^ b));
-    case 'imp':
-      return logicalOp(a, b, (a, b) => ~a | b);
-    default:
-      throw new Error(`Unknown operator ${op}`);
-  }
-}
-
-function floatDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
-  if (b.number == 0) {
-    return values.DIVISION_BY_ZERO;
-  }
-  const result = a.number / b.number;
-  if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
-    return values.double(result);
-  }
-  return values.single(result);
-}
-
-function evaluateStringBinaryOperator(op: string, a: values.StringValue, b: values.StringValue): values.Value {
-  switch (op.toLowerCase()) {
-    case '+':
-      return values.string(a.string + b.string);
-    case '=':
-      return values.boolean(a.string == b.string);
-    case '<':
-      return values.boolean(a.string < b.string);
-    case '<=':
-      return values.boolean(a.string <= b.string);
-    case '<>':
-      return values.boolean(a.string != b.string);
-    case '>=':
-      return values.boolean(a.string >= b.string);
-    case '>':
-      return values.boolean(a.string > b.string);
-    case '-':
-    case '*':
-    case '/':
-    case '\\':
-    case 'mod':
-    case '^':
-    case 'and':
-    case 'or':
-    case 'xor':
-    case 'eqv':
-    case 'imp':
-     return values.TYPE_MISMATCH;
-    default:
-      throw new Error(`Unknown operator ${op}`);
-  }
-}
-
 function withIntegerCast(a: values.NumericValue, b: values.NumericValue, fn: (a: values.NumericValue, b: values.NumericValue) => values.Value): values.Value {
   const bothOperandsAreShortIntegers =
     a.tag == TypeTag.INTEGER && b.tag == TypeTag.INTEGER;
@@ -327,22 +353,4 @@ function withIntegerCast(a: values.NumericValue, b: values.NumericValue, fn: (a:
     return castB;
   }
   return fn(castA, castB);
-}
-
-function integerDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
-  if (b.number == 0) {
-    return values.DIVISION_BY_ZERO;
-  }
-  return values.numericTypeOf(a)(Math.floor(a.number / b.number));
-}
-
-function integerRemainder(a: values.NumericValue, b: values.NumericValue): values.Value {
-  if (b.number == 0) {
-    return values.DIVISION_BY_ZERO;
-  }
-  return values.numericTypeOf(a)(a.number % b.number);
-}
-
-function logicalOp(a: values.NumericValue, b: values.NumericValue, op: (a: number, b: number) => number): values.Value {
-  return withIntegerCast(a, b, (a, b) => values.numericTypeOf(a)(op(a.number, b.number)));
 }
