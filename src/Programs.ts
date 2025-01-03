@@ -348,7 +348,22 @@ class ProgramChunker extends QBasicParserListener {
   override enterUnlock_statement = (ctx: parser.Unlock_statementContext) => {}
   override enterView_statement = (ctx: parser.View_statementContext) => {}
   override enterView_print_statement = (ctx: parser.View_print_statementContext) => {}
-  override enterWhile_wend_statement = (ctx: parser.While_wend_statementContext) => {}
+
+  override enterWhile_wend_statement = (ctx: parser.While_wend_statementContext) => {
+    ctx['$exitLabel'] = this.makeSyntheticLabel();
+    ctx['$topLabel'] = this.makeSyntheticLabel();
+    const condition = this.checkBoolean(ctx.expr()!);
+    this.addLabelForNextStatement(ctx['$topLabel']);
+    this.addStatement(statements.while_(condition));
+    this.setTargetForCurrentStatement(ctx['$exitLabel'], ctx);
+  }
+
+  override exitWhile_wend_statement = (ctx: parser.While_wend_statementContext) => {
+    this.addStatement(statements.goto());
+    this.setTargetForCurrentStatement(ctx['$topLabel'], ctx);
+    this.addLabelForNextStatement(ctx['$exitLabel']);
+  }
+
   override enterWidth_statement = (ctx: parser.Width_statementContext) => {}
   override enterWindow_statement = (ctx: parser.Window_statementContext) => {}
   override enterWrite_statement = (ctx: parser.Write_statementContext) => {}

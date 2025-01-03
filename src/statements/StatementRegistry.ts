@@ -76,3 +76,7 @@ export function print(ast: parser.Print_statementContext) {
 export function return_(start: Token) {
   return new ReturnStatement(ControlFlowTag.GOSUB, start);
 }
+
+export function while_(expr: parser.ExprContext) {
+  return new DoTest(true, expr);
+}
