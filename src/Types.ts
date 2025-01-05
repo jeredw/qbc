@@ -84,10 +84,6 @@ export function sameType(s: Type, t: Type) {
   return s.tag == t.tag;
 }
 
-export function isArray(t: Type): t is ArrayType {
-  return t.tag == TypeTag.ARRAY;
-}
-
 function isString(s: Type): boolean {
   return s.tag == TypeTag.STRING || s.tag == TypeTag.FIXED_STRING;
 }

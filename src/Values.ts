@@ -90,6 +90,9 @@ export function mostPreciseType(a: NumericValue, b: NumericValue): (number: numb
 }
 
 export function cast(value: Value, desiredType: Type): Value {
+  if (value.tag == TypeTag.ERROR) {
+    return value;
+  }
   if (value.tag == desiredType.tag &&
       value.tag != TypeTag.RECORD &&
       value.tag != TypeTag.ARRAY) {
@@ -144,6 +147,7 @@ export function integer(number: number): Value {
   if (number < -32768 || number > 32767) {
     return OVERFLOW;
   }
+  // TODO: QBasic rounds floats to the nearest even.
   return {tag: TypeTag.INTEGER, number: Math.round(number)};
 }
 
@@ -151,6 +155,7 @@ export function long(number: number): Value {
   if (number < -2147483648 || number > 2147483647) {
     return OVERFLOW;
   }
+  // TODO: QBasic rounds floats to the nearest even.
   return {tag: TypeTag.LONG, number: Math.round(number)};
 }
 

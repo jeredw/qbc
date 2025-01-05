@@ -6,15 +6,7 @@ export interface Variable {
   arrayDimensions?: ArrayBounds[];
 }
 
-export type Dimensions =
-  | ArrayBounds[]
-  | DynamicArray;
-
 export interface ArrayBounds {
-  lower: number;
-  upper: number;
-}
-
-export interface DynamicArray {
-  numDimensions: number;
+  lower: number | undefined;
+  upper: number | undefined;
 }

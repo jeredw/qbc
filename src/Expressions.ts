@@ -344,6 +344,7 @@ function withIntegerCast(a: values.NumericValue, b: values.NumericValue, fn: (a:
   const bothOperandsAreShortIntegers =
     a.tag == TypeTag.INTEGER && b.tag == TypeTag.INTEGER;
   const integerType = bothOperandsAreShortIntegers ? values.integer : values.long;
+  // TODO: QBasic rounds floats to the nearest even.
   const castA = integerType(Math.round(a.number));
   const castB = integerType(Math.round(b.number));
   if (!values.isNumeric(castA)) {

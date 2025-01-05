@@ -15,9 +15,9 @@ import {
   typeOfSigil,
   sameType,
 } from "./Types.ts";
-import { ArrayBounds, Dimensions, Variable } from "./Variables.ts";
+import { ArrayBounds, Variable } from "./Variables.ts";
 import { evaluateExpression } from "./Expressions.ts";
-import { isError, isNumeric } from "./Values.ts";
+import { isError, isNumeric, Value } from "./Values.ts";
 import { Statement } from "./statements/Statement.ts";
 
 export interface Program {
@@ -56,7 +56,7 @@ class ProgramChunker extends QBasicParserListener {
   private _chunk: ProgramChunk;
   private _program: Program;
   private _syntheticLabelIndex = 0;
-  private _baseIndex = 0;
+  private _arrayBaseIndex = 1;
 
   constructor() {
     super();
@@ -276,17 +276,15 @@ class ProgramChunker extends QBasicParserListener {
 
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
     for (const dim of ctx.dim_variable()) {
-      if (dim.dim_array_bounds()) {
-        throw new Error("unimplemented");
-      }
-      const arrayBounds = {};
+      const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds())
+      const dimensions = {...arrayDimensions.length ? {arrayDimensions} : {}};
       if (!!dim.AS()) {
         const asType = this.getType(dim.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
         try {
           this._chunk.symbols.defineVariable({
-            variable: {name, type: asType, ...arrayBounds},
+            variable: {name, type: asType, ...dimensions},
             isAsType: true
           });
         } catch (error: any) {
@@ -308,7 +306,7 @@ class ProgramChunker extends QBasicParserListener {
         }
         try {
           this._chunk.symbols.defineVariable({
-            variable: {name, type, ...arrayBounds},
+            variable: {name, type, ...dimensions},
           });
         } catch (error: any) {
           throw ParseError.fromToken(dim.ID()!.symbol, error.message);
@@ -317,34 +315,42 @@ class ProgramChunker extends QBasicParserListener {
     }
   }
 
-  /*
-  private getArrayBounds(ctx: parser.Dim_array_boundsContext): Dimensions {
+  private getArrayBounds(ctx: parser.Dim_array_boundsContext | null): ArrayBounds[] {
+    if (ctx == null) {
+      return [];
+    }
     const tryToEvaluateAsConstant = (expr: parser.ExprContext) => {
-      const result = evaluateExpression({
-        expr,
-        symbols: this._chunk.symbols,
-        constantExpression: true,
-        resultType: { tag: TypeTag.LONG },
-      });
+      let result: Value | undefined;
+      try {
+        result = evaluateExpression({
+          expr,
+          symbols: this._chunk.symbols,
+          constantExpression: true,
+          resultType: { tag: TypeTag.LONG },
+        });
+      } catch (error: any) {
+        // Thrown errors from evaluateExpression() mean this is not a constant
+        // expression.  This array bound must be dynamic, so swallow the error
+        // and return undefined.
+        return;
+      }
+      // Error values mean the expression had some known issue, like a type
+      // mismatch or division by zero.
+      if (isError(result)) {
+        throw ParseError.fromToken(expr.start!, result.errorMessage);
+      }
       if (isNumeric(result)) {
         return result.number;
       }
-      if ()
-      throw new Error("not constant");
     };
-    try {
-      return ctx.dim_subscript().map((range) => {
-        const lower = range._lower ?
-            tryToEvaluateAsConstant(range._lower) :
-            this._baseIndex;  // TODO: option base
-        const upper = tryToEvaluateAsConstant(range._upper!);
-        return {lower, upper};
-      });
-    } catch (error: any) {
-      return {numDimensions: ctx.dim_subscript().length};
-    }
+    return ctx.dim_subscript().map((range) => {
+      const lower = range._lower ?
+          tryToEvaluateAsConstant(range._lower) :
+          this._arrayBaseIndex;  // TODO: option base
+      const upper = tryToEvaluateAsConstant(range._upper!);
+      return {lower, upper};
+    });
   }
-    */
 
   override enterDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
     ctx['$exitLabel'] = this.makeSyntheticLabel();
