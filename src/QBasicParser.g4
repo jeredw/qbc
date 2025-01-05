@@ -875,7 +875,7 @@ args_or_indices : '(' (expr (COMMA expr)*)? ')';
 // 
 // Note the IDE reformats "x   . y" as "x.y".
 variable_or_function_call
-  : (ID | FNID) (args_or_indices ('.' ID)?)?
+  : name=(ID | FNID) (args_or_indices ('.' ID)?)?
   ;
 
 // A system or user-defined type following an AS keyword.

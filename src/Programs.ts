@@ -13,10 +13,11 @@ import {
   typeOfDefType,
   typeOfName,
   typeOfSigil,
+  sameType,
 } from "./Types.ts";
-import { Variable } from "./Variables.ts";
+import { ArrayBounds, Dimensions, Variable } from "./Variables.ts";
 import { evaluateExpression } from "./Expressions.ts";
-import { isError } from "./Values.ts";
+import { isError, isNumeric } from "./Values.ts";
 import { Statement } from "./statements/Statement.ts";
 
 export interface Program {
@@ -55,6 +56,7 @@ class ProgramChunker extends QBasicParserListener {
   private _chunk: ProgramChunk;
   private _program: Program;
   private _syntheticLabelIndex = 0;
+  private _baseIndex = 0;
 
   constructor() {
     super();
@@ -121,16 +123,17 @@ class ProgramChunker extends QBasicParserListener {
 
   override enterFunction_statement = (ctx: parser.Function_statementContext) => {
     const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
-    if (this._chunk.symbols.has(name)) {
-      throw ParseError.fromToken(ctx.ID().symbol, "Duplicate definition");
+    try {
+      this._chunk.symbols.defineProcedure({
+        name,
+        returnType: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
+        parameters: this.parseParameterList(ctx.parameter_list()),
+        staticStorage: !!ctx.STATIC(),
+        programChunkIndex: this._program.chunks.length,
+      });
+    } catch (error: any) {
+      throw ParseError.fromToken(ctx.ID().symbol, error.message);
     }
-    this._chunk.symbols.defineProcedure({
-      name,
-      returnType: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
-      parameters: this.parseParameterList(ctx.parameter_list()),
-      staticStorage: !!ctx.STATIC(),
-      programChunkIndex: this._program.chunks.length,
-    });
     // A label on a function is attached to the first statement of the function.
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
     this._program.chunks.push(this._chunk);
@@ -142,32 +145,34 @@ class ProgramChunker extends QBasicParserListener {
     const fnPrefixed = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
     const [name, sigil] = splitSigil(fnPrefixed);
     const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    if (this._chunk.symbols.hasFn(name, returnType.tag)) {
-      throw ParseError.fromToken(ctx._name!, "Duplicate definition");
-    }
     // Executing def fn marks it visible in the symbol table.
     this.addStatement(statements.defFn(name, returnType));
-    this._chunk.symbols.defineFn({
-      name,
-      returnType,
-      parameters: this.parseDefFnParameterList(ctx.def_fn_parameter_list()),
-      programChunkIndex: this._program.chunks.length,
-    });
+    try {
+      this._chunk.symbols.defineFn({
+        name,
+        returnType,
+        parameters: this.parseDefFnParameterList(ctx.def_fn_parameter_list()),
+        programChunkIndex: this._program.chunks.length,
+      });
+    } catch (error: any) {
+      throw ParseError.fromToken(ctx._name!, error.message);
+    }
     this._chunk = this.makeProgramChunk(this._chunk.symbols);
     this._program.chunks.push(this._chunk);
   }
 
   override enterSub_statement = (ctx: parser.Sub_statementContext) => {
-    const name = getUntypedId(ctx.untyped_id());
-    if (this._chunk.symbols.has(name)) {
-      throw ParseError.fromToken(ctx.untyped_id().start!, "Duplicate definition");
+    const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
+    try {
+      this._chunk.symbols.defineProcedure({
+        name,
+        parameters: this.parseParameterList(ctx.parameter_list()),
+        staticStorage: !!ctx.STATIC(),
+        programChunkIndex: this._program.chunks.length
+      });
+    } catch (error: any) {
+      throw ParseError.fromToken(ctx.untyped_id().start!, error.message);
     }
-    this._chunk.symbols.defineProcedure({
-      name,
-      parameters: this.parseParameterList(ctx.parameter_list()),
-      staticStorage: !!ctx.STATIC(),
-      programChunkIndex: this._program.chunks.length
-    });
     // A label on a sub is attached to the first statement of the sub.
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
     this._program.chunks.push(this._chunk);
@@ -236,7 +241,28 @@ class ProgramChunker extends QBasicParserListener {
   }
 
   override enterOption_statement = (ctx: parser.Option_statementContext) => {}
-  override enterAssignment_statement = (ctx: parser.Assignment_statementContext) => {}
+
+  override enterAssignment_statement = (ctx: parser.Assignment_statementContext) => {
+    /*const assignee = ctx.variable_or_function_call();
+    const [name, sigil] = splitSigil(assignee._name!.text!);
+    const symbol = this._chunk.symbols.lookup(name);
+    if (symbol && !symbol.variable) {
+      throw ParseError.fromToken(assignee._name!, "Duplicate definition");
+    }
+    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const expr = ctx.expr();
+    const value = evaluateExpression({
+      expr,
+      symbols: this._chunk.symbols,
+      typeCheck: true,
+      resultType: type
+    });
+    if (isError(value)) {
+      throw ParseError.fromToken(assignee._name!, value.errorMessage);
+    }
+    this.addStatement(statements.let_());*/
+  }
+
   override enterCall_statement = (ctx: parser.Call_statementContext) => {}
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
@@ -247,7 +273,78 @@ class ProgramChunker extends QBasicParserListener {
   override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
   override enterData_statement = (ctx: parser.Data_statementContext) => {}
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
-  override enterDim_statement = (ctx: parser.Dim_statementContext) => {}
+
+  override enterDim_statement = (ctx: parser.Dim_statementContext) => {
+    for (const dim of ctx.dim_variable()) {
+      if (dim.dim_array_bounds()) {
+        throw new Error("unimplemented");
+      }
+      const arrayBounds = {};
+      if (!!dim.AS()) {
+        const asType = this.getType(dim.type_name()!);
+        const allowPeriods = asType.tag != TypeTag.RECORD;
+        const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
+        try {
+          this._chunk.symbols.defineVariable({
+            variable: {name, type: asType, ...arrayBounds},
+            isAsType: true
+          });
+        } catch (error: any) {
+          throw ParseError.fromToken(dim.untyped_id()!.start!, error.message);
+        }
+      } else {
+        const [name, sigil] = splitSigil(dim.ID()?.getText()!);
+        const asType = this._chunk.symbols.getAsType(name);
+        const type = sigil ? typeOfSigil(sigil) :
+          // So DIM x AS STRING, x(50) fails with "AS clause required".
+          asType ? asType :
+          this.getDefaultType(name);
+        if (asType) {
+          // DIM...AS followed by DIM without AS for the same name always fails.
+          if (sameType(type, asType)) {
+            throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
+          }
+          throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
+        }
+        try {
+          this._chunk.symbols.defineVariable({
+            variable: {name, type, ...arrayBounds},
+          });
+        } catch (error: any) {
+          throw ParseError.fromToken(dim.ID()!.symbol, error.message);
+        }
+      }
+    }
+  }
+
+  /*
+  private getArrayBounds(ctx: parser.Dim_array_boundsContext): Dimensions {
+    const tryToEvaluateAsConstant = (expr: parser.ExprContext) => {
+      const result = evaluateExpression({
+        expr,
+        symbols: this._chunk.symbols,
+        constantExpression: true,
+        resultType: { tag: TypeTag.LONG },
+      });
+      if (isNumeric(result)) {
+        return result.number;
+      }
+      if ()
+      throw new Error("not constant");
+    };
+    try {
+      return ctx.dim_subscript().map((range) => {
+        const lower = range._lower ?
+            tryToEvaluateAsConstant(range._lower) :
+            this._baseIndex;  // TODO: option base
+        const upper = tryToEvaluateAsConstant(range._upper!);
+        return {lower, upper};
+      });
+    } catch (error: any) {
+      return {numDimensions: ctx.dim_subscript().length};
+    }
+  }
+    */
 
   override enterDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
     ctx['$exitLabel'] = this.makeSyntheticLabel();
@@ -370,9 +467,7 @@ class ProgramChunker extends QBasicParserListener {
 
   private checkNoExecutableStatements(ctx: ParserRuleContext) {
     for (const statement of this._chunk.statements) {
-      if (statement.isExecutable()) {
-        throw ParseError.fromToken(ctx.start!, "COMMON and DECLARE must precede executable statements");
-      }
+      throw ParseError.fromToken(ctx.start!, "COMMON and DECLARE must precede executable statements");
     }
   }
 
@@ -436,11 +531,11 @@ class ProgramChunker extends QBasicParserListener {
 
   override enterType_statement = (ctx: parser.Type_statementContext) => {
     const nameCtx = ctx.untyped_id() ?? ctx.untyped_fnid();
-    const name = getUntypedId(nameCtx!, /* allowPeriods= */ false);
+    const name = getUntypedId(nameCtx!, {allowPeriods: false});
     const elements: UserDefinedTypeElement[] = [];
     for (const elementCtx of ctx.type_element()) {
       const elementNameCtx = elementCtx.untyped_id() ?? elementCtx.untyped_fnid();
-      const elementName = getUntypedId(elementNameCtx!, /* allowPeriods= */ false);
+      const elementName = getUntypedId(elementNameCtx!, {allowPeriods: false});
       const typeNameCtx = elementCtx.type_name_for_type_element();
       const elementType = this.getType(typeNameCtx);
       elements.push({name: elementName, type: elementType});
@@ -460,7 +555,11 @@ class ProgramChunker extends QBasicParserListener {
       if (isError(value)) {
         throw ParseError.fromToken(assignment.ID().symbol, value.errorMessage);
       }
-      this._chunk.symbols.defineConstant(name, value);
+      try {
+        this._chunk.symbols.defineConstant(name, value);
+      } catch (error: any) {
+        throw ParseError.fromToken(assignment.ID().symbol, error.message);
+      }
     }
   }
 
@@ -488,7 +587,7 @@ class ProgramChunker extends QBasicParserListener {
 
   private parseParameter(ctx: parser.ParameterContext | parser.Def_fn_parameterContext): Variable {
     const nameCtx = ctx.untyped_id();
-    const rawName = nameCtx ? getUntypedId(nameCtx) : ctx.ID()!.getText();
+    const rawName = nameCtx ? getUntypedId(nameCtx, {allowPeriods: true}) : ctx.ID()!.getText();
     const [name, sigil] = splitSigil(rawName);
     const asTypeCtx = ctx instanceof parser.ParameterContext ?
       ctx.type_name_for_parameter() :
@@ -508,7 +607,7 @@ class ProgramChunker extends QBasicParserListener {
     }
     const child = ctx.children[0];
     if (child instanceof parser.Untyped_idContext || child instanceof parser.Untyped_fnidContext) {
-      const typeName = getUntypedId(child, /* allowPeriods= */ false);
+      const typeName = getUntypedId(child, {allowPeriods: false});
       const type = this.program.types.get(typeName);
       if (!type) {
         throw ParseError.fromToken(ctx.start!, "Type not defined");
@@ -547,7 +646,7 @@ function firstCharOfId(name: string) {
   return lower.startsWith('fn') ? name.slice(2, 1) : name.slice(0, 1);
 }
 
-function getUntypedId(ctx: parser.Untyped_idContext | parser.Untyped_fnidContext, allowPeriods: boolean = true): string {
+function getUntypedId(ctx: parser.Untyped_idContext | parser.Untyped_fnidContext, {allowPeriods}: {allowPeriods: boolean}): string {
   const id = checkUntyped(ctx.getText(), ctx, "Identifier cannot end with %, &, !, # or $");
   if (!allowPeriods && id.includes('.')) {
       throw ParseError.fromToken(ctx.start!, "Identifier cannot include period");

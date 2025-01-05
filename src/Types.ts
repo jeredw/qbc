@@ -68,6 +68,30 @@ export type Type =
   | ArrayType
   | AnyType;
 
+export function sameType(s: Type, t: Type) {
+  if (isString(s) && isString(t)) {
+    return true;
+  }
+  if (s.tag == TypeTag.ANY || t.tag == TypeTag.ANY) {
+    return true;
+  }
+  if (s.tag == TypeTag.RECORD && t.tag == TypeTag.RECORD) {
+    return s.name == t.name;
+  }
+  if (s.tag == TypeTag.ARRAY && t.tag == TypeTag.ARRAY) {
+    return sameType(s.elementType, t.elementType);
+  }
+  return s.tag == t.tag;
+}
+
+export function isArray(t: Type): t is ArrayType {
+  return t.tag == TypeTag.ARRAY;
+}
+
+function isString(s: Type): boolean {
+  return s.tag == TypeTag.STRING || s.tag == TypeTag.FIXED_STRING;
+}
+
 export function typeOfSigil(sigil: string): Type {
   switch (sigil) {
     case '!': return {tag: TypeTag.SINGLE};

@@ -1,7 +1,8 @@
+import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { DefFnStatement } from "./DefFn.ts";
 import { GosubStatement } from "./Gosub.ts";
 import { GotoStatement } from "./Goto.ts";
-import { DoTest, IfTest, LoopTest } from "./Cond.ts";
+import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import { Type } from "../Types";
@@ -59,6 +60,10 @@ export function gosub() {
 
 export function if_(expr: parser.ExprContext) {
   return new IfTest(expr);
+}
+
+export function let_() {
+  return new LetStatement();
 }
 
 export function loop(isWhile: boolean, expr: parser.ExprContext) {

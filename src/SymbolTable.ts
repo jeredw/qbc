@@ -1,47 +1,206 @@
 import { Procedure } from "./Procedures";
-import { splitSigil, Type, TypeTag } from "./Types";
+import { sameType, Type, TypeTag } from "./Types";
 import { Value } from "./Values";
 import { Variable } from "./Variables";
 
+// Variables, constants (CONST), and procedures (FUNCTION and SUB) share the
+// same namespace.  Constants and procedures are looked up only by name, not by
+// type or number of arguments.
+//
+// Variables of different types can have the same name, and a scalar ("simple")
+// variable can have the same name as an array variable.
+//
+// Names can have at most one AS type.
+//
+//   DIM x AS STRING, x(5) AS STRING  ' ok
+//   DIM x AS STRING, x(5) AS INTEGER ' Duplicate definition
+//
+// After DIM...AS, typed references to a name, whether array or scalar, must
+// agree with the AS type.  But e.g. untyped array references ignore the AS type
+// for scalar variables with the same name.
+// 
+//   DIM x AS STRING
+//   x = 42       ' Type mismatch
+//   x! = 42      ' Duplicate definition
+//   x(5) = 42    ' ok
+//   x$(5) = "ok" ' ok
+//   x!(5) = 42   ' Duplicate definition
+
+export enum SymbolTag {
+  PROCEDURE,
+  CONSTANT,
+  VARIABLE
+}
+
+export interface ProcedureSymbol {
+  tag: SymbolTag.PROCEDURE;
+  procedure: Procedure;
+}
+
+export interface ConstantSymbol {
+  tag: SymbolTag.CONSTANT;
+  constant: Value;
+}
+
+export interface VariableSymbol {
+  tag: SymbolTag.VARIABLE;
+  variable: Variable;
+}
+
+export type Symbol =
+  | ProcedureSymbol
+  | ConstantSymbol
+  | VariableSymbol;
+
+type TypeToItemMap<T> = Map<TypeTag, T>
+
+interface Slot {
+  procedure?: Procedure;
+  constant?: Value;
+  defFns?: TypeToItemMap<Procedure>;
+  scalarVariables?: TypeToItemMap<Variable>;
+  arrayVariables?: TypeToItemMap<Variable>;
+  scalarAsType?: Type;
+  arrayAsType?: Type;
+}
+
 export class SymbolTable {
   private _parent: SymbolTable | undefined;
-  private _procedures: Map<string, Procedure> = new Map();
-  private _fns: Map<TypeTag, Map<string, Procedure>> = new Map([
-    [TypeTag.SINGLE, new Map()],
-    [TypeTag.DOUBLE, new Map()],
-    [TypeTag.STRING, new Map()],
-    [TypeTag.INTEGER, new Map()],
-    [TypeTag.LONG, new Map()],
-  ]);
-  private _constants: Map<string, Value> = new Map();
-
+  private _symbols: Map<string, Slot> = new Map();
+  
   constructor(parent?: SymbolTable) {
     this._parent = parent;
   }
 
-  defineConstant(name: string, value: Value) {
-    this._constants.set(name, value);
+  // Look up a name, and if it is not found, define a new variable with that
+  // name and the given type.
+  lookupOrDefineVariable({name, type, isDefaultType, numDimensions}: {
+      name: string,
+      type: Type,
+      isDefaultType: boolean,
+      numDimensions: number
+    }): Symbol {
+    const slot = this._symbols.get(name);
+    if (slot) {
+      // If a name is found with the wrong type, we fall through to trying to
+      // define a variable below and throw "Duplicate definition".
+      if (slot.procedure && (!slot.procedure.returnType || sameType(type, slot.procedure.returnType))) {
+        return {tag: SymbolTag.PROCEDURE, procedure: slot.procedure};
+      }
+      if (slot.defFns) {
+        const procedure = slot.defFns.get(type.tag);
+        if (procedure) {
+          return {tag: SymbolTag.PROCEDURE, procedure};
+        }
+      }
+      if (slot.constant && slot.constant.tag == type.tag) {
+        return {tag: SymbolTag.CONSTANT, constant: slot.constant};
+      }
+      if (numDimensions == 0 && slot.scalarVariables) {
+        const asType = isDefaultType ? slot.scalarAsType :
+          (slot.scalarAsType ?? slot.arrayAsType);
+        if (!asType || sameType(asType, type)) {
+          const variable = slot.scalarVariables.get(type.tag);
+          if (variable) {
+            return {tag: SymbolTag.VARIABLE, variable};
+          }
+        }
+      }
+      if (numDimensions > 0 && slot.arrayVariables) {
+        const asType = isDefaultType ? slot.arrayAsType :
+          (slot.arrayAsType ?? slot.scalarAsType);
+        if (!asType || sameType(asType, type)) {
+          const variable = slot.arrayVariables.get(type.tag);
+          if (variable) {
+            return {tag: SymbolTag.VARIABLE, variable};
+          }
+        }
+      }
+    }
+    const arrayDimensions = numDimensions > 0 ? {
+      arrayDimensions: new Array(numDimensions).fill({
+        lower: 1, upper: 10  // TODO: option base
+      })
+    } : {};
+    const variable = { name, type, ...arrayDimensions };
+    this.defineVariable({variable});
+    return { tag: SymbolTag.VARIABLE, variable };
   }
 
-  lookupConstant(name: string): Value | undefined {
-    return this._constants.get(name);
+  getAsType(name: string): Type | undefined {
+    const slot = this._symbols.get(name);
+    return slot?.scalarAsType ?? slot?.arrayAsType;
   }
 
-  defineProcedure(proc: Procedure) {
-    this._procedures.set(proc.name, proc);
+  defineVariable({variable, isAsType = false}: {
+    variable: Variable,
+    isAsType?: boolean
+  }) {
+    const slot = this._symbols.get(variable.name) ?? {};
+    if (slot.procedure || slot.constant) {
+      throw new Error("Duplicate definition");
+    }
+    if (slot.defFns) {
+      throw new Error("Cannot start with FN");
+    }
+    if (!variable.arrayDimensions) {
+      const asType = slot.scalarAsType ?? slot.arrayAsType;
+      if (asType && !sameType(asType, variable.type)) {
+        throw new Error("Duplicate definition")
+      }
+      if (isAsType) {
+        slot.scalarAsType = variable.type;
+      }
+      if (!slot.scalarVariables) {
+        slot.scalarVariables = new Map();
+      }
+      if (slot.scalarVariables.has(variable.type.tag)) {
+        throw new Error("Duplicate definition");
+      }
+      slot.scalarVariables.set(variable.type.tag, variable);
+    } else {
+      const asType = slot.arrayAsType ?? slot.scalarAsType;
+      if (asType && !sameType(asType, variable.type)) {
+        throw new Error("Duplicate definition")
+      }
+      if (isAsType) {
+        slot.arrayAsType = variable.type;
+      }
+      if (!slot.arrayVariables) {
+        slot.arrayVariables = new Map();
+      }
+      if (slot.arrayVariables.has(variable.type.tag)) {
+        throw new Error("Array already dimensioned");
+      }
+      slot.arrayVariables.set(variable.type.tag, variable);
+    }
+    this._symbols.set(variable.name, slot);
+  }
+  
+  defineConstant(name: string, constant: Value) {
+    if (this._symbols.has(name)) {
+      throw new Error("Duplicate definition");
+    }
+    this._symbols.set(name, {constant});
   }
 
-  defineFn(proc: Procedure) {
-    const table = this._fns.get(proc.returnType!.tag)!;
-    table.set(proc.name, proc);
+  defineProcedure(procedure: Procedure) {
+    if (this._symbols.has(procedure.name)) {
+      throw new Error("Duplicate definition");
+    }
+    this._symbols.set(procedure.name, {procedure});
   }
 
-  hasFn(name: string, typeTag: TypeTag): boolean {
-    const table = this._fns.get(typeTag)!;
-    return table.has(name);
-  }
-
-  has(name: string): boolean {
-    return this._procedures.has(name);
+  defineFn(procedure: Procedure) {
+    const slot = this._symbols.get(procedure.name) ?? {
+      defFns: new Map()
+    };
+    if (!slot.defFns) {
+      throw new Error("Name must start with FN");
+    }
+    if (slot.defFns.has(procedure.returnType!.tag)) {
+      throw new Error("Duplicate definition");
+    }
+    slot.defFns.set(procedure.returnType!.tag, procedure);
   }
 }
