@@ -150,7 +150,7 @@ class ExpressionListener extends QBasicParserListener {
       // But even if it is defined, it's not a constant.
       throw ParseError.fromToken(ctx.FNID()!.symbol, "Invalid constant");
     }
-    const [name, sigil] = ctx.ID(0)!.getText()
+    const [name, sigil] = splitSigil(ctx.ID(0)!.getText());
     const value = this._symbols.lookupConstant(name);
     if (!value) {
       throw ParseError.fromToken(ctx.ID(0)!.symbol, "Invalid constant");

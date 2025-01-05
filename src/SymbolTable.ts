@@ -64,12 +64,36 @@ interface Slot {
   arrayAsType?: Type;
 }
 
+class NameToSlotMap {
+  private _map: Map<string, Slot> = new Map();
+
+  get(name: string): Slot | undefined {
+    return this._map.get(canonicalName(name));
+  }
+
+  set(name: string, slot: Slot) {
+    this._map.set(canonicalName(name), slot);
+  }
+
+  has(name: string) {
+    return this._map.has(canonicalName(name));
+  }
+}
+
+function canonicalName(name: string): string {
+  return name.toLowerCase();
+}
+
 export class SymbolTable {
   private _parent: SymbolTable | undefined;
-  private _symbols: Map<string, Slot> = new Map();
+  private _symbols: NameToSlotMap = new NameToSlotMap();
   
   constructor(parent?: SymbolTable) {
     this._parent = parent;
+  }
+
+  lookupConstant(name: string): Value | undefined {
+    return this._symbols.get(name)?.constant;
   }
 
   // Look up a name, and if it is not found, define a new variable with that
