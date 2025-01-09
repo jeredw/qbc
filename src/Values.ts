@@ -121,6 +121,40 @@ export function cast(value: Value, desiredType: Type): Value {
   }
 }
 
+export function getDefaultValueOfType(type: Type): Value {
+  switch (type.tag) {
+    case TypeTag.SINGLE:
+      return single(0);
+    case TypeTag.DOUBLE:
+      return double(0);
+    case TypeTag.STRING:
+      return string("");
+    case TypeTag.INTEGER:
+      return integer(0);
+    case TypeTag.LONG:
+      return long(0);
+    case TypeTag.FIXED_STRING:
+      return string("");
+    case TypeTag.RECORD:
+      return buildDefaultRecord(type);
+    case TypeTag.ARRAY:
+    case TypeTag.ANY:
+      throw new Error("unimplemented");
+  }
+}
+
+function buildDefaultRecord(recordType: UserDefinedType): Value {
+  const value: RecordValue = {
+    tag: TypeTag.RECORD,
+    recordType,
+    elements: new Map()
+  }
+  for (const {name, type} of recordType.elements) {
+    value.elements.set(name, getDefaultValueOfType(type));
+  }
+  return value;
+}
+
 export function error(errorMessage: string = ""): ErrorValue {
   return {tag: TypeTag.ERROR, errorMessage};
 }

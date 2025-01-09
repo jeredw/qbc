@@ -9,6 +9,7 @@ import { Type } from "../Types";
 import * as parser from "../../build/QBasicParser";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
+import { Variable } from "../Variables.ts";
 
 export function defFn(name: string, returnType: Type) {
   return new DefFnStatement(name, returnType);
@@ -62,8 +63,8 @@ export function if_(expr: parser.ExprContext) {
   return new IfTest(expr);
 }
 
-export function let_() {
-  return new LetStatement();
+export function let_(variable: Variable, expr: parser.ExprContext) {
+  return new LetStatement(variable, expr);
 }
 
 export function loop(isWhile: boolean, expr: parser.ExprContext) {

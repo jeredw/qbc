@@ -5,28 +5,27 @@ import {
   UnaryMinusExprContext,
   ValueExprContext,
   VarCallExprContext,
+  Variable_or_function_callContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTreeWalker, TerminalNode } from "antlr4ng";
 import * as values from "./Values.ts";
 import { splitSigil, Type, typeOfSigil, TypeTag } from "./Types.ts";
-import { SymbolTable } from "./SymbolTable.ts";
 import { ParseError } from "./Errors.ts";
+import { isConstant, isVariable } from "./SymbolTable.ts";
 
 export function evaluateExpression({
-  symbols,
   expr,
   constantExpression,
   typeCheck,
   resultType
 }: {
-  symbols: SymbolTable,
   expr: ExprContext,
   constantExpression?: boolean,
   typeCheck?: boolean,
   resultType?: Type
 }): values.Value {
-  const expressionListener = new ExpressionListener(symbols, !!constantExpression, !!typeCheck);
+  const expressionListener = new ExpressionListener(!!constantExpression, !!typeCheck);
   ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
   const result = expressionListener.getResult();
   return resultType ? values.cast(result, resultType) : result;
@@ -34,13 +33,11 @@ export function evaluateExpression({
 
 class ExpressionListener extends QBasicParserListener {
   private _stack: values.Value[] = [];
-  private _symbols: SymbolTable;
   private _constantExpression: boolean;
   private _typeCheck: boolean;
 
-  constructor(symbols: SymbolTable, constantExpression: boolean, typeCheck: boolean) {
+  constructor(constantExpression: boolean, typeCheck: boolean) {
     super();
-    this._symbols = symbols;
     this._constantExpression = constantExpression;
     this._typeCheck = typeCheck;
   }
@@ -139,26 +136,27 @@ class ExpressionListener extends QBasicParserListener {
 
   override exitVarCallExpr = (dispatchCtx: VarCallExprContext) => {
     const ctx = dispatchCtx.variable_or_function_call();
-    if (!this._constantExpression) {
-      throw new Error("unimplemented");
+    const symbol = ctx['$symbol'];
+    if (!symbol) {
+      throw new Error("missing symbol");
     }
-    if (ctx.args_or_indices()) {
-      throw ParseError.fromToken(ctx.args_or_indices()!.LEFT_PAREN().symbol, "Invalid constant");
+    if (this._constantExpression) {
+      if (!isConstant(symbol)) {
+        throw ParseError.fromToken(ctx.start!, "Invalid constant");
+      }
     }
-    if (ctx.FNID()) {
-      // QBasic will actually try to lookup the fnid first and complain if it's not defined.
-      // But even if it is defined, it's not a constant.
-      throw ParseError.fromToken(ctx.FNID()!.symbol, "Invalid constant");
+    if (isConstant(symbol)) {
+      this.push(symbol.constant)
+      return;
     }
-    const [name, sigil] = splitSigil(ctx.ID(0)!.getText());
-    const value = this._symbols.lookupConstant(name);
-    if (!value) {
-      throw ParseError.fromToken(ctx.ID(0)!.symbol, "Invalid constant");
+    if (isVariable(symbol)) {
+      if (!symbol.variable.value) {
+        symbol.variable.value = values.getDefaultValueOfType(symbol.variable.type);
+      }
+      this.push(symbol.variable.value);
+      return;
     }
-    if (sigil && typeOfSigil(sigil).tag != value.tag) {
-      throw ParseError.fromToken(ctx.ID(0)!.symbol, "Duplicate definition");
-    }
-    this.push(value);
+    throw new Error("unimplemented");
   }
 
   private parseValue(fullText: string): values.Value {
@@ -190,9 +188,9 @@ class ExpressionListener extends QBasicParserListener {
       case '/':
         return this.floatDivide(a, b);
       case '\\':
-        return withIntegerCast(a, b, this.integerDivide);
+        return withIntegerCast(a, b, (a: values.NumericValue, b: values.NumericValue) => this.integerDivide(a, b));
       case 'mod':
-        return withIntegerCast(a, b, this.integerRemainder);
+        return withIntegerCast(a, b, (a: values.NumericValue, b: values.NumericValue) => this.integerRemainder(a, b));
       case '^':
         if (a.number == 0 && b.number < 0 && !this._typeCheck) {
           return values.ILLEGAL_FUNCTION_CALL;

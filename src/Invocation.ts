@@ -75,10 +75,7 @@ export class Invocation {
     }
     const statement = chunk.statements[statementIndex];
     try {
-      const controlFlow = statement.execute({
-        symbols: chunk.symbols,
-        devices: this.devices,
-      });
+      const controlFlow = statement.execute({devices: this.devices});
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
         return;

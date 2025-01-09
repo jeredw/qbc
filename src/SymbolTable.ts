@@ -52,6 +52,14 @@ export type Symbol =
   | ConstantSymbol
   | VariableSymbol;
 
+export function isVariable(symbol: Symbol): symbol is VariableSymbol {
+  return 'variable' in symbol;
+}
+
+export function isConstant(symbol: Symbol): symbol is ConstantSymbol {
+  return 'constant' in symbol;
+}
+
 type TypeToItemMap<T> = Map<TypeTag, T>
 
 interface Slot {
@@ -117,7 +125,7 @@ export class SymbolTable {
           return {tag: SymbolTag.PROCEDURE, procedure};
         }
       }
-      if (slot.constant && slot.constant.tag == type.tag) {
+      if (slot.constant && (isDefaultType || slot.constant.tag == type.tag)) {
         return {tag: SymbolTag.CONSTANT, constant: slot.constant};
       }
       if (numDimensions == 0 && slot.scalarVariables) {

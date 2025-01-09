@@ -3,7 +3,7 @@ import * as statements from "./statements/StatementRegistry.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTree, ParseTreeWalker, Token } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
-import { SymbolTable } from "./SymbolTable.ts";
+import { isVariable, SymbolTable } from "./SymbolTable.ts";
 import {
   TypeTag,
   Type,
@@ -242,25 +242,37 @@ class ProgramChunker extends QBasicParserListener {
 
   override enterOption_statement = (ctx: parser.Option_statementContext) => {}
 
-  override enterAssignment_statement = (ctx: parser.Assignment_statementContext) => {
-    /*const assignee = ctx.variable_or_function_call();
-    const [name, sigil] = splitSigil(assignee._name!.text!);
-    const symbol = this._chunk.symbols.lookup(name);
-    if (symbol && !symbol.variable) {
+  override enterVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
+    const [name, sigil] = splitSigil(ctx._name!.text!);
+    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const symbol = this._chunk.symbols.lookupOrDefineVariable({
+      name,
+      type,
+      isDefaultType: !sigil,
+      numDimensions: 0  // TODO arrays
+    });
+    ctx['$symbol'] = symbol;
+  }
+
+  override exitAssignment_statement = (ctx: parser.Assignment_statementContext) => {
+    const assignee = ctx.variable_or_function_call();
+    const symbol = assignee['$symbol'];
+    if (!symbol) {
+      throw new Error("missing symbol");
+    }
+    if (!isVariable(symbol)) {
       throw ParseError.fromToken(assignee._name!, "Duplicate definition");
     }
-    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const expr = ctx.expr();
     const value = evaluateExpression({
       expr,
-      symbols: this._chunk.symbols,
       typeCheck: true,
-      resultType: type
+      resultType: symbol.variable.type
     });
     if (isError(value)) {
       throw ParseError.fromToken(assignee._name!, value.errorMessage);
     }
-    this.addStatement(statements.let_());*/
+    this.addStatement(statements.let_(symbol.variable, expr));
   }
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {}
@@ -277,6 +289,9 @@ class ProgramChunker extends QBasicParserListener {
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
     for (const dim of ctx.dim_variable()) {
       const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds())
+      if (arrayDimensions.some((bounds) => bounds.lower === undefined || bounds.upper == undefined)) {
+        throw new Error("TODO: dynamic arrays");
+      }
       const dimensions = {...arrayDimensions.length ? {arrayDimensions} : {}};
       if (!!dim.AS()) {
         const asType = this.getType(dim.type_name()!);
@@ -324,7 +339,6 @@ class ProgramChunker extends QBasicParserListener {
       try {
         result = evaluateExpression({
           expr,
-          symbols: this._chunk.symbols,
           constantExpression: true,
           resultType: { tag: TypeTag.LONG },
         });
@@ -553,7 +567,6 @@ class ProgramChunker extends QBasicParserListener {
     for (const assignment of ctx.const_assignment()) {
       const [name, sigil] = splitSigil(assignment.ID().getText());
       const value = evaluateExpression({
-        symbols: this._chunk.symbols,
         expr: assignment.const_expr().expr(),
         constantExpression: true,
         ...(sigil ? {resultType: typeOfSigil(sigil)} : {}),
@@ -636,7 +649,6 @@ class ProgramChunker extends QBasicParserListener {
   private checkBoolean(expr: parser.ExprContext): parser.ExprContext {
     const value = evaluateExpression({
       expr,
-      symbols: this._chunk.symbols,
       typeCheck: true,
       resultType: {tag: TypeTag.LONG},
     });
