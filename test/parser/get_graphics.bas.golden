@@ -25,7 +25,8 @@
         (expr 
           (literal 16)) ) , 
       (variable_or_function_call sprite% 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 2)) ))))) \n <EOF>)
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 2)))) )))) \n <EOF>)

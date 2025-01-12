@@ -46,9 +46,13 @@
                 (call_statement CALL 
                   (untyped_id Convert) 
                   ( 
-                    (call_argument_list 
-                      (call_argument Decimal) , 
-                      (call_argument Newbase)) ))) \r\n 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Decimal))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Newbase)))) ))) \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Decimal) = 
@@ -98,38 +102,42 @@
                 (variable_or_function_call Digit$) = 
                 (expr 
                   (variable_or_function_call CHR$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call R)) + 
-                          (expr 
-                            (literal 48))) ))))))) ELSE 
+                            (expr 
+                              (variable_or_function_call R)) + 
+                            (expr 
+                              (literal 48))))) )))))) ELSE 
           (if_inline_action 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Digit$) = 
                 (expr 
                   (variable_or_function_call CHR$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call R)) + 
-                          (expr 
-                            (literal 55))) ))))))))) \r\n 
+                            (expr 
+                              (variable_or_function_call R)) + 
+                            (expr 
+                              (literal 55))))) )))))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call N$) = 
           (expr 
             (expr 
               (variable_or_function_call RIGHT$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call Digit$)) , 
-                    (expr 
-                      (literal 1)) )))) + 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Digit$))) , 
+                    (argument 
+                      (expr 
+                        (literal 1)))) ))) + 
             (expr 
               (variable_or_function_call N$))))) \r\n) 
     (end_sub_statement END SUB)) \r\n \n <EOF>)

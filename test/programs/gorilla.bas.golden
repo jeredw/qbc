@@ -353,17 +353,19 @@
     (expr 
       (expr 
         (variable_or_function_call INT 
-          (args_or_indices 
-            ( 
-              (expr 
+          ( 
+            (argument_list 
+              (argument 
                 (expr 
-                  (variable_or_function_call RND 
-                    (args_or_indices 
+                  (expr 
+                    (variable_or_function_call RND 
                       ( 
-                        (expr 
-                          (literal 1)) )))) * 
-                (expr 
-                  (variable_or_function_call x))) )))) + 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1)))) ))) * 
+                  (expr 
+                    (variable_or_function_call x))))) ))) + 
       (expr 
         (literal 1)))) \n 
   (statement 
@@ -375,10 +377,11 @@
       (variable_or_function_call KeyFlags) = 
       (expr 
         (variable_or_function_call PEEK 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 1047)) )))))) \n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1047)))) ))))) \n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -394,11 +397,11 @@
       (statement 
         (call_statement 
           (untyped_id POKE) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 1047))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (expr 
                   (variable_or_function_call KeyFlags)) OR 
@@ -418,23 +421,39 @@
   (statement 
     (call_statement 
       (untyped_id GetInputs) 
-      (call_argument_list 
-        (call_argument Name1$) , 
-        (call_argument Name2$) , 
-        (call_argument NumGames)))) \n 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call Name1$))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call Name2$))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call NumGames)))))) \n 
   (statement 
     (call_statement 
       (untyped_id GorillaIntro) 
-      (call_argument_list 
-        (call_argument Name1$) , 
-        (call_argument Name2$)))) \n 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call Name1$))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call Name2$)))))) \n 
   (statement 
     (call_statement 
       (untyped_id PlayGame) 
-      (call_argument_list 
-        (call_argument Name1$) , 
-        (call_argument Name2$) , 
-        (call_argument NumGames)))) \n \n 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call Name1$))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call Name2$))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call NumGames)))))) \n \n 
   (statement 
     (def_seg_statement DEF SEG = 
       (expr 
@@ -442,11 +461,13 @@
   (statement 
     (call_statement 
       (untyped_id POKE) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal 1047))) , 
-        (call_argument KeyFlags)))) \n 
+        (argument 
+          (expr 
+            (variable_or_function_call KeyFlags)))))) \n 
   (statement 
     (def_seg_statement DEF SEG)) \n 
   (statement 
@@ -532,10 +553,11 @@
           (literal 4)) * 
         (expr 
           (variable_or_function_call ATN 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 1#)) ))))))) \n \n \n 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1#)))) )))))) \n \n \n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
@@ -603,8 +625,10 @@
       (statement 
         (call_statement 
           (untyped_id RESTORE) 
-          (call_argument_list 
-            (call_argument EGABanana)))) \n 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call EGABanana)))))) \n 
       (statement 
         (dim_statement REDIM 
           (dim_variable LBan& 
@@ -641,10 +665,11 @@
             (statement 
               (read_statement READ 
                 (variable_or_function_call LBan& 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call i)) ))))) \n) NEXT i)) \n \n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) )))) \n) NEXT i)) \n \n 
       (statement 
         (for_next_statement FOR i = 
           (expr 
@@ -655,10 +680,11 @@
             (statement 
               (read_statement READ 
                 (variable_or_function_call DBan& 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call i)) ))))) \n) NEXT i)) \n \n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) )))) \n) NEXT i)) \n \n 
       (statement 
         (for_next_statement FOR i = 
           (expr 
@@ -669,10 +695,11 @@
             (statement 
               (read_statement READ 
                 (variable_or_function_call UBan& 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call i)) ))))) \n) NEXT i)) \n \n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) )))) \n) NEXT i)) \n \n 
       (statement 
         (for_next_statement FOR i = 
           (expr 
@@ -683,10 +710,11 @@
             (statement 
               (read_statement READ 
                 (variable_or_function_call RBan& 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call i)) ))))) \n) NEXT i)) \n \n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) )))) \n) NEXT i)) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SunHt) = 
@@ -712,8 +740,10 @@
         (statement 
           (call_statement 
             (untyped_id RESTORE) 
-            (call_argument_list 
-              (call_argument CGABanana)))) \n 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call CGABanana)))))) \n 
         (statement 
           (dim_statement REDIM 
             (dim_variable LBan& 
@@ -770,10 +800,11 @@
               (statement 
                 (read_statement READ 
                   (variable_or_function_call LBan& 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call i)) ))))) \n) NEXT i)) \n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call i)))) )))) \n) NEXT i)) \n 
         (statement 
           (for_next_statement FOR i = 
             (expr 
@@ -784,10 +815,11 @@
               (statement 
                 (read_statement READ 
                   (variable_or_function_call DBan& 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call i)) ))))) \n) NEXT i)) \n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call i)))) )))) \n) NEXT i)) \n 
         (statement 
           (for_next_statement FOR i = 
             (expr 
@@ -798,10 +830,11 @@
               (statement 
                 (read_statement READ 
                   (variable_or_function_call UBan& 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call i)) ))))) \n) NEXT i)) \n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call i)))) )))) \n) NEXT i)) \n 
         (statement 
           (for_next_statement FOR i = 
             (expr 
@@ -812,10 +845,11 @@
               (statement 
                 (read_statement READ 
                   (variable_or_function_call RBan& 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call i)) ))))) \n) NEXT i)) \n \n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call i)))) )))) \n) NEXT i)) \n \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call MachSpeed) = 
@@ -1046,8 +1080,8 @@
             (statement 
               (call_statement 
                 (untyped_id Rest) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal .005)))))) \n) NEXT c#)) \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n 
@@ -1108,15 +1142,17 @@
           (variable_or_function_call Angle#) = 
           (expr 
             (variable_or_function_call GetNum# 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 2)) , 
-                  (expr 
+              ( 
+                (argument_list 
+                  (argument 
                     (expr 
-                      (variable_or_function_call LocateCol)) + 
+                      (literal 2))) , 
+                  (argument 
                     (expr 
-                      (literal 7))) )))))) \n \n 
+                      (expr 
+                        (variable_or_function_call LocateCol)) + 
+                      (expr 
+                        (literal 7))))) ))))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -1132,15 +1168,17 @@
           (variable_or_function_call Velocity) = 
           (expr 
             (variable_or_function_call GetNum# 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 3)) , 
-                  (expr 
+              ( 
+                (argument_list 
+                  (argument 
                     (expr 
-                      (variable_or_function_call LocateCol)) + 
+                      (literal 3))) , 
+                  (argument 
                     (expr 
-                      (literal 10))) )))))) \n \n 
+                      (expr 
+                        (variable_or_function_call LocateCol)) + 
+                      (expr 
+                        (literal 10))))) ))))) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -1174,18 +1212,19 @@
               (print_statement PRINT 
                 (expr 
                   (variable_or_function_call SPACE$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (literal 30)) \ 
-                          (expr 
-                            ( 
-                              (expr 
+                            (expr 
+                              (literal 30)) \ 
+                            (expr 
+                              ( 
                                 (expr 
-                                  (literal 80)) \ 
-                                (expr 
-                                  (variable_or_function_call MaxCol))) ))) )))) ;)) \n 
+                                  (expr 
+                                    (literal 80)) \ 
+                                  (expr 
+                                    (variable_or_function_call MaxCol))) ))))) ))) ;)) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -1206,18 +1245,19 @@
               (print_statement PRINT 
                 (expr 
                   (variable_or_function_call SPACE$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (literal 30)) \ 
-                          (expr 
-                            ( 
-                              (expr 
+                            (expr 
+                              (literal 30)) \ 
+                            (expr 
+                              ( 
                                 (expr 
-                                  (literal 80)) \ 
-                                (expr 
-                                  (variable_or_function_call MaxCol))) ))) )))) ;)) \n) NEXT)) \n \n 
+                                  (expr 
+                                    (literal 80)) \ 
+                                  (expr 
+                                    (variable_or_function_call MaxCol))) ))))) ))) ;)) \n) NEXT)) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SunHit) = 
@@ -1228,18 +1268,23 @@
           (variable_or_function_call PlayerHit) = 
           (expr 
             (variable_or_function_call PlotShot 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call x)) , 
-                  (expr 
-                    (variable_or_function_call y)) , 
-                  (expr 
-                    (variable_or_function_call Angle#)) , 
-                  (expr 
-                    (variable_or_function_call Velocity)) , 
-                  (expr 
-                    (variable_or_function_call PlayerNum)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call x))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call y))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Angle#))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Velocity))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call PlayerNum)))) ))))) \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -1278,8 +1323,10 @@
             (statement 
               (call_statement 
                 (untyped_id VictoryDance) 
-                (call_argument_list 
-                  (call_argument PlayerNum)))) \n)) 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call PlayerNum)))))) \n)) 
         (end_if_statement END IF)) \n \n) 
     (end_function_statement END FUNCTION)) \n \n \n \n \n \n \n 
   (sub_statement SUB 
@@ -1301,10 +1348,11 @@
           (variable_or_function_call y) = 
           (expr 
             (variable_or_function_call Scl 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 25)) )))))) \n \n \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 25)))) ))))) \n \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -1313,38 +1361,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 22)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 22)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 18)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 18)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 22)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 22)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 18)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 18)))) )))) ) , 
           (expr 
             (variable_or_function_call BACKATTR)) , 
           (box_style BF))) \n \n \n \n 
@@ -1357,10 +1409,11 @@
               (variable_or_function_call y)) ) , 
           (expr 
             (variable_or_function_call Scl 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 12)) )))) , 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 12)))) ))) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n 
       (statement 
@@ -1380,10 +1433,11 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 20)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 20)))) )))) , 
             (expr 
               (variable_or_function_call y)) ) - 
           ( 
@@ -1392,10 +1446,11 @@
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 20)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 20)))) )))) , 
             (expr 
               (variable_or_function_call y)) ) , 
           (expr 
@@ -1410,10 +1465,11 @@
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 15)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 15)))) )))) ) - 
           ( 
             (expr 
               (variable_or_function_call x)) , 
@@ -1422,10 +1478,11 @@
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 15)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 15)))) )))) ) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n \n 
       (statement 
@@ -1436,38 +1493,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 15)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 15)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 10)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 15)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 15)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 10)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) )))) ) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n 
       (statement 
@@ -1478,38 +1539,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 15)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 15)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 10)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 15)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 15)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 10)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) )))) ) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n \n 
       (statement 
@@ -1520,38 +1585,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 8)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 8)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 13)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 13)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 8)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 8)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 13)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 13)))) )))) ) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n 
       (statement 
@@ -1562,38 +1631,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 8)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 8)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 13)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 13)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 8)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 8)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 13)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 13)))) )))) ) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n \n 
       (statement 
@@ -1604,38 +1677,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 18)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 18)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 5)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 5)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 18)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 18)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 5)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 5)))) )))) ) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n 
       (statement 
@@ -1646,38 +1723,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 18)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 18)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 5)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 5)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 18)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 18)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 5)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 5)))) )))) ) , 
           (expr 
             (variable_or_function_call SUNATTR)))) \n \n \n 
       (if_block_statement IF 
@@ -1694,16 +1775,18 @@
                     (variable_or_function_call y)) + 
                   (expr 
                     (variable_or_function_call Scl 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (literal 5)) ))))) ) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 5)))) )))) ) , 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2.9)) )))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 2.9)))) ))) , 
               (expr 
                 (literal 0)))) \n 
           (statement 
@@ -1716,10 +1799,11 @@
                     (variable_or_function_call y)) + 
                   (expr 
                     (variable_or_function_call Scl 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (literal 5)) ))))) ) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 5)))) )))) ) , 
               (expr 
                 (literal 0)) , 
               (expr 
@@ -1735,10 +1819,11 @@
                     (variable_or_function_call y)) ) , 
                 (expr 
                   (variable_or_function_call Scl 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 8)) )))) , 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 8)))) ))) , 
                 (expr 
                   (literal 0)) , 
                 (expr 
@@ -1976,10 +2061,11 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 4)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 4)))) )))) , 
             (expr 
               (variable_or_function_call y)) ) - 
           ( 
@@ -1988,19 +2074,21 @@
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2.9)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 2.9)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 6)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 6)))) )))) ) , 
           (expr 
             (variable_or_function_call OBJECTCOLOR)) , 
           (box_style BF))) \n 
@@ -2012,38 +2100,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 5)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 5)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 2)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 4)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 4)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 4)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 4)))) )))) ) , 
           (expr 
             (variable_or_function_call OBJECTCOLOR)) , 
           (box_style BF))) \n \n \n 
@@ -2055,38 +2147,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 3)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 3)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 2)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 2)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 2)))) )))) ) , 
           (expr 
             (literal 0)))) \n \n \n 
       (if_block_statement IF 
@@ -2147,38 +2243,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 3)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 3)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 7)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 7)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 2)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 2)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 7)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 7)))) )))) ) , 
           (expr 
             (variable_or_function_call OBJECTCOLOR)))) \n \n \n 
       (statement 
@@ -2189,38 +2289,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 8)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 8)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 8)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 8)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 6.9)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 6.9)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 14)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 14)))) )))) ) , 
           (expr 
             (variable_or_function_call OBJECTCOLOR)) , 
           (box_style BF))) \n 
@@ -2232,38 +2336,42 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 6)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 6)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 15)) ))))) ) - 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 15)))) )))) ) - 
           ( 
             (expr 
               (expr 
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 4.9)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 4.9)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 20)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 20)))) )))) ) , 
           (expr 
             (variable_or_function_call OBJECTCOLOR)) , 
           (box_style BF))) \n \n \n 
@@ -2282,25 +2390,28 @@
                       (variable_or_function_call x)) + 
                     (expr 
                       (variable_or_function_call Scl 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call i)) ))))) , 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call i)))) )))) , 
                   (expr 
                     (expr 
                       (variable_or_function_call y)) + 
                     (expr 
                       (variable_or_function_call Scl 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (literal 25)) ))))) ) , 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 25)))) )))) ) , 
                 (expr 
                   (variable_or_function_call Scl 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 10)) )))) , 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 10)))) ))) , 
                 (expr 
                   (variable_or_function_call OBJECTCOLOR)) , 
                 (expr 
@@ -2328,35 +2439,39 @@
                         (variable_or_function_call x)) + 
                       (expr 
                         (variable_or_function_call Scl 
-                          (args_or_indices 
-                            ( 
-                              (expr - 
-                                (expr 
-                                  (literal 6))) ))))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr - 
+                                  (expr 
+                                    (literal 6))))) )))) + 
                     (expr 
                       (variable_or_function_call Scl 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
-                                (variable_or_function_call i)) - 
-                              (expr 
-                                (literal .1))) ))))) , 
+                                (expr 
+                                  (variable_or_function_call i)) - 
+                                (expr 
+                                  (literal .1))))) )))) , 
                   (expr 
                     (expr 
                       (variable_or_function_call y)) + 
                     (expr 
                       (variable_or_function_call Scl 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (literal 25)) ))))) ) , 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 25)))) )))) ) , 
                 (expr 
                   (variable_or_function_call Scl 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 10)) )))) , 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 10)))) ))) , 
                 (expr 
                   (variable_or_function_call OBJECTCOLOR)) , 
                 (expr 
@@ -2380,25 +2495,28 @@
                 (variable_or_function_call x)) - 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 4.9)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 4.9)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 10)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) )))) ) , 
           (expr 
             (variable_or_function_call Scl 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 4.9)) )))) , 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 4.9)))) ))) , 
           (expr 
             (literal 0)) , 
           (expr 
@@ -2419,25 +2537,28 @@
                 (variable_or_function_call x)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 4.9)) ))))) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 4.9)))) )))) , 
             (expr 
               (expr 
                 (variable_or_function_call y)) + 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 10)) ))))) ) , 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) )))) ) , 
           (expr 
             (variable_or_function_call Scl 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 4.9)) )))) , 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 4.9)))) ))) , 
           (expr 
             (literal 0)) , 
           (expr 
@@ -2478,28 +2599,31 @@
                               (variable_or_function_call x)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
+                                ( 
+                                  (argument_list 
+                                    (argument 
                                       (expr 
-                                        (variable_or_function_call i)) - 
-                                      (expr 
-                                        (literal .1))) ))))) , 
+                                        (expr 
+                                          (variable_or_function_call i)) - 
+                                        (expr 
+                                          (literal .1))))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 14)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 14)))) )))) ) , 
                         (expr 
                           (variable_or_function_call Scl 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 9)) )))) , 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 9)))) ))) , 
                         (expr 
                           (variable_or_function_call OBJECTCOLOR)) , 
                         (expr 
@@ -2527,31 +2651,35 @@
                                 (variable_or_function_call x)) + 
                               (expr 
                                 (variable_or_function_call Scl 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (literal 4.9)) ))))) + 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (literal 4.9)))) )))) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call i)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call i)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 4)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 4)))) )))) ) , 
                         (expr 
                           (variable_or_function_call Scl 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 9)) )))) , 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 9)))) ))) , 
                         (expr 
                           (variable_or_function_call OBJECTCOLOR)) , 
                         (expr 
@@ -2575,38 +2703,42 @@
                               (variable_or_function_call x)) - 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 15)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 15)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) - 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 1)) ))))) ) - 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 1)))) )))) ) - 
                         ( 
                           (expr 
                             (expr 
                               (variable_or_function_call x)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 14)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 14)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 28)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 28)))) )))) ) , 
                         (variable_or_function_call GorR&))) \n)) 
                 (case_block 
                   (case_statement CASE 
@@ -2622,28 +2754,31 @@
                               (variable_or_function_call x)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
+                                ( 
+                                  (argument_list 
+                                    (argument 
                                       (expr 
-                                        (variable_or_function_call i)) - 
-                                      (expr 
-                                        (literal .1))) ))))) , 
+                                        (expr 
+                                          (variable_or_function_call i)) - 
+                                        (expr 
+                                          (literal .1))))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 4)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 4)))) )))) ) , 
                         (expr 
                           (variable_or_function_call Scl 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 9)) )))) , 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 9)))) ))) , 
                         (expr 
                           (variable_or_function_call OBJECTCOLOR)) , 
                         (expr 
@@ -2671,31 +2806,35 @@
                                 (variable_or_function_call x)) + 
                               (expr 
                                 (variable_or_function_call Scl 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (literal 4.9)) ))))) + 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (literal 4.9)))) )))) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call i)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call i)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 14)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 14)))) )))) ) , 
                         (expr 
                           (variable_or_function_call Scl 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 9)) )))) , 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 9)))) ))) , 
                         (expr 
                           (variable_or_function_call OBJECTCOLOR)) , 
                         (expr 
@@ -2719,38 +2858,42 @@
                               (variable_or_function_call x)) - 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 15)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 15)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) - 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 1)) ))))) ) - 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 1)))) )))) ) - 
                         ( 
                           (expr 
                             (expr 
                               (variable_or_function_call x)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 14)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 14)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 28)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 28)))) )))) ) , 
                         (variable_or_function_call GorL&))) \n)) 
                 (case_block 
                   (case_statement CASE 
@@ -2766,28 +2909,31 @@
                               (variable_or_function_call x)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
+                                ( 
+                                  (argument_list 
+                                    (argument 
                                       (expr 
-                                        (variable_or_function_call i)) - 
-                                      (expr 
-                                        (literal .1))) ))))) , 
+                                        (expr 
+                                          (variable_or_function_call i)) - 
+                                        (expr 
+                                          (literal .1))))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 14)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 14)))) )))) ) , 
                         (expr 
                           (variable_or_function_call Scl 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 9)) )))) , 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 9)))) ))) , 
                         (expr 
                           (variable_or_function_call OBJECTCOLOR)) , 
                         (expr 
@@ -2815,31 +2961,35 @@
                                 (variable_or_function_call x)) + 
                               (expr 
                                 (variable_or_function_call Scl 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (literal 4.9)) ))))) + 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (literal 4.9)))) )))) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call i)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call i)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 14)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 14)))) )))) ) , 
                         (expr 
                           (variable_or_function_call Scl 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 9)) )))) , 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 9)))) ))) , 
                         (expr 
                           (variable_or_function_call OBJECTCOLOR)) , 
                         (expr 
@@ -2863,38 +3013,42 @@
                               (variable_or_function_call x)) - 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 15)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 15)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) - 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 1)) ))))) ) - 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 1)))) )))) ) - 
                         ( 
                           (expr 
                             (expr 
                               (variable_or_function_call x)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 14)) ))))) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 14)))) )))) , 
                           (expr 
                             (expr 
                               (variable_or_function_call y)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 28)) ))))) ) , 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 28)))) )))) ) , 
                         (variable_or_function_call GorD&))) \n)) 
                 (end_select_statement END SELECT))) \n) NEXT i)) \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n 
@@ -2909,19 +3063,21 @@
           (variable_or_function_call YAdj) = 
           (expr 
             (variable_or_function_call Scl 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 12)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 12)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call XAdj) = 
           (expr 
             (variable_or_function_call Scl 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 5)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 5)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SclX#) = 
@@ -2981,10 +3137,11 @@
                     (expr 
                       (expr 
                         (variable_or_function_call GorillaX 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call PlayerHit)) )))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PlayerHit)))) ))) + 
                       (expr 
                         (expr 
                           (literal 3.5)) * 
@@ -2996,10 +3153,11 @@
                     (expr 
                       (expr 
                         (variable_or_function_call GorillaY 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call PlayerHit)) )))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PlayerHit)))) ))) + 
                       (expr 
                         (expr 
                           (literal 7)) * 
@@ -3020,10 +3178,11 @@
                   (expr 
                     (expr 
                       (variable_or_function_call GorillaX 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call PlayerHit)) )))) + 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call PlayerHit)))) ))) + 
                     (expr 
                       (expr 
                         (literal 7)) * 
@@ -3033,10 +3192,11 @@
                     (expr 
                       (expr 
                         (variable_or_function_call GorillaY 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call PlayerHit)) )))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PlayerHit)))) ))) + 
                       (expr 
                         (expr 
                           (literal 9)) * 
@@ -3047,18 +3207,20 @@
                 ( 
                   (expr 
                     (variable_or_function_call GorillaX 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call PlayerHit)) )))) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call PlayerHit)))) ))) , 
                   (expr 
                     (expr 
                       (expr 
                         (variable_or_function_call GorillaY 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call PlayerHit)) )))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PlayerHit)))) ))) + 
                       (expr 
                         (expr 
                           (literal 9)) * 
@@ -3098,10 +3260,11 @@
                           (expr 
                             (expr 
                               (variable_or_function_call GorillaX 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call PlayerHit)) )))) + 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call PlayerHit)))) ))) + 
                             (expr 
                               (expr 
                                 (literal 3.5)) * 
@@ -3113,10 +3276,11 @@
                           (expr 
                             (expr 
                               (variable_or_function_call GorillaY 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call PlayerHit)) )))) + 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call PlayerHit)))) ))) + 
                             (expr 
                               (expr 
                                 (literal 7)) * 
@@ -3149,10 +3313,11 @@
                     (expr 
                       (expr 
                         (variable_or_function_call GorillaX 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call PlayerHit)) )))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PlayerHit)))) ))) + 
                       (expr 
                         (expr 
                           (literal 3.5)) * 
@@ -3163,10 +3328,11 @@
                   (expr 
                     (expr 
                       (variable_or_function_call GorillaY 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call PlayerHit)) )))) + 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call PlayerHit)))) ))) + 
                     (expr 
                       (variable_or_function_call YAdj))) ) , 
                 (expr 
@@ -3202,10 +3368,11 @@
                     (expr 
                       (expr 
                         (variable_or_function_call GorillaX 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call PlayerHit)) )))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PlayerHit)))) ))) + 
                       (expr 
                         (expr 
                           (literal 3.5)) * 
@@ -3216,10 +3383,11 @@
                   (expr 
                     (expr 
                       (variable_or_function_call GorillaY 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call PlayerHit)) )))) + 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call PlayerHit)))) ))) + 
                     (expr 
                       (variable_or_function_call YAdj))) ) , 
                 (expr 
@@ -3288,12 +3456,14 @@
                 (variable_or_function_call Player1$) = 
                 (expr 
                   (variable_or_function_call LEFT$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Player1$)) , 
-                        (expr 
-                          (literal 10)) )))))) \n)) 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Player1$))) , 
+                        (argument 
+                          (expr 
+                            (literal 10)))) ))))) \n)) 
         (end_if_statement END IF)) \n \n 
       (statement 
         (locate_statement LOCATE 
@@ -3324,12 +3494,14 @@
                 (variable_or_function_call Player2$) = 
                 (expr 
                   (variable_or_function_call LEFT$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Player2$)) , 
-                        (expr 
-                          (literal 10)) )))))) \n)) 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Player2$))) , 
+                        (argument 
+                          (expr 
+                            (literal 10)))) ))))) \n)) 
         (end_if_statement END IF)) \n \n 
       (statement 
         (do_loop_statement DO 
@@ -3344,10 +3516,11 @@
               (print_statement PRINT 
                 (expr 
                   (variable_or_function_call SPACE$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 25)) )))) ;)) \n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 25)))) ))) ;)) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -3363,16 +3536,19 @@
                 (variable_or_function_call NumGames) = 
                 (expr 
                   (variable_or_function_call VAL 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call LEFT$ 
-                            (args_or_indices 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call LEFT$ 
                               ( 
-                                (expr 
-                                  (variable_or_function_call game$)) , 
-                                (expr 
-                                  (literal 2)) )))) )))))) \n) LOOP 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call game$))) , 
+                                  (argument 
+                                    (expr 
+                                      (literal 2)))) ))))) ))))) \n) LOOP 
           (loop_condition UNTIL 
             (expr 
               (expr 
@@ -3423,10 +3599,11 @@
               (print_statement PRINT 
                 (expr 
                   (variable_or_function_call SPACE$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 28)) )))) ;)) \n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 28)))) ))) ;)) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -3442,10 +3619,11 @@
                 (variable_or_function_call gravity#) = 
                 (expr 
                   (variable_or_function_call VAL 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call grav$)) )))))) \n) LOOP 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call grav$)))) ))))) \n) LOOP 
           (loop_condition UNTIL 
             (expr 
               (expr 
@@ -3518,10 +3696,11 @@
                   (variable_or_function_call Result$)) ; 
                 (expr 
                   (variable_or_function_call CHR$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 95)) )))) ; 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 95)))) ))) ; 
                 (expr 
                   (literal "    ")) ;)) \n \n 
             (statement 
@@ -3560,12 +3739,14 @@
                       (expr 
                         (expr 
                           (variable_or_function_call INSTR 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call Result$)) , 
-                                (expr 
-                                  (literal ".")) )))) = 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Result$))) , 
+                                (argument 
+                                  (expr 
+                                    (literal ".")))) ))) = 
                         (expr 
                           (literal 0))) THEN \n 
                       (then_block 
@@ -3583,19 +3764,21 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call CHR$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 13)) )))))) 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 13)))) ))))) 
                   (block \n 
                     (if_block_statement IF 
                       (expr 
                         (expr 
                           (variable_or_function_call VAL 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call Result$)) )))) > 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Result$)))) ))) > 
                         (expr 
                           (literal 360))) THEN \n 
                       (then_block 
@@ -3617,10 +3800,11 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call CHR$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 8)) )))))) 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 8)))) ))))) 
                   (block \n 
                     (if_block_statement IF 
                       (expr 
@@ -3637,18 +3821,20 @@
                             (variable_or_function_call Result$) = 
                             (expr 
                               (variable_or_function_call LEFT$ 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call Result$)) , 
-                                    (expr 
+                                ( 
+                                  (argument_list 
+                                    (argument 
                                       (expr 
-                                        (builtin_function LEN 
-                                          ( 
-                                            (expr 
-                                              (variable_or_function_call Result$)) ))) - 
+                                        (variable_or_function_call Result$))) , 
+                                    (argument 
                                       (expr 
-                                        (literal 1))) )))))) \n) 
+                                        (expr 
+                                          (builtin_function LEN 
+                                            ( 
+                                              (expr 
+                                                (variable_or_function_call Result$)) ))) - 
+                                        (expr 
+                                          (literal 1))))) ))))) \n) 
                       (end_if_statement END IF)) \n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
@@ -3685,10 +3871,11 @@
           (variable_or_function_call GetNum#) = 
           (expr 
             (variable_or_function_call VAL 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call Result$)) )))))) \n) 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Result$)))) ))))) \n) 
     (end_function_statement END FUNCTION)) \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id GorillaIntro) 
@@ -3799,11 +3986,11 @@
             (statement 
               (call_statement 
                 (untyped_id Center) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal 5))) , 
-                  (call_argument 
+                  (argument 
                     (expr 
                       (literal "Please wait while gorillas are drawn."))))))))) \n \n 
       (statement 
@@ -3829,43 +4016,61 @@
       (statement 
         (call_statement 
           (untyped_id DrawGorilla) 
-          (call_argument_list 
-            (call_argument x) , 
-            (call_argument y) , 
-            (call_argument ARMSDOWN)))) \n 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call x))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call y))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call ARMSDOWN)))))) \n 
       (statement 
         (call_statement 
           (untyped_id CLS) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 2)))))) \n 
       (statement 
         (call_statement 
           (untyped_id DrawGorilla) 
-          (call_argument_list 
-            (call_argument x) , 
-            (call_argument y) , 
-            (call_argument LEFTUP)))) \n 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call x))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call y))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call LEFTUP)))))) \n 
       (statement 
         (call_statement 
           (untyped_id CLS) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 2)))))) \n 
       (statement 
         (call_statement 
           (untyped_id DrawGorilla) 
-          (call_argument_list 
-            (call_argument x) , 
-            (call_argument y) , 
-            (call_argument RIGHTUP)))) \n 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call x))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call y))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call RIGHTUP)))))) \n 
       (statement 
         (call_statement 
           (untyped_id CLS) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 2)))))) \n \n 
       (statement 
@@ -3892,31 +4097,32 @@
         (expr 
           (expr 
             (variable_or_function_call UCASE$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call Char$)) )))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Char$)))) ))) = 
           (expr 
             (literal "V"))) THEN \n 
         (then_block 
           (statement 
             (call_statement 
               (untyped_id Center) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal 2))) , 
-                (call_argument 
+                (argument 
                   (expr 
                     (literal "Q B A S I C   G O R I L L A S")))))) \n 
           (statement 
             (call_statement 
               (untyped_id Center) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal 5))) , 
-                (call_argument 
+                (argument 
                   (expr 
                     (literal "             STARRING:               ")))))) \n 
           (statement 
@@ -3933,11 +4139,13 @@
           (statement 
             (call_statement 
               (untyped_id Center) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal 7))) , 
-                (call_argument P$)))) \n \n 
+                (argument 
+                  (expr 
+                    (variable_or_function_call P$)))))) \n \n 
           (statement 
             (put_graphics_statement PUT 
               ( 
@@ -3963,8 +4171,8 @@
           (statement 
             (call_statement 
               (untyped_id Rest) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal 1)))))) \n \n 
           (statement 
@@ -3996,8 +4204,8 @@
           (statement 
             (call_statement 
               (untyped_id Rest) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal .3)))))) \n \n 
           (statement 
@@ -4029,8 +4237,8 @@
           (statement 
             (call_statement 
               (untyped_id Rest) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal .3)))))) \n \n 
           (statement 
@@ -4062,8 +4270,8 @@
           (statement 
             (call_statement 
               (untyped_id Rest) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal .3)))))) \n \n 
           (statement 
@@ -4095,8 +4303,8 @@
           (statement 
             (call_statement 
               (untyped_id Rest) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal .3)))))) \n \n 
           (statement 
@@ -4135,8 +4343,8 @@
                 (statement 
                   (call_statement 
                     (untyped_id Rest) 
-                    (call_argument_list 
-                      (call_argument 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (literal .1)))))) \n 
                 (statement 
@@ -4168,8 +4376,8 @@
                 (statement 
                   (call_statement 
                     (untyped_id Rest) 
-                    (call_argument_list 
-                      (call_argument 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (literal .1)))))) \n) NEXT)) \n) 
         (end_if_statement END IF)) \n) 
@@ -4204,11 +4412,11 @@
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 4))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "Q B a s i c    G O R I L L A S")))))) \n 
       (statement 
@@ -4218,72 +4426,72 @@
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 6))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "Copyright 
                   (C) Microsoft Corporation 1990")))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 8))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "Your mission is to hit your opponent with the exploding")))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 9))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "banana by varying the angle and power of your throw, taking")))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 10))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "into account wind speed, gravity, and the city skyline.")))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 11))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "The wind speed is shown by a directional arrow at the bottom")))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 12))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "of the playing field, its length relative to its strength.")))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 24))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "Press any key to continue")))))) \n \n 
       (statement 
@@ -4328,10 +4536,11 @@
           (variable_or_function_call Slope) = 
           (expr 
             (variable_or_function_call FnRan 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 6)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 6)))) ))))) \n 
       (statement 
         (select_case_statement SELECT CASE 
           (expr 
@@ -4617,10 +4826,11 @@
                 (expr 
                   (expr 
                     (variable_or_function_call FnRan 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call DefBWidth)) )))) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call DefBWidth)))) ))) + 
                   (expr 
                     (variable_or_function_call DefBWidth))))) \n 
             (statement 
@@ -4651,10 +4861,11 @@
                 (expr 
                   (expr 
                     (variable_or_function_call FnRan 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call RandomHeight)) )))) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call RandomHeight)))) ))) + 
                   (expr 
                     (variable_or_function_call NewHt))))) \n 
             (statement 
@@ -4698,19 +4909,21 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call BCoor 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call CurBuilding)) )) . XCoor) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call CurBuilding)))) ) . XCoor) = 
                 (expr 
                   (variable_or_function_call x)))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call BCoor 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call CurBuilding)) )) . YCoor) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call CurBuilding)))) ) . YCoor) = 
                 (expr 
                   (expr 
                     (variable_or_function_call BottomLine)) - 
@@ -4730,10 +4943,11 @@
                       (expr 
                         (expr 
                           (variable_or_function_call FnRan 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 3)) )))) + 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 3)))) ))) + 
                         (expr 
                           (literal 4)))))) ELSE 
                 (if_inline_action 
@@ -4836,10 +5050,11 @@
                                       (expr 
                                         (expr 
                                           (variable_or_function_call FnRan 
-                                            (args_or_indices 
-                                              ( 
-                                                (expr 
-                                                  (literal 2)) )))) - 
+                                            ( 
+                                              (argument_list 
+                                                (argument 
+                                                  (expr 
+                                                    (literal 2)))) ))) - 
                                         (expr 
                                           (literal 2))) )) * 
                                   (expr - 
@@ -4849,10 +5064,11 @@
                             (expr 
                               (expr 
                                 (variable_or_function_call FnRan 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (literal 4)) )))) = 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (literal 4)))) ))) = 
                               (expr 
                                 (literal 1))) THEN 
                             (else_block \n 
@@ -4958,20 +5174,22 @@
           (expr 
             (expr 
               (variable_or_function_call FnRan 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 10)) )))) - 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 10)))) ))) - 
             (expr 
               (literal 5))))) \n 
       (if_block_statement IF 
         (expr 
           (expr 
             (variable_or_function_call FnRan 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 3)) )))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 3)))) ))) = 
           (expr 
             (literal 1))) THEN \n 
         (then_block 
@@ -4990,10 +5208,11 @@
                       (variable_or_function_call Wind)) + 
                     (expr 
                       (variable_or_function_call FnRan 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (literal 10)) ))))))) \n) 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 10)))) )))))) \n) 
             (else_block_statement ELSE 
               (else_block \n 
                 (statement 
@@ -5004,10 +5223,11 @@
                         (variable_or_function_call Wind)) - 
                       (expr 
                         (variable_or_function_call FnRan 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 10)) ))))))) \n)) 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 10)))) )))))) \n)) 
             (end_if_statement END IF)) \n) 
         (end_if_statement END IF)) \n \n \n 
       (if_block_statement IF 
@@ -5238,10 +5458,11 @@
                       (expr 
                         (expr 
                           (variable_or_function_call FnRan 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 2)) )))) + 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 2)))) ))) + 
                         (expr 
                           (literal 1)))))) ELSE 
                 (if_inline_action 
@@ -5253,44 +5474,49 @@
                           (variable_or_function_call LastBuilding)) - 
                         (expr 
                           (variable_or_function_call FnRan 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 2)) )))))))))) \n \n 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 2)))) ))))))))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call BWidth) = 
                 (expr 
                   (expr 
                     (variable_or_function_call BCoor 
-                      (args_or_indices 
-                        ( 
-                          (expr 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
-                              (variable_or_function_call BNum)) + 
-                            (expr 
-                              (literal 1))) )) . XCoor)) - 
+                              (expr 
+                                (variable_or_function_call BNum)) + 
+                              (expr 
+                                (literal 1))))) ) . XCoor)) - 
                   (expr 
                     (variable_or_function_call BCoor 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call BNum)) )) . XCoor))))) \n 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call BNum)))) ) . XCoor))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GorillaX 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call i)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) )) = 
                 (expr 
                   (expr 
                     (expr 
                       (variable_or_function_call BCoor 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call BNum)) )) . XCoor)) + 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call BNum)))) ) . XCoor)) + 
                     (expr 
                       (expr 
                         (variable_or_function_call BWidth)) / 
@@ -5301,17 +5527,19 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GorillaY 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call i)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) )) = 
                 (expr 
                   (expr 
                     (variable_or_function_call BCoor 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call BNum)) )) . YCoor)) - 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call BNum)))) ) . YCoor)) - 
                   (expr 
                     (variable_or_function_call YAdj))))) \n 
             (statement 
@@ -5319,16 +5547,18 @@
                 ( 
                   (expr 
                     (variable_or_function_call GorillaX 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call i)) )))) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call i)))) ))) , 
                   (expr 
                     (variable_or_function_call GorillaY 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call i)) )))) ) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call i)))) ))) ) , 
                 (variable_or_function_call GorD&) , PSET)) \n) NEXT i)) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
   (sub_statement SUB 
@@ -5380,8 +5610,8 @@
             (statement 
               (call_statement 
                 (untyped_id RANDOMIZE) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       ( 
                         (expr 
@@ -5390,21 +5620,23 @@
               (call_statement CALL 
                 (untyped_id MakeCityScape) 
                 ( 
-                  (call_argument_list 
-                    (call_argument BCoor 
+                  (argument_list 
+                    (argument BCoor 
                       ( ))) ))) \n 
             (statement 
               (call_statement CALL 
                 (untyped_id PlaceGorillas) 
                 ( 
-                  (call_argument_list 
-                    (call_argument BCoor 
+                  (argument_list 
+                    (argument BCoor 
                       ( ))) ))) \n 
             (statement 
               (call_statement 
                 (untyped_id DoSun) 
-                (call_argument_list 
-                  (call_argument SUNHAPPY)))) \n 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call SUNHAPPY)))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Hit) = 
@@ -5461,43 +5693,49 @@
                   (statement 
                     (call_statement 
                       (untyped_id Center) 
-                      (call_argument_list 
-                        (call_argument 
+                      (argument_list 
+                        (argument 
                           (expr 
                             (literal 23))) , 
-                        (call_argument 
+                        (argument 
                           (expr 
                             (expr 
                               (expr 
                                 (variable_or_function_call LTRIM$ 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (variable_or_function_call STR$ 
-                                          (args_or_indices 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call STR$ 
                                             ( 
-                                              (expr 
-                                                (variable_or_function_call TotalWins 
-                                                  (args_or_indices 
-                                                    ( 
-                                                      (expr 
-                                                        (literal 1)) )))) )))) )))) + 
+                                              (argument_list 
+                                                (argument 
+                                                  (expr 
+                                                    (variable_or_function_call TotalWins 
+                                                      ( 
+                                                        (argument_list 
+                                                          (argument 
+                                                            (expr 
+                                                              (literal 1)))) ))))) ))))) ))) + 
                               (expr 
                                 (literal ">Score<"))) + 
                             (expr 
                               (variable_or_function_call LTRIM$ 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call STR$ 
-                                        (args_or_indices 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call STR$ 
                                           ( 
-                                            (expr 
-                                              (variable_or_function_call TotalWins 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
-                                                      (literal 2)) )))) )))) ))))))))) \n 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call TotalWins 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
+                                                          (expr 
+                                                            (literal 2)))) ))))) ))))) )))))))) \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Tosser) = 
@@ -5519,22 +5757,27 @@
                       (variable_or_function_call Hit) = 
                       (expr 
                         (variable_or_function_call DoShot 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call Tosser)) , 
-                              (expr 
-                                (variable_or_function_call GorillaX 
-                                  (args_or_indices 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call Tosser))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call GorillaX 
                                     ( 
-                                      (expr 
-                                        (variable_or_function_call Tosser)) )))) , 
-                              (expr 
-                                (variable_or_function_call GorillaY 
-                                  (args_or_indices 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call Tosser)))) )))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call GorillaY 
                                     ( 
-                                      (expr 
-                                        (variable_or_function_call Tosser)) )))) )))))) \n \n \n 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call Tosser)))) ))))) ))))) \n \n \n 
                   (statement 
                     (if_inline_statement IF 
                       (expr 
@@ -5543,8 +5786,10 @@
                         (statement 
                           (call_statement 
                             (untyped_id DoSun) 
-                            (call_argument_list 
-                              (call_argument SUNHAPPY))))))) \n \n 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call SUNHAPPY))))))))) \n \n 
                   (statement 
                     (if_inline_statement IF 
                       (expr 
@@ -5557,16 +5802,20 @@
                           (call_statement CALL 
                             (untyped_id UpdateScores) 
                             ( 
-                              (call_argument_list 
-                                (call_argument TotalWins 
+                              (argument_list 
+                                (argument TotalWins 
                                   ( )) , 
-                                (call_argument Tosser) , 
-                                (call_argument Hit)) )))))) \n) LOOP)) \n 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Tosser))) , 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Hit)))) )))))) \n) LOOP)) \n 
             (statement 
               (call_statement 
                 (untyped_id SLEEP) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal 1)))))) \n) NEXT i)) \n \n 
       (statement 
@@ -5596,21 +5845,21 @@
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 8))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "GAME OVER!")))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 10))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "Score:")))))) \n 
       (statement 
@@ -5625,16 +5874,18 @@
             (variable_or_function_call Player1$)) ; 
           (expr 
             (variable_or_function_call TAB 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 50)) )))) ; 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 50)))) ))) ; 
           (expr 
             (variable_or_function_call TotalWins 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 1)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -5647,24 +5898,26 @@
             (variable_or_function_call Player2$)) ; 
           (expr 
             (variable_or_function_call TAB 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 50)) )))) ; 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 50)))) ))) ; 
           (expr 
             (variable_or_function_call TotalWins 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 2)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 2)))) ))))) \n 
       (statement 
         (call_statement 
           (untyped_id Center) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 24))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal "Press any key to continue")))))) \n 
       (statement 
@@ -5714,10 +5967,11 @@
           (expr 
             (expr 
               (variable_or_function_call COS 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call Angle#)) )))) * 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Angle#)))) ))) * 
             (expr 
               (variable_or_function_call Velocity))))) \n 
       (statement 
@@ -5726,10 +5980,11 @@
           (expr 
             (expr 
               (variable_or_function_call SIN 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call Angle#)) )))) * 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Angle#)))) ))) * 
             (expr 
               (variable_or_function_call Velocity))))) \n \n 
       (statement 
@@ -5775,8 +6030,8 @@
       (statement 
         (call_statement 
           (untyped_id Rest) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal .1)))))) \n \n \n 
       (statement 
@@ -5792,20 +6047,22 @@
           (variable_or_function_call adjust) = 
           (expr 
             (variable_or_function_call Scl 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 4)) )))))) \n \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 4)))) ))))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call xedge) = 
           (expr 
             (expr 
               (variable_or_function_call Scl 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 9)) )))) * 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 9)))) ))) * 
             (expr 
               ( 
                 (expr 
@@ -5869,19 +6126,21 @@
                   (variable_or_function_call StartXPos)) + 
                 (expr 
                   (variable_or_function_call Scl 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 25)) ))))))) \n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 25)))) )))))) \n 
           (statement 
             (assignment_statement 
               (variable_or_function_call direction) = 
               (expr 
                 (variable_or_function_call Scl 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 4)) )))))) \n) 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 4)))) ))))) \n) 
         (else_block_statement ELSE 
           (else_block \n 
             (statement 
@@ -5889,11 +6148,12 @@
                 (variable_or_function_call direction) = 
                 (expr 
                   (variable_or_function_call Scl 
-                    (args_or_indices 
-                      ( 
-                        (expr - 
-                          (expr 
-                            (literal 4))) )))))) \n)) 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr - 
+                            (expr 
+                              (literal 4))))) ))))) \n)) 
         (end_if_statement END IF)) \n \n 
       (if_block_statement IF 
         (expr 
@@ -5933,8 +6193,8 @@
             (statement 
               (call_statement 
                 (untyped_id Rest) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal .02)))))) \n \n \n 
             (if_block_statement IF 
@@ -5950,11 +6210,19 @@
                   (call_statement CALL 
                     (untyped_id DrawBan) 
                     ( 
-                      (call_argument_list 
-                        (call_argument oldx#) , 
-                        (call_argument oldy#) , 
-                        (call_argument oldrot) , 
-                        (call_argument FALSE)) ))) \n) 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call oldx#))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call oldy#))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call oldrot))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call FALSE)))) ))) \n) 
               (end_if_statement END IF)) \n \n 
             (statement 
               (assignment_statement 
@@ -6044,10 +6312,11 @@
                             (variable_or_function_call ScrWidth)) - 
                           (expr 
                             (variable_or_function_call Scl 
-                              (args_or_indices 
-                                ( 
-                                  (expr 
-                                    (literal 10)) )))))) )) OR 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (literal 10)))) ))))) )) OR 
                   (expr 
                     ( 
                       (expr 
@@ -6092,18 +6361,19 @@
                     (variable_or_function_call LookX) = 
                     (expr 
                       (variable_or_function_call Scl 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
-                                (literal 8)) * 
-                              (expr 
-                                ( 
-                                  (expr 
+                                (expr 
+                                  (literal 8)) * 
+                                (expr 
+                                  ( 
                                     (expr 
-                                      (literal 2)) - 
-                                    (expr 
-                                      (variable_or_function_call PlayerNum))) ))) )))))) \n 
+                                      (expr 
+                                        (literal 2)) - 
+                                      (expr 
+                                        (variable_or_function_call PlayerNum))) ))))) ))))) \n 
                 (statement 
                   (do_loop_statement DO 
                     (block \n 
@@ -6112,18 +6382,20 @@
                           (variable_or_function_call pointval) = 
                           (expr 
                             (variable_or_function_call POINT 
-                              (args_or_indices 
-                                ( 
-                                  (expr 
+                              ( 
+                                (argument_list 
+                                  (argument 
                                     (expr 
-                                      (variable_or_function_call x#)) + 
+                                      (expr 
+                                        (variable_or_function_call x#)) + 
+                                      (expr 
+                                        (variable_or_function_call LookX)))) , 
+                                  (argument 
                                     (expr 
-                                      (variable_or_function_call LookX))) , 
-                                  (expr 
-                                    (expr 
-                                      (variable_or_function_call y#)) + 
-                                    (expr 
-                                      (variable_or_function_call LookY))) )))))) \n 
+                                      (expr 
+                                        (variable_or_function_call y#)) + 
+                                      (expr 
+                                        (variable_or_function_call LookY))))) ))))) \n 
                       (if_block_statement IF 
                         (expr 
                           (expr 
@@ -6149,22 +6421,24 @@
                                     (expr 
                                       (expr 
                                         (variable_or_function_call ABS 
-                                          (args_or_indices 
-                                            ( 
-                                              (expr 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
                                                 (expr 
                                                   (expr 
-                                                    (variable_or_function_call ScrWidth)) \ 
+                                                    (expr 
+                                                      (variable_or_function_call ScrWidth)) \ 
+                                                    (expr 
+                                                      (literal 2))) - 
                                                   (expr 
-                                                    (literal 2))) - 
-                                                (expr 
-                                                  (variable_or_function_call x#))) )))) > 
+                                                    (variable_or_function_call x#))))) ))) > 
                                       (expr 
                                         (variable_or_function_call Scl 
-                                          (args_or_indices 
-                                            ( 
-                                              (expr 
-                                                (literal 20)) ))))) OR 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (literal 20)))) )))) OR 
                                     (expr 
                                       (expr 
                                         (variable_or_function_call y#)) > 
@@ -6199,8 +6473,10 @@
                                   (statement 
                                     (call_statement 
                                       (untyped_id DoSun) 
-                                      (call_argument_list 
-                                        (call_argument SUNSHOCK))))))) \n 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call SUNSHOCK))))))))) \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call SunHit) = 
@@ -6235,10 +6511,11 @@
                               (variable_or_function_call LookY)) + 
                             (expr 
                               (variable_or_function_call Scl 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (literal 6)) ))))))) \n) LOOP 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 6)))) )))))) \n) LOOP 
                     (loop_condition UNTIL 
                       (expr 
                         (expr 
@@ -6248,10 +6525,11 @@
                             (variable_or_function_call LookX)) <> 
                           (expr 
                             (variable_or_function_call Scl 
-                              (args_or_indices 
-                                ( 
-                                  (expr 
-                                    (literal 4)) ))))))))) \n \n 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (literal 4)))) )))))))) \n \n 
                 (if_block_statement IF 
                   (expr 
                     (expr NOT 
@@ -6278,11 +6556,19 @@
                       (call_statement CALL 
                         (untyped_id DrawBan) 
                         ( 
-                          (call_argument_list 
-                            (call_argument x#) , 
-                            (call_argument y#) , 
-                            (call_argument rot) , 
-                            (call_argument TRUE)) ))) \n 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call x#))) , 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call y#))) , 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call rot))) , 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call TRUE)))) ))) \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call NeedErase) = 
@@ -6327,14 +6613,14 @@
             (call_statement CALL 
               (untyped_id DoExplosion) 
               ( 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (expr 
                         (variable_or_function_call x#)) + 
                       (expr 
                         (variable_or_function_call adjust)))) , 
-                  (call_argument 
+                  (argument 
                     (expr 
                       (expr 
                         (variable_or_function_call y#)) + 
@@ -6352,12 +6638,14 @@
                 (variable_or_function_call PlayerHit) = 
                 (expr 
                   (variable_or_function_call ExplodeGorilla 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call x#)) , 
-                        (expr 
-                          (variable_or_function_call y#)) )))))) \n)) 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call x#))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call y#)))) ))))) \n)) 
         (end_if_statement END IF)) \n \n 
       (statement 
         (assignment_statement 
@@ -6411,10 +6699,11 @@
             (variable_or_function_call n!)) <> 
           (expr 
             (variable_or_function_call INT 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call n!)) ))))) THEN \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call n!)))) )))) THEN \n 
         (then_block 
           (statement 
             (if_inline_statement IF 
@@ -6445,16 +6734,17 @@
               (variable_or_function_call Scl) = 
               (expr 
                 (variable_or_function_call CINT 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (expr 
-                            (variable_or_function_call n!)) / 
+                            (expr 
+                              (variable_or_function_call n!)) / 
+                            (expr 
+                              (literal 2))) + 
                           (expr 
-                            (literal 2))) + 
-                        (expr 
-                          (literal .1))) )))))) \n) 
+                            (literal .1))))) ))))) \n) 
         (else_block_statement ELSE 
           (else_block \n 
             (statement 
@@ -6462,10 +6752,11 @@
                 (variable_or_function_call Scl) = 
                 (expr 
                   (variable_or_function_call CINT 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call n!)) )))))) \n)) 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call n!)))) ))))) \n)) 
         (end_if_statement END IF)) \n \n) 
     (end_function_statement END FUNCTION)) \n \n \n \n 
   (sub_statement SUB 
@@ -6727,31 +7018,35 @@
           (statement 
             (assignment_statement 
               (variable_or_function_call Record 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call ABS 
-                        (args_or_indices 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call ABS 
                           ( 
-                            (expr 
-                              (expr 
-                                (variable_or_function_call PlayerNum)) - 
-                              (expr 
-                                (literal 3))) )))) ))) = 
-              (expr 
-                (expr 
-                  (variable_or_function_call Record 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call ABS 
-                            (args_or_indices 
-                              ( 
+                            (argument_list 
+                              (argument 
                                 (expr 
                                   (expr 
                                     (variable_or_function_call PlayerNum)) - 
                                   (expr 
-                                    (literal 3))) )))) )))) + 
+                                    (literal 3))))) ))))) )) = 
+              (expr 
+                (expr 
+                  (variable_or_function_call Record 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call ABS 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (expr 
+                                        (variable_or_function_call PlayerNum)) - 
+                                      (expr 
+                                        (literal 3))))) ))))) ))) + 
                 (expr 
                   (literal 1))))) \n) 
         (else_block_statement ELSE 
@@ -6759,17 +7054,19 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call Record 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call PlayerNum)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call PlayerNum)))) )) = 
                 (expr 
                   (expr 
                     (variable_or_function_call Record 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call PlayerNum)) )))) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call PlayerNum)))) ))) + 
                   (expr 
                     (literal 1))))) \n)) 
         (end_if_statement END IF)) \n) 
@@ -6792,16 +7089,18 @@
                 ( 
                   (expr 
                     (variable_or_function_call GorillaX 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Player)) )))) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Player)))) ))) , 
                   (expr 
                     (variable_or_function_call GorillaY 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Player)) )))) ) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Player)))) ))) ) , 
                 (variable_or_function_call GorL&) , PSET)) \n 
             (statement 
               (play_statement PLAY 
@@ -6810,8 +7109,8 @@
             (statement 
               (call_statement 
                 (untyped_id Rest) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal .2)))))) \n 
             (statement 
@@ -6819,16 +7118,18 @@
                 ( 
                   (expr 
                     (variable_or_function_call GorillaX 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Player)) )))) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Player)))) ))) , 
                   (expr 
                     (variable_or_function_call GorillaY 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Player)) )))) ) , 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Player)))) ))) ) , 
                 (variable_or_function_call GorR&) , PSET)) \n 
             (statement 
               (play_statement PLAY 
@@ -6837,8 +7138,8 @@
             (statement 
               (call_statement 
                 (untyped_id Rest) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal .2)))))) \n) NEXT)) \n) 
     (end_sub_statement END SUB)) \n <EOF>)

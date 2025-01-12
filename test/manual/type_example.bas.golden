@@ -24,32 +24,36 @@
   (statement 
     (assignment_statement 
       (variable_or_function_call Deck 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 1)) )) . Suit) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . Suit) = 
       (expr 
         (literal "Club")))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Deck 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 1)) )) . Value) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . Value) = 
       (expr 
         (literal 2)))) \n 
   (statement 
     (print_statement PRINT 
       (expr 
         (variable_or_function_call Deck 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 1)) )) . Suit)) , 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ) . Suit)) , 
       (expr 
         (variable_or_function_call Deck 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 1)) )) . Value)))) \n <EOF>)
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ) . Value)))) \n <EOF>)

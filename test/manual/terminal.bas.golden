@@ -22,16 +22,18 @@
       (expr 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 0)) )))) + 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) + 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 16)) ))))))) \r\n \r\n \r\n \r\n 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 16)))) )))))) \r\n \r\n \r\n \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -44,12 +46,14 @@
     (print_statement PRINT 
       (expr 
         (variable_or_function_call STRING$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 80)) , 
-              (expr 
-                (literal "_")) )))) ;)) \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 80))) , 
+              (argument 
+                (expr 
+                  (literal "_")))) ))) ;)) \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -60,10 +64,11 @@
     (print_statement PRINT 
       (expr 
         (variable_or_function_call TAB 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 30)) )))) ; 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 30)))) ))) ; 
       (expr 
         (literal "Press ALT+q to quit")) ;)) \r\n \r\n 
   (statement 
@@ -117,10 +122,11 @@
           (expr NOT 
             (expr 
               (variable_or_function_call EOF 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 1)) ))))) THEN \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 1)))) )))) THEN \r\n 
           (then_block \r\n \r\n 
             (statement 
               (assignment_statement 
@@ -130,17 +136,20 @@
                     ( 
                       (expr 
                         (variable_or_function_call LOC 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 1)) )))) , # 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 1)))) ))) , # 
                       (expr 
                         (literal 1)) ))))) \r\n \r\n 
             (statement 
               (call_statement 
                 (untyped_id Filter) 
-                (call_argument_list 
-                  (call_argument ModemInput$)))) \r\n 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call ModemInput$)))))) \r\n 
             (statement 
               (print_statement PRINT 
                 (expr 
@@ -167,16 +176,19 @@
                 (variable_or_function_call BackSpace) = 
                 (expr 
                   (variable_or_function_call INSTR 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Instring$)) , 
-                        (expr 
-                          (variable_or_function_call CHR$ 
-                            (args_or_indices 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Instring$))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call CHR$ 
                               ( 
-                                (expr 
-                                  (literal 8)) )))) )))))) \r\n 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (literal 8)))) ))))) ))))) \r\n 
             (if_block_statement IF 
               (expr 
                 (variable_or_function_call BackSpace)) THEN \r\n 
@@ -189,10 +201,11 @@
                         (variable_or_function_call BackSpace)) ) = 
                     (expr 
                       (variable_or_function_call CHR$ 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (literal 29)) )))))) \r\n) 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 29)))) ))))) \r\n) 
               (end_if_statement END IF)) \r\n) LOOP 
           (loop_condition WHILE 
             (expr 
@@ -205,16 +218,19 @@
                 (variable_or_function_call LineFeed) = 
                 (expr 
                   (variable_or_function_call INSTR 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Instring$)) , 
-                        (expr 
-                          (variable_or_function_call CHR$ 
-                            (args_or_indices 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Instring$))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call CHR$ 
                               ( 
-                                (expr 
-                                  (literal 10)) )))) )))))) \r\n 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (literal 10)))) ))))) ))))) \r\n 
             (if_block_statement IF 
               (expr 
                 (variable_or_function_call LineFeed)) THEN \r\n 
@@ -225,15 +241,17 @@
                     (expr 
                       (expr 
                         (variable_or_function_call LEFT$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call InString$)) , 
-                              (expr 
+                          ( 
+                            (argument_list 
+                              (argument 
                                 (expr 
-                                  (variable_or_function_call LineFeed)) - 
+                                  (variable_or_function_call InString$))) , 
+                              (argument 
                                 (expr 
-                                  (literal 1))) )))) + 
+                                  (expr 
+                                    (variable_or_function_call LineFeed)) - 
+                                  (expr 
+                                    (literal 1))))) ))) + 
                       (expr 
                         (builtin_function MID$ 
                           ( 

@@ -436,46 +436,47 @@
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Index 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Til)) ))) = 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Til)))) )) = 
                   (expr 
                     (variable_or_function_call Til)))) \n) NEXT)) \n \n \n 
         (statement 
           (call_statement 
             (untyped_id Message) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (literal "Calculating")))))) \n 
         (statement 
           (call_statement 
             (untyped_id TorusCalc) 
-            (call_argument_list 
-              (call_argument T 
+            (argument_list 
+              (argument T 
                 ( ))))) \n \n \n 
         (statement 
           (call_statement 
             (untyped_id TorusColor) 
-            (call_argument_list 
-              (call_argument T 
+            (argument_list 
+              (argument T 
                 ( ))))) \n \n \n 
         (statement 
           (call_statement 
             (untyped_id Message) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (literal "Sorting")))))) \n 
         (statement 
           (call_statement 
             (untyped_id TorusSort) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (literal 0))) , 
-              (call_argument 
+              (argument 
                 (expr 
                   (expr 
                     (variable_or_function_call Max)) - 
@@ -521,10 +522,10 @@
         (statement 
           (call_statement 
             (untyped_id TorusDraw) 
-            (call_argument_list 
-              (call_argument T 
+            (argument_list 
+              (argument T 
                 ( )) , 
-              (call_argument Index 
+              (argument Index 
                 ( ))))) \n \n \n 
         (statement 
           (do_loop_statement DO 
@@ -538,8 +539,8 @@
               (statement 
                 (call_statement 
                   (untyped_id Delay) 
-                  (call_argument_list 
-                    (call_argument 
+                  (argument_list 
+                    (argument 
                       (expr 
                         ( 
                           (expr 
@@ -547,8 +548,10 @@
               (statement 
                 (call_statement 
                   (untyped_id TorusRotate) 
-                  (call_argument_list 
-                    (call_argument CONTINUE)))) \n) LOOP)) \n 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call CONTINUE)))))) \n) LOOP)) \n 
         (statement 
           (screen_statement SCREEN 
             (expr 
@@ -793,10 +796,11 @@
         (print_statement PRINT 
           (expr 
             (variable_or_function_call SPACE$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 19)) )))) ;)) \n \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 19)))) ))) ;)) \n \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -1073,12 +1077,14 @@
         (expr 
           (expr 
             (variable_or_function_call POINT 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call T.xc)) , 
-                  (expr 
-                    (variable_or_function_call T.yc)) )))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call T.xc))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call T.yc)))) ))) = 
           (expr 
             (variable_or_function_call Border))) THEN \n 
         (then_block 
@@ -1183,23 +1189,27 @@
           (variable_or_function_call X) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call T.xc)) , 
-                  (expr 
-                    (literal 0)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call T.xc))) , 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call YU) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call T.yc)) , 
-                  (expr 
-                    (literal 1)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call T.yc))) , 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call YD) = 
@@ -1210,23 +1220,27 @@
           (variable_or_function_call H) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call Highest)) , 
-                  (expr 
-                    (literal 1)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Highest))) , 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call L) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call Lowest)) , 
-                  (expr 
-                    (literal 1)) )))))) \n \n \n \n \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Lowest))) , 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) \n \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call IsUp) = 
@@ -1266,18 +1280,22 @@
                     (expr 
                       (expr 
                         (variable_or_function_call POINT 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call T.xc)) , 
-                              (expr 
-                                (variable_or_function_call PMAP 
-                                  (args_or_indices 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call T.xc))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PMAP 
                                     ( 
-                                      (expr 
-                                        (variable_or_function_call YU)) , 
-                                      (expr 
-                                        (literal 3)) )))) )))) = 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call YU))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 3)))) ))))) ))) = 
                       (expr 
                         (variable_or_function_call Border))) THEN 
                     (if_inline_action 
@@ -1297,18 +1315,22 @@
                     (expr 
                       (expr 
                         (variable_or_function_call POINT 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call T.xc)) , 
-                              (expr 
-                                (variable_or_function_call PMAP 
-                                  (args_or_indices 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call T.xc))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PMAP 
                                     ( 
-                                      (expr 
-                                        (variable_or_function_call YD)) , 
-                                      (expr 
-                                        (literal 3)) )))) )))) = 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call YD))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 3)))) ))))) ))) = 
                       (expr 
                         (variable_or_function_call Border))) THEN 
                     (if_inline_action 
@@ -1377,10 +1399,11 @@
         (print_statement PRINT 
           (expr 
             (variable_or_function_call SPACE$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 19)) )))) ;)) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 19)))) ))) ;)) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -2015,10 +2038,11 @@
                                           (statement 
                                             (assignment_statement 
                                               (variable_or_function_call Pal 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
-                                                      (variable_or_function_call Index)) ))) = 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
+                                                      (expr 
+                                                        (variable_or_function_call Index)))) )) = 
                                               (expr 
                                                 (expr 
                                                   (expr 
@@ -2103,10 +2127,11 @@
                                                       (statement 
                                                         (assignment_statement 
                                                           (variable_or_function_call Pal 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (variable_or_function_call Index)) ))) = 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (variable_or_function_call Index)))) )) = 
                                                           (expr 
                                                             (expr 
                                                               (expr 
@@ -2194,10 +2219,11 @@
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Pal 
-                                          (args_or_indices 
-                                            ( 
-                                              (expr 
-                                                (variable_or_function_call Index)) ))) = 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call Index)))) )) = 
                                         (expr 
                                           (expr 
                                             (expr 
@@ -2239,8 +2265,10 @@
                 (statement 
                   (call_statement 
                     (untyped_id TorusRotate) 
-                    (call_argument_list 
-                      (call_argument RNDM))))))) \n) 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call RNDM))))))))) \n) 
         (end_if_statement END IF)) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
   (sub_statement SUB 
@@ -2367,10 +2395,11 @@
       (if_block_statement IF 
         (expr 
           (variable_or_function_call Inside 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (variable_or_function_call T)) )))) THEN \n 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call T)))) ))) THEN \n 
         (then_block \n 
           (statement 
             (preset_statement PRESET 
@@ -2500,55 +2529,61 @@
           (variable_or_function_call XRot) = 
           (expr 
             (variable_or_function_call DegToRad 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call TOR.XDegree)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call TOR.XDegree)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call YRot) = 
           (expr 
             (variable_or_function_call DegToRad 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call TOR.YDegree)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call TOR.YDegree)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call CXRot) = 
           (expr 
             (variable_or_function_call COS 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call XRot)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call XRot)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SXRot) = 
           (expr 
             (variable_or_function_call SIN 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call XRot)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call XRot)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call CYRot) = 
           (expr 
             (variable_or_function_call COS 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call YRot)) )))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call YRot)))) ))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SYRot) = 
           (expr 
             (variable_or_function_call SIN 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call YRot)) )))))) \n \n \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call YRot)))) ))))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call XInc) = 
@@ -2587,100 +2622,109 @@
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 0)) )) . x1) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ) . x1) = 
           (expr 
             (variable_or_function_call FirstY)))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (variable_or_function_call TOR.Sect)) - 
-                  (expr 
-                    (literal 1))) )) . x2) = 
+                    (expr 
+                      (variable_or_function_call TOR.Sect)) - 
+                    (expr 
+                      (literal 1))))) ) . x2) = 
           (expr 
             (variable_or_function_call FirstY)))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (variable_or_function_call Max)) - 
-                  (expr 
-                    (literal 1))) )) . x3) = 
+                    (expr 
+                      (variable_or_function_call Max)) - 
+                    (expr 
+                      (literal 1))))) ) . x3) = 
           (expr 
             (variable_or_function_call FirstY)))) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (variable_or_function_call Max)) - 
-                  (expr 
-                    (variable_or_function_call TOR.Sect))) )) . x4) = 
+                    (expr 
+                      (variable_or_function_call Max)) - 
+                    (expr 
+                      (variable_or_function_call TOR.Sect))))) ) . x4) = 
           (expr 
             (variable_or_function_call FirstY)))) \n \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 0)) )) . y1) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ) . y1) = 
           (expr 
             (literal 0)))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (variable_or_function_call TOR.Sect)) - 
-                  (expr 
-                    (literal 1))) )) . y2) = 
+                    (expr 
+                      (variable_or_function_call TOR.Sect)) - 
+                    (expr 
+                      (literal 1))))) ) . y2) = 
           (expr 
             (literal 0)))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (variable_or_function_call Max)) - 
-                  (expr 
-                    (literal 1))) )) . y3) = 
+                    (expr 
+                      (variable_or_function_call Max)) - 
+                    (expr 
+                      (literal 1))))) ) . y3) = 
           (expr 
             (literal 0)))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (variable_or_function_call Max)) - 
-                  (expr 
-                    (variable_or_function_call TOR.Sect))) )) . y4) = 
+                    (expr 
+                      (variable_or_function_call Max)) - 
+                    (expr 
+                      (variable_or_function_call TOR.Sect))))) ) . y4) = 
           (expr 
             (literal 0)))) \n \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call T 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 0)) )) . z1) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ) . z1) = 
           (expr 
             (expr - 
               (expr 
@@ -2715,13 +2759,14 @@
                           (literal 1))) )) * 
                   (expr 
                     (variable_or_function_call COS 
-                      (args_or_indices 
-                        ( 
-                          (expr 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
-                              (variable_or_function_call XSect)) * 
-                            (expr 
-                              (variable_or_function_call XInc))) ))))))) \n 
+                              (expr 
+                                (variable_or_function_call XSect)) * 
+                              (expr 
+                                (variable_or_function_call XInc))))) )))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call sy) = 
@@ -2736,13 +2781,14 @@
                             (literal 1))) )) * 
                     (expr 
                       (variable_or_function_call SIN 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
-                                (variable_or_function_call XSect)) * 
-                              (expr 
-                                (variable_or_function_call XInc))) ))))) * 
+                                (expr 
+                                  (variable_or_function_call XSect)) * 
+                                (expr 
+                                  (variable_or_function_call XInc))))) )))) * 
                   (expr 
                     (variable_or_function_call CXRot))))) \n 
             (statement 
@@ -2759,13 +2805,14 @@
                             (literal 1))) )) * 
                     (expr 
                       (variable_or_function_call SIN 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
-                                (variable_or_function_call XSect)) * 
-                              (expr 
-                                (variable_or_function_call XInc))) ))))) * 
+                                (expr 
+                                  (variable_or_function_call XSect)) * 
+                                (expr 
+                                  (variable_or_function_call XInc))))) )))) * 
                   (expr 
                     (variable_or_function_call SXRot))))) \n 
             (statement 
@@ -2789,30 +2836,51 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call XSect)) )) . x1) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call XSect)))) ) . x1) = 
                 (expr 
                   (variable_or_function_call ssx)))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
-                          (variable_or_function_call XSect)) - 
-                        (expr 
-                          (literal 1))) )) . x2) = 
+                          (expr 
+                            (variable_or_function_call XSect)) - 
+                          (expr 
+                            (literal 1))))) ) . x2) = 
                 (expr 
                   (variable_or_function_call ssx)))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call Max)) - 
+                              (expr 
+                                (variable_or_function_call TOR.Sect))) + 
+                            (expr 
+                              (variable_or_function_call XSect))) - 
+                          (expr 
+                            (literal 1))))) ) . x3) = 
+                (expr 
+                  (variable_or_function_call ssx)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call T 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (expr 
                             (expr 
@@ -2820,53 +2888,57 @@
                             (expr 
                               (variable_or_function_call TOR.Sect))) + 
                           (expr 
-                            (variable_or_function_call XSect))) - 
-                        (expr 
-                          (literal 1))) )) . x3) = 
-                (expr 
-                  (variable_or_function_call ssx)))) \n 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (expr 
-                          (expr 
-                            (variable_or_function_call Max)) - 
-                          (expr 
-                            (variable_or_function_call TOR.Sect))) + 
-                        (expr 
-                          (variable_or_function_call XSect))) )) . x4) = 
+                            (variable_or_function_call XSect))))) ) . x4) = 
                 (expr 
                   (variable_or_function_call ssx)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call XSect)) )) . y1) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call XSect)))) ) . y1) = 
                 (expr 
                   (variable_or_function_call sy)))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
-                          (variable_or_function_call XSect)) - 
-                        (expr 
-                          (literal 1))) )) . y2) = 
+                          (expr 
+                            (variable_or_function_call XSect)) - 
+                          (expr 
+                            (literal 1))))) ) . y2) = 
                 (expr 
                   (variable_or_function_call sy)))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call Max)) - 
+                              (expr 
+                                (variable_or_function_call TOR.Sect))) + 
+                            (expr 
+                              (variable_or_function_call XSect))) - 
+                          (expr 
+                            (literal 1))))) ) . y3) = 
+                (expr 
+                  (variable_or_function_call sy)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call T 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (expr 
                             (expr 
@@ -2874,33 +2946,17 @@
                             (expr 
                               (variable_or_function_call TOR.Sect))) + 
                           (expr 
-                            (variable_or_function_call XSect))) - 
-                        (expr 
-                          (literal 1))) )) . y3) = 
-                (expr 
-                  (variable_or_function_call sy)))) \n 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (expr 
-                          (expr 
-                            (variable_or_function_call Max)) - 
-                          (expr 
-                            (variable_or_function_call TOR.Sect))) + 
-                        (expr 
-                          (variable_or_function_call XSect))) )) . y4) = 
+                            (variable_or_function_call XSect))))) ) . y4) = 
                 (expr 
                   (variable_or_function_call sy)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call XSect)) )) . z1) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call XSect)))) ) . z1) = 
                 (expr 
                   (expr 
                     ( 
@@ -2934,13 +2990,14 @@
                     (variable_or_function_call TOR.Thick)) + 
                   (expr 
                     (variable_or_function_call COS 
-                      (args_or_indices 
-                        ( 
-                          (expr 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
-                              (variable_or_function_call YPanel)) * 
-                            (expr 
-                              (variable_or_function_call YInc))) ))))))) \n 
+                              (expr 
+                                (variable_or_function_call YPanel)) * 
+                              (expr 
+                                (variable_or_function_call YInc))))) )))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call sy) = 
@@ -2948,13 +3005,14 @@
                   (expr - 
                     (expr 
                       (variable_or_function_call SIN 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
-                                (variable_or_function_call YPanel)) * 
-                              (expr 
-                                (variable_or_function_call YInc))) ))))) * 
+                                (expr 
+                                  (variable_or_function_call YPanel)) * 
+                                (expr 
+                                  (variable_or_function_call YInc))))) )))) * 
                   (expr 
                     (variable_or_function_call SXRot))))) \n 
             (statement 
@@ -2963,13 +3021,14 @@
                 (expr 
                   (expr 
                     (variable_or_function_call SIN 
-                      (args_or_indices 
-                        ( 
-                          (expr 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
-                              (variable_or_function_call YPanel)) * 
-                            (expr 
-                              (variable_or_function_call YInc))) )))) * 
+                              (expr 
+                                (variable_or_function_call YPanel)) * 
+                              (expr 
+                                (variable_or_function_call YInc))))) ))) * 
                   (expr 
                     (variable_or_function_call CXRot))))) \n 
             (statement 
@@ -2993,21 +3052,59 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
-                          (variable_or_function_call TOR.Sect)) * 
-                        (expr 
-                          (variable_or_function_call YPanel))) )) . x1) = 
+                          (expr 
+                            (variable_or_function_call TOR.Sect)) * 
+                          (expr 
+                            (variable_or_function_call YPanel))))) ) . x1) = 
                 (expr 
                   (variable_or_function_call ssx)))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call TOR.Sect)) * 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call YPanel)) + 
+                                  (expr 
+                                    (literal 1))) ))) - 
+                          (expr 
+                            (literal 1))))) ) . x2) = 
+                (expr 
+                  (variable_or_function_call ssx)))) \n \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call T 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call TOR.Sect)) * 
+                            (expr 
+                              (variable_or_function_call YPanel))) - 
+                          (expr 
+                            (literal 1))))) ) . x3) = 
+                (expr 
+                  (variable_or_function_call ssx)))) \n \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call T 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (expr 
                             (variable_or_function_call TOR.Sect)) * 
@@ -3015,63 +3112,67 @@
                             ( 
                               (expr 
                                 (expr 
-                                  (variable_or_function_call YPanel)) + 
+                                  (variable_or_function_call YPanel)) - 
                                 (expr 
-                                  (literal 1))) ))) - 
-                        (expr 
-                          (literal 1))) )) . x2) = 
-                (expr 
-                  (variable_or_function_call ssx)))) \n \n 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (expr 
-                          (expr 
-                            (variable_or_function_call TOR.Sect)) * 
-                          (expr 
-                            (variable_or_function_call YPanel))) - 
-                        (expr 
-                          (literal 1))) )) . x3) = 
-                (expr 
-                  (variable_or_function_call ssx)))) \n \n 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (expr 
-                          (variable_or_function_call TOR.Sect)) * 
-                        (expr 
-                          ( 
-                            (expr 
-                              (expr 
-                                (variable_or_function_call YPanel)) - 
-                              (expr 
-                                (literal 1))) ))) )) . x4) = 
+                                  (literal 1))) ))))) ) . x4) = 
                 (expr 
                   (variable_or_function_call ssx)))) \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
-                          (variable_or_function_call TOR.Sect)) * 
-                        (expr 
-                          (variable_or_function_call YPanel))) )) . y1) = 
+                          (expr 
+                            (variable_or_function_call TOR.Sect)) * 
+                          (expr 
+                            (variable_or_function_call YPanel))))) ) . y1) = 
                 (expr 
                   (variable_or_function_call sy)))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call TOR.Sect)) * 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call YPanel)) + 
+                                  (expr 
+                                    (literal 1))) ))) - 
+                          (expr 
+                            (literal 1))))) ) . y2) = 
+                (expr 
+                  (variable_or_function_call sy)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call T 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call TOR.Sect)) * 
+                            (expr 
+                              (variable_or_function_call YPanel))) - 
+                          (expr 
+                            (literal 1))))) ) . y3) = 
+                (expr 
+                  (variable_or_function_call sy)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call T 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (expr 
                             (variable_or_function_call TOR.Sect)) * 
@@ -3079,55 +3180,22 @@
                             ( 
                               (expr 
                                 (expr 
-                                  (variable_or_function_call YPanel)) + 
+                                  (variable_or_function_call YPanel)) - 
                                 (expr 
-                                  (literal 1))) ))) - 
-                        (expr 
-                          (literal 1))) )) . y2) = 
-                (expr 
-                  (variable_or_function_call sy)))) \n 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (expr 
-                          (expr 
-                            (variable_or_function_call TOR.Sect)) * 
-                          (expr 
-                            (variable_or_function_call YPanel))) - 
-                        (expr 
-                          (literal 1))) )) . y3) = 
-                (expr 
-                  (variable_or_function_call sy)))) \n 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (expr 
-                          (variable_or_function_call TOR.Sect)) * 
-                        (expr 
-                          ( 
-                            (expr 
-                              (expr 
-                                (variable_or_function_call YPanel)) - 
-                              (expr 
-                                (literal 1))) ))) )) . y4) = 
+                                  (literal 1))) ))))) ) . y4) = 
                 (expr 
                   (variable_or_function_call sy)))) \n \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
-                          (variable_or_function_call TOR.Sect)) * 
-                        (expr 
-                          (variable_or_function_call YPanel))) )) . z1) = 
+                          (expr 
+                            (variable_or_function_call TOR.Sect)) * 
+                          (expr 
+                            (variable_or_function_call YPanel))))) ) . z1) = 
                 (expr 
                   (expr 
                     ( 
@@ -3156,9 +3224,13 @@
                   (statement 
                     (call_statement 
                       (untyped_id CountTiles) 
-                      (call_argument_list 
-                        (call_argument XSect) , 
-                        (call_argument YPanel)))) \n \n 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call XSect))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call YPanel)))))) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call ty) = 
@@ -3170,34 +3242,37 @@
                                 (variable_or_function_call TOR.Thick)) + 
                               (expr 
                                 (variable_or_function_call COS 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
                                         (expr 
-                                          (variable_or_function_call YPanel)) * 
-                                        (expr 
-                                          (variable_or_function_call YInc))) ))))) )) * 
+                                          (expr 
+                                            (variable_or_function_call YPanel)) * 
+                                          (expr 
+                                            (variable_or_function_call YInc))))) )))) )) * 
                         (expr 
                           (variable_or_function_call SIN 
-                            (args_or_indices 
-                              ( 
-                                (expr 
+                            ( 
+                              (argument_list 
+                                (argument 
                                   (expr 
-                                    (variable_or_function_call XSect)) * 
-                                  (expr 
-                                    (variable_or_function_call XInc))) ))))))) \n 
+                                    (expr 
+                                      (variable_or_function_call XSect)) * 
+                                    (expr 
+                                      (variable_or_function_call XInc))))) )))))) \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call tz) = 
                       (expr 
                         (variable_or_function_call SIN 
-                          (args_or_indices 
-                            ( 
-                              (expr 
+                          ( 
+                            (argument_list 
+                              (argument 
                                 (expr 
-                                  (variable_or_function_call YPanel)) * 
-                                (expr 
-                                  (variable_or_function_call YInc))) )))))) \n 
+                                  (expr 
+                                    (variable_or_function_call YPanel)) * 
+                                  (expr 
+                                    (variable_or_function_call YInc))))) ))))) \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call sx) = 
@@ -3209,22 +3284,24 @@
                                 (variable_or_function_call TOR.Thick)) + 
                               (expr 
                                 (variable_or_function_call COS 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
                                         (expr 
-                                          (variable_or_function_call YPanel)) * 
-                                        (expr 
-                                          (variable_or_function_call YInc))) ))))) )) * 
+                                          (expr 
+                                            (variable_or_function_call YPanel)) * 
+                                          (expr 
+                                            (variable_or_function_call YInc))))) )))) )) * 
                         (expr 
                           (variable_or_function_call COS 
-                            (args_or_indices 
-                              ( 
-                                (expr 
+                            ( 
+                              (argument_list 
+                                (argument 
                                   (expr 
-                                    (variable_or_function_call XSect)) * 
-                                  (expr 
-                                    (variable_or_function_call XInc))) ))))))) \n 
+                                    (expr 
+                                      (variable_or_function_call XSect)) * 
+                                    (expr 
+                                      (variable_or_function_call XInc))))) )))))) \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call sy) = 
@@ -3274,24 +3351,9 @@
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (expr 
-                                (expr 
-                                  (variable_or_function_call TOR.Sect)) * 
-                                (expr 
-                                  (variable_or_function_call YPanel))) + 
-                              (expr 
-                                (variable_or_function_call XSect))) )) . x1) = 
-                      (expr 
-                        (variable_or_function_call ssx)))) \n 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
                                 (expr 
                                   (expr 
@@ -3299,17 +3361,58 @@
                                   (expr 
                                     (variable_or_function_call YPanel))) + 
                                 (expr 
-                                  (variable_or_function_call XSect))) - 
-                              (expr 
-                                (literal 1))) )) . x2) = 
+                                  (variable_or_function_call XSect))))) ) . x1) = 
                       (expr 
                         (variable_or_function_call ssx)))) \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (expr 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call TOR.Sect)) * 
+                                    (expr 
+                                      (variable_or_function_call YPanel))) + 
+                                  (expr 
+                                    (variable_or_function_call XSect))) - 
+                                (expr 
+                                  (literal 1))))) ) . x2) = 
+                      (expr 
+                        (variable_or_function_call ssx)))) \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call T 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (expr 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call TOR.Sect)) * 
+                                    (expr 
+                                      ( 
+                                        (expr 
+                                          (expr 
+                                            (variable_or_function_call YPanel)) - 
+                                          (expr 
+                                            (literal 1))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call XSect))) - 
+                                (expr 
+                                  (literal 1))))) ) . x3) = 
+                      (expr 
+                        (variable_or_function_call ssx)))) \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call T 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
                                 (expr 
                                   (expr 
@@ -3322,52 +3425,15 @@
                                         (expr 
                                           (literal 1))) ))) + 
                                 (expr 
-                                  (variable_or_function_call XSect))) - 
-                              (expr 
-                                (literal 1))) )) . x3) = 
-                      (expr 
-                        (variable_or_function_call ssx)))) \n 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (expr 
-                                (expr 
-                                  (variable_or_function_call TOR.Sect)) * 
-                                (expr 
-                                  ( 
-                                    (expr 
-                                      (expr 
-                                        (variable_or_function_call YPanel)) - 
-                                      (expr 
-                                        (literal 1))) ))) + 
-                              (expr 
-                                (variable_or_function_call XSect))) )) . x4) = 
+                                  (variable_or_function_call XSect))))) ) . x4) = 
                       (expr 
                         (variable_or_function_call ssx)))) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (expr 
-                                (expr 
-                                  (variable_or_function_call TOR.Sect)) * 
-                                (expr 
-                                  (variable_or_function_call YPanel))) + 
-                              (expr 
-                                (variable_or_function_call XSect))) )) . y1) = 
-                      (expr 
-                        (variable_or_function_call sy)))) \n 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
                                 (expr 
                                   (expr 
@@ -3375,17 +3441,58 @@
                                   (expr 
                                     (variable_or_function_call YPanel))) + 
                                 (expr 
-                                  (variable_or_function_call XSect))) - 
-                              (expr 
-                                (literal 1))) )) . y2) = 
+                                  (variable_or_function_call XSect))))) ) . y1) = 
                       (expr 
                         (variable_or_function_call sy)))) \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (expr 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call TOR.Sect)) * 
+                                    (expr 
+                                      (variable_or_function_call YPanel))) + 
+                                  (expr 
+                                    (variable_or_function_call XSect))) - 
+                                (expr 
+                                  (literal 1))))) ) . y2) = 
+                      (expr 
+                        (variable_or_function_call sy)))) \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call T 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (expr 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call TOR.Sect)) * 
+                                    (expr 
+                                      ( 
+                                        (expr 
+                                          (expr 
+                                            (variable_or_function_call YPanel)) - 
+                                          (expr 
+                                            (literal 1))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call XSect))) - 
+                                (expr 
+                                  (literal 1))))) ) . y3) = 
+                      (expr 
+                        (variable_or_function_call sy)))) \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call T 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
                                 (expr 
                                   (expr 
@@ -3398,44 +3505,23 @@
                                         (expr 
                                           (literal 1))) ))) + 
                                 (expr 
-                                  (variable_or_function_call XSect))) - 
-                              (expr 
-                                (literal 1))) )) . y3) = 
-                      (expr 
-                        (variable_or_function_call sy)))) \n 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (expr 
-                                (expr 
-                                  (variable_or_function_call TOR.Sect)) * 
-                                (expr 
-                                  ( 
-                                    (expr 
-                                      (expr 
-                                        (variable_or_function_call YPanel)) - 
-                                      (expr 
-                                        (literal 1))) ))) + 
-                              (expr 
-                                (variable_or_function_call XSect))) )) . y4) = 
+                                  (variable_or_function_call XSect))))) ) . y4) = 
                       (expr 
                         (variable_or_function_call sy)))) \n \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
+                        ( 
+                          (argument_list 
+                            (argument 
                               (expr 
                                 (expr 
-                                  (variable_or_function_call TOR.Sect)) * 
+                                  (expr 
+                                    (variable_or_function_call TOR.Sect)) * 
+                                  (expr 
+                                    (variable_or_function_call YPanel))) + 
                                 (expr 
-                                  (variable_or_function_call YPanel))) + 
-                              (expr 
-                                (variable_or_function_call XSect))) )) . z1) = 
+                                  (variable_or_function_call XSect))))) ) . z1) = 
                       (expr 
                         (expr 
                           ( 
@@ -3454,12 +3540,12 @@
       (statement 
         (call_statement 
           (untyped_id CountTiles) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr - 
                 (expr 
                   (literal 1)))) , 
-            (call_argument 
+            (argument 
               (expr - 
                 (expr 
                   (literal 1))))))) \n \n) 
@@ -3538,10 +3624,11 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call T 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call Til)) )) . TColor) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Til)))) ) . TColor) = 
                 (expr 
                   (variable_or_function_call Atr)))) \n) NEXT)) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n 
@@ -3921,16 +4008,19 @@
                 (variable_or_function_call Ky) = 
                 (expr 
                   (variable_or_function_call ASC 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call RIGHT$ 
-                            (args_or_indices 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call RIGHT$ 
                               ( 
-                                (expr 
-                                  (variable_or_function_call K$)) , 
-                                (expr 
-                                  (literal 1)) )))) )))))) \n \n 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call K$))) , 
+                                  (argument 
+                                    (expr 
+                                      (literal 1)))) ))))) ))))) \n \n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3981,16 +4071,20 @@
                         (variable_or_function_call Fld) = 
                         (expr 
                           (variable_or_function_call Rotated 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 0)) , 
-                                (expr 
-                                  (variable_or_function_call Fields)) , 
-                                (expr 
-                                  (variable_or_function_call Fld)) , 
-                                (expr 
-                                  (variable_or_function_call Inc)) )))))) \n)) 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0))) , 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Fields))) , 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Fld))) , 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Inc)))) ))))) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -4036,20 +4130,25 @@
                                 (variable_or_function_call TOR.Thick) = 
                                 (expr 
                                   (variable_or_function_call Rotated 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (literal 1)) , 
-                                        (expr 
-                                          (literal 9)) , 
-                                        (expr 
-                                          (variable_or_function_call INT 
-                                            (args_or_indices 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (literal 1))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 9))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call INT 
                                               ( 
-                                                (expr 
-                                                  (variable_or_function_call TOR.Thick)) )))) , 
-                                        (expr 
-                                          (variable_or_function_call Inc)) )))))) \n 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call TOR.Thick)))) )))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call Inc)))) ))))) \n 
                             (statement 
                               (print_using_statement PRINT USING 
                                 (expr 
@@ -4067,16 +4166,20 @@
                                 (variable_or_function_call TOR.Panel) = 
                                 (expr 
                                   (variable_or_function_call Rotated 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (literal 6)) , 
-                                        (expr 
-                                          (literal 20)) , 
-                                        (expr 
-                                          (variable_or_function_call TOR.Panel)) , 
-                                        (expr 
-                                          (variable_or_function_call Inc)) )))))) \n 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (literal 6))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 20))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call TOR.Panel))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call Inc)))) ))))) \n 
                             (statement 
                               (print_using_statement PRINT USING 
                                 (expr 
@@ -4094,16 +4197,20 @@
                                 (variable_or_function_call TOR.Sect) = 
                                 (expr 
                                   (variable_or_function_call Rotated 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (literal 6)) , 
-                                        (expr 
-                                          (literal 20)) , 
-                                        (expr 
-                                          (variable_or_function_call TOR.Sect)) , 
-                                        (expr 
-                                          (variable_or_function_call Inc)) )))))) \n 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (literal 6))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 20))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call TOR.Sect))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call Inc)))) ))))) \n 
                             (statement 
                               (print_using_statement PRINT USING 
                                 (expr 
@@ -4121,21 +4228,25 @@
                                 (variable_or_function_call TOR.XDegree) = 
                                 (expr 
                                   (variable_or_function_call Rotated 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (literal 0)) , 
-                                        (expr 
-                                          (literal 345)) , 
-                                        (expr 
-                                          (variable_or_function_call TOR.XDegree)) , 
-                                        (expr 
-                                          ( 
-                                            (expr 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (literal 0))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 345))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call TOR.XDegree))) , 
+                                        (argument 
+                                          (expr 
+                                            ( 
                                               (expr 
-                                                (literal 15)) * 
-                                              (expr 
-                                                (variable_or_function_call Inc))) )) )))))) \n 
+                                                (expr 
+                                                  (literal 15)) * 
+                                                (expr 
+                                                  (variable_or_function_call Inc))) )))) ))))) \n 
                             (statement 
                               (print_using_statement PRINT USING 
                                 (expr 
@@ -4153,21 +4264,25 @@
                                 (variable_or_function_call TOR.YDegree) = 
                                 (expr 
                                   (variable_or_function_call Rotated 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (literal 0)) , 
-                                        (expr 
-                                          (literal 345)) , 
-                                        (expr 
-                                          (variable_or_function_call TOR.YDegree)) , 
-                                        (expr 
-                                          ( 
-                                            (expr 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (literal 0))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 345))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call TOR.YDegree))) , 
+                                        (argument 
+                                          (expr 
+                                            ( 
                                               (expr 
-                                                (literal 15)) * 
-                                              (expr 
-                                                (variable_or_function_call Inc))) )) )))))) \n 
+                                                (expr 
+                                                  (literal 15)) * 
+                                                (expr 
+                                                  (variable_or_function_call Inc))) )))) ))))) \n 
                             (statement 
                               (print_using_statement PRINT USING 
                                 (expr 
@@ -4223,53 +4338,61 @@
                                 (variable_or_function_call I) = 
                                 (expr 
                                   (variable_or_function_call INSTR 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call Available$)) , 
-                                        (expr 
-                                          (variable_or_function_call HEX$ 
-                                            (args_or_indices 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call Available$))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call HEX$ 
                                               ( 
-                                                (expr 
-                                                  (variable_or_function_call VC.Scrn)) )))) )))))) \n 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call VC.Scrn)))) ))))) ))))) \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call I) = 
                                 (expr 
                                   (variable_or_function_call Rotated 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (literal 1)) , 
-                                        (expr 
-                                          (builtin_function LEN 
-                                            ( 
-                                              (expr 
-                                                (variable_or_function_call Available$)) ))) , 
-                                        (expr 
-                                          (variable_or_function_call I)) , 
-                                        (expr 
-                                          (variable_or_function_call Inc)) )))))) \n 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (literal 1))) , 
+                                        (argument 
+                                          (expr 
+                                            (builtin_function LEN 
+                                              ( 
+                                                (expr 
+                                                  (variable_or_function_call Available$)) )))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call I))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call Inc)))) ))))) \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call VC.Scrn) = 
                                 (expr 
                                   (variable_or_function_call VAL 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
                                           (expr 
-                                            (literal "&h")) + 
-                                          (expr 
-                                            (builtin_function MID$ 
-                                              ( 
-                                                (expr 
-                                                  (variable_or_function_call Available$)) , 
-                                                (expr 
-                                                  (variable_or_function_call I)) , 
-                                                (expr 
-                                                  (literal 1)) )))) )))))) \n 
+                                            (expr 
+                                              (literal "&h")) + 
+                                            (expr 
+                                              (builtin_function MID$ 
+                                                ( 
+                                                  (expr 
+                                                    (variable_or_function_call Available$)) , 
+                                                  (expr 
+                                                    (variable_or_function_call I)) , 
+                                                  (expr 
+                                                    (literal 1)) )))))) ))))) \n 
                             (statement 
                               (print_using_statement PRINT USING 
                                 (expr 
@@ -4287,8 +4410,10 @@
             (statement 
               (call_statement 
                 (untyped_id SetConfig) 
-                (call_argument_list 
-                  (call_argument VC.Scrn)))) \n \n) LOOP 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call VC.Scrn)))))) \n \n) LOOP 
           (loop_condition UNTIL 
             (expr 
               (expr 
@@ -4354,8 +4479,8 @@
       (statement 
         (call_statement 
           (untyped_id RANDOMIZE) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (builtin_function TIMER)))))) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n 
@@ -4393,16 +4518,20 @@
             (statement 
               (call_statement 
                 (untyped_id TileDraw) 
-                (call_argument_list 
-                  (call_argument T 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Index 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call Til)) )))) )))))) \n) NEXT)) \n \n) 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call T 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call Index 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call Til)))) ))))) ))))))) \n) NEXT)) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
     (untyped_id TorusRotate) 
@@ -4469,13 +4598,14 @@
                       (variable_or_function_call FirstClr) = 
                       (expr 
                         (variable_or_function_call INT 
-                          (args_or_indices 
-                            ( 
-                              (expr 
+                          ( 
+                            (argument_list 
+                              (argument 
                                 (expr 
-                                  (variable_or_function_call RND)) * 
-                                (expr 
-                                  (variable_or_function_call VC.Colors))) )))))) \n)) 
+                                  (expr 
+                                    (variable_or_function_call RND)) * 
+                                  (expr 
+                                    (variable_or_function_call VC.Colors))))) ))))) \n)) 
               (case_block 
                 (case_statement CASE 
                   (case_expr 
@@ -4612,10 +4742,11 @@
                       (variable_or_function_call Atr)) , 
                     (expr 
                       (variable_or_function_call Pal 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call Work)) )))))) \n 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call Work)))) ))))) \n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call Work) = 
@@ -4658,19 +4789,20 @@
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call T 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call I)) )) . TColor) = 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) ) . TColor) = 
                     (expr 
                       (variable_or_function_call Toggle)))) \n) NEXT)) \n \n 
           (statement 
             (call_statement 
               (untyped_id TorusDraw) 
-              (call_argument_list 
-                (call_argument T 
+              (argument_list 
+                (argument T 
                   ( )) , 
-                (call_argument Index 
+                (argument Index 
                   ( ))))) \n \n 
           (statement 
             (assignment_statement 
@@ -4774,45 +4906,59 @@
                 (expr 
                   (expr 
                     (variable_or_function_call T 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Index 
-                              (args_or_indices 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Index 
                                 ( 
-                                  (expr 
-                                    (variable_or_function_call Low)) )))) )) . z1)) > 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call Low)))) ))))) ) . z1)) > 
                   (expr 
                     (variable_or_function_call T 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Index 
-                              (args_or_indices 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Index 
                                 ( 
-                                  (expr 
-                                    (variable_or_function_call High)) )))) )) . z1))) THEN \n 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call High)))) ))))) ) . z1))) THEN \n 
                 (then_block 
                   (statement 
                     (call_statement 
                       (untyped_id CountTiles) 
-                      (call_argument_list 
-                        (call_argument High) , 
-                        (call_argument Low)))) \n 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call High))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Low)))))) \n 
                   (statement 
                     (call_statement 
                       (untyped_id SWAP) 
-                      (call_argument_list 
-                        (call_argument Index 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call Low)) ))) , 
-                        (call_argument Index 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call High)) )))))) \n) 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Index 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call Low)))) )))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Index 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call High)))) ))))))) \n) 
                 (end_if_statement END IF)) \n) 
             (else_block_statement ELSE 
               (else_block \n \n 
@@ -4822,56 +4968,69 @@
                     (expr 
                       (expr 
                         (variable_or_function_call INT 
-                          (args_or_indices 
-                            ( 
-                              (expr 
+                          ( 
+                            (argument_list 
+                              (argument 
                                 (expr 
-                                  (variable_or_function_call RND)) * 
-                                (expr 
-                                  ( 
-                                    (expr 
+                                  (expr 
+                                    (variable_or_function_call RND)) * 
+                                  (expr 
+                                    ( 
                                       (expr 
                                         (expr 
-                                          (variable_or_function_call High)) - 
+                                          (expr 
+                                            (variable_or_function_call High)) - 
+                                          (expr 
+                                            (variable_or_function_call Low))) + 
                                         (expr 
-                                          (variable_or_function_call Low))) + 
-                                      (expr 
-                                        (literal 1))) ))) )))) + 
+                                          (literal 1))) ))))) ))) + 
                       (expr 
                         (variable_or_function_call Low))))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id CountTiles) 
-                    (call_argument_list 
-                      (call_argument High) , 
-                      (call_argument Low)))) \n 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call High))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Low)))))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id SWAP) 
-                    (call_argument_list 
-                      (call_argument Index 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call High)) ))) , 
-                      (call_argument Index 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call RandIndex%)) )))))) \n 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Index 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call High)))) )))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Index 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call RandIndex%)))) ))))))) \n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call Partition) = 
                     (expr 
                       (variable_or_function_call T 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call Index 
-                                (args_or_indices 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call Index 
                                   ( 
-                                    (expr 
-                                      (variable_or_function_call High)) )))) )) . z1)))) \n \n 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call High)))) ))))) ) . z1)))) \n \n 
                 (statement 
                   (do_loop_statement DO 
                     (block \n 
@@ -4901,14 +5060,16 @@
                                   (expr 
                                     (expr 
                                       (variable_or_function_call T 
-                                        (args_or_indices 
-                                          ( 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                (args_or_indices 
+                                        ( 
+                                          (argument_list 
+                                            (argument 
+                                              (expr 
+                                                (variable_or_function_call Index 
                                                   ( 
-                                                    (expr 
-                                                      (variable_or_function_call I)) )))) )) . z1)) <= 
+                                                    (argument_list 
+                                                      (argument 
+                                                        (expr 
+                                                          (variable_or_function_call I)))) ))))) ) . z1)) <= 
                                     (expr 
                                       (variable_or_function_call Partition))) )))) 
                           (block \n 
@@ -4936,14 +5097,16 @@
                                   (expr 
                                     (expr 
                                       (variable_or_function_call T 
-                                        (args_or_indices 
-                                          ( 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                (args_or_indices 
+                                        ( 
+                                          (argument_list 
+                                            (argument 
+                                              (expr 
+                                                (variable_or_function_call Index 
                                                   ( 
-                                                    (expr 
-                                                      (variable_or_function_call J)) )))) )) . z1)) >= 
+                                                    (argument_list 
+                                                      (argument 
+                                                        (expr 
+                                                          (variable_or_function_call J)))) ))))) ) . z1)) >= 
                                     (expr 
                                       (variable_or_function_call Partition))) )))) 
                           (block \n 
@@ -4965,23 +5128,33 @@
                           (statement 
                             (call_statement 
                               (untyped_id CountTiles) 
-                              (call_argument_list 
-                                (call_argument High) , 
-                                (call_argument Low)))) \n 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call High))) , 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Low)))))) \n 
                           (statement 
                             (call_statement 
                               (untyped_id SWAP) 
-                              (call_argument_list 
-                                (call_argument Index 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (variable_or_function_call I)) ))) , 
-                                (call_argument Index 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (variable_or_function_call J)) )))))) \n) 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Index 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call I)))) )))) , 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Index 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call J)))) ))))))) \n) 
                         (end_if_statement END IF)) \n) LOOP 
                     (loop_condition WHILE 
                       (expr 
@@ -4992,23 +5165,33 @@
                 (statement 
                   (call_statement 
                     (untyped_id CountTiles) 
-                    (call_argument_list 
-                      (call_argument High) , 
-                      (call_argument Low)))) \n 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call High))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Low)))))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id SWAP) 
-                    (call_argument_list 
-                      (call_argument Index 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call I)) ))) , 
-                      (call_argument Index 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call High)) )))))) \n 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Index 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call I)))) )))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Index 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call High)))) ))))))) \n 
                 (if_block_statement IF 
                   (expr 
                     (expr 
@@ -5029,9 +5212,11 @@
                     (statement 
                       (call_statement 
                         (untyped_id TorusSort) 
-                        (call_argument_list 
-                          (call_argument Low) , 
-                          (call_argument 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Low))) , 
+                          (argument 
                             (expr 
                               (expr 
                                 (variable_or_function_call I)) - 
@@ -5040,33 +5225,39 @@
                     (statement 
                       (call_statement 
                         (untyped_id TorusSort) 
-                        (call_argument_list 
-                          (call_argument 
+                        (argument_list 
+                          (argument 
                             (expr 
                               (expr 
                                 (variable_or_function_call I)) + 
                               (expr 
                                 (literal 1)))) , 
-                          (call_argument High)))) \n) 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call High)))))) \n) 
                   (else_block_statement ELSE 
                     (else_block \n 
                       (statement 
                         (call_statement 
                           (untyped_id TorusSort) 
-                          (call_argument_list 
-                            (call_argument 
+                          (argument_list 
+                            (argument 
                               (expr 
                                 (expr 
                                   (variable_or_function_call I)) + 
                                 (expr 
                                   (literal 1)))) , 
-                            (call_argument High)))) \n 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call High)))))) \n 
                       (statement 
                         (call_statement 
                           (untyped_id TorusSort) 
-                          (call_argument_list 
-                            (call_argument Low) , 
-                            (call_argument 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call Low))) , 
+                            (argument 
                               (expr 
                                 (expr 
                                   (variable_or_function_call I)) - 

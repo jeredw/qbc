@@ -8,10 +8,11 @@
           (literal "MENU")) + 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 13)) ))))))) \n 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 13)))) )))))) \n 
   (statement 
     (key_statement KEY LIST)) \n 
   (statement 

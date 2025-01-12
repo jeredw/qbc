@@ -9,14 +9,14 @@
     (call_statement CALL 
       (untyped_id MsgNoMove) 
       ( 
-        (call_argument_list 
-          (call_argument 
+        (argument_list 
+          (argument 
             (expr 
               (literal "A message not to be missed."))) , 
-          (call_argument 
+          (argument 
             (expr 
               (literal 9))) , 
-          (call_argument 
+          (argument 
             (expr 
               (literal 35)))) ))) \r\n 
   (statement 
@@ -40,10 +40,11 @@
           (variable_or_function_call CurCol%) = 
           (expr 
             (variable_or_function_call POS 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 0)) )))))) \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 

@@ -18,10 +18,11 @@
         (expr NOT 
           (expr 
             (variable_or_function_call EOF 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 1)) )))))) 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) 
       (block \n 
         (statement 
           (assignment_statement 

@@ -21,14 +21,14 @@
   (statement 
     (call_statement 
       (untyped_id PrntMsg) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal 24))) , 
-        (call_argument 
+        (argument 
           (expr 
             (literal 1))) , 
-        (call_argument 
+        (argument 
           (expr 
             (literal "<Caps Lock On>")))))) \r\n 
   (statement 
@@ -47,27 +47,27 @@
   (statement 
     (call_statement 
       (untyped_id PrntMsg) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal 24))) , 
-        (call_argument 
+        (argument 
           (expr 
             (literal 1))) , 
-        (call_argument 
+        (argument 
           (expr 
             (literal "              ")))))) \r\n 
   (statement 
     (call_statement 
       (untyped_id PrntMsg) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal 25))) , 
-        (call_argument 
+        (argument 
           (expr 
             (literal 1))) , 
-        (call_argument 
+        (argument 
           (expr 
             (literal "Press any key to continue...")))))) \r\n 
   (statement 
@@ -94,18 +94,19 @@
       (statement 
         (call_statement 
           (untyped_id POKE) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal &H0417))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (expr 
                   (variable_or_function_call PEEK 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal &H0417)) )))) OR 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal &H0417)))) ))) OR 
                 (expr 
                   (literal &H40))))))) \r\n \r\n 
       (statement 
@@ -121,18 +122,19 @@
       (statement 
         (call_statement 
           (untyped_id POKE) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal &H0417))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (expr 
                   (variable_or_function_call PEEK 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal &H0417)) )))) AND 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal &H0417)))) ))) AND 
                 (expr 
                   (literal &HBF))))))) \r\n 
       (statement 
@@ -156,10 +158,11 @@
           (variable_or_function_call CurCol%) = 
           (expr 
             (variable_or_function_call POS 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 0)) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 

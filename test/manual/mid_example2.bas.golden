@@ -61,10 +61,11 @@
                       (variable_or_function_call Decimal))) + 
                   (expr 
                     (variable_or_function_call VAL 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Digit$)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Digit$)))) )))))) \n) 
           (else_block_statement ELSE 
             (else_block \n 
               (statement 

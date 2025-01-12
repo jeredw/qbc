@@ -24,10 +24,11 @@
             (variable_or_function_call INKEY$)) = 
           (expr 
             (variable_or_function_call CHR$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 27)) )))))) 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 27)))) ))))) 
       (block :) LOOP)) \n 
   (statement 
     (end_statement END)) \n \n 

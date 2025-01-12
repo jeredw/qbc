@@ -25,11 +25,13 @@
     (call_statement CALL 
       (untyped_id Comline) 
       ( 
-        (call_argument_list 
-          (call_argument N) , 
-          (call_argument A$ 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call N))) , 
+          (argument A$ 
             ( )) , 
-          (call_argument 
+          (argument 
             (expr 
               (literal 10)))) ))) \r\n \r\n 
   (statement 
@@ -53,10 +55,11 @@
           (print_statement PRINT 
             (expr 
               (variable_or_function_call A$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call I)) )))))) :) NEXT I)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call I)))) ))))) :) NEXT I)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Comline) 
     ( 
@@ -134,10 +137,11 @@
                         (variable_or_function_call C$)) <> 
                       (expr 
                         (variable_or_function_call CHR$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 9)) )))))) )) THEN \r\n 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 9)))) ))))) )) THEN \r\n 
               (then_block \r\n \r\n \r\n 
                 (if_block_statement IF 
                   (expr NOT 
@@ -171,17 +175,19 @@
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call Args$ 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call NumArgs)) ))) = 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call NumArgs)))) )) = 
                     (expr 
                       (expr 
                         (variable_or_function_call Args$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call NumArgs)) )))) + 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call NumArgs)))) ))) + 
                       (expr 
                         (variable_or_function_call C$))))) \r\n) 
               (else_block_statement ELSE 

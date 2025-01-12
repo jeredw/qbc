@@ -76,21 +76,24 @@
       (variable_or_function_call FileName$) = 
       (expr 
         (variable_or_function_call UCASE$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call FileName$)) )))))) \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call FileName$)))) ))))) \r\n 
   (statement 
     (if_inline_statement IF 
       (expr 
         (expr 
           (variable_or_function_call INSTR 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (variable_or_function_call FileName$)) , 
-                (expr 
-                  (literal ".QLB")) )))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call FileName$))) , 
+                (argument 
+                  (expr 
+                    (literal ".QLB")))) ))) = 
         (expr 
           (literal 0))) THEN 
       (if_inline_action 
@@ -110,10 +113,11 @@
       (variable_or_function_call OutFile$) = 
       (expr 
         (variable_or_function_call UCASE$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call OutFile$)) )))))) \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call OutFile$)))) ))))) \r\n 
   (statement 
     (if_inline_statement IF 
       (expr 
@@ -201,9 +205,13 @@
   (statement 
     (call_statement 
       (untyped_id DumpSym) 
-      (call_argument_list 
-        (call_argument Qhdr.SymStart) , 
-        (call_argument QHdrPos)))) \r\n 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call Qhdr.SymStart))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call QHdrPos)))))) \r\n 
   (statement 
     (print_statement PRINT 
       (file_number # 
@@ -226,9 +234,13 @@
   (statement 
     (call_statement 
       (untyped_id DumpSym) 
-      (call_argument_list 
-        (call_argument Qhdr.DatStart) , 
-        (call_argument QHdrPos)))) \r\n 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call Qhdr.DatStart))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call QHdrPos)))))) \r\n 
   (statement 
     (print_statement PRINT 
       (file_number # 
@@ -316,60 +328,72 @@
                 (variable_or_function_call SName$) = 
                 (expr 
                   (variable_or_function_call LEFT$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Prospect$)) , 
-                        (expr 
-                          (variable_or_function_call INSTR 
-                            (args_or_indices 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Prospect$))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call INSTR 
                               ( 
-                                (expr 
-                                  (variable_or_function_call Prospect$)) , 
-                                (expr 
-                                  (variable_or_function_call CHR$ 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (literal 0)) )))) )))) )))))) \r\n \r\n \r\n \r\n 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call Prospect$))) , 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call CHR$ 
+                                        ( 
+                                          (argument_list 
+                                            (argument 
+                                              (expr 
+                                                (literal 0)))) ))))) ))))) ))))) \r\n \r\n \r\n \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
                   (expr 
                     (expr 
                       (variable_or_function_call LEFT$ 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call SName$)) , 
-                            (expr 
-                              (literal 2)) )))) <> 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call SName$))) , 
+                            (argument 
+                              (expr 
+                                (literal 2)))) ))) <> 
                     (expr 
                       (literal "__"))) AND 
                   (expr 
                     (expr 
                       (variable_or_function_call LEFT$ 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call SName$)) , 
-                            (expr 
-                              (literal 1)) )))) <> 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call SName$))) , 
+                            (argument 
+                              (expr 
+                                (literal 1)))) ))) <> 
                     (expr 
                       (literal "$")))) AND 
                 (expr 
                   (expr 
                     (variable_or_function_call UCASE$ 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call LEFT$ 
-                              (args_or_indices 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call LEFT$ 
                                 ( 
-                                  (expr 
-                                    (variable_or_function_call SName$)) , 
-                                  (expr 
-                                    (literal 2)) )))) )))) <> 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call SName$))) , 
+                                    (argument 
+                                      (expr 
+                                        (literal 2)))) ))))) ))) <> 
                   (expr 
                     (literal "B$")))) THEN \r\n 
               (then_block 

@@ -12,16 +12,18 @@
       (expr 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal &H4)) )))) + 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &H4)))) ))) + 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal &H1F)) ))))))) \n 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &H1F)))) )))))) \n 
   (statement 
     (on_event_gosub_statement ON KEY 
       ( 
@@ -42,10 +44,11 @@
           (variable_or_function_call INKEY$)) <> 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (variable_or_function_call ESC)) ))))) 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call ESC)))) )))) 
       (block \n 
         (statement 
           (print_statement PRINT 
@@ -61,8 +64,8 @@
   (statement 
     (call_statement 
       (untyped_id SLEEP) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal 1)))))) \n 
   (statement 

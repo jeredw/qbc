@@ -48,10 +48,11 @@
                     (variable_or_function_call Sum)) + 
                   (expr 
                     (variable_or_function_call X 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call I)) ))))))) \r\n) NEXT I)) \r\n 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) )))))) \r\n) NEXT I)) \r\n 
       (statement 
         (print_statement PRINT 
           (expr 

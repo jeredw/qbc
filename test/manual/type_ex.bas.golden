@@ -28,15 +28,15 @@
     (call_statement CALL 
       (untyped_id BuildDeck) 
       ( 
-        (call_argument_list 
-          (call_argument Deck 
+        (argument_list 
+          (argument Deck 
             ( ))) ))) \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id Shuffle) 
       ( 
-        (call_argument_list 
-          (call_argument Deck 
+        (argument_list 
+          (argument Deck 
             ( ))) ))) \r\n 
   (statement 
     (for_next_statement FOR I% = 
@@ -49,12 +49,15 @@
           (call_statement CALL 
             (untyped_id ShowCard) 
             ( 
-              (call_argument_list 
-                (call_argument Deck 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call I%)) )))) ))) \r\n) NEXT I%)) \r\n \r\n \r\n \r\n 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call Deck 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I%)))) ))))) ))) \r\n) NEXT I%)) \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id BuildDeck) 
     ( 
@@ -80,37 +83,41 @@
       (statement 
         (assignment_statement 
           (variable_or_function_call Suits 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 1)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )) = 
           (expr 
             (literal "Hearts")))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Suits 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 2)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) )) = 
           (expr 
             (literal "Clubs")))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Suits 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 3)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3)))) )) = 
           (expr 
             (literal "Diamonds")))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Suits 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 4)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 4)))) )) = 
           (expr 
             (literal "Spades")))) \r\n \r\n 
       (statement 
@@ -146,25 +153,28 @@
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Deck 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call CardNum%)) )) . Value) = 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call CardNum%)))) ) . Value) = 
                       (expr 
                         (variable_or_function_call J%)))) \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Deck 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call CardNum%)) )) . Suit) = 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call CardNum%)))) ) . Suit) = 
                       (expr 
                         (variable_or_function_call Suits 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call I%)) )))))) \r\n) NEXT J%)) \r\n) NEXT I%)) \r\n \r\n) 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call I%)))) ))))) \r\n) NEXT J%)) \r\n) NEXT I%)) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Shuffle) 
@@ -180,8 +190,8 @@
       (statement 
         (call_statement 
           (untyped_id RANDOMIZE) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (builtin_function TIMER)))))) \r\n \r\n 
       (statement 
@@ -196,45 +206,53 @@
                 (variable_or_function_call CardOne%) = 
                 (expr 
                   (variable_or_function_call INT 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
                             (expr 
-                              (literal 52)) * 
+                              (expr 
+                                (literal 52)) * 
+                              (expr 
+                                (variable_or_function_call RND))) + 
                             (expr 
-                              (variable_or_function_call RND))) + 
-                          (expr 
-                            (literal 1))) )))))) \r\n 
+                              (literal 1))))) ))))) \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call CardTwo%) = 
                 (expr 
                   (variable_or_function_call INT 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
                             (expr 
-                              (literal 52)) * 
+                              (expr 
+                                (literal 52)) * 
+                              (expr 
+                                (variable_or_function_call RND))) + 
                             (expr 
-                              (variable_or_function_call RND))) + 
-                          (expr 
-                            (literal 1))) )))))) \r\n \r\n 
+                              (literal 1))))) ))))) \r\n \r\n 
             (statement 
               (call_statement 
                 (untyped_id SWAP) 
-                (call_argument_list 
-                  (call_argument Deck 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call CardOne%)) ))) , 
-                  (call_argument Deck 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call CardTwo%)) )))))) \r\n) NEXT I%)) \r\n \r\n) 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Deck 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call CardOne%)))) )))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Deck 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call CardTwo%)))) ))))))) \r\n) NEXT I%)) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id ShowCard) 

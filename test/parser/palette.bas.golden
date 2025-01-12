@@ -8,9 +8,10 @@
   (statement 
     (palette_statement palette using 
       (variable_or_function_call pal# 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 4)) ))))) \n 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 4)))) )))) \n 
   (statement 
     (palette_statement palette)) \n <EOF>)

@@ -38,8 +38,10 @@
         (statement 
           (call_statement 
             (untyped_id ShowPattern) 
-            (call_argument_list 
-              (call_argument OK$)))) \r\n) LOOP 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call OK$)))))) \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 
@@ -108,10 +110,11 @@
           (variable_or_function_call Null$) = 
           (expr 
             (variable_or_function_call CHR$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 0)) )))))) \r\n \r\n \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \r\n \r\n \r\n \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n \r\n \r\n 
@@ -163,13 +166,14 @@
                     (expr 
                       (expr 
                         (variable_or_function_call ABS 
-                          (args_or_indices 
-                            ( 
-                              (expr 
+                          ( 
+                            (argument_list 
+                              (argument 
                                 (expr 
-                                  (builtin_function TIMER)) - 
-                                (expr 
-                                  (variable_or_function_call RefTime))) )))) > 
+                                  (expr 
+                                    (builtin_function TIMER)) - 
+                                  (expr 
+                                    (variable_or_function_call RefTime))))) ))) > 
                       (expr 
                         (literal .3))) THEN \r\n 
                     (then_block 
@@ -250,10 +254,11 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call CHR$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 27)) )))))) 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 27)))) ))))) 
                   (block \r\n 
                     (statement 
                       (exit_statement EXIT SUB)) \r\n \r\n)) 
@@ -262,27 +267,29 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call CHR$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 32)) )))))) 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 32)))) ))))) 
                   (block \r\n \r\n \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrentByte%) = 
                         (expr 
                           (variable_or_function_call ASC 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (builtin_function MID$ 
-                                    ( 
-                                      (expr 
-                                        (variable_or_function_call Pattern$)) , 
-                                      (expr 
-                                        (variable_or_function_call ByteNum%)) , 
-                                      (expr 
-                                        (literal 1)) ))) )))))) \r\n 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (builtin_function MID$ 
+                                      ( 
+                                        (expr 
+                                          (variable_or_function_call Pattern$)) , 
+                                        (expr 
+                                          (variable_or_function_call ByteNum%)) , 
+                                        (expr 
+                                          (literal 1)) ))))) ))))) \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrentByte%) = 
@@ -291,10 +298,11 @@
                             (variable_or_function_call CurrentByte%)) XOR 
                           (expr 
                             (variable_or_function_call Bit% 
-                              (args_or_indices 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call BitNum%)) ))))))) \r\n 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call BitNum%)))) )))))) \r\n 
                     (statement 
                       (mid_statement MID$ 
                         ( 
@@ -303,10 +311,11 @@
                             (variable_or_function_call ByteNum%)) ) = 
                         (expr 
                           (variable_or_function_call CHR$ 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call CurrentByte%)) )))))) \r\n \r\n \r\n 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call CurrentByte%)))) ))))) \r\n \r\n \r\n 
                     (if_block_statement IF 
                       (expr 
                         (expr 
@@ -316,10 +325,11 @@
                                 (variable_or_function_call CurrentByte%)) AND 
                               (expr 
                                 (variable_or_function_call Bit% 
-                                  (args_or_indices 
-                                    ( 
-                                      (expr 
-                                        (variable_or_function_call BitNum%)) ))))) )) <> 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call BitNum%)))) )))) )) <> 
                         (expr 
                           (literal 0))) THEN \r\n 
                       (then_block 
@@ -362,10 +372,11 @@
                     (case_expr 
                       (expr 
                         (variable_or_function_call CHR$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (literal 13)) )))))) 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 13)))) ))))) 
                   (block \r\n 
                     (statement 
                       (call_statement 
@@ -378,10 +389,11 @@
                           (variable_or_function_call Null$)) + 
                         (expr 
                           (variable_or_function_call CHR$ 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 75)) ))))))) 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 75)))) )))))) 
                   (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
@@ -412,10 +424,11 @@
                           (variable_or_function_call Null$)) + 
                         (expr 
                           (variable_or_function_call CHR$ 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 77)) ))))))) 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 77)))) )))))) 
                   (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
@@ -446,10 +459,11 @@
                           (variable_or_function_call Null$)) + 
                         (expr 
                           (variable_or_function_call CHR$ 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 72)) ))))))) 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 72)))) )))))) 
                   (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
@@ -480,10 +494,11 @@
                           (variable_or_function_call Null$)) + 
                         (expr 
                           (variable_or_function_call CHR$ 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (literal 80)) ))))))) 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 80)))) )))))) 
                   (block \r\n \r\n 
                     (statement 
                       (assignment_statement 
@@ -527,10 +542,11 @@
           (variable_or_function_call Esc$) = 
           (expr 
             (variable_or_function_call CHR$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 27)) )))))) \r\n \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 27)))) ))))) \r\n \r\n \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
@@ -541,10 +557,11 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call Bit% 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call I%)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I%)))) )) = 
                 (expr 
                   (expr 
                     (literal 2)) ^ 
@@ -603,12 +620,14 @@
           (variable_or_function_call Pattern$) = 
           (expr 
             (variable_or_function_call STRING$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call PatternSize%)) , 
-                  (expr 
-                    (literal 255)) )))))) \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call PatternSize%))) , 
+                  (argument 
+                    (expr 
+                      (literal 255)))) ))))) \r\n \r\n 
       (statement 
         (screen_statement SCREEN 
           (expr 
@@ -805,17 +824,18 @@
                 (variable_or_function_call PatternByte%) = 
                 (expr 
                   (variable_or_function_call ASC 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (builtin_function MID$ 
-                            ( 
-                              (expr 
-                                (variable_or_function_call Pattern$)) , 
-                              (expr 
-                                (variable_or_function_call I%)) , 
-                              (expr 
-                                (literal 1)) ))) )))))) \r\n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (builtin_function MID$ 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call Pattern$)) , 
+                                (expr 
+                                  (variable_or_function_call I%)) , 
+                                (expr 
+                                  (literal 1)) ))))) ))))) \r\n 
             (statement 
               (print_statement PRINT 
                 (expr 
@@ -823,14 +843,16 @@
                     (")) ; 
                   (expr 
                     (variable_or_function_call LTRIM$ 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call STR$ 
-                              (args_or_indices 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call STR$ 
                                 ( 
-                                  (expr 
-                                    (variable_or_function_call PatternByte%)) )))) )))) ; 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call PatternByte%)))) ))))) ))) ; 
                   (expr 
                     (literal ")")))) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
@@ -848,11 +870,12 @@
           (variable_or_function_call OK$) = 
           (expr 
             (variable_or_function_call UCASE$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (builtin_function INPUT$ 
-                      ( 
-                        (expr 
-                          (literal 1)) ))) )))))) \r\n) 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (builtin_function INPUT$ 
+                        ( 
+                          (expr 
+                            (literal 1)) ))))) ))))) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

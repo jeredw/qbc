@@ -39,10 +39,11 @@
       (variable_or_function_call FileLength) = 
       (expr 
         (variable_or_function_call LOF 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 1)) )))))) \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))))) \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call BytesLeft) = 
@@ -85,14 +86,17 @@
                   (variable_or_function_call StringPos%) = 
                   (expr 
                     (variable_or_function_call INSTR 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Start%)) , 
-                          (expr 
-                            (variable_or_function_call Buffer$)) , 
-                          (expr 
-                            (variable_or_function_call Pattern$)) )))))) \r\n 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Start%))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Buffer$))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Pattern$)))) ))))) \r\n 
               (if_block_statement IF 
                 (expr 
                   (expr 

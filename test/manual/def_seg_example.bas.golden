@@ -8,18 +8,19 @@
       (variable_or_function_call Status%) = 
       (expr 
         (variable_or_function_call PEEK 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal &H417)) )))))) \n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal &H417)))) ))))) \n 
   (statement 
     (call_statement 
       (untyped_id POKE) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal &H417))) , 
-        (call_argument 
+        (argument 
           (expr 
             ( 
               (expr 

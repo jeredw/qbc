@@ -18,10 +18,11 @@
         (expr NOT 
           (expr 
             (variable_or_function_call EOF 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 1)) )))))) 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) 
       (block \r\n 
         (statement 
           (line_input_statement LINE INPUT 
@@ -33,9 +34,13 @@
           (call_statement CALL 
             (untyped_id Linesearch) 
             ( 
-              (call_argument_list 
-                (call_argument Test$) , 
-                (call_argument P$)) ))) \r\n) LOOP)) \r\n \r\n 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call Test$))) , 
+                (argument 
+                  (expr 
+                    (variable_or_function_call P$)))) ))) \r\n) LOOP)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Linesearch) 
     ( 
@@ -56,12 +61,14 @@
           (variable_or_function_call X) = 
           (expr 
             (variable_or_function_call INSTR 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call Test$)) , 
-                  (expr 
-                    (variable_or_function_call P$)) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Test$))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call P$)))) ))))) \r\n 
       (statement 
         (if_inline_statement IF 
           (expr 

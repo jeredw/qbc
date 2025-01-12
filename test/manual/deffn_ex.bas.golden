@@ -44,7 +44,8 @@
         (literal "factorial is")) 
       (expr 
         (variable_or_function_call FNFactorial# 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call Num)) )))))) \r\n \n <EOF>)
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call Num)))) ))))) \r\n \n <EOF>)

@@ -12,22 +12,25 @@
       (variable_or_function_call CleanNum$) = 
       (expr 
         (variable_or_function_call Filter$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call A$)) , 
-              (expr 
-                (literal "0123456789.-")) )))))) \r\n \r\n \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call A$))) , 
+              (argument 
+                (expr 
+                  (literal "0123456789.-")))) ))))) \r\n \r\n \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
         (literal "The number's value = ")) ; 
       (expr 
         (variable_or_function_call VAL 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call CleanNum$)) )))))) \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call CleanNum$)))) ))))) \r\n 
   (statement 
     (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (function_statement FUNCTION Filter$ 
@@ -72,12 +75,14 @@
               (expr 
                 (expr 
                   (variable_or_function_call INSTR 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call FilterString$)) , 
-                        (expr 
-                          (variable_or_function_call C$)) )))) <> 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call FilterString$))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call C$)))) ))) <> 
                 (expr 
                   (literal 0))) THEN \r\n 
               (then_block 

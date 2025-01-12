@@ -41,10 +41,11 @@
               (expr 
                 (expr 
                   (variable_or_function_call UCASE$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call N$)) )))) = 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call N$)))) ))) = 
                 (expr 
                   (literal "END")))) THEN 
             (if_inline_action 
@@ -61,16 +62,18 @@
         (statement 
           (assignment_statement 
             (variable_or_function_call Values 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call NumValues)) ))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call NumValues)))) )) = 
             (expr 
               (variable_or_function_call VAL 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call N$)) )))))) \r\n) LOOP)) \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call N$)))) ))))) \r\n) LOOP)) \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -91,7 +94,7 @@
   (statement 
     (call_statement 
       (untyped_id CHAIN) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal "com2_ex")))))) \r\n \n <EOF>)

@@ -56,10 +56,11 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call PaletteArray 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call I)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I)))) )) = 
                 (expr 
                   (variable_or_function_call I)))) \r\n) NEXT I)) \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
@@ -129,20 +130,22 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call PaletteArray 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call I)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I)))) )) = 
                 (expr 
                   (expr 
                     ( 
                       (expr 
                         (expr 
                           (variable_or_function_call PaletteArray 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call I)) )))) MOD 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call I)))) ))) MOD 
                         (expr 
                           (literal 15))) )) + 
                   (expr 
@@ -150,8 +153,9 @@
       (statement 
         (palette_statement PALETTE USING 
           (variable_or_function_call PaletteArray 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 0)) ))))) \r\n) 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

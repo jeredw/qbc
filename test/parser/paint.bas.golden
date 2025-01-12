@@ -22,18 +22,20 @@
           (literal 0)) ) , 
       (expr 
         (variable_or_function_call chr$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 12)) )))) , 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 12)))) ))) , 
       (expr 
         (literal 2)) , 
       (expr 
         (variable_or_function_call chr$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 0)) )))))) \n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n 
   (statement 
     (paint_statement paint 
       ( 
@@ -54,16 +56,18 @@
           (literal 0)) ) , 
       (expr 
         (variable_or_function_call chr$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 12)) )))) , , 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 12)))) ))) , , 
       (expr 
         (variable_or_function_call chr$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 0)) )))))) \n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n 
   (statement 
     (paint_statement paint 
       ( 
@@ -84,10 +88,11 @@
         (literal 2)) , 
       (expr 
         (variable_or_function_call chr$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 0)) )))))) \n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n 
   (statement 
     (paint_statement paint 
       ( 
@@ -97,7 +102,8 @@
           (literal 0)) ) , , , 
       (expr 
         (variable_or_function_call chr$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 0)) )))))) \n <EOF>)
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n <EOF>)

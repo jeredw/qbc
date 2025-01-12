@@ -173,12 +173,14 @@
             (variable_or_function_call Q) = 
             (expr 
               (variable_or_function_call INSTR 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal "BFKSQbfksq")) , 
-                    (expr 
-                      (variable_or_function_call Q$)) )))))) \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal "BFKSQbfksq"))) , 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Q$)))) ))))) \r\n 
         (label 
           (line_number 80)) 
         (statement 
@@ -262,8 +264,8 @@
         (statement 
           (call_statement 
             (untyped_id SOUND) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (expr 
                     (variable_or_function_call LTONE)) - 
@@ -272,7 +274,7 @@
                       (variable_or_function_call COUNT)) / 
                     (expr 
                       (literal 2))))) , 
-              (call_argument 
+              (argument 
                 (expr 
                   (expr 
                     (variable_or_function_call COUNT)) / 
@@ -283,9 +285,11 @@
         (statement 
           (call_statement 
             (untyped_id SOUND) 
-            (call_argument_list 
-              (call_argument HTONE) , 
-              (call_argument 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call HTONE))) , 
+              (argument 
                 (expr 
                   (expr 
                     (variable_or_function_call COUNT)) / 
@@ -339,9 +343,11 @@
         (statement 
           (call_statement 
             (untyped_id SOUND) 
-            (call_argument_list 
-              (call_argument COUNT) , 
-              (call_argument 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call COUNT))) , 
+              (argument 
                 (expr 
                   (expr 
                     (variable_or_function_call DELAY)) / 
@@ -394,17 +400,21 @@
         (statement 
           (call_statement 
             (untyped_id SOUND) 
-            (call_argument_list 
-              (call_argument HTONE) , 
-              (call_argument 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call HTONE))) , 
+              (argument 
                 (expr 
                   (literal 5)))))) : 
         (statement 
           (call_statement 
             (untyped_id SOUND) 
-            (call_argument_list 
-              (call_argument LTONE) , 
-              (call_argument 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call LTONE))) , 
+              (argument 
                 (expr 
                   (literal 5)))))) \r\n 
         (label 
@@ -467,18 +477,19 @@
               (statement 
                 (call_statement 
                   (untyped_id SOUND) 
-                  (call_argument_list 
-                    (call_argument 
+                  (argument_list 
+                    (argument 
                       (expr 
                         (expr 
                           (variable_or_function_call HTONE)) - 
                         (expr 
                           (variable_or_function_call ABS 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call COUNT)) )))))) , 
-                    (call_argument 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call COUNT)))) ))))) , 
+                    (argument 
                       (expr 
                         (literal .3)))))) \r\n 
               (label 

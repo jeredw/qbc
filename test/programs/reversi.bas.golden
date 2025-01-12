@@ -379,10 +379,11 @@
                   (if_block_statement IF 
                     (expr 
                       (variable_or_function_call ValidMove 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call COMP)) )))) THEN \n 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call COMP)))) ))) THEN \n 
                     (then_block 
                       (statement 
                         (call_statement 
@@ -390,10 +391,11 @@
                     (elseif_block_statement ELSEIF 
                       (expr 
                         (variable_or_function_call ValidMove 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call HUMAN)) )))) THEN 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call HUMAN)))) ))) THEN 
                       (else_block \n 
                         (statement 
                           (do_loop_statement DO 
@@ -401,8 +403,8 @@
                               (statement 
                                 (call_statement 
                                   (untyped_id DisplayMsg) 
-                                  (call_argument_list 
-                                    (call_argument 
+                                  (argument_list 
+                                    (argument 
                                       (expr 
                                         (literal "You have no valid moves.  Select pass.")))))) \n 
                               (statement 
@@ -423,16 +425,19 @@
                               (expr 
                                 (expr 
                                   (variable_or_function_call ASC 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call RIGHT$ 
-                                            (args_or_indices 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call RIGHT$ 
                                               ( 
-                                                (expr 
-                                                  (variable_or_function_call a$)) , 
-                                                (expr 
-                                                  (literal 1)) )))) )))) = 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call a$))) , 
+                                                  (argument 
+                                                    (expr 
+                                                      (literal 1)))) ))))) ))) = 
                                 (expr 
                                   (variable_or_function_call PASS)))))) \n 
                         (statement 
@@ -474,10 +479,11 @@
                     (if_block_statement IF 
                       (expr 
                         (variable_or_function_call ValidMove 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call HUMAN)) )))) THEN \n 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call HUMAN)))) ))) THEN \n 
                       (then_block 
                         (statement 
                           (call_statement 
@@ -485,16 +491,17 @@
                       (elseif_block_statement ELSEIF 
                         (expr 
                           (variable_or_function_call ValidMove 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call COMP)) )))) THEN 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call COMP)))) ))) THEN 
                         (else_block \n 
                           (statement 
                             (call_statement 
                               (untyped_id DisplayMsg) 
-                              (call_argument_list 
-                                (call_argument 
+                              (argument_list 
+                                (argument 
                                   (expr 
                                     (literal "Computer has no valid moves.  Your Turn.")))))) \n 
                           (statement 
@@ -515,8 +522,8 @@
         (statement 
           (call_statement 
             (untyped_id DisplayMsg) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (literal "Game Over")))))) \n)) 
     (end_if_statement END IF)) \n \n 
@@ -579,12 +586,14 @@
               (expr 
                 (expr 
                   (variable_or_function_call GG 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call i)) , 
-                        (expr 
-                          (variable_or_function_call j)) )) . player)) = 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call i))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call j)))) ) . player)) = 
                 (expr 
                   (variable_or_function_call GBoard))) THEN \n 
               (then_block 
@@ -602,12 +611,14 @@
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call i)) , 
-                          (expr 
-                            (variable_or_function_call j)) )) . player)) = 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call i))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call j)))) ) . player)) = 
                   (expr 
                     (variable_or_function_call Opponent))) THEN 
                 (else_block \n 
@@ -716,12 +727,14 @@
                     (expr 
                       (expr 
                         (variable_or_function_call GG 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call row)) , 
-                              (expr 
-                                (variable_or_function_call col)) )) . nTake)) > 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call row))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call col)))) ) . nTake)) > 
                       (expr 
                         (literal 0))) THEN \n 
                     (then_block 
@@ -738,20 +751,24 @@
                               (expr 
                                 (expr 
                                   (variable_or_function_call GG 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call row)) , 
-                                        (expr 
-                                          (variable_or_function_call col)) )) . nTake)) + 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call row))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call col)))) ) . nTake)) + 
                                 (expr 
                                   (variable_or_function_call GW 
-                                    (args_or_indices 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call row)) , 
-                                        (expr 
-                                          (variable_or_function_call col)) ))))))) \n) 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call row))) , 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call col)))) )))))) \n) 
                         (else_block_statement ELSE 
                           (else_block \n 
                             (statement 
@@ -760,20 +777,24 @@
                                 (expr 
                                   (expr 
                                     (variable_or_function_call GG 
-                                      (args_or_indices 
-                                        ( 
-                                          (expr 
-                                            (variable_or_function_call row)) , 
-                                          (expr 
-                                            (variable_or_function_call col)) )) . nTake)) + 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call row))) , 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call col)))) ) . nTake)) + 
                                   (expr 
                                     (variable_or_function_call GW 
-                                      (args_or_indices 
-                                        ( 
-                                          (expr 
-                                            (variable_or_function_call row)) , 
-                                          (expr 
-                                            (variable_or_function_call col)) ))))))) \n 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call row))) , 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call col)))) )))))) \n 
                             (statement 
                               (select_case_statement SELECT CASE 
                                 (expr 
@@ -801,22 +822,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 1)) , 
-                                                                    (expr 
-                                                                      (literal 1)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n 
                                     (statement 
                                       (if_inline_statement IF 
                                         (expr 
@@ -833,22 +857,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 1)) , 
-                                                                    (expr 
-                                                                      (literal 8)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n)) 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n)) 
                                 (case_block 
                                   (case_statement CASE 
                                     (case_expr 
@@ -860,12 +887,14 @@
                                         (expr 
                                           (expr 
                                             (variable_or_function_call GG 
-                                              (args_or_indices 
-                                                ( 
-                                                  (expr 
-                                                    (literal 1)) , 
-                                                  (expr 
-                                                    (variable_or_function_call col)) )) . player)) <> 
+                                              ( 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (literal 1))) , 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call col)))) ) . player)) <> 
                                           (expr 
                                             (variable_or_function_call COMP))) THEN 
                                         (if_inline_action 
@@ -883,12 +912,14 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (literal 1)) , 
-                                                                (expr 
-                                                                  (variable_or_function_call col)) )) . player)) = 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (literal 1))) , 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (variable_or_function_call col)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -902,15 +933,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
-                                                      (literal 1)) , 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call col)) - 
+                                                        (literal 1))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) )) . player)) <> 
+                                                        (expr 
+                                                          (variable_or_function_call col)) - 
+                                                        (expr 
+                                                          (literal 1))))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -928,15 +961,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (literal 1)) , 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call col)) - 
+                                                                    (literal 1))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) )) . player)) = 
+                                                                    (expr 
+                                                                      (variable_or_function_call col)) - 
+                                                                    (expr 
+                                                                      (literal 1))))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -950,15 +985,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
-                                                      (literal 1)) , 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call col)) + 
+                                                        (literal 1))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) )) . player)) <> 
+                                                        (expr 
+                                                          (variable_or_function_call col)) + 
+                                                        (expr 
+                                                          (literal 1))))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -976,15 +1013,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (literal 1)) , 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call col)) + 
+                                                                    (literal 1))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) )) . player)) = 
+                                                                    (expr 
+                                                                      (variable_or_function_call col)) + 
+                                                                    (expr 
+                                                                      (literal 1))))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n)) 
                                 (case_block 
@@ -998,12 +1037,14 @@
                                         (expr 
                                           (expr 
                                             (variable_or_function_call GG 
-                                              (args_or_indices 
-                                                ( 
-                                                  (expr 
-                                                    (literal 8)) , 
-                                                  (expr 
-                                                    (variable_or_function_call col)) )) . player)) <> 
+                                              ( 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (literal 8))) , 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call col)))) ) . player)) <> 
                                           (expr 
                                             (variable_or_function_call COMP))) THEN 
                                         (if_inline_action 
@@ -1021,12 +1062,14 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (literal 8)) , 
-                                                                (expr 
-                                                                  (variable_or_function_call col)) )) . player)) = 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (literal 8))) , 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (variable_or_function_call col)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -1040,15 +1083,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
-                                                      (literal 8)) , 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call col)) - 
+                                                        (literal 8))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) )) . player)) <> 
+                                                        (expr 
+                                                          (variable_or_function_call col)) - 
+                                                        (expr 
+                                                          (literal 1))))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -1066,15 +1111,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (literal 8)) , 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call col)) - 
+                                                                    (literal 8))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) )) . player)) = 
+                                                                    (expr 
+                                                                      (variable_or_function_call col)) - 
+                                                                    (expr 
+                                                                      (literal 1))))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -1088,15 +1135,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
-                                                      (literal 8)) , 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call col)) + 
+                                                        (literal 8))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) )) . player)) <> 
+                                                        (expr 
+                                                          (variable_or_function_call col)) + 
+                                                        (expr 
+                                                          (literal 1))))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -1114,15 +1163,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (literal 8)) , 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call col)) + 
+                                                                    (literal 8))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) )) . player)) = 
+                                                                    (expr 
+                                                                      (variable_or_function_call col)) + 
+                                                                    (expr 
+                                                                      (literal 1))))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n)) 
                                 (case_block 
@@ -1147,22 +1198,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 8)) , 
-                                                                    (expr 
-                                                                      (literal 1)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n 
                                     (statement 
                                       (if_inline_statement IF 
                                         (expr 
@@ -1179,22 +1233,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 8)) , 
-                                                                    (expr 
-                                                                      (literal 8)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n)) 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n)) 
                                 (end_select_statement END SELECT))) \n 
                             (statement 
                               (select_case_statement SELECT CASE 
@@ -1223,22 +1280,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 1)) , 
-                                                                    (expr 
-                                                                      (literal 1)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n 
                                     (statement 
                                       (if_inline_statement IF 
                                         (expr 
@@ -1255,22 +1315,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 8)) , 
-                                                                    (expr 
-                                                                      (literal 1)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n)) 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n)) 
                                 (case_block 
                                   (case_statement CASE 
                                     (case_expr 
@@ -1282,12 +1345,14 @@
                                         (expr 
                                           (expr 
                                             (variable_or_function_call GG 
-                                              (args_or_indices 
-                                                ( 
-                                                  (expr 
-                                                    (variable_or_function_call row)) , 
-                                                  (expr 
-                                                    (literal 1)) )) . player)) <> 
+                                              ( 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call row))) , 
+                                                  (argument 
+                                                    (expr 
+                                                      (literal 1)))) ) . player)) <> 
                                           (expr 
                                             (variable_or_function_call COMP))) THEN 
                                         (if_inline_action 
@@ -1305,12 +1370,14 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (variable_or_function_call row)) , 
-                                                                (expr 
-                                                                  (literal 1)) )) . player)) = 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (variable_or_function_call row))) , 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (literal 1)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -1324,15 +1391,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call row)) - 
+                                                        (expr 
+                                                          (variable_or_function_call row)) - 
+                                                        (expr 
+                                                          (literal 1)))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) , 
-                                                    (expr 
-                                                      (literal 1)) )) . player)) <> 
+                                                        (literal 1)))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -1350,15 +1419,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call row)) - 
+                                                                    (expr 
+                                                                      (variable_or_function_call row)) - 
+                                                                    (expr 
+                                                                      (literal 1)))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) , 
-                                                                (expr 
-                                                                  (literal 1)) )) . player)) = 
+                                                                    (literal 1)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -1372,15 +1443,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call row)) + 
+                                                        (expr 
+                                                          (variable_or_function_call row)) + 
+                                                        (expr 
+                                                          (literal 1)))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) , 
-                                                    (expr 
-                                                      (literal 1)) )) . player)) <> 
+                                                        (literal 1)))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -1398,15 +1471,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call row)) + 
+                                                                    (expr 
+                                                                      (variable_or_function_call row)) + 
+                                                                    (expr 
+                                                                      (literal 1)))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) , 
-                                                                (expr 
-                                                                  (literal 1)) )) . player)) = 
+                                                                    (literal 1)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n)) 
                                 (case_block 
@@ -1420,12 +1495,14 @@
                                         (expr 
                                           (expr 
                                             (variable_or_function_call GG 
-                                              (args_or_indices 
-                                                ( 
-                                                  (expr 
-                                                    (variable_or_function_call row)) , 
-                                                  (expr 
-                                                    (literal 8)) )) . player)) <> 
+                                              ( 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call row))) , 
+                                                  (argument 
+                                                    (expr 
+                                                      (literal 8)))) ) . player)) <> 
                                           (expr 
                                             (variable_or_function_call COMP))) THEN 
                                         (if_inline_action 
@@ -1443,12 +1520,14 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
-                                                                  (variable_or_function_call row)) , 
-                                                                (expr 
-                                                                  (literal 8)) )) . player)) = 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (variable_or_function_call row))) , 
+                                                                (argument 
+                                                                  (expr 
+                                                                    (literal 8)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -1462,15 +1541,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call row)) - 
+                                                        (expr 
+                                                          (variable_or_function_call row)) - 
+                                                        (expr 
+                                                          (literal 1)))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) , 
-                                                    (expr 
-                                                      (literal 8)) )) . player)) <> 
+                                                        (literal 8)))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -1488,15 +1569,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call row)) - 
+                                                                    (expr 
+                                                                      (variable_or_function_call row)) - 
+                                                                    (expr 
+                                                                      (literal 1)))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) , 
-                                                                (expr 
-                                                                  (literal 8)) )) . player)) = 
+                                                                    (literal 8)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n 
                                     (statement 
@@ -1510,15 +1593,17 @@
                                           (expr 
                                             (expr 
                                               (variable_or_function_call GG 
-                                                (args_or_indices 
-                                                  ( 
-                                                    (expr 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
                                                       (expr 
-                                                        (variable_or_function_call row)) + 
+                                                        (expr 
+                                                          (variable_or_function_call row)) + 
+                                                        (expr 
+                                                          (literal 1)))) , 
+                                                    (argument 
                                                       (expr 
-                                                        (literal 1))) , 
-                                                    (expr 
-                                                      (literal 8)) )) . player)) <> 
+                                                        (literal 8)))) ) . player)) <> 
                                             (expr 
                                               (variable_or_function_call COMP)))) THEN 
                                         (if_inline_action 
@@ -1536,15 +1621,17 @@
                                                       (expr 
                                                         (expr 
                                                           (variable_or_function_call GG 
-                                                            (args_or_indices 
-                                                              ( 
-                                                                (expr 
+                                                            ( 
+                                                              (argument_list 
+                                                                (argument 
                                                                   (expr 
-                                                                    (variable_or_function_call row)) + 
+                                                                    (expr 
+                                                                      (variable_or_function_call row)) + 
+                                                                    (expr 
+                                                                      (literal 1)))) , 
+                                                                (argument 
                                                                   (expr 
-                                                                    (literal 1))) , 
-                                                                (expr 
-                                                                  (literal 8)) )) . player)) = 
+                                                                    (literal 8)))) ) . player)) = 
                                                         (expr 
                                                           (variable_or_function_call HUMAN))) ))))))))) \n)) 
                                 (case_block 
@@ -1569,22 +1656,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 1)) , 
-                                                                    (expr 
-                                                                      (literal 8)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 1))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n 
                                     (statement 
                                       (if_inline_statement IF 
                                         (expr 
@@ -1601,22 +1691,25 @@
                                                   (variable_or_function_call value)) + 
                                                 (expr 
                                                   (variable_or_function_call ABS 
-                                                    (args_or_indices 
-                                                      ( 
-                                                        (expr 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
                                                           (expr 
                                                             (expr 
-                                                              (literal 10)) * 
-                                                            (expr 
-                                                              (variable_or_function_call GG 
-                                                                (args_or_indices 
+                                                              (expr 
+                                                                (literal 10)) * 
+                                                              (expr 
+                                                                (variable_or_function_call GG 
                                                                   ( 
-                                                                    (expr 
-                                                                      (literal 8)) , 
-                                                                    (expr 
-                                                                      (literal 8)) )) . player))) = 
-                                                          (expr 
-                                                            (variable_or_function_call COMP))) )))))))))) \n)) 
+                                                                    (argument_list 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8))) , 
+                                                                      (argument 
+                                                                        (expr 
+                                                                          (literal 8)))) ) . player))) = 
+                                                            (expr 
+                                                              (variable_or_function_call COMP))))) ))))))))) \n)) 
                                 (end_select_statement END SELECT))) \n)) 
                         (end_if_statement END IF)) \n 
                       (if_block_statement IF 
@@ -1646,10 +1739,16 @@
       (statement 
         (call_statement 
           (untyped_id TakeBlocks) 
-          (call_argument_list 
-            (call_argument bestrow) , 
-            (call_argument bestcol) , 
-            (call_argument COMP)))) \n 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call bestrow))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call bestcol))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call COMP)))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call GS.stat) = 
@@ -1672,153 +1771,172 @@
       (statement 
         (assignment_statement 
           (variable_or_function_call a$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 1)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )) = 
           (expr 
             (literal "The object of Reversi is to finish the game with more of your red")))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call a$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 2)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) )) = 
           (expr 
             (literal "circles on the board than the computer has of blue 
               (Monochrome")))) \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call a$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 3)) ))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 3)))) )) = 
             (expr 
               (literal "monitors will show red as white and blue as black).")))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call a$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 4)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 4)))) )) = 
           (expr 
             (literal "")))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call a$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 5)) ))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) )) = 
           (expr 
             (literal "1) You and the computer play by the same rules.")))) \n 
     (statement 
       (assignment_statement 
         (variable_or_function_call a$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 6)) ))) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 6)))) )) = 
         (expr 
           (literal "2) To make a legal move, at least one of the computer's circles")))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call a$ 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 7)) ))) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 7)))) )) = 
       (expr 
         (literal "   must lie in a horizontal, vertical, or diagonal line between")))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call a$ 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 8)) ))) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 8)))) )) = 
       (expr 
         (literal "   one of your existing circles and the square where you want to")))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call a$ 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 9)) ))) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 9)))) )) = 
       (expr 
         (literal "   move.  Use the arrow keys to position the cursor on the square")))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call a$ 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 10)) ))) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 10)))) )) = 
       (expr 
         (literal "   and hit Enter or the Space Bar.")))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call a$ 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 11)) ))) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 11)))) )) = 
       (expr 
         (literal "3) You can choose Pass from the game controls menu on your first")))) \n (statement 
   (assignment_statement 
     (variable_or_function_call a$ 
-      (args_or_indices 
-        ( 
-          (expr 
-            (literal 12)) ))) = 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (literal 12)))) )) = 
     (expr 
       (literal "   move to force the computer to play first.")))) \n (statement 
   (assignment_statement 
     (variable_or_function_call a$ 
-      (args_or_indices 
-        ( 
-          (expr 
-            (literal 13)) ))) = 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (literal 13)))) )) = 
     (expr 
       (literal "4) After your first move, you cannot pass if you can make a legal")))) \n (statement (assignment_statement 
   (variable_or_function_call a$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 14)) ))) = 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 14)))) )) = 
   (expr 
     (literal "   move.")))) \n (statement (assignment_statement 
   (variable_or_function_call a$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 15)) ))) = 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 15)))) )) = 
   (expr 
     (literal "5) If you cannot make a legal move, you must choose Pass")))) \n (statement (assignment_statement (variable_or_function_call a$ 
-  (args_or_indices 
-    ( 
+  ( 
+    (argument_list 
+      (argument 
+        (expr 
+          (literal 16)))) )) = (expr 
+  (literal "6) When neither you nor the computer can make a legal move, the")))) \n (statement (assignment_statement (variable_or_function_call a$ ( 
+  (argument_list 
+    (argument 
       (expr 
-        (literal 16)) ))) = (expr 
-  (literal "6) When neither you nor the computer can make a legal move, the")))) \n (statement (assignment_statement (variable_or_function_call a$ (args_or_indices 
-  ( 
-    (expr 
-      (literal 17)) ))) = (expr (literal "   game is over.")))) \n (statement (assignment_statement (variable_or_function_call a$ (args_or_indices 
-  ( 
-    (expr 
-      (literal 18)) ))) = (expr (literal "7) The one with the most circles wins.")))) \n \n (statement (line_statement LINE ( (expr (literal 0)) , (expr (literal 0)) ) - ( (expr (literal 640)) , (expr (literal 480)) ) , (expr (variable_or_function_call BG)) , (box_style BF))) \n (statement (line_statement LINE ( (expr (literal 39)) , (expr (literal 15)) ) - ( (expr (literal 590)) , (expr (literal 450)) ) , (expr (literal 0)) , (box_style B))) \n (if_block_statement IF (expr (expr (variable_or_function_call GBoard)) = (expr (literal 85))) THEN \n (then_block (statement (paint_statement PAINT ( 
+        (literal 17)))) )) = (expr (literal "   game is over.")))) \n (statement (assignment_statement (variable_or_function_call a$ ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (literal 18)))) )) = (expr (literal "7) The one with the most circles wins.")))) \n \n (statement (line_statement LINE ( (expr (literal 0)) , (expr (literal 0)) ) - ( (expr (literal 640)) , (expr (literal 480)) ) , (expr (variable_or_function_call BG)) , (box_style BF))) \n (statement (line_statement LINE ( (expr (literal 39)) , (expr (literal 15)) ) - ( (expr (literal 590)) , (expr (literal 450)) ) , (expr (literal 0)) , (box_style B))) \n (if_block_statement IF (expr (expr (variable_or_function_call GBoard)) = (expr (literal 85))) THEN \n (then_block (statement (paint_statement PAINT ( 
   (expr 
     (literal 200)) , 
   (expr 
     (literal 200)) ) , (expr 
   (variable_or_function_call CHR$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 85)) )))) , (expr 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 85)))) ))) , (expr 
   (literal 0)))) \n) (else_block_statement ELSE (else_block \n (statement (paint_statement PAINT 
   ( 
     (expr 
@@ -1838,10 +1956,13 @@
     (literal 7)))) \n (statement (print_statement PRINT 
   (expr 
     (variable_or_function_call a$ 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call i)) )))))) \n) NEXT i)) \n (statement (locate_statement LOCATE (expr (literal 23)) , (expr (literal 25)))) : (statement (print_statement PRINT (expr (literal "- Press any key to continue -")))) \n (label (text_label (untyped_id SLEEP)) :) (statement (assignment_statement (variable_or_function_call a$) = (expr (variable_or_function_call INKEY$)))) \n (statement (call_statement (untyped_id DrawGameBoard))) \n (statement (call_statement (untyped_id DrawCursor) (call_argument_list (call_argument GS.curRow) , (call_argument GS.curCol)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DisplayMsg) ( (parameter_list (parameter a$)) ) (block \n \n (statement (assignment_statement (variable_or_function_call slen) = (expr (builtin_function LEN ( 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call i)))) ))))) \n) NEXT i)) \n (statement (locate_statement LOCATE (expr (literal 23)) , (expr (literal 25)))) : (statement (print_statement PRINT (expr (literal "- Press any key to continue -")))) \n (label (text_label (untyped_id SLEEP)) :) (statement (assignment_statement (variable_or_function_call a$) = (expr (variable_or_function_call INKEY$)))) \n (statement (call_statement (untyped_id DrawGameBoard))) \n (statement (call_statement (untyped_id DrawCursor) (argument_list (argument (expr 
+  (variable_or_function_call GS.curRow))) , (argument (expr 
+  (variable_or_function_call GS.curCol)))))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DisplayMsg) ( (parameter_list (parameter a$)) ) (block \n \n (statement (assignment_statement (variable_or_function_call slen) = (expr (builtin_function LEN ( 
   (expr 
     (variable_or_function_call a$)) ))))) \n (statement (assignment_statement (variable_or_function_call LX) = (expr (expr ( 
   (expr 
@@ -1869,10 +1990,11 @@
   (expr 
     (literal 430)) ) , (expr 
   (variable_or_function_call CHR$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 85)) )))) , (expr 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 85)))) ))) , (expr 
   (literal 0)))) \n) (else_block_statement ELSE (else_block \n (statement (paint_statement PAINT 
   ( 
     (expr 
@@ -1890,46 +2012,56 @@
     (expr 
       (literal 80)) - 
     (expr 
-      (variable_or_function_call slen))) )) / (expr (literal 2))))) \n (statement (print_statement PRINT (expr (variable_or_function_call a$)) ;)) \n (statement (assignment_statement (variable_or_function_call GS.mDisplay) = (expr (variable_or_function_call TRUE)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DrawCursor) ( (parameter_list (parameter row) , (parameter col)) ) (block \n (if_block_statement IF (expr (expr (variable_or_function_call GG (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) )) . nTake)) > (expr (literal 0))) THEN \n (then_block (statement (circle_statement CIRCLE ( 
+      (variable_or_function_call slen))) )) / (expr (literal 2))))) \n (statement (print_statement PRINT (expr (variable_or_function_call a$)) ;)) \n (statement (assignment_statement (variable_or_function_call GS.mDisplay) = (expr (variable_or_function_call TRUE)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DrawCursor) ( (parameter_list (parameter row) , (parameter col)) ) (block \n (if_block_statement IF (expr (expr (variable_or_function_call GG ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col)))) ) . nTake)) > (expr (literal 0))) THEN \n (then_block (statement (circle_statement CIRCLE ( 
   (expr 
     (variable_or_function_call GG 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call row)) , 
-          (expr 
-            (variable_or_function_call col)) )) . cx)) , 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call row))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call col)))) ) . cx)) , 
   (expr 
     (variable_or_function_call GG 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call row)) , 
-          (expr 
-            (variable_or_function_call col)) )) . cy)) ) , (expr 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call row))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call col)))) ) . cy)) ) , (expr 
   (literal 15)) , (expr 
   (variable_or_function_call HUMAN)))) \n (statement (circle_statement CIRCLE ( 
   (expr 
     (variable_or_function_call GG 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call row)) , 
-          (expr 
-            (variable_or_function_call col)) )) . cx)) , 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call row))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call col)))) ) . cx)) , 
   (expr 
     (variable_or_function_call GG 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call row)) , 
-          (expr 
-            (variable_or_function_call col)) )) . cy)) ) , (expr 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call row))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call col)))) ) . cy)) ) , (expr 
   (literal 14)) , (expr 
   (variable_or_function_call HUMAN)))) \n) (else_block_statement ELSE (else_block \n (statement (assignment_statement 
   (variable_or_function_call lc) = 
@@ -1938,12 +2070,14 @@
   (expr 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . player)) = 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . player)) = 
     (expr 
       (literal 0))) THEN 
   (if_inline_action 
@@ -1955,41 +2089,49 @@
   ( 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cx)) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cx)) , 
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cy)) - 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cy)) - 
       (expr 
         (literal 15))) ) - 
   ( 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cx)) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cx)) , 
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cy)) + 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cy)) + 
       (expr 
         (literal 15))) ) , 
   (expr 
@@ -1998,46 +2140,54 @@
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cx)) - 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cx)) - 
       (expr 
         (literal 1))) , 
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cy)) - 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cy)) - 
       (expr 
         (literal 15))) ) - 
   ( 
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cx)) - 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cx)) - 
       (expr 
         (literal 1))) , 
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cy)) + 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cy)) + 
       (expr 
         (literal 15))) ) , 
   (expr 
@@ -2046,42 +2196,50 @@
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cx)) + 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cx)) + 
       (expr 
         (literal 15))) , 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cy)) ) - 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cy)) ) - 
   ( 
     (expr 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cx)) - 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cx)) - 
       (expr 
         (literal 15))) , 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cy)) ) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cy)) ) , 
   (expr 
     (variable_or_function_call lc)))) \n)) (end_if_statement END IF)) \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DrawGameBoard) (block \n \n (statement (line_statement LINE ( (expr (literal 0)) , (expr (literal 0)) ) - ( (expr (literal 640)) , (expr (literal 480)) ) , (expr (variable_or_function_call BG)) , (box_style BF))) \n (statement (line_statement LINE ( (expr (literal 239)) , (expr (literal 15)) ) - ( (expr (literal 400)) , (expr (literal 40)) ) , (expr (literal 0)) , (box_style B))) \n (statement (line_statement LINE ( (expr (literal 39)) , (expr (literal 260)) ) - ( (expr (literal 231)) , (expr (literal 390)) ) , (expr (literal 0)) , (box_style B))) \n (statement (line_statement LINE ( (expr (literal 39)) , (expr (literal 70)) ) - ( (expr (literal 231)) , (expr (literal 220)) ) , (expr (literal 0)) , (box_style B))) \n (statement (line_statement LINE ( (expr (literal 269)) , (expr (literal 70)) ) - ( (expr (literal 591)) , (expr (literal 390)) ) , (expr (literal 0)) , (box_style B))) \n \n (if_block_statement IF (expr (expr (variable_or_function_call GBoard)) = (expr (literal 85))) THEN \n (then_block (statement (paint_statement PAINT ( 
   (expr 
@@ -2089,40 +2247,44 @@
   (expr 
     (literal 25)) ) , (expr 
   (variable_or_function_call CHR$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 85)) )))) , (expr 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 85)))) ))) , (expr 
   (literal 0)))) \n (statement (paint_statement PAINT ( 
   (expr 
     (literal 150)) , 
   (expr 
     (literal 350)) ) , (expr 
   (variable_or_function_call CHR$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 85)) )))) , (expr 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 85)))) ))) , (expr 
   (literal 0)))) \n (statement (paint_statement PAINT ( 
   (expr 
     (literal 150)) , 
   (expr 
     (literal 124)) ) , (expr 
   (variable_or_function_call CHR$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 85)) )))) , (expr 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 85)))) ))) , (expr 
   (literal 0)))) \n (statement (paint_statement PAINT ( 
   (expr 
     (literal 450)) , 
   (expr 
     (literal 225)) ) , (expr 
   (variable_or_function_call CHR$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 85)) )))) , (expr 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 85)))) ))) , (expr 
   (literal 0)))) \n) (else_block_statement ELSE (else_block \n (statement (paint_statement PAINT 
   ( 
     (expr 
@@ -2241,30 +2403,38 @@
       (expr 
         (expr 
           (variable_or_function_call GG 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (variable_or_function_call row)) , 
-                (expr 
-                  (variable_or_function_call col)) )) . player)) <> 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call row))) , 
+                (argument 
+                  (expr 
+                    (variable_or_function_call col)))) ) . player)) <> 
         (expr 
           (variable_or_function_call GBoard))) THEN \n 
       (then_block 
         (statement 
           (call_statement 
             (untyped_id DrawGamePiece) 
-            (call_argument_list 
-              (call_argument row) , 
-              (call_argument col) , 
-              (call_argument 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col))) , 
+              (argument 
                 (expr 
                   (variable_or_function_call GG 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call row)) , 
-                        (expr 
-                          (variable_or_function_call col)) )) . player)))))) \n) 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call row))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call col)))) ) . player)))))) \n) 
       (end_if_statement END IF)) \n) NEXT col)) \n) NEXT row)) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DrawGamePiece) ( (parameter_list (parameter row) , (parameter col) , (parameter GpColor)) ) (block \n \n (if_block_statement IF (expr (expr (variable_or_function_call GBoard)) = (expr (literal 85))) THEN \n (then_block (statement (line_statement LINE ( 
   (expr 
     (expr 
@@ -2305,20 +2475,24 @@
     ( 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cx)) , 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cx)) , 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cy)) ) , 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cy)) ) , 
     (expr 
       (literal 15)) , 
     (expr 
@@ -2327,20 +2501,24 @@
     ( 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cx)) , 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cx)) , 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cy)) ) , 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cy)) ) , 
     (expr 
       (variable_or_function_call GpColor)) , 
     (expr 
@@ -2362,28 +2540,33 @@
       (expr 
         (literal 40)))) ) , (expr 
   (variable_or_function_call CHR$ 
-    (args_or_indices 
-      ( 
-        (expr 
-          (literal 85)) )))) , (expr 
+    ( 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 85)))) ))) , (expr 
   (literal 0)))) \n) (else_block_statement ELSE (else_block \n (statement (circle_statement CIRCLE 
   ( 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cx)) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cx)) , 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cy)) ) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cy)) ) , 
   (expr 
     (literal 15)) , 
   (expr 
@@ -2391,20 +2574,24 @@
   ( 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cx)) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cx)) , 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cy)) ) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cy)) ) , 
   (expr 
     (literal 14)) , 
   (expr 
@@ -2412,41 +2599,46 @@
   ( 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cx)) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cx)) , 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . cy)) ) , 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . cy)) ) , 
   (expr 
     (variable_or_function_call GpColor)) , 
   (expr 
-    (variable_or_function_call GpColor)))) \n)) (end_if_statement END IF)) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id GameOver) (block \n (statement (assignment_statement (variable_or_function_call Scorediff) = (expr (expr (variable_or_function_call GS.rScore)) - (expr (variable_or_function_call GS.bScore))))) \n (if_block_statement IF (expr (expr (variable_or_function_call Scorediff)) = (expr (literal 0))) THEN \n (then_block (statement (call_statement (untyped_id DisplayMsg) (call_argument_list 
-  (call_argument 
+    (variable_or_function_call GpColor)))) \n)) (end_if_statement END IF)) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id GameOver) (block \n (statement (assignment_statement (variable_or_function_call Scorediff) = (expr (expr (variable_or_function_call GS.rScore)) - (expr (variable_or_function_call GS.bScore))))) \n (if_block_statement IF (expr (expr (variable_or_function_call Scorediff)) = (expr (literal 0))) THEN \n (then_block (statement (call_statement (untyped_id DisplayMsg) (argument_list 
+  (argument 
     (expr 
       (literal "Tie Game")))))) \n) (elseif_block_statement ELSEIF (expr (expr (variable_or_function_call Scorediff)) < (expr (literal 0))) THEN (else_block \n (statement (call_statement 
   (untyped_id DisplayMsg) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (literal "You lost by")))))) \n (statement (print_statement PRINT 
   (expr 
     (variable_or_function_call ABS 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call Scorediff)) )))))) \n)) (else_block_statement ELSE (else_block \n (statement (call_statement 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call Scorediff)))) ))))) \n)) (else_block_statement ELSE (else_block \n (statement (call_statement 
   (untyped_id DisplayMsg) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (literal "You won by")))))) \n (statement (print_statement PRINT 
   (expr 
@@ -2454,16 +2646,19 @@
   (variable_or_function_call GS.stat) = 
   (expr 
     (variable_or_function_call ASC 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call RIGHT$ 
-              (args_or_indices 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call RIGHT$ 
                 ( 
-                  (expr 
-                    (variable_or_function_call INKEY$)) , 
-                  (expr 
-                    (literal 1)) )))) )))))) \n) LOOP (loop_condition UNTIL (expr (expr 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call INKEY$))) , 
+                    (argument 
+                      (expr 
+                        (literal 1)))) ))))) ))))) \n) LOOP (loop_condition UNTIL (expr (expr 
   (expr 
     (variable_or_function_call GS.stat)) = 
   (expr 
@@ -2529,34 +2724,40 @@
     (statement 
       (assignment_statement 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . player) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . player) = 
         (expr 
           (variable_or_function_call GBoard)))) \n 
     (statement 
       (assignment_statement 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . nTake) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . nTake) = 
         (expr 
           (literal 0)))) \n 
     (statement 
       (assignment_statement 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cx) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cx) = 
         (expr 
           (expr 
             (literal 270)) + 
@@ -2573,12 +2774,14 @@
     (statement 
       (assignment_statement 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . cy) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . cy) = 
         (expr 
           (expr 
             (literal 70)) + 
@@ -2595,30 +2798,40 @@
     (statement 
       (assignment_statement 
         (variable_or_function_call GW 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) ))) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) )) = 
         (expr 
-          (literal 2)))) \n) NEXT col)) \n) NEXT row)) \n (statement (assignment_statement (variable_or_function_call GW (args_or_indices ( 
-  (expr 
-    (literal 1)) , 
-  (expr 
-    (literal 1)) ))) = (expr (literal 99)))) \n (statement (assignment_statement (variable_or_function_call GW (args_or_indices ( 
-  (expr 
-    (literal 1)) , 
-  (expr 
-    (literal 8)) ))) = (expr (literal 99)))) \n (statement (assignment_statement (variable_or_function_call GW (args_or_indices ( 
-  (expr 
-    (literal 8)) , 
-  (expr 
-    (literal 1)) ))) = (expr (literal 99)))) \n (statement (assignment_statement (variable_or_function_call GW (args_or_indices ( 
-  (expr 
-    (literal 8)) , 
-  (expr 
-    (literal 8)) ))) = (expr (literal 99)))) \n (statement (for_next_statement FOR i = (expr (literal 3)) TO (expr (literal 6)) (block \n (statement (for_next_statement FOR j = 
+          (literal 2)))) \n) NEXT col)) \n) NEXT row)) \n (statement (assignment_statement (variable_or_function_call GW ( (argument_list 
+  (argument 
+    (expr 
+      (literal 1))) , 
+  (argument 
+    (expr 
+      (literal 1)))) )) = (expr (literal 99)))) \n (statement (assignment_statement (variable_or_function_call GW ( (argument_list 
+  (argument 
+    (expr 
+      (literal 1))) , 
+  (argument 
+    (expr 
+      (literal 8)))) )) = (expr (literal 99)))) \n (statement (assignment_statement (variable_or_function_call GW ( (argument_list 
+  (argument 
+    (expr 
+      (literal 8))) , 
+  (argument 
+    (expr 
+      (literal 1)))) )) = (expr (literal 99)))) \n (statement (assignment_statement (variable_or_function_call GW ( (argument_list 
+  (argument 
+    (expr 
+      (literal 8))) , 
+  (argument 
+    (expr 
+      (literal 8)))) )) = (expr (literal 99)))) \n (statement (for_next_statement FOR i = (expr (literal 3)) TO (expr (literal 6)) (block \n (statement (for_next_statement FOR j = 
   (expr 
     (literal 1)) TO 
   (expr 
@@ -2629,332 +2842,417 @@
     (statement 
       (assignment_statement 
         (variable_or_function_call GW 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call i)) , 
-              (expr 
-                (variable_or_function_call j)) ))) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call i))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call j)))) )) = 
         (expr 
           (literal 5)))) \n 
     (statement 
       (assignment_statement 
         (variable_or_function_call GW 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call j)) , 
-              (expr 
-                (variable_or_function_call i)) ))) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call j))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call i)))) )) = 
         (expr 
-          (literal 5)))) \n) NEXT j)) \n) NEXT i)) \n (statement (assignment_statement (variable_or_function_call GG (args_or_indices ( 
-  (expr 
-    (literal 4)) , 
-  (expr 
-    (literal 4)) )) . player) = (expr (variable_or_function_call HUMAN)))) \n (statement (assignment_statement (variable_or_function_call GG (args_or_indices ( 
-  (expr 
-    (literal 5)) , 
-  (expr 
-    (literal 4)) )) . player) = (expr (variable_or_function_call COMP)))) \n (statement (assignment_statement (variable_or_function_call GG (args_or_indices ( 
-  (expr 
-    (literal 4)) , 
-  (expr 
-    (literal 5)) )) . player) = (expr (variable_or_function_call COMP)))) \n (statement (assignment_statement (variable_or_function_call GG (args_or_indices ( 
-  (expr 
-    (literal 5)) , 
-  (expr 
-    (literal 5)) )) . player) = (expr (variable_or_function_call HUMAN)))) \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id TakeBlocks) ( (parameter_list (parameter row) , (parameter col) , (parameter player)) ) (block \n \n (statement (assignment_statement (variable_or_function_call GG (args_or_indices ( 
-  (expr 
-    (variable_or_function_call row)) , 
-  (expr 
-    (variable_or_function_call col)) )) . player) = (expr (variable_or_function_call player)))) \n (statement (call_statement (untyped_id DrawGamePiece) (call_argument_list (call_argument row) , (call_argument col) , (call_argument player)))) \n \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
+          (literal 5)))) \n) NEXT j)) \n) NEXT i)) \n (statement (assignment_statement (variable_or_function_call GG ( (argument_list 
+  (argument 
     (expr 
-      (variable_or_function_call row)) , 
+      (literal 4))) , 
+  (argument 
     (expr 
-      (variable_or_function_call col)) , 
+      (literal 4)))) ) . player) = (expr (variable_or_function_call HUMAN)))) \n (statement (assignment_statement (variable_or_function_call GG ( (argument_list 
+  (argument 
     (expr 
-      (literal 1)) )))) (block \n (statement (assignment_statement 
+      (literal 5))) , 
+  (argument 
+    (expr 
+      (literal 4)))) ) . player) = (expr (variable_or_function_call COMP)))) \n (statement (assignment_statement (variable_or_function_call GG ( (argument_list 
+  (argument 
+    (expr 
+      (literal 4))) , 
+  (argument 
+    (expr 
+      (literal 5)))) ) . player) = (expr (variable_or_function_call COMP)))) \n (statement (assignment_statement (variable_or_function_call GG ( (argument_list 
+  (argument 
+    (expr 
+      (literal 5))) , 
+  (argument 
+    (expr 
+      (literal 5)))) ) . player) = (expr (variable_or_function_call HUMAN)))) \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id TakeBlocks) ( (parameter_list (parameter row) , (parameter col) , (parameter player)) ) (block \n \n (statement (assignment_statement (variable_or_function_call GG ( (argument_list 
+  (argument 
+    (expr 
+      (variable_or_function_call row))) , 
+  (argument 
+    (expr 
+      (variable_or_function_call col)))) ) . player) = (expr (variable_or_function_call player)))) \n (statement (call_statement (untyped_id DrawGamePiece) (argument_list (argument (expr 
+  (variable_or_function_call row))) , (argument (expr 
+  (variable_or_function_call col))) , (argument (expr 
+  (variable_or_function_call player)))))) \n \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 1)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
-          (variable_or_function_call row)) , 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call col)) - 
+            (variable_or_function_call row))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) )) . player) = 
+            (expr 
+              (variable_or_function_call col)) - 
+            (expr 
+              (variable_or_function_call i))))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument row) , 
-    (call_argument 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call col)) - 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument player)))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) , 
-    (expr 
-      (literal 2)) )))) (block \n (statement (assignment_statement 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 2)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
-          (variable_or_function_call row)) , 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call col)) + 
+            (variable_or_function_call row))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) )) . player) = 
+            (expr 
+              (variable_or_function_call col)) + 
+            (expr 
+              (variable_or_function_call i))))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument row) , 
-    (call_argument 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call col)) + 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument player)))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) , 
-    (expr 
-      (literal 3)) )))) (block \n (statement (assignment_statement 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 3)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call row)) - 
+            (expr 
+              (variable_or_function_call row)) - 
+            (expr 
+              (variable_or_function_call i)))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) , 
-        (expr 
-          (variable_or_function_call col)) )) . player) = 
+            (variable_or_function_call col)))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call row)) - 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument col) , 
-    (call_argument player)))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) , 
-    (expr 
-      (literal 4)) )))) (block \n (statement (assignment_statement 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 4)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call row)) + 
+            (expr 
+              (variable_or_function_call row)) + 
+            (expr 
+              (variable_or_function_call i)))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) , 
-        (expr 
-          (variable_or_function_call col)) )) . player) = 
+            (variable_or_function_call col)))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call row)) + 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument col) , 
-    (call_argument player)))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) , 
-    (expr 
-      (literal 5)) )))) (block \n (statement (assignment_statement 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 5)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call row)) - 
+            (expr 
+              (variable_or_function_call row)) - 
+            (expr 
+              (variable_or_function_call i)))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) , 
-        (expr 
-          (expr 
-            (variable_or_function_call col)) - 
-          (expr 
-            (variable_or_function_call i))) )) . player) = 
+            (expr 
+              (variable_or_function_call col)) - 
+            (expr 
+              (variable_or_function_call i))))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call row)) - 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call col)) - 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument player)))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) , 
-    (expr 
-      (literal 6)) )))) (block \n (statement (assignment_statement 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 6)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call row)) + 
+            (expr 
+              (variable_or_function_call row)) + 
+            (expr 
+              (variable_or_function_call i)))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) , 
-        (expr 
-          (expr 
-            (variable_or_function_call col)) + 
-          (expr 
-            (variable_or_function_call i))) )) . player) = 
+            (expr 
+              (variable_or_function_call col)) + 
+            (expr 
+              (variable_or_function_call i))))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call row)) + 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call col)) + 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument player)))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) , 
-    (expr 
-      (literal 7)) )))) (block \n (statement (assignment_statement 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 7)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call row)) - 
+            (expr 
+              (variable_or_function_call row)) - 
+            (expr 
+              (variable_or_function_call i)))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) , 
-        (expr 
-          (expr 
-            (variable_or_function_call col)) + 
-          (expr 
-            (variable_or_function_call i))) )) . player) = 
+            (expr 
+              (variable_or_function_call col)) + 
+            (expr 
+              (variable_or_function_call i))))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call row)) - 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call col)) + 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument player)))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP (args_or_indices 
-  ( 
-    (expr 
-      (variable_or_function_call row)) , 
-    (expr 
-      (variable_or_function_call col)) , 
-    (expr 
-      (literal 8)) )))) (block \n (statement (assignment_statement 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (variable_or_function_call GP ( 
+  (argument_list 
+    (argument 
+      (expr 
+        (variable_or_function_call row))) , 
+    (argument 
+      (expr 
+        (variable_or_function_call col))) , 
+    (argument 
+      (expr 
+        (literal 8)))) ))) (block \n (statement (assignment_statement 
   (variable_or_function_call GG 
-    (args_or_indices 
-      ( 
-        (expr 
+    ( 
+      (argument_list 
+        (argument 
           (expr 
-            (variable_or_function_call row)) + 
+            (expr 
+              (variable_or_function_call row)) + 
+            (expr 
+              (variable_or_function_call i)))) , 
+        (argument 
           (expr 
-            (variable_or_function_call i))) , 
-        (expr 
-          (expr 
-            (variable_or_function_call col)) - 
-          (expr 
-            (variable_or_function_call i))) )) . player) = 
+            (expr 
+              (variable_or_function_call col)) - 
+            (expr 
+              (variable_or_function_call i))))) ) . player) = 
   (expr 
     (variable_or_function_call player)))) \n (statement (call_statement 
   (untyped_id DrawGamePiece) 
-  (call_argument_list 
-    (call_argument 
+  (argument_list 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call row)) + 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument 
+    (argument 
       (expr 
         (expr 
           (variable_or_function_call col)) - 
         (expr 
           (variable_or_function_call i)))) , 
-    (call_argument player)))) \n) NEXT i)) \n \n (if_block_statement IF (expr (expr (variable_or_function_call player)) = (expr (variable_or_function_call HUMAN))) THEN \n (then_block (statement (assignment_statement (variable_or_function_call GS.rScore) = (expr 
+    (argument 
+      (expr 
+        (variable_or_function_call player)))))) \n) NEXT i)) \n \n (if_block_statement IF (expr (expr (variable_or_function_call player)) = (expr (variable_or_function_call HUMAN))) THEN \n (then_block (statement (assignment_statement (variable_or_function_call GS.rScore) = (expr 
   (expr 
     (expr 
       (variable_or_function_call GS.rScore)) + 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . nTake))) + 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . nTake))) + 
   (expr 
     (literal 1))))) \n (statement (assignment_statement (variable_or_function_call GS.bScore) = (expr 
   (expr 
     (variable_or_function_call GS.bScore)) - 
   (expr 
     (variable_or_function_call GG 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call row)) , 
-          (expr 
-            (variable_or_function_call col)) )) . nTake))))) \n) (else_block_statement ELSE (else_block \n (statement (assignment_statement 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call row))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call col)))) ) . nTake))))) \n) (else_block_statement ELSE (else_block \n (statement (assignment_statement 
   (variable_or_function_call GS.bScore) = 
   (expr 
     (expr 
@@ -2962,12 +3260,14 @@
         (variable_or_function_call GS.bScore)) + 
       (expr 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . nTake))) + 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . nTake))) + 
     (expr 
       (literal 1))))) \n (statement (assignment_statement 
   (variable_or_function_call GS.rScore) = 
@@ -2976,12 +3276,16 @@
       (variable_or_function_call GS.rScore)) - 
     (expr 
       (variable_or_function_call GG 
-        (args_or_indices 
-          ( 
-            (expr 
-              (variable_or_function_call row)) , 
-            (expr 
-              (variable_or_function_call col)) )) . nTake))))) \n)) (end_if_statement END IF)) \n \n (statement (locate_statement LOCATE (expr (literal 17)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Your Score:      ")) ; (expr (variable_or_function_call GS.rScore)))) \n (statement (locate_statement LOCATE (expr (literal 18)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Computer Score:  ")) ; (expr (variable_or_function_call GS.bScore)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id UserMove) (block \n \n (statement (call_statement (untyped_id DrawCursor) (call_argument_list (call_argument GS.curRow) , (call_argument GS.curCol)))) \n (statement (do_loop_statement DO (block \n (statement (do_loop_statement DO 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call row))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call col)))) ) . nTake))))) \n)) (end_if_statement END IF)) \n \n (statement (locate_statement LOCATE (expr (literal 17)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Your Score:      ")) ; (expr (variable_or_function_call GS.rScore)))) \n (statement (locate_statement LOCATE (expr (literal 18)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Computer Score:  ")) ; (expr (variable_or_function_call GS.bScore)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id UserMove) (block \n \n (statement (call_statement (untyped_id DrawCursor) (argument_list (argument (expr 
+  (variable_or_function_call GS.curRow))) , (argument (expr 
+  (variable_or_function_call GS.curCol)))))) \n (statement (do_loop_statement DO (block \n (statement (do_loop_statement DO 
   (block \n 
     (statement 
       (assignment_statement 
@@ -2997,16 +3301,19 @@
   (variable_or_function_call move) = 
   (expr 
     (variable_or_function_call ASC 
-      (args_or_indices 
-        ( 
-          (expr 
-            (variable_or_function_call RIGHT$ 
-              (args_or_indices 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call RIGHT$ 
                 ( 
-                  (expr 
-                    (variable_or_function_call a$)) , 
-                  (expr 
-                    (literal 1)) )))) )))))) \n (if_block_statement IF (expr 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call a$))) , 
+                    (argument 
+                      (expr 
+                        (literal 1)))) ))))) ))))) \n (if_block_statement IF (expr 
   (variable_or_function_call GS.mDisplay)) THEN \n (then_block 
   (statement 
     (line_statement LINE 
@@ -3042,18 +3349,24 @@
       (statement 
         (call_statement 
           (untyped_id DrawGamePiece) 
-          (call_argument_list 
-            (call_argument GS.curRow) , 
-            (call_argument GS.curCol) , 
-            (call_argument 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call GS.curRow))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call GS.curCol))) , 
+            (argument 
               (expr 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call GS.curRow)) , 
-                      (expr 
-                        (variable_or_function_call GS.curCol)) )) . player)))))) \n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call GS.curRow))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call GS.curCol)))) ) . player)))))) \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -3203,9 +3516,13 @@
       (statement 
         (call_statement 
           (untyped_id DrawCursor) 
-          (call_argument_list 
-            (call_argument GS.curRow) , 
-            (call_argument GS.curCol)))) \n)) 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call GS.curRow))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call GS.curCol)))))) \n)) 
   (case_block 
     (case_statement CASE 
       (case_expr 
@@ -3233,8 +3550,8 @@
           (statement 
             (call_statement 
               (untyped_id DisplayMsg) 
-              (call_argument_list 
-                (call_argument 
+              (argument_list 
+                (argument 
                   (expr 
                     (literal "You passed.  Computer will make first move.")))))) \n 
           (statement 
@@ -3247,8 +3564,8 @@
             (statement 
               (call_statement 
                 (untyped_id DisplayMsg) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal "You can only pass on your first turn.")))))) \n)) 
         (end_if_statement END IF)) \n)) 
@@ -3312,22 +3629,30 @@
         (expr 
           (expr 
             (variable_or_function_call GG 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call GS.curRow)) , 
-                  (expr 
-                    (variable_or_function_call GS.curCol)) )) . nTake)) > 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call GS.curRow))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call GS.curCol)))) ) . nTake)) > 
           (expr 
             (literal 0))) THEN \n 
         (then_block 
           (statement 
             (call_statement 
               (untyped_id TakeBlocks) 
-              (call_argument_list 
-                (call_argument GS.curRow) , 
-                (call_argument GS.curCol) , 
-                (call_argument HUMAN)))) \n 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call GS.curRow))) , 
+                (argument 
+                  (expr 
+                    (variable_or_function_call GS.curCol))) , 
+                (argument 
+                  (expr 
+                    (variable_or_function_call HUMAN)))))) \n 
           (statement 
             (assignment_statement 
               (variable_or_function_call GS.stat) = 
@@ -3338,8 +3663,8 @@
             (statement 
               (call_statement 
                 (untyped_id DisplayMsg) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (literal "Invalid move.  Move to a space where the cursor is a circle.")))))) \n)) 
         (end_if_statement END IF)) \n)) 
@@ -3362,7 +3687,8 @@
   (expr 
     (variable_or_function_call GS.stat)) <> 
   (expr 
-    (variable_or_function_call FMOVE))))))) \n \n) (end_sub_statement END SUB)) \n \n (function_statement FUNCTION ValidMove ( (parameter_list (parameter Opponent)) ) (block \n \n (statement (assignment_statement (variable_or_function_call ValidMove) = (expr (variable_or_function_call FALSE)))) \n (statement (call_statement (untyped_id ERASE) (call_argument_list (call_argument GP)))) \n (statement (for_next_statement FOR row = (expr (literal 1)) TO (expr (literal 8)) (block \n (statement (for_next_statement FOR col = 
+    (variable_or_function_call FMOVE))))))) \n \n) (end_sub_statement END SUB)) \n \n (function_statement FUNCTION ValidMove ( (parameter_list (parameter Opponent)) ) (block \n \n (statement (assignment_statement (variable_or_function_call ValidMove) = (expr (variable_or_function_call FALSE)))) \n (statement (call_statement (untyped_id ERASE) (argument_list (argument (expr 
+  (variable_or_function_call GP)))))) \n (statement (for_next_statement FOR row = (expr (literal 1)) TO (expr (literal 8)) (block \n (statement (for_next_statement FOR col = 
   (expr 
     (literal 1)) TO 
   (expr 
@@ -3371,24 +3697,28 @@
     (statement 
       (assignment_statement 
         (variable_or_function_call GG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call row)) , 
-              (expr 
-                (variable_or_function_call col)) )) . nTake) = 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call row))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call col)))) ) . nTake) = 
         (expr 
           (literal 0)))) \n \n 
     (if_block_statement IF 
       (expr 
         (expr 
           (variable_or_function_call GG 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (variable_or_function_call row)) , 
-                (expr 
-                  (variable_or_function_call col)) )) . player)) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call row))) , 
+                (argument 
+                  (expr 
+                    (variable_or_function_call col)))) ) . player)) = 
         (expr 
           (variable_or_function_call GBoard))) THEN \n 
       (then_block 
@@ -3402,64 +3732,81 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 1)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 1)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call row)) , 
-                        (expr 
-                          (variable_or_function_call row)) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call col)) - 
+                            (variable_or_function_call row))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr - 
+                            (variable_or_function_call row))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                            (literal 0))) , 
+                        (argument 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call col)) - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (literal 0))) , 
+                        (argument 
+                          (expr - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 1)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 1)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (if_block_statement IF 
           (expr 
@@ -3471,63 +3818,80 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 2)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 2)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call row)) , 
-                        (expr 
-                          (variable_or_function_call row)) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call col)) + 
+                            (variable_or_function_call row))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call row))) , 
+                        (argument 
+                          (expr 
+                            (literal 0))) , 
+                        (argument 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call col)) + 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (literal 9))) , 
+                        (argument 
                           (expr 
                             (literal 1))) , 
-                        (expr 
-                          (literal 9)) , 
-                        (expr 
-                          (literal 1)) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 2)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 2)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (if_block_statement IF 
           (expr 
@@ -3539,64 +3903,81 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 3)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 3)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call row)) - 
+                            (expr 
+                              (variable_or_function_call row)) - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr - 
+                            (literal 0))) , 
+                        (argument 
+                          (expr - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (variable_or_function_call col)) , 
-                        (expr 
-                          (variable_or_function_call col)) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                            (variable_or_function_call col))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call col))) , 
+                        (argument 
+                          (expr 
+                            (literal 0))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 3)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 3)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (if_block_statement IF 
           (expr 
@@ -3608,63 +3989,80 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 4)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 4)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call row)) + 
+                            (expr 
+                              (variable_or_function_call row)) + 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (literal 9))) , 
+                        (argument 
                           (expr 
                             (literal 1))) , 
-                        (expr 
-                          (literal 9)) , 
-                        (expr 
-                          (literal 1)) , 
-                        (expr 
-                          (variable_or_function_call col)) , 
-                        (expr 
-                          (variable_or_function_call col)) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call col))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call col))) , 
+                        (argument 
+                          (expr 
+                            (literal 0))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 4)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 4)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (if_block_statement IF 
           (expr 
@@ -3682,68 +4080,85 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 5)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 5)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call row)) - 
+                            (expr 
+                              (variable_or_function_call row)) - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr - 
+                            (literal 0))) , 
+                        (argument 
+                          (expr - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
+                            (expr 
+                              (variable_or_function_call col)) - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (variable_or_function_call col)) - 
+                            (literal 0))) , 
+                        (argument 
+                          (expr - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr - 
-                          (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 5)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 5)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (if_block_statement IF 
           (expr 
@@ -3761,66 +4176,83 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 6)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 6)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call row)) + 
+                            (expr 
+                              (variable_or_function_call row)) + 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (literal 9)) , 
-                        (expr 
-                          (literal 1)) , 
-                        (expr 
-                          (expr 
-                            (variable_or_function_call col)) + 
+                            (literal 9))) , 
+                        (argument 
                           (expr 
                             (literal 1))) , 
-                        (expr 
-                          (literal 9)) , 
-                        (expr 
-                          (literal 1)) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                        (argument 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call col)) + 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (literal 9))) , 
+                        (argument 
+                          (expr 
+                            (literal 1))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 6)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 6)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (if_block_statement IF 
           (expr 
@@ -3838,67 +4270,84 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 7)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 7)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call row)) - 
+                            (expr 
+                              (variable_or_function_call row)) - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (literal 0))) , 
+                        (argument 
+                          (expr - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call col)) + 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (literal 9))) , 
+                        (argument 
                           (expr 
                             (literal 1))) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr - 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (expr 
-                            (variable_or_function_call col)) + 
-                          (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (literal 9)) , 
-                        (expr 
-                          (literal 1)) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 7)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 7)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (if_block_statement IF 
           (expr 
@@ -3916,79 +4365,98 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call GP 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) , 
-                      (expr 
-                        (literal 8)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col))) , 
+                      (argument 
+                        (expr 
+                          (literal 8)))) )) = 
                 (expr 
                   (variable_or_function_call CheckPath 
-                    (args_or_indices 
-                      ( 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call row)) + 
+                            (expr 
+                              (variable_or_function_call row)) + 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (literal 9)) , 
-                        (expr 
-                          (literal 1)) , 
-                        (expr 
-                          (expr 
-                            (variable_or_function_call col)) - 
+                            (literal 9))) , 
+                        (argument 
                           (expr 
                             (literal 1))) , 
-                        (expr 
-                          (literal 0)) , 
-                        (expr - 
+                        (argument 
                           (expr 
-                            (literal 1))) , 
-                        (expr 
-                          (variable_or_function_call Opponent)) )))))) \n 
+                            (expr 
+                              (variable_or_function_call col)) - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (literal 0))) , 
+                        (argument 
+                          (expr - 
+                            (expr 
+                              (literal 1)))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Opponent)))) ))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake) = 
                 (expr 
                   (expr 
                     (variable_or_function_call GG 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) )) . nTake)) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col)))) ) . nTake)) + 
                   (expr 
                     (variable_or_function_call GP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call row)) , 
-                          (expr 
-                            (variable_or_function_call col)) , 
-                          (expr 
-                            (literal 8)) ))))))) \n) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call row))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call col))) , 
+                          (argument 
+                            (expr 
+                              (literal 8)))) )))))) \n) 
           (end_if_statement END IF)) \n 
         (statement 
           (if_inline_statement IF 
             (expr 
               (expr 
                 (variable_or_function_call GG 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call row)) , 
-                      (expr 
-                        (variable_or_function_call col)) )) . nTake)) > 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call row))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call col)))) ) . nTake)) > 
               (expr 
                 (literal 0))) THEN 
             (if_inline_action 

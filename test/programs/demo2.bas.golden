@@ -135,12 +135,14 @@
             (expr 
               (expr 
                 (variable_or_function_call INSTR 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal "BFKSQbfksq")) , 
-                      (expr 
-                        (variable_or_function_call Q$)) )))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal "BFKSQbfksq"))) , 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Q$)))) ))) = 
               (expr 
                 (literal 0))) 
             (block \r\n 
@@ -176,11 +178,11 @@
               (call_statement CALL 
                 (untyped_id Bounce) 
                 ( 
-                  (call_argument_list 
-                    (call_argument 
+                  (argument_list 
+                    (argument 
                       (expr 
                         (literal 32767))) , 
-                    (call_argument 
+                    (argument 
                       (expr 
                         (literal 246)))) ))) \r\n) 
           (elseif_block_statement ELSEIF 
@@ -204,14 +206,14 @@
                 (call_statement CALL 
                   (untyped_id Fall) 
                   ( 
-                    (call_argument_list 
-                      (call_argument 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (literal 2000))) , 
-                      (call_argument 
+                      (argument 
                         (expr 
                           (literal 550))) , 
-                      (call_argument 
+                      (argument 
                         (expr 
                           (literal 500)))) ))) \r\n)) 
           (elseif_block_statement ELSEIF 
@@ -239,11 +241,11 @@
                 (call_statement CALL 
                   (untyped_id Siren) 
                   ( 
-                    (call_argument_list 
-                      (call_argument 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (literal 780))) , 
-                      (call_argument 
+                      (argument 
                         (expr 
                           (literal 650)))) ))) \r\n)) 
           (elseif_block_statement ELSEIF 
@@ -271,11 +273,11 @@
                 (call_statement CALL 
                   (untyped_id Klaxon) 
                   ( 
-                    (call_argument_list 
-                      (call_argument 
+                    (argument_list 
+                      (argument 
                         (expr 
                           (literal 987))) , 
-                      (call_argument 
+                      (argument 
                         (expr 
                           (literal 329)))) ))) \r\n)) 
           (elseif_block_statement ELSEIF 
@@ -313,8 +315,8 @@
             (statement 
               (call_statement 
                 (untyped_id SOUND) 
-                (call_argument_list 
-                  (call_argument 
+                (argument_list 
+                  (argument 
                     (expr 
                       (expr 
                         (variable_or_function_call Low)) - 
@@ -323,7 +325,7 @@
                           (variable_or_function_call Count)) / 
                         (expr 
                           (literal 2))))) , 
-                  (call_argument 
+                  (argument 
                     (expr 
                       (expr 
                         (variable_or_function_call Count)) / 
@@ -332,9 +334,11 @@
             (statement 
               (call_statement 
                 (untyped_id SOUND) 
-                (call_argument_list 
-                  (call_argument Hi) , 
-                  (call_argument 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Hi))) , 
+                  (argument 
                     (expr 
                       (expr 
                         (variable_or_function_call Count)) / 
@@ -362,9 +366,11 @@
             (statement 
               (call_statement 
                 (untyped_id SOUND) 
-                (call_argument_list 
-                  (call_argument Count) , 
-                  (call_argument 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Count))) , 
+                  (argument 
                     (expr 
                       (expr 
                         (variable_or_function_call Del)) / 
@@ -389,17 +395,21 @@
             (statement 
               (call_statement 
                 (untyped_id SOUND) 
-                (call_argument_list 
-                  (call_argument Hi) , 
-                  (call_argument 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Hi))) , 
+                  (argument 
                     (expr 
                       (literal 5)))))) \r\n 
             (statement 
               (call_statement 
                 (untyped_id SOUND) 
-                (call_argument_list 
-                  (call_argument Low) , 
-                  (call_argument 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Low))) , 
+                  (argument 
                     (expr 
                       (literal 5)))))) \r\n) WEND)) \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n \r\n 
@@ -432,18 +442,19 @@
                   (statement 
                     (call_statement 
                       (untyped_id SOUND) 
-                      (call_argument_list 
-                        (call_argument 
+                      (argument_list 
+                        (argument 
                           (expr 
                             (expr 
                               (variable_or_function_call Hi)) - 
                             (expr 
                               (variable_or_function_call ABS 
-                                (args_or_indices 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call Count)) )))))) , 
-                        (call_argument 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call Count)))) ))))) , 
+                        (argument 
                           (expr 
                             (literal .3)))))) \r\n 
                   (statement 

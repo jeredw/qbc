@@ -17,27 +17,31 @@
               ().?")) + 
           (expr 
             (variable_or_function_call CHR$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 9)) ))))) + 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 9)))) )))) + 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 34)) ))))))) \r\n \r\n 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 34)))) )))))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Token$) = 
       (expr 
         (variable_or_function_call StrTok$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call P$)) , 
-              (expr 
-                (variable_or_function_call Delimiters$)) )))))) \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call P$))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call Delimiters$)))) ))))) \r\n 
   (statement 
     (while_wend_statement WHILE 
       (expr 
@@ -55,12 +59,14 @@
             (variable_or_function_call Token$) = 
             (expr 
               (variable_or_function_call StrTok$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal "")) , 
-                    (expr 
-                      (variable_or_function_call Delimiters$)) )))))) \r\n) WEND)) \r\n \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal ""))) , 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Delimiters$)))) ))))) \r\n) WEND)) \r\n \r\n 
   (function_statement FUNCTION StrTok$ 
     ( 
       (parameter_list 
@@ -113,19 +119,21 @@
             (expr 
               (expr 
                 (variable_or_function_call INSTR 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call Delim$)) , 
-                      (expr 
-                        (builtin_function MID$ 
-                          ( 
-                            (expr 
-                              (variable_or_function_call SaveStr$)) , 
-                            (expr 
-                              (variable_or_function_call BegPos%)) , 
-                            (expr 
-                              (literal 1)) ))) )))) <> 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Delim$))) , 
+                      (argument 
+                        (expr 
+                          (builtin_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call SaveStr$)) , 
+                              (expr 
+                                (variable_or_function_call BegPos%)) , 
+                              (expr 
+                                (literal 1)) ))))) ))) <> 
               (expr 
                 (literal 0)))) 
           (block \r\n 
@@ -168,19 +176,21 @@
             (expr 
               (expr 
                 (variable_or_function_call INSTR 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call Delim$)) , 
-                      (expr 
-                        (builtin_function MID$ 
-                          ( 
-                            (expr 
-                              (variable_or_function_call SaveStr$)) , 
-                            (expr 
-                              (variable_or_function_call EndPos%)) , 
-                            (expr 
-                              (literal 1)) ))) )))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call Delim$))) , 
+                      (argument 
+                        (expr 
+                          (builtin_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call SaveStr$)) , 
+                              (expr 
+                                (variable_or_function_call EndPos%)) , 
+                              (expr 
+                                (literal 1)) ))))) ))) = 
               (expr 
                 (literal 0)))) 
           (block \r\n 

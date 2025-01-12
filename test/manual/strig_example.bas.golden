@@ -19,10 +19,11 @@
                   (variable_or_function_call INKEY$)) = 
                 (expr 
                   (variable_or_function_call CHR$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (literal 27)) )))))) THEN 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 27)))) ))))) THEN 
             (if_inline_action 
               (statement 
                 (exit_statement EXIT DO))))) \n) LOOP)) \n 

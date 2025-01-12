@@ -11,14 +11,16 @@
     (def_seg_statement DEF SEG = 
       (expr 
         (variable_or_function_call VARSEG 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call a% 
-                  (args_or_indices 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call a% 
                     ( 
-                      (expr 
-                        (literal 0)) )))) )))))) \n 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 0)))) ))))) ))))) \n 
   (statement 
     (for_next_statement FOR i% = 
       (expr 
@@ -32,22 +34,26 @@
         (statement 
           (call_statement 
             (untyped_id POKE) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (expr 
                     (variable_or_function_call VARPTR 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call a% 
-                              (args_or_indices 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call a% 
                                 ( 
-                                  (expr 
-                                    (literal 0)) )))) )))) + 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 0)))) ))))) ))) + 
                   (expr 
                     (variable_or_function_call i%)))) , 
-              (call_argument d%)))) \n) NEXT i%)) \n 
+              (argument 
+                (expr 
+                  (variable_or_function_call d%)))))) \n) NEXT i%)) \n 
   (statement 
     (data_statement DATA 
       (data_item 205) , 
@@ -58,13 +64,15 @@
       ( 
         (expr 
           (variable_or_function_call VARPTR 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (variable_or_function_call a% 
-                    (args_or_indices 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call a% 
                       ( 
-                        (expr 
-                          (literal 0)) )))) )))) ))) \n 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 0)))) ))))) ))) ))) \n 
   (statement 
     (def_seg_statement DEF SEG)) \n <EOF>)

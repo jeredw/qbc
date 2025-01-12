@@ -19,10 +19,11 @@
           (variable_or_function_call OldCol) = 
           (expr 
             (variable_or_function_call POS 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 0)) )))))) \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -58,10 +59,11 @@
                 (variable_or_function_call Resp$) = 
                 (expr 
                   (variable_or_function_call UCASE$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Resp$)) )))))) \r\n \r\n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Resp$)))) ))))) \r\n \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -111,11 +113,14 @@
         (expr NOT 
           (expr 
             (variable_or_function_call YesQues 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal "Do you know the frequency?")) , 
-                  (expr 
-                    (literal 12)) , 
-                  (expr 
-                    (literal 5)) )))))))) \r\n \n <EOF>)
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "Do you know the frequency?"))) , 
+                  (argument 
+                    (expr 
+                      (literal 12))) , 
+                  (argument 
+                    (expr 
+                      (literal 5)))) ))))))) \r\n \n <EOF>)

@@ -22,10 +22,11 @@
                 (literal "O")) + 
               (expr 
                 (variable_or_function_call STR$ 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call i%)) ))))))) \n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i%)))) )))))) \n 
         (statement 
           (play_statement PLAY 
             (expr 
@@ -33,7 +34,8 @@
                 (literal "X")) + 
               (expr 
                 (variable_or_function_call VARPTR$ 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call scale$)) ))))))) \n) NEXT i%)) \n <EOF>)
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call scale$)))) )))))) \n) NEXT i%)) \n <EOF>)

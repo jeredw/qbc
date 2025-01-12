@@ -10,10 +10,11 @@
         (literal 1)) TO 
       (expr 
         (variable_or_function_call VAL 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call C$)) )))) 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call C$)))) ))) 
       (block \n 
         (statement 
           (read_statement READ 
@@ -51,12 +52,14 @@
       (expr 
         (expr 
           (variable_or_function_call LEFT$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (variable_or_function_call Day$)) , 
-                (expr 
-                  (literal 1)) )))) = 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call Day$))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) ))) = 
         (expr 
           (literal "0"))) THEN 
       (if_inline_action 
@@ -65,23 +68,27 @@
             (variable_or_function_call Day$) = 
             (expr 
               (variable_or_function_call RIGHT$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call Day$)) , 
-                    (expr 
-                      (literal 1)) ))))))))) \n \n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Day$))) , 
+                    (argument 
+                      (expr 
+                        (literal 1)))) )))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Year$) = 
       (expr 
         (variable_or_function_call RIGHT$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call C$)) , 
-              (expr 
-                (literal 4)) )))))) \n \n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call C$))) , 
+              (argument 
+                (expr 
+                  (literal 4)))) ))))) \n \n 
   (statement 
     (print_statement PRINT 
       (expr 

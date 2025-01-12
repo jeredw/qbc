@@ -36,25 +36,26 @@
         (statement 
           (call_statement 
             (untyped_id CLS) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (literal 1)))))) \r\n \r\n \r\n 
         (statement 
           (call_statement 
             (untyped_id DRAW) 
-            (call_argument_list 
-              (call_argument 
+            (argument_list 
+              (argument 
                 (expr 
                   (expr 
                     (expr 
                       (literal "TA")) + 
                     (expr 
                       (variable_or_function_call STR$ 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call Angle%)) ))))) + 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call Angle%)))) )))) + 
                   (expr 
                     (variable_or_function_call Plot$))))))) \r\n \r\n \r\n 
         (statement 
@@ -73,9 +74,13 @@
         (statement 
           (call_statement 
             (untyped_id SWAP) 
-            (call_argument_list 
-              (call_argument APage%) , 
-              (call_argument VPage%)))) \r\n \r\n) LOOP 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call APage%))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call VPage%)))))) \r\n \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 

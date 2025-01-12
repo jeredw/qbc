@@ -19,10 +19,11 @@
         (statement 
           (assignment_statement 
             (variable_or_function_call a% 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call i%)) ))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call i%)))) )) = 
             (expr 
               (variable_or_function_call i%)))) :) NEXT i%)) \n 
   (statement 
@@ -68,20 +69,22 @@
               (statement 
                 (assignment_statement 
                   (variable_or_function_call a% 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call i%)) ))) = 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call i%)))) )) = 
                   (expr 
                     (expr 
                       ( 
                         (expr 
                           (expr 
                             (variable_or_function_call a% 
-                              (args_or_indices 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call i%)) )))) + 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call i%)))) ))) + 
                           (expr 
                             (literal 1))) )) MOD 
                     (expr 
@@ -89,10 +92,11 @@
         (statement 
           (palette_statement PALETTE USING 
             (variable_or_function_call a% 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 0)) ))))) \n) LOOP 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) )))) \n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 

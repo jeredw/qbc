@@ -34,10 +34,11 @@
         (expr 
           (expr 
             (variable_or_function_call UCASE$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call R$)) )))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call R$)))) ))) = 
           (expr 
             (literal "Y")))))) \n 
   (statement 
@@ -66,10 +67,11 @@
         (expr NOT 
           (expr 
             (variable_or_function_call EOF 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 1)) )))))) 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) 
       (block \n 
         (statement 
           (input_statement INPUT 
@@ -91,7 +93,7 @@
   (statement 
     (call_statement 
       (untyped_id KILL) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal "LIST")))))) \n <EOF>)

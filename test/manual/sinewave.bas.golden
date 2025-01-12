@@ -57,10 +57,11 @@
           (print_statement PRINT 
             (expr 
               (variable_or_function_call TAB 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 20)) )))) ;)) \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 20)))) ))) ;)) \r\n 
         (statement 
           (input_statement INPUT "Number of cycles 
             (0 to end): " , 
@@ -109,13 +110,14 @@
                       (variable_or_function_call Y) = 
                       (expr 
                         (variable_or_function_call SIN 
-                          (args_or_indices 
-                            ( 
-                              (expr 
+                          ( 
+                            (argument_list 
+                              (argument 
                                 (expr 
-                                  (variable_or_function_call Cycles)) * 
-                                (expr 
-                                  (variable_or_function_call X))) )))))) \r\n 
+                                  (expr 
+                                    (variable_or_function_call Cycles)) * 
+                                  (expr 
+                                    (variable_or_function_call X))))) ))))) \r\n 
                   (statement 
                     (line_statement LINE - 
                       ( 

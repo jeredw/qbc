@@ -39,7 +39,8 @@
         (expr 
           (literal 0)) ) , 
       (variable_or_function_call sprite% 
-        (args_or_indices 
-          ( 
-            (expr 
-              (literal 5)) ))) , or)) \n <EOF>)
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 5)))) )) , or)) \n <EOF>)

@@ -8,10 +8,11 @@
         (literal "The string length is")) ; 
       (expr 
         (variable_or_function_call StrLen 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call InString$)) )))))) \r\n \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call InString$)))) ))))) \r\n \r\n 
   (function_statement FUNCTION StrLen 
     ( 
       (parameter_list 
@@ -39,14 +40,15 @@
                     (literal 1)) + 
                   (expr 
                     (variable_or_function_call StrLen 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (builtin_function MID$ 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call X$)) , 
-                                (expr 
-                                  (literal 2)) ))) ))))))) \r\n)) 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (builtin_function MID$ 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call X$)) , 
+                                  (expr 
+                                    (literal 2)) ))))) )))))) \r\n)) 
         (end_if_statement END IF)) \r\n) 
     (end_function_statement END FUNCTION)) \r\n <EOF>)

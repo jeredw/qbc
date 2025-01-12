@@ -22,19 +22,21 @@
       (variable_or_function_call CarReturn$) = 
       (expr 
         (variable_or_function_call CHR$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 13)) )))))) \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 13)))) ))))) \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call LineFeed$) = 
       (expr 
         (variable_or_function_call CHR$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 10)) )))))) \r\n \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 10)))) ))))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -49,10 +51,11 @@
             (variable_or_function_call InFile$) = 
             (expr 
               (variable_or_function_call Backup$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call OutFile$)) )))))) \r\n \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call OutFile$)))) ))))) \r\n \r\n 
         (statement 
           (on_error_statement ON ERROR GOTO 
             (target 
@@ -92,10 +95,11 @@
             (do_condition UNTIL 
               (expr 
                 (variable_or_function_call EOF 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 1)) ))))) 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 1)))) )))) 
             (block \r\n \r\n \r\n 
               (statement 
                 (assignment_statement 
@@ -214,13 +218,14 @@
             (variable_or_function_call More$) = 
             (expr 
               (variable_or_function_call UCASE$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (builtin_function INPUT$ 
-                        ( 
-                          (expr 
-                            (literal 1)) ))) )))))) \r\n \r\n \r\n) LOOP 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (builtin_function INPUT$ 
+                          ( 
+                            (expr 
+                              (literal 1)) ))))) ))))) \r\n \r\n \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 
@@ -265,10 +270,11 @@
               (variable_or_function_call InFile$) = 
               (expr 
                 (variable_or_function_call Backup$ 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call OutFile$)) )))))) \r\n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call OutFile$)))) ))))) \r\n 
           (statement 
             (resume_statement RESUME)) \r\n)) 
       (case_block 
@@ -280,8 +286,10 @@
           (statement 
             (call_statement 
               (untyped_id KILL) 
-              (call_argument_list 
-                (call_argument InFile$)))) \r\n 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call InFile$)))))) \r\n 
           (statement 
             (resume_statement RESUME)) \r\n)) 
       (case_block 
@@ -302,12 +310,14 @@
           (variable_or_function_call Extension) = 
           (expr 
             (variable_or_function_call INSTR 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call FileName$)) , 
-                  (expr 
-                    (literal ".")) )))))) \r\n \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call FileName$))) , 
+                  (argument 
+                    (expr 
+                      (literal ".")))) ))))) \r\n \r\n \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -321,15 +331,17 @@
               (expr 
                 (expr 
                   (variable_or_function_call LEFT$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call FileName$)) , 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call Extension)) - 
+                            (variable_or_function_call FileName$))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) )))) + 
+                            (expr 
+                              (variable_or_function_call Extension)) - 
+                            (expr 
+                              (literal 1))))) ))) + 
                 (expr 
                   (literal ".BAK"))))) \r\n \r\n \r\n) 
         (else_block_statement ELSE 

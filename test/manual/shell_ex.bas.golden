@@ -9,8 +9,8 @@
   (statement 
     (call_statement 
       (untyped_id SHELL) 
-      (call_argument_list 
-        (call_argument 
+      (argument_list 
+        (argument 
           (expr 
             (literal "DIR > DIRFILE")))))) \r\n 
   (statement 
@@ -43,23 +43,27 @@
                   (expr 
                     (expr 
                       (variable_or_function_call INSTR 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call DirLine$)) , 
-                            (expr 
-                              (variable_or_function_call MDate$)) )))) > 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call DirLine$))) , 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call MDate$)))) ))) > 
                     (expr 
                       (literal 0))) AND 
                   (expr 
                     (expr 
                       (variable_or_function_call LEFT$ 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call DirLine$)) , 
-                            (expr 
-                              (literal 1)) )))) <> 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call DirLine$))) , 
+                            (argument 
+                              (expr 
+                                (literal 1)))) ))) <> 
                     (expr 
                       (literal ".")))) THEN \r\n 
                 (then_block 
@@ -68,10 +72,11 @@
                       (variable_or_function_call FileSpec$) = 
                       (expr 
                         (variable_or_function_call GetName$ 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call DirLine$)) )))))) \r\n \r\n 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call DirLine$)))) ))))) \r\n \r\n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
@@ -100,17 +105,20 @@
                       (statement 
                         (call_statement 
                           (untyped_id SHELL) 
-                          (call_argument_list 
-                            (call_argument DoLine$)))) \r\n) 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call DoLine$)))))) \r\n) 
                     (end_if_statement END IF)) \r\n) 
                 (end_if_statement END IF)) \r\n) LOOP 
             (loop_condition UNTIL 
               (expr 
                 (variable_or_function_call EOF 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 1)) ))))))) \r\n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 1)))) )))))) \r\n 
         (statement 
           (close_statement CLOSE # 
             (expr 
@@ -134,10 +142,11 @@
         (expr 
           (expr 
             (variable_or_function_call UCASE$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call R$)) )))) <> 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call R$)))) ))) <> 
           (expr 
             (literal "Y")))))) \r\n \r\n 
   (statement 
@@ -152,32 +161,36 @@
           (variable_or_function_call BaseName$) = 
           (expr 
             (variable_or_function_call RTRIM$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call LEFT$ 
-                      (args_or_indices 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call LEFT$ 
                         ( 
-                          (expr 
-                            (variable_or_function_call DirLine$)) , 
-                          (expr 
-                            (literal 8)) )))) )))))) \r\n \r\n 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call DirLine$))) , 
+                            (argument 
+                              (expr 
+                                (literal 8)))) ))))) ))))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ExtName$) = 
           (expr 
             (variable_or_function_call RTRIM$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (builtin_function MID$ 
-                      ( 
-                        (expr 
-                          (variable_or_function_call DirLine$)) , 
-                        (expr 
-                          (literal 10)) , 
-                        (expr 
-                          (literal 3)) ))) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (builtin_function MID$ 
+                        ( 
+                          (expr 
+                            (variable_or_function_call DirLine$)) , 
+                          (expr 
+                            (literal 10)) , 
+                          (expr 
+                            (literal 3)) ))))) ))))) \r\n 
       (if_block_statement IF 
         (expr 
           (expr 

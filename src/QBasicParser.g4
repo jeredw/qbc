@@ -299,24 +299,9 @@ assignment_statement
 // CALL can only be used with SUB procedures.
 call_statement
 // CALL sub or CALL sub(arg1, arg2, ... argN)
-  : CALL untyped_id ('(' call_argument_list ')')?
+  : CALL untyped_id ('(' argument_list ')')?
 // If CALL is omitted, parens must also be omitted.
-  | untyped_id call_argument_list?
-  ;
-
-call_argument_list
-  : call_argument (COMMA call_argument)*
-  ;
-
-call_argument
-// Array variables must have () after their name, and are always passed by reference.
-  : ID '(' ')'
-// Non-parenthesized variables are passed by reference. Note this includes
-// variables with array indices.
-  | ID args_or_indices?
-// Otherwise we can pass arbitrary expressions by value, including variables
-// (by parenthesizing them).
-  | expr
+  | untyped_id argument_list?
   ;
 
 call_absolute_statement
@@ -861,11 +846,6 @@ builtin_function
   | TIMER
   ;
 
-// An argument list or set of array indices following an identifier,
-// either an array lookup or a function call.
-// May be empty for function calls with no arguments.
-args_or_indices : '(' (expr (COMMA expr)*)? ')';
-
 // Identifiers can contain '.', and '.' is also how to look up type elements.
 // *** This grammar always matches the longest possible token name as an
 // identifier, and expects later passes to decide whether 'x.y.z' is a variable
@@ -875,7 +855,20 @@ args_or_indices : '(' (expr (COMMA expr)*)? ')';
 // 
 // Note the IDE reformats "x   . y" as "x.y".
 variable_or_function_call
-  : name=(ID | FNID) (args_or_indices ('.' ID)?)?
+  : name=(ID | FNID) ('(' argument_list ')' ('.' ID)?)?
+  ;
+
+// An argument list or set of array indices following an identifier,
+// either an array lookup or a function call.
+// May be empty for function calls with no arguments.
+argument_list
+  : argument (COMMA argument)*
+  ;
+
+argument
+// Special syntax for passing an array argument.
+  : ID '(' ')'
+  | expr
   ;
 
 // A system or user-defined type following an AS keyword.

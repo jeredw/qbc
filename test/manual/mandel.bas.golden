@@ -62,30 +62,51 @@
         (statement 
           (assignment_statement 
             (variable_or_function_call PaletteArray 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call I)) ))) = 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call I)))) )) = 
             (expr 
               (variable_or_function_call I)))) :) NEXT I)) \r\n \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id WindowVals) 
-      (call_argument_list 
-        (call_argument WLeft) , 
-        (call_argument WRight) , 
-        (call_argument WTop) , 
-        (call_argument WBottom)))) \r\n \r\n \r\n \r\n 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call WLeft))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call WRight))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call WTop))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call WBottom)))))) \r\n \r\n \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id ScreenTest) 
-      (call_argument_list 
-        (call_argument EgaMode) , 
-        (call_argument ColorRange) , 
-        (call_argument VLeft) , 
-        (call_argument VRight) , 
-        (call_argument VTop) , 
-        (call_argument VBottom)))) \r\n \r\n \r\n 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call EgaMode))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call ColorRange))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VLeft))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VRight))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VTop))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VBottom)))))) \r\n \r\n \r\n 
   (statement 
     (view_statement VIEW 
       ( 
@@ -160,12 +181,14 @@
             (variable_or_function_call LogicY) = 
             (expr 
               (variable_or_function_call PMAP 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (variable_or_function_call Y)) , 
-                    (expr 
-                      (literal 3)) )))))) \r\n \r\n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Y))) , 
+                    (argument 
+                      (expr 
+                        (literal 3)))) ))))) \r\n \r\n 
         (statement 
           (pset_statement PSET 
             ( 
@@ -190,12 +213,14 @@
                   (variable_or_function_call LogicX) = 
                   (expr 
                     (variable_or_function_call PMAP 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call X)) , 
-                          (expr 
-                            (literal 2)) )))))) \r\n \r\n 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call X))) , 
+                          (argument 
+                            (expr 
+                              (literal 2)))) ))))) \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call MandelX&) = 
@@ -401,20 +426,22 @@
             (statement 
               (assignment_statement 
                 (variable_or_function_call PaletteArray 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call I)) ))) = 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I)))) )) = 
                 (expr 
                   (expr 
                     ( 
                       (expr 
                         (expr 
                           (variable_or_function_call PaletteArray 
-                            (args_or_indices 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call I)) )))) MOD 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call I)))) ))) MOD 
                         (expr 
                           (variable_or_function_call ColorRange))) )) + 
                   (expr 
@@ -422,10 +449,11 @@
       (statement 
         (palette_statement PALETTE USING 
           (variable_or_function_call PaletteArray 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 0)) ))))) \r\n \r\n) 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
   (sub_statement SUB 
     (untyped_id ScreenTest) 
@@ -580,10 +608,11 @@
             (variable_or_function_call Resp$)) <> 
           (expr 
             (variable_or_function_call CHR$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 13)) ))))) THEN \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 13)))) )))) THEN \r\n 
         (then_block 
           (statement 
             (print_statement PRINT)) \r\n 

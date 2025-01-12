@@ -39,10 +39,11 @@
         (literal " Current record: ")) ; 
       (expr 
         (variable_or_function_call LOC 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 1)) )))) ; 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))) ; 
       (expr 
         (literal " Next: ")) ; 
       (expr 

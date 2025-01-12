@@ -25,10 +25,11 @@
         (statement 
           (read_statement READ 
             (variable_or_function_call KeyText$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call I)) ))))) \n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call I)))) )))) \n 
         (statement 
           (key_statement KEY 
             (expr 
@@ -36,16 +37,18 @@
             (expr 
               (expr 
                 (variable_or_function_call KeyText$ 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (variable_or_function_call I)) )))) + 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I)))) ))) + 
               (expr 
                 (variable_or_function_call CHR$ 
-                  (args_or_indices 
-                    ( 
-                      (expr 
-                        (literal 13)) ))))))) \n) NEXT I)) \n \n 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 13)))) )))))) \n) NEXT I)) \n \n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -82,10 +85,11 @@
           (print_statement PRINT 
             (expr 
               (variable_or_function_call SPACE$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 50)) )))) ;)) \n 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 50)))) ))) ;)) \n 
         (statement 
           (locate_statement LOCATE 
             (expr 
@@ -119,10 +123,11 @@
                   (print_statement PRINT 
                     (expr 
                       (variable_or_function_call SPACE$ 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (literal 15)) )))) ;)) \n 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 15)))) ))) ;)) \n 
                 (statement 
                   (locate_statement LOCATE 
                     (expr 

@@ -8,10 +8,11 @@
       (variable_or_function_call Esc$) = 
       (expr 
         (variable_or_function_call CHR$ 
-          (args_or_indices 
-            ( 
-              (expr 
-                (literal 27)) )))))) \r\n \r\n \r\n \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 27)))) ))))) \r\n \r\n \r\n \r\n 
   (statement 
     (for_next_statement FOR ColorVal = 
       (expr 

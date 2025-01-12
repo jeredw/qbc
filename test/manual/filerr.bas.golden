@@ -70,10 +70,11 @@
                 (variable_or_function_call LocString$) = 
                 (expr 
                   (variable_or_function_call UCASE$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call LocString$)) )))))) \r\n \r\n \r\n \r\n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call LocString$)))) ))))) \r\n \r\n \r\n \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call LineNum) = 
@@ -85,10 +86,11 @@
                   (expr NOT 
                     (expr 
                       (variable_or_function_call EOF 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (variable_or_function_call FileNum)) )))))) 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call FileNum)))) ))))) 
                 (block \r\n \r\n \r\n 
                   (statement 
                     (line_input_statement LINE INPUT 
@@ -100,16 +102,19 @@
                     (expr 
                       (expr 
                         (variable_or_function_call INSTR 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call UCASE$ 
-                                  (args_or_indices 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call UCASE$ 
                                     ( 
-                                      (expr 
-                                        (variable_or_function_call LineBuffer$)) )))) , 
-                              (expr 
-                                (variable_or_function_call LocString$)) )))) <> 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call LineBuffer$)))) )))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call LocString$)))) ))) <> 
                       (expr 
                         (literal 0))) THEN \r\n 
                     (then_block 
@@ -190,13 +195,14 @@
                     (variable_or_function_call Char$) = 
                     (expr 
                       (variable_or_function_call UCASE$ 
-                        (args_or_indices 
-                          ( 
-                            (expr 
-                              (builtin_function INPUT$ 
-                                ( 
-                                  (expr 
-                                    (literal 1)) ))) )))))) \r\n 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (builtin_function INPUT$ 
+                                  ( 
+                                    (expr 
+                                      (literal 1)) ))))) ))))) \r\n 
                 (if_block_statement IF 
                   (expr 
                     (expr 

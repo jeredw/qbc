@@ -29,8 +29,10 @@
         (statement 
           (call_statement 
             (untyped_id Face) 
-            (call_argument_list 
-              (call_argument Min$)))) \r\n \r\n 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call Min$)))))) \r\n \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n \r\n 
@@ -106,19 +108,21 @@
           (variable_or_function_call Hr) = 
           (expr 
             (variable_or_function_call VAL 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call TIME$)) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call TIME$)))) ))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Min) = 
           (expr 
             (variable_or_function_call VAL 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call Min$)) )))))) \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Min$)))) ))))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Little) = 
@@ -154,35 +158,37 @@
       (statement 
         (call_statement 
           (untyped_id DRAW) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (expr 
                   (expr 
                     (literal "TA=")) + 
                   (expr 
                     (variable_or_function_call VARPTR$ 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Little)) ))))) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Little)))) )))) + 
                 (expr 
                   (literal "NU40"))))))) \r\n 
       (statement 
         (call_statement 
           (untyped_id DRAW) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (expr 
                   (expr 
                     (literal "TA=")) + 
                   (expr 
                     (variable_or_function_call VARPTR$ 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Big)) ))))) + 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Big)))) )))) + 
                 (expr 
                   (literal "NU70"))))))) \r\n) 
     (end_sub_statement END SUB)) \r\n \n <EOF>)

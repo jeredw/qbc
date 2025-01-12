@@ -74,16 +74,20 @@
       (variable_or_function_call ArraySize%) = 
       (expr 
         (variable_or_function_call GetArraySize 
-          (args_or_indices 
-            ( 
-              (expr 
-                (variable_or_function_call WLeft)) , 
-              (expr 
-                (variable_or_function_call WRight)) , 
-              (expr 
-                (variable_or_function_call WTop)) , 
-              (expr 
-                (variable_or_function_call WBottom)) )))))) \r\n \r\n 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call WLeft))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call WRight))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call WTop))) , 
+              (argument 
+                (expr 
+                  (variable_or_function_call WBottom)))) ))))) \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -150,28 +154,32 @@
           (expr 
             (expr 
               (variable_or_function_call CHR$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 126)) )))) + 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 126)))) ))) + 
             (expr 
               (variable_or_function_call CHR$ 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 0)) ))))) + 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )))) + 
           (expr 
             (variable_or_function_call CHR$ 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 126)) ))))) + 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 126)))) )))) + 
         (expr 
           (variable_or_function_call CHR$ 
-            (args_or_indices 
-              ( 
-                (expr 
-                  (literal 126)) ))))))) \r\n 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 126)))) )))))) \r\n 
   (statement 
     (paint_statement PAINT 
       ( 
@@ -232,14 +240,16 @@
                     (expr 
                       (expr 
                         (variable_or_function_call ABS 
-                          (args_or_indices 
-                            ( 
-                              (expr 
-                                (variable_or_function_call COS 
-                                  (args_or_indices 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call COS 
                                     ( 
-                                      (expr 
-                                        (variable_or_function_call X)) )))) )))) * 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call X)))) ))))) ))) * 
                       (expr 
                         (variable_or_function_call Decay))) - 
                     (expr 
@@ -341,58 +351,67 @@
           (variable_or_function_call VLeft) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call WLeft)) , 
-                  (expr 
-                    (literal 0)) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call WLeft))) , 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call VRight) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call WRight)) , 
-                  (expr 
-                    (literal 0)) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call WRight))) , 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call VTop) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call WTop)) , 
-                  (expr 
-                    (literal 1)) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call WTop))) , 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call VBottom) = 
           (expr 
             (variable_or_function_call PMAP 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call WBottom)) , 
-                  (expr 
-                    (literal 1)) )))))) \r\n \r\n \r\n \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call WBottom))) , 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) \r\n \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call RectHeight) = 
           (expr 
             (expr 
               (variable_or_function_call ABS 
-                (args_or_indices 
-                  ( 
-                    (expr 
+                ( 
+                  (argument_list 
+                    (argument 
                       (expr 
-                        (variable_or_function_call VBottom)) - 
-                      (expr 
-                        (variable_or_function_call VTop))) )))) + 
+                        (expr 
+                          (variable_or_function_call VBottom)) - 
+                        (expr 
+                          (variable_or_function_call VTop))))) ))) + 
             (expr 
               (literal 1))))) \r\n 
       (statement 
@@ -401,13 +420,14 @@
           (expr 
             (expr 
               (variable_or_function_call ABS 
-                (args_or_indices 
-                  ( 
-                    (expr 
+                ( 
+                  (argument_list 
+                    (argument 
                       (expr 
-                        (variable_or_function_call VRight)) - 
-                      (expr 
-                        (variable_or_function_call VLeft))) )))) + 
+                        (expr 
+                          (variable_or_function_call VRight)) - 
+                        (expr 
+                          (variable_or_function_call VLeft))))) ))) + 
             (expr 
               (literal 1))))) \r\n \r\n \r\n 
       (statement 
@@ -421,18 +441,19 @@
                 (variable_or_function_call RectHeight)) * 
               (expr 
                 (variable_or_function_call INT 
-                  (args_or_indices 
-                    ( 
-                      (expr 
+                  ( 
+                    (argument_list 
+                      (argument 
                         (expr 
-                          ( 
-                            (expr 
+                          (expr 
+                            ( 
                               (expr 
-                                (variable_or_function_call RectWidth)) + 
-                              (expr 
-                                (literal 7))) )) / 
-                        (expr 
-                          (literal 8))) )))))))) \r\n \r\n \r\n 
+                                (expr 
+                                  (variable_or_function_call RectWidth)) + 
+                                (expr 
+                                  (literal 7))) )) / 
+                          (expr 
+                            (literal 8))))) ))))))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call GetArraySize) = 

@@ -54,8 +54,10 @@
                 (call_statement CALL 
                   (untyped_id Zoom) 
                   ( 
-                    (call_argument_list 
-                      (call_argument X)) ))) \r\n 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call X)))) ))) \r\n 
               (statement 
                 (for_next_statement FOR I = 
                   (expr 

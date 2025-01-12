@@ -49,10 +49,11 @@
         (expr NOT 
           (expr 
             (variable_or_function_call EOF 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (literal 1)) )))))) 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) 
       (block \r\n 
         (statement 
           (line_input_statement LINE INPUT 
@@ -104,12 +105,14 @@
           (variable_or_function_call Mark) = 
           (expr 
             (variable_or_function_call INSTR 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call F1$)) , 
-                  (expr 
-                    (literal ".")) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call F1$))) , 
+                  (argument 
+                    (expr 
+                      (literal ".")))) ))))) \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -133,15 +136,17 @@
                 (expr 
                   (expr 
                     (variable_or_function_call LEFT$ 
-                      (args_or_indices 
-                        ( 
-                          (expr 
-                            (variable_or_function_call F1$)) , 
-                          (expr 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
-                              (variable_or_function_call Mark)) - 
+                              (variable_or_function_call F1$))) , 
+                          (argument 
                             (expr 
-                              (literal 1))) )))) + 
+                              (expr 
+                                (variable_or_function_call Mark)) - 
+                              (expr 
+                                (literal 1))))) ))) + 
                   (expr 
                     (literal ".NEW"))))) \r\n)) 
         (end_if_statement END IF)) \r\n) 
@@ -165,12 +170,14 @@
           (variable_or_function_call Mark) = 
           (expr 
             (variable_or_function_call INSTR 
-              (args_or_indices 
-                ( 
-                  (expr 
-                    (variable_or_function_call Temp$)) , 
-                  (expr 
-                    (variable_or_function_call Old$)) )))))) \r\n 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Temp$))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call Old$)))) ))))) \r\n 
       (statement 
         (while_wend_statement WHILE 
           (expr 
@@ -181,15 +188,17 @@
                 (variable_or_function_call Part1$) = 
                 (expr 
                   (variable_or_function_call LEFT$ 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Temp$)) , 
-                        (expr 
+                    ( 
+                      (argument_list 
+                        (argument 
                           (expr 
-                            (variable_or_function_call Mark)) - 
+                            (variable_or_function_call Temp$))) , 
+                        (argument 
                           (expr 
-                            (literal 1))) )))))) \r\n 
+                            (expr 
+                              (variable_or_function_call Mark)) - 
+                            (expr 
+                              (literal 1))))) ))))) \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Part2$) = 
@@ -227,12 +236,14 @@
                 (variable_or_function_call Mark) = 
                 (expr 
                   (variable_or_function_call INSTR 
-                    (args_or_indices 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Temp$)) , 
-                        (expr 
-                          (variable_or_function_call Old$)) )))))) \r\n) WEND)) \r\n 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Temp$))) , 
+                        (argument 
+                          (expr 
+                            (variable_or_function_call Old$)))) ))))) \r\n) WEND)) \r\n 
       (if_block_statement IF 
         (expr 
           (expr 

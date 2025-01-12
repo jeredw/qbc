@@ -52,58 +52,90 @@
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument C) , 
-          (call_argument QRTR)) ))) : 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call C))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call QRTR)))) ))) : 
   (statement 
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument D) , 
-          (call_argument QRTR)) ))) \r\n 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call D))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call QRTR)))) ))) \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument E) , 
-          (call_argument QRTR)) ))) : 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call E))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call QRTR)))) ))) : 
   (statement 
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument F) , 
-          (call_argument QRTR)) ))) \r\n 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call F))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call QRTR)))) ))) \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument G) , 
-          (call_argument QRTR)) ))) : 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call G))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call QRTR)))) ))) : 
   (statement 
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument A) , 
-          (call_argument QRTR)) ))) \r\n 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call A))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call QRTR)))) ))) \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument B) , 
-          (call_argument QRTR)) ))) : 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call B))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call QRTR)))) ))) : 
   (statement 
     (call_statement CALL 
       (untyped_id Sounds) 
       ( 
-        (call_argument_list 
-          (call_argument C1) , 
-          (call_argument WHOLE)) ))) \r\n \r\n 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call C1))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call WHOLE)))) ))) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Sounds) 
     ( 
@@ -116,13 +148,14 @@
           (variable_or_function_call Clicks%) = 
           (expr 
             (variable_or_function_call CINT 
-              (args_or_indices 
-                ( 
-                  (expr 
+              ( 
+                (argument_list 
+                  (argument 
                     (expr 
-                      (literal 1193280!)) / 
-                    (expr 
-                      (variable_or_function_call Freq!))) )))))) \r\n 
+                      (expr 
+                        (literal 1193280!)) / 
+                      (expr 
+                        (variable_or_function_call Freq!))))) ))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call LoByte%) = 
@@ -142,49 +175,56 @@
       (statement 
         (call_statement 
           (untyped_id OUT) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 67))) , 
-            (call_argument 
+            (argument 
               (expr 
                 (literal 182)))))) \r\n \r\n 
       (statement 
         (call_statement 
           (untyped_id OUT) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 66))) , 
-            (call_argument LoByte%)))) \r\n 
+            (argument 
+              (expr 
+                (variable_or_function_call LoByte%)))))) \r\n 
       (statement 
         (call_statement 
           (untyped_id OUT) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 66))) , 
-            (call_argument HiByte%)))) \r\n \r\n 
+            (argument 
+              (expr 
+                (variable_or_function_call HiByte%)))))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call SpkrOn%) = 
           (expr 
             (expr 
               (variable_or_function_call INP 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 97)) )))) OR 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 97)))) ))) OR 
             (expr 
               (literal &H03))))) \r\n 
       (statement 
         (call_statement 
           (untyped_id OUT) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 97))) , 
-            (call_argument SpkrOn%)))) \r\n \r\n 
+            (argument 
+              (expr 
+                (variable_or_function_call SpkrOn%)))))) \r\n \r\n 
       (statement 
         (for_next_statement FOR I! = 
           (expr 
@@ -198,18 +238,21 @@
           (expr 
             (expr 
               (variable_or_function_call INP 
-                (args_or_indices 
-                  ( 
-                    (expr 
-                      (literal 97)) )))) AND 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 97)))) ))) AND 
             (expr 
               (literal &HFC))))) \r\n 
       (statement 
         (call_statement 
           (untyped_id OUT) 
-          (call_argument_list 
-            (call_argument 
+          (argument_list 
+            (argument 
               (expr 
                 (literal 97))) , 
-            (call_argument SpkrOff%)))) \r\n) 
+            (argument 
+              (expr 
+                (variable_or_function_call SpkrOff%)))))) \r\n) 
     (end_sub_statement END SUB)) \r\n \n <EOF>)
