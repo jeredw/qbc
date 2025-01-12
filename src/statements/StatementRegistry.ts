@@ -1,3 +1,4 @@
+import { CallStatement } from "./Call.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { DefFnStatement } from "./DefFn.ts";
 import { GosubStatement } from "./Gosub.ts";
@@ -10,6 +11,10 @@ import * as parser from "../../build/QBasicParser";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
+
+export function call(chunkIndex: number) {
+  return new CallStatement(chunkIndex);
+}
 
 export function defFn(name: string, returnType: Type) {
   return new DefFnStatement(name, returnType);

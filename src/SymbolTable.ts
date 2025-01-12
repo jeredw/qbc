@@ -60,6 +60,10 @@ export function isConstant(symbol: Symbol): symbol is ConstantSymbol {
   return 'constant' in symbol;
 }
 
+export function isProcedure(symbol: Symbol): symbol is ProcedureSymbol {
+  return 'procedure' in symbol;
+}
+
 type TypeToItemMap<T> = Map<TypeTag, T>
 
 interface Slot {
@@ -102,6 +106,10 @@ export class SymbolTable {
 
   lookupConstant(name: string): Value | undefined {
     return this._symbols.get(name)?.constant;
+  }
+
+  lookupProcedure(name: string): Procedure | undefined {
+    return this._symbols.get(name)?.procedure;
   }
 
   // Look up a name, and if it is not found, define a new variable with that

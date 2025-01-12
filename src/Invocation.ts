@@ -68,6 +68,9 @@ export class Invocation {
     }
     const {chunkIndex, statementIndex} = this.stack[this.stack.length - 1]!;
     const chunk = this.program.chunks[chunkIndex];
+    if (!chunk) {
+      throw new Error(`invalid chunk ${chunkIndex}`);
+    }
     if (statementIndex >= chunk.statements.length) {
       this.exitChunk();
       this.step();

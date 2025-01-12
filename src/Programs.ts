@@ -3,7 +3,7 @@ import * as statements from "./statements/StatementRegistry.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTree, ParseTreeWalker, Token } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
-import { isVariable, SymbolTable } from "./SymbolTable.ts";
+import { isProcedure, isVariable, SymbolTable } from "./SymbolTable.ts";
 import {
   TypeTag,
   Type,
@@ -19,6 +19,7 @@ import { ArrayBounds, Variable } from "./Variables.ts";
 import { evaluateExpression } from "./Expressions.ts";
 import { isError, isNumeric, Value } from "./Values.ts";
 import { Statement } from "./statements/Statement.ts";
+import { CallStatement } from "./statements/Call.ts";
 
 export interface Program {
   chunks: ProgramChunk[];
@@ -57,6 +58,7 @@ class ProgramChunker extends QBasicParserListener {
   private _program: Program;
   private _syntheticLabelIndex = 0;
   private _arrayBaseIndex = 1;
+  private _unresolvedCalls: [Token, CallStatement, string][] = [];
 
   constructor() {
     super();
@@ -74,6 +76,7 @@ class ProgramChunker extends QBasicParserListener {
 
   override exitProgram = (_ctx: parser.ProgramContext) => {
     this._program.chunks.forEach((chunk) => this.assignTargets(chunk));
+    this._unresolvedCalls.forEach((unresolved) => this.resolveProcedure(...unresolved));
   }
 
   private assignTargets(chunk: ProgramChunk) {
@@ -85,6 +88,17 @@ class ProgramChunker extends QBasicParserListener {
       }
       statement.targetIndex = targetIndex;
     });
+  }
+
+  private resolveProcedure(token: Token, statement: CallStatement, name: string) {
+    const procedure = this._chunk.symbols.lookupProcedure(name);
+    if (!procedure) {
+      throw ParseError.fromToken(token, "Subprogram not defined");
+    }
+    if (procedure.returnType) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    statement.chunkIndex = procedure.programChunkIndex;
   }
 
   override enterLabel = (ctx: parser.LabelContext) => {
@@ -254,12 +268,21 @@ class ProgramChunker extends QBasicParserListener {
     ctx['$symbol'] = symbol;
   }
 
+  /*override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
+    const symbol = ctx['$symbol'];
+    if (!isProcedure(symbol)) {
+      return;
+    }
+    const procedure = symbol.procedure;
+  }*/
+
   override exitAssignment_statement = (ctx: parser.Assignment_statementContext) => {
     const assignee = ctx.variable_or_function_call();
     const symbol = assignee['$symbol'];
     if (!symbol) {
       throw new Error("missing symbol");
     }
+    // TODO: Support assignment to function name in functions.
     if (!isVariable(symbol)) {
       throw ParseError.fromToken(assignee._name!, "Duplicate definition");
     }
@@ -275,7 +298,13 @@ class ProgramChunker extends QBasicParserListener {
     this.addStatement(statements.let_(symbol.variable, expr));
   }
 
-  override enterCall_statement = (ctx: parser.Call_statementContext) => {}
+  override enterCall_statement = (ctx: parser.Call_statementContext) => {
+    const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
+    const call = statements.call(-1);
+    this._unresolvedCalls.push([ctx.start!, call, name]);
+    this.addStatement(call);
+  }
+
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
   override enterCircle_statement = (ctx: parser.Circle_statementContext) => {}
