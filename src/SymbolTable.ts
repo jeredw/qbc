@@ -105,11 +105,11 @@ export class SymbolTable {
   }
 
   lookupConstant(name: string): Value | undefined {
-    return this._symbols.get(name)?.constant;
+    return this._symbols.get(name)?.constant ?? this._parent?.lookupConstant(name);
   }
 
   lookupProcedure(name: string): Procedure | undefined {
-    return this._symbols.get(name)?.procedure;
+    return this._symbols.get(name)?.procedure ?? this._parent?.lookupProcedure(name);
   }
 
   // Look up a name, and if it is not found, define a new variable with that
@@ -120,11 +120,11 @@ export class SymbolTable {
       isDefaultType: boolean,
       numDimensions: number
     }): Symbol {
-    const slot = this._symbols.get(name);
+    const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
     if (slot) {
       // If a name is found with the wrong type, we fall through to trying to
       // define a variable below and throw "Duplicate definition".
-      if (slot.procedure && (!slot.procedure.returnType || sameType(type, slot.procedure.returnType))) {
+      if (slot.procedure && (!slot.procedure.result || sameType(type, slot.procedure.result.type))) {
         return {tag: SymbolTag.PROCEDURE, procedure: slot.procedure};
       }
       if (slot.defFns) {
@@ -168,7 +168,7 @@ export class SymbolTable {
   }
 
   getAsType(name: string): Type | undefined {
-    const slot = this._symbols.get(name);
+    const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
     return slot?.scalarAsType ?? slot?.arrayAsType;
   }
 
@@ -235,9 +235,9 @@ export class SymbolTable {
     if (!slot.defFns) {
       throw new Error("Name must start with FN");
     }
-    if (slot.defFns.has(procedure.returnType!.tag)) {
+    if (slot.defFns.has(procedure.result!.type.tag)) {
       throw new Error("Duplicate definition");
     }
-    slot.defFns.set(procedure.returnType!.tag, procedure);
+    slot.defFns.set(procedure.result!.type.tag, procedure);
   }
 }

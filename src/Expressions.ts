@@ -2,7 +2,6 @@ import {
   ExprContext,
   ExponentExprContext,
   NotExprContext,
-  ParenExprContext,
   UnaryMinusExprContext,
   ValueExprContext,
   VarCallExprContext,
@@ -137,6 +136,14 @@ class ExpressionListener extends QBasicParserListener {
 
   override exitVarCallExpr = (dispatchCtx: VarCallExprContext) => {
     const ctx = dispatchCtx.variable_or_function_call();
+    const result = ctx['$result'];
+    if (result) {
+      if (!result.value) {
+        result.value = values.getDefaultValueOfType(result.type);
+      }
+      this.push(result.value);
+      return;
+    }
     const symbol = ctx['$symbol'];
     if (!symbol) {
       throw new Error("missing symbol");
@@ -147,7 +154,7 @@ class ExpressionListener extends QBasicParserListener {
       }
     }
     if (isConstant(symbol)) {
-      this.push(symbol.constant)
+      this.push(symbol.constant);
       return;
     }
     if (isVariable(symbol)) {
@@ -158,7 +165,7 @@ class ExpressionListener extends QBasicParserListener {
       this.push(variable.value);
       return;
     }
-    throw new Error("unimplemented");
+    throw new Error("missing result for function call");
   }
 
   private parseValue(fullText: string): values.Value {
