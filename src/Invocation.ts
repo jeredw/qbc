@@ -1,6 +1,6 @@
 import { Devices } from "./Devices";
 import { Program } from "./Programs";
-import { ControlFlowTag } from "./ControlFlow";
+import { ControlFlowTag, SavedValue } from "./ControlFlow";
 import { RuntimeError } from "./Errors";
 import { ReturnStatement } from "./statements/Return";
 import { RETURN_WITHOUT_GOSUB } from "./Values";
@@ -13,6 +13,7 @@ interface ProgramLocation {
   chunkIndex: number;
   statementIndex: number;
   pusher?: ControlFlowTag;
+  savedValues?: SavedValue[];
 }
 
 export class Invocation {
@@ -103,8 +104,9 @@ export class Invocation {
         case ControlFlowTag.CALL:
           this.stack.push({
             chunkIndex: controlFlow.chunkIndex,
+            savedValues: controlFlow.savedValues,
             statementIndex: 0,
-            pusher: ControlFlowTag.CALL
+            pusher: ControlFlowTag.CALL,
           });
           break;
         case ControlFlowTag.RETURN:
@@ -133,6 +135,12 @@ export class Invocation {
 
   private exitChunk() {
     this.discardGosubFrames();
+    const callFrame = this.stack[this.stack.length - 1];
+    if (callFrame && callFrame.savedValues) {
+      for (const {variable, value} of callFrame.savedValues) {
+        variable.value = value;
+      }
+    }
     this.stack.pop();
   }
 

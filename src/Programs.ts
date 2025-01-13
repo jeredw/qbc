@@ -17,9 +17,9 @@ import {
 } from "./Types.ts";
 import { ArrayBounds, Variable } from "./Variables.ts";
 import { evaluateExpression } from "./Expressions.ts";
-import { isError, isNumeric, Value } from "./Values.ts";
+import { reference, isError, isNumeric, Value } from "./Values.ts";
 import { Statement } from "./statements/Statement.ts";
-import { CallStatement } from "./statements/Call.ts";
+import { CallStatement, ParameterBinding } from "./statements/Call.ts";
 
 export interface Program {
   chunks: ProgramChunk[];
@@ -58,7 +58,7 @@ class ProgramChunker extends QBasicParserListener {
   private _program: Program;
   private _syntheticLabelIndex = 0;
   private _arrayBaseIndex = 1;
-  private _unresolvedCalls: [Token, CallStatement, string][] = [];
+  private _callsToResolve: (() => void)[] = [];
 
   constructor() {
     super();
@@ -76,7 +76,7 @@ class ProgramChunker extends QBasicParserListener {
 
   override exitProgram = (_ctx: parser.ProgramContext) => {
     this._program.chunks.forEach((chunk) => this.assignTargets(chunk));
-    this._unresolvedCalls.forEach((unresolved) => this.resolveProcedure(...unresolved));
+    this._callsToResolve.forEach((call) => call());
   }
 
   private assignTargets(chunk: ProgramChunk) {
@@ -88,17 +88,6 @@ class ProgramChunker extends QBasicParserListener {
       }
       statement.targetIndex = targetIndex;
     });
-  }
-
-  private resolveProcedure(token: Token, statement: CallStatement, name: string) {
-    const procedure = this._chunk.symbols.lookupProcedure(name);
-    if (!procedure) {
-      throw ParseError.fromToken(token, "Subprogram not defined");
-    }
-    if (procedure.returnType) {
-      throw ParseError.fromToken(token, "Duplicate definition");
-    }
-    statement.chunkIndex = procedure.programChunkIndex;
   }
 
   override enterLabel = (ctx: parser.LabelContext) => {
@@ -137,11 +126,12 @@ class ProgramChunker extends QBasicParserListener {
 
   override enterFunction_statement = (ctx: parser.Function_statementContext) => {
     const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
+    const parameters = this.parseParameterList(ctx.parameter_list());
     try {
       this._chunk.symbols.defineProcedure({
         name,
         returnType: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
-        parameters: this.parseParameterList(ctx.parameter_list()),
+        parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
         staticStorage: !!ctx.STATIC(),
         programChunkIndex: this._program.chunks.length,
       });
@@ -151,6 +141,7 @@ class ProgramChunker extends QBasicParserListener {
     // A label on a function is attached to the first statement of the function.
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
     this._program.chunks.push(this._chunk);
+    this.installParameters(parameters);
   }
 
   override enterDef_fn_statement = (ctx: parser.Def_fn_statementContext) => {
@@ -159,28 +150,30 @@ class ProgramChunker extends QBasicParserListener {
     const fnPrefixed = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
     const [name, sigil] = splitSigil(fnPrefixed);
     const returnType = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    // Executing def fn marks it visible in the symbol table.
-    this.addStatement(statements.defFn(name, returnType));
+    const parameters = this.parseDefFnParameterList(ctx.def_fn_parameter_list());
     try {
       this._chunk.symbols.defineFn({
         name,
         returnType,
-        parameters: this.parseDefFnParameterList(ctx.def_fn_parameter_list()),
+        parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
         programChunkIndex: this._program.chunks.length,
       });
     } catch (error: any) {
       throw ParseError.fromToken(ctx._name!, error.message);
     }
-    this._chunk = this.makeProgramChunk(this._chunk.symbols);
+    // TODO: only params and statics get local entries in a def fn
+    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
     this._program.chunks.push(this._chunk);
+    this.installParameters(parameters);
   }
 
   override enterSub_statement = (ctx: parser.Sub_statementContext) => {
     const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
+    const parameters = this.parseParameterList(ctx.parameter_list());
     try {
       this._chunk.symbols.defineProcedure({
         name,
-        parameters: this.parseParameterList(ctx.parameter_list()),
+        parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
         staticStorage: !!ctx.STATIC(),
         programChunkIndex: this._program.chunks.length
       });
@@ -190,6 +183,17 @@ class ProgramChunker extends QBasicParserListener {
     // A label on a sub is attached to the first statement of the sub.
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
     this._program.chunks.push(this._chunk);
+    this.installParameters(parameters);
+  }
+
+  private installParameters(parameters: [ParserRuleContext, Variable][]) {
+    for (const [paramCtx, param] of parameters) {
+      try {
+        this._chunk.symbols.defineVariable(param);
+      } catch (error: any) {
+        throw ParseError.fromToken(paramCtx.start!, error.message);
+      }
+    }
   }
 
   private exitProcedure = (_ctx: ParserRuleContext) => {
@@ -301,8 +305,50 @@ class ProgramChunker extends QBasicParserListener {
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
     const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
     const call = statements.call(-1);
-    this._unresolvedCalls.push([ctx.start!, call, name]);
+    this._callsToResolve.push(() => this.resolveProcedure(ctx.start!, ctx.argument_list(), call, name));
     this.addStatement(call);
+  }
+
+  private resolveProcedure(token: Token, argumentListCtx: parser.Argument_listContext | null, statement: CallStatement, name: string) {
+    const procedure = this._chunk.symbols.lookupProcedure(name);
+    if (!procedure) {
+      throw ParseError.fromToken(token, "Subprogram not defined");
+    }
+    if (procedure.returnType) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    const args = argumentListCtx?.argument() ?? [];
+    if (args.length != procedure.parameters.length) {
+      throw ParseError.fromToken(token, "Argument-count mismatch");
+    }
+    const parameterBindings: ParameterBinding[] = [];
+    for (let i = 0; i < args.length; i++) {
+      const expr = args[i].expr();
+      if (!expr) {
+        throw new Error("unimplemented");
+      }
+      const parameter = procedure.parameters[i];
+      const variable = getVariableReference(expr);
+      if (variable) {
+        // Type must match exactly for pass by reference.
+        if (!sameType(variable.type, parameter.type)) {
+          throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
+        }
+        parameterBindings.push({parameter, value: reference(variable)});
+      } else {
+        const value = evaluateExpression({
+          expr,
+          typeCheck: true,
+          resultType: procedure.parameters[i].type,
+        });
+        if (isError(value)) {
+          throw ParseError.fromToken(args[i].start!, value.errorMessage);
+        }
+        parameterBindings.push({parameter, expr});
+      }
+    }
+    statement.chunkIndex = procedure.programChunkIndex;
+    statement.parameterBindings = parameterBindings;
   }
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
@@ -328,8 +374,7 @@ class ProgramChunker extends QBasicParserListener {
         const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
         try {
           this._chunk.symbols.defineVariable({
-            variable: {name, type: asType, ...dimensions},
-            isAsType: true
+            name, type: asType, isAsType: true, ...dimensions
           });
         } catch (error: any) {
           throw ParseError.fromToken(dim.untyped_id()!.start!, error.message);
@@ -350,7 +395,7 @@ class ProgramChunker extends QBasicParserListener {
         }
         try {
           this._chunk.symbols.defineVariable({
-            variable: {name, type, ...dimensions},
+            name, type, ...dimensions,
           });
         } catch (error: any) {
           throw ParseError.fromToken(dim.ID()!.symbol, error.message);
@@ -625,15 +670,15 @@ class ProgramChunker extends QBasicParserListener {
     this._chunk.labelToIndex.set(label, nextStatementIndex);
   }
 
-  private parseParameterList(ctx: parser.Parameter_listContext | null): Variable[] {
+  private parseParameterList(ctx: parser.Parameter_listContext | null): [ParserRuleContext, Variable][] {
     return ctx?.parameter().map((param) => this.parseParameter(param)) ?? [];
   }
 
-  private parseDefFnParameterList(ctx: parser.Def_fn_parameter_listContext | null): Variable[] {
+  private parseDefFnParameterList(ctx: parser.Def_fn_parameter_listContext | null): [ParserRuleContext, Variable][] {
     return ctx?.def_fn_parameter().map((param) => this.parseParameter(param)) ?? [];
   }
 
-  private parseParameter(ctx: parser.ParameterContext | parser.Def_fn_parameterContext): Variable {
+  private parseParameter(ctx: parser.ParameterContext | parser.Def_fn_parameterContext): [ParserRuleContext, Variable] {
     const nameCtx = ctx.untyped_id();
     const rawName = nameCtx ? getUntypedId(nameCtx, {allowPeriods: true}) : ctx.ID()!.getText();
     const [name, sigil] = splitSigil(rawName);
@@ -646,7 +691,7 @@ class ProgramChunker extends QBasicParserListener {
     const type: Type = (ctx instanceof parser.ParameterContext && ctx.array_declaration()) ?
       {tag: TypeTag.ARRAY, elementType: typeSpec} :
       typeSpec;
-    return {type, name};
+    return [ctx, {type, name, isAsType: !!asTypeCtx}];
   }
 
   private getType(ctx: ParserRuleContext): Type {
@@ -721,4 +766,16 @@ function findParent<T extends ParserRuleContext>(
     ctx = ctx.parent;
   }
   return null;
+}
+
+function getVariableReference(expr: parser.ExprContext): Variable | undefined {
+  if (expr.children.length == 1) {
+    const child = expr.children[0];
+    if (child instanceof parser.Variable_or_function_callContext) {
+      const symbol = child['$symbol'];
+      if (isVariable(symbol)) {
+        return symbol.variable;
+      }
+    }
+  }
 }

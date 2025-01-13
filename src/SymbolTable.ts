@@ -163,7 +163,7 @@ export class SymbolTable {
       })
     } : {};
     const variable = { name, type, ...arrayDimensions };
-    this.defineVariable({variable});
+    this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };
   }
 
@@ -172,10 +172,7 @@ export class SymbolTable {
     return slot?.scalarAsType ?? slot?.arrayAsType;
   }
 
-  defineVariable({variable, isAsType = false}: {
-    variable: Variable,
-    isAsType?: boolean
-  }) {
+  defineVariable(variable: Variable) {
     const slot = this._symbols.get(variable.name) ?? {};
     if (slot.procedure || slot.constant) {
       throw new Error("Duplicate definition");
@@ -188,7 +185,7 @@ export class SymbolTable {
       if (asType && !sameType(asType, variable.type)) {
         throw new Error("Duplicate definition")
       }
-      if (isAsType) {
+      if (variable.isAsType) {
         slot.scalarAsType = variable.type;
       }
       if (!slot.scalarVariables) {
@@ -203,7 +200,7 @@ export class SymbolTable {
       if (asType && !sameType(asType, variable.type)) {
         throw new Error("Duplicate definition")
       }
-      if (isAsType) {
+      if (variable.isAsType) {
         slot.arrayAsType = variable.type;
       }
       if (!slot.arrayVariables) {

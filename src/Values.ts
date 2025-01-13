@@ -1,4 +1,5 @@
 import { Type, TypeTag, UserDefinedType } from './Types.ts'
+import type { Variable } from './Variables.ts'
 
 export type ErrorValue = {
   tag: TypeTag.ERROR;
@@ -42,6 +43,11 @@ export type ArrayValue = {
   elements: Map<number, Value>;
 }
 
+export type ReferenceValue = {
+  tag: TypeTag.REFERENCE;
+  reference: Variable;
+}
+
 export type NumericValue =
   | SingleValue
   | DoubleValue
@@ -53,7 +59,8 @@ export type Value =
   | StringValue
   | NumericValue
   | RecordValue
-  | ArrayValue;
+  | ArrayValue
+  | ReferenceValue;
 
 export function isError(value: Value): value is ErrorValue {
   return 'errorMessage' in value;
@@ -65,6 +72,10 @@ export function isString(value: Value): value is StringValue {
 
 export function isNumeric(value: Value): value is NumericValue {
   return 'number' in value;
+}
+
+export function isReference(value: Value): value is ReferenceValue {
+  return 'reference' in value;
 }
 
 export function numericTypeOf(a: NumericValue): (number: number) => Value {
@@ -195,6 +206,10 @@ export function long(number: number): Value {
 
 export function boolean(test: boolean): Value {
   return test ? integer(TRUE) : integer(FALSE);
+}
+
+export function reference(variable: Variable): Value {
+  return {tag: TypeTag.REFERENCE, reference: variable};
 }
 
 export const

@@ -9,6 +9,8 @@ export enum TypeTag {
   RECORD,
   ARRAY,
   ANY,
+  // Reference is only used for values, not types.
+  REFERENCE,
 }
 
 export interface SingleType {

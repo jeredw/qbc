@@ -1,3 +1,6 @@
+import type { Variable } from './Variables.ts'
+import type { Value } from './Values.ts'
+
 export enum ControlFlowTag {
   GOTO,
   GOSUB,
@@ -17,6 +20,12 @@ export interface Gosub {
 export interface Call {
   tag: ControlFlowTag.CALL;
   chunkIndex: number;
+  savedValues?: SavedValue[];
+}
+
+export interface SavedValue {
+  variable: Variable;
+  value: Value;
 }
 
 export interface Return {

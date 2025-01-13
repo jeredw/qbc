@@ -2,17 +2,18 @@ import {
   ExprContext,
   ExponentExprContext,
   NotExprContext,
+  ParenExprContext,
   UnaryMinusExprContext,
   ValueExprContext,
   VarCallExprContext,
-  Variable_or_function_callContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
-import { ParserRuleContext, ParseTreeWalker, TerminalNode } from "antlr4ng";
+import { ParserRuleContext, ParseTreeWalker } from "antlr4ng";
 import * as values from "./Values.ts";
-import { splitSigil, Type, typeOfSigil, TypeTag } from "./Types.ts";
+import { splitSigil, Type, TypeTag } from "./Types.ts";
 import { ParseError } from "./Errors.ts";
 import { isConstant, isVariable } from "./SymbolTable.ts";
+import { dereference } from "./Variables.ts";
 
 export function evaluateExpression({
   expr,
@@ -150,10 +151,11 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     if (isVariable(symbol)) {
-      if (!symbol.variable.value) {
-        symbol.variable.value = values.getDefaultValueOfType(symbol.variable.type);
+      const variable = dereference(symbol.variable);
+      if (!variable.value) {
+        variable.value = values.getDefaultValueOfType(variable.type);
       }
-      this.push(symbol.variable.value);
+      this.push(variable.value);
       return;
     }
     throw new Error("unimplemented");
