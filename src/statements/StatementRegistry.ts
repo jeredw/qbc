@@ -1,4 +1,4 @@
-import { CallStatement } from "./Call.ts";
+import { CallStatement, StackFrame } from "./Call.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { GosubStatement } from "./Gosub.ts";
 import { GotoStatement } from "./Goto.ts";
@@ -10,8 +10,8 @@ import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 
-export function call(chunkIndex: number) {
-  return new CallStatement(chunkIndex);
+export function call(chunkIndex: number, stackFrame: StackFrame[]) {
+  return new CallStatement(chunkIndex, stackFrame);
 }
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {

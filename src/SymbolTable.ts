@@ -47,20 +47,20 @@ export interface VariableSymbol {
   variable: Variable;
 }
 
-export type Symbol =
+export type QBasicSymbol =
   | ProcedureSymbol
   | ConstantSymbol
   | VariableSymbol;
 
-export function isVariable(symbol: Symbol): symbol is VariableSymbol {
+export function isVariable(symbol: QBasicSymbol): symbol is VariableSymbol {
   return 'variable' in symbol;
 }
 
-export function isConstant(symbol: Symbol): symbol is ConstantSymbol {
+export function isConstant(symbol: QBasicSymbol): symbol is ConstantSymbol {
   return 'constant' in symbol;
 }
 
-export function isProcedure(symbol: Symbol): symbol is ProcedureSymbol {
+export function isProcedure(symbol: QBasicSymbol): symbol is ProcedureSymbol {
   return 'procedure' in symbol;
 }
 
@@ -81,6 +81,16 @@ class NameToSlotMap {
 
   get(name: string): Slot | undefined {
     return this._map.get(canonicalName(name));
+  }
+
+  variables(): Variable[] {
+    const scalars = Array.from(this._map.values())
+      .filter((slot) => !!slot.scalarVariables)
+      .flatMap((slot) => Array.from(slot.scalarVariables!.values()));
+    const arrays = Array.from(this._map.values())
+      .filter((slot) => !!slot.arrayVariables)
+      .flatMap((slot) => Array.from(slot.arrayVariables!.values()));
+    return scalars.concat(arrays);
   }
 
   set(name: string, slot: Slot) {
@@ -119,7 +129,7 @@ export class SymbolTable {
       type: Type,
       isDefaultType: boolean,
       numDimensions: number
-    }): Symbol {
+    }): QBasicSymbol {
     const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
     if (slot) {
       // If a name is found with the wrong type, we fall through to trying to
@@ -137,8 +147,10 @@ export class SymbolTable {
         return {tag: SymbolTag.CONSTANT, constant: slot.constant};
       }
       if (numDimensions == 0 && slot.scalarVariables) {
-        const asType = isDefaultType ? slot.scalarAsType :
-          (slot.scalarAsType ?? slot.arrayAsType);
+        const asType = slot.scalarAsType ?? slot.arrayAsType;
+        if (asType && isDefaultType) {
+          type = asType;
+        }
         if (!asType || sameType(asType, type)) {
           const variable = slot.scalarVariables.get(type.tag);
           if (variable) {
@@ -147,8 +159,10 @@ export class SymbolTable {
         }
       }
       if (numDimensions > 0 && slot.arrayVariables) {
-        const asType = isDefaultType ? slot.arrayAsType :
-          (slot.arrayAsType ?? slot.scalarAsType);
+        const asType = slot.arrayAsType ?? slot.scalarAsType;
+        if (asType && isDefaultType) {
+          type = asType;
+        }
         if (!asType || sameType(asType, type)) {
           const variable = slot.arrayVariables.get(type.tag);
           if (variable) {
@@ -170,6 +184,10 @@ export class SymbolTable {
   getAsType(name: string): Type | undefined {
     const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
     return slot?.scalarAsType ?? slot?.arrayAsType;
+  }
+
+  variables(): Variable[] {
+    return this._symbols.variables();
   }
 
   defineVariable(variable: Variable) {

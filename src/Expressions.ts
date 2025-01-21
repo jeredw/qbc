@@ -35,11 +35,13 @@ class ExpressionListener extends QBasicParserListener {
   private _stack: values.Value[] = [];
   private _constantExpression: boolean;
   private _typeCheck: boolean;
+  private _callExpressionDepth: number;
 
   constructor(constantExpression: boolean, typeCheck: boolean) {
     super();
     this._constantExpression = constantExpression;
     this._typeCheck = typeCheck;
+    this._callExpressionDepth = 0;
   }
 
   getResult() {
@@ -58,6 +60,9 @@ class ExpressionListener extends QBasicParserListener {
   }
 
   private binaryOperator = (ctx: ParserRuleContext) => {
+    if (this._callExpressionDepth > 0) {
+      return;
+    }
     const op = ctx.getChild(1)!.getText();
     const b = this.pop();
     const a = this.pop();
@@ -81,6 +86,9 @@ class ExpressionListener extends QBasicParserListener {
   // Skip parens.
 
   override exitExponentExpr = (ctx: ExponentExprContext) => {
+    if (this._callExpressionDepth > 0) {
+      return;
+    }
     if (this._constantExpression) {
       throw ParseError.fromToken(ctx.EXP().symbol, "Illegal function call");
     }
@@ -90,6 +98,9 @@ class ExpressionListener extends QBasicParserListener {
   // Skip unary plus.
 
   override exitUnaryMinusExpr = (_ctx: UnaryMinusExprContext) => {
+    if (this._callExpressionDepth > 0) {
+      return;
+    }
     const a = this.pop();
     if (!values.isNumeric(a)) {
       this.push(values.TYPE_MISMATCH);
@@ -106,6 +117,9 @@ class ExpressionListener extends QBasicParserListener {
   override exitComparisonExpr = this.binaryOperator;
 
   override exitNotExpr = (_ctx: NotExprContext) => {
+    if (this._callExpressionDepth > 0) {
+      return;
+    }
     const a = this.pop();
     if (!values.isNumeric(a)) {
       this.push(values.TYPE_MISMATCH);
@@ -131,14 +145,25 @@ class ExpressionListener extends QBasicParserListener {
   override exitImpExpr = this.binaryOperator;
 
   override exitValueExpr = (ctx: ValueExprContext) => {
+    if (this._callExpressionDepth > 0) {
+      return;
+    }
     this.push(this.parseValue(ctx.getText()));
   }
 
-  override exitVarCallExpr = (dispatchCtx: VarCallExprContext) => {
+  override enterVarCallExpr = (dispatchCtx: VarCallExprContext) => {
+    this._callExpressionDepth++;
+    if (this._callExpressionDepth > 1) {
+      // Do not recurse into argument expressions.  Those are evaluated separately.
+      return;
+    }
     const ctx = dispatchCtx.variable_or_function_call();
     const result = ctx['$result'];
     if (result) {
       if (!result.value) {
+        if (!this._typeCheck) {
+          throw new Error("missing result value for function expression");
+        }
         result.value = values.getDefaultValueOfType(result.type);
       }
       this.push(result.value);
@@ -166,6 +191,10 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     throw new Error("missing result for function call");
+  }
+
+  override exitVarCallExpr = (_ctx: VarCallExprContext) => {
+    this._callExpressionDepth--;
   }
 
   private parseValue(fullText: string): values.Value {

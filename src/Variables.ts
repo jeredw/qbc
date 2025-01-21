@@ -7,6 +7,7 @@ export interface Variable {
   arrayDimensions?: ArrayBounds[];
   value?: Value;
   isAsType?: boolean;
+  isParameter?: boolean;
 }
 
 export interface ArrayBounds {

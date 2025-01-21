@@ -10,7 +10,7 @@ import {
   Token,
 } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
-import { analyze } from "./Programs.ts";
+import { compile } from "./Programs.ts";
 import { Invocation, invoke } from "./Invocation.ts";
 import { Devices } from "./Devices.ts";
 
@@ -35,7 +35,7 @@ export class Interpreter {
     parser.addErrorListener(parseErrorListener);
     // Parse the program first to check correct syntax.
     const tree = parser.program();
-    const program = analyze(tree);
+    const program = compile(tree);
     return invoke(this.devices, program);
   }
 }

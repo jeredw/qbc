@@ -5,32 +5,32 @@ import { Value } from "../Values";
 import { Variable } from "../Variables";
 import { Statement } from "./Statement";
 
-export interface ParameterBinding {
-  parameter: Variable;
+export interface StackFrame {
+  variable: Variable;
   expr?: ExprContext;
   value?: Value;
 }
 
 export class CallStatement extends Statement {
   chunkIndex: number;
-  parameterBindings: ParameterBinding[];
+  stackFrame: StackFrame[];
 
-  constructor(chunkIndex: number) {
+  constructor(chunkIndex: number, stackFrame: StackFrame[]) {
     super();
     this.chunkIndex = chunkIndex;
-    this.parameterBindings = [];
+    this.stackFrame = stackFrame;
   }
 
   override execute(): ControlFlow {
     const savedValues: SavedValue[] = [];
-    for (const {parameter, expr, value} of this.parameterBindings) {
-      if (parameter.value) {
-        savedValues.push({variable: parameter, value: parameter.value});
+    for (const {variable, expr, value} of this.stackFrame) {
+      if (variable.value) {
+        savedValues.push({variable, value: variable.value});
       }
       if (expr) {
-        parameter.value = evaluateExpression({expr, resultType: parameter.type});
+        variable.value = evaluateExpression({expr, resultType: variable.type});
       } else if (value) {
-        parameter.value = value;
+        variable.value = value;
       }
     }
     return {tag: ControlFlowTag.CALL, chunkIndex: this.chunkIndex, savedValues};
