@@ -124,6 +124,9 @@ export class Invocation {
             this.exitChunk();
           }
           break;
+        case ControlFlowTag.HALT:
+          this.stack = [];
+          break;
       }
     } catch (error: unknown) {
       if (error instanceof RuntimeError) {

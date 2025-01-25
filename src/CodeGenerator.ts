@@ -286,7 +286,10 @@ export class CodeGenerator extends QBasicParserListener {
     this.addLabelForNextStatement(labels.$exitLabel);
   }
 
-  override enterEnd_statement = (ctx: parser.End_statementContext) => {}
+  override enterEnd_statement = (ctx: parser.End_statementContext) => {
+    this.addStatement(statements.end());
+  }
+
   override enterField_statement = (ctx: parser.Field_statementContext) => {}
 
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {

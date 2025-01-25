@@ -1,5 +1,6 @@
 import { CallStatement, StackFrame } from "./Call.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
+import { EndStatement } from "./End.ts";
 import { GosubStatement } from "./Gosub.ts";
 import { GotoStatement } from "./Goto.ts";
 import { LetStatement } from "./Let.ts";
@@ -20,6 +21,10 @@ export function do_(isWhile: boolean, expr: parser.ExprContext) {
 
 export function elseIf(expr: parser.ExprContext) {
   return new IfTest(expr);
+}
+
+export function end() {
+  return new EndStatement();
 }
 
 export function endFunction() {
