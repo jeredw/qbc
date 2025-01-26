@@ -741,9 +741,9 @@ case_statement
   | CASE ELSE
   ;
 case_expr
-  : IS ('<' | '<=' | '>' | '>=' | '<>' | '=') expr
-  | expr TO expr
-  | expr
+  : IS op=('<' | '<=' | '>' | '>=' | '<>' | '=') other=expr
+  | lower=expr TO upper=expr
+  | equal=expr
   ;
 
 end_select_statement

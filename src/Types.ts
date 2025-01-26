@@ -1,5 +1,3 @@
-import { SingletonPredictionContext } from "antlr4ng";
-
 export enum TypeTag {
   ERROR,  // Sentinel value for errors.
   SINGLE,

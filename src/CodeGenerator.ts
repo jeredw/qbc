@@ -426,9 +426,93 @@ export class CodeGenerator extends QBasicParserListener {
   override enterRset_statement = (ctx: parser.Rset_statementContext) => {}
   override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
   override enterSeek_statement = (ctx: parser.Seek_statementContext) => {}
-  override enterSelect_case_statement = (ctx: parser.Select_case_statementContext) => {}
-  override enterCase_statement = (ctx: parser.Case_statementContext) => {}
-  override enterEnd_select_statement = (ctx: parser.End_select_statementContext) => {}
+
+  override enterSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
+    // First evaluate the test expression, then evaluate each "case" in sequence
+    // until one matches.
+    // let $testVariable = testexpr
+    // test1:
+    //   case $testVariable caseExpr -> block1
+    //   case $testVariable caseExpr -> block1
+    //   case $testVariable caseExpr -> block1
+    //   goto test2
+    // block1:
+    //   ...
+    //   goto exit
+    // test2:
+    //   case $testVariable caseExpr -> block2
+    //   case $testVariable caseExpr -> block2
+    //   goto test3
+    // block2:
+    //   ...
+    //   goto exit
+    // test3: // case else
+    // block3:
+    //   ...
+    // exit:
+    const testVariable = getTyperContext(ctx).$test;
+    if (!testVariable) {
+      throw new Error("missing test");
+    }
+    const textExpr = this.compileExpression(ctx.expr());
+    this.addStatement(statements.let_(testVariable, textExpr));
+    const labels = getCodeGeneratorContext(ctx);
+    labels.$exitLabel = this.makeSyntheticLabel();
+    let nextBranchLabel = this.makeSyntheticLabel();
+    for (const block of ctx.case_block()) {
+      getCodeGeneratorContext(block).$label = this.makeSyntheticLabel();
+      getCodeGeneratorContext(block).$exitLabel = labels.$exitLabel;
+      const caseStatement = block.case_statement();
+      getCodeGeneratorContext(caseStatement).$label = nextBranchLabel;
+      getTyperContext(caseStatement).$test = testVariable;
+      nextBranchLabel = this.makeSyntheticLabel();
+      getCodeGeneratorContext(caseStatement).$nextBranchLabel = nextBranchLabel;
+    }
+    const lastBlock = ctx.case_block(ctx.case_block().length - 1);
+    if (lastBlock) {
+      const lastCase = lastBlock.case_statement();
+      getCodeGeneratorContext(lastBlock).$exitLabel = '';
+      getCodeGeneratorContext(lastCase).$nextBranchLabel = labels.$exitLabel;
+    }
+  }
+
+  override exitSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
+    const labels = getCodeGeneratorContext(ctx);
+    this.addLabelForNextStatement(labels.$exitLabel);
+  }
+
+  override enterCase_statement = (ctx: parser.Case_statementContext) => {
+    if (!ctx.parent) {
+      throw new Error("missing parent");
+    }
+    const blockLabel = getCodeGeneratorContext(ctx.parent).$label;
+    const testVariable = getTyperContext(ctx).$test;
+    const labels = getCodeGeneratorContext(ctx);
+    this.addLabelForNextStatement(labels.$label);
+    for (const caseExpr of ctx.case_expr()) {
+      for (const childExpr of caseExpr.expr()) {
+        this.compileExpression(childExpr, ctx.start!, testVariable.type);
+      }
+      this.addStatement(statements.case_(testVariable, caseExpr));
+      this.setTargetForCurrentStatement(blockLabel, ctx);
+    }
+    if (ctx.ELSE()) {
+      // Fall through to block.
+    } else {
+      this.addStatement(statements.goto());
+      this.setTargetForCurrentStatement(labels.$nextBranchLabel, ctx);
+    }
+    this.addLabelForNextStatement(blockLabel);
+  }
+
+  override exitCase_block = (ctx: parser.Case_blockContext) => {
+    const labels = getCodeGeneratorContext(ctx);
+    if (labels.$exitLabel) {
+      this.addStatement(statements.goto());
+      this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
+    }
+  }
+
   override enterShared_statement = (ctx: parser.Shared_statementContext) => {}
   override enterStatic_statement = (ctx: parser.Static_statementContext) => {}
   override enterStop_statement = (ctx: parser.Stop_statementContext) => {}

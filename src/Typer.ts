@@ -17,7 +17,7 @@ import {
 import { ArrayBounds, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
-import { isError, isNumeric, Value } from "./Values.ts";
+import { isError, isNumeric, isString, typeOfValue, Value } from "./Values.ts";
 import { evaluateExpression } from "./Expressions.ts";
 
 export interface TyperContext {
@@ -29,6 +29,8 @@ export interface TyperContext {
   $end: Variable;
   // Saved "STEP" expression value for a for loop.
   $increment: Variable;
+  // Saved test expression for select case.
+  $test: Variable;
 }
 
 export function getTyperContext(ctx: ParserRuleContext): TyperContext {
@@ -325,7 +327,16 @@ export class Typer extends QBasicParserListener {
   override enterRset_statement = (ctx: parser.Rset_statementContext) => {}
   override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
   override enterSeek_statement = (ctx: parser.Seek_statementContext) => {}
-  override enterSelect_case_statement = (ctx: parser.Select_case_statementContext) => {}
+
+  override exitSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
+    const value = evaluateExpression({
+      expr: ctx.expr(),
+      typeCheck: true
+    });
+    const type = typeOfValue(value);
+    getTyperContext(ctx).$test = this.makeSyntheticVariable(type);
+  }
+
   override enterCase_statement = (ctx: parser.Case_statementContext) => {}
   override enterEnd_select_statement = (ctx: parser.End_select_statementContext) => {}
   override enterShared_statement = (ctx: parser.Shared_statementContext) => {}

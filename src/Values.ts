@@ -132,6 +132,20 @@ export function cast(value: Value, desiredType: Type): Value {
   }
 }
 
+export function typeOfValue(value: Value): Type {
+  switch (value.tag) {
+    case TypeTag.SINGLE:
+    case TypeTag.DOUBLE:
+    case TypeTag.INTEGER:
+    case TypeTag.LONG:
+      return {tag: value.tag};
+    case TypeTag.STRING:
+    case TypeTag.FIXED_STRING:
+      return {tag: TypeTag.STRING};
+  }
+  throw new Error("unimplemented");
+}
+
 export function getDefaultValueOfType(type: Type): Value {
   switch (type.tag) {
     case TypeTag.SINGLE:
