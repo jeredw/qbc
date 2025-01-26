@@ -302,13 +302,14 @@
                         (assignment_statement 
                           (variable_or_function_call Plot$) = 
                           (expr 
-                            (literal "B "))))) ELSE 
-                    (if_inline_action 
-                      (statement 
-                        (assignment_statement 
-                          (variable_or_function_call Plot$) = 
-                          (expr 
-                            (literal ""))))))) \r\n)) 
+                            (literal "B "))))) 
+                    (if_inline_else_statement ELSE 
+                      (if_inline_action 
+                        (statement 
+                          (assignment_statement 
+                            (variable_or_function_call Plot$) = 
+                            (expr 
+                              (literal "")))))))) \r\n)) 
             (case_block 
               (case_statement CASE ELSE) 
               (block \r\n \r\n \r\n \r\n)) 

@@ -380,7 +380,43 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.goto());
   }
 
-  override enterIf_inline_statement = (ctx: parser.If_inline_statementContext) => {}
+  override enterIf_inline_statement = (ctx: parser.If_inline_statementContext) => {
+    const labels = getCodeGeneratorContext(ctx);
+    labels.$exitLabel = this.makeSyntheticLabel();
+    const test = this.compileBoolean(ctx.expr());
+    this.addStatement(statements.if_(test));
+    const elseCtx = ctx.if_inline_else_statement();
+    if (!elseCtx) {
+      // if cond -> exit
+      //   <then...>
+      // exit:
+      this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
+    } else {
+      // if cond -> else
+      //   <then...>
+      //   goto exit
+      // else:
+      //   <else...>
+      // exit:
+      const elseLabel = this.makeSyntheticLabel();
+      this.setTargetForCurrentStatement(elseLabel, ctx);
+      getCodeGeneratorContext(elseCtx).$label = elseLabel;
+      getCodeGeneratorContext(elseCtx).$exitLabel = labels.$exitLabel;
+    }
+  }
+
+  override enterIf_inline_else_statement = (ctx: parser.If_inline_else_statementContext) => {
+    const labels = getCodeGeneratorContext(ctx);
+    this.addStatement(statements.goto());
+    this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
+    this.addLabelForNextStatement(labels.$label);
+  }
+
+  override exitIf_inline_statement = (ctx: parser.If_inline_statementContext) => {
+    const labels = getCodeGeneratorContext(ctx);
+    this.addLabelForNextStatement(labels.$exitLabel);
+  }
+
   override enterInput_statement = (ctx: parser.Input_statementContext) => {}
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
   override enterKey_statement = (ctx: parser.Key_statementContext) => {}

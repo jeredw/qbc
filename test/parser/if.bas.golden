@@ -5,10 +5,11 @@
         (variable_or_function_call TRUE)) then 
       (if_inline_action 
         (implicit_goto_target 
-          (line_number 10))) else 
-      (if_inline_action 
-        (implicit_goto_target 
-          (line_number 20))))) \n 
+          (line_number 10))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (implicit_goto_target 
+            (line_number 20)))))) \n 
   (statement 
     (if_inline_statement if 
       (expr 
@@ -26,10 +27,11 @@
               (statement 
                 (goto_statement goto 
                   (target 
-                    (line_number 5))))) else 
-            (if_inline_action 
-              (implicit_goto_target 
-                (line_number 30)))))))) \n 
+                    (line_number 5))))) 
+            (if_inline_else_statement else 
+              (if_inline_action 
+                (implicit_goto_target 
+                  (line_number 30))))))))) \n 
   (if_block_statement if 
     (expr 
       (variable_or_function_call foo)) then \n 

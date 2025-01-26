@@ -3952,13 +3952,14 @@
               (assignment_statement 
                 (variable_or_function_call CreatePath) = 
                 (expr 
-                  (variable_or_function_call TRUE))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call CreatePath) = 
-                (expr 
-                  (variable_or_function_call FALSE))))))) \n 
+                  (variable_or_function_call TRUE))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call CreatePath) = 
+                  (expr 
+                    (variable_or_function_call FALSE)))))))) \n 
       (statement 
         (on_error_statement ON ERROR GOTO 
           (target 
@@ -4672,14 +4673,15 @@
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (literal "GAME OVER"))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (print_statement PRINT 
-                (expr 
-                  (literal "Maze #")) ; 
-                (expr 
-                  (variable_or_function_call MazesFinished))))))) \n \n 
+                  (literal "GAME OVER"))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "Maze #")) ; 
+                  (expr 
+                    (variable_or_function_call MazesFinished)))))))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4786,13 +4788,14 @@
                     (assignment_statement 
                       (variable_or_function_call Win) = 
                       (expr 
-                        (literal 1))))) ELSE 
-                (if_inline_action 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call Win) = 
-                      (expr 
-                        (literal 2))))))) \n 
+                        (literal 1))))) 
+                (if_inline_else_statement ELSE 
+                  (if_inline_action 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call Win) = 
+                        (expr 
+                          (literal 2)))))))) \n 
             (statement 
               (print_statement PRINT 
                 (expr 
@@ -5042,13 +5045,14 @@
                               (assignment_statement 
                                 (variable_or_function_call Win) = 
                                 (expr 
-                                  (literal 1))))) ELSE 
-                          (if_inline_action 
-                            (statement 
-                              (assignment_statement 
-                                (variable_or_function_call Win) = 
-                                (expr 
-                                  (literal 2))))))) \n 
+                                  (literal 1))))) 
+                          (if_inline_else_statement ELSE 
+                            (if_inline_action 
+                              (statement 
+                                (assignment_statement 
+                                  (variable_or_function_call Win) = 
+                                  (expr 
+                                    (literal 2)))))))) \n 
                       (statement 
                         (print_statement PRINT 
                           (expr 
@@ -6692,12 +6696,13 @@
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (literal "YES"))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (print_statement PRINT 
-                (expr 
-                  (literal "NO"))))))) \n 
+                  (literal "YES"))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (print_statement PRINT 
+                  (expr 
+                    (literal "NO")))))))) \n 
       (statement 
         (color_statement COLOR 
           (expr 

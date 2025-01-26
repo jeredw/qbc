@@ -109,21 +109,22 @@
                             (expr 
                               (variable_or_function_call R)) + 
                             (expr 
-                              (literal 48))))) )))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call Digit$) = 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
+                              (literal 48))))) )))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Digit$) = 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
-                              (variable_or_function_call R)) + 
-                            (expr 
-                              (literal 55))))) )))))))) \r\n 
+                              (expr 
+                                (variable_or_function_call R)) + 
+                              (expr 
+                                (literal 55))))) ))))))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call N$) = 

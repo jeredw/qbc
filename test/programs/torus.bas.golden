@@ -1746,13 +1746,14 @@
                       (assignment_statement 
                         (variable_or_function_call VC.Atribs) = 
                         (expr 
-                          (literal 4))))) ELSE 
-                  (if_inline_action 
-                    (statement 
-                      (assignment_statement 
-                        (variable_or_function_call VC.Atribs) = 
-                        (expr 
-                          (literal 16))))))) \n 
+                          (literal 4))))) 
+                  (if_inline_else_statement ELSE 
+                    (if_inline_action 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call VC.Atribs) = 
+                          (expr 
+                            (literal 16)))))))) \n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call VC.XPix) = 
@@ -3967,13 +3968,14 @@
               (assignment_statement 
                 (variable_or_function_call Fields) = 
                 (expr 
-                  (literal 10))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call Fields) = 
-                (expr 
-                  (literal 12))))))) \n \n \n 
+                  (literal 10))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Fields) = 
+                  (expr 
+                    (literal 12)))))))) \n \n \n 
       (statement 
         (do_loop_statement DO 
           (block \n \n 
@@ -4058,14 +4060,15 @@
                             (assignment_statement 
                               (variable_or_function_call Inc) = 
                               (expr 
-                                (literal 2))))) ELSE 
-                        (if_inline_action 
-                          (statement 
-                            (assignment_statement 
-                              (variable_or_function_call Inc) = 
-                              (expr - 
-                                (expr 
-                                  (literal 2)))))))) \n 
+                                (literal 2))))) 
+                        (if_inline_else_statement ELSE 
+                          (if_inline_action 
+                            (statement 
+                              (assignment_statement 
+                                (variable_or_function_call Inc) = 
+                                (expr - 
+                                  (expr 
+                                    (literal 2))))))))) \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call Fld) = 
@@ -4106,14 +4109,15 @@
                             (assignment_statement 
                               (variable_or_function_call Inc) = 
                               (expr 
-                                (literal 1))))) ELSE 
-                        (if_inline_action 
-                          (statement 
-                            (assignment_statement 
-                              (variable_or_function_call Inc) = 
-                              (expr - 
-                                (expr 
-                                  (literal 1)))))))) \n 
+                                (literal 1))))) 
+                        (if_inline_else_statement ELSE 
+                          (if_inline_action 
+                            (statement 
+                              (assignment_statement 
+                                (variable_or_function_call Inc) = 
+                                (expr - 
+                                  (expr 
+                                    (literal 1))))))))) \n 
                     (statement 
                       (select_case_statement SELECT CASE 
                         (expr 

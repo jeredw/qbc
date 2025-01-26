@@ -5576,13 +5576,14 @@
                     (assignment_statement 
                       (variable_or_function_call ofst) = 
                       (expr 
-                        (literal 1))))) ELSE 
-                (if_inline_action 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call ofst) = 
-                      (expr 
-                        (literal 2))))))) \n \n 
+                        (literal 1))))) 
+                (if_inline_else_statement ELSE 
+                  (if_inline_action 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call ofst) = 
+                        (expr 
+                          (literal 2)))))))) \n \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -6830,13 +6831,14 @@
               (assignment_statement 
                 (variable_or_function_call playerHit) = 
                 (expr 
-                  (literal 1))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call playerHit) = 
-                (expr 
-                  (literal 2))))))) \n \n 
+                  (literal 1))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call playerHit) = 
+                  (expr 
+                    (literal 2)))))))) \n \n 
       (statement 
         (play_statement PLAY 
           (expr 

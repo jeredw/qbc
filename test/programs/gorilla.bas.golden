@@ -1017,13 +1017,14 @@
               (assignment_statement 
                 (variable_or_function_call Inc#) = 
                 (expr 
-                  (literal .5))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call Inc#) = 
-                (expr 
-                  (literal .41))))))) \n 
+                  (literal .5))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call Inc#) = 
+                  (expr 
+                    (literal .41)))))))) \n 
       (statement 
         (for_next_statement FOR c# = 
           (expr 
@@ -1944,16 +1945,17 @@
                             (variable_or_function_call xc#)) , 
                           (expr 
                             (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call LBan&) , PSET))) ELSE 
-                  (if_inline_action 
-                    (statement 
-                      (put_graphics_statement PUT 
-                        ( 
-                          (expr 
-                            (variable_or_function_call xc#)) , 
-                          (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call LBan&) , XOR))))) \n)) 
+                        (variable_or_function_call LBan&) , PSET))) 
+                  (if_inline_else_statement ELSE 
+                    (if_inline_action 
+                      (statement 
+                        (put_graphics_statement PUT 
+                          ( 
+                            (expr 
+                              (variable_or_function_call xc#)) , 
+                            (expr 
+                              (variable_or_function_call yc#)) ) , 
+                          (variable_or_function_call LBan&) , XOR)))))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1972,16 +1974,17 @@
                             (variable_or_function_call xc#)) , 
                           (expr 
                             (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call UBan&) , PSET))) ELSE 
-                  (if_inline_action 
-                    (statement 
-                      (put_graphics_statement PUT 
-                        ( 
-                          (expr 
-                            (variable_or_function_call xc#)) , 
-                          (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call UBan&) , XOR))))) \n)) 
+                        (variable_or_function_call UBan&) , PSET))) 
+                  (if_inline_else_statement ELSE 
+                    (if_inline_action 
+                      (statement 
+                        (put_graphics_statement PUT 
+                          ( 
+                            (expr 
+                              (variable_or_function_call xc#)) , 
+                            (expr 
+                              (variable_or_function_call yc#)) ) , 
+                          (variable_or_function_call UBan&) , XOR)))))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -2000,16 +2003,17 @@
                             (variable_or_function_call xc#)) , 
                           (expr 
                             (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call DBan&) , PSET))) ELSE 
-                  (if_inline_action 
-                    (statement 
-                      (put_graphics_statement PUT 
-                        ( 
-                          (expr 
-                            (variable_or_function_call xc#)) , 
-                          (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call DBan&) , XOR))))) \n)) 
+                        (variable_or_function_call DBan&) , PSET))) 
+                  (if_inline_else_statement ELSE 
+                    (if_inline_action 
+                      (statement 
+                        (put_graphics_statement PUT 
+                          ( 
+                            (expr 
+                              (variable_or_function_call xc#)) , 
+                            (expr 
+                              (variable_or_function_call yc#)) ) , 
+                          (variable_or_function_call DBan&) , XOR)))))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -2028,16 +2032,17 @@
                             (variable_or_function_call xc#)) , 
                           (expr 
                             (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call RBan&) , PSET))) ELSE 
-                  (if_inline_action 
-                    (statement 
-                      (put_graphics_statement PUT 
-                        ( 
-                          (expr 
-                            (variable_or_function_call xc#)) , 
-                          (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call RBan&) , XOR))))) \n)) 
+                        (variable_or_function_call RBan&) , PSET))) 
+                  (if_inline_else_statement ELSE 
+                    (if_inline_action 
+                      (statement 
+                        (put_graphics_statement PUT 
+                          ( 
+                            (expr 
+                              (variable_or_function_call xc#)) , 
+                            (expr 
+                              (variable_or_function_call yc#)) ) , 
+                          (variable_or_function_call RBan&) , XOR)))))) \n)) 
           (end_select_statement END SELECT))) \n \n) 
     (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n 
   (sub_statement SUB 
@@ -3109,13 +3114,14 @@
               (assignment_statement 
                 (variable_or_function_call PlayerHit) = 
                 (expr 
-                  (literal 1))))) ELSE 
-          (if_inline_action 
-            (statement 
-              (assignment_statement 
-                (variable_or_function_call PlayerHit) = 
-                (expr 
-                  (literal 2))))))) \n 
+                  (literal 1))))) 
+          (if_inline_else_statement ELSE 
+            (if_inline_action 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call PlayerHit) = 
+                  (expr 
+                    (literal 2)))))))) \n 
       (statement 
         (play_statement PLAY 
           (expr 
@@ -4949,13 +4955,14 @@
                                   (expr 
                                     (literal 3)))) ))) + 
                         (expr 
-                          (literal 4)))))) ELSE 
-                (if_inline_action 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call BuildingColor) = 
-                      (expr 
-                        (literal 2))))))) \n \n \n 
+                          (literal 4)))))) 
+                (if_inline_else_statement ELSE 
+                  (if_inline_action 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call BuildingColor) = 
+                        (expr 
+                          (literal 2)))))))) \n \n \n 
             (statement 
               (line_statement LINE 
                 ( 
@@ -5295,13 +5302,14 @@
                     (variable_or_function_call ArrowDir) = 
                     (expr - 
                       (expr 
-                        (literal 2)))))) ELSE 
-              (if_inline_action 
-                (statement 
-                  (assignment_statement 
-                    (variable_or_function_call ArrowDir) = 
-                    (expr 
-                      (literal 2))))))) \n 
+                        (literal 2)))))) 
+              (if_inline_else_statement ELSE 
+                (if_inline_action 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call ArrowDir) = 
+                      (expr 
+                        (literal 2)))))))) \n 
           (statement 
             (line_statement LINE 
               ( 
@@ -5464,21 +5472,22 @@
                                   (expr 
                                     (literal 2)))) ))) + 
                         (expr 
-                          (literal 1)))))) ELSE 
-                (if_inline_action 
-                  (statement 
-                    (assignment_statement 
-                      (variable_or_function_call BNum) = 
-                      (expr 
+                          (literal 1)))))) 
+                (if_inline_else_statement ELSE 
+                  (if_inline_action 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call BNum) = 
                         (expr 
-                          (variable_or_function_call LastBuilding)) - 
-                        (expr 
-                          (variable_or_function_call FnRan 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (literal 2)))) ))))))))) \n \n 
+                          (expr 
+                            (variable_or_function_call LastBuilding)) - 
+                          (expr 
+                            (variable_or_function_call FnRan 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (literal 2)))) )))))))))) \n \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call BWidth) = 
