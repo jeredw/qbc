@@ -472,7 +472,7 @@ field_assignment
 // is handled in the lexer by a special mode just for NEXT statements that
 // turns ',' into NEXT_WITH_MANDATORY_ID.
 for_next_statement
-  : FOR ID '=' expr TO expr (STEP expr)?
+  : FOR ID '=' start=expr TO end=expr (STEP increment=expr)?
     block
     (NEXT ID? | NEXT_WITH_MANDATORY_ID ID)
   ;

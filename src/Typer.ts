@@ -12,6 +12,7 @@ import {
   typeOfName,
   typeOfSigil,
   sameType,
+  isNumericType
 } from "./Types.ts";
 import { ArrayBounds, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure } from "./SymbolTable.ts";
@@ -24,6 +25,10 @@ export interface TyperContext {
   $procedure: Procedure;
   // Synthetic result variable for a function call lifted from an expression.
   $result: Variable;
+  // Saved "TO" expression value for a for loop.
+  $end: Variable;
+  // Saved "STEP" expression value for a for loop.
+  $increment: Variable;
 }
 
 export function getTyperContext(ctx: ParserRuleContext): TyperContext {
@@ -253,13 +258,33 @@ export class Typer extends QBasicParserListener {
     });
   }
 
-  override enterEnd_statement = (ctx: parser.End_statementContext) => {}
   override enterField_statement = (ctx: parser.Field_statementContext) => {}
 
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
-  }
-
-  override exitFor_next_statement = (ctx: parser.For_next_statementContext) => {
+    const [name, sigil] = splitSigil(ctx.ID(0)!.getText().toLowerCase());
+    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const nextId = ctx.ID(1);
+    if (nextId) {
+      // If present, the variable name and type in NEXT must match FOR.
+      const [nextName, nextSigil] = splitSigil(nextId.getText().toLowerCase());
+      const nextType = nextSigil ? typeOfSigil(nextSigil) : this.getDefaultType(nextName);
+      if (name != nextName || !sameType(type, nextType)) {
+        throw ParseError.fromToken(ctx.ID(1)!.symbol, "NEXT without FOR");
+      }
+    }
+    if (!isNumericType(type)) {
+      // Non-numeric counters cause a type mismatch on the end expression.
+      throw ParseError.fromToken(ctx._end!.start!, "Type mismatch");
+    }
+    const symbol = this._chunk.symbols.lookupOrDefineVariable({
+      name,
+      type,
+      isDefaultType: !sigil,
+      numDimensions: 0
+    });
+    getTyperContext(ctx).$symbol = symbol;
+    getTyperContext(ctx).$end = this.makeSyntheticVariable(type);
+    getTyperContext(ctx).$increment = this.makeSyntheticVariable(type);
   }
 
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}

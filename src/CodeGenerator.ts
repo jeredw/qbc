@@ -7,7 +7,7 @@ import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
 import { StackFrame } from "./statements/Call.ts";
 import { evaluateExpression } from "./Expressions.ts";
-import { reference, isError, isNumeric, Value, getDefaultValueOfType } from "./Values.ts";
+import { reference, isError, getDefaultValueOfType } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag } from "./Types.ts";
 import { isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
@@ -293,9 +293,80 @@ export class CodeGenerator extends QBasicParserListener {
   override enterField_statement = (ctx: parser.Field_statementContext) => {}
 
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
+    // These three assignments are always done:
+    //   let counter = startexpr
+    //   let $end = endexpr
+    //   let $increment = incrementexpr
+    // Then there's a test to check whether increment's sign is consistent with
+    // the loop direction:
+    //   For(counter, $end, $increment?) -> exit
+    // The increment happens in the NEXT statement.
+    //   top: <body>
+    //   Next(<token>, counter, $end, $increment?) -> top
+    //   exit:
+    const symbol = getTyperContext(ctx).$symbol;
+    if (!symbol) {
+      throw new Error("missing symbol");
+    }
+    const counter = this.getLvalue(ctx.ID(0)!.symbol, symbol);
+    const start = ctx._start;
+    if (!start) {
+      throw new Error("missing start expr");
+    }
+    const startExpr = this.compileExpression(start, start.start!, counter.type);
+    this.addStatement(statements.let_(counter, startExpr));
+
+    const endVariable = getTyperContext(ctx).$end;
+    if (!endVariable) {
+      throw new Error("missing limit");
+    }
+    const end = ctx._end;
+    if (!end) {
+      throw new Error("missing end expr");
+    }
+    const endExpr = this.compileExpression(end, end.start!, counter.type);
+    this.addStatement(statements.let_(endVariable, endExpr));
+
+    const incrementVariable = getTyperContext(ctx).$increment;
+    if (!incrementVariable) {
+      throw new Error("missing increment");
+    }
+    if (ctx.STEP()) {
+      const increment = ctx._increment;
+      if (!increment) {
+        throw new Error("missing step expr");
+      }
+      const incrementExpr = this.compileExpression(increment, increment.start!, counter.type);
+      this.addStatement(statements.let_(incrementVariable, incrementExpr));
+    }
+
+    const labels = getCodeGeneratorContext(ctx);
+    labels.$topLabel = this.makeSyntheticLabel();
+    labels.$exitLabel = this.makeSyntheticLabel();
+    this.addStatement(statements.for_(counter, endVariable, ctx.STEP() && incrementVariable));
+    this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
+    this.addLabelForNextStatement(labels.$topLabel);
   }
 
   override exitFor_next_statement = (ctx: parser.For_next_statementContext) => {
+    const symbol = getTyperContext(ctx).$symbol;
+    if (!symbol) {
+      throw new Error("missing symbol");
+    }
+    const counter = this.getLvalue(ctx.ID(0)!.symbol, symbol);
+    const endVariable = getTyperContext(ctx).$end;
+    if (!endVariable) {
+      throw new Error("missing limit");
+    }
+    const incrementVariable = getTyperContext(ctx).$increment;
+    if (!incrementVariable) {
+      throw new Error("missing increment");
+    }
+
+    const labels = getCodeGeneratorContext(ctx);
+    this.addStatement(statements.next(ctx.start!, counter, endVariable, ctx.STEP() && incrementVariable));
+    this.setTargetForCurrentStatement(labels.$topLabel, ctx);
+    this.addLabelForNextStatement(labels.$exitLabel);
   }
 
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}

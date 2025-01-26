@@ -1,6 +1,7 @@
 import { CallStatement, StackFrame } from "./Call.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { EndStatement } from "./End.ts";
+import { ForStatement, NextStatement } from "./For.ts";
 import { GosubStatement } from "./Gosub.ts";
 import { GotoStatement } from "./Goto.ts";
 import { LetStatement } from "./Let.ts";
@@ -55,6 +56,10 @@ export function exitSub() {
   return new ReturnStatement(ControlFlowTag.CALL);
 }
 
+export function for_(counter: Variable, end: Variable, increment: Variable | null) {
+  return new ForStatement(counter, end, increment);
+}
+
 export function goto() {
   return new GotoStatement();
 }
@@ -75,8 +80,8 @@ export function loop(isWhile: boolean, expr: parser.ExprContext) {
   return new LoopTest(isWhile, expr);
 }
 
-export function next() {
-  return new GotoStatement();
+export function next(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {
+  return new NextStatement(forToken, counter, end, increment);
 }
 
 export function print(ast: parser.Print_statementContext) {

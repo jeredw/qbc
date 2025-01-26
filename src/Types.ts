@@ -1,3 +1,5 @@
+import { SingletonPredictionContext } from "antlr4ng";
+
 export enum TypeTag {
   ERROR,  // Sentinel value for errors.
   SINGLE,
@@ -84,6 +86,10 @@ export function sameType(s: Type, t: Type) {
     return sameType(s.elementType, t.elementType);
   }
   return s.tag == t.tag;
+}
+
+export function isNumericType(s: Type): boolean {
+  return s.tag == TypeTag.SINGLE || s.tag == TypeTag.DOUBLE || s.tag == TypeTag.INTEGER || s.tag == TypeTag.LONG;
 }
 
 function isString(s: Type): boolean {
