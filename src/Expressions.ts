@@ -148,7 +148,7 @@ class ExpressionListener extends QBasicParserListener {
     if (this._callExpressionDepth > 0) {
       return;
     }
-    this.push(this.parseValue(ctx.getText()));
+    this.push(parseLiteral(ctx.getText()));
   }
 
   override enterVarCallExpr = (dispatchCtx: VarCallExprContext) => {
@@ -195,23 +195,6 @@ class ExpressionListener extends QBasicParserListener {
 
   override exitVarCallExpr = (_ctx: VarCallExprContext) => {
     this._callExpressionDepth--;
-  }
-
-  private parseValue(fullText: string): values.Value {
-    const [text, sigil] = splitSigil(fullText);
-    if (text.startsWith('"') && text.endsWith('"')) {
-      return values.string(text.substring(1, text.length - 1));
-    }
-    if (text.toLowerCase().startsWith('&h')) {
-      return parseAmpConstant(text, 16, sigil);
-    }
-    if (text.toLowerCase().startsWith('&o')) {
-      return parseAmpConstant(text, 8, sigil);
-    }
-    if (/^[0-9]+$/.test(text)) {
-      return parseIntegerConstant(text, sigil);
-    }
-    return parseFloatConstant(text, sigil);
   }
 
   private evaluateNumericBinaryOperator(op: string, a: values.NumericValue, b: values.NumericValue): values.Value {
@@ -326,6 +309,23 @@ class ExpressionListener extends QBasicParserListener {
   private check(n: number): number {
     return this._typeCheck ? 0 : n;
   }
+}
+
+export function parseLiteral(fullText: string): values.Value {
+  const [text, sigil] = splitSigil(fullText);
+  if (text.startsWith('"') && text.endsWith('"')) {
+    return values.string(text.substring(1, text.length - 1));
+  }
+  if (text.toLowerCase().startsWith('&h')) {
+    return parseAmpConstant(text, 16, sigil);
+  }
+  if (text.toLowerCase().startsWith('&o')) {
+    return parseAmpConstant(text, 8, sigil);
+  }
+  if (/^[0-9]+$/.test(text)) {
+    return parseIntegerConstant(text, sigil);
+  }
+  return parseFloatConstant(text, sigil);
 }
 
 function parseFloatConstant(text: string, sigil: string): values.Value {

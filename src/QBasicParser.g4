@@ -933,13 +933,26 @@ type_name_for_type_element
 // A file number can be any expression that evaluates to a valid file handle
 file_number : '#' expr ;
 
-// QBasic permits sizing a fixed string with a constant after '*'.  The IDE
-// will remove any type sigils after the constant.
-// *** If ID is not a constant, DIM errors with 'Invalid constant'.
-// In TYPE definitions, fixed strings with non-constant dimensions parse, but
-// trying to DIM things of the resulting TYPE hangs at runtime!
+// QBasic supports fixed strings of 1-32767 bytes.
+// - The IDE rewrites hex and octal lengths as decimals, so admit those.
+// *** Check that they are integers later.
+// - Floating point or string literals error with 'Overflow', so don't admit
+// those.
+//
+// The language allows a constant after '*'.  The IDE will remove any type
+// sigils after the constant, so allow but silently ignore a sigil.
+// *** If ID is not a positive integral constant, the parser errors with
+// 'Invalid constant' inside DIM statements.
+// *** TYPE statements don't check the value of the integer constant, but
+// you probably can't run the program if the value is bogus.
+//
+// Constants in TYPE elements have a few bugs.  QBasic can't handle IDs with a
+// period inside TYPE, and errors with 'Statement illegal in TYPE block' if you
+// try to use a constant with a period for a fixed string length.  IDs that are
+// not constants parse ok, but trying to DIM things of the resulting TYPE hangs
+// at runtime, and other weird behavior happens if you use a constant <= 0.
 fixed_string
-  : STRING '*' (DIGITS | ID)
+  : STRING '*' (len=(DIGITS | HEX | OCTAL) '%'? | ID)
   ;
 
 // *** untyped_id and untyped_fnid should be checked for no trailing type sigil.

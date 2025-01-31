@@ -15,3 +15,8 @@ type yep
   a as integer: rem what a great type
   b as integer: rem this is really rad
 end type
+type ok
+  x as string * &h20
+  y as string * 40%
+  z as string * k
+end type

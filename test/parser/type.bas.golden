@@ -47,4 +47,18 @@
     (type_element 
       (untyped_id b) as 
       (type_name_for_type_element integer) :) 
-    (rem_statement rem) \n end type) \n <EOF>)
+    (rem_statement rem) \n end type) \n 
+  (type_statement type 
+    (untyped_id ok) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element 
+        (fixed_string string * &h20)) \n) 
+    (type_element 
+      (untyped_id y) as 
+      (type_name_for_type_element 
+        (fixed_string string * 40 %)) \n) 
+    (type_element 
+      (untyped_id z) as 
+      (type_name_for_type_element 
+        (fixed_string string * k)) \n) end type) \n <EOF>)

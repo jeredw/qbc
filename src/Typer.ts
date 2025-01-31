@@ -18,7 +18,7 @@ import { ArrayBounds, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
 import { isError, isNumeric, isString, typeOfValue, Value } from "./Values.ts";
-import { evaluateExpression } from "./Expressions.ts";
+import { evaluateExpression, parseLiteral } from "./Expressions.ts";
 
 export interface TyperContext {
   $symbol: QBasicSymbol;
@@ -454,8 +454,23 @@ export class Typer extends QBasicParserListener {
     }
     if (child instanceof parser.Fixed_stringContext) {
       const fixedString = child as parser.Fixed_stringContext;
-      const maxLength = parseInt(fixedString.DIGITS()!.getText(), 10);
-      return {tag: TypeTag.FIXED_STRING, maxLength};
+      if (fixedString._len) {
+        const maxLength = parseLiteral(fixedString._len.text!);
+        if (maxLength.tag != TypeTag.INTEGER) {
+          throw ParseError.fromToken(fixedString._len, "Overflow");
+        }
+        if (maxLength.number == 0) {
+          throw ParseError.fromToken(fixedString._len, "Illegal number");
+        }
+        return {tag: TypeTag.FIXED_STRING, maxLength: maxLength.number};
+      }
+      const id = fixedString.ID()!.getText();
+      const [name, _] = splitSigil(id);
+      const maxLength = this._chunk.symbols.lookupConstant(name);
+      if (!maxLength || maxLength.tag != TypeTag.INTEGER || maxLength.number <= 0) {
+        throw ParseError.fromToken(fixedString.ID()!.symbol, "Invalid constant");
+      }
+      return {tag: TypeTag.FIXED_STRING, maxLength: maxLength.number};
     }
     return typeOfName(child.getText());
   }
