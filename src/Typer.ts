@@ -390,6 +390,9 @@ export class Typer extends QBasicParserListener {
       const elementType = this.getType(typeNameCtx);
       elements.push({name: elementName, type: elementType});
     }
+    if (ctx.type_element().length == 0) {
+      throw ParseError.fromToken(ctx.END().symbol, "Element not defined")
+    }
     this._program.types.set(name, {tag: TypeTag.RECORD, name, elements});
   }
 

@@ -50,7 +50,7 @@ program
     EOF
   ;
 
-// block matches statements in loops, procedures, and conditionals.
+// block matches statements in the body of loops, procedures, and conditionals.
 // It does not allow some statements only allowed at the top level.
 block
 // blocks can go on one line, like START : block : END
@@ -224,6 +224,7 @@ array_declaration
 
 // Statements after END FUNCTION on the same line are silently dropped!
 // program should consume the final NL or EOL.
+// *** Ignore any extra statements here.
 end_function_statement
   : label? END FUNCTION (COLON statement?)*
   ;
@@ -273,6 +274,7 @@ sub_statement
 
 // Statements after END SUB on the same line are silently dropped!
 // program should consume the final NL or EOL.
+// *** Ignore any extra statements here.
 end_sub_statement
   : label? END SUB (COLON statement?)*
   ;
@@ -281,7 +283,9 @@ type_statement
 // *** Note: type names cannot include '.'.
    : TYPE (untyped_id | untyped_fnid) (COLON | NL)+
 // *** Types must have at least one element.
-     (rem_statement NL | type_element)+
+// We admit empty types here so we can provide a better error message than
+// antlr's default.
+     (rem_statement NL | type_element)*
      END TYPE
    ;
 
