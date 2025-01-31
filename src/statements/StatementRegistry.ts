@@ -3,8 +3,7 @@ import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
-import { GosubStatement } from "./Gosub.ts";
-import { GotoStatement } from "./Goto.ts";
+import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
@@ -46,11 +45,11 @@ export function exitDef() {
 }
 
 export function exitDo() {
-  return new GotoStatement();
+  return new BranchStatement({});
 }
 
 export function exitFor() {
-  return new GotoStatement();
+  return new BranchStatement({});
 }
 
 export function exitFunction() {
@@ -66,11 +65,19 @@ export function for_(counter: Variable, end: Variable, increment: Variable | nul
 }
 
 export function goto() {
-  return new GotoStatement();
+  return new BranchStatement({});
+}
+
+export function gotoIndex(expr: parser.ExprContext) {
+  return new BranchIndexStatement({expr});
 }
 
 export function gosub() {
-  return new GosubStatement();
+  return new BranchStatement({gosub: true});
+}
+
+export function gosubIndex(expr: parser.ExprContext) {
+  return new BranchIndexStatement({gosub: true, expr});
 }
 
 export function if_(expr: parser.ExprContext) {

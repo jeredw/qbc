@@ -599,15 +599,11 @@ on_event_gosub_statement
   ;
 
 on_expr_gosub_statement
-  : ON expr GOSUB target_list
-  ;
-
-target_list
-  : target (COMMA target)*
+  : ON expr GOSUB target (COMMA target)*
   ;
 
 on_expr_goto_statement
-  : ON expr GOTO target_list
+  : ON expr GOTO target (COMMA target)*
   ;
 
 open_legacy_statement

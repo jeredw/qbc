@@ -18,7 +18,7 @@ export interface TargetRef {
 
 export interface ProgramChunk {
   statements: Statement[];
-  indexToTarget: Map<number, TargetRef>;
+  indexToTarget: [number, TargetRef][];
   labelToIndex: Map<string, number>;
   symbols: SymbolTable;
   procedure?: Procedure;

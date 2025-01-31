@@ -3,57 +3,51 @@
     (on_expr_gosub_statement on 
       (expr 
         (variable_or_function_call i%)) gosub 
-      (target_list 
-        (target 
-          (text_label 
-            (untyped_id one))) , 
-        (target 
-          (text_label 
-            (untyped_id two)))))) \n 
+      (target 
+        (text_label 
+          (untyped_id one))) , 
+      (target 
+        (text_label 
+          (untyped_id two))))) \n 
   (statement 
     (on_expr_gosub_statement on 
       (expr 
         (literal 2)) gosub 
-      (target_list 
-        (target 
-          (line_number 1)) , 
-        (target 
-          (line_number 2)) , 
-        (target 
-          (line_number 3))))) \n 
+      (target 
+        (line_number 1)) , 
+      (target 
+        (line_number 2)) , 
+      (target 
+        (line_number 3)))) \n 
   (statement 
     (on_expr_gosub_statement on 
       (expr 
         (literal 1.5)) gosub 
-      (target_list 
-        (target 
-          (line_number 2))))) \n 
+      (target 
+        (line_number 2)))) \n 
   (statement 
     (on_expr_goto_statement on 
       (expr 
         (variable_or_function_call i%)) goto 
-      (target_list 
-        (target 
-          (text_label 
-            (untyped_id one))) , 
-        (target 
-          (text_label 
-            (untyped_id two)))))) \n 
+      (target 
+        (text_label 
+          (untyped_id one))) , 
+      (target 
+        (text_label 
+          (untyped_id two))))) \n 
   (statement 
     (on_expr_goto_statement on 
       (expr 
         (literal 2)) goto 
-      (target_list 
-        (target 
-          (line_number 1)) , 
-        (target 
-          (line_number 2)) , 
-        (target 
-          (line_number 3))))) \n 
+      (target 
+        (line_number 1)) , 
+      (target 
+        (line_number 2)) , 
+      (target 
+        (line_number 3)))) \n 
   (statement 
     (on_expr_goto_statement on 
       (expr 
         (literal 1.5)) goto 
-      (target_list 
-        (target 
-          (line_number 2))))) \n <EOF>)
+      (target 
+        (line_number 2)))) \n <EOF>)

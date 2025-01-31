@@ -59,7 +59,7 @@ export class Typer extends QBasicParserListener {
   }
 
   private makeProgramChunk(symbols: SymbolTable, procedure?: Procedure): ProgramChunk {
-    return {statements: [], labelToIndex: new Map(), indexToTarget: new Map(), symbols, procedure};
+    return {statements: [], labelToIndex: new Map(), indexToTarget: [], symbols, procedure};
   }
 
   override enterFunction_statement = (ctx: parser.Function_statementContext) => {
@@ -337,8 +337,6 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$test = this.makeSyntheticVariable(type);
   }
 
-  override enterCase_statement = (ctx: parser.Case_statementContext) => {}
-  override enterEnd_select_statement = (ctx: parser.End_select_statementContext) => {}
   override enterShared_statement = (ctx: parser.Shared_statementContext) => {}
   override enterStatic_statement = (ctx: parser.Static_statementContext) => {}
   override enterStop_statement = (ctx: parser.Stop_statementContext) => {}

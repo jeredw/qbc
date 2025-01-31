@@ -13,6 +13,7 @@ import { isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
+import { BranchIndexStatement } from "./statements/Branch.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -50,14 +51,22 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   private assignTargets(chunk: ProgramChunk) {
-    chunk.indexToTarget.forEach((targetRef, statementIndex) => {
+    for (const [statementIndex, targetRef] of chunk.indexToTarget) {
       const statement = chunk.statements[statementIndex];
       const targetIndex = chunk.labelToIndex.get(targetRef.label);
       if (targetIndex === undefined) {
         throw ParseError.fromToken(targetRef.token, "Label not defined");
       }
+      if (statement.targetIndex !== undefined && !(statement instanceof BranchIndexStatement)) {
+        throw new Error("Only expecting one target");
+      }
       statement.targetIndex = targetIndex;
-    });
+      if (!statement.targets) {
+        statement.targets = [targetIndex];
+      } else {
+        statement.targets.push(targetIndex);
+      }
+    };
   }
 
   override enterLabel = (ctx: parser.LabelContext) => {
@@ -431,8 +440,17 @@ export class CodeGenerator extends QBasicParserListener {
   override enterName_statement = (ctx: parser.Name_statementContext) => {}
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
   override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {}
-  override enterOn_expr_gosub_statement = (ctx: parser.On_expr_gosub_statementContext) => {}
-  override enterOn_expr_goto_statement = (ctx: parser.On_expr_goto_statementContext) => {}
+
+  override enterOn_expr_gosub_statement = (ctx: parser.On_expr_gosub_statementContext) => {
+    const expr = this.compileExpression(ctx.expr(), ctx.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.gosubIndex(expr));
+  }
+
+  override enterOn_expr_goto_statement = (ctx: parser.On_expr_goto_statementContext) => {
+    const expr = this.compileExpression(ctx.expr(), ctx.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.gotoIndex(expr));
+  }
+
   override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
   override enterOpen_statement = (ctx: parser.Open_statementContext) => {}
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
@@ -618,7 +636,7 @@ export class CodeGenerator extends QBasicParserListener {
 
   private setTargetForCurrentStatement(label: string, ctx: ParserRuleContext) {
     const currentStatementIndex = this._chunk.statements.length - 1;
-    this._chunk.indexToTarget.set(currentStatementIndex, {label, token: ctx.start!});
+    this._chunk.indexToTarget.push([currentStatementIndex, {label, token: ctx.start!}]);
   }
 
   private addLabelForNextStatement(label: string) {
