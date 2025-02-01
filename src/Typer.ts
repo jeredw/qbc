@@ -2,7 +2,7 @@ import * as parser from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener";
 import { ParseError } from "./Errors.ts";
 import type { Program, ProgramChunk } from "./Programs";
-import { ParserRuleContext } from "antlr4ng";
+import { ParserRuleContext, Token } from "antlr4ng";
 import {
   TypeTag,
   Type,
@@ -63,20 +63,18 @@ export class Typer extends QBasicParserListener {
   }
 
   override enterFunction_statement = (ctx: parser.Function_statementContext) => {
+    const token = ctx.ID().symbol;
     const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
     const parameters = this.parseParameterList(ctx.parameter_list());
     const procedure = {
       name,
       parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
-      result: {name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name)},
+      result: {name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name), token},
       staticStorage: !!ctx.STATIC(),
       programChunkIndex: this._program.chunks.length,
+      token,
     };
-    try {
-      this._chunk.symbols.defineProcedure(procedure);
-    } catch (error: any) {
-      throw ParseError.fromToken(ctx.ID().symbol, error.message);
-    }
+    this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
     this._program.chunks.push(this._chunk);
@@ -84,6 +82,7 @@ export class Typer extends QBasicParserListener {
   }
 
   override enterDef_fn_statement = (ctx: parser.Def_fn_statementContext) => {
+    const token = ctx._name!;
     const rawName = ctx._name!.text!.toLowerCase();
     // Correct "def fn foo" to "def fnfoo".
     const fnPrefixed = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
@@ -92,14 +91,11 @@ export class Typer extends QBasicParserListener {
     const procedure = {
       name,
       parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
-      result: { name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name) },
+      result: { name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name), token },
       programChunkIndex: this._program.chunks.length,
+      token
     };
-    try {
-      this._chunk.symbols.defineFn(procedure);
-    } catch (error: any) {
-      throw ParseError.fromToken(ctx._name!, error.message);
-    }
+    this._chunk.symbols.defineFn(procedure);
     getTyperContext(ctx).$procedure = procedure;
     // TODO: only params and statics get local entries in a def fn
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
@@ -114,13 +110,10 @@ export class Typer extends QBasicParserListener {
       name,
       parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
       staticStorage: !!ctx.STATIC(),
-      programChunkIndex: this._program.chunks.length
+      programChunkIndex: this._program.chunks.length,
+      token: ctx.untyped_id().start!
     };
-    try {
-      this._chunk.symbols.defineProcedure(procedure);
-    } catch (error: any) {
-      throw ParseError.fromToken(ctx.untyped_id().start!, error.message);
-    }
+    this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
     this._program.chunks.push(this._chunk);
@@ -129,11 +122,7 @@ export class Typer extends QBasicParserListener {
 
   private installParameters(parameters: [ParserRuleContext, Variable][]) {
     for (const [paramCtx, param] of parameters) {
-      try {
-        this._chunk.symbols.defineVariable(param);
-      } catch (error: any) {
-        throw ParseError.fromToken(paramCtx.start!, error.message);
-      }
+      this._chunk.symbols.defineVariable(param);
     }
   }
 
@@ -150,28 +139,25 @@ export class Typer extends QBasicParserListener {
   override enterVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
     const [name, sigil] = splitSigil(ctx._name!.text!);
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    try {
-      const symbol = this._chunk.symbols.lookupOrDefineVariable({
-        name,
-        type,
-        isDefaultType: !sigil,
-        numDimensions: 0  // TODO arrays
-      });
-      getTyperContext(ctx).$symbol = symbol;
-      if (!isProcedure(symbol) || ctx.parent instanceof parser.Assignment_statementContext) {
-        return;
-      }
-      const procedure = symbol.procedure;
-      const result = this.makeSyntheticVariable(procedure.result!.type);
-      getTyperContext(ctx).$result = result;
-    } catch (error: any) {
-      throw ParseError.fromToken(ctx.start!, error.message);
+    const symbol = this._chunk.symbols.lookupOrDefineVariable({
+      name,
+      type,
+      isDefaultType: !sigil,
+      numDimensions: 0, // TODO arrays
+      token: ctx._name!
+    });
+    getTyperContext(ctx).$symbol = symbol;
+    if (!isProcedure(symbol) || ctx.parent instanceof parser.Assignment_statementContext) {
+      return;
     }
+    const procedure = symbol.procedure;
+    const result = this.makeSyntheticVariable(procedure.result!.type, ctx._name!);
+    getTyperContext(ctx).$result = result;
   }
 
-  private makeSyntheticVariable(type: Type): Variable {
+  private makeSyntheticVariable(type: Type, token: Token): Variable {
     const name = `_v${this._syntheticVariableIndex++}`;
-    const variable = {name, type};
+    const variable = {name, type, token};
     this._chunk.symbols.defineVariable(variable);
     return variable;
   }
@@ -192,13 +178,13 @@ export class Typer extends QBasicParserListener {
         const asType = this.getType(dim.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
-        try {
-          this._chunk.symbols.defineVariable({
-            name, type: asType, isAsType: true, ...dimensions
-          });
-        } catch (error: any) {
-          throw ParseError.fromToken(dim.untyped_id()!.start!, error.message);
-        }
+        this._chunk.symbols.defineVariable({
+          name,
+          type: asType,
+          isAsType: true,
+          token: dim.untyped_id()!.start!,
+          ...dimensions,
+        });
       } else {
         const [name, sigil] = splitSigil(dim.ID()?.getText()!);
         const asType = this._chunk.symbols.getAsType(name);
@@ -213,13 +199,12 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
         }
-        try {
-          this._chunk.symbols.defineVariable({
-            name, type, ...dimensions,
-          });
-        } catch (error: any) {
-          throw ParseError.fromToken(dim.ID()!.symbol, error.message);
-        }
+        this._chunk.symbols.defineVariable({
+          name,
+          type,
+          token: dim.ID()!.symbol,
+          ...dimensions,
+        });
       }
     }
   }
@@ -282,11 +267,12 @@ export class Typer extends QBasicParserListener {
       name,
       type,
       isDefaultType: !sigil,
-      numDimensions: 0
+      numDimensions: 0,
+      token: ctx.ID(0)!.symbol
     });
     getTyperContext(ctx).$symbol = symbol;
-    getTyperContext(ctx).$end = this.makeSyntheticVariable(type);
-    getTyperContext(ctx).$increment = this.makeSyntheticVariable(type);
+    getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);
+    getTyperContext(ctx).$increment = this.makeSyntheticVariable(type, ctx._increment!.start!);
   }
 
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}
@@ -334,7 +320,7 @@ export class Typer extends QBasicParserListener {
       typeCheck: true
     });
     const type = typeOfValue(value);
-    getTyperContext(ctx).$test = this.makeSyntheticVariable(type);
+    getTyperContext(ctx).$test = this.makeSyntheticVariable(type, ctx.start!);
   }
 
   override enterShared_statement = (ctx: parser.Shared_statementContext) => {}
@@ -407,11 +393,7 @@ export class Typer extends QBasicParserListener {
       if (isError(value)) {
         throw ParseError.fromToken(assignment.ID().symbol, value.errorMessage);
       }
-      try {
-        this._chunk.symbols.defineConstant(name, value);
-      } catch (error: any) {
-        throw ParseError.fromToken(assignment.ID().symbol, error.message);
-      }
+      this._chunk.symbols.defineConstant(name, {value, token: assignment.ID().symbol});
     }
   }
 
@@ -436,7 +418,7 @@ export class Typer extends QBasicParserListener {
     const type: Type = (ctx instanceof parser.ParameterContext && ctx.array_declaration()) ?
       {tag: TypeTag.ARRAY, elementType: typeSpec} :
       typeSpec;
-    return [ctx, {type, name, isAsType: !!asTypeCtx, isParameter: true}];
+    return [ctx, {type, name, isAsType: !!asTypeCtx, isParameter: true, token: ctx.start!}];
   }
 
   private getType(ctx: ParserRuleContext): Type {
@@ -467,10 +449,10 @@ export class Typer extends QBasicParserListener {
       const id = fixedString.ID()!.getText();
       const [name, _] = splitSigil(id);
       const maxLength = this._chunk.symbols.lookupConstant(name);
-      if (!maxLength || maxLength.tag != TypeTag.INTEGER || maxLength.number <= 0) {
+      if (!maxLength || maxLength.value.tag != TypeTag.INTEGER || maxLength.value.number <= 0) {
         throw ParseError.fromToken(fixedString.ID()!.symbol, "Invalid constant");
       }
-      return {tag: TypeTag.FIXED_STRING, maxLength: maxLength.number};
+      return {tag: TypeTag.FIXED_STRING, maxLength: maxLength.value.number};
     }
     return typeOfName(child.getText());
   }

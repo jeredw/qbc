@@ -1,3 +1,4 @@
+import { Token } from 'antlr4ng';
 import { Type, TypeTag, UserDefinedType } from './Types.ts'
 import type { Variable } from './Variables.ts'
 
@@ -61,6 +62,11 @@ export type Value =
   | RecordValue
   | ArrayValue
   | ReferenceValue;
+
+export type Constant = {
+  value: Value;
+  token: Token;
+}
 
 export function isError(value: Value): value is ErrorValue {
   return 'errorMessage' in value;

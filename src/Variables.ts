@@ -8,6 +8,7 @@ export interface Variable {
   value?: Value;
   isAsType?: boolean;
   isParameter?: boolean;
+  token: Token;
 }
 
 export interface ArrayBounds {

@@ -179,7 +179,7 @@ class ExpressionListener extends QBasicParserListener {
       }
     }
     if (isConstant(symbol)) {
-      this.push(symbol.constant);
+      this.push(symbol.constant.value);
       return;
     }
     if (isVariable(symbol)) {

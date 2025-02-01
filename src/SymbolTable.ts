@@ -1,7 +1,9 @@
+import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures";
 import { sameType, Type, TypeTag } from "./Types";
-import { Value } from "./Values";
+import { Constant } from "./Values";
 import { Variable } from "./Variables";
+import { ParseError } from "./Errors";
 
 // Variables, constants (CONST), and procedures (FUNCTION and SUB) share the
 // same namespace.  Constants and procedures are looked up only by name, not by
@@ -39,7 +41,7 @@ export interface ProcedureSymbol {
 
 export interface ConstantSymbol {
   tag: SymbolTag.CONSTANT;
-  constant: Value;
+  constant: Constant;
 }
 
 export interface VariableSymbol {
@@ -68,7 +70,7 @@ type TypeToItemMap<T> = Map<TypeTag, T>
 
 interface Slot {
   procedure?: Procedure;
-  constant?: Value;
+  constant?: Constant;
   defFns?: TypeToItemMap<Procedure>;
   scalarVariables?: TypeToItemMap<Variable>;
   arrayVariables?: TypeToItemMap<Variable>;
@@ -81,6 +83,15 @@ class NameToSlotMap {
 
   get(name: string): Slot | undefined {
     return this._map.get(canonicalName(name));
+  }
+
+  findPrefixDot(rawPrefix: string): Slot | undefined {
+    const prefix = canonicalName(rawPrefix);
+    for (const [name, slot] of this._map) {
+      if (name.startsWith(`${prefix}.`)) {
+        return slot;
+      }
+    }
   }
 
   variables(): Variable[] {
@@ -114,7 +125,7 @@ export class SymbolTable {
     this._parent = parent;
   }
 
-  lookupConstant(name: string): Value | undefined {
+  lookupConstant(name: string): Constant | undefined {
     return this._symbols.get(name)?.constant ?? this._parent?.lookupConstant(name);
   }
 
@@ -124,11 +135,12 @@ export class SymbolTable {
 
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, isDefaultType, numDimensions}: {
+  lookupOrDefineVariable({name, type, isDefaultType, numDimensions, token}: {
       name: string,
       type: Type,
       isDefaultType: boolean,
       numDimensions: number
+      token: Token
     }): QBasicSymbol {
     const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
     if (slot) {
@@ -143,7 +155,7 @@ export class SymbolTable {
           return {tag: SymbolTag.PROCEDURE, procedure};
         }
       }
-      if (slot.constant && (isDefaultType || slot.constant.tag == type.tag)) {
+      if (slot.constant && (isDefaultType || slot.constant.value.tag == type.tag)) {
         return {tag: SymbolTag.CONSTANT, constant: slot.constant};
       }
       if (numDimensions == 0 && slot.scalarVariables) {
@@ -176,7 +188,7 @@ export class SymbolTable {
         lower: 1, upper: 10  // TODO: option base
       })
     } : {};
-    const variable = { name, type, ...arrayDimensions };
+    const variable = { name, type, token, ...arrayDimensions };
     this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };
   }
@@ -193,17 +205,33 @@ export class SymbolTable {
   defineVariable(variable: Variable) {
     const slot = this._symbols.get(variable.name) ?? {};
     if (slot.procedure || slot.constant) {
-      throw new Error("Duplicate definition");
+      throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
     if (slot.defFns) {
-      throw new Error("Cannot start with FN");
+      throw ParseError.fromToken(variable.token, "Cannot start with FN");
+    }
+    if (variable.type.tag == TypeTag.RECORD) {
+      const conflicts = this._symbols.findPrefixDot(variable.name);
+      if (conflicts) {
+        const tokens = [
+          getTokens(conflicts.arrayVariables),
+          getTokens(conflicts.scalarVariables),
+          getTokens(conflicts.defFns),
+          conflicts.procedure?.token,
+          conflicts.constant?.token,
+        ].flat().filter((x) => !!x);
+        if (!tokens.length) {
+          throw new Error("expecting conflict token");
+        }
+        throw ParseError.fromToken(tokens[0], "Identifier cannot include period");
+      }
     }
     if (!variable.arrayDimensions) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
       if (asType && !sameType(asType, variable.type)) {
         // dim x as string
         // dim x as integer
-        throw new Error("Duplicate definition")
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       if (variable.isAsType) {
         slot.scalarAsType = variable.type;
@@ -213,18 +241,18 @@ export class SymbolTable {
       } else if (variable.isAsType) {
         // x = 42
         // dim x as string
-        throw new Error("Duplicate definition");
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       if (slot.scalarVariables.has(variable.type.tag)) {
         // x$ = "foo"
         // dim x$
-        throw new Error("Duplicate definition");
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       slot.scalarVariables.set(variable.type.tag, variable);
     } else {
       const asType = slot.arrayAsType ?? slot.scalarAsType;
       if (asType && !sameType(asType, variable.type)) {
-        throw new Error("Duplicate definition")
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       if (variable.isAsType) {
         slot.arrayAsType = variable.type;
@@ -232,26 +260,26 @@ export class SymbolTable {
       if (!slot.arrayVariables) {
         slot.arrayVariables = new Map();
       } else if (variable.isAsType) {
-        throw new Error("Duplicate definition");
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       if (slot.arrayVariables.has(variable.type.tag)) {
-        throw new Error("Array already dimensioned");
+        throw ParseError.fromToken(variable.token, "Array already dimensioned");
       }
       slot.arrayVariables.set(variable.type.tag, variable);
     }
     this._symbols.set(variable.name, slot);
   }
   
-  defineConstant(name: string, constant: Value) {
+  defineConstant(name: string, constant: Constant) {
     if (this._symbols.has(name)) {
-      throw new Error("Duplicate definition");
+      throw ParseError.fromToken(constant.token, "Duplicate definition");
     }
     this._symbols.set(name, {constant});
   }
 
   defineProcedure(procedure: Procedure) {
     if (this._symbols.has(procedure.name)) {
-      throw new Error("Duplicate definition");
+      throw ParseError.fromToken(procedure.token, "Duplicate definition");
     }
     this._symbols.set(procedure.name, {procedure});
   }
@@ -261,11 +289,15 @@ export class SymbolTable {
       defFns: new Map()
     };
     if (!slot.defFns) {
-      throw new Error("Name must start with FN");
+      throw ParseError.fromToken(procedure.token, "Name must start with FN");
     }
     if (slot.defFns.has(procedure.result!.type.tag)) {
-      throw new Error("Duplicate definition");
+      throw ParseError.fromToken(procedure.token, "Duplicate definition");
     }
     slot.defFns.set(procedure.result!.type.tag, procedure);
   }
+}
+
+function getTokens(map?: TypeToItemMap<Procedure|Variable>): Token[] {
+  return map ? Array.from(map.values()).map((item) => item.token) : [];
 }

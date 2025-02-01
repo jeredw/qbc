@@ -6,4 +6,5 @@ export interface Procedure {
   result?: Variable;
   programChunkIndex: number;
   staticStorage?: boolean;
+  token: Token;
 }

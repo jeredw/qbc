@@ -13,15 +13,11 @@
       <button class="stop-button">Stop</button>
     </div>
     <div class="code-box">
-      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">function fib(n as integer)
-if n < 2 then
-fib = 1
-else
-fib = fib(n-1) + fib(n-2)
-end if
-end function
-
-print fib(3)
+      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">type foo
+x as string * 20
+end type
+t.x = 42
+dim t as foo
 </div>
     </div>
     <div class="status-line"> <span class="run-hint">&lt;⌘+Enter=Run &gt;</span> <span class="stop-hint">&lt;⌘+Enter=Stop&gt;</span></div>
