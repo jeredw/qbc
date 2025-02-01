@@ -184,7 +184,7 @@ export class Typer extends QBasicParserListener {
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
     for (const dim of ctx.dim_variable()) {
       const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds())
-      if (arrayDimensions.some((bounds) => bounds.lower === undefined || bounds.upper == undefined)) {
+      if (arrayDimensions.some((bounds) => bounds.lower === undefined || bounds.upper === undefined)) {
         throw new Error("TODO: dynamic arrays");
       }
       const dimensions = {...arrayDimensions.length ? {arrayDimensions} : {}};

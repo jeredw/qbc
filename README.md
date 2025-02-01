@@ -20,6 +20,35 @@ basements, which `QBASIC.EXE` would still run correctly.
 So it seems better to accept whatever the IDE would understand as a valid
 program.
 
+### Incremental parsing
+
+QBasic was intended for interactive development on machines where compiling code
+was slow - like go take a coffee break slow.  So it keeps some parse state like
+symbols around between program runs.  For example, if you run:
+
+```basic
+dim x as string
+```
+
+and then edit and rerun:
+
+```basic
+x = 42
+dim x as string
+```
+
+you get "Type mismatch" on `x = 42`.  But if you open a new program and run:
+
+```basic
+x = 42
+dim x as string
+```
+
+you get "Duplicate definition" on `dim x`.
+
+This implementation doesn't do incremental parsing and tries to match what would
+happen in a fresh run with no saved state.
+
 ### Is QBasic case-sensitive?
 
 Kind of not really.  The IDE automatically converts keywords to uppercase, and
