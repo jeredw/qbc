@@ -121,7 +121,7 @@ export class Typer extends QBasicParserListener {
   }
 
   private installParameters(parameters: [ParserRuleContext, Variable][]) {
-    for (const [paramCtx, param] of parameters) {
+    for (const [_, param] of parameters) {
       this._chunk.symbols.defineVariable(param);
     }
   }
@@ -301,6 +301,10 @@ export class Typer extends QBasicParserListener {
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {}
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
+
+  override enterPrint_statement = (ctx: parser.Print_statementContext) => {
+    // TODO: check that exprs are string or numeric
+  }
 
   override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {}
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}

@@ -35,7 +35,7 @@ export type LongValue = {
 export type RecordValue = {
   tag: TypeTag.RECORD;
   recordType: UserDefinedType;
-  elements: Map<string, Value>;
+  elements: Map<string, Variable>;
 }
 
 export type ArrayValue = {
@@ -152,7 +152,7 @@ export function typeOfValue(value: Value): Type {
   throw new Error("unimplemented");
 }
 
-export function getDefaultValueOfType(type: Type): Value {
+export function getDefaultValueOfType(type: Type, {allowDefaultRecords}: {allowDefaultRecords: boolean}): Value {
   switch (type.tag) {
     case TypeTag.SINGLE:
       return single(0);
@@ -167,21 +167,24 @@ export function getDefaultValueOfType(type: Type): Value {
     case TypeTag.FIXED_STRING:
       return string("");
     case TypeTag.RECORD:
-      return buildDefaultRecord(type);
+      if (!allowDefaultRecords) {
+        throw new Error("unexpected empty record");
+      }
+      return record(type, new Map());
     case TypeTag.ARRAY:
     case TypeTag.ANY:
       throw new Error("unimplemented");
   }
 }
 
-function buildDefaultRecord(recordType: UserDefinedType): Value {
+export function record(recordType: UserDefinedType, elements: Map<string, Variable>): RecordValue {
   const value: RecordValue = {
     tag: TypeTag.RECORD,
     recordType,
     elements: new Map()
   }
-  for (const {name, type} of recordType.elements) {
-    value.elements.set(name, getDefaultValueOfType(type));
+  for (const [name, variable] of elements) {
+    value.elements.set(name, variable);
   }
   return value;
 }

@@ -1,7 +1,7 @@
 import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures";
 import { sameType, Type, TypeTag } from "./Types";
-import { Constant } from "./Values";
+import { Constant, record } from "./Values";
 import { Variable } from "./Variables";
 import { ParseError } from "./Errors";
 
@@ -225,6 +225,20 @@ export class SymbolTable {
         }
         throw ParseError.fromToken(tokens[0], "Identifier cannot include period");
       }
+      const elements: Map<string, Variable> = new Map();
+      for (const {name: elementName, type: elementType} of variable.type.elements) {
+        const element = {
+          name: `${variable.name}.${elementName}`,
+          type: elementType,
+          isAsType: true,
+          isParameter: variable.isParameter,
+          token: variable.token,
+          // TODO: Array elements
+        };
+        this.defineVariable(element);
+        elements.set(elementName, element);
+      }
+      variable.value = record(variable.type, elements);
     }
     if (!variable.arrayDimensions) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;

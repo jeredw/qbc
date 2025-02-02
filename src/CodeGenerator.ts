@@ -238,7 +238,26 @@ export class CodeGenerator extends QBasicParserListener {
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
         stackFrame.push({variable: parameter, value: reference(variable)});
+        if (parameter.type.tag == TypeTag.RECORD) {
+          if (!parameter.value || parameter.value.tag != TypeTag.RECORD) {
+            throw new Error("missing record value");
+          }
+          if (!variable.value || variable.value.tag != TypeTag.RECORD) {
+            throw new Error("missing record value");
+          }
+          for (const [name, parameterElement] of parameter.value.elements) {
+            const variableElement = variable.value.elements.get(name);
+            if (!variableElement) {
+              throw new Error("missing element variable");
+            }
+            stackFrame.push({variable: parameterElement, value: reference(variableElement)});
+          }
+        }
       } else {
+        if (parameter.type.tag == TypeTag.RECORD) {
+          // Cannot pass expressions as record parameters, e.g. (rec) doesn't work.
+          throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
+        }
         const expr = this.compileExpression(parseExpr, args[i].start!, procedure.parameters[i].type);
         stackFrame.push({variable: parameter, expr});
       }
@@ -249,8 +268,10 @@ export class CodeGenerator extends QBasicParserListener {
     const locals = this._program.chunks[procedure.programChunkIndex].symbols.variables();
     for (const variable of locals) {
       // TODO: Don't overwrite statics.
-      if (!variable.isParameter && (!result || variable.name != result.name)) {
-        stackFrame.push({variable, value: getDefaultValueOfType(variable.type)});
+      if (!variable.isParameter && (!result || variable.name != result.name)
+          && variable.type.tag != TypeTag.RECORD) {
+        // Record locals always refer to the same element variables.
+        stackFrame.push({variable, value: getDefaultValueOfType(variable.type, {allowDefaultRecords: false})});
       }
     }
     this.addStatement(statements.call(procedure.programChunkIndex, stackFrame));

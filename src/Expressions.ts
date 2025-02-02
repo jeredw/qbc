@@ -161,10 +161,7 @@ class ExpressionListener extends QBasicParserListener {
     const result = ctx['$result'];
     if (result) {
       if (!result.value) {
-        if (!this._typeCheck) {
-          throw new Error("missing result value for function expression");
-        }
-        result.value = values.getDefaultValueOfType(result.type);
+        result.value = values.getDefaultValueOfType(result.type, {allowDefaultRecords: this._typeCheck});
       }
       this.push(result.value);
       return;
@@ -185,7 +182,7 @@ class ExpressionListener extends QBasicParserListener {
     if (isVariable(symbol)) {
       const variable = dereference(symbol.variable);
       if (!variable.value) {
-        variable.value = values.getDefaultValueOfType(variable.type);
+        variable.value = values.getDefaultValueOfType(variable.type, {allowDefaultRecords: this._typeCheck});
       }
       this.push(variable.value);
       return;

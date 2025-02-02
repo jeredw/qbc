@@ -16,8 +16,14 @@
       <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">type foo
 x as string * 20
 end type
-t.x = 42
-dim t as foo
+
+sub stuff(arg as foo)
+arg.x = "moo"
+end sub
+
+dim a as foo
+stuff a
+print a.x        
 </div>
     </div>
     <div class="status-line"> <span class="run-hint">&lt;⌘+Enter=Run &gt;</span> <span class="stop-hint">&lt;⌘+Enter=Stop&gt;</span></div>
