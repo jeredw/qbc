@@ -68,7 +68,7 @@ export class Typer extends QBasicParserListener {
     const parameters = this.parseParameterList(ctx.parameter_list());
     const procedure = {
       name,
-      parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
+      parameters,
       result: {name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name), token},
       staticStorage: !!ctx.STATIC(),
       programChunkIndex: this._program.chunks.length,
@@ -90,7 +90,7 @@ export class Typer extends QBasicParserListener {
     const parameters = this.parseDefFnParameterList(ctx.def_fn_parameter_list());
     const procedure = {
       name,
-      parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
+      parameters,
       result: { name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name), token },
       programChunkIndex: this._program.chunks.length,
       token
@@ -108,7 +108,7 @@ export class Typer extends QBasicParserListener {
     const parameters = this.parseParameterList(ctx.parameter_list());
     const procedure = {
       name,
-      parameters: parameters.map((ctxAndVariable) => ctxAndVariable[1]),
+      parameters,
       staticStorage: !!ctx.STATIC(),
       programChunkIndex: this._program.chunks.length,
       token: ctx.untyped_id().start!
@@ -120,8 +120,8 @@ export class Typer extends QBasicParserListener {
     this.installParameters(parameters);
   }
 
-  private installParameters(parameters: [ParserRuleContext, Variable][]) {
-    for (const [_, param] of parameters) {
+  private installParameters(parameters: Variable[]) {
+    for (const param of parameters) {
       this._chunk.symbols.defineVariable(param);
     }
   }
@@ -401,15 +401,15 @@ export class Typer extends QBasicParserListener {
     }
   }
 
-  private parseParameterList(ctx: parser.Parameter_listContext | null): [ParserRuleContext, Variable][] {
+  private parseParameterList(ctx: parser.Parameter_listContext | null): Variable[] {
     return ctx?.parameter().map((param) => this.parseParameter(param)) ?? [];
   }
 
-  private parseDefFnParameterList(ctx: parser.Def_fn_parameter_listContext | null): [ParserRuleContext, Variable][] {
+  private parseDefFnParameterList(ctx: parser.Def_fn_parameter_listContext | null): Variable[] {
     return ctx?.def_fn_parameter().map((param) => this.parseParameter(param)) ?? [];
   }
 
-  private parseParameter(ctx: parser.ParameterContext | parser.Def_fn_parameterContext): [ParserRuleContext, Variable] {
+  private parseParameter(ctx: parser.ParameterContext | parser.Def_fn_parameterContext): Variable {
     const nameCtx = ctx.untyped_id();
     const rawName = nameCtx ? getUntypedId(nameCtx, {allowPeriods: true}) : ctx.ID()!.getText();
     const [name, sigil] = splitSigil(rawName);
@@ -422,7 +422,7 @@ export class Typer extends QBasicParserListener {
     const type: Type = (ctx instanceof parser.ParameterContext && ctx.array_declaration()) ?
       {tag: TypeTag.ARRAY, elementType: typeSpec} :
       typeSpec;
-    return [ctx, {type, name, isAsType: !!asTypeCtx, isParameter: true, token: ctx.start!}];
+    return {type, name, isAsType: !!asTypeCtx, isParameter: true, token: ctx.start!};
   }
 
   private getType(ctx: ParserRuleContext): Type {
