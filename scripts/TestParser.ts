@@ -53,7 +53,7 @@ function prettyPrint(tree: string): string {
 async function runTests(tests: string[]) {
   for (const testPath of tests) {
     try {
-      const goldenPath = testPath + '.golden';
+      const goldenPath = testPath + '.tree';
       const input = Deno.readTextFileSync(testPath);
       const output = prettyPrint(parseProgram(input));
       const diffCommand = new Deno.Command('diff', {
