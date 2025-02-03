@@ -13,14 +13,16 @@
       <button class="stop-button">Stop</button>
     </div>
     <div class="code-box">
-      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">20 function foo ()
-        if i = 1 then exit function
-        i = 1
-        print "hi"
-        goto 20
-        end function
-        print foo        
-</div>
+      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">
+function fib(n)
+  if n <= 2 then
+    fib = 1
+  else
+    fib = fib(n - 1) + fib(n - 2)
+  end if
+end function
+print fib(8)
+      </div>
     </div>
     <div class="status-line"> <span class="run-hint">&lt;⌘+Enter=Run &gt;</span> <span class="stop-hint">&lt;⌘+Enter=Stop&gt;</span></div>
   </div>

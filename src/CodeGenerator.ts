@@ -266,8 +266,7 @@ export class CodeGenerator extends QBasicParserListener {
     }
     const locals = this._program.chunks[procedure.programChunkIndex].symbols.variables();
     for (const variable of locals) {
-      if (!variable.isParameter && (!result || variable.name != result.name) &&
-          variable.storageType == StorageType.STACK) {
+      if (!variable.isParameter && variable.storageType == StorageType.STACK) {
         stackVariables.push({variable, value: getDefaultValue(variable)});
       }
     }
