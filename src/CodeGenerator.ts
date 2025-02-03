@@ -5,15 +5,16 @@ import { ParseError } from "./Errors.ts";
 import { Program, ProgramChunk } from "./Programs";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
-import { StackFrame } from "./statements/Call.ts";
-import { evaluateExpression } from "./Expressions.ts";
-import { reference, isError, getDefaultValueOfType } from "./Values.ts";
+import { typeCheckExpression } from "./Expressions.ts";
+import { reference, isError, getDefaultValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag } from "./Types.ts";
 import { isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
 import { BranchIndexStatement } from "./statements/Branch.ts";
+import { StorageType } from "./Memory.ts";
+import { StackVariable } from "./statements/Call.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -224,7 +225,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (args.length != procedure.parameters.length) {
       throw ParseError.fromToken(token, "Argument-count mismatch");
     }
-    const stackFrame: StackFrame[] = [];
+    const stackVariables: StackVariable[] = [];
     for (let i = 0; i < args.length; i++) {
       const parseExpr = args[i].expr();
       if (!parseExpr) {
@@ -237,44 +238,42 @@ export class CodeGenerator extends QBasicParserListener {
         if (!sameType(variable.type, parameter.type)) {
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
-        stackFrame.push({variable: parameter, value: reference(variable)});
+        stackVariables.push({variable: parameter, value: reference(variable)});
         if (parameter.type.tag == TypeTag.RECORD) {
-          if (!parameter.value || parameter.value.tag != TypeTag.RECORD) {
-            throw new Error("missing record value");
+          if (!parameter.elements || !variable.elements) {
+            throw new Error("missing record elements");
           }
-          if (!variable.value || variable.value.tag != TypeTag.RECORD) {
-            throw new Error("missing record value");
-          }
-          for (const [name, parameterElement] of parameter.value.elements) {
-            const variableElement = variable.value.elements.get(name);
+          for (const [name, parameterElement] of parameter.elements) {
+            const variableElement = variable.elements.get(name);
             if (!variableElement) {
               throw new Error("missing element variable");
             }
-            stackFrame.push({variable: parameterElement, value: reference(variableElement)});
+            stackVariables.push({variable: parameterElement, value: reference(variableElement)});
           }
         }
       } else {
-        if (parameter.type.tag == TypeTag.RECORD) {
-          // Cannot pass expressions as record parameters, e.g. (rec) doesn't work.
+        if (parameter.type.tag == TypeTag.RECORD || parameter.type.tag == TypeTag.ARRAY) {
+          // Can't pass records or arrays by value.
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
         const expr = this.compileExpression(parseExpr, args[i].start!, procedure.parameters[i].type);
-        stackFrame.push({variable: parameter, expr});
+        stackVariables.push({variable: parameter, expr});
       }
     }
     if (procedure.result && result) {
-      stackFrame.push({variable: procedure.result, value: reference(result)});
+      stackVariables.push({variable: procedure.result, value: reference(result)});
     }
     const locals = this._program.chunks[procedure.programChunkIndex].symbols.variables();
     for (const variable of locals) {
-      // TODO: Don't overwrite statics.
-      if (!variable.isParameter && (!result || variable.name != result.name)
-          && variable.type.tag != TypeTag.RECORD) {
-        // Record locals always refer to the same element variables.
-        stackFrame.push({variable, value: getDefaultValueOfType(variable.type, {allowDefaultRecords: false})});
+      if (!variable.isParameter && (!result || variable.name != result.name) &&
+          variable.storageType == StorageType.STACK) {
+        stackVariables.push({variable, value: getDefaultValue(variable)});
       }
     }
-    this.addStatement(statements.call(procedure.programChunkIndex, stackFrame));
+    if (stackVariables.length != this.program.chunks[procedure.programChunkIndex].stackSize) {
+      throw new Error("stack size mismatch");
+    }
+    this.addStatement(statements.call(procedure.programChunkIndex, stackVariables));
   }
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
@@ -689,11 +688,7 @@ export class CodeGenerator extends QBasicParserListener {
       }
     }, expr);
     if (resultType && token) {
-      const value = evaluateExpression({
-        expr,
-        typeCheck: true,
-        resultType
-      });
+      const value = typeCheckExpression({expr, resultType});
       if (isError(value)) {
         throw ParseError.fromToken(token, value.errorMessage);
       }

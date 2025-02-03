@@ -9,6 +9,7 @@ import { Procedure } from "./Procedures.ts";
 export interface Program {
   chunks: ProgramChunk[];
   types: Map<string, UserDefinedType>;
+  staticSize: number;
 }
 
 export interface TargetRef {
@@ -22,6 +23,7 @@ export interface ProgramChunk {
   labelToIndex: Map<string, number>;
   symbols: SymbolTable;
   procedure?: Procedure;
+  stackSize: number;
 }
 
 export function compile(tree: ParseTree): Program {

@@ -4,6 +4,7 @@ import { RuntimeError } from "../Errors";
 import { evaluateExpression } from "../Expressions";
 import { TypeTag } from "../Types";
 import { ILLEGAL_FUNCTION_CALL, isError, isNumeric } from "../Values";
+import { ExecutionContext } from "./ExecutionContext";
 import { Statement } from "./Statement";
 
 export class BranchStatement extends Statement {
@@ -29,10 +30,11 @@ export class BranchIndexStatement extends Statement {
     this.expr = expr;
   }
 
-  override execute(): ControlFlow | void {
+  override execute(context: ExecutionContext): ControlFlow | void {
     const value = evaluateExpression({
       expr: this.expr,
-      resultType: {tag: TypeTag.INTEGER}
+      resultType: {tag: TypeTag.INTEGER},
+      memory: context.memory,
     });
     if (isError(value)) {
       throw RuntimeError.fromToken(this.expr.start!, value);

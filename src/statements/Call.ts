@@ -1,11 +1,13 @@
 import { ExprContext } from "../../build/QBasicParser";
-import { ControlFlow, ControlFlowTag, SavedValue } from "../ControlFlow";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow";
 import { evaluateExpression } from "../Expressions";
-import { Value } from "../Values";
+import { Address, StorageType } from "../Memory";
+import { isReference, reference, Value } from "../Values";
 import { Variable } from "../Variables";
+import { ExecutionContext } from "./ExecutionContext";
 import { Statement } from "./Statement";
 
-export interface StackFrame {
+export interface StackVariable {
   variable: Variable;
   expr?: ExprContext;
   value?: Value;
@@ -13,26 +15,37 @@ export interface StackFrame {
 
 export class CallStatement extends Statement {
   chunkIndex: number;
-  stackFrame: StackFrame[];
+  stackVariables: StackVariable[];
 
-  constructor(chunkIndex: number, stackFrame: StackFrame[]) {
+  constructor(chunkIndex: number, stackVariables: StackVariable[]) {
     super();
     this.chunkIndex = chunkIndex;
-    this.stackFrame = stackFrame;
+    this.stackVariables = stackVariables;
   }
 
-  override execute(): ControlFlow {
-    const savedValues: SavedValue[] = [];
-    for (const {variable, expr, value} of this.stackFrame) {
-      if (variable.value) {
-        savedValues.push({variable, value: variable.value});
-      }
+  override execute(context: ExecutionContext): ControlFlow {
+    const frameIndex = context.memory.getStackFrameIndex();
+    const writes: [Address, Value][] = [];
+    for (const {variable, expr, value} of this.stackVariables) {
       if (expr) {
-        variable.value = evaluateExpression({expr, resultType: variable.type});
+        // Evaluate argument expression in the context of the current stack frame.
+        const value = evaluateExpression({expr, resultType: variable.type, memory: context.memory});
+        writes.push([variable.address!, value]);
       } else if (value) {
-        variable.value = value;
+        if (isReference(value) && value.variable.storageType == StorageType.STACK) {
+          // Explicitly mark that stack references refer to the current stack frame.
+          const address = {...value.address, frameIndex};
+          writes.push([variable.address!, {...value, address}]);
+        } else {
+          writes.push([variable.address!, value]);
+        }
       }
     }
-    return {tag: ControlFlowTag.CALL, chunkIndex: this.chunkIndex, savedValues};
+    // Now create the new stack frame and initialize parameters.
+    context.memory.pushStack(this.stackVariables.length);
+    for (const [address, value] of writes) {
+      context.memory.write(address, value);
+    }
+    return {tag: ControlFlowTag.CALL, chunkIndex: this.chunkIndex};
   }
 }

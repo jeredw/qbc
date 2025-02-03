@@ -1,0 +1,69 @@
+(program 
+  (type_statement type 
+    (untyped_id foo) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element 
+        (fixed_string string * 20)) \n) end type) \n \n 
+  (sub_statement sub 
+    (untyped_id quack) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id t) as 
+          (type_name_for_parameter 
+            (untyped_id foo))) , 
+        (parameter 
+          (untyped_id n) as 
+          (type_name_for_parameter integer))) ) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call t.x) = 
+          (expr 
+            (expr 
+              (literal "quack")) + 
+            (expr 
+              (variable_or_function_call t.x))))) \n 
+      (if_block_statement if 
+        (expr 
+          (expr 
+            (variable_or_function_call n)) > 
+          (expr 
+            (literal 0))) then \n 
+        (then_block 
+          (statement 
+            (call_statement 
+              (untyped_id quack) 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call t))) , 
+                (argument 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call n)) - 
+                    (expr 
+                      (literal 1))))))) \n) 
+        (end_if_statement end if)) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id a) as 
+        (type_name 
+          (untyped_id foo))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id quack) 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call a))) , 
+        (argument 
+          (expr 
+            (literal 4)))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call a.x)))) \n <EOF>)

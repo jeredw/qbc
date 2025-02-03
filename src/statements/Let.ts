@@ -1,9 +1,11 @@
 import { ExprContext } from "../../build/QBasicParser";
 import { RuntimeError } from "../Errors";
 import { evaluateExpression } from "../Expressions";
-import { TypeTag } from "../Types";
-import { getDefaultValueOfType, isError, isReference, Value } from "../Values";
-import { dereference, Variable } from "../Variables";
+import { Memory } from "../Memory";
+import { sameType, TypeTag } from "../Types";
+import { getDefaultValue, isError, isReference, Value } from "../Values";
+import { Variable } from "../Variables";
+import { ExecutionContext } from "./ExecutionContext";
 import { Statement } from "./Statement";
 
 export class LetStatement extends Statement {
@@ -16,39 +18,31 @@ export class LetStatement extends Statement {
     this.expr = expr;
   }
 
-  override execute() {
-    const variable = dereference(this.variable);
+  override execute(context: ExecutionContext) {
     const value = evaluateExpression({
       expr: this.expr,
-      resultType: variable.type,
+      resultType: this.variable.type,
+      memory: context.memory,
     });
     if (isError(value)) {
       throw RuntimeError.fromToken(this.expr.start!, value);
     }
-    assign(variable, value);
+    assign(this.variable, value, context.memory);
   }
 }
 
-function assign(target: Variable, source: Value) {
-  if (source.tag == TypeTag.RECORD) {
-    if (!target.value) {
-      throw new Error("no value for record");
+function assign(variable: Variable, value: Value, memory: Memory) {
+  if (variable.type.tag == TypeTag.RECORD) {
+    if (!isReference(value) || !sameType(variable.type, value.variable.type)) {
+      throw new Error("invalid record assignment");
     }
-    if (target.value.tag != TypeTag.RECORD ||
-      source.recordType.name != target.value.recordType.name) {
-      throw new Error("record type mismatch");
-    }
-    for (const [name, sourceVariable] of source.elements) {
-      const targetVariable = target.value.elements.get(name);
-      if (!targetVariable) {
-        throw new Error("missing element in record");
-      }
-      if (!sourceVariable.value) {
-        sourceVariable.value = getDefaultValueOfType(sourceVariable.type, {allowDefaultRecords: false});
-      }
-      assign(targetVariable, sourceVariable.value);
+    for (const [name, sourceVariable] of value.variable.elements!) {
+      const targetVariable = variable.elements!.get(name)!;
+      const [_, sourceValue] = memory.dereference(sourceVariable.address!);
+      assign(targetVariable, sourceValue ?? getDefaultValue(sourceVariable), memory);
     }
     return;
   }
-  target.value = source;
+  const [address, _] = memory.dereference(variable.address!);
+  memory.write(address, value);
 }

@@ -14,7 +14,7 @@ export class PrintStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     for (const expr of this.ast.expr()) {
-      const value = evaluateExpression({expr});
+      const value = evaluateExpression({expr, memory: context.memory});
       if (isNumeric(value)) {
         context.devices.textScreen.print(value.number.toString(), true);
       } else if (isString(value)) {

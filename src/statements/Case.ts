@@ -2,8 +2,10 @@ import { Case_exprContext, ExprContext } from "../../build/QBasicParser";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow";
 import { RuntimeError } from "../Errors";
 import { evaluateExpression } from "../Expressions";
+import { Memory } from "../Memory";
 import { isError, isNumeric, isString, Value } from "../Values";
 import { Variable } from "../Variables";
+import { ExecutionContext } from "./ExecutionContext";
 import { Statement } from "./Statement";
 
 export class CaseStatement extends Statement {
@@ -16,16 +18,16 @@ export class CaseStatement extends Statement {
     this.condition = condition;
   }
 
-  override execute(): ControlFlow | void {
-    if (this.match()) {
+  override execute(context: ExecutionContext): ControlFlow | void {
+    if (this.match(context.memory)) {
       return {tag: ControlFlowTag.GOTO};
     }
   }
 
-  private match(): boolean {
-    const test = this.test.value!;
+  private match(memory: Memory): boolean {
+    const [_, test] = memory.dereference(this.test.address!);
     if (this.condition.IS()) {
-      const other = this.evaluate(this.condition._other!);
+      const other = this.evaluate(memory, this.condition._other!);
       const op = this.condition._op?.text;
       switch (op) {
         case '<':
@@ -43,18 +45,20 @@ export class CaseStatement extends Statement {
       }
     }
     if (this.condition.TO()) {
-      const lower = this.evaluate(this.condition._lower!);
-      const upper = this.evaluate(this.condition._upper!);
+      const lower = this.evaluate(memory, this.condition._lower!);
+      const upper = this.evaluate(memory, this.condition._upper!);
       return check(test, lower, (a, b) => a >= b) &&
              check(test, upper, (a, b) => a <= b);
     }
-    const equal = this.evaluate(this.condition._equal!);
+    const equal = this.evaluate(memory, this.condition._equal!);
     return check(test, equal, (a, b) => a == b);
   }
 
-  private evaluate(expr: ExprContext): Value {
+  private evaluate(memory: Memory, expr: ExprContext): Value {
     const value = evaluateExpression({
-      expr, resultType: this.test.type,
+      expr,
+      resultType: this.test.type,
+      memory
     });
     if (isError(value)) {
       throw RuntimeError.fromToken(this.condition.start!, value);

@@ -17,8 +17,9 @@ import {
 import { ArrayBounds, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
-import { isError, isNumeric, isString, typeOfValue, Value } from "./Values.ts";
-import { evaluateExpression, parseLiteral } from "./Expressions.ts";
+import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
+import { typeCheckExpression, parseLiteral } from "./Expressions.ts";
+import { StorageType } from "./Memory.ts";
 
 export interface TyperContext {
   $symbol: QBasicSymbol;
@@ -43,6 +44,7 @@ export class Typer extends QBasicParserListener {
   private _program: Program;
   private _arrayBaseIndex = 1;
   private _syntheticVariableIndex = 0;
+  private _storageType: StorageType = StorageType.STATIC;
 
   constructor() {
     super();
@@ -50,7 +52,8 @@ export class Typer extends QBasicParserListener {
     this._chunk = topLevel;
     this._program = {
       chunks: [topLevel],
-      types: new Map()
+      types: new Map(),
+      staticSize: 0,
     };
   }
 
@@ -59,7 +62,11 @@ export class Typer extends QBasicParserListener {
   }
 
   private makeProgramChunk(symbols: SymbolTable, procedure?: Procedure): ProgramChunk {
-    return {statements: [], labelToIndex: new Map(), indexToTarget: [], symbols, procedure};
+    return {statements: [], labelToIndex: new Map(), indexToTarget: [], symbols, procedure, stackSize: 0};
+  }
+
+  override exitProgram = (_ctx: parser.ProgramContext) => {
+    this._program.staticSize = this._chunk.symbols.staticSize();
   }
 
   override enterFunction_statement = (ctx: parser.Function_statementContext) => {
@@ -69,11 +76,16 @@ export class Typer extends QBasicParserListener {
     const procedure = {
       name,
       parameters,
-      result: {name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name), token},
-      staticStorage: !!ctx.STATIC(),
+      result: {
+        name,
+        type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
+        token,
+        storageType: StorageType.STACK
+      },
       programChunkIndex: this._program.chunks.length,
       token,
     };
+    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
@@ -91,10 +103,16 @@ export class Typer extends QBasicParserListener {
     const procedure = {
       name,
       parameters,
-      result: { name, type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name), token },
+      result: {
+        name,
+        type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
+        token,
+        storageType: StorageType.STACK
+      },
       programChunkIndex: this._program.chunks.length,
       token
     };
+    this._storageType = StorageType.STATIC;
     this._chunk.symbols.defineFn(procedure);
     getTyperContext(ctx).$procedure = procedure;
     // TODO: only params and statics get local entries in a def fn
@@ -109,10 +127,10 @@ export class Typer extends QBasicParserListener {
     const procedure = {
       name,
       parameters,
-      staticStorage: !!ctx.STATIC(),
       programChunkIndex: this._program.chunks.length,
       token: ctx.untyped_id().start!
     };
+    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
@@ -127,7 +145,9 @@ export class Typer extends QBasicParserListener {
   }
 
   private exitProcedure = (_ctx: ParserRuleContext) => {
+    this._chunk.stackSize = this._chunk.symbols.stackSize();
     this._chunk = this._program.chunks[0];
+    this._storageType = StorageType.STATIC;
   }
 
   override exitFunction_statement = this.exitProcedure;
@@ -144,7 +164,8 @@ export class Typer extends QBasicParserListener {
       type,
       isDefaultType: !sigil,
       numDimensions: 0, // TODO arrays
-      token: ctx._name!
+      token: ctx._name!,
+      storageType: this._storageType
     });
     getTyperContext(ctx).$symbol = symbol;
     if (!isProcedure(symbol) || ctx.parent instanceof parser.Assignment_statementContext) {
@@ -157,7 +178,7 @@ export class Typer extends QBasicParserListener {
 
   private makeSyntheticVariable(type: Type, token: Token): Variable {
     const name = `_v${this._syntheticVariableIndex++}`;
-    const variable = {name, type, token};
+    const variable = {name, type, token, storageType: this._storageType};
     this._chunk.symbols.defineVariable(variable);
     return variable;
   }
@@ -183,6 +204,7 @@ export class Typer extends QBasicParserListener {
           type: asType,
           isAsType: true,
           token: dim.untyped_id()!.start!,
+          storageType: this._storageType,
           ...dimensions,
         });
       } else {
@@ -203,6 +225,7 @@ export class Typer extends QBasicParserListener {
           name,
           type,
           token: dim.ID()!.symbol,
+          storageType: this._storageType,
           ...dimensions,
         });
       }
@@ -216,13 +239,13 @@ export class Typer extends QBasicParserListener {
     const tryToEvaluateAsConstant = (expr: parser.ExprContext) => {
       let result: Value | undefined;
       try {
-        result = evaluateExpression({
+        result = typeCheckExpression({
           expr,
           constantExpression: true,
           resultType: { tag: TypeTag.LONG },
         });
       } catch (error: any) {
-        // Thrown errors from evaluateExpression() mean this is not a constant
+        // Thrown errors from typeCheckExpression() mean this is not a constant
         // expression.  This array bound must be dynamic, so swallow the error
         // and return undefined.
         return;
@@ -268,7 +291,8 @@ export class Typer extends QBasicParserListener {
       type,
       isDefaultType: !sigil,
       numDimensions: 0,
-      token: ctx.ID(0)!.symbol
+      token: ctx.ID(0)!.symbol,
+      storageType: this._storageType
     });
     getTyperContext(ctx).$symbol = symbol;
     getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);
@@ -319,10 +343,7 @@ export class Typer extends QBasicParserListener {
   override enterSeek_statement = (ctx: parser.Seek_statementContext) => {}
 
   override exitSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
-    const value = evaluateExpression({
-      expr: ctx.expr(),
-      typeCheck: true
-    });
+    const value = typeCheckExpression({expr: ctx.expr()});
     const type = typeOfValue(value);
     getTyperContext(ctx).$test = this.makeSyntheticVariable(type, ctx.start!);
   }
@@ -389,7 +410,7 @@ export class Typer extends QBasicParserListener {
   override enterConst_statement = (ctx: parser.Const_statementContext) => {
     for (const assignment of ctx.const_assignment()) {
       const [name, sigil] = splitSigil(assignment.ID().getText());
-      const value = evaluateExpression({
+      const value = typeCheckExpression({
         expr: assignment.const_expr().expr(),
         constantExpression: true,
         ...(sigil ? {resultType: typeOfSigil(sigil)} : {}),
@@ -422,7 +443,14 @@ export class Typer extends QBasicParserListener {
     const type: Type = (ctx instanceof parser.ParameterContext && ctx.array_declaration()) ?
       {tag: TypeTag.ARRAY, elementType: typeSpec} :
       typeSpec;
-    return {type, name, isAsType: !!asTypeCtx, isParameter: true, token: ctx.start!};
+    return {
+      type,
+      name,
+      isAsType: !!asTypeCtx,
+      isParameter: true,
+      token: ctx.start!,
+      storageType: StorageType.STACK
+    };
   }
 
   private getType(ctx: ParserRuleContext): Type {

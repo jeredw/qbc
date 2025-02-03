@@ -12,20 +12,36 @@ import * as values from "./Values.ts";
 import { splitSigil, Type, TypeTag } from "./Types.ts";
 import { ParseError } from "./Errors.ts";
 import { isConstant, isVariable } from "./SymbolTable.ts";
-import { dereference } from "./Variables.ts";
+import { Memory } from "./Memory.ts";
+import { Variable } from "./Variables.ts";
+
+export function typeCheckExpression({
+  expr,
+  constantExpression,
+  resultType,
+}: {
+  expr: ExprContext,
+  constantExpression?: boolean,
+  resultType?: Type,
+}): values.Value {
+  const expressionListener = new ExpressionListener(!!constantExpression);
+  ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
+  const result = expressionListener.getResult();
+  return resultType ? values.cast(result, resultType) : result;
+}
 
 export function evaluateExpression({
   expr,
   constantExpression,
-  typeCheck,
-  resultType
+  resultType,
+  memory,
 }: {
   expr: ExprContext,
   constantExpression?: boolean,
-  typeCheck?: boolean,
-  resultType?: Type
+  resultType?: Type,
+  memory: Memory,
 }): values.Value {
-  const expressionListener = new ExpressionListener(!!constantExpression, !!typeCheck);
+  const expressionListener = new ExpressionListener(!!constantExpression, memory);
   ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
   const result = expressionListener.getResult();
   return resultType ? values.cast(result, resultType) : result;
@@ -34,14 +50,16 @@ export function evaluateExpression({
 class ExpressionListener extends QBasicParserListener {
   private _stack: values.Value[] = [];
   private _constantExpression: boolean;
-  private _typeCheck: boolean;
   private _callExpressionDepth: number;
+  private _typeCheck: boolean;
+  private _memory?: Memory;
 
-  constructor(constantExpression: boolean, typeCheck: boolean) {
+  constructor(constantExpression: boolean, memory?: Memory) {
     super();
     this._constantExpression = constantExpression;
-    this._typeCheck = typeCheck;
     this._callExpressionDepth = 0;
+    this._typeCheck = !memory;
+    this._memory = memory;
   }
 
   getResult() {
@@ -160,10 +178,7 @@ class ExpressionListener extends QBasicParserListener {
     const ctx = dispatchCtx.variable_or_function_call();
     const result = ctx['$result'];
     if (result) {
-      if (!result.value) {
-        result.value = values.getDefaultValueOfType(result.type, {allowDefaultRecords: this._typeCheck});
-      }
-      this.push(result.value);
+      this.push(this.readVariable(result));
       return;
     }
     const symbol = ctx['$symbol'];
@@ -180,14 +195,20 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     if (isVariable(symbol)) {
-      const variable = dereference(symbol.variable);
-      if (!variable.value) {
-        variable.value = values.getDefaultValueOfType(variable.type, {allowDefaultRecords: this._typeCheck});
-      }
-      this.push(variable.value);
+      this.push(this.readVariable(symbol.variable));
       return;
     }
     throw new Error("missing result for function call");
+  }
+
+  private readVariable(variable: Variable): values.Value {
+    if (this._memory) {
+      const [_, value] = this._memory.dereference(variable.address!);
+      if (value) {
+        return value;
+      }
+    }
+    return values.getDefaultValue(variable);
   }
 
   override exitVarCallExpr = (_ctx: VarCallExprContext) => {

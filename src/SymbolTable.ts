@@ -1,9 +1,10 @@
 import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures";
 import { sameType, Type, TypeTag } from "./Types";
-import { Constant, record } from "./Values";
+import { Constant } from "./Values";
 import { Variable } from "./Variables";
 import { ParseError } from "./Errors";
+import { Address, StorageType } from "./Memory";
 
 // Variables, constants (CONST), and procedures (FUNCTION and SUB) share the
 // same namespace.  Constants and procedures are looked up only by name, not by
@@ -120,9 +121,13 @@ function canonicalName(name: string): string {
 export class SymbolTable {
   private _parent: SymbolTable | undefined;
   private _symbols: NameToSlotMap = new NameToSlotMap();
+  private _stackIndex: number;
+  private _staticIndex: number;
   
   constructor(parent?: SymbolTable) {
     this._parent = parent;
+    this._stackIndex = 0;
+    this._staticIndex = 0;
   }
 
   lookupConstant(name: string): Constant | undefined {
@@ -135,12 +140,13 @@ export class SymbolTable {
 
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, isDefaultType, numDimensions, token}: {
+  lookupOrDefineVariable({name, type, isDefaultType, numDimensions, token, storageType}: {
       name: string,
       type: Type,
       isDefaultType: boolean,
-      numDimensions: number
-      token: Token
+      numDimensions: number,
+      token: Token,
+      storageType: StorageType,
     }): QBasicSymbol {
     const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
     if (slot) {
@@ -188,7 +194,7 @@ export class SymbolTable {
         lower: 1, upper: 10  // TODO: option base
       })
     } : {};
-    const variable = { name, type, token, ...arrayDimensions };
+    const variable = { name, type, token, storageType, ...arrayDimensions };
     this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };
   }
@@ -225,7 +231,7 @@ export class SymbolTable {
         }
         throw ParseError.fromToken(tokens[0], "Identifier cannot include period");
       }
-      const elements: Map<string, Variable> = new Map();
+      variable.elements = new Map();
       for (const {name: elementName, type: elementType} of variable.type.elements) {
         const element = {
           name: `${variable.name}.${elementName}`,
@@ -233,12 +239,12 @@ export class SymbolTable {
           isAsType: true,
           isParameter: variable.isParameter,
           token: variable.token,
+          storageType: variable.storageType,
           // TODO: Array elements
         };
         this.defineVariable(element);
-        elements.set(elementName, element);
+        variable.elements.set(elementName, element);
       }
-      variable.value = record(variable.type, elements);
     }
     if (!variable.arrayDimensions) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
@@ -281,6 +287,7 @@ export class SymbolTable {
       }
       slot.arrayVariables.set(variable.type.tag, variable);
     }
+    variable.address = this.allocate(variable.storageType);
     this._symbols.set(variable.name, slot);
   }
   
@@ -309,6 +316,35 @@ export class SymbolTable {
       throw ParseError.fromToken(procedure.token, "Duplicate definition");
     }
     slot.defFns.set(procedure.result!.type.tag, procedure);
+  }
+
+  stackSize(): number {
+    return this._stackIndex;
+  }
+
+  staticSize(): number {
+    if (this._parent) {
+      return this._parent.staticSize();
+    }
+    return this._staticIndex;
+  }
+
+  private allocate(storageType: StorageType): Address {
+    switch (storageType) {
+      case StorageType.STACK:
+        return {storageType, index: this._stackIndex++};
+      case StorageType.STATIC:
+        return {storageType, index: this.allocateStaticIndex()};
+    }
+  }
+
+  private allocateStaticIndex(): number {
+    if (this._parent) {
+      return this._parent.allocateStaticIndex();
+    }
+    const index = this._staticIndex;
+    this._staticIndex++;
+    return index;
   }
 }
 

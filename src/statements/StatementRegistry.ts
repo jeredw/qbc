@@ -1,4 +1,4 @@
-import { CallStatement, StackFrame } from "./Call.ts";
+import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { EndStatement } from "./End.ts";
@@ -12,8 +12,8 @@ import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 
-export function call(chunkIndex: number, stackFrame: StackFrame[]) {
-  return new CallStatement(chunkIndex, stackFrame);
+export function call(chunkIndex: number, stackVariables: StackVariable[]) {
+  return new CallStatement(chunkIndex, stackVariables);
 }
 
 export function case_(test: Variable, condition: parser.Case_exprContext) {

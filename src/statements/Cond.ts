@@ -2,7 +2,9 @@ import { ExprContext } from "../../build/QBasicParser";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow";
 import { RuntimeError } from "../Errors";
 import { evaluateExpression } from "../Expressions";
+import { Memory } from "../Memory";
 import { isError, isNumeric, TYPE_MISMATCH } from "../Values";
+import { ExecutionContext } from "./ExecutionContext";
 import { Statement } from "./Statement";
 
 export class DoTest extends Statement {
@@ -15,8 +17,8 @@ export class DoTest extends Statement {
     this.expr = expr;
   }
 
-  override execute(): ControlFlow | void {
-    const test = evaluateBoolean(this.expr);
+  override execute(context: ExecutionContext): ControlFlow | void {
+    const test = evaluateBoolean(context.memory, this.expr);
     const shouldBranchOut = this.isWhile != test;
     if (shouldBranchOut) {
       return { tag: ControlFlowTag.GOTO };
@@ -34,8 +36,8 @@ export class LoopTest extends Statement {
     this.expr = expr;
   }
 
-  override execute(): ControlFlow | void {
-    const test = evaluateBoolean(this.expr);
+  override execute(context: ExecutionContext): ControlFlow | void {
+    const test = evaluateBoolean(context.memory, this.expr);
     const shouldBranchBack = this.isWhile == test;
     if (shouldBranchBack) {
       return { tag: ControlFlowTag.GOTO };
@@ -51,15 +53,15 @@ export class IfTest extends Statement {
     this.expr = expr;
   }
 
-  override execute(): ControlFlow | void {
-    if (!evaluateBoolean(this.expr)) {
+  override execute(context: ExecutionContext): ControlFlow | void {
+    if (!evaluateBoolean(context.memory, this.expr)) {
       return { tag: ControlFlowTag.GOTO };
     }
   }
 }
 
-function evaluateBoolean(expr: ExprContext): boolean {
-  const value = evaluateExpression({expr: expr});
+function evaluateBoolean(memory: Memory, expr: ExprContext): boolean {
+  const value = evaluateExpression({expr: expr, memory});
   if (isError(value)) {
     throw RuntimeError.fromToken(expr.start!, value);
   }

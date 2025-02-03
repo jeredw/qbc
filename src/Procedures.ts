@@ -1,3 +1,4 @@
+import { Token } from "antlr4ng";
 import { Variable } from "./Variables.ts"
 
 export interface Procedure {
@@ -5,6 +6,5 @@ export interface Procedure {
   parameters: Variable[];
   result?: Variable;
   programChunkIndex: number;
-  staticStorage?: boolean;
   token: Token;
 }

@@ -1,6 +1,7 @@
 import { Token } from 'antlr4ng';
-import { Type, TypeTag, UserDefinedType } from './Types.ts'
+import { sameType, Type, TypeTag } from './Types.ts'
 import type { Variable } from './Variables.ts'
+import { Address } from './Memory.ts';
 
 export type ErrorValue = {
   tag: TypeTag.ERROR;
@@ -32,21 +33,10 @@ export type LongValue = {
   number: number;
 }
 
-export type RecordValue = {
-  tag: TypeTag.RECORD;
-  recordType: UserDefinedType;
-  elements: Map<string, Variable>;
-}
-
-export type ArrayValue = {
-  tag: TypeTag.ARRAY;
-  arrayType: Type;
-  elements: Map<number, Value>;
-}
-
 export type ReferenceValue = {
   tag: TypeTag.REFERENCE;
-  reference: Variable;
+  variable: Variable;
+  address: Address;
 }
 
 export type NumericValue =
@@ -59,8 +49,6 @@ export type Value =
   | ErrorValue
   | StringValue
   | NumericValue
-  | RecordValue
-  | ArrayValue
   | ReferenceValue;
 
 export type Constant = {
@@ -81,7 +69,7 @@ export function isNumeric(value: Value): value is NumericValue {
 }
 
 export function isReference(value: Value): value is ReferenceValue {
-  return 'reference' in value;
+  return 'variable' in value;
 }
 
 export function numericTypeOf(a: NumericValue): (number: number) => Value {
@@ -110,11 +98,6 @@ export function cast(value: Value, desiredType: Type): Value {
   if (value.tag == TypeTag.ERROR) {
     return value;
   }
-  if (value.tag == desiredType.tag &&
-      value.tag != TypeTag.RECORD &&
-      value.tag != TypeTag.ARRAY) {
-    return value;
-  }
   switch (desiredType.tag) {
     case TypeTag.SINGLE:
       return isNumeric(value) ? single(value.number) : TYPE_MISMATCH;
@@ -127,12 +110,10 @@ export function cast(value: Value, desiredType: Type): Value {
     case TypeTag.LONG:
       return isNumeric(value) ? long(value.number) : TYPE_MISMATCH;
     case TypeTag.FIXED_STRING:
-      return isString(value) ? string(value.string.slice(0, desiredType.maxLength - 1)) : TYPE_MISMATCH;
+      return isString(value) ? string(value.string.slice(0, desiredType.maxLength)) : TYPE_MISMATCH;
     case TypeTag.RECORD:
-      return value.tag == TypeTag.RECORD && value.recordType.name == desiredType.name ?
-        value : TYPE_MISMATCH;
     case TypeTag.ARRAY:
-      throw new Error("unimplemented");
+      return isReference(value) && sameType(value.variable.type, desiredType) ? value : TYPE_MISMATCH;
     case TypeTag.ANY:
       return value;
   }
@@ -152,8 +133,8 @@ export function typeOfValue(value: Value): Type {
   throw new Error("unimplemented");
 }
 
-export function getDefaultValueOfType(type: Type, {allowDefaultRecords}: {allowDefaultRecords: boolean}): Value {
-  switch (type.tag) {
+export function getDefaultValue(variable: Variable): Value {
+  switch (variable.type.tag) {
     case TypeTag.SINGLE:
       return single(0);
     case TypeTag.DOUBLE:
@@ -167,26 +148,11 @@ export function getDefaultValueOfType(type: Type, {allowDefaultRecords}: {allowD
     case TypeTag.FIXED_STRING:
       return string("");
     case TypeTag.RECORD:
-      if (!allowDefaultRecords) {
-        throw new Error("unexpected empty record");
-      }
-      return record(type, new Map());
     case TypeTag.ARRAY:
+      return reference(variable);
     case TypeTag.ANY:
       throw new Error("unimplemented");
   }
-}
-
-export function record(recordType: UserDefinedType, elements: Map<string, Variable>): RecordValue {
-  const value: RecordValue = {
-    tag: TypeTag.RECORD,
-    recordType,
-    elements: new Map()
-  }
-  for (const [name, variable] of elements) {
-    value.elements.set(name, variable);
-  }
-  return value;
 }
 
 export function error(errorMessage: string = ""): ErrorValue {
@@ -232,7 +198,7 @@ export function boolean(test: boolean): Value {
 }
 
 export function reference(variable: Variable): Value {
-  return {tag: TypeTag.REFERENCE, reference: variable};
+  return {tag: TypeTag.REFERENCE, variable, address: {...variable.address!}};
 }
 
 export const

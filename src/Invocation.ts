@@ -1,29 +1,31 @@
 import { Devices } from "./Devices";
 import { Program } from "./Programs";
-import { ControlFlowTag, SavedValue } from "./ControlFlow";
+import { Memory } from "./Memory";
+import { ControlFlowTag } from "./ControlFlow";
 import { RuntimeError } from "./Errors";
 import { ReturnStatement } from "./statements/Return";
 import { RETURN_WITHOUT_GOSUB } from "./Values";
 
-export function invoke(devices: Devices, program: Program) {
-  return new Invocation(devices, program);
+export function invoke(devices: Devices, memory: Memory, program: Program) {
+  return new Invocation(devices, memory, program);
 }
 
 interface ProgramLocation {
   chunkIndex: number;
   statementIndex: number;
   pusher?: ControlFlowTag;
-  savedValues?: SavedValue[];
 }
 
 export class Invocation {
   private devices: Devices;
+  private memory: Memory;
   private program: Program;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
 
-  constructor(devices: Devices, program: Program) {
+  constructor(devices: Devices, memory: Memory, program: Program) {
     this.devices = devices;
+    this.memory = memory;
     this.program = program;
   }
 
@@ -79,7 +81,7 @@ export class Invocation {
     }
     const statement = chunk.statements[statementIndex];
     try {
-      const controlFlow = statement.execute({devices: this.devices});
+      const controlFlow = statement.execute({devices: this.devices, memory: this.memory});
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
         return;
@@ -104,7 +106,6 @@ export class Invocation {
         case ControlFlowTag.CALL:
           this.stack.push({
             chunkIndex: controlFlow.chunkIndex,
-            savedValues: controlFlow.savedValues,
             statementIndex: 0,
             pusher: ControlFlowTag.CALL,
           });
@@ -139,10 +140,8 @@ export class Invocation {
   private exitChunk() {
     this.discardGosubFrames();
     const callFrame = this.stack[this.stack.length - 1];
-    if (callFrame && callFrame.savedValues) {
-      for (const {variable, value} of callFrame.savedValues) {
-        variable.value = value;
-      }
+    if (callFrame.pusher == ControlFlowTag.CALL) {
+      this.memory.popStack();
     }
     this.stack.pop();
   }
