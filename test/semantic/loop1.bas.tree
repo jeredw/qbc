@@ -1,0 +1,78 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (while_wend_statement while 
+      (expr 
+        (expr 
+          (variable_or_function_call i)) < 
+        (expr 
+          (literal 20))) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call i) = 
+            (expr 
+              (expr 
+                (variable_or_function_call i)) + 
+              (expr 
+                (variable_or_function_call i))))) \n) wend)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call i)))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (do_loop_statement do 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call i) = 
+            (expr 
+              (expr 
+                (variable_or_function_call i)) + 
+              (expr 
+                (literal 1))))) \n) loop 
+      (loop_condition until 
+        (expr 
+          (expr 
+            (variable_or_function_call i)) > 
+          (expr 
+            (literal 20)))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call i)))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (do_loop_statement do 
+      (do_condition while 
+        (expr 
+          (expr 
+            (variable_or_function_call i)) < 
+          (expr 
+            (literal 20)))) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call i) = 
+            (expr 
+              (expr 
+                (variable_or_function_call i)) + 
+              (expr 
+                (literal 1))))) \n) loop)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call i)))) \n <EOF>)

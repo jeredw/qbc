@@ -248,7 +248,7 @@ export class SymbolTable {
     }
     if (!variable.arrayDimensions) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
-      if (asType && !sameType(asType, variable.type)) {
+      if (asType && variable.isAsType && !sameType(asType, variable.type)) {
         // dim x as string
         // dim x as integer
         throw ParseError.fromToken(variable.token, "Duplicate definition");
@@ -271,7 +271,7 @@ export class SymbolTable {
       slot.scalarVariables.set(variable.type.tag, variable);
     } else {
       const asType = slot.arrayAsType ?? slot.scalarAsType;
-      if (asType && !sameType(asType, variable.type)) {
+      if (asType && variable.isAsType && !sameType(asType, variable.type)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       if (variable.isAsType) {

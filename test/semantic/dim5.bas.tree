@@ -1,0 +1,16 @@
+(program 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id x) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) )) as 
+        (type_name string)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id x) as 
+        (type_name integer)))) \n <EOF>)
