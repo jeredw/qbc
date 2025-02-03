@@ -1,10 +1,10 @@
-import { Devices } from "./Devices";
-import { Program } from "./Programs";
-import { Memory } from "./Memory";
-import { ControlFlowTag } from "./ControlFlow";
-import { RuntimeError } from "./Errors";
-import { ReturnStatement } from "./statements/Return";
-import { RETURN_WITHOUT_GOSUB } from "./Values";
+import { Devices } from "./Devices.ts";
+import { Program } from "./Programs.ts";
+import { Memory } from "./Memory.ts";
+import { ControlFlowTag } from "./ControlFlow.ts";
+import { RuntimeError } from "./Errors.ts";
+import { ReturnStatement } from "./statements/Return.ts";
+import { RETURN_WITHOUT_GOSUB } from "./Values.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program) {
   return new Invocation(devices, memory, program);

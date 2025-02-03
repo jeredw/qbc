@@ -1,12 +1,12 @@
-import { ExprContext } from "../../build/QBasicParser";
-import { RuntimeError } from "../Errors";
-import { evaluateExpression } from "../Expressions";
-import { Memory } from "../Memory";
-import { sameType, TypeTag } from "../Types";
-import { getDefaultValue, isError, isReference, Value } from "../Values";
-import { Variable } from "../Variables";
-import { ExecutionContext } from "./ExecutionContext";
-import { Statement } from "./Statement";
+import { ExprContext } from "../../build/QBasicParser.ts";
+import { RuntimeError } from "../Errors.ts";
+import { evaluateExpression } from "../Expressions.ts";
+import { Memory } from "../Memory.ts";
+import { sameType, TypeTag } from "../Types.ts";
+import { getDefaultValue, isError, isReference, Value } from "../Values.ts";
+import { Variable } from "../Variables.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
 
 export class LetStatement extends Statement {
   variable: Variable;

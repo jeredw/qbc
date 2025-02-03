@@ -1,10 +1,4 @@
 (program 
-  (label 
-    (line_number 10)) 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call foo)))) \n 
   (function_statement 
     (label 
       (line_number 20)) function foo 
@@ -33,4 +27,8 @@
         (goto_statement goto 
           (target 
             (line_number 20)))) \n) 
-    (end_function_statement end function)) \n <EOF>)
+    (end_function_statement end function)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call foo)))) \n <EOF>)

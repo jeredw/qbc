@@ -13,20 +13,13 @@
       <button class="stop-button">Stop</button>
     </div>
     <div class="code-box">
-      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">type foo
-x as string * 20
-end type
-
-sub quack(t as foo, n as integer)
-t.x = "quack" + t.x
-if n > 0 then
-quack t, n-1
-end if
-end sub
-
-dim a as foo
-quack a, 4
-print a.x        
+      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">20 function foo ()
+        if i = 1 then exit function
+        i = 1
+        print "hi"
+        goto 20
+        end function
+        print foo        
 </div>
     </div>
     <div class="status-line"> <span class="run-hint">&lt;⌘+Enter=Run &gt;</span> <span class="stop-hint">&lt;⌘+Enter=Stop&gt;</span></div>

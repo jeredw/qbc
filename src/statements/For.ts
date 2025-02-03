@@ -1,11 +1,11 @@
 import { Token } from "antlr4ng";
-import { ControlFlow, ControlFlowTag } from "../ControlFlow";
-import { RuntimeError } from "../Errors";
-import { isError, isNumeric, numericTypeOf } from "../Values";
-import { Variable } from "../Variables";
-import { Statement } from "./Statement";
-import { ExecutionContext } from "./ExecutionContext";
-import { Memory } from "../Memory";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
+import { RuntimeError } from "../Errors.ts";
+import { isError, isNumeric, numericTypeOf } from "../Values.ts";
+import { Variable } from "../Variables.ts";
+import { Statement } from "./Statement.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
+import { Memory } from "../Memory.ts";
 
 export class ForStatement extends Statement {
   counter: Variable;

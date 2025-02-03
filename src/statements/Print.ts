@@ -1,8 +1,8 @@
-import { Print_statementContext } from "../../build/QBasicParser";
-import { evaluateExpression } from "../Expressions";
-import { isNumeric, isString } from "../Values";
-import { ExecutionContext } from "./ExecutionContext";
-import { Statement } from "./Statement";
+import { Print_statementContext } from "../../build/QBasicParser.ts";
+import { evaluateExpression } from "../Expressions.ts";
+import { isNumeric, isString } from "../Values.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
 
 export class PrintStatement extends Statement {
   ast: Print_statementContext;

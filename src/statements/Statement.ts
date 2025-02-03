@@ -1,5 +1,5 @@
-import { ControlFlow } from "../ControlFlow";
-import { ExecutionContext } from "./ExecutionContext";
+import { ControlFlow } from "../ControlFlow.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
 
 export abstract class Statement {
   // If defined, index of statement this statement may branch to.

@@ -1,12 +1,12 @@
-import { Case_exprContext, ExprContext } from "../../build/QBasicParser";
-import { ControlFlow, ControlFlowTag } from "../ControlFlow";
-import { RuntimeError } from "../Errors";
-import { evaluateExpression } from "../Expressions";
-import { Memory } from "../Memory";
-import { isError, isNumeric, isString, Value } from "../Values";
-import { Variable } from "../Variables";
-import { ExecutionContext } from "./ExecutionContext";
-import { Statement } from "./Statement";
+import { Case_exprContext, ExprContext } from "../../build/QBasicParser.ts";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
+import { RuntimeError } from "../Errors.ts";
+import { evaluateExpression } from "../Expressions.ts";
+import { Memory } from "../Memory.ts";
+import { isError, isNumeric, isString, Value } from "../Values.ts";
+import { Variable } from "../Variables.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
 
 export class CaseStatement extends Statement {
   test: Variable;

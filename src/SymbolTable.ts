@@ -1,10 +1,10 @@
 import { Token } from "antlr4ng";
-import { Procedure } from "./Procedures";
-import { sameType, Type, TypeTag } from "./Types";
-import { Constant } from "./Values";
-import { Variable } from "./Variables";
-import { ParseError } from "./Errors";
-import { Address, StorageType } from "./Memory";
+import { Procedure } from "./Procedures.ts";
+import { sameType, Type, TypeTag } from "./Types.ts";
+import { Constant } from "./Values.ts";
+import { Variable } from "./Variables.ts";
+import { ParseError } from "./Errors.ts";
+import { Address, StorageType } from "./Memory.ts";
 
 // Variables, constants (CONST), and procedures (FUNCTION and SUB) share the
 // same namespace.  Constants and procedures are looked up only by name, not by
@@ -302,6 +302,9 @@ export class SymbolTable {
     if (this._symbols.has(procedure.name)) {
       throw ParseError.fromToken(procedure.token, "Duplicate definition");
     }
+    if (procedure.result) {
+      procedure.result.address = this.allocate(procedure.result.storageType);
+    }
     this._symbols.set(procedure.name, {procedure});
   }
 
@@ -329,7 +332,7 @@ export class SymbolTable {
     return this._staticIndex;
   }
 
-  private allocate(storageType: StorageType): Address {
+  allocate(storageType: StorageType): Address {
     switch (storageType) {
       case StorageType.STACK:
         return {storageType, index: this._stackIndex++};

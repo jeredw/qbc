@@ -1,6 +1,6 @@
 import { Interpreter } from "./Interpreter.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
-import { TextScreen } from "./Screen.ts";
+import { CanvasTextScreen } from "./Screen.ts";
 import { Invocation } from "./Invocation.ts";
 
 const TAB_STOPS = 8;
@@ -15,11 +15,11 @@ class Shell {
   private runButton: HTMLElement;
   private stopButton: HTMLElement;
 
-  private screen: TextScreen;
+  private screen: CanvasTextScreen;
 
   constructor(root: HTMLElement) {
     this.root = root;
-    this.screen = new TextScreen(80, 25);
+    this.screen = new CanvasTextScreen(80, 25);
     this.root.appendChild(this.screen.canvas);
     requestAnimationFrame(this.updateScreen);
     this.interpreter = new Interpreter({

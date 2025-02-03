@@ -1,6 +1,6 @@
 import { Token } from "antlr4ng";
-import { Type } from "./Types"
-import { StorageType, Address } from "./Memory";
+import { Type } from "./Types.ts"
+import { StorageType, Address } from "./Memory.ts";
 
 export interface Variable {
   name: string;

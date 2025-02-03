@@ -1,11 +1,11 @@
-import { ExprContext } from "../../build/QBasicParser";
-import { ControlFlow, ControlFlowTag } from "../ControlFlow";
-import { RuntimeError } from "../Errors";
-import { evaluateExpression } from "../Expressions";
-import { TypeTag } from "../Types";
-import { ILLEGAL_FUNCTION_CALL, isError, isNumeric } from "../Values";
-import { ExecutionContext } from "./ExecutionContext";
-import { Statement } from "./Statement";
+import { ExprContext } from "../../build/QBasicParser.ts";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
+import { RuntimeError } from "../Errors.ts";
+import { evaluateExpression } from "../Expressions.ts";
+import { TypeTag } from "../Types.ts";
+import { ILLEGAL_FUNCTION_CALL, isError, isNumeric } from "../Values.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
 
 export class BranchStatement extends Statement {
   gosub: boolean;

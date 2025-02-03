@@ -1,5 +1,5 @@
 import { Token } from "antlr4ng"
-import { ErrorValue } from "./Values";
+import { ErrorValue } from "./Values.ts";
 
 /** Semantic errors detected at parse time. */
 export class ParseError extends Error {

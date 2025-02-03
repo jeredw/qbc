@@ -1,11 +1,11 @@
-import { ExprContext } from "../../build/QBasicParser";
-import { ControlFlow, ControlFlowTag } from "../ControlFlow";
-import { evaluateExpression } from "../Expressions";
-import { Address, StorageType } from "../Memory";
-import { isReference, reference, Value } from "../Values";
-import { Variable } from "../Variables";
-import { ExecutionContext } from "./ExecutionContext";
-import { Statement } from "./Statement";
+import { ExprContext } from "../../build/QBasicParser.ts";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
+import { evaluateExpression } from "../Expressions.ts";
+import { Address, StorageType } from "../Memory.ts";
+import { isReference, Value } from "../Values.ts";
+import { Variable } from "../Variables.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
 
 export interface StackVariable {
   variable: Variable;

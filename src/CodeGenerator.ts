@@ -1,8 +1,8 @@
 import * as parser from "../build/QBasicParser.ts";
 import * as statements from "./statements/StatementRegistry.ts";
-import { QBasicParserListener } from "../build/QBasicParserListener";
+import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParseError } from "./Errors.ts";
-import { Program, ProgramChunk } from "./Programs";
+import { Program, ProgramChunk } from "./Programs.ts";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
 import { typeCheckExpression } from "./Expressions.ts";
@@ -221,6 +221,7 @@ export class CodeGenerator extends QBasicParserListener {
       // Attempting to call a function with a call statement, or a sub from an expression.
       throw ParseError.fromToken(token, "Duplicate definition");
     }
+    const hasResult = procedure.result && result;
     const args = argumentListCtx?.argument() ?? [];
     if (args.length != procedure.parameters.length) {
       throw ParseError.fromToken(token, "Argument-count mismatch");

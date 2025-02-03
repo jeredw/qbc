@@ -7,7 +7,7 @@ import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
-import * as parser from "../../build/QBasicParser";
+import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";

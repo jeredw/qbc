@@ -1,7 +1,7 @@
 import * as parser from "../build/QBasicParser.ts";
-import { QBasicParserListener } from "../build/QBasicParserListener";
+import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParseError } from "./Errors.ts";
-import type { Program, ProgramChunk } from "./Programs";
+import type { Program, ProgramChunk } from "./Programs.ts";
 import { ParserRuleContext, Token } from "antlr4ng";
 import {
   TypeTag,
@@ -73,7 +73,7 @@ export class Typer extends QBasicParserListener {
     const token = ctx.ID().symbol;
     const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
     const parameters = this.parseParameterList(ctx.parameter_list());
-    const procedure = {
+    const procedure: Procedure = {
       name,
       parameters,
       result: {
@@ -90,6 +90,7 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$procedure = procedure;
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
     this._program.chunks.push(this._chunk);
+    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
     this.installParameters(parameters);
   }
 
@@ -100,7 +101,7 @@ export class Typer extends QBasicParserListener {
     const fnPrefixed = rawName.startsWith('fn') ? rawName : `fn${rawName}`;
     const [name, sigil] = splitSigil(fnPrefixed);
     const parameters = this.parseDefFnParameterList(ctx.def_fn_parameter_list());
-    const procedure = {
+    const procedure: Procedure = {
       name,
       parameters,
       result: {
@@ -118,6 +119,7 @@ export class Typer extends QBasicParserListener {
     // TODO: only params and statics get local entries in a def fn
     this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
     this._program.chunks.push(this._chunk);
+    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
     this.installParameters(parameters);
   }
 

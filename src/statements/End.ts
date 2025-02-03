@@ -1,5 +1,5 @@
-import { ControlFlow, ControlFlowTag } from "../ControlFlow";
-import { Statement } from "./Statement";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
+import { Statement } from "./Statement.ts";
 
 export class EndStatement extends Statement {
   constructor() {

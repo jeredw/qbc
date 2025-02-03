@@ -30,7 +30,22 @@ const DEFAULT_PALETTE = new Map([
   [15, "#ffffff"],
 ]);
 
-export class TextScreen {
+export interface TextScreen {
+  print(text: string, newline: boolean): void;
+}
+
+export class TestTextScreen implements TextScreen {
+  output: string = "";
+
+  print(text: string, newline_: boolean) {
+    this.output += text;
+    if (newline_) {
+      this.output += '\n';
+    }
+  }
+}
+
+export class CanvasTextScreen implements TextScreen {
   private _width: number;
   private _height: number;
   private _color: Attributes;

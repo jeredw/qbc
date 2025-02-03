@@ -1,4 +1,4 @@
-import { isReference, Value } from "./Values";
+import { isReference, Value } from "./Values.ts";
 
 export enum StorageType {
   STATIC,

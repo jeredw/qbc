@@ -1,6 +1,6 @@
 import { Token } from "antlr4ng";
-import { ControlFlow, ControlFlowTag } from "../ControlFlow";
-import { Statement } from "./Statement";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
+import { Statement } from "./Statement.ts";
 
 export class ReturnStatement extends Statement {
   start?: Token;
