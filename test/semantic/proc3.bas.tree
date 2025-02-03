@@ -1,0 +1,17 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (goto_statement goto 
+          (target 
+            (text_label 
+              (untyped_id bar))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (label 
+    (text_label 
+      (untyped_id bar)) :) 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "nope")))) \n <EOF>)

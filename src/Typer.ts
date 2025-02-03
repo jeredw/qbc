@@ -298,7 +298,9 @@ export class Typer extends QBasicParserListener {
     });
     getTyperContext(ctx).$symbol = symbol;
     getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);
-    getTyperContext(ctx).$increment = this.makeSyntheticVariable(type, ctx._increment!.start!);
+    if (ctx._increment) {
+      getTyperContext(ctx).$increment = this.makeSyntheticVariable(type, ctx._increment!.start!);
+    }
   }
 
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}

@@ -1,0 +1,21 @@
+(program 
+  (type_statement type 
+    (untyped_id node) \n \n 
+    (type_element 
+      (untyped_id parent) as 
+      (type_name_for_type_element 
+        (untyped_id node)) \n) 
+    (type_element 
+      (untyped_id left) as 
+      (type_name_for_type_element 
+        (untyped_id node)) \n) 
+    (type_element 
+      (untyped_id right) as 
+      (type_name_for_type_element 
+        (untyped_id node)) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id tree) as 
+        (type_name 
+          (untyped_id node))))) \n <EOF>)

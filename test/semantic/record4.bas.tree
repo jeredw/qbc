@@ -1,0 +1,41 @@
+(program 
+  (type_statement type 
+    (untyped_id inner) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element 
+        (fixed_string string * 42)) \n) end type) \n \n 
+  (type_statement type 
+    (untyped_id outer) \n 
+    (type_element 
+      (untyped_id a) as 
+      (type_name_for_type_element 
+        (untyped_id inner)) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id s) as 
+        (type_name 
+          (untyped_id outer))) , 
+      (dim_variable 
+        (untyped_id t) as 
+        (type_name 
+          (untyped_id outer))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call t.a.x) = 
+      (expr 
+        (literal "yo howdy")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s) = 
+      (expr 
+        (variable_or_function_call t)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call s.a.x)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call t.a.x)))) \n <EOF>)

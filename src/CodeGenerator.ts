@@ -357,10 +357,10 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.let_(endVariable, endExpr));
 
     const incrementVariable = getTyperContext(ctx).$increment;
-    if (!incrementVariable) {
-      throw new Error("missing increment");
-    }
     if (ctx.STEP()) {
+      if (!incrementVariable) {
+        throw new Error("missing increment");
+      }
       const increment = ctx._increment;
       if (!increment) {
         throw new Error("missing step expr");
@@ -388,7 +388,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("missing limit");
     }
     const incrementVariable = getTyperContext(ctx).$increment;
-    if (!incrementVariable) {
+    if (ctx.STEP() && !incrementVariable) {
       throw new Error("missing increment");
     }
 

@@ -1,0 +1,54 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo$) = 
+      (expr 
+        (literal "hello")))) \n 
+  (statement 
+    (select_case_statement select case 
+      (expr 
+        (variable_or_function_call foo$)) 
+      (before_first_case \n) 
+      (case_block 
+        (case_statement case 
+          (case_expr 
+            (expr 
+              (literal "apples")) to 
+            (expr 
+              (literal "guava")))) 
+        (block : \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "nope")))) \n)) 
+      (case_block 
+        (case_statement case 
+          (case_expr is >= 
+            (expr 
+              (literal "potato"))) , 
+          (case_expr is = 
+            (expr 
+              (literal "watermelon")))) 
+        (block : \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "nope")))) \n)) 
+      (case_block 
+        (case_statement case 
+          (case_expr 
+            (expr 
+              (literal "zuchini")))) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "nope")))) \n)) 
+      (case_block 
+        (case_statement case else) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "ok")))) \n)) 
+      (end_select_statement end select))) \n <EOF>)

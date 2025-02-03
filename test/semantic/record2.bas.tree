@@ -1,0 +1,72 @@
+(program 
+  (type_statement type 
+    (untyped_id test) \n 
+    (type_element 
+      (untyped_id a) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id b) as 
+      (type_name_for_type_element 
+        (fixed_string string * 42)) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id x) as 
+        (type_name 
+          (untyped_id test))) , 
+      (dim_variable 
+        (untyped_id y) as 
+        (type_name 
+          (untyped_id test))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x.b) = 
+      (expr 
+        (literal "hello")))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x.b)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call y.b)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call y) = 
+      (expr 
+        (variable_or_function_call x)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x.b)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call y.b)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call y.b) = 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x.b)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call y.b)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x.b) = 
+      (expr 
+        (literal "yes")))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x.b)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call y.b)))) \n <EOF>)

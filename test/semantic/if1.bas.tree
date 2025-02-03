@@ -1,0 +1,27 @@
+(program \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (expr 
+          (literal 4)) < 
+        (expr 
+          (literal 2))) then 
+      (if_inline_action 
+        (statement 
+          (if_inline_statement if 
+            (expr 
+              (expr 
+                (literal 4)) > 
+              (expr 
+                (literal 2))) then 
+            (if_inline_action 
+              (statement 
+                (print_statement print 
+                  (expr 
+                    (literal "nope"))))) 
+            (if_inline_else_statement else 
+              (if_inline_action 
+                (statement 
+                  (print_statement print 
+                    (expr 
+                      (literal "nope"))))))))))) \n <EOF>)

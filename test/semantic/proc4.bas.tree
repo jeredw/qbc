@@ -1,0 +1,68 @@
+(program 
+  (function_statement function foo 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id x) as 
+          (type_name_for_parameter integer)) , 
+        (parameter 
+          (untyped_id y) as 
+          (type_name_for_parameter string)) , 
+        (parameter 
+          (untyped_id z) as 
+          (type_name_for_parameter integer))) ) static 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call i) = 
+          (expr 
+            (expr 
+              (variable_or_function_call i)) + 
+            (expr 
+              (literal 1))))) \n 
+      (statement 
+        (print_statement print 
+          (expr 
+            (variable_or_function_call i)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call foo) = 
+          (expr 
+            (expr 
+              (expr 
+                (variable_or_function_call x)) * 
+              (expr 
+                (variable_or_function_call i))) + 
+            (expr 
+              (variable_or_function_call z))))) \n) 
+    (end_function_statement end function)) \n \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call foo 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 2))) , 
+              (argument 
+                (expr 
+                  (literal "hello"))) , 
+              (argument 
+                (expr 
+                  (literal 1)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call foo 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 4))) , 
+              (argument 
+                (expr 
+                  (literal "goodbye"))) , 
+              (argument 
+                (expr 
+                  (literal 1)))) ))))) \n <EOF>)

@@ -1,0 +1,55 @@
+(program 
+  (function_statement function fib 
+    ( 
+      (parameter_list 
+        (parameter n)) ) 
+    (block \n 
+      (if_block_statement if 
+        (expr 
+          (expr 
+            (variable_or_function_call n)) <= 
+          (expr 
+            (literal 2))) then \n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call fib) = 
+              (expr 
+                (literal 1)))) \n) 
+        (else_block_statement else 
+          (else_block \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call fib) = 
+                (expr 
+                  (expr 
+                    (variable_or_function_call fib 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call n)) - 
+                              (expr 
+                                (literal 1))))) ))) + 
+                  (expr 
+                    (variable_or_function_call fib 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call n)) - 
+                              (expr 
+                                (literal 2))))) )))))) \n)) 
+        (end_if_statement end if)) \n) 
+    (end_function_statement end function)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fib 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 8)))) ))))) \n <EOF>)

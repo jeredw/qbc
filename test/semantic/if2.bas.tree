@@ -1,0 +1,48 @@
+(program 
+  (if_block_statement if 
+    (expr 
+      (expr 
+        (variable_or_function_call foo$)) = 
+      (expr 
+        (literal "bar"))) then \n 
+    (then_block 
+      (statement 
+        (print_statement print 
+          (expr 
+            (literal "nope")))) \n) 
+    (elseif_block_statement elseif 
+      (expr 
+        (expr 
+          (expr 
+            (variable_or_function_call baz$)) > 
+          (expr 
+            (variable_or_function_call quux$))) or 
+        (expr 
+          (expr 
+            (variable_or_function_call foo$)) = 
+          (expr 
+            (literal "quux")))) then 
+      (else_block \n 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "nope")))) \n)) 
+    (elseif_block_statement elseif 
+      (expr not 
+        (expr 
+          (expr 
+            (literal 4)) < 
+          (expr 
+            (literal 5)))) then 
+      (else_block \n 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "nope")))) \n)) 
+    (else_block_statement else 
+      (else_block \n 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "ok")))) \n)) 
+    (end_if_statement end if)) \n <EOF>)
