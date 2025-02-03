@@ -1,0 +1,60 @@
+(program 
+  (function_statement function ugh 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id x) as 
+          (type_name_for_parameter integer))) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (expr 
+            (variable_or_function_call x)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ugh) = 
+          (expr 
+            (variable_or_function_call x)))) \n) 
+    (end_function_statement end function)) \n \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (variable_or_function_call ugh 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))) to 
+      (expr 
+        (variable_or_function_call ugh 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 1))))) ))) step 
+      (expr 
+        (variable_or_function_call ugh 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 2)))) ))) 
+      (block \n 
+        (statement 
+          (for_next_statement for j = 
+            (expr 
+              (variable_or_function_call ugh 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 3)))) ))) to 
+            (expr 
+              (variable_or_function_call ugh 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 4)))) ))) 
+            (block \n) next j)) :) next i)) \n <EOF>)

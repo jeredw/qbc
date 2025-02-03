@@ -27,8 +27,20 @@
                   (expr 
                     (variable_or_function_call i))) + 
                 (expr 
-                  (variable_or_function_call j))))) \n) next j) , i)) \n 
+                  (variable_or_function_call j))))) \n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call loops) = 
+              (expr 
+                (expr 
+                  (variable_or_function_call loops)) + 
+                (expr 
+                  (literal 1))))) \n) next j) , i)) \n \n 
   (statement 
     (print_statement print 
       (expr 
-        (variable_or_function_call sum)))) \n <EOF>)
+        (variable_or_function_call sum)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call loops)))) \n <EOF>)

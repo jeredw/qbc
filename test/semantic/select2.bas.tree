@@ -1,0 +1,96 @@
+(program 
+  (function_statement function ugh 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id x) as 
+          (type_name_for_parameter integer))) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (expr 
+            (variable_or_function_call x)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ugh) = 
+          (expr 
+            (variable_or_function_call x)))) \n) 
+    (end_function_statement end function)) \n \n 
+  (statement 
+    (select_case_statement select case 
+      (expr 
+        (variable_or_function_call ugh 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))) 
+      (before_first_case \n) 
+      (case_block 
+        (case_statement case 
+          (case_expr 
+            (expr 
+              (variable_or_function_call ugh 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 2)))) ))) to 
+            (expr 
+              (variable_or_function_call ugh 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 3)))) ))))) 
+        (block : \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "nope")))) \n)) 
+      (case_block 
+        (case_statement case 
+          (case_expr is >= 
+            (expr 
+              (variable_or_function_call ugh 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 4)))) )))) , 
+          (case_expr is <= 
+            (expr 
+              (variable_or_function_call ugh 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 5)))) ))))) 
+        (block : \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "ok")))) \n)) 
+      (case_block 
+        (case_statement case 
+          (case_expr 
+            (expr 
+              (variable_or_function_call ugh 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 6)))) ))))) 
+        (block : \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "nope")))) \n)) 
+      (case_block 
+        (case_statement case else) 
+        (block : \n 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "nope")))) \n)) 
+      (end_select_statement end select))) \n <EOF>)
