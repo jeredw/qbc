@@ -164,7 +164,7 @@ export function string(string: string = ""): Value {
 }
 
 export function single(number: number): Value {
-  if (!isFinite(number) || number < -1.401298e-45 || number > 3.402823e+38) {
+  if (!isFinite(number) || number < -3.402823e+38 || number > 3.402823e+38) {
     return OVERFLOW;
   }
   return {tag: TypeTag.SINGLE, number};

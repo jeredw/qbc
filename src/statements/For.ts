@@ -23,7 +23,7 @@ export class ForStatement extends Statement {
     const start = getValueOrDefault(context.memory, this.counter);
     const end = getValueOrDefault(context.memory, this.end);
     const increment = getValueOrDefault(context.memory, this.increment, 1);
-    if (end > start && increment < 0 || end < start && increment > 0) {
+    if (end > start && increment < 0 || end < start && increment >= 0) {
       return { tag: ControlFlowTag.GOTO };
     }
   }
@@ -48,14 +48,15 @@ export class NextStatement extends Statement {
     if (!counterValue || !isNumeric(counterValue)) {
       throw new Error("must be numeric");
     }
-    const next = counterValue.number + getValueOrDefault(context.memory, this.increment, 1);
+    const increment = getValueOrDefault(context.memory, this.increment, 1);
+    const next = counterValue.number + increment;
     const nextValue = numericTypeOf(counterValue)(next);
     if (isError(nextValue)) {
       throw RuntimeError.fromToken(this.forToken, nextValue);
     }
     context.memory.write(counterAddress, nextValue);
     const end = getValueOrDefault(context.memory, this.end);
-    if (next <= end) {
+    if (increment == 0 || (increment > 0 && next <= end) || (increment < 0 && next >= end)) {
       return {tag: ControlFlowTag.GOTO};
     }
   }
