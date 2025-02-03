@@ -1,0 +1,90 @@
+(program 
+  (statement 
+    (on_expr_goto_statement on 
+      (expr 
+        (expr 
+          (literal 2)) + 
+        (expr 
+          (literal 2))) goto 
+      (target 
+        (line_number 10)) , 
+      (target 
+        (line_number 20)) , 
+      (target 
+        (line_number 30)) , 
+      (target 
+        (line_number 40)))) \n 
+  (label 
+    (line_number 10)) 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "nope")))) : 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (line_number 20)) 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "nope")))) : 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (line_number 30)) 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "nope")))) : 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (line_number 40)) 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "ok")))) \n \n 
+  (statement 
+    (on_expr_goto_statement on 
+      (expr 
+        (literal 0)) goto 
+      (target 
+        (line_number 10)) , 
+      (target 
+        (line_number 20)) , 
+      (target 
+        (line_number 30)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (on_expr_goto_statement on 
+      (expr 
+        (literal 4)) goto 
+      (target 
+        (line_number 10)) , 
+      (target 
+        (line_number 20)) , 
+      (target 
+        (line_number 30)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (on_expr_gosub_statement on 
+      (expr 
+        (literal 1)) gosub 
+      (target 
+        (line_number 50)) , 
+      (target 
+        (line_number 10)) , 
+      (target 
+        (line_number 20)))) \n 
+  (label 
+    (line_number 50)) 
+  (statement 
+    (print_statement print 
+      (expr 
+        (literal "ok")))) \n <EOF>)

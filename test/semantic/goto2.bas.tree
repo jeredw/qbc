@@ -1,0 +1,64 @@
+(program 
+  (statement 
+    (gosub_statement gosub 
+      (target 
+        (text_label 
+          (untyped_id foo))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call i)))) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id foo)) :) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (expr 
+          (variable_or_function_call i)) + 
+        (expr 
+          (literal 1))))) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (expr 
+          (variable_or_function_call i)) < 
+        (expr 
+          (literal 10))) then 
+      (if_inline_action 
+        (statement 
+          (gosub_statement gosub 
+            (target 
+              (text_label 
+                (untyped_id bar)))))))) \n 
+  (statement 
+    (return_statement return)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id bar)) :) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (expr 
+          (variable_or_function_call i)) + 
+        (expr 
+          (literal 2))))) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (expr 
+          (variable_or_function_call i)) < 
+        (expr 
+          (literal 10))) then 
+      (if_inline_action 
+        (statement 
+          (gosub_statement gosub 
+            (target 
+              (text_label 
+                (untyped_id foo)))))))) \n 
+  (statement 
+    (return_statement return)) \n <EOF>)
