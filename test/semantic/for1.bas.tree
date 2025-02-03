@@ -1,0 +1,29 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call sum) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call sum) = 
+            (expr 
+              (expr 
+                (variable_or_function_call sum)) + 
+              (expr 
+                (variable_or_function_call i))))) \n) next i)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call i)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call sum)))) \n <EOF>)

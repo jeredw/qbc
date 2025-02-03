@@ -61,9 +61,11 @@ block
 // ...}: END
   | (COLON statement?)* NL
     (label? (statement? | if_block_statement) (COLON statement?)* NL)*
-// Match block ending keyword in the parent statement, then match NL
-// in the parent block or program.
-    label? (statement? | if_block_statement) (COLON statement?)*
+// Match block ending keyword in the parent statement, then match NL in the
+// parent block or program.  Match a label first on the last partial line so
+// that we prefer "label: (END)" instead of "call label ':' (END)".
+    ( label?
+    | label? (statement? | if_block_statement) (COLON statement?)* COLON)
   ;
 
 // Used to define labels.
@@ -477,8 +479,15 @@ field_assignment
 // turns ',' into NEXT_WITH_MANDATORY_ID.
 for_next_statement
   : FOR ID '=' start=expr TO end=expr (STEP increment=expr)?
-    block
-    (NEXT ID? | NEXT_WITH_MANDATORY_ID ID)
+    ( block (NEXT ID? | NEXT_WITH_MANDATORY_ID ID)
+    // NEXT_WITH_MANDATORY_ID counts as a statement separator to close the block.
+    | (COLON statement?)* (COLON for_next_statement) NEXT_WITH_MANDATORY_ID ID
+    | ((COLON statement?)* NL
+       (label? (statement? | if_block_statement) (COLON statement?)* NL)*
+       ( label?
+       | label? for_next_statement (NEXT_WITH_MANDATORY_ID ID)
+       | label? (statement? | if_block_statement) (COLON statement?)*
+         (COLON for_next_statement) (NEXT_WITH_MANDATORY_ID ID))))
   ;
 
 get_graphics_statement

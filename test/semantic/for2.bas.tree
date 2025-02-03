@@ -1,0 +1,316 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) step 
+      (expr 
+        (literal 1)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 1)))) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "1->10 +1 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "1->10 +1 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) step 
+      (expr 
+        (literal 0)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 1)))) \n 
+        (statement 
+          (exit_statement exit for)) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "1->10  0 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "1->10  0 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) step 
+      (expr - 
+        (expr 
+          (literal 1))) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 0)))) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "1->10 -1 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "1->10 -1 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 10)) to 
+      (expr 
+        (literal 1)) step 
+      (expr 
+        (literal 1)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 0)))) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "10->1 +1 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "10->1 +1 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 10)) to 
+      (expr 
+        (literal 1)) step 
+      (expr 
+        (literal 0)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 0)))) \n 
+        (statement 
+          (exit_statement exit for)) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "10->1  0 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "10->1  0 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 10)) to 
+      (expr 
+        (literal 1)) step 
+      (expr - 
+        (expr 
+          (literal 1))) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 1)))) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "10->1 -1 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "10->1 -1 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 1)) step 
+      (expr 
+        (literal 1)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 1)))) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "1->1  +1 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "1->1  +1 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 1)) step 
+      (expr 
+        (literal 0)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 1)))) \n 
+        (statement 
+          (exit_statement exit for)) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "1->1   0 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "1->1   0 fail")))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call pass) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 1)) step 
+      (expr - 
+        (expr 
+          (literal 1))) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call pass) = 
+            (expr 
+              (literal 1)))) \n) next i)) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call pass)) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (expr 
+              (literal "1->1  -1 ok"))))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (expr 
+                (literal "1->1  -1 fail")))))))) \n <EOF>)

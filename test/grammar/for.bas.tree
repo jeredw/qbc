@@ -39,15 +39,49 @@
       (expr 
         (literal 1)) to 
       (expr 
-        (literal 5)) 
-      (block \n 
-        (statement 
-          (for_next_statement for b = 
-            (expr 
-              (literal 1)) to 
-            (expr 
-              (literal 5)) 
-            (block \n) next b))) , a)) \n 
+        (literal 5)) \n 
+      (for_next_statement for b = 
+        (expr 
+          (literal 1)) to 
+        (expr 
+          (literal 5)) 
+        (block \n) next b) , a)) \n 
+  (statement 
+    (for_next_statement for a = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) \n 
+      (for_next_statement for b = 
+        (expr 
+          (literal 1)) to 
+        (expr 
+          (literal 5)) 
+        (block :) next b) , a)) \n 
+  (statement 
+    (for_next_statement for a = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) : 
+      (for_next_statement for b = 
+        (expr 
+          (literal 1)) to 
+        (expr 
+          (literal 5)) 
+        (block :) next b) , a)) \n 
+  (statement 
+    (for_next_statement for a = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) : 
+      (for_next_statement for b = 
+        (expr 
+          (literal 1)) to 
+        (expr 
+          (literal 5)) 
+        (block \n) next b) , a)) \n 
   (statement 
     (print_statement print 
       (expr 
