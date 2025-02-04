@@ -27,24 +27,30 @@ was slow - like go take a coffee break slow.  So it keeps some parse state like
 symbols around between program runs.  For example, if you run:
 
 ```basic
-dim x as string
+sub test
+  shared foo as long
+  foo = 42
+end sub
+test
 ```
 
 and then edit and rerun:
 
 ```basic
-x = 42
-dim x as string
+sub test
+  shared foo as long
+  foo = 42
+end sub
+test
+print foo
 ```
 
-you get "Type mismatch" on `x = 42`.  But if you open a new program and run:
+you get "42".  But if you save and reload this program and do a fresh run, you
+get a "Duplicate definition" error on `shared foo as long`.
 
-```basic
-x = 42
-dim x as string
-```
-
-you get "Duplicate definition" on `dim x`.
+The first interactive run defines a global `foo as long`, and rerunning prints
+it.  But on a fresh run, `print foo` implicitly defines a global `foo!`, and the
+`shared` declaration mismatches it.
 
 This implementation doesn't do incremental parsing and tries to match what would
 happen in a fresh run with no saved state.

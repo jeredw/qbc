@@ -117,7 +117,7 @@ export class Typer extends QBasicParserListener {
     this._chunk.symbols.defineFn(procedure);
     getTyperContext(ctx).$procedure = procedure;
     // TODO: only params and statics get local entries in a def fn
-    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
+    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
     this._program.chunks.push(this._chunk);
     procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
     this.installParameters(parameters);
@@ -135,7 +135,7 @@ export class Typer extends QBasicParserListener {
     this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
-    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols));
+    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
     this._program.chunks.push(this._chunk);
     this.installParameters(parameters);
   }
@@ -233,6 +233,21 @@ export class Typer extends QBasicParserListener {
       }
     }
   }
+
+  override enterShared_statement = (ctx: parser.Shared_statementContext) => {
+    if (!this._chunk.procedure || this._chunk.procedure.name.startsWith('fn')) {
+      throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB/FUNCTION");
+    }
+    for (const scopeVar of ctx.scope_variable()) {
+    }
+  }
+
+  override enterStatic_statement = (ctx: parser.Static_statementContext) => {
+    if (!this._chunk.procedure) {
+      throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB, FUNCTION or DEF FN");
+    }
+  }
+
 
   private getArrayBounds(ctx: parser.Dim_array_boundsContext | null): ArrayBounds[] {
     if (ctx == null) {
@@ -352,8 +367,6 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$test = this.makeSyntheticVariable(type, ctx.start!);
   }
 
-  override enterShared_statement = (ctx: parser.Shared_statementContext) => {}
-  override enterStatic_statement = (ctx: parser.Static_statementContext) => {}
   override enterStop_statement = (ctx: parser.Stop_statementContext) => {}
   override enterUnlock_statement = (ctx: parser.Unlock_statementContext) => {}
   override enterView_statement = (ctx: parser.View_statementContext) => {}

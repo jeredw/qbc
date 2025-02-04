@@ -763,10 +763,12 @@ end_select_statement
   : label? END SELECT
   ;
 
+// *** SHARED is illegal outside a sub or function.
 shared_statement
   : SHARED scope_variable (COMMA scope_variable)*
   ;
 
+// *** STATIC is illegal outside a sub, function, or def fn.
 static_statement
   : STATIC scope_variable (COMMA scope_variable)*
   ;

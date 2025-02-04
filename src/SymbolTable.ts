@@ -319,6 +319,7 @@ export class SymbolTable {
       throw ParseError.fromToken(procedure.token, "Duplicate definition");
     }
     slot.defFns.set(procedure.result!.type.tag, procedure);
+    this._symbols.set(procedure.name, slot);
   }
 
   stackSize(): number {
