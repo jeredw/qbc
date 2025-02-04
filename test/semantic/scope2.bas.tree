@@ -1,0 +1,29 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call j) = 
+      (expr 
+        (literal 1)))) \n 
+  (def_fn_statement def fnfoo 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call fnfoo) = 
+          (expr 
+            (variable_or_function_call j)))) \n) end def) \n 
+  (function_statement function test 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call test) = 
+          (expr 
+            (variable_or_function_call j)))) \n) 
+    (end_function_statement end function)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fnfoo)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call test)))) \n <EOF>)

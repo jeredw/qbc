@@ -420,6 +420,7 @@ deftype_statement
 // evidently stripped.
 letter_range: first=(ID | FNID) ('-' second=(ID | FNID))? ;
 
+// *** SHARED is illegal in procedures or def fns.
 dim_statement
   : DIM SHARED? dim_variable (COMMA dim_variable)*
   | REDIM SHARED? dim_variable (COMMA dim_variable)*

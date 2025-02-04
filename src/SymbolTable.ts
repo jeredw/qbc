@@ -123,9 +123,11 @@ export class SymbolTable {
   private _symbols: NameToSlotMap = new NameToSlotMap();
   private _stackIndex: number;
   private _staticIndex: number;
+  private _defFn: boolean;
   
-  constructor(parent?: SymbolTable) {
+  constructor({parent, defFn} : {parent?: SymbolTable, defFn?: boolean}) {
     this._parent = parent;
+    this._defFn = !!defFn;
     this._stackIndex = 0;
     this._staticIndex = 0;
   }
@@ -148,22 +150,33 @@ export class SymbolTable {
       token: Token,
       storageType: StorageType,
     }): QBasicSymbol {
-    const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
+    const mySlot = this._symbols.get(name);
+    const parentSlot = this._parent?._symbols.get(name);
+    const slot = mySlot ?? parentSlot;
     if (slot) {
-      // If a name is found with the wrong type, we fall through to trying to
-      // define a variable below and throw "Duplicate definition".
-      if (slot.procedure && (!slot.procedure.result || sameType(type, slot.procedure.result.type))) {
-        return {tag: SymbolTag.PROCEDURE, procedure: slot.procedure};
+      if (slot.procedure) {
+        if (!slot.procedure.result || sameType(type, slot.procedure.result.type)) {
+          return {tag: SymbolTag.PROCEDURE, procedure: slot.procedure};
+        }
+        throw ParseError.fromToken(token, "Duplicate definition");
       }
       if (slot.defFns) {
         const procedure = slot.defFns.get(type.tag);
         if (procedure) {
           return {tag: SymbolTag.PROCEDURE, procedure};
         }
+        throw ParseError.fromToken(token, "Duplicate definition");
       }
-      if (slot.constant && (isDefaultType || slot.constant.value.tag == type.tag)) {
-        return {tag: SymbolTag.CONSTANT, constant: slot.constant};
+      if (slot.constant) {
+        if (isDefaultType || slot.constant.value.tag == type.tag) {
+          return {tag: SymbolTag.CONSTANT, constant: slot.constant};
+        }
+        throw ParseError.fromToken(token, "Duplicate definition");
       }
+      // Anything in local table takes precedence over global table:
+      // - Parameters and statics => in local
+      // - Shared => in local
+      // - Dim shared => in global
       if (numDimensions == 0 && slot.scalarVariables) {
         const asType = slot.scalarAsType ?? slot.arrayAsType;
         if (asType && isDefaultType) {
@@ -171,7 +184,7 @@ export class SymbolTable {
         }
         if (!asType || sameType(asType, type)) {
           const variable = slot.scalarVariables.get(type.tag);
-          if (variable) {
+          if (variable && (this._defFn || slot === mySlot || variable.shared)) {
             return {tag: SymbolTag.VARIABLE, variable};
           }
         }
@@ -183,7 +196,7 @@ export class SymbolTable {
         }
         if (!asType || sameType(asType, type)) {
           const variable = slot.arrayVariables.get(type.tag);
-          if (variable) {
+          if (variable && (this._defFn || slot === mySlot || variable.shared)) {
             return {tag: SymbolTag.VARIABLE, variable};
           }
         }
@@ -209,7 +222,10 @@ export class SymbolTable {
   }
 
   defineVariable(variable: Variable) {
-    const slot = this._symbols.get(variable.name) ?? {};
+    const table = this._defFn && !variable.static && !variable.isParameter ?
+      this._parent!._symbols :
+      this._symbols;
+    const slot = table.get(variable.name) ?? {};
     if (slot.procedure || slot.constant) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
@@ -288,7 +304,7 @@ export class SymbolTable {
       slot.arrayVariables.set(variable.type.tag, variable);
     }
     variable.address = this.allocate(variable.storageType);
-    this._symbols.set(variable.name, slot);
+    table.set(variable.name, slot);
   }
   
   defineConstant(name: string, constant: Constant) {

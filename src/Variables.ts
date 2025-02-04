@@ -8,6 +8,8 @@ export interface Variable {
   arrayDimensions?: ArrayBounds[];
   isAsType?: boolean;
   isParameter?: boolean;
+  shared?: boolean;
+  static?: boolean;
   token: Token;
   elements?: Map<string, Variable>;
   storageType: StorageType;

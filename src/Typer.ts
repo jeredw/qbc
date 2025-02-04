@@ -48,7 +48,8 @@ export class Typer extends QBasicParserListener {
 
   constructor() {
     super();
-    const topLevel = this.makeProgramChunk(new SymbolTable());
+    const symbols = new SymbolTable({});
+    const topLevel = this.makeProgramChunk(symbols);
     this._chunk = topLevel;
     this._program = {
       chunks: [topLevel],
@@ -88,7 +89,8 @@ export class Typer extends QBasicParserListener {
     this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
-    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
+    const symbols = new SymbolTable({parent: this._chunk.symbols});
+    this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
     procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
     this.installParameters(parameters);
@@ -116,8 +118,11 @@ export class Typer extends QBasicParserListener {
     this._storageType = StorageType.STATIC;
     this._chunk.symbols.defineFn(procedure);
     getTyperContext(ctx).$procedure = procedure;
-    // TODO: only params and statics get local entries in a def fn
-    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
+    const symbols = new SymbolTable({
+      parent: this._chunk.symbols,
+      defFn: true
+    });
+    this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
     procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
     this.installParameters(parameters);
@@ -135,7 +140,8 @@ export class Typer extends QBasicParserListener {
     this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
-    this._chunk = this.makeProgramChunk(new SymbolTable(this._chunk.symbols), procedure);
+    const symbols = new SymbolTable({parent: this._chunk.symbols});
+    this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
     this.installParameters(parameters);
   }
@@ -191,6 +197,9 @@ export class Typer extends QBasicParserListener {
   override enterData_statement = (ctx: parser.Data_statementContext) => {}
 
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
+    if (ctx.SHARED() && this._chunk.procedure) {
+      throw ParseError.fromToken(ctx.SHARED()!.symbol, "Illegal in procedure or DEF FN");
+    }
     for (const dim of ctx.dim_variable()) {
       const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds())
       if (arrayDimensions.some((bounds) => bounds.lower === undefined || bounds.upper === undefined)) {
@@ -207,6 +216,7 @@ export class Typer extends QBasicParserListener {
           isAsType: true,
           token: dim.untyped_id()!.start!,
           storageType: this._storageType,
+          shared: !!ctx.SHARED(),
           ...dimensions,
         });
       } else {
@@ -228,6 +238,7 @@ export class Typer extends QBasicParserListener {
           type,
           token: dim.ID()!.symbol,
           storageType: this._storageType,
+          shared: !!ctx.SHARED(),
           ...dimensions,
         });
       }
