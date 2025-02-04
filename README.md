@@ -23,34 +23,34 @@ program.
 ### Incremental parsing
 
 QBasic was intended for interactive development on machines where compiling code
-was slow - like go take a coffee break slow.  So it keeps some parse state like
+was slow - like, go take a coffee break slow.  So it keeps some parse state like
 symbols around between program runs.  For example, if you run:
 
 ```basic
-sub test
-  shared foo as long
+SUB test
+  SHARED foo AS LONG
   foo = 42
-end sub
+END SUB
 test
 ```
 
 and then edit and rerun:
 
 ```basic
-sub test
-  shared foo as long
+SUB TEST
+  SHARED foo AS LONG
   foo = 42
-end sub
+END SUB
 test
-print foo
+PRINT foo
 ```
 
 you get "42".  But if you save and reload this program and do a fresh run, you
-get a "Duplicate definition" error on `shared foo as long`.
+get a "Duplicate definition" error on `SHARED foo AS LONG`.
 
-The first interactive run defines a global `foo as long`, and rerunning prints
-it.  But on a fresh run, `print foo` implicitly defines a global `foo!`, and the
-`shared` declaration mismatches it.
+The first interactive run defines a global `foo&`, and rerunning prints it.  But
+on a fresh run, `print foo` implicitly defines a global `foo!`, and the `SHARED`
+declaration mismatches it.
 
 This implementation doesn't do incremental parsing and tries to match what would
 happen in a fresh run with no saved state.
@@ -69,7 +69,7 @@ of arrays, and DOS stuff like path lengths and the number of file handles.  Most
 of this is observable through `ON ERROR` so is really part of the language.  For
 example,
 
-```
+```basic
 ON ERROR GOTO overflow
 a% = 32768
 PRINT "no overflow"
