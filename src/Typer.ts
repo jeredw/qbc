@@ -15,7 +15,7 @@ import {
   isNumericType
 } from "./Types.ts";
 import { ArrayBounds, Variable } from "./Variables.ts";
-import { SymbolTable, QBasicSymbol, isProcedure } from "./SymbolTable.ts";
+import { SymbolTable, QBasicSymbol, isProcedure, isVariable } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
 import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
 import { typeCheckExpression, parseLiteral } from "./Expressions.ts";
@@ -89,7 +89,10 @@ export class Typer extends QBasicParserListener {
     this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
-    const symbols = new SymbolTable({parent: this._chunk.symbols});
+    const symbols = new SymbolTable({
+      parent: this._chunk.symbols,
+      name,
+    });
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
     procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
@@ -120,7 +123,7 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$procedure = procedure;
     const symbols = new SymbolTable({
       parent: this._chunk.symbols,
-      defFn: true
+      name,
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
@@ -140,7 +143,10 @@ export class Typer extends QBasicParserListener {
     this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
-    const symbols = new SymbolTable({parent: this._chunk.symbols});
+    const symbols = new SymbolTable({
+      parent: this._chunk.symbols,
+      name,
+    });
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
     this.installParameters(parameters);
@@ -173,7 +179,8 @@ export class Typer extends QBasicParserListener {
       isDefaultType: !sigil,
       numDimensions: 0, // TODO arrays
       token: ctx._name!,
-      storageType: this._storageType
+      storageType: this._storageType,
+      isAsType: false,
     });
     getTyperContext(ctx).$symbol = symbol;
     if (!isProcedure(symbol) || ctx.parent instanceof parser.Assignment_statementContext) {
@@ -249,8 +256,64 @@ export class Typer extends QBasicParserListener {
     if (!this._chunk.procedure || this._chunk.procedure.name.startsWith('fn')) {
       throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB/FUNCTION");
     }
-    for (const scopeVar of ctx.scope_variable()) {
+    // TODO: This doesn't work right for procedures that occur before global
+    // definitions.
+    const globalSymbols = this._program.chunks[0].symbols;
+    for (const share of ctx.shared_variable()) {
+      if (!!share.AS()) {
+        const asType = this.getType(share.type_name()!);
+        const allowPeriods = asType.tag != TypeTag.RECORD;
+        const name = getUntypedId(share.untyped_id()!, {allowPeriods});
+        const token = share.untyped_id()!.start!;
+        const symbol = globalSymbols.lookupOrDefineVariable({
+          name,
+          type: asType,
+          token,
+          isDefaultType: false,
+          numDimensions: 0,  // TODO
+          storageType: StorageType.STATIC,
+          isAsType: true,
+        });
+        this.shareVariable(symbol, token);
+      } else {
+        const [name, sigil] = splitSigil(share.ID()?.getText()!);
+        const asType = this._chunk.symbols.getAsType(name);
+        const type = sigil ? typeOfSigil(sigil) :
+          asType ? asType :
+          this.getDefaultType(name);
+        const token = share.ID()!.symbol;
+        if (asType) {
+          if (sameType(type, asType)) {
+            throw ParseError.fromToken(token, "AS clause required");
+          }
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
+        const symbol = globalSymbols.lookupOrDefineVariable({
+          name,
+          type,
+          token,
+          isDefaultType: false,
+          numDimensions: 0,  // TODO
+          storageType: StorageType.STATIC,
+          isAsType: false,
+        });
+        this.shareVariable(symbol, token);
+      }
     }
+  }
+
+  private shareVariable(symbol: QBasicSymbol, token: Token) {
+    if (!isVariable(symbol)) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    const variable = symbol.variable;
+    if (!variable.sharedWith) {
+      variable.sharedWith = new Set();
+    }
+    if (variable.sharedWith.has(this._chunk.procedure!.name)) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    variable.sharedWith.add(this._chunk.procedure!.name);
   }
 
   override enterStatic_statement = (ctx: parser.Static_statementContext) => {
@@ -258,7 +321,6 @@ export class Typer extends QBasicParserListener {
       throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB, FUNCTION or DEF FN");
     }
   }
-
 
   private getArrayBounds(ctx: parser.Dim_array_boundsContext | null): ArrayBounds[] {
     if (ctx == null) {
@@ -320,7 +382,8 @@ export class Typer extends QBasicParserListener {
       isDefaultType: !sigil,
       numDimensions: 0,
       token: ctx.ID(0)!.symbol,
-      storageType: this._storageType
+      storageType: this._storageType,
+      isAsType: false,
     });
     getTyperContext(ctx).$symbol = symbol;
     getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);

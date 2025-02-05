@@ -412,10 +412,10 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable PaletteArray 
-            (array_declaration 
+          (shared_variable PaletteArray 
+            (array_declaration_no_dimensions 
               ( ))) , 
-          (scope_variable ColorRange))) \r\n \r\n 
+          (shared_variable ColorRange))) \r\n \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 

@@ -321,13 +321,13 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Index) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id IndexType))) , 
-          (scope_variable NumberOfRecords))) \r\n 
+          (shared_variable NumberOfRecords))) \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n 
@@ -534,13 +534,13 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Index) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id IndexType))) , 
-          (scope_variable NumberOfRecords))) \r\n \r\n \r\n 
+          (shared_variable NumberOfRecords))) \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call TopRecord) = 
@@ -788,13 +788,13 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Index) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id IndexType))) , 
-          (scope_variable NumberOfRecords))) \r\n \r\n 
+          (shared_variable NumberOfRecords))) \r\n \r\n 
       (statement 
         (const_statement CONST 
           (const_assignment NUMCOLS = 
@@ -941,13 +941,13 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Index) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id IndexType))) , 
-          (scope_variable NumberOfRecords))) \r\n \r\n \r\n \r\n 
+          (shared_variable NumberOfRecords))) \r\n \r\n \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Offset) = 

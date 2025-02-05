@@ -55,7 +55,7 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable Pattern$))) \r\n \r\n 
+          (shared_variable Pattern$))) \r\n \r\n 
       (statement 
         (view_statement VIEW 
           ( 
@@ -89,12 +89,12 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable Pattern$) , 
-          (scope_variable Esc$) , 
-          (scope_variable Bit% 
-            (array_declaration 
+          (shared_variable Pattern$) , 
+          (shared_variable Esc$) , 
+          (shared_variable Bit% 
+            (array_declaration_no_dimensions 
               ( ))) , 
-          (scope_variable PatternSize%))) \r\n \r\n 
+          (shared_variable PatternSize%))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ByteNum%) = 
@@ -531,12 +531,12 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable Pattern$) , 
-          (scope_variable Esc$) , 
-          (scope_variable Bit% 
-            (array_declaration 
+          (shared_variable Pattern$) , 
+          (shared_variable Esc$) , 
+          (shared_variable Bit% 
+            (array_declaration_no_dimensions 
               ( ))) , 
-          (scope_variable PatternSize%))) \r\n \r\n 
+          (shared_variable PatternSize%))) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Esc$) = 
@@ -794,8 +794,8 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable Pattern$) , 
-          (scope_variable PatternSize%))) \r\n \r\n \r\n 
+          (shared_variable Pattern$) , 
+          (shared_variable PatternSize%))) \r\n \r\n \r\n 
       (statement 
         (screen_statement SCREEN 
           (expr 

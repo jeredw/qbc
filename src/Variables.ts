@@ -9,6 +9,7 @@ export interface Variable {
   isAsType?: boolean;
   isParameter?: boolean;
   shared?: boolean;
+  sharedWith?: Set<string>;
   static?: boolean;
   token: Token;
   elements?: Map<string, Variable>;

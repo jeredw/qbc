@@ -37,7 +37,7 @@ test
 and then edit and rerun:
 
 ```basic
-SUB TEST
+SUB test
   SHARED foo AS LONG
   foo = 42
 END SUB
@@ -49,8 +49,8 @@ you get "42".  But if you save and reload this program and do a fresh run, you
 get a "Duplicate definition" error on `SHARED foo AS LONG`.
 
 The first interactive run defines a global `foo&`, and rerunning prints it.  But
-on a fresh run, `print foo` implicitly defines a global `foo!`, and the `SHARED`
-declaration mismatches it.
+on a fresh run, `PRINT foo` implicitly defines `foo!`, and the `SHARED`
+declaration mismatches it (note: the IDE moves the `SUB` _after_ the `PRINT`)!
 
 This implementation doesn't do incremental parsing and tries to match what would
 happen in a fresh run with no saved state.

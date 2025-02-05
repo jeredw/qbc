@@ -210,9 +210,9 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id MonthData) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id MonthType))))) \r\n 
@@ -489,9 +489,9 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id MonthData) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id MonthType))))) \r\n \r\n \r\n \r\n 

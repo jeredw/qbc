@@ -120,14 +120,14 @@ function canonicalName(name: string): string {
 
 export class SymbolTable {
   private _parent: SymbolTable | undefined;
+  private _name?: string;
   private _symbols: NameToSlotMap = new NameToSlotMap();
   private _stackIndex: number;
   private _staticIndex: number;
-  private _defFn: boolean;
   
-  constructor({parent, defFn} : {parent?: SymbolTable, defFn?: boolean}) {
+  constructor({parent, name} : {parent?: SymbolTable, name?: string}) {
     this._parent = parent;
-    this._defFn = !!defFn;
+    this._name = name;
     this._stackIndex = 0;
     this._staticIndex = 0;
   }
@@ -142,13 +142,14 @@ export class SymbolTable {
 
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, isDefaultType, numDimensions, token, storageType}: {
+  lookupOrDefineVariable({name, type, isDefaultType, numDimensions, token, storageType, isAsType}: {
       name: string,
       type: Type,
       isDefaultType: boolean,
       numDimensions: number,
       token: Token,
       storageType: StorageType,
+      isAsType: boolean,
     }): QBasicSymbol {
     const mySlot = this._symbols.get(name);
     const parentSlot = this._parent?._symbols.get(name);
@@ -173,10 +174,6 @@ export class SymbolTable {
         }
         throw ParseError.fromToken(token, "Duplicate definition");
       }
-      // Anything in local table takes precedence over global table:
-      // - Parameters and statics => in local
-      // - Shared => in local
-      // - Dim shared => in global
       if (numDimensions == 0 && slot.scalarVariables) {
         const asType = slot.scalarAsType ?? slot.arrayAsType;
         if (asType && isDefaultType) {
@@ -184,7 +181,7 @@ export class SymbolTable {
         }
         if (!asType || sameType(asType, type)) {
           const variable = slot.scalarVariables.get(type.tag);
-          if (variable && (this._defFn || slot === mySlot || variable.shared)) {
+          if (variable && this.isVisible(variable, slot, mySlot)) {
             return {tag: SymbolTag.VARIABLE, variable};
           }
         }
@@ -196,7 +193,7 @@ export class SymbolTable {
         }
         if (!asType || sameType(asType, type)) {
           const variable = slot.arrayVariables.get(type.tag);
-          if (variable && (this._defFn || slot === mySlot || variable.shared)) {
+          if (variable && this.isVisible(variable, slot, mySlot)) {
             return {tag: SymbolTag.VARIABLE, variable};
           }
         }
@@ -207,7 +204,7 @@ export class SymbolTable {
         lower: 1, upper: 10  // TODO: option base
       })
     } : {};
-    const variable = { name, type, token, storageType, ...arrayDimensions };
+    const variable = { name, type, token, storageType, isAsType, ...arrayDimensions };
     this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };
   }
@@ -222,7 +219,7 @@ export class SymbolTable {
   }
 
   defineVariable(variable: Variable) {
-    const table = this._defFn && !variable.static && !variable.isParameter ?
+    const table = this.defFn() && !variable.static && !variable.isParameter ?
       this._parent!._symbols :
       this._symbols;
     const slot = table.get(variable.name) ?? {};
@@ -356,6 +353,17 @@ export class SymbolTable {
       case StorageType.STATIC:
         return {storageType, index: this.allocateStaticIndex()};
     }
+  }
+
+  private isVisible(variable: Variable, slot: Slot, mySlot?: Slot): boolean {
+    return slot === mySlot ||
+      this.defFn() ||
+      !!variable.shared ||
+      (!!this._name && !!variable.sharedWith?.has(this._name));
+  }
+
+  private defFn(): boolean {
+    return !!this._name?.startsWith('fn');
   }
 
   private allocateStaticIndex(): number {

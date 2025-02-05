@@ -1,0 +1,27 @@
+(program 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id x) as 
+        (type_name string)))) \n 
+  (sub_statement sub 
+    (untyped_id test) 
+    (block \n 
+      (statement 
+        (shared_statement shared 
+          (shared_variable 
+            (untyped_id x) as 
+            (type_name string)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x) = 
+          (expr 
+            (literal "ok")))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id test))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x)))) \n <EOF>)

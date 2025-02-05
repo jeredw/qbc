@@ -1,31 +1,26 @@
 (program 
   (statement 
     (shared_statement shared 
-      (scope_variable 
+      (shared_variable 
         (untyped_id wowzas) 
-        (array_declaration 
+        (array_declaration_no_dimensions 
           ( )) as 
         (type_name 
           (fixed_string string * 42))))) \n 
   (statement 
     (shared_statement shared 
-      (scope_variable i) , 
-      (scope_variable j) , 
-      (scope_variable k) , 
-      (scope_variable a 
-        (array_declaration 
+      (shared_variable i) , 
+      (shared_variable j) , 
+      (shared_variable k) , 
+      (shared_variable a 
+        (array_declaration_no_dimensions 
           ( ))))) \n 
   (statement 
     (shared_statement shared 
-      (scope_variable a$) , 
-      (scope_variable b$ 
-        (array_declaration 
+      (shared_variable a$) , 
+      (shared_variable b$ 
+        (array_declaration_no_dimensions 
           ( ))) , 
-      (scope_variable x) , 
-      (scope_variable y) , 
-      (scope_variable z))) \n 
-  (statement 
-    (shared_statement shared 
-      (scope_variable test 
-        (array_declaration 
-          ( 2 ))))) \n <EOF>)
+      (shared_variable x) , 
+      (shared_variable y) , 
+      (shared_variable z))) \n <EOF>)

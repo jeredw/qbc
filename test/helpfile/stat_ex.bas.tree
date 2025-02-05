@@ -98,8 +98,8 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable F1$) , 
-          (scope_variable F2$))) \r\n 
+          (shared_variable F1$) , 
+          (shared_variable F2$))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Mark) = 
@@ -156,12 +156,12 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable Temp$) , 
-          (scope_variable Old$) , 
-          (scope_variable Nw$) , 
-          (scope_variable Rep) , 
-          (scope_variable Num) , 
-          (scope_variable M))) \r\n 
+          (shared_variable Temp$) , 
+          (shared_variable Old$) , 
+          (shared_variable Nw$) , 
+          (shared_variable Rep) , 
+          (shared_variable Num) , 
+          (shared_variable M))) \r\n 
       (statement 
         (static_statement STATIC 
           (scope_variable R))) \r\n 

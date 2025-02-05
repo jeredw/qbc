@@ -224,6 +224,11 @@ array_declaration
   : '(' DIGITS? ')'
   ;
 
+// Dimensions don't parse in SHARED statement.
+array_declaration_no_dimensions
+  : '(' ')'
+  ;
+
 // Statements after END FUNCTION on the same line are silently dropped!
 // program should consume the final NL or EOL.
 // *** Ignore any extra statements here.
@@ -372,6 +377,11 @@ block_name
 scope_variable
   : untyped_id array_declaration? AS type_name
   | ID array_declaration?
+  ;
+
+shared_variable
+  : untyped_id array_declaration_no_dimensions? AS type_name
+  | ID array_declaration_no_dimensions?
   ;
 
 const_statement
@@ -766,7 +776,7 @@ end_select_statement
 
 // *** SHARED is illegal outside a sub or function.
 shared_statement
-  : SHARED scope_variable (COMMA scope_variable)*
+  : SHARED shared_variable (COMMA shared_variable)*
   ;
 
 // *** STATIC is illegal outside a sub, function, or def fn.

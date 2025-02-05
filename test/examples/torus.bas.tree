@@ -905,13 +905,13 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id InitRows) AS 
             (type_name INTEGER)) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id BestMode) AS 
             (type_name INTEGER)) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Available) AS 
             (type_name STRING)))) \n \n \n \n 
       (statement 
@@ -995,7 +995,7 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))))) \n 
@@ -1385,7 +1385,7 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))))) \n \n 
@@ -1489,11 +1489,11 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id BestMode) AS 
             (type_name INTEGER)))) \n \n 
       (statement 
@@ -1970,13 +1970,13 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Pal) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name LONG)))) \n \n \n 
       (if_block_statement IF 
@@ -2283,11 +2283,11 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id TOR) AS 
             (type_name 
               (untyped_id TORUS))))) \n \n \n 
@@ -2510,11 +2510,11 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id TOR) AS 
             (type_name 
               (untyped_id TORUS))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Max) AS 
             (type_name INTEGER)))) \n 
       (statement 
@@ -3567,11 +3567,11 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Max) AS 
             (type_name INTEGER)))) \n \n \n 
       (statement 
@@ -3638,15 +3638,15 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id TOR) AS 
             (type_name 
               (untyped_id TORUS))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Available) AS 
             (type_name STRING)))) \n \n \n 
       (statement 
@@ -4506,7 +4506,7 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Max) AS 
             (type_name INTEGER)))) \n \n 
       (statement 
@@ -4545,36 +4545,36 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id VC) AS 
             (type_name 
               (untyped_id Config))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id TOR) AS 
             (type_name 
               (untyped_id TORUS))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Pal) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name LONG)) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Max) AS 
             (type_name INTEGER)))) \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id T) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id Tile))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Index) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name INTEGER)) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id BestMode) AS 
             (type_name INTEGER)))) \n 
       (statement 
@@ -4873,15 +4873,15 @@
     (block \n 
       (statement 
         (shared_statement SHARED 
-          (scope_variable 
+          (shared_variable 
             (untyped_id T) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name 
               (untyped_id Tile))) , 
-          (scope_variable 
+          (shared_variable 
             (untyped_id Index) 
-            (array_declaration 
+            (array_declaration_no_dimensions 
               ( )) AS 
             (type_name INTEGER)))) \n 
       (statement 
