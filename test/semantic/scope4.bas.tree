@@ -1,0 +1,39 @@
+(program 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable 
+        (untyped_id i) as 
+        (type_name string)))) \n 
+  (function_statement function test 
+    (block \n 
+      (statement 
+        (static_statement static 
+          (scope_variable 
+            (untyped_id i) as 
+            (type_name integer)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call i) = 
+          (expr 
+            (expr 
+              (variable_or_function_call i)) + 
+            (expr 
+              (literal 1))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call test) = 
+          (expr 
+            (variable_or_function_call i)))) \n) 
+    (end_function_statement end function)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call test)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call test)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call test)))) \n <EOF>)

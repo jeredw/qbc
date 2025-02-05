@@ -200,7 +200,6 @@ export class Typer extends QBasicParserListener {
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
-  override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
   override enterData_statement = (ctx: parser.Data_statementContext) => {}
 
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
@@ -250,6 +249,42 @@ export class Typer extends QBasicParserListener {
         });
       }
     }
+  }
+
+  private getArrayBounds(ctx: parser.Dim_array_boundsContext | null): ArrayBounds[] {
+    if (ctx == null) {
+      return [];
+    }
+    const tryToEvaluateAsConstant = (expr: parser.ExprContext) => {
+      let result: Value | undefined;
+      try {
+        result = typeCheckExpression({
+          expr,
+          constantExpression: true,
+          resultType: { tag: TypeTag.LONG },
+        });
+      } catch (error: any) {
+        // Thrown errors from typeCheckExpression() mean this is not a constant
+        // expression.  This array bound must be dynamic, so swallow the error
+        // and return undefined.
+        return;
+      }
+      // Error values mean the expression had some known issue, like a type
+      // mismatch or division by zero.
+      if (isError(result)) {
+        throw ParseError.fromToken(expr.start!, result.errorMessage);
+      }
+      if (isNumeric(result)) {
+        return result.number;
+      }
+    };
+    return ctx.dim_subscript().map((range) => {
+      const lower = range._lower ?
+          tryToEvaluateAsConstant(range._lower) :
+          this._arrayBaseIndex;  // TODO: option base
+      const upper = tryToEvaluateAsConstant(range._upper!);
+      return {lower, upper};
+    });
   }
 
   override enterShared_statement = (ctx: parser.Shared_statementContext) => {
@@ -320,44 +355,41 @@ export class Typer extends QBasicParserListener {
     if (!this._chunk.procedure) {
       throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB, FUNCTION or DEF FN");
     }
-  }
-
-  private getArrayBounds(ctx: parser.Dim_array_boundsContext | null): ArrayBounds[] {
-    if (ctx == null) {
-      return [];
-    }
-    const tryToEvaluateAsConstant = (expr: parser.ExprContext) => {
-      let result: Value | undefined;
-      try {
-        result = typeCheckExpression({
-          expr,
-          constantExpression: true,
-          resultType: { tag: TypeTag.LONG },
+    for (const scope of ctx.scope_variable()) {
+      if (!!scope.AS()) {
+        const asType = this.getType(scope.type_name()!);
+        const allowPeriods = asType.tag != TypeTag.RECORD;
+        const name = getUntypedId(scope.untyped_id()!, {allowPeriods});
+        this._chunk.symbols.defineVariable({
+          name,
+          type: asType,
+          isAsType: true,
+          token: scope.untyped_id()!.start!,
+          storageType: StorageType.STATIC,
         });
-      } catch (error: any) {
-        // Thrown errors from typeCheckExpression() mean this is not a constant
-        // expression.  This array bound must be dynamic, so swallow the error
-        // and return undefined.
-        return;
+      } else {
+        const [name, sigil] = splitSigil(scope.ID()?.getText()!);
+        const asType = this._chunk.symbols.getAsType(name);
+        const type = sigil ? typeOfSigil(sigil) :
+          asType ? asType :
+          this.getDefaultType(name);
+        if (asType) {
+          if (sameType(type, asType)) {
+            throw ParseError.fromToken(scope.ID()!.symbol, "AS clause required");
+          }
+          throw ParseError.fromToken(scope.ID()!.symbol, "Duplicate definition");
+        }
+        this._chunk.symbols.defineVariable({
+          name,
+          type,
+          token: scope.ID()!.symbol,
+          storageType: StorageType.STATIC,
+        });
       }
-      // Error values mean the expression had some known issue, like a type
-      // mismatch or division by zero.
-      if (isError(result)) {
-        throw ParseError.fromToken(expr.start!, result.errorMessage);
-      }
-      if (isNumeric(result)) {
-        return result.number;
-      }
-    };
-    return ctx.dim_subscript().map((range) => {
-      const lower = range._lower ?
-          tryToEvaluateAsConstant(range._lower) :
-          this._arrayBaseIndex;  // TODO: option base
-      const upper = tryToEvaluateAsConstant(range._upper!);
-      return {lower, upper};
-    });
+    }
   }
 
+  override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
   override enterField_statement = (ctx: parser.Field_statementContext) => {}
 
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {

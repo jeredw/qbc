@@ -290,7 +290,7 @@ parse those using baked in rules.
 | `SEEK`           | Statement   | ✅      | ⛔      |
 | `SELECT CASE`    | Statement   | ✅      | ✅      |
 | `SGN`            | Function    | -       | ⛔      |
-| `SHARED`         | Statement   | ✅      | ⛔      |
+| `SHARED`         | Statement   | ✅      | 🚧      |
 | `SHELL`          | Statement   | -       | ⛔      |
 | `SIN`            | Function    | -       | ⛔      |
 | `SINGLE`         | Keyword     | ✅      | ✅      |
@@ -299,7 +299,7 @@ parse those using baked in rules.
 | `SPACE$`         | Function    | -       | ⛔      |
 | `SPC`            | Function    | -       | ⛔      |
 | `SQR`            | Function    | -       | ⛔      |
-| `STATIC`         | Statement   | ✅      | ⛔      |
+| `STATIC`         | Statement   | ✅      | 🚧      |
 | `$STATIC`        | Metacommand | ✅      | ⛔      |
 | `STEP`           | Keyword     | ✅      | ✅      |
 | `STICK`          | Function    | -       | ⛔      |
