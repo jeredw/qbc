@@ -1,4 +1,4 @@
-import { ParseError } from "../src/Errors.ts";
+import { ParseError, RuntimeError } from "../src/Errors.ts";
 import { Interpreter } from "../src/Interpreter.ts";
 import { TestTextScreen } from "../src/Screen.ts";
 
@@ -12,6 +12,8 @@ async function interpret(text: string): Promise<string> {
   } catch (e: unknown) {
     if (e instanceof ParseError) {
       return `ERROR ${e.location.line}:${e.location.column} ${e.message}`;
+    } else if (e instanceof RuntimeError) {
+      return `RUNTIME ERROR ${e.location.line}:${e.location.column} ${e.message}`;
     } else {
       throw e;
     }

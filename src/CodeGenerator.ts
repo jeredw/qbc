@@ -8,13 +8,14 @@ import { Variable } from "./Variables.ts";
 import { typeCheckExpression } from "./Expressions.ts";
 import { reference, isError, getDefaultValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag } from "./Types.ts";
-import { isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
+import { isBuiltin, isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
 import { BranchIndexStatement } from "./statements/Branch.ts";
 import { StorageType } from "./Memory.ts";
 import { StackVariable } from "./statements/Call.ts";
+import { Builtin } from "./Builtins.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -209,6 +210,11 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
+    const builtin = getTyperContext(ctx).$builtin;
+    if (builtin) {
+      this.callBuiltin(builtin, ctx.start!, ctx.argument_list());
+      return;
+    }
     const procedure = getTyperContext(ctx).$procedure;
     if (!procedure) {
       throw new Error("missing procedure");
@@ -216,12 +222,27 @@ export class CodeGenerator extends QBasicParserListener {
     this.call(procedure, ctx.start!, ctx.argument_list());
   }
 
+  private callBuiltin(builtin: Builtin, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
+    if (builtin.returnType && !result || !builtin.returnType && result) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    const args = argumentListCtx?.argument() ?? [];
+    const exprs: parser.ExprContext[] = [];
+    for (const arg of args) {
+      const parseExpr = arg.expr();
+      if (!parseExpr) {
+        throw new Error("unimplemented");
+      }
+      exprs.push(this.compileExpression(parseExpr));
+    }
+    this.addStatement(builtin.statement(token, exprs, result));
+  }
+
   private call(procedure: Procedure, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
     if (procedure.result && !result || !procedure.result && result) {
       // Attempting to call a function with a call statement, or a sub from an expression.
       throw ParseError.fromToken(token, "Duplicate definition");
     }
-    const hasResult = procedure.result && result;
     const args = argumentListCtx?.argument() ?? [];
     if (args.length != procedure.parameters.length) {
       throw ParseError.fromToken(token, "Argument-count mismatch");
@@ -347,7 +368,7 @@ export class CodeGenerator extends QBasicParserListener {
 
     const endVariable = getTyperContext(ctx).$end;
     if (!endVariable) {
-      throw new Error("missing limit");
+      throw new Error("missing end variable");
     }
     const end = ctx._end;
     if (!end) {
@@ -385,7 +406,7 @@ export class CodeGenerator extends QBasicParserListener {
     const counter = this.getLvalue(ctx.ID(0)!.symbol, symbol);
     const endVariable = getTyperContext(ctx).$end;
     if (!endVariable) {
-      throw new Error("missing limit");
+      throw new Error("missing end");
     }
     const incrementVariable = getTyperContext(ctx).$increment;
     if (ctx.STEP() && !incrementVariable) {
@@ -676,15 +697,24 @@ export class CodeGenerator extends QBasicParserListener {
         if (!symbol) {
           throw new Error("missing symbol");
         }
-        if (!isProcedure(symbol)) {
+        if (isBuiltin(symbol)) {
+          const builtin = symbol.builtin;
+          const result = getTyperContext(ctx).$result;
+          if (!result) {
+            throw new Error("missing result variable");
+          }
+          codeGenerator.callBuiltin(builtin, ctx.start!, ctx.argument_list(), result);
           return;
         }
-        const procedure = symbol.procedure;
-        const result = getTyperContext(ctx).$result;
-        if (!result) {
-          throw new Error("missing result variable");
+        if (isProcedure(symbol)) {
+          const procedure = symbol.procedure;
+          const result = getTyperContext(ctx).$result;
+          if (!result) {
+            throw new Error("missing result variable");
+          }
+          codeGenerator.call(procedure, ctx.start!, ctx.argument_list(), result);
+          return;
         }
-        codeGenerator.call(procedure, ctx.start!, ctx.argument_list(), result);
       }
     }, expr);
     if (resultType && token) {

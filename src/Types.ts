@@ -11,6 +11,8 @@ export enum TypeTag {
   ANY,
   // Reference is only used for values, not types.
   REFERENCE,
+  // Numeric is used for polymorphic builtins.
+  NUMERIC,
 }
 
 export interface SingleType {

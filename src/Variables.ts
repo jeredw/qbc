@@ -6,6 +6,7 @@ export interface Variable {
   name: string;
   type: Type;
   arrayDimensions?: ArrayBounds[];
+  sigil?: string;
   isAsType?: boolean;
   isParameter?: boolean;
   shared?: boolean;

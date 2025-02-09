@@ -5,6 +5,7 @@ import { SymbolTable } from "./SymbolTable.ts";
 import { UserDefinedType, } from "./Types.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
+import { StandardLibrary } from "./Builtins.ts";
 
 export interface Program {
   chunks: ProgramChunk[];
@@ -27,7 +28,8 @@ export interface ProgramChunk {
 }
 
 export function compile(tree: ParseTree): Program {
-  const typer = new Typer();
+  const builtins = new StandardLibrary();
+  const typer = new Typer(builtins);
   ParseTreeWalker.DEFAULT.walk(typer, tree);
   const codeGenerator = new CodeGenerator(typer.program);
   ParseTreeWalker.DEFAULT.walk(codeGenerator, tree);

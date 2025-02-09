@@ -1,3 +1,4 @@
+import { AbsFunction } from "./Abs.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
@@ -11,6 +12,10 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
+
+export function abs(token: Token, params: parser.ExprContext[], result?: Variable) {
+  return new AbsFunction(token, params, result);
+}
 
 export function call(chunkIndex: number, stackVariables: StackVariable[]) {
   return new CallStatement(chunkIndex, stackVariables);

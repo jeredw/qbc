@@ -1,0 +1,16 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call k%) = 
+      (expr - 
+        (expr 
+          (literal 32768))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call abs 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call k%)))) ))))) \n <EOF>)

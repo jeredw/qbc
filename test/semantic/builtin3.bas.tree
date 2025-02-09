@@ -1,0 +1,10 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call abs$) = 
+      (expr 
+        (literal "hi")))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call abs$)))) \n <EOF>)

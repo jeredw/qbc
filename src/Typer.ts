@@ -15,15 +15,17 @@ import {
   isNumericType
 } from "./Types.ts";
 import { ArrayBounds, Variable } from "./Variables.ts";
-import { SymbolTable, QBasicSymbol, isProcedure, isVariable } from "./SymbolTable.ts";
+import { SymbolTable, QBasicSymbol, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
-import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
+import { isError, isNumeric, isString, typeOfValue, Value } from "./Values.ts";
 import { typeCheckExpression, parseLiteral } from "./Expressions.ts";
 import { StorageType } from "./Memory.ts";
+import { Builtin, StandardLibrary } from "./Builtins.ts";
 
 export interface TyperContext {
   $symbol: QBasicSymbol;
   $procedure: Procedure;
+  $builtin: Builtin;
   // Synthetic result variable for a function call lifted from an expression.
   $result: Variable;
   // Saved "TO" expression value for a for loop.
@@ -45,10 +47,12 @@ export class Typer extends QBasicParserListener {
   private _arrayBaseIndex = 1;
   private _syntheticVariableIndex = 0;
   private _storageType: StorageType = StorageType.STATIC;
+  private _builtins: StandardLibrary;
 
-  constructor() {
+  constructor(builtins: StandardLibrary) {
     super();
-    const symbols = new SymbolTable({});
+    this._builtins = builtins;
+    const symbols = new SymbolTable({builtins: this._builtins});
     const topLevel = this.makeProgramChunk(symbols);
     this._chunk = topLevel;
     this._program = {
@@ -91,6 +95,7 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$procedure = procedure;
     const symbols = new SymbolTable({
       parent: this._chunk.symbols,
+      builtins: this._builtins,
       name,
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
@@ -123,6 +128,7 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$procedure = procedure;
     const symbols = new SymbolTable({
       parent: this._chunk.symbols,
+      builtins: this._builtins,
       name,
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
@@ -145,6 +151,7 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$procedure = procedure;
     const symbols = new SymbolTable({
       parent: this._chunk.symbols,
+      builtins: this._builtins,
       name,
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
@@ -170,25 +177,54 @@ export class Typer extends QBasicParserListener {
 
   override enterOption_statement = (ctx: parser.Option_statementContext) => {}
 
-  override enterVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
+  override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
     const [name, sigil] = splitSigil(ctx._name!.text!);
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
       name,
       type,
-      isDefaultType: !sigil,
+      sigil,
       numDimensions: 0, // TODO arrays
       token: ctx._name!,
       storageType: this._storageType,
       isAsType: false,
     });
     getTyperContext(ctx).$symbol = symbol;
-    if (!isProcedure(symbol) || ctx.parent instanceof parser.Assignment_statementContext) {
+    if (isBuiltin(symbol) && symbol.builtin.returnType) {
+      const builtin = symbol.builtin;
+      // Assume builtins with return type have one argument.
+      const args = ctx.argument_list()?.argument();
+      if (!args) {
+        throw ParseError.fromToken(ctx._name!, "Expecting argument");
+      }
+      if (args.length != 1) {
+        throw ParseError.fromToken(ctx._name!, "Expecting one argument");
+      }
+      const expr = args[0].expr();
+      if (!expr) {
+        throw new Error("unimplemented");
+      }
+      const value = typeCheckExpression({expr});
+      if (isError(value) ||
+          builtin.returnType == TypeTag.NUMERIC && !isNumeric(value) ||
+          builtin.returnType == TypeTag.STRING && !isString(value)) {
+        throw ParseError.fromToken(ctx._name!, "Type mismatch");
+      }
+      const type = typeOfValue(value);
+      const result = this.makeSyntheticVariable(type, ctx._name!);
+      getTyperContext(ctx).$result = result;
       return;
     }
-    const procedure = symbol.procedure;
-    const result = this.makeSyntheticVariable(procedure.result!.type, ctx._name!);
-    getTyperContext(ctx).$result = result;
+    if (isProcedure(symbol) && !(ctx.parent instanceof parser.Assignment_statementContext)) {
+      const procedure = symbol.procedure;
+      if (!procedure.result) {
+        // Attempting to call a sub...
+        throw ParseError.fromToken(ctx._name!, "Duplicate definition");
+      }
+      const result = this.makeSyntheticVariable(procedure.result!.type, ctx._name!);
+      getTyperContext(ctx).$result = result;
+      return;
+    }
   }
 
   private makeSyntheticVariable(type: Type, token: Token): Variable {
@@ -242,6 +278,7 @@ export class Typer extends QBasicParserListener {
         this._chunk.symbols.defineVariable({
           name,
           type,
+          sigil,
           token: dim.ID()!.symbol,
           storageType: this._storageType,
           shared: !!ctx.SHARED(),
@@ -304,7 +341,6 @@ export class Typer extends QBasicParserListener {
           name,
           type: asType,
           token,
-          isDefaultType: false,
           numDimensions: 0,  // TODO
           storageType: StorageType.STATIC,
           isAsType: true,
@@ -327,7 +363,7 @@ export class Typer extends QBasicParserListener {
           name,
           type,
           token,
-          isDefaultType: false,
+          sigil,
           numDimensions: 0,  // TODO
           storageType: StorageType.STATIC,
           isAsType: false,
@@ -381,6 +417,7 @@ export class Typer extends QBasicParserListener {
         }
         this._chunk.symbols.defineVariable({
           name,
+          sigil,
           type,
           token: scope.ID()!.symbol,
           storageType: StorageType.STATIC,
@@ -411,7 +448,7 @@ export class Typer extends QBasicParserListener {
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
       name,
       type,
-      isDefaultType: !sigil,
+      sigil,
       numDimensions: 0,
       token: ctx.ID(0)!.symbol,
       storageType: this._storageType,
@@ -427,7 +464,6 @@ export class Typer extends QBasicParserListener {
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}
   override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {}
 
-  override enterIf_inline_statement = (ctx: parser.If_inline_statementContext) => {}
   override enterInput_statement = (ctx: parser.Input_statementContext) => {}
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
   override enterKey_statement = (ctx: parser.Key_statementContext) => {}
@@ -484,6 +520,11 @@ export class Typer extends QBasicParserListener {
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
     const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
+    const builtin = this._chunk.symbols.lookupBuiltin(name, '', ctx.start!);
+    if (builtin) {
+      getTyperContext(ctx).$builtin = builtin;
+      return;
+    }
     const procedure = this._chunk.symbols.lookupProcedure(name);
     if (!procedure) {
       throw ParseError.fromToken(ctx.start!, "Subprogram not defined");

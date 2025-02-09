@@ -104,7 +104,7 @@ parse those using baked in rules.
 
 | Feature          | Category    | Parser  | Codegen |
 | ---------------- | ----------- | ------- | ------- |
-| `ABS`            | Function    | -       | ⛔      |
+| `ABS`            | Function    | -       | ✅      |
 | `ABSOLUTE`       | Keyword     | ✅      | ⛔      |
 | `ACCESS`         | Keyword     | ✅      | ⛔      |
 | `AND`            | Operator    | ✅      | ✅      |
@@ -148,7 +148,7 @@ parse those using baked in rules.
 | `DATE$`          | Function    | -       | ⛔      |
 | `DATE$`          | Statement   | -       | ⛔      |
 | `DECLARE`        | Statement   | ✅      | ⛔      |
-| `DEF FN`         | Statement   | ✅      | 🚧      |
+| `DEF FN`         | Statement   | ✅      | ✅      |
 | `DEF SEG`        | Statement   | ✅      | ⛔      |
 | `DEFDBL`         | Statement   | ✅      | ✅      |
 | `DEFINT`         | Statement   | ✅      | ✅      |
@@ -180,7 +180,7 @@ parse those using baked in rules.
 | `FOR`...`NEXT`   | Statement   | ✅      | ✅      |
 | `FRE`            | Function    | -       | ⛔      |
 | `FREEFILE`       | Function    | -       | ⛔      |
-| `FUNCTION`       | Statement   | ✅      | 🚧      |
+| `FUNCTION`       | Statement   | ✅      | ✅      |
 | `GET` I/O        | Statement   | ✅      | ⛔      |
 | `GET` Graphics   | Statement   | ✅      | ⛔      |
 | `GOSUB`          | Statement   | ✅      | ✅      |
@@ -310,7 +310,7 @@ parse those using baked in rules.
 | `STRIG`          | Statement   | ✅      | ⛔      |
 | `STRING`         | Keyword     | ✅      | ⛔      |
 | `STRING$`        | Function    | -       | ⛔      |
-| `SUB`            | Statement   | ✅      | 🚧      |
+| `SUB`            | Statement   | ✅      | ✅      |
 | `SWAP`           | Statement   | -       | ⛔      |
 | `SYSTEM`         | Statement   | -       | ⛔      |
 | `TAB`            | Function    | -       | ⛔      |

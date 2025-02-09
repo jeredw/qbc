@@ -1,0 +1,2 @@
+abs$ = "hi"
+print abs$

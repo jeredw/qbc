@@ -5,6 +5,7 @@ import { Constant } from "./Values.ts";
 import { Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
 import { Address, StorageType } from "./Memory.ts";
+import { Builtin, StandardLibrary } from "./Builtins.ts";
 
 // Variables, constants (CONST), and procedures (FUNCTION and SUB) share the
 // same namespace.  Constants and procedures are looked up only by name, not by
@@ -32,7 +33,8 @@ import { Address, StorageType } from "./Memory.ts";
 export enum SymbolTag {
   PROCEDURE,
   CONSTANT,
-  VARIABLE
+  VARIABLE,
+  BUILTIN,
 }
 
 export interface ProcedureSymbol {
@@ -50,10 +52,16 @@ export interface VariableSymbol {
   variable: Variable;
 }
 
+export interface BuiltinSymbol {
+  tag: SymbolTag.BUILTIN;
+  builtin: Builtin;
+}
+
 export type QBasicSymbol =
   | ProcedureSymbol
   | ConstantSymbol
-  | VariableSymbol;
+  | VariableSymbol
+  | BuiltinSymbol;
 
 export function isVariable(symbol: QBasicSymbol): symbol is VariableSymbol {
   return 'variable' in symbol;
@@ -65,6 +73,10 @@ export function isConstant(symbol: QBasicSymbol): symbol is ConstantSymbol {
 
 export function isProcedure(symbol: QBasicSymbol): symbol is ProcedureSymbol {
   return 'procedure' in symbol;
+}
+
+export function isBuiltin(symbol: QBasicSymbol): symbol is BuiltinSymbol {
+  return 'builtin' in symbol;
 }
 
 type TypeToItemMap<T> = Map<TypeTag, T>
@@ -119,13 +131,15 @@ function canonicalName(name: string): string {
 }
 
 export class SymbolTable {
+  private _builtins: StandardLibrary;
   private _parent: SymbolTable | undefined;
   private _name?: string;
   private _symbols: NameToSlotMap = new NameToSlotMap();
   private _stackIndex: number;
   private _staticIndex: number;
   
-  constructor({parent, name} : {parent?: SymbolTable, name?: string}) {
+  constructor({builtins, parent, name} : {builtins: StandardLibrary, parent?: SymbolTable, name?: string}) {
+    this._builtins = builtins;
     this._parent = parent;
     this._name = name;
     this._stackIndex = 0;
@@ -140,20 +154,44 @@ export class SymbolTable {
     return this._symbols.get(name)?.procedure ?? this._parent?.lookupProcedure(name);
   }
 
+  lookupBuiltin(name: string, sigil: string | undefined, token: Token): Builtin | undefined {
+    const builtin = this._builtins.lookup(name);
+    if (builtin) {
+      if (!builtin.returnType || builtin.returnType == TypeTag.NUMERIC) {
+        if (!sigil) {
+          return builtin;
+        }
+        if (sigil != '$') {
+          // cls% isn't a valid identifier, but cls$ is.
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
+      }
+      if (builtin.returnType == TypeTag.STRING) {
+        // chr% can shadow chr$.
+        return sigil === '$' ? builtin : undefined;
+      }
+    }
+  }
+
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, isDefaultType, numDimensions, token, storageType, isAsType}: {
+  lookupOrDefineVariable({name, type, sigil, numDimensions, token, storageType, isAsType}: {
       name: string,
       type: Type,
-      isDefaultType: boolean,
+      sigil?: string,
       numDimensions: number,
       token: Token,
       storageType: StorageType,
       isAsType: boolean,
     }): QBasicSymbol {
+    const builtin = this.lookupBuiltin(name, sigil, token);
+    if (builtin) {
+      return {tag: SymbolTag.BUILTIN, builtin};
+    }
     const mySlot = this._symbols.get(name);
     const parentSlot = this._parent?._symbols.get(name);
     const slot = mySlot ?? parentSlot;
+    const isDefaultType = !sigil;
     if (slot) {
       if (slot.procedure) {
         if (!slot.procedure.result || sameType(type, slot.procedure.result.type)) {
@@ -204,7 +242,7 @@ export class SymbolTable {
         lower: 1, upper: 10  // TODO: option base
       })
     } : {};
-    const variable = { name, type, token, storageType, isAsType, ...arrayDimensions };
+    const variable = { name, type, sigil, token, storageType, isAsType, ...arrayDimensions };
     this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };
   }
@@ -219,6 +257,10 @@ export class SymbolTable {
   }
 
   defineVariable(variable: Variable) {
+    const builtin = this.lookupBuiltin(variable.name, variable.sigil, variable.token);
+    if (builtin) {
+      throw ParseError.fromToken(variable.token, "Duplicate definition");
+    }
     const table = this.defFn() && !variable.static && !variable.isParameter ?
       this._parent!._symbols :
       this._symbols;
