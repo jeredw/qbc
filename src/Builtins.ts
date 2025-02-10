@@ -17,6 +17,7 @@ export class StandardLibrary {
     ["abs", {name: "abs", returnType: {tag: TypeTag.NUMERIC}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.abs}],
     ["asc", {name: "asc", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.STRING}], statement: statements.asc}],
     ["atn", {name: "atn", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.atn}],
+    ["beep", {name: "beep", arguments: [], statement: statements.beep}],
   ]);
 
   lookup(name: string): Builtin | undefined {

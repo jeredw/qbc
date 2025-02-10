@@ -1,6 +1,7 @@
 import { AbsFunction } from "./Abs.ts";
 import { AscFunction } from "./Asc.ts";
 import { AtnFunction } from "./Atn.ts";
+import { BeepStatement } from "./Beep.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
@@ -25,6 +26,10 @@ export function asc(token: Token, params: parser.ExprContext[], result?: Variabl
 
 export function atn(token: Token, params: parser.ExprContext[], result?: Variable) {
   return new AtnFunction(token, params, result);
+}
+
+export function beep(_token: Token, _params: parser.ExprContext[], _result?: Variable) {
+  return new BeepStatement();
 }
 
 export function call(chunkIndex: number, stackVariables: StackVariable[]) {

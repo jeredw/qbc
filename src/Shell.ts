@@ -1,6 +1,7 @@
 import { Interpreter } from "./Interpreter.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
 import { CanvasTextScreen } from "./Screen.ts";
+import { WebAudioSpeaker } from "./Speaker.ts";
 import { Invocation } from "./Invocation.ts";
 
 const TAB_STOPS = 8;
@@ -14,22 +15,31 @@ class Shell {
   private error: HTMLElement | null;
   private runButton: HTMLElement;
   private stopButton: HTMLElement;
+  private playButton: HTMLElement;
+  private muteButton: HTMLElement;
 
   private screen: CanvasTextScreen;
+  private speaker: WebAudioSpeaker;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.screen = new CanvasTextScreen(80, 25);
+    this.speaker = new WebAudioSpeaker();
     this.root.appendChild(this.screen.canvas);
     requestAnimationFrame(this.updateScreen);
     this.interpreter = new Interpreter({
-      textScreen: this.screen
+      textScreen: this.screen,
+      speaker: this.speaker,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
     this.runButton.addEventListener('click', () => this.run());
     this.stopButton = assertHTMLElement(root.querySelector('.stop-button'));
     this.stopButton.addEventListener('click', () => this.stop());
+    this.playButton = assertHTMLElement(root.querySelector('.play-button'));
+    this.playButton.addEventListener('click', () => this.playAudio());
+    this.muteButton = assertHTMLElement(root.querySelector('.mute-button'));
+    this.muteButton.addEventListener('click', () => this.muteAudio());
     this.error = this.codePane.querySelector('.error');
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (document.activeElement != this.codePane) {
@@ -87,6 +97,16 @@ class Shell {
   stop() {
     this.root.classList.remove('running');
     this.invocation?.stop();
+  }
+
+  playAudio() {
+    this.speaker.enable();
+    this.root.classList.add('sound-enabled');
+  }
+
+  muteAudio() {
+    this.speaker.disable();
+    this.root.classList.remove('sound-enabled');
   }
 
   private updateScreen = () => {

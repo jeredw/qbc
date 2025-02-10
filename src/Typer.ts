@@ -190,7 +190,10 @@ export class Typer extends QBasicParserListener {
       isAsType: false,
     });
     getTyperContext(ctx).$symbol = symbol;
-    if (isBuiltin(symbol) && symbol.builtin.returnType) {
+    if (isBuiltin(symbol)) {
+      if (!symbol.builtin.returnType) {
+        throw ParseError.fromToken(ctx._name!, "Duplicate definition");
+      }
       // Assume that a polymorphic numeric return type has the type of the first argument.
       let returnType = symbol.builtin.returnType;
       if (returnType.tag == TypeTag.NUMERIC) {

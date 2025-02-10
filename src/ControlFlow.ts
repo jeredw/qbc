@@ -4,6 +4,7 @@ export enum ControlFlowTag {
   CALL,
   RETURN,
   HALT,
+  WAIT,
 }
 
 export interface Goto {
@@ -28,9 +29,15 @@ export interface Halt {
   tag: ControlFlowTag.HALT;
 }
 
+export interface Wait {
+  tag: ControlFlowTag.WAIT;
+  promise: Promise<void>;
+}
+
 export type ControlFlow =
   | Goto
   | Gosub
   | Call
   | Return
-  | Halt;
+  | Halt
+  | Wait;

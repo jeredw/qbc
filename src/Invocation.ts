@@ -22,6 +22,7 @@ export class Invocation {
   private program: Program;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
+  private pendingWork?: Promise<void>;
 
   constructor(devices: Devices, memory: Memory, program: Program) {
     this.devices = devices;
@@ -33,11 +34,11 @@ export class Invocation {
     this.stopped = true;
   }
 
-  start(): Promise<void> {
+  async start(): Promise<void> {
     this.stopped = false;
-    const nextStep = (resolve: Function, reject: Function) => {
+    const nextStep = async (resolve: Function, reject: Function) => {
       try {
-        this.step();
+        await this.step();
         if (!this.isStopped()) {
           setTimeout(() => nextStep(resolve, reject));
         } else {
@@ -52,7 +53,7 @@ export class Invocation {
     });
   }
 
-  restart(): Promise<void> {
+  async restart(): Promise<void> {
     const chunks = this.program.chunks;
     this.stack = [];
     if (chunks.length > 0 && chunks[0].statements.length > 0) {
@@ -65,7 +66,7 @@ export class Invocation {
     return this.stopped || this.stack.length == 0;
   }
 
-  step() {
+  async step() {
     if (this.isStopped()) {
       return;
     }
@@ -127,6 +128,9 @@ export class Invocation {
           break;
         case ControlFlowTag.HALT:
           this.stack = [];
+          break;
+        case ControlFlowTag.WAIT:
+          await controlFlow.promise;
           break;
       }
     } catch (error: unknown) {

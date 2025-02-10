@@ -37,7 +37,9 @@ body {
 }
 
 .toolbar {
+  display: flex;
   background: var(--qbc-light-gray);
+  gap: 8px;
   width: 644px;
   padding: 0 8px;
 }
@@ -63,6 +65,16 @@ button {
 button:active {
   background: var(--qbc-black);
   color: var(--qbc-light-gray);
+}
+
+.sound-enabled .play-button {
+  display: none;
+}
+.mute-button {
+  display: none;
+}
+.sound-enabled .mute-button {
+  display: block;
 }
 
 .running .run-button,

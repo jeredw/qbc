@@ -1,0 +1,11 @@
+(program 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (call_statement 
+            (untyped_id beep))) \n) next i)) \n <EOF>)

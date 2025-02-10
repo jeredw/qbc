@@ -1,14 +1,16 @@
 import { ParseError, RuntimeError } from "../src/Errors.ts";
 import { Interpreter } from "../src/Interpreter.ts";
 import { TestTextScreen } from "../src/Screen.ts";
+import { TestSpeaker } from "../src/Speaker.ts";
 
 async function interpret(text: string): Promise<string> {
   try {
     const textScreen = new TestTextScreen();
-    const interpreter = new Interpreter({textScreen});
+    const speaker = new TestSpeaker();
+    const interpreter = new Interpreter({textScreen, speaker});
     const invocation = interpreter.run(text);
     await invocation.restart();
-    return textScreen.output;
+    return textScreen.output + speaker.output;
   } catch (e: unknown) {
     if (e instanceof ParseError) {
       return `ERROR ${e.location.line}:${e.location.column} ${e.message}`;
