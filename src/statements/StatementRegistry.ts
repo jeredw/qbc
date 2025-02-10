@@ -1,6 +1,6 @@
 import { AbsFunction } from "./Abs.ts";
 import { AscFunction } from "./Asc.ts";
-import { AtnFunction } from "./Atn.ts";
+import { AtnFunction, CosFunction, SinFunction, TanFunction } from "./Trig.ts";
 import { BeepStatement } from "./Beep.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
@@ -61,6 +61,10 @@ export function cint(params: BuiltinParams) {
 
 export function clng(params: BuiltinParams) {
   return new ClngFunction(params);
+}
+
+export function cos(params: BuiltinParams) {
+  return new CosFunction(params);
 }
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {
@@ -145,6 +149,14 @@ export function print(ast: parser.Print_statementContext) {
 
 export function return_(start: Token) {
   return new ReturnStatement(ControlFlowTag.GOSUB, start);
+}
+
+export function sin(params: BuiltinParams) {
+  return new SinFunction(params);
+}
+
+export function tan(params: BuiltinParams) {
+  return new TanFunction(params);
 }
 
 export function while_(expr: parser.ExprContext) {

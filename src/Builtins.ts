@@ -5,17 +5,17 @@ import { Variable } from "./Variables.ts";
 import { Token } from "antlr4ng";
 import * as statements from "./statements/StatementRegistry.ts";
 
-export interface Builtin {
-  name: string;
-  returnType?: Type;
-  arguments: Type[];
-  statement: (token: Token, params: ExprContext[], result?: Variable) => Statement;
-}
-
 export interface BuiltinParams {
   token: Token;
   params: ExprContext[];
   result?: Variable;
+}
+
+export interface Builtin {
+  name: string;
+  returnType?: Type;
+  arguments: Type[];
+  statement: (params: BuiltinParams) => Statement;
 }
 
 export class StandardLibrary {
@@ -26,9 +26,12 @@ export class StandardLibrary {
     ["beep", {name: "beep", arguments: [], statement: statements.beep}],
     ["cdbl", {name: "cdbl", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.cdbl}],
     ["chr", {name: "chr", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.chr}],
+    ["cos", {name: "cos", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.cos}],
     ["csng", {name: "csng", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.csng}],
     ["cint", {name: "cint", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.cint}],
     ["clng", {name: "clng", returnType: {tag: TypeTag.LONG}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.clng}],
+    ["sin", {name: "sin", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.sin}],
+    ["tan", {name: "tan", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.tan}],
   ]);
 
   lookup(name: string): Builtin | undefined {
