@@ -12,6 +12,12 @@ export interface Builtin {
   statement: (token: Token, params: ExprContext[], result?: Variable) => Statement;
 }
 
+export interface BuiltinParams {
+  token: Token;
+  params: ExprContext[];
+  result?: Variable;
+}
+
 export class StandardLibrary {
   builtins: Map<string, Builtin> = new Map([
     ["abs", {name: "abs", returnType: {tag: TypeTag.NUMERIC}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.abs}],

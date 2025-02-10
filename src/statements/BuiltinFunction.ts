@@ -6,23 +6,24 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { evaluateExpression } from "../Expressions.ts";
 import { isError, Value } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
+import { BuiltinParams } from "../Builtins.ts";
 
 export abstract class BuiltinFunction1 extends Statement {
   token: Token;
   params: ExprContext[];
   result: Variable;
 
-  constructor(token: Token, params: ExprContext[], result?: Variable) {
+  constructor(params: BuiltinParams) {
     super();
-    this.token = token;
-    this.params = params;
+    this.token = params.token;
+    this.params = params.params;
     if (this.params.length != 1) {
       throw new Error("expecting one argument");
     }
-    if (!result) {
+    if (!params.result) {
       throw new Error("expecting result")
     }
-    this.result = result;
+    this.result = params.result;
   }
 
   override execute(context: ExecutionContext) {

@@ -17,20 +17,21 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
+import { BuiltinParams } from "../Builtins.ts";
 
-export function abs(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new AbsFunction(token, params, result);
+export function abs(params: BuiltinParams) {
+  return new AbsFunction(params);
 }
 
-export function asc(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new AscFunction(token, params, result);
+export function asc(params: BuiltinParams) {
+  return new AscFunction(params);
 }
 
-export function atn(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new AtnFunction(token, params, result);
+export function atn(params: BuiltinParams) {
+  return new AtnFunction(params);
 }
 
-export function beep(_token: Token, _params: parser.ExprContext[], _result?: Variable) {
+export function beep() {
   return new BeepStatement();
 }
 
@@ -38,28 +39,28 @@ export function call(chunkIndex: number, stackVariables: StackVariable[]) {
   return new CallStatement(chunkIndex, stackVariables);
 }
 
-export function cdbl(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new CdblFunction(token, params, result);
-}
-
-export function chr(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new ChrFunction(token, params, result);
-}
-
-export function csng(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new CsngFunction(token, params, result);
-}
-
-export function cint(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new CintFunction(token, params, result);
-}
-
-export function clng(token: Token, params: parser.ExprContext[], result?: Variable) {
-  return new ClngFunction(token, params, result);
-}
-
 export function case_(test: Variable, condition: parser.Case_exprContext) {
   return new CaseStatement(test, condition);
+}
+
+export function cdbl(params: BuiltinParams) {
+  return new CdblFunction(params);
+}
+
+export function chr(params: BuiltinParams) {
+  return new ChrFunction(params);
+}
+
+export function csng(params: BuiltinParams) {
+  return new CsngFunction(params);
+}
+
+export function cint(params: BuiltinParams) {
+  return new CintFunction(params);
+}
+
+export function clng(params: BuiltinParams) {
+  return new ClngFunction(params);
 }
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {

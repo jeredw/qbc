@@ -230,15 +230,15 @@ export class CodeGenerator extends QBasicParserListener {
     if (builtin.arguments.length != args.length) {
       throw ParseError.fromToken(token, "Argument-count mismatch");
     }
-    const exprs: parser.ExprContext[] = [];
+    const params: parser.ExprContext[] = [];
     for (let i = 0; i < args.length; i++) {
       const parseExpr = args[i].expr();
       if (!parseExpr) {
         throw new Error("unimplemented");
       }
-      exprs.push(this.compileExpression(parseExpr, args[i].start!, builtin.arguments[i]!));
+      params.push(this.compileExpression(parseExpr, args[i].start!, builtin.arguments[i]!));
     }
-    this.addStatement(builtin.statement(token, exprs, result));
+    this.addStatement(builtin.statement({token, params, result}));
   }
 
   private call(procedure: Procedure, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
