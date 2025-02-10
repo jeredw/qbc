@@ -114,7 +114,7 @@ parse those using baked in rules.
 | `ASC`            | Function    | -       | ✅      |
 | `ATN`            | Function    | -       | ✅      |
 | `BASE`           | Keyword     | ✅      | ⛔      |
-| `BEEP`           | Statement   | -       | ⛔      |
+| `BEEP`           | Statement   | -       | ✅      |
 | `BINARY`         | Keyword     | ✅      | ⛔      |
 | `BLOAD`          | Statement   | -       | ⛔      |
 | `BSAVE`          | Statement   | -       | ⛔      |
