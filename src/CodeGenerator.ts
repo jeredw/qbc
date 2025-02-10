@@ -227,13 +227,16 @@ export class CodeGenerator extends QBasicParserListener {
       throw ParseError.fromToken(token, "Duplicate definition");
     }
     const args = argumentListCtx?.argument() ?? [];
+    if (builtin.arguments.length != args.length) {
+      throw ParseError.fromToken(token, "Argument-count mismatch");
+    }
     const exprs: parser.ExprContext[] = [];
-    for (const arg of args) {
-      const parseExpr = arg.expr();
+    for (let i = 0; i < args.length; i++) {
+      const parseExpr = args[i].expr();
       if (!parseExpr) {
         throw new Error("unimplemented");
       }
-      exprs.push(this.compileExpression(parseExpr));
+      exprs.push(this.compileExpression(parseExpr, args[i].start!, builtin.arguments[i]!));
     }
     this.addStatement(builtin.statement(token, exprs, result));
   }

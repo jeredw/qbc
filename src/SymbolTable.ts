@@ -1,6 +1,6 @@
 import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures.ts";
-import { sameType, Type, TypeTag } from "./Types.ts";
+import { isNumericType, sameType, Type, TypeTag } from "./Types.ts";
 import { Constant } from "./Values.ts";
 import { Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
@@ -157,7 +157,7 @@ export class SymbolTable {
   lookupBuiltin(name: string, sigil: string | undefined, token: Token): Builtin | undefined {
     const builtin = this._builtins.lookup(name);
     if (builtin) {
-      if (!builtin.returnType || builtin.returnType == TypeTag.NUMERIC) {
+      if (!builtin.returnType || isNumericType(builtin.returnType)) {
         if (!sigil) {
           return builtin;
         }
@@ -166,7 +166,7 @@ export class SymbolTable {
           throw ParseError.fromToken(token, "Duplicate definition");
         }
       }
-      if (builtin.returnType == TypeTag.STRING) {
+      if (builtin.returnType && builtin.returnType.tag == TypeTag.STRING) {
         // chr% can shadow chr$.
         return sigil === '$' ? builtin : undefined;
       }

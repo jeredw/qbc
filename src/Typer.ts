@@ -191,27 +191,24 @@ export class Typer extends QBasicParserListener {
     });
     getTyperContext(ctx).$symbol = symbol;
     if (isBuiltin(symbol) && symbol.builtin.returnType) {
-      const builtin = symbol.builtin;
-      // Assume builtins with return type have one argument.
-      const args = ctx.argument_list()?.argument();
-      if (!args) {
-        throw ParseError.fromToken(ctx._name!, "Expecting argument");
+      // Assume that a polymorphic numeric return type has the type of the first argument.
+      let returnType = symbol.builtin.returnType;
+      if (returnType.tag == TypeTag.NUMERIC) {
+        const args = ctx.argument_list()?.argument() || [];
+        if (args.length == 0) {
+          throw ParseError.fromToken(ctx._name!, "Argument-count mismatch");
+        }
+        const expr = args[0].expr();
+        if (!expr) {
+          throw new Error("unimplemented");
+        }
+        const value = typeCheckExpression({expr});
+        if (isError(value) || !isNumeric(value)) {
+          throw ParseError.fromToken(ctx._name!, "Type mismatch");
+        }
+        returnType = typeOfValue(value);
       }
-      if (args.length != 1) {
-        throw ParseError.fromToken(ctx._name!, "Expecting one argument");
-      }
-      const expr = args[0].expr();
-      if (!expr) {
-        throw new Error("unimplemented");
-      }
-      const value = typeCheckExpression({expr});
-      if (isError(value) ||
-          builtin.returnType == TypeTag.NUMERIC && !isNumeric(value) ||
-          builtin.returnType == TypeTag.STRING && !isString(value)) {
-        throw ParseError.fromToken(ctx._name!, "Type mismatch");
-      }
-      const type = typeOfValue(value);
-      const result = this.makeSyntheticVariable(type, ctx._name!);
+      const result = this.makeSyntheticVariable(returnType, ctx._name!);
       getTyperContext(ctx).$result = result;
       return;
     }

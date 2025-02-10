@@ -2,12 +2,13 @@ import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError } from "../Errors.ts";
 import { evaluateExpression } from "../Expressions.ts";
-import { isError, isNumeric, numericTypeOf } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, integer, isError, isString, numericTypeOf } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
+import { charToAscii } from "../AsciiChart.ts";
 
-export class AbsFunction extends Statement {
+export class AscFunction extends Statement {
   token: Token;
   params: ExprContext[];
   result: Variable;
@@ -28,20 +29,19 @@ export class AbsFunction extends Statement {
     }
     const value = evaluateExpression({
       expr: this.params[0],
-      resultType: this.result.type,
       memory: context.memory
     });
-    if (!isNumeric(value)) {
-      throw new Error("expecting number");
+    if (!isString(value)) {
+      throw new Error("expecting string");
     }
-    if (value.number < 0) {
-      const negValue = numericTypeOf(value)(-value.number);
-      if (isError(negValue)) {
-        throw RuntimeError.fromToken(this.token, negValue);
-      }
-      context.memory.write(this.result.address!, negValue);
-    } else {
-      context.memory.write(this.result.address!, value);
+    const firstChar = value.string.at(0);
+    if (firstChar === undefined) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
+    const code = charToAscii.get(firstChar);
+    if (code === undefined) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    context.memory.write(this.result.address!, integer(code));
   }
 }

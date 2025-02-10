@@ -111,7 +111,7 @@ parse those using baked in rules.
 | `ANY`            | Keyword     | ✅      | 🚧      |
 | `APPEND`         | Keyword     | ✅      | ⛔      |
 | `AS`             | Keyword     | ✅      | 🚧      |
-| `ASC`            | Function    | -       | ⛔      |
+| `ASC`            | Function    | -       | ✅      |
 | `ATN`            | Function    | -       | ⛔      |
 | `BASE`           | Keyword     | ✅      | ⛔      |
 | `BEEP`           | Statement   | -       | ⛔      |

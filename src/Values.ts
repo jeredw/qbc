@@ -116,6 +116,8 @@ export function cast(value: Value, desiredType: Type): Value {
       return isReference(value) && sameType(value.variable.type, desiredType) ? value : TYPE_MISMATCH;
     case TypeTag.ANY:
       return value;
+    case TypeTag.NUMERIC:
+      return isNumeric(value) ? value : TYPE_MISMATCH;
   }
 }
 
@@ -151,6 +153,7 @@ export function getDefaultValue(variable: Variable): Value {
     case TypeTag.ARRAY:
       return reference(variable);
     case TypeTag.ANY:
+    case TypeTag.NUMERIC:
       throw new Error("unimplemented");
   }
 }

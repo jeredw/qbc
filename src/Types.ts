@@ -9,10 +9,10 @@ export enum TypeTag {
   RECORD,
   ARRAY,
   ANY,
-  // Reference is only used for values, not types.
-  REFERENCE,
   // Numeric is used for polymorphic builtins.
   NUMERIC,
+  // Reference is only used for values, not types.
+  REFERENCE,
 }
 
 export interface SingleType {
@@ -61,6 +61,10 @@ export interface AnyType {
   tag: TypeTag.ANY;
 }
 
+export interface NumericType {
+  tag: TypeTag.NUMERIC;
+}
+
 export type Type =
   | StringType
   | SingleType
@@ -70,7 +74,8 @@ export type Type =
   | FixedStringType
   | UserDefinedType
   | ArrayType
-  | AnyType;
+  | AnyType
+  | NumericType;
 
 export function sameType(s: Type, t: Type) {
   if (isString(s) && isString(t)) {
@@ -89,7 +94,7 @@ export function sameType(s: Type, t: Type) {
 }
 
 export function isNumericType(s: Type): boolean {
-  return s.tag == TypeTag.SINGLE || s.tag == TypeTag.DOUBLE || s.tag == TypeTag.INTEGER || s.tag == TypeTag.LONG;
+  return s.tag == TypeTag.NUMERIC || s.tag == TypeTag.SINGLE || s.tag == TypeTag.DOUBLE || s.tag == TypeTag.INTEGER || s.tag == TypeTag.LONG;
 }
 
 function isString(s: Type): boolean {
