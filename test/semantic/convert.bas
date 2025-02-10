@@ -3,3 +3,8 @@ print csng(975.3421515#) ' Output is:  975.3422
 print cint(12.49)        ' Output is:  12  13
 print cint(12.51)
 print clng(338457.8)     ' Output is:  338458
+print mki$(22346)
+print mki$(-2500)
+print mkl$(56256346)
+print mks$(1#)
+print mkd$(6.023e23)

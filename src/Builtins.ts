@@ -30,6 +30,10 @@ export class StandardLibrary {
     ["csng", {name: "csng", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.csng}],
     ["cint", {name: "cint", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.cint}],
     ["clng", {name: "clng", returnType: {tag: TypeTag.LONG}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.clng}],
+    ["mki", {name: "mki", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mki}],
+    ["mkd", {name: "mkd", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mkd}],
+    ["mkl", {name: "mkl", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mkl}],
+    ["mks", {name: "mks", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mks}],
     ["sin", {name: "sin", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.sin}],
     ["tan", {name: "tan", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.tan}],
   ]);

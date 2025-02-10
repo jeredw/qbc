@@ -6,7 +6,7 @@ import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { ChrFunction } from "./Chr.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
-import { CdblFunction, CintFunction, ClngFunction, CsngFunction } from "./Convert.ts";
+import { CdblFunction, CintFunction, ClngFunction, CsngFunction, MkdFunction, MkiFunction, MklFunction, MksFunction } from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
@@ -137,6 +137,22 @@ export function let_(variable: Variable, expr: parser.ExprContext) {
 
 export function loop(isWhile: boolean, expr: parser.ExprContext) {
   return new LoopTest(isWhile, expr);
+}
+
+export function mki(params: BuiltinParams) {
+  return new MkiFunction(params);
+}
+
+export function mkl(params: BuiltinParams) {
+  return new MklFunction(params);
+}
+
+export function mks(params: BuiltinParams) {
+  return new MksFunction(params);
+}
+
+export function mkd(params: BuiltinParams) {
+  return new MkdFunction(params);
 }
 
 export function next(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {
