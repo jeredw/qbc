@@ -1,0 +1,49 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call cdbl 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (expr 
+                    (literal 1)) / 
+                  (expr 
+                    (literal 3))))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call csng 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 975.3421515#)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call cint 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 12.49)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call cint 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 12.51)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call clng 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 338457.8)))) ))))) \n <EOF>)

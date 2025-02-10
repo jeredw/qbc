@@ -121,14 +121,14 @@ parse those using baked in rules.
 | `CALL`           | Statement   | ✅      | ✅      |
 | `CALL ABSOLUTE`  | Statement   | ✅      | ⛔      |
 | `CASE`           | Keyword     | ✅      | ✅      |
-| `CDBL`           | Function    | -       | ⛔      |
+| `CDBL`           | Function    | -       | ✅      |
 | `CHAIN`          | Statement   | -       | ⛔      |
 | `CHDIR`          | Statement   | -       | ⛔      |
 | `CHR$`           | Function    | -       | ⛔      |
-| `CINT`           | Function    | -       | ⛔      |
+| `CINT`           | Function    | -       | ✅      |
 | `CIRCLE`         | Statement   | ✅      | ⛔      |
 | `CLEAR`          | Statement   | ✅      | ⛔      |
-| `CLNG`           | Function    | -       | ⛔      |
+| `CLNG`           | Function    | -       | ✅      |
 | `CLOSE`          | Statement   | ✅      | ⛔      |
 | `CLS`            | Statement   | -       | ⛔      |
 | `COLOR`          | Statement   | ✅      | ⛔      |
@@ -136,7 +136,7 @@ parse those using baked in rules.
 | `COMMON`         | Statement   | ✅      | ⛔      |
 | `CONST`          | Statement   | ✅      | ✅      |
 | `COS`            | Function    | -       | ⛔      |
-| `CSNG`           | Function    | -       | ⛔      |
+| `CSNG`           | Function    | -       | ✅      |
 | `CSRLIN`         | Function    | -       | ⛔      |
 | `CVD`            | Function    | -       | ⛔      |
 | `CVDMBF`         | Function    | -       | ⛔      |

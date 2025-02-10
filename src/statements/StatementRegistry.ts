@@ -5,6 +5,7 @@ import { BeepStatement } from "./Beep.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
+import { CdblFunction, CintFunction, ClngFunction, CsngFunction } from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
@@ -34,6 +35,22 @@ export function beep(_token: Token, _params: parser.ExprContext[], _result?: Var
 
 export function call(chunkIndex: number, stackVariables: StackVariable[]) {
   return new CallStatement(chunkIndex, stackVariables);
+}
+
+export function cdbl(token: Token, params: parser.ExprContext[], result?: Variable) {
+  return new CdblFunction(token, params, result);
+}
+
+export function csng(token: Token, params: parser.ExprContext[], result?: Variable) {
+  return new CsngFunction(token, params, result);
+}
+
+export function cint(token: Token, params: parser.ExprContext[], result?: Variable) {
+  return new CintFunction(token, params, result);
+}
+
+export function clng(token: Token, params: parser.ExprContext[], result?: Variable) {
+  return new ClngFunction(token, params, result);
 }
 
 export function case_(test: Variable, condition: parser.Case_exprContext) {
