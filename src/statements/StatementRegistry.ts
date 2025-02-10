@@ -4,6 +4,7 @@ import { AtnFunction } from "./Atn.ts";
 import { BeepStatement } from "./Beep.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
+import { ChrFunction } from "./Chr.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { CdblFunction, CintFunction, ClngFunction, CsngFunction } from "./Convert.ts";
 import { EndStatement } from "./End.ts";
@@ -39,6 +40,10 @@ export function call(chunkIndex: number, stackVariables: StackVariable[]) {
 
 export function cdbl(token: Token, params: parser.ExprContext[], result?: Variable) {
   return new CdblFunction(token, params, result);
+}
+
+export function chr(token: Token, params: parser.ExprContext[], result?: Variable) {
+  return new ChrFunction(token, params, result);
 }
 
 export function csng(token: Token, params: parser.ExprContext[], result?: Variable) {

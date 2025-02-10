@@ -10,10 +10,10 @@ const chart = `
   007 •    (bel)   023 ↨ (etb)   039 '       055 7   071 G   087 W   103 g   119 w
   008 ◘    (bs)    024 ↑ (can)   040 (       056 8   072 H   088 X   104 h   120 x
   009 \x09 (tab)   025 ↓ (em)    041 )       057 9   073 I   089 Y   105 i   121 y
-  010 \x0a (lf)    026 � (eof)   042 *       058 :   074 J   090 Z   106 j   122 z
+  010 �    (lf)    026 � (eof)   042 *       058 :   074 J   090 Z   106 j   122 z
   011 ♂    (vt)    027 ← (esc)   043 +       059 ;   075 K   091 [   107 k   123 {
   012 ♀    (np)    028 ∟ (fs)    044 ,       060 <   076 L   092 \\  108 l   124 |
-  013 \x0d (cr)    029 ↔ (gs)    045 -       061 =   077 M   093 ]   109 m   125 }
+  013 �    (cr)    029 ↔ (gs)    045 -       061 =   077 M   093 ]   109 m   125 }
   014 ♫    (so)    030 ▲ (rs)    046 .       062 >   078 N   094 ^   110 n   126 ~
   015 ☼    (si)    031 ▼ (us)    047 /       063 ?   079 O   095 _   111 o   127 ⌂
 
@@ -40,9 +40,12 @@ export const [asciiToChar, charToAscii] = (() => {
     const entries = line.match(/(\d\d\d) (.)/g) ?? [];
     for (const entry of entries) {
       const code = parseInt(entry, 10);
-      const char = entry.at(-1);
+      let char = entry.at(-1);
       if (!char) {
         throw new Error("error defining ascii chart");
+      }
+      if (char === '�') {
+        char = String.fromCharCode(code);
       }
       asciiToChar.set(code, char);
       charToAscii.set(char, code);

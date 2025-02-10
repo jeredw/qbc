@@ -19,6 +19,7 @@ export class StandardLibrary {
     ["atn", {name: "atn", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.atn}],
     ["beep", {name: "beep", arguments: [], statement: statements.beep}],
     ["cdbl", {name: "cdbl", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.cdbl}],
+    ["chr", {name: "chr", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.chr}],
     ["csng", {name: "csng", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.csng}],
     ["cint", {name: "cint", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.cint}],
     ["clng", {name: "clng", returnType: {tag: TypeTag.LONG}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.clng}],
