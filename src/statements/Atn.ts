@@ -1,10 +1,10 @@
 import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
-import { isNumeric, numericTypeOf, Value } from "../Values.ts";
+import { cast, double, isNumeric, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 
-export class AbsFunction extends BuiltinFunction1 {
+export class AtnFunction extends BuiltinFunction1 {
   constructor(token: Token, params: ExprContext[], result?: Variable) {
     super(token, params, result);
   }
@@ -13,6 +13,6 @@ export class AbsFunction extends BuiltinFunction1 {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
-    return numericTypeOf(input)(input.number < 0 ? -input.number : input.number);
+    return cast(double(Math.atan(input.number)), this.result.type);
   }
 }

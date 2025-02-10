@@ -1,5 +1,6 @@
 import { AbsFunction } from "./Abs.ts";
 import { AscFunction } from "./Asc.ts";
+import { AtnFunction } from "./Atn.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
@@ -20,6 +21,10 @@ export function abs(token: Token, params: parser.ExprContext[], result?: Variabl
 
 export function asc(token: Token, params: parser.ExprContext[], result?: Variable) {
   return new AscFunction(token, params, result);
+}
+
+export function atn(token: Token, params: parser.ExprContext[], result?: Variable) {
+  return new AtnFunction(token, params, result);
 }
 
 export function call(chunkIndex: number, stackVariables: StackVariable[]) {

@@ -16,6 +16,7 @@ export class StandardLibrary {
   builtins: Map<string, Builtin> = new Map([
     ["abs", {name: "abs", returnType: {tag: TypeTag.NUMERIC}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.abs}],
     ["asc", {name: "asc", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.STRING}], statement: statements.asc}],
+    ["atn", {name: "atn", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.atn}],
   ]);
 
   lookup(name: string): Builtin | undefined {

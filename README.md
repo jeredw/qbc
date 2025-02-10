@@ -112,7 +112,7 @@ parse those using baked in rules.
 | `APPEND`         | Keyword     | ✅      | ⛔      |
 | `AS`             | Keyword     | ✅      | 🚧      |
 | `ASC`            | Function    | -       | ✅      |
-| `ATN`            | Function    | -       | ⛔      |
+| `ATN`            | Function    | -       | ✅      |
 | `BASE`           | Keyword     | ✅      | ⛔      |
 | `BEEP`           | Statement   | -       | ⛔      |
 | `BINARY`         | Keyword     | ✅      | ⛔      |
