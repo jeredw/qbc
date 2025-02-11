@@ -1,8 +1,8 @@
-import { double, integer, isError, isNumeric, long, NumericValue, single, string, Value } from "../Values.ts";
+import { double, integer, isError, isNumeric, isString, long, NumericValue, single, string, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinParams } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
-import { asciiToChar } from "../AsciiChart.ts";
+import { asciiToChar, charToAscii } from "../AsciiChart.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(params: BuiltinParams) {
@@ -56,7 +56,7 @@ export class ClngFunction extends BuiltinFunction1 {
   }
 }
 
-abstract class BitsToString extends BuiltinFunction1 {
+abstract class BytesToString extends BuiltinFunction1 {
   constructor(params: BuiltinParams) {
     super(params);
   }
@@ -72,7 +72,7 @@ abstract class BitsToString extends BuiltinFunction1 {
   abstract getBytes(value: Value): number[];
 }
 
-export class MkiFunction extends BitsToString {
+export class MkiFunction extends BytesToString {
   constructor(params: BuiltinParams) {
     super(params);
   }
@@ -93,7 +93,7 @@ export class MkiFunction extends BitsToString {
   }
 }
 
-export class MklFunction extends BitsToString {
+export class MklFunction extends BytesToString {
   constructor(params: BuiltinParams) {
     super(params);
   }
@@ -116,7 +116,7 @@ export class MklFunction extends BitsToString {
   }
 }
 
-export class MksFunction extends BitsToString {
+export class MksFunction extends BytesToString {
   constructor(params: BuiltinParams) {
     super(params);
   }
@@ -129,17 +129,12 @@ export class MksFunction extends BitsToString {
     if (!isNumeric(value)) {
       throw new Error("expecting number");
     }
-    const bits = float32Bits(value.number);
-    return [
-      bits & 0xff,
-      (bits >> 8) & 0xff,
-      (bits >> 16) & 0xff,
-      (bits >> 24) & 0xff,
-    ];
+    const bytes = float32Bytes(value.number);
+    return Array.from(bytes);
   }
 }
 
-export class MkdFunction extends BitsToString {
+export class MkdFunction extends BytesToString {
   constructor(params: BuiltinParams) {
     super(params);
   }
@@ -152,28 +147,95 @@ export class MkdFunction extends BitsToString {
     if (!isNumeric(value)) {
       throw new Error("expecting number");
     }
-    const bits = float64Bits(value.number);
-    return [
-      bits[0] & 0xff,
-      (bits[0] >> 8) & 0xff,
-      (bits[0] >> 16) & 0xff,
-      (bits[0] >> 24) & 0xff,
-      bits[1] & 0xff,
-      (bits[1] >> 8) & 0xff,
-      (bits[1] >> 16) & 0xff,
-      (bits[1] >> 24) & 0xff,
-    ];
+    const bytes = float64Bytes(value.number);
+    return Array.from(bytes);
   }
 }
 
-function float32Bits(f32: number): number {
-  const buf = new ArrayBuffer(4);
-  (new Float32Array(buf))[0] = f32;
-  return (new Uint32Array(buf))[0];
+abstract class StringToBytes extends BuiltinFunction1 {
+  constructor(params: BuiltinParams) {
+    super(params);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isString(input)) {
+      throw new Error("expecting string");
+    }
+    const bytes = input.string.split('').map((char) => {
+      const code = charToAscii.get(char);
+      if (code === undefined) {
+        throw new Error("unmapped character in string");
+      }
+      return code;
+    });
+    return this.getValue(bytes);
+  }
+
+  abstract getValue(bytes: number[]): Value;
 }
 
-function float64Bits(f64: number): number[] {
-  const buf = new ArrayBuffer(8);
-  (new Float64Array(buf))[0] = f64;
-  return [(new Uint32Array(buf))[0], (new Uint32Array(buf))[1]];
+export class CviFunction extends StringToBytes {
+  constructor(params: BuiltinParams) {
+    super(params);
+  }
+
+  override getValue(bytes: number[]): Value {
+    return integer((bytes[1] << 8) | bytes[0]);
+  }
+}
+
+export class CvlFunction extends StringToBytes {
+  constructor(params: BuiltinParams) {
+    super(params);
+  }
+
+  override getValue(bytes: number[]): Value {
+    return long((bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0]);
+  }
+}
+
+export class CvsFunction extends StringToBytes {
+  constructor(params: BuiltinParams) {
+    super(params);
+  }
+
+  override getValue(bytes: number[]): Value {
+    return single(bytesToFloat32(bytes));
+  }
+}
+
+export class CvdFunction extends StringToBytes {
+  constructor(params: BuiltinParams) {
+    super(params);
+  }
+
+  override getValue(bytes: number[]): Value {
+    return double(bytesToFloat64(bytes));
+  }
+}
+
+function bytesToFloat32(bytes: number[]): number {
+  const bytes8 = new Uint8Array(bytes);
+  const littleEndian = true;
+  return new DataView(bytes8.buffer).getFloat32(0, littleEndian);
+}
+
+function bytesToFloat64(bytes: number[]): number {
+  const bytes8 = new Uint8Array(bytes);
+  const littleEndian = true;
+  return new DataView(bytes8.buffer).getFloat64(0, littleEndian);
+}
+
+function float32Bytes(f32: number): Uint8Array {
+  const buffer = new ArrayBuffer(4);
+  const littleEndian = true;
+  new DataView(buffer).setFloat32(0, f32, littleEndian);
+  return new Uint8Array(buffer);
+}
+
+function float64Bytes(f64: number): Uint8Array {
+  const buffer = new ArrayBuffer(8);
+  const littleEndian = true;
+  new DataView(buffer).setFloat64(0, f64, littleEndian);
+  return new Uint8Array(buffer);
 }

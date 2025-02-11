@@ -8,3 +8,7 @@ print mki$(-2500)
 print mkl$(56256346)
 print mks$(1#)
 print mkd$(6.023e23)
+print cvi("JW")     ' 22346
+print cvl("blah")   ' 1751215202
+print cvs("⌂§ f")   ' 6.023e23
+print cvd("blahblah")

@@ -6,7 +6,9 @@ import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { ChrFunction } from "./Chr.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
-import { CdblFunction, CintFunction, ClngFunction, CsngFunction, MkdFunction, MkiFunction, MklFunction, MksFunction } from "./Convert.ts";
+import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
+         CvdFunction, CviFunction, CvlFunction, CvsFunction,
+         MkdFunction, MkiFunction, MklFunction, MksFunction } from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
@@ -65,6 +67,22 @@ export function clng(params: BuiltinParams) {
 
 export function cos(params: BuiltinParams) {
   return new CosFunction(params);
+}
+
+export function cvi(params: BuiltinParams) {
+  return new CviFunction(params);
+}
+
+export function cvd(params: BuiltinParams) {
+  return new CvdFunction(params);
+}
+
+export function cvl(params: BuiltinParams) {
+  return new CvlFunction(params);
+}
+
+export function cvs(params: BuiltinParams) {
+  return new CvsFunction(params);
 }
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {
@@ -143,16 +161,16 @@ export function mki(params: BuiltinParams) {
   return new MkiFunction(params);
 }
 
+export function mkd(params: BuiltinParams) {
+  return new MkdFunction(params);
+}
+
 export function mkl(params: BuiltinParams) {
   return new MklFunction(params);
 }
 
 export function mks(params: BuiltinParams) {
   return new MksFunction(params);
-}
-
-export function mkd(params: BuiltinParams) {
-  return new MkdFunction(params);
 }
 
 export function next(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {
