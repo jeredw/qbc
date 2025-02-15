@@ -1,0 +1,1 @@
+print mksmbf$(cvs(chr$(0) + chr$(0) + chr$(&h80) + chr$(&h7f))) ' inf

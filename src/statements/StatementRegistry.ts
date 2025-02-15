@@ -8,7 +8,9 @@ import { ChrFunction } from "./Chr.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
          CvdFunction, CviFunction, CvlFunction, CvsFunction,
-         MkdFunction, MkiFunction, MklFunction, MksFunction } from "./Convert.ts";
+         CvsmbfFunction,
+         MkdFunction, MkiFunction, MklFunction, MksFunction, 
+         MksmbfFunction} from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
@@ -83,6 +85,10 @@ export function cvl(params: BuiltinParams) {
 
 export function cvs(params: BuiltinParams) {
   return new CvsFunction(params);
+}
+
+export function cvsmbf(params: BuiltinParams) {
+  return new CvsmbfFunction(params);
 }
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {
@@ -171,6 +177,10 @@ export function mkl(params: BuiltinParams) {
 
 export function mks(params: BuiltinParams) {
   return new MksFunction(params);
+}
+
+export function mksmbf(params: BuiltinParams) {
+  return new MksmbfFunction(params);
 }
 
 export function next(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {

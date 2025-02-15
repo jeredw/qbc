@@ -34,10 +34,12 @@ export class StandardLibrary {
     ["cvd", {name: "cvd", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvd}],
     ["cvl", {name: "cvl", returnType: {tag: TypeTag.LONG}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvl}],
     ["cvs", {name: "cvs", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvs}],
+    ["cvsmbf", {name: "cvsmbf", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvsmbf}],
     ["mki", {name: "mki", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mki}],
     ["mkd", {name: "mkd", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mkd}],
     ["mkl", {name: "mkl", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mkl}],
     ["mks", {name: "mks", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mks}],
+    ["mksmbf", {name: "mksmbf", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mksmbf}],
     ["sin", {name: "sin", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.sin}],
     ["tan", {name: "tan", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.tan}],
   ]);

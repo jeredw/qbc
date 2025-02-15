@@ -1,8 +1,9 @@
-import { double, integer, isError, isNumeric, isString, long, NumericValue, single, string, Value } from "../Values.ts";
+import { double, integer, isError, isNumeric, isString, long, NumericValue, OVERFLOW, single, string, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinParams } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
 import { asciiToChar, charToAscii } from "../AsciiChart.ts";
+import { TypeTag } from "../Types.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(params: BuiltinParams) {
@@ -122,14 +123,12 @@ export class MksFunction extends BytesToString {
   }
 
   override getBytes(input: NumericValue): number[] {
-    const value = single(input.number);
-    if (isError(value)) {
-      throw RuntimeError.fromToken(this.token, value);
-    }
-    if (!isNumeric(value)) {
+    if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
-    const bytes = float32Bytes(value.number);
+    // single() normally returns OVERFLOW for inf but mks$ can output it.
+    const value = input.tag == TypeTag.DOUBLE ? Math.fround(input.number) : input.number;
+    const bytes = float32Bytes(value);
     return Array.from(bytes);
   }
 }
@@ -140,15 +139,32 @@ export class MkdFunction extends BytesToString {
   }
 
   override getBytes(input: NumericValue): number[] {
-    const value = double(input.number);
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    // double() normally returns OVERFLOW for inf but mkd$ can output it.
+    const bytes = float64Bytes(input.number);
+    return Array.from(bytes);
+  }
+}
+
+export class MksmbfFunction extends BytesToString {
+  constructor(params: BuiltinParams) {
+    super(params);
+  }
+
+  override getBytes(input: NumericValue): number[] {
+    const value = single(input.number);
     if (isError(value)) {
       throw RuntimeError.fromToken(this.token, value);
     }
     if (!isNumeric(value)) {
       throw new Error("expecting number");
     }
-    const bytes = float64Bytes(value.number);
-    return Array.from(bytes);
+    if (!isFinite(value.number) || isNaN(value.number)) {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+    return float32BytesMbf(value.number);
   }
 }
 
@@ -200,7 +216,8 @@ export class CvsFunction extends StringToBytes {
   }
 
   override getValue(bytes: number[]): Value {
-    return single(bytesToFloat32(bytes));
+    // single normally returns OVERFLOW for inf but cvs can return this.
+    return {tag: TypeTag.SINGLE, number: bytesToFloat32(bytes)};
   }
 }
 
@@ -210,7 +227,18 @@ export class CvdFunction extends StringToBytes {
   }
 
   override getValue(bytes: number[]): Value {
-    return double(bytesToFloat64(bytes));
+    // double normally returns OVERFLOW for inf but cvs can return this.
+    return {tag: TypeTag.DOUBLE, number: bytesToFloat64(bytes)};
+  }
+}
+
+export class CvsmbfFunction extends StringToBytes {
+  constructor(params: BuiltinParams) {
+    super(params);
+  }
+
+  override getValue(bytes: number[]): Value {
+    return single(mbfBytesToFloat32(bytes));
   }
 }
 
@@ -226,6 +254,21 @@ function bytesToFloat64(bytes: number[]): number {
   return new DataView(bytes8.buffer).getFloat64(0, littleEndian);
 }
 
+function mbfBytesToFloat32(bytes: number[]): number {
+  const exponent = bytes[3] - 129;  // mantissa is implicitly .1xxxxx
+  const sign = bytes[2] & 0x80;
+  if (exponent + 127 < 1) {
+    // ieee uses a 0 exponent for denorms so mbf exponents < 3 convert to 0.
+    return 0;
+  }
+  return bytesToFloat32([
+    bytes[0],
+    bytes[1],
+    (bytes[2] & 0x7f) | (((exponent + 127) << 7) & 0x80),
+    (((exponent + 127) >> 1) & 0x7f) | sign
+  ])
+}
+
 function float32Bytes(f32: number): Uint8Array {
   const buffer = new ArrayBuffer(4);
   const littleEndian = true;
@@ -238,4 +281,22 @@ function float64Bytes(f64: number): Uint8Array {
   const littleEndian = true;
   new DataView(buffer).setFloat64(0, f64, littleEndian);
   return new Uint8Array(buffer);
+}
+
+function float32BytesMbf(f32: number): number[] {
+  const bytes = float32Bytes(f32);
+  const exponent = (((bytes[3] & 0x7f) << 1) | ((bytes[2] >> 7) & 1)) - 127;
+  const sign = bytes[3] & 0x80;
+  if (exponent === -127) {
+    return [0, 0, 0, 0];
+  }
+  if (exponent === 255) {
+    throw new Error("not expecting infinities or nans");
+  }
+  return [
+    bytes[0],
+    bytes[1],
+    (bytes[2] & 0x7f) | sign,
+    exponent + 129  // implicit .1xxxx mantissa in ieee -> 1.xxxx mbf
+  ];
 }
