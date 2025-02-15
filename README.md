@@ -139,11 +139,11 @@ parse those using baked in rules.
 | `CSNG`           | Function    | -       | ✅      |
 | `CSRLIN`         | Function    | -       | ⛔      |
 | `CVD`            | Function    | -       | ✅      |
-| `CVDMBF`         | Function    | -       | ⛔      |
+| `CVDMBF`         | Function    | -       | ✅      |
 | `CVI`            | Function    | -       | ✅      |
 | `CVL`            | Function    | -       | ✅      |
 | `CVS`            | Function    | -       | ✅      |
-| `CVSMBF`         | Function    | -       | ⛔      |
+| `CVSMBF`         | Function    | -       | ✅      |
 | `DATA`           | Statement   | ✅      | ⛔      |
 | `DATE$`          | Function    | -       | ⛔      |
 | `DATE$`          | Statement   | -       | ⛔      |
@@ -223,11 +223,11 @@ parse those using baked in rules.
 | `MID$`           | Statement   | ✅      | ⛔      |
 | `MKD$`           | Function    | -       | ✅      |
 | `MKDIR`          | Statement   | -       | ⛔      |
-| `MKDMBF$`        | Function    | -       | ⛔      |
+| `MKDMBF$`        | Function    | -       | ✅      |
 | `MKI$`           | Function    | -       | ✅      |
 | `MKL$`           | Function    | -       | ✅      |
 | `MKS$`           | Function    | -       | ✅      |
-| `MKSMBF$`        | Function    | -       | ⛔      |
+| `MKSMBF$`        | Function    | -       | ✅      |
 | `MOD`            | Operator    | ✅      | ✅      |
 | `NAME`           | Statement   | ✅      | ⛔      |
 | `NEXT`           | Keyword     | ✅      | ✅      |

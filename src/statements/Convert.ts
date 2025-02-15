@@ -1,4 +1,4 @@
-import { double, integer, isError, isNumeric, isString, long, NumericValue, OVERFLOW, single, string, Value } from "../Values.ts";
+import { double, ILLEGAL_FUNCTION_CALL, integer, isError, isNumeric, isString, long, NumericValue, OVERFLOW, single, string, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinParams } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
@@ -154,6 +154,7 @@ export class MksmbfFunction extends BytesToString {
   }
 
   override getBytes(input: NumericValue): number[] {
+    // inf/nan isn't representable in mbf so overflow is desired.
     const value = single(input.number);
     if (isError(value)) {
       throw RuntimeError.fromToken(this.token, value);
@@ -168,14 +169,46 @@ export class MksmbfFunction extends BytesToString {
   }
 }
 
-abstract class StringToBytes extends BuiltinFunction1 {
+export class MkdmbfFunction extends BytesToString {
   constructor(params: BuiltinParams) {
     super(params);
+  }
+
+  override getBytes(input: NumericValue): number[] {
+    // inf/nan isn't representable in mbf so overflow is desired.
+    const value = double(input.number);
+    if (isError(value)) {
+      throw RuntimeError.fromToken(this.token, value);
+    }
+    if (!isNumeric(value)) {
+      throw new Error("expecting number");
+    }
+    if (!isFinite(value.number) || isNaN(value.number)) {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+    // Too-small values get rounded to zero, too-large values overflow.
+    try {
+      return float64BytesMbf(value.number);
+    } catch {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+  }
+}
+
+abstract class StringToBytes extends BuiltinFunction1 {
+  expectedNumBytes: number;
+
+  constructor(params: BuiltinParams, expectedNumBytes: number) {
+    super(params);
+    this.expectedNumBytes = expectedNumBytes;
   }
 
   override calculate(input: Value): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
+    }
+    if (input.string.length != this.expectedNumBytes) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
     const bytes = input.string.split('').map((char) => {
       const code = charToAscii.get(char);
@@ -192,7 +225,7 @@ abstract class StringToBytes extends BuiltinFunction1 {
 
 export class CviFunction extends StringToBytes {
   constructor(params: BuiltinParams) {
-    super(params);
+    super(params, 2);
   }
 
   override getValue(bytes: number[]): Value {
@@ -202,7 +235,7 @@ export class CviFunction extends StringToBytes {
 
 export class CvlFunction extends StringToBytes {
   constructor(params: BuiltinParams) {
-    super(params);
+    super(params, 4);
   }
 
   override getValue(bytes: number[]): Value {
@@ -212,7 +245,7 @@ export class CvlFunction extends StringToBytes {
 
 export class CvsFunction extends StringToBytes {
   constructor(params: BuiltinParams) {
-    super(params);
+    super(params, 4);
   }
 
   override getValue(bytes: number[]): Value {
@@ -223,7 +256,7 @@ export class CvsFunction extends StringToBytes {
 
 export class CvdFunction extends StringToBytes {
   constructor(params: BuiltinParams) {
-    super(params);
+    super(params, 8);
   }
 
   override getValue(bytes: number[]): Value {
@@ -234,11 +267,21 @@ export class CvdFunction extends StringToBytes {
 
 export class CvsmbfFunction extends StringToBytes {
   constructor(params: BuiltinParams) {
-    super(params);
+    super(params, 4);
   }
 
   override getValue(bytes: number[]): Value {
     return single(mbfBytesToFloat32(bytes));
+  }
+}
+
+export class CvdmbfFunction extends StringToBytes {
+  constructor(params: BuiltinParams) {
+    super(params, 8);
+  }
+
+  override getValue(bytes: number[]): Value {
+    return double(mbfBytesToFloat64(bytes));
   }
 }
 
@@ -269,6 +312,30 @@ function mbfBytesToFloat32(bytes: number[]): number {
   ])
 }
 
+function mbfBytesToFloat64(bytes: number[]): number {
+  const exponent = bytes[7] - 129;  // mantissa is implicitly .1xxxxx
+  const sign = bytes[6] & 0x80;
+  if (exponent === -129) {
+    // 0 exponent -> 0
+    return 0;
+  }
+  // mbf has a 55-bit mantissa while ieee has a 52-bit mantissa, 
+  // drop the three least significant bits.
+  //        7        6        5        4        3        2        1        0
+  // ........|....6666|66655555|55544444|44433333|33322222|22211111|11100000|000
+  //                  48       40       32       24       16       8
+  return bytesToFloat64([
+    ((bytes[1] << 5) & 0xe0) | ((bytes[0] >> 3) & 0x1f),
+    ((bytes[2] << 5) & 0xe0) | ((bytes[1] >> 3) & 0x1f),
+    ((bytes[3] << 5) & 0xe0) | ((bytes[2] >> 3) & 0x1f),
+    ((bytes[4] << 5) & 0xe0) | ((bytes[3] >> 3) & 0x1f),
+    ((bytes[5] << 5) & 0xe0) | ((bytes[4] >> 3) & 0x1f),
+    ((bytes[6] << 5) & 0xe0) | ((bytes[5] >> 3) & 0x1f),
+    ((bytes[6] >> 3) & 0x0f) | (((exponent + 1023) << 4) & 0xf0),
+    (((exponent + 1023) >> 4) & 0x7f) | sign
+  ])
+}
+
 function float32Bytes(f32: number): Uint8Array {
   const buffer = new ArrayBuffer(4);
   const littleEndian = true;
@@ -290,13 +357,43 @@ function float32BytesMbf(f32: number): number[] {
   if (exponent === -127) {
     return [0, 0, 0, 0];
   }
-  if (exponent === 255) {
+  if (exponent === 128) {
     throw new Error("not expecting infinities or nans");
   }
   return [
     bytes[0],
     bytes[1],
     (bytes[2] & 0x7f) | sign,
+    exponent + 129  // implicit .1xxxx mantissa in ieee -> 1.xxxx mbf
+  ];
+}
+
+function float64BytesMbf(f64: number): number[] {
+  const bytes = float64Bytes(f64);
+  const exponent = (((bytes[7] & 0x7f) << 4) | ((bytes[6] >> 4) & 0xf)) - 1023;
+  const sign = bytes[7] & 0x80;
+  if (exponent < -128) {
+    return [0, 0, 0, 0, 0, 0, 0, 0];
+  }
+  if (exponent === 1024) {
+    throw new Error("not expecting infinities or nans");
+  }
+  if (exponent + 129 > 255) {
+    throw new Error("overflow");
+  }
+  // 
+  // The lower three mbf mantissa bits are always 0.
+  //        7        6        5        4        3        2        1        0
+  // ........|.6666555|55555444|44444333|33333222|22222111|11111000|00000---|
+  //         56       48       40       32       24       16       8
+  return [
+    (bytes[0] << 3) & 0xf8,
+    ((bytes[1] << 3) & 0xf8) | ((bytes[0] >> 5) & 7),
+    ((bytes[2] << 3) & 0xf8) | ((bytes[1] >> 5) & 7),
+    ((bytes[3] << 3) & 0xf8) | ((bytes[2] >> 5) & 7),
+    ((bytes[4] << 3) & 0xf8) | ((bytes[3] >> 5) & 7),
+    ((bytes[5] << 3) & 0xf8) | ((bytes[4] >> 5) & 7),
+    sign | ((bytes[6] << 3) & 0x78) | ((bytes[5] >> 5) & 7),
     exponent + 129  // implicit .1xxxx mantissa in ieee -> 1.xxxx mbf
   ];
 }

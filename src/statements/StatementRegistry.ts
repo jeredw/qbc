@@ -7,10 +7,8 @@ import { CaseStatement } from "./Case.ts";
 import { ChrFunction } from "./Chr.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
-         CvdFunction, CviFunction, CvlFunction, CvsFunction,
-         CvsmbfFunction,
-         MkdFunction, MkiFunction, MklFunction, MksFunction, 
-         MksmbfFunction} from "./Convert.ts";
+         CvdFunction, CvdmbfFunction, CviFunction, CvlFunction, CvsFunction, CvsmbfFunction,
+         MkdFunction, MkdmbfFunction, MkiFunction, MklFunction, MksFunction, MksmbfFunction } from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
@@ -77,6 +75,10 @@ export function cvi(params: BuiltinParams) {
 
 export function cvd(params: BuiltinParams) {
   return new CvdFunction(params);
+}
+
+export function cvdmbf(params: BuiltinParams) {
+  return new CvdmbfFunction(params);
 }
 
 export function cvl(params: BuiltinParams) {
@@ -169,6 +171,10 @@ export function mki(params: BuiltinParams) {
 
 export function mkd(params: BuiltinParams) {
   return new MkdFunction(params);
+}
+
+export function mkdmbf(params: BuiltinParams) {
+  return new MkdmbfFunction(params);
 }
 
 export function mkl(params: BuiltinParams) {
