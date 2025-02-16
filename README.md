@@ -135,7 +135,7 @@ parse those using baked in rules.
 | `COM`            | Statement   | ✅      | ⛔      |
 | `COMMON`         | Statement   | ✅      | ⛔      |
 | `CONST`          | Statement   | ✅      | ✅      |
-| `COS`            | Function    | -       | ⛔      |
+| `COS`            | Function    | -       | ✅      |
 | `CSNG`           | Function    | -       | ✅      |
 | `CSRLIN`         | Function    | -       | ⛔      |
 | `CVD`            | Function    | -       | ✅      |
@@ -292,7 +292,7 @@ parse those using baked in rules.
 | `SGN`            | Function    | -       | ⛔      |
 | `SHARED`         | Statement   | ✅      | 🚧      |
 | `SHELL`          | Statement   | -       | ⛔      |
-| `SIN`            | Function    | -       | ⛔      |
+| `SIN`            | Function    | -       | ✅      |
 | `SINGLE`         | Keyword     | ✅      | ✅      |
 | `SLEEP`          | Statement   | -       | ⛔      |
 | `SOUND`          | Statement   | -       | ⛔      |
@@ -314,7 +314,7 @@ parse those using baked in rules.
 | `SWAP`           | Statement   | -       | ⛔      |
 | `SYSTEM`         | Statement   | -       | ⛔      |
 | `TAB`            | Function    | -       | ⛔      |
-| `TAN`            | Function    | -       | ⛔      |
+| `TAN`            | Function    | -       | ✅      |
 | `THEN`           | Keyword     | ✅      | ✅      |
 | `TIME$`          | Function    | -       | ⛔      |
 | `TIMER`          | Function    | ✅      | ⛔      |
