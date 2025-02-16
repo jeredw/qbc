@@ -351,6 +351,8 @@ export class SymbolTable {
       const size = getStorageSize(variable);
       if (size == 0) {
         variable.storageType = StorageType.DYNAMIC;
+      } else if (size > 65535) {
+        throw ParseError.fromToken(variable.token, "Subscript out of range");
       } else if (variable.storageType != StorageType.DYNAMIC) {
         variable.address = this.allocate(variable.storageType, size);
       }

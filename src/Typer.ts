@@ -329,7 +329,7 @@ export class Typer extends QBasicParserListener {
         result = typeCheckExpression({
           expr,
           constantExpression: true,
-          resultType: { tag: TypeTag.LONG },
+          resultType: { tag: TypeTag.INTEGER },
         });
       } catch (error: any) {
         // Thrown errors from typeCheckExpression() mean this is not a constant
@@ -349,7 +349,7 @@ export class Typer extends QBasicParserListener {
     return ctx.dim_subscript().map((range) => {
       const lower = range._lower ?
           tryToEvaluateAsConstant(range._lower) :
-          this._arrayBaseIndex;  // TODO: option base
+          this._arrayBaseIndex;
       const upper = tryToEvaluateAsConstant(range._upper!);
       return {lower, upper};
     });
