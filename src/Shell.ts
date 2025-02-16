@@ -68,7 +68,7 @@ class Shell {
           return false;
       }
       this.clearErrors();
-      console.log(e);
+      //console.log(e);
     });
   }
 

@@ -881,7 +881,7 @@ builtin_function
 // 
 // Note the IDE reformats "x   . y" as "x.y".
 variable_or_function_call
-  : name=(ID | FNID) ('(' argument_list ')' ('.' ID)?)?
+  : name=(ID | FNID) ('(' argument_list ')' ('.' element=ID)?)?
   ;
 
 // An argument list or set of array indices following an identifier,

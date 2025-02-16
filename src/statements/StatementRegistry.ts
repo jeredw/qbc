@@ -2,6 +2,7 @@ import { AbsFunction } from "./Abs.ts";
 import { AscFunction } from "./Asc.ts";
 import { AtnFunction, CosFunction, SinFunction, TanFunction } from "./Trig.ts";
 import { BeepStatement } from "./Beep.ts";
+import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { ChrFunction } from "./Chr.ts";
@@ -11,7 +12,7 @@ import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
          MkdFunction, MkdmbfFunction, MkiFunction, MklFunction, MksFunction, MksmbfFunction } from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
-import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
+import { IndexArrayStatement } from "./IndexArray.ts";
 import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
@@ -155,6 +156,10 @@ export function gosubIndex(expr: parser.ExprContext) {
 
 export function if_(expr: parser.ExprContext) {
   return new IfTest(expr);
+}
+
+export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {
+  return new IndexArrayStatement(array, indexExprs, result);
 }
 
 export function let_(variable: Variable, expr: parser.ExprContext) {

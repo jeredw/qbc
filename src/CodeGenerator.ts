@@ -4,7 +4,7 @@ import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParseError } from "./Errors.ts";
 import { Program, ProgramChunk } from "./Programs.ts";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
-import { Variable } from "./Variables.ts";
+import { isArray, Variable } from "./Variables.ts";
 import { typeCheckExpression } from "./Expressions.ts";
 import { reference, isError, getDefaultValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag } from "./Types.ts";
@@ -205,8 +205,19 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("missing symbol");
     }
     const variable = this.getLvalue(assignee._name!, symbol);
-    const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
-    this.addStatement(statements.let_(variable, expr));
+    if (isArray(variable)) {
+      // Evaluate an array index expression for an lvalue first.
+      const result = getTyperContext(assignee).$result;
+      if (!result) {
+        throw new Error("missing result variable");
+      }
+      this.indexArray(variable, assignee.start!, assignee.argument_list(), assignee._element, result);
+      const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
+      this.addStatement(statements.let_(result, expr));
+    } else {
+      const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
+      this.addStatement(statements.let_(variable, expr));
+    }
   }
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
@@ -220,6 +231,28 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("missing procedure");
     }
     this.call(procedure, ctx.start!, ctx.argument_list());
+  }
+
+  private indexArray(array: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, element: Token | null | undefined, result: Variable) {
+    if (!isArray(array)) {
+      throw new Error("indexing non array variable");
+    }
+    if (!!element) {
+      throw new Error("unimplemented");
+    }
+    const args = argumentListCtx?.argument() ?? [];
+    if (array.arrayDimensions!.length != args.length) {
+      throw ParseError.fromToken(token, "Wrong number of dimensions");
+    }
+    const indexExprs: parser.ExprContext[] = [];
+    for (let i = 0; i < args.length; i++) {
+      const parseExpr = args[i].expr();
+      if (!parseExpr) {
+        throw ParseError.fromToken(args[i].start!, "Type mismatch");
+      }
+      indexExprs.push(this.compileExpression(parseExpr, args[i].start!, {tag: TypeTag.INTEGER}));
+    }
+    this.addStatement(statements.indexArray(array, indexExprs, result));
   }
 
   private callBuiltin(builtin: Builtin, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
@@ -717,6 +750,17 @@ export class CodeGenerator extends QBasicParserListener {
           }
           codeGenerator.call(procedure, ctx.start!, ctx.argument_list(), result);
           return;
+        }
+        if (isVariable(symbol)) {
+          const variable = symbol.variable;
+          if (isArray(variable)) {
+            const result = getTyperContext(ctx).$result;
+            if (!result) {
+              throw new Error("missing result variable");
+            }
+            codeGenerator.indexArray(variable, ctx.start!, ctx.argument_list(), ctx._element, result);
+            return;
+          }
         }
       }
     }, expr);

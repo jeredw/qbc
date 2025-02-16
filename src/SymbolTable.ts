@@ -2,7 +2,7 @@ import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures.ts";
 import { isNumericType, sameType, Type, TypeTag } from "./Types.ts";
 import { Constant } from "./Values.ts";
-import { Variable } from "./Variables.ts";
+import { getStorageSize, Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
 import { Address, StorageType } from "./Memory.ts";
 import { Builtin, StandardLibrary } from "./Builtins.ts";
@@ -232,6 +232,12 @@ export class SymbolTable {
         if (!asType || sameType(asType, type)) {
           const variable = slot.arrayVariables.get(type.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
+            if (!variable.arrayDimensions) {
+              throw new Error("missing array dimensions");
+            }
+            if (variable.arrayDimensions.length != numDimensions) {
+              throw ParseError.fromToken(token, "Wrong number of dimensions");
+            }
             return {tag: SymbolTag.VARIABLE, variable};
           }
         }
@@ -324,6 +330,7 @@ export class SymbolTable {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       slot.scalarVariables.set(variable.type.tag, variable);
+      variable.address = this.allocate(variable.storageType, 1);
     } else {
       const asType = slot.arrayAsType ?? slot.scalarAsType;
       if (asType && variable.isAsType && !sameType(asType, variable.type)) {
@@ -341,8 +348,13 @@ export class SymbolTable {
         throw ParseError.fromToken(variable.token, "Array already dimensioned");
       }
       slot.arrayVariables.set(variable.type.tag, variable);
+      const size = getStorageSize(variable);
+      if (size == 0) {
+        variable.storageType = StorageType.DYNAMIC;
+      } else if (variable.storageType != StorageType.DYNAMIC) {
+        variable.address = this.allocate(variable.storageType, size);
+      }
     }
-    variable.address = this.allocate(variable.storageType);
     table.set(variable.name, slot);
   }
   
@@ -358,7 +370,7 @@ export class SymbolTable {
       throw ParseError.fromToken(procedure.token, "Duplicate definition");
     }
     if (procedure.result) {
-      procedure.result.address = this.allocate(procedure.result.storageType);
+      procedure.result.address = this.allocate(procedure.result.storageType, 1);
     }
     this._symbols.set(procedure.name, {procedure});
   }
@@ -388,12 +400,14 @@ export class SymbolTable {
     return this._staticIndex;
   }
 
-  allocate(storageType: StorageType): Address {
+  allocate(storageType: StorageType, size: number): Address {
     switch (storageType) {
       case StorageType.STACK:
-        return {storageType, index: this._stackIndex++};
+        return {storageType, index: this.allocateStack(size)};
       case StorageType.STATIC:
-        return {storageType, index: this.allocateStaticIndex()};
+        return {storageType, index: this.allocateStatic(size)};
+      case StorageType.DYNAMIC:
+        throw new Error("dynamic allocation at compile time");
     }
   }
 
@@ -408,12 +422,18 @@ export class SymbolTable {
     return !!this._name?.startsWith('fn');
   }
 
-  private allocateStaticIndex(): number {
+  private allocateStack(size: number): number {
+    const index = this._stackIndex;
+    this._stackIndex += size;
+    return index;
+  }
+
+  private allocateStatic(size: number): number {
     if (this._parent) {
-      return this._parent.allocateStaticIndex();
+      return this._parent.allocateStatic(size);
     }
     const index = this._staticIndex;
-    this._staticIndex++;
+    this._staticIndex += size;
     return index;
   }
 }

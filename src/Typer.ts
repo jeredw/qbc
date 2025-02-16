@@ -14,7 +14,7 @@ import {
   sameType,
   isNumericType
 } from "./Types.ts";
-import { ArrayBounds, Variable } from "./Variables.ts";
+import { ArrayBounds, isArray, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
 import { isError, isNumeric, isString, typeOfValue, Value } from "./Values.ts";
@@ -26,7 +26,8 @@ export interface TyperContext {
   $symbol: QBasicSymbol;
   $procedure: Procedure;
   $builtin: Builtin;
-  // Synthetic result variable for a function call lifted from an expression.
+  // Synthetic result variable for a function call, builtin, or array element
+  // lookup lifted from an expression.
   $result: Variable;
   // Saved "TO" expression value for a for loop.
   $end: Variable;
@@ -100,7 +101,7 @@ export class Typer extends QBasicParserListener {
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
-    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
+    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK, 1);
     this.installParameters(parameters);
   }
 
@@ -133,7 +134,7 @@ export class Typer extends QBasicParserListener {
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
-    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK);
+    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK, 1);
     this.installParameters(parameters);
   }
 
@@ -180,11 +181,12 @@ export class Typer extends QBasicParserListener {
   override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
     const [name, sigil] = splitSigil(ctx._name!.text!);
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const args = ctx.argument_list()?.argument() || [];
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
       name,
       type,
       sigil,
-      numDimensions: 0, // TODO arrays
+      numDimensions: args.length,
       token: ctx._name!,
       storageType: this._storageType,
       isAsType: false,
@@ -216,6 +218,9 @@ export class Typer extends QBasicParserListener {
       return;
     }
     if (isProcedure(symbol) && !(ctx.parent instanceof parser.Assignment_statementContext)) {
+      // If the direct parent is a LET, this is a function return assignment.
+      // Otherwise, it is a function call that will be hoisted out into a
+      // separate statement and assigned to a temporary result variable.
       const procedure = symbol.procedure;
       if (!procedure.result) {
         // Attempting to call a sub...
@@ -223,6 +228,14 @@ export class Typer extends QBasicParserListener {
       }
       const result = this.makeSyntheticVariable(procedure.result!.type, ctx._name!);
       getTyperContext(ctx).$result = result;
+      return;
+    }
+    if (isVariable(symbol)) {
+      const variable = symbol.variable;
+      if (isArray(variable)) {
+        const result = this.makeSyntheticVariable(variable.type, ctx._name!);
+        getTyperContext(ctx).$result = result;
+      }
       return;
     }
   }

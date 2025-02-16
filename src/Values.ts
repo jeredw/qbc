@@ -200,8 +200,8 @@ export function boolean(test: boolean): Value {
   return test ? integer(TRUE) : integer(FALSE);
 }
 
-export function reference(variable: Variable): Value {
-  return {tag: TypeTag.REFERENCE, variable, address: {...variable.address!}};
+export function reference(variable: Variable, address?: Address): Value {
+  return {tag: TypeTag.REFERENCE, variable, address: address ? address : {...variable.address!}};
 }
 
 export const
@@ -214,4 +214,5 @@ export const
   TYPE_MISMATCH = error('Type mismatch'),
   DIVISION_BY_ZERO = error('Division by zero'),
   ILLEGAL_FUNCTION_CALL = error('Illegal function call'),
-  RETURN_WITHOUT_GOSUB = error('RETURN without GOSUB');
+  RETURN_WITHOUT_GOSUB = error('RETURN without GOSUB'),
+  SUBSCRIPT_OUT_OF_RANGE = error('Subscript out of range');

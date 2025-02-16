@@ -1,0 +1,20 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 10)))) )) = 
+      (expr 
+        (literal 3.14)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 10)))) ))))) \n <EOF>)
