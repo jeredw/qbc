@@ -73,7 +73,7 @@ export class Memory {
   }
 
   dereference(address: Address): [Address, Value] {
-    const MAX_DEPTH = 32;
+    const MAX_DEPTH = 1000;
     let depth = 0;
     let value = this.read(address);
     while (value && isReference(value) && depth < MAX_DEPTH) {

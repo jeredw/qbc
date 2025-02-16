@@ -8,7 +8,7 @@ async function interpret(text: string): Promise<string> {
     const textScreen = new TestTextScreen();
     const speaker = new TestSpeaker();
     const interpreter = new Interpreter({textScreen, speaker});
-    const invocation = interpreter.run(text);
+    const invocation = interpreter.run(text + '\n');
     await invocation.restart();
     return textScreen.output + speaker.output;
   } catch (e: unknown) {

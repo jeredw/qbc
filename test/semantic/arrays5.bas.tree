@@ -1,0 +1,65 @@
+(program 
+  (statement 
+    (dim_statement dim 
+      (dim_variable t 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 11))) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call t) = 
+      (expr 
+        (literal 2)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call t 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) )) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (for_next_statement for i% = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call t 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call i%)) + 
+                      (expr 
+                        (literal 1))))) )) = 
+            (expr 
+              (expr 
+                (variable_or_function_call t)) * 
+              (expr 
+                (variable_or_function_call t 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i%)))) )))))) \n) next)) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call t)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call t 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 11)))) ))))) \n <EOF>)

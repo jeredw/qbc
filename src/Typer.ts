@@ -45,7 +45,8 @@ export class Typer extends QBasicParserListener {
   private _firstCharToDefaultType: Map<string, Type> = new Map();
   private _chunk: ProgramChunk;
   private _program: Program;
-  private _arrayBaseIndex = 1;
+  private _optionBaseAllowed = true;
+  private _arrayBaseIndex = 0;
   private _syntheticVariableIndex = 0;
   private _storageType: StorageType = StorageType.STATIC;
   private _builtins: StandardLibrary;
@@ -176,7 +177,20 @@ export class Typer extends QBasicParserListener {
   override exitDef_fn_statement = this.exitProcedure;
   override exitSub_statement = this.exitProcedure;
 
-  override enterOption_statement = (ctx: parser.Option_statementContext) => {}
+  override enterOption_statement = (ctx: parser.Option_statementContext) => {
+    if (!this._optionBaseAllowed) {
+      throw ParseError.fromToken(ctx.start!, "Array already dimensioned");
+    }
+    const base = ctx.DIGITS().getText();
+    if (base == '0') {
+      this._arrayBaseIndex = 0;
+    } else if (base == '1') {
+      this._arrayBaseIndex = 1;
+    } else {
+      throw ParseError.fromToken(ctx.DIGITS().symbol, "Expected 0 or 1");
+    }
+    this._optionBaseAllowed = false;
+  }
 
   override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
     const [name, sigil] = splitSigil(ctx._name!.text!);
@@ -233,6 +247,7 @@ export class Typer extends QBasicParserListener {
     if (isVariable(symbol)) {
       const variable = symbol.variable;
       if (isArray(variable)) {
+        this._optionBaseAllowed = false;
         const result = this.makeSyntheticVariable(variable.type, ctx._name!);
         getTyperContext(ctx).$result = result;
       }
@@ -259,6 +274,9 @@ export class Typer extends QBasicParserListener {
       const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds())
       if (arrayDimensions.some((bounds) => bounds.lower === undefined || bounds.upper === undefined)) {
         throw new Error("TODO: dynamic arrays");
+      }
+      if (arrayDimensions.length > 0) {
+        this._optionBaseAllowed = false;
       }
       const dimensions = {...arrayDimensions.length ? {arrayDimensions} : {}};
       if (!!dim.AS()) {

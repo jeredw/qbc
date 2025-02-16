@@ -246,7 +246,7 @@ parse those using baked in rules.
 | `ON`...`GOTO`    | Statement   | ✅      | ✅      |
 | `OPEN`           | Statement   | ✅      | ⛔      |
 | `OPEN COM`       | Statement   | ✅      | ⛔      |
-| `OPTION BASE`    | Statement   | ✅      | ⛔      |
+| `OPTION BASE`    | Statement   | ✅      | ✅      |
 | `OR`             | Operator    | ✅      | ✅      |
 | `OUT`            | Statement   | -       | ⛔      |
 | `OUTPUT`         | Keyword     | ✅      | ⛔      |
