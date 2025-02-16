@@ -32,7 +32,7 @@ export class CallStatement extends Statement {
         const value = evaluateExpression({expr, resultType: variable.type, memory: context.memory});
         writes.push([variable.address!, value]);
       } else if (value) {
-        if (isReference(value) && value.variable.storageType == StorageType.STACK) {
+        if (isReference(value) && value.variable.storageType == StorageType.AUTOMATIC) {
           // Explicitly mark that stack references refer to the current stack frame.
           const address = {...value.address, frameIndex};
           writes.push([variable.address!, {...value, address}]);

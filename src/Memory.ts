@@ -2,7 +2,7 @@ import { isReference, Value } from "./Values.ts";
 
 export enum StorageType {
   STATIC,
-  STACK,
+  AUTOMATIC,
   DYNAMIC,
 }
 
@@ -102,7 +102,7 @@ export class Memory {
 
   read(address: Address): Value {
     switch (address.storageType) {
-      case StorageType.STACK:
+      case StorageType.AUTOMATIC:
         return this.getStackFrame(address.frameIndex).read(address.index);
       case StorageType.STATIC:
         return this.static.read(address.index);
@@ -113,7 +113,7 @@ export class Memory {
 
   write(address: Address, value: Value) {
     switch (address.storageType) {
-      case StorageType.STACK:
+      case StorageType.AUTOMATIC:
         return this.getStackFrame(address.frameIndex).write(address.index, value);
       case StorageType.STATIC:
         return this.static.write(address.index, value);

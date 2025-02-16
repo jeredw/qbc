@@ -404,7 +404,7 @@ export class SymbolTable {
 
   allocate(storageType: StorageType, size: number): Address {
     switch (storageType) {
-      case StorageType.STACK:
+      case StorageType.AUTOMATIC:
         return {storageType, index: this.allocateStack(size)};
       case StorageType.STATIC:
         return {storageType, index: this.allocateStatic(size)};

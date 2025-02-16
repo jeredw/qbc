@@ -87,12 +87,12 @@ export class Typer extends QBasicParserListener {
         name,
         type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
         token,
-        storageType: StorageType.STACK
+        storageType: StorageType.AUTOMATIC
       },
       programChunkIndex: this._program.chunks.length,
       token,
     };
-    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
+    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
     const symbols = new SymbolTable({
@@ -102,7 +102,7 @@ export class Typer extends QBasicParserListener {
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
-    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK, 1);
+    procedure.result!.address = this._chunk.symbols.allocate(StorageType.AUTOMATIC, 1);
     this.installParameters(parameters);
   }
 
@@ -120,7 +120,7 @@ export class Typer extends QBasicParserListener {
         name,
         type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
         token,
-        storageType: StorageType.STACK
+        storageType: StorageType.AUTOMATIC
       },
       programChunkIndex: this._program.chunks.length,
       token
@@ -135,7 +135,7 @@ export class Typer extends QBasicParserListener {
     });
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
-    procedure.result!.address = this._chunk.symbols.allocate(StorageType.STACK, 1);
+    procedure.result!.address = this._chunk.symbols.allocate(StorageType.AUTOMATIC, 1);
     this.installParameters(parameters);
   }
 
@@ -148,7 +148,7 @@ export class Typer extends QBasicParserListener {
       programChunkIndex: this._program.chunks.length,
       token: ctx.untyped_id().start!
     };
-    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.STACK;
+    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
     this._chunk.symbols.defineProcedure(procedure);
     getTyperContext(ctx).$procedure = procedure;
     const symbols = new SymbolTable({
@@ -644,7 +644,7 @@ export class Typer extends QBasicParserListener {
       isAsType: !!asTypeCtx,
       isParameter: true,
       token: ctx.start!,
-      storageType: StorageType.STACK
+      storageType: StorageType.AUTOMATIC
     };
   }
 
