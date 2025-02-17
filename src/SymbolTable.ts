@@ -1,8 +1,8 @@
 import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures.ts";
-import { isNumericType, sameType, Type, TypeTag } from "./Types.ts";
+import { getRecordLength, isNumericType, sameType, Type, TypeTag } from "./Types.ts";
 import { Constant } from "./Values.ts";
-import { getStorageSize, Variable } from "./Variables.ts";
+import { getItemSize, getStorageSize, Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
 import { Address, StorageType } from "./Memory.ts";
 import { Builtin, StandardLibrary } from "./Builtins.ts";
@@ -137,6 +137,8 @@ export class SymbolTable {
   private _symbols: NameToSlotMap = new NameToSlotMap();
   private _stackIndex: number;
   private _staticIndex: number;
+  private _elementIndex: number;
+  private _itemSize: number;
   
   constructor({builtins, parent, name} : {builtins: StandardLibrary, parent?: SymbolTable, name?: string}) {
     this._builtins = builtins;
@@ -262,7 +264,7 @@ export class SymbolTable {
     return this._symbols.variables();
   }
 
-  defineVariable(variable: Variable) {
+  defineVariable(variable: Variable, element?: boolean) {
     const builtin = this.lookupBuiltin(variable.name, variable.sigil, variable.token);
     if (builtin) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
@@ -276,36 +278,6 @@ export class SymbolTable {
     }
     if (slot.defFns) {
       throw ParseError.fromToken(variable.token, "Cannot start with FN");
-    }
-    if (variable.type.tag == TypeTag.RECORD) {
-      const conflicts = this._symbols.findPrefixDot(variable.name);
-      if (conflicts) {
-        const tokens = [
-          getTokens(conflicts.arrayVariables),
-          getTokens(conflicts.scalarVariables),
-          getTokens(conflicts.defFns),
-          conflicts.procedure?.token,
-          conflicts.constant?.token,
-        ].flat().filter((x) => !!x);
-        if (!tokens.length) {
-          throw new Error("expecting conflict token");
-        }
-        throw ParseError.fromToken(tokens[0], "Identifier cannot include period");
-      }
-      variable.elements = new Map();
-      for (const {name: elementName, type: elementType} of variable.type.elements) {
-        const element = {
-          name: `${variable.name}.${elementName}`,
-          type: elementType,
-          isAsType: true,
-          isParameter: variable.isParameter,
-          token: variable.token,
-          storageType: variable.storageType,
-          // TODO: Array elements
-        };
-        this.defineVariable(element);
-        variable.elements.set(elementName, element);
-      }
     }
     if (!variable.arrayDimensions) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
@@ -330,7 +302,10 @@ export class SymbolTable {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       slot.scalarVariables.set(variable.type.tag, variable);
-      variable.address = this.allocate(variable.storageType, 1);
+      if (!variable.address) {
+        const size = getStorageSize(variable);
+        variable.address = this.allocate(variable.storageType, size);
+      }
     } else {
       const asType = slot.arrayAsType ?? slot.scalarAsType;
       if (asType && variable.isAsType && !sameType(asType, variable.type)) {
@@ -348,13 +323,57 @@ export class SymbolTable {
         throw ParseError.fromToken(variable.token, "Array already dimensioned");
       }
       slot.arrayVariables.set(variable.type.tag, variable);
-      const size = getStorageSize(variable);
-      if (size == 0) {
-        variable.storageType = StorageType.DYNAMIC;
-      } else if (size > 65535) {
-        throw ParseError.fromToken(variable.token, "Subscript out of range");
-      } else if (variable.storageType != StorageType.DYNAMIC) {
-        variable.address = this.allocate(variable.storageType, size);
+      if (!variable.address) {
+        variable.itemSize = getItemSize(variable);
+        const size = getStorageSize(variable);
+        if (size == 0 || variable.storageType == StorageType.AUTOMATIC) {
+          variable.storageType = StorageType.DYNAMIC;
+        } else if (size > 65535) {
+          throw ParseError.fromToken(variable.token, "Subscript out of range");
+        } else if (variable.storageType != StorageType.DYNAMIC) {
+          variable.address = this.allocate(variable.storageType, size);
+        }
+      }
+    }
+    if (variable.type.tag == TypeTag.RECORD) {
+      const conflicts = this._symbols.findPrefixDot(variable.name);
+      if (conflicts) {
+        const tokens = [
+          getTokens(conflicts.arrayVariables),
+          getTokens(conflicts.scalarVariables),
+          getTokens(conflicts.defFns),
+          conflicts.procedure?.token,
+          conflicts.constant?.token,
+        ].flat().filter((x) => !!x);
+        if (!tokens.length) {
+          throw new Error("expecting conflict token");
+        }
+        throw ParseError.fromToken(tokens[0], "Identifier cannot include period");
+      }
+      variable.elements = new Map();
+      if (!element) {
+        // The first value in a record type is a reference to the record.
+        this._elementIndex = variable.address!.index + 1;
+        this._itemSize = variable.itemSize!;
+      }
+      const elementArray = !element && variable.arrayDimensions ? '()' : '';
+      for (const {name: elementName, type: elementType} of variable.type.elements) {
+        const address = {...variable.address!};
+        address.index = this._elementIndex;
+        this._elementIndex++;
+        const element = {
+          name: `${variable.name}${elementArray}.${elementName}`,
+          type: elementType,
+          isAsType: true,
+          isParameter: variable.isParameter,
+          token: variable.token,
+          storageType: variable.storageType,
+          address,
+          arrayDimensions: variable.arrayDimensions,
+          itemSize: this._itemSize,
+        };
+        this.defineVariable(element, true);
+        variable.elements.set(elementName, element);
       }
     }
     table.set(variable.name, slot);

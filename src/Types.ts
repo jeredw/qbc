@@ -142,3 +142,16 @@ export function splitSigil(text: string): [string, string] {
   }
   return [text, ""];
 }
+
+export function getRecordLength(type: UserDefinedType): number {
+  // The first value is reserved for a reference to the record.
+  let size = 1;
+  for (const {type: elementType} of type.elements) {
+    if (elementType.tag == TypeTag.RECORD) {
+      size += getRecordLength(elementType);
+    } else {
+      size++;
+    }
+  }
+  return size;
+}

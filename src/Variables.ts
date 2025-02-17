@@ -1,5 +1,5 @@
 import { Token } from "antlr4ng";
-import { Type } from "./Types.ts"
+import { getRecordLength, Type, TypeTag } from "./Types.ts"
 import { StorageType, Address } from "./Memory.ts";
 
 export interface Variable {
@@ -16,6 +16,8 @@ export interface Variable {
   elements?: Map<string, Variable>;
   storageType: StorageType;
   address?: Address;
+  elementOffset?: number;
+  itemSize?: number;
 }
 
 export interface ArrayBounds {
@@ -27,16 +29,22 @@ export function isArray(variable: Variable) {
   return variable.arrayDimensions && variable.arrayDimensions.length > 0;
 }
 
+export function getItemSize(variable: Variable): number {
+  return variable.type.tag == TypeTag.RECORD ?
+    getRecordLength(variable.type) : 1;
+}
+
 export function getStorageSize(variable: Variable): number {
+  const itemSize = getItemSize(variable);
   if (isArray(variable)) {
-    let size = 1;
+    let itemCount = 1;
     for (const bounds of variable.arrayDimensions!) {
       if (bounds.upper === undefined || bounds.lower === undefined) {
         return 0;
       }
-      size = size * (1 + bounds.upper - bounds.lower);
+      itemCount = itemCount * (1 + bounds.upper - bounds.lower);
     }
-    return size;
+    return itemCount * itemSize;
   }
-  return 1;
+  return itemSize;
 }

@@ -21,7 +21,7 @@ export class IndexArrayStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     let offset = 0;
-    let stride = 1;
+    let stride = this.array.itemSize!;
     for (let i = 0; i < this.indexExprs.length; i++) {
       const expr = this.indexExprs[i];
       const value = evaluateExpression({

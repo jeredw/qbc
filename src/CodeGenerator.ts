@@ -211,7 +211,7 @@ export class CodeGenerator extends QBasicParserListener {
       if (!result) {
         throw new Error("missing result variable");
       }
-      this.indexArray(variable, assignee.start!, assignee.argument_list(), assignee._element, result);
+      this.indexArray(variable, assignee.start!, assignee.argument_list(), result);
       const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
       this.addStatement(statements.let_(result, expr));
     } else {
@@ -233,12 +233,9 @@ export class CodeGenerator extends QBasicParserListener {
     this.call(procedure, ctx.start!, ctx.argument_list());
   }
 
-  private indexArray(array: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, element: Token | null | undefined, result: Variable) {
+  private indexArray(array: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, result: Variable) {
     if (!isArray(array)) {
       throw new Error("indexing non array variable");
-    }
-    if (!!element) {
-      throw new Error("unimplemented");
     }
     const args = argumentListCtx?.argument() ?? [];
     if (array.arrayDimensions!.length != args.length) {
@@ -758,7 +755,7 @@ export class CodeGenerator extends QBasicParserListener {
             if (!result) {
               throw new Error("missing result variable");
             }
-            codeGenerator.indexArray(variable, ctx.start!, ctx.argument_list(), ctx._element, result);
+            codeGenerator.indexArray(variable, ctx.start!, ctx.argument_list(), result);
             return;
           }
         }

@@ -196,8 +196,9 @@ export class Typer extends QBasicParserListener {
     const [name, sigil] = splitSigil(ctx._name!.text!);
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const args = ctx.argument_list()?.argument() || [];
+    const element = ctx._element?.text || '';
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
-      name,
+      name: element ? `${name}().${element}` : name,
       type,
       sigil,
       numDimensions: args.length,
@@ -351,6 +352,9 @@ export class Typer extends QBasicParserListener {
           tryToEvaluateAsConstant(range._lower) :
           this._arrayBaseIndex;
       const upper = tryToEvaluateAsConstant(range._upper!);
+      if (lower !== undefined && upper !== undefined && upper < lower) {
+        throw ParseError.fromToken(ctx.start!, "Subscript out of range");
+      }
       return {lower, upper};
     });
   }
