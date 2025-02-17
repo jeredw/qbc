@@ -1,0 +1,11 @@
+(program 
+  (option_statement option base 1) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n <EOF>)

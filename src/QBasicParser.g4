@@ -87,6 +87,8 @@ implicit_goto_target
 line_number : DIGITS ;
 text_label : untyped_id | untyped_fnid;
 
+// Many statements are parsed as calls to builtin procedures.  This is just the
+// set of statements that need special parsing.
 statement
   : assignment_statement
   | call_statement
@@ -201,7 +203,7 @@ def_fn_parameter
   | ID
   ;
 
-// IDE drops empty '()' parameter lists.
+// The IDE drops empty '()' parameter lists, so admit that.
 function_statement
   : label? FUNCTION ID ('(' parameter_list? ')')? STATIC?
     block
@@ -223,8 +225,8 @@ parameter
 array_declaration
   : '(' DIGITS? ')'
   ;
-
-// Dimensions don't parse in SHARED statement.
+// But the SHARED statement doesn't support optional array dimensions (it's
+// newer).
 array_declaration_no_dimensions
   : '(' ')'
   ;
@@ -272,7 +274,7 @@ option_statement
   : OPTION BASE DIGITS
   ;
 
-// IDE drops empty '()' parameter lists.
+// The IDE drops empty '()' parameter lists, so admit that.
 sub_statement
   : label? SUB name=untyped_id ('(' parameter_list? ')')? STATIC?
     block
@@ -312,6 +314,7 @@ call_statement
 // CALL sub or CALL sub(arg1, arg2, ... argN)
   : CALL untyped_id ('(' argument_list ')')?
 // If CALL is omitted, parens must also be omitted.
+// Many statements are parsed into this implicit CALL syntax.
   | untyped_id argument_list?
   ;
 

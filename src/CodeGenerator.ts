@@ -223,6 +223,9 @@ export class CodeGenerator extends QBasicParserListener {
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
     const builtin = getTyperContext(ctx).$builtin;
     if (builtin) {
+      if (ctx.CALL()) {
+        throw ParseError.fromToken(ctx.untyped_id().start!, "Expected identifier");
+      }
       this.callBuiltin(builtin, ctx.start!, ctx.argument_list());
       return;
     }
