@@ -279,6 +279,7 @@ export class SymbolTable {
     if (slot.defFns) {
       throw ParseError.fromToken(variable.token, "Cannot start with FN");
     }
+    this.checkForAmbiguousRecord(variable);
     if (!variable.arrayDimensions) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
       if (asType && variable.isAsType && !sameType(asType, variable.type)) {
@@ -429,6 +430,23 @@ export class SymbolTable {
         return {storageType, index: this.allocateStatic(size)};
       case StorageType.DYNAMIC:
         throw new Error("dynamic allocation at compile time");
+    }
+  }
+
+  private checkForAmbiguousRecord(variable: Variable) {
+    if (!variable.name.includes('.')) {
+      return;
+    }
+    const [prefix] = variable.name.split('.');
+    const symbol = this._symbols.get(prefix);
+    if (!symbol) {
+      return;
+    }
+    if (symbol.scalarVariables && symbol.scalarVariables.get(TypeTag.RECORD)) {
+      throw ParseError.fromToken(variable.token, "Element not defined");
+    }
+    if (symbol.arrayVariables && symbol.arrayVariables.get(TypeTag.RECORD)) {
+      throw ParseError.fromToken(variable.token, "Identifier cannot include period");
     }
   }
 

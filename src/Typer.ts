@@ -706,7 +706,7 @@ function getUntypedId(ctx: parser.Untyped_idContext | parser.Untyped_fnidContext
     throw ParseError.fromToken(ctx.start!, "Identifier cannot end with %, &, !, # or $");
   }
   if (!allowPeriods && id.includes('.')) {
-      throw ParseError.fromToken(ctx.start!, "Identifier cannot include period");
+    throw ParseError.fromToken(ctx.start!, "Identifier cannot include period");
   }
   return id.toLowerCase();
 }
