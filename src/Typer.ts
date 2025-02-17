@@ -249,6 +249,10 @@ export class Typer extends QBasicParserListener {
       const variable = symbol.variable;
       if (isArray(variable)) {
         this._optionBaseAllowed = false;
+        // Note that for record arrays, result is a record with references to
+        // each element at this index.  So t(2) creates _v0 = index(t, 2), but
+        // also _v0.element = index(t().element, 2), etc.  This simplifies
+        // procedure calls with record references.
         const result = this.makeSyntheticVariable(variable.type, ctx._name!);
         getTyperContext(ctx).$result = result;
       }

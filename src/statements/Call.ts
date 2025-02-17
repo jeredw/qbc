@@ -11,6 +11,7 @@ export interface StackVariable {
   variable: Variable;
   expr?: ExprContext;
   value?: Value;
+  record?: Variable;
 }
 
 export class CallStatement extends Statement {

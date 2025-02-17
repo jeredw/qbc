@@ -287,9 +287,13 @@ export class CodeGenerator extends QBasicParserListener {
         throw new Error("unimplemented");
       }
       const parameter = procedure.parameters[i];
-      const refParam = getVariableReference(parseExpr);
-      if (refParam) {
-        let [variable, variableCtx] = refParam;
+      const referenceParam = getVariableReference(parseExpr);
+      if (referenceParam) {
+        let [variable, variableCtx] = referenceParam;
+        // Type must match exactly for pass by reference.
+        if (!sameType(variable.type, parameter.type)) {
+          throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
+        }
         if (isArray(variable)) {
           const result = getTyperContext(variableCtx).$result;
           if (!result) {
@@ -297,10 +301,6 @@ export class CodeGenerator extends QBasicParserListener {
           }
           this.indexArray(variable, variableCtx.start!, variableCtx.argument_list(), result);
           variable = result;
-        }
-        // Type must match exactly for pass by reference.
-        if (!sameType(variable.type, parameter.type)) {
-          throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
         stackVariables.push({variable: parameter, value: reference(variable)});
         if (parameter.type.tag == TypeTag.RECORD) {

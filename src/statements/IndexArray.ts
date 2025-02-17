@@ -57,5 +57,23 @@ export class IndexArrayStatement extends Statement {
       frameIndex: this.array.address.frameIndex,
       index: this.array.address.index + offset
     }));
+    if (this.array.type.tag == TypeTag.RECORD) {
+      // For records, also update all the element offsets.
+      if (!this.array.elements ||
+        this.result.type.tag != TypeTag.RECORD || !this.result.elements) {
+        throw new Error("missing elements");
+      }
+      for (const [name, element] of this.array.elements) {
+        const resultElement = this.result.elements.get(name);
+        if (!resultElement || !resultElement.address || !element.address) {
+          throw new Error("missing element variable");
+        }
+        context.memory.write(resultElement.address, reference(element, {
+          storageType: element.storageType,
+          frameIndex: element.address.frameIndex,
+          index: element.address.index + offset
+        }));
+      }
+    }
   }
 }

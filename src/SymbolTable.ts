@@ -357,6 +357,8 @@ export class SymbolTable {
         this._elementIndex = variable.address!.index + 1;
         this._itemSize = variable.itemSize!;
       }
+      // Elements of user-defined type arrays get their own internal array
+      // symbols named t().element located at t(0).element.
       const elementArray = !element && variable.arrayDimensions ? '()' : '';
       for (const {name: elementName, type: elementType} of variable.type.elements) {
         const address = {...variable.address!};
