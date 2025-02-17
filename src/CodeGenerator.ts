@@ -287,8 +287,17 @@ export class CodeGenerator extends QBasicParserListener {
         throw new Error("unimplemented");
       }
       const parameter = procedure.parameters[i];
-      const variable = getVariableReference(parseExpr);
-      if (variable) {
+      const refParam = getVariableReference(parseExpr);
+      if (refParam) {
+        let [variable, variableCtx] = refParam;
+        if (isArray(variable)) {
+          const result = getTyperContext(variableCtx).$result;
+          if (!result) {
+            throw new Error("missing result variable");
+          }
+          this.indexArray(variable, variableCtx.start!, variableCtx.argument_list(), result);
+          variable = result;
+        }
         // Type must match exactly for pass by reference.
         if (!sameType(variable.type, parameter.type)) {
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
@@ -785,13 +794,13 @@ function findParent<T extends ParserRuleContext>(
   return null;
 }
 
-function getVariableReference(expr: parser.ExprContext): Variable | undefined {
+function getVariableReference(expr: parser.ExprContext): [Variable, parser.Variable_or_function_callContext] | undefined {
   if (expr.children.length == 1) {
     const child = expr.children[0];
     if (child instanceof parser.Variable_or_function_callContext) {
-      const symbol = child['$symbol'];
+      const symbol = getTyperContext(child).$symbol;
       if (isVariable(symbol)) {
-        return symbol.variable;
+        return [symbol.variable, child];
       }
     }
   }
