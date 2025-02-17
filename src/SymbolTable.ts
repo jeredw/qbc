@@ -177,7 +177,7 @@ export class SymbolTable {
 
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, sigil, numDimensions, token, storageType, isAsType}: {
+  lookupOrDefineVariable({name, type, sigil, numDimensions, token, storageType, isAsType, arrayBaseIndex}: {
       name: string,
       type: Type,
       sigil?: string,
@@ -185,6 +185,7 @@ export class SymbolTable {
       token: Token,
       storageType: StorageType,
       isAsType: boolean,
+      arrayBaseIndex: number,
     }): QBasicSymbol {
     const builtin = this.lookupBuiltin(name, sigil, token);
     if (builtin) {
@@ -247,7 +248,7 @@ export class SymbolTable {
     }
     const arrayDimensions = numDimensions > 0 ? {
       arrayDimensions: new Array(numDimensions).fill({
-        lower: 1, upper: 10  // TODO: option base
+        lower: arrayBaseIndex, upper: 10
       })
     } : {};
     const variable = { name, type, sigil, token, storageType, isAsType, ...arrayDimensions };

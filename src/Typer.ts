@@ -205,6 +205,7 @@ export class Typer extends QBasicParserListener {
       token: ctx._name!,
       storageType: this._storageType,
       isAsType: false,
+      arrayBaseIndex: this._arrayBaseIndex,
     });
     getTyperContext(ctx).$symbol = symbol;
     if (isBuiltin(symbol)) {
@@ -383,6 +384,7 @@ export class Typer extends QBasicParserListener {
           numDimensions: 0,  // TODO
           storageType: StorageType.STATIC,
           isAsType: true,
+          arrayBaseIndex: this._arrayBaseIndex,
         });
         this.shareVariable(symbol, token);
       } else {
@@ -406,6 +408,7 @@ export class Typer extends QBasicParserListener {
           numDimensions: 0,  // TODO
           storageType: StorageType.STATIC,
           isAsType: false,
+          arrayBaseIndex: this._arrayBaseIndex,
         });
         this.shareVariable(symbol, token);
       }
@@ -492,6 +495,7 @@ export class Typer extends QBasicParserListener {
       token: ctx.ID(0)!.symbol,
       storageType: this._storageType,
       isAsType: false,
+      arrayBaseIndex: this._arrayBaseIndex,
     });
     getTyperContext(ctx).$symbol = symbol;
     getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);
