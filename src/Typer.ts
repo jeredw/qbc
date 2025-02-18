@@ -17,7 +17,7 @@ import {
 import { ArrayBounds, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
-import { isError, isNumeric, isString, typeOfValue, Value } from "./Values.ts";
+import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
 import { typeCheckExpression, parseLiteral } from "./Expressions.ts";
 import { StorageType } from "./Memory.ts";
 import { Builtin, StandardLibrary } from "./Builtins.ts";
@@ -296,11 +296,13 @@ export class Typer extends QBasicParserListener {
     }
     for (const dim of ctx.dim_variable()) {
       const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds());
+      const dynamic = arrayDimensions.some((bound) => bound.lower === undefined || bound.upper === undefined);
       if (arrayDimensions.length > 0) {
         this._optionBaseAllowed = false;
       }
       const dimensions = {...arrayDimensions.length ? {
         array: {
+          dynamic,
           dimensions: arrayDimensions
         }
       } : {}};
@@ -344,7 +346,9 @@ export class Typer extends QBasicParserListener {
         };
         this._chunk.symbols.defineVariable(variable);
       }
-      getTyperContext(ctx).$result = variable;
+      if (dynamic) {
+        getTyperContext(dim).$result = variable;
+      }
     }
   }
 

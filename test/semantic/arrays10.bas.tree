@@ -1,0 +1,33 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call k) = 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call k))) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 15)))) )) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 15)))) ))))) \n <EOF>)

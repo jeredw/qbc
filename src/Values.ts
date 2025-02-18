@@ -1,6 +1,6 @@
 import { Token } from 'antlr4ng';
 import { sameType, Type, TypeTag } from './Types.ts'
-import type { ArrayBounds, ArrayDescriptor, Variable } from './Variables.ts'
+import type { ArrayDescriptor, Variable } from './Variables.ts'
 import { Address } from './Memory.ts';
 
 export type ErrorValue = {

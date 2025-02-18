@@ -1,6 +1,6 @@
 import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures.ts";
-import { getRecordLength, isNumericType, sameType, Type, TypeTag } from "./Types.ts";
+import { isNumericType, sameType, Type, TypeTag } from "./Types.ts";
 import { Constant } from "./Values.ts";
 import { getItemSize, getStorageSize, Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
@@ -360,7 +360,7 @@ export class SymbolTable {
           throw ParseError.fromToken(variable.token, "Subscript out of range");
         }
         variable.address = this.allocate(variable.storageType, size);
-        if (variable.storageType == StorageType.STATIC) {
+        if (!variable.array.dynamic) {
           // If the array is static, values follow the first address which is
           // always reserved for a descriptor.
           variable.array.baseAddress = {...variable.address};

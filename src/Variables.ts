@@ -38,8 +38,7 @@ export interface ArrayBounds {
 }
 
 export function getItemSize(variable: Variable): number {
-  return variable.type.tag == TypeTag.RECORD ?
-    getRecordLength(variable.type) : 1;
+  return variable.type.tag == TypeTag.RECORD ? getRecordLength(variable.type) : 1;
 }
 
 export function getStorageSize(variable: Variable): number {

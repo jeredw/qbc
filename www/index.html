@@ -15,12 +15,10 @@
       <button class="mute-button">Mute </button>
     </div>
     <div class="code-box">
-      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">sub foo(x() as integer, n as single)
-  x(2) = 42
-end sub
-dim x(10) as integer
-foo x(), x
-print x(2)
+      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">k = 15
+dim x(k)
+x(15) = 42
+print x(15)
 </div>
     </div>
     <div class="status-line"> <span class="run-hint">&lt;⌘+Enter=Run &gt;</span> <span class="stop-hint">&lt;⌘+Enter=Stop&gt;</span></div>

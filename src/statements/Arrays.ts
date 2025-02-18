@@ -2,9 +2,9 @@ import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError } from "../Errors.ts";
 import { evaluateExpression } from "../Expressions.ts";
-import { Address, StorageType } from "../Memory.ts";
+import { StorageType } from "../Memory.ts";
 import { TypeTag } from "../Types.ts";
-import { array, ArrayValue, isArray, isError, isNumeric, reference, SUBSCRIPT_OUT_OF_RANGE, TYPE_MISMATCH } from "../Values.ts";
+import { array, isArray, isError, isNumeric, reference, SUBSCRIPT_OUT_OF_RANGE, TYPE_MISMATCH } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -51,7 +51,12 @@ export class DimStatement extends Statement {
       throw RuntimeError.fromToken(this.token, SUBSCRIPT_OUT_OF_RANGE);
     }
     const baseAddress = context.memory.allocate(numElements);
-    const descriptor = array(this.result, {storageType: StorageType.DYNAMIC, baseAddress, dimensions});
+    const descriptor = array(this.result, {
+      storageType: StorageType.DYNAMIC,
+      itemSize: this.result.array.itemSize,
+      baseAddress,
+      dimensions
+    });
     context.memory.write(descriptorAddress, descriptor);
   }
 }
