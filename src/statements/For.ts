@@ -44,7 +44,7 @@ export class NextStatement extends Statement {
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
-    const [counterAddress, counterValue] = context.memory.dereference(this.counter.address!);
+    const [counterAddress, counterValue] = context.memory.dereference(this.counter);
     if (!counterValue || !isNumeric(counterValue)) {
       throw new Error("must be numeric");
     }
@@ -66,7 +66,7 @@ function getValueOrDefault(memory: Memory, variable: Variable | null, defaultVal
   if (!variable) {
     return defaultValue;
   }
-  const [_, value] = memory.dereference(variable.address!);
+  const [_, value] = memory.dereference(variable);
   if (!value || !isNumeric(value)) {
     throw new Error("must be numeric");
   }

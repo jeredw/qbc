@@ -7,12 +7,12 @@ export enum TypeTag {
   LONG,
   FIXED_STRING,
   RECORD,
-  ARRAY,
   ANY,
   // Numeric is used for polymorphic builtins.
   NUMERIC,
-  // Reference is only used for values, not types.
+  // Reference and array are only used for values, not types.
   REFERENCE,
+  ARRAY,
 }
 
 export interface SingleType {
@@ -51,12 +51,6 @@ export interface UserDefinedType {
   elements: UserDefinedTypeElement[];
 }
 
-export interface ArrayType {
-  tag: TypeTag.ARRAY;
-  elementType: Type;
-  // Array variables have dimensions, but types don't.
-}
-
 export interface AnyType {
   tag: TypeTag.ANY;
 }
@@ -73,7 +67,6 @@ export type Type =
   | LongType
   | FixedStringType
   | UserDefinedType
-  | ArrayType
   | AnyType
   | NumericType;
 
@@ -86,9 +79,6 @@ export function sameType(s: Type, t: Type) {
   }
   if (s.tag == TypeTag.RECORD && t.tag == TypeTag.RECORD) {
     return s.name == t.name;
-  }
-  if (s.tag == TypeTag.ARRAY && t.tag == TypeTag.ARRAY) {
-    return sameType(s.elementType, t.elementType);
   }
   return s.tag == t.tag;
 }
@@ -144,8 +134,7 @@ export function splitSigil(text: string): [string, string] {
 }
 
 export function getRecordLength(type: UserDefinedType): number {
-  // The first value is reserved for a reference to the record.
-  let size = 1;
+  let size = 0;
   for (const {type: elementType} of type.elements) {
     if (elementType.tag == TypeTag.RECORD) {
       size += getRecordLength(elementType);

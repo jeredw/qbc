@@ -31,7 +31,7 @@ export function compile(tree: ParseTree): Program {
   const builtins = new StandardLibrary();
   const typer = new Typer(builtins);
   ParseTreeWalker.DEFAULT.walk(typer, tree);
-  const codeGenerator = new CodeGenerator(typer.program);
+  const codeGenerator = new CodeGenerator(typer.program, typer.arrayBaseIndex);
   ParseTreeWalker.DEFAULT.walk(codeGenerator, tree);
   return codeGenerator.program;
 }

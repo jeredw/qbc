@@ -4,7 +4,7 @@ import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParseError } from "./Errors.ts";
 import { Program, ProgramChunk } from "./Programs.ts";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
-import { isArray, Variable } from "./Variables.ts";
+import { Variable } from "./Variables.ts";
 import { typeCheckExpression } from "./Expressions.ts";
 import { reference, isError, getDefaultValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag } from "./Types.ts";
@@ -16,6 +16,7 @@ import { BranchIndexStatement } from "./statements/Branch.ts";
 import { StorageType } from "./Memory.ts";
 import { StackVariable } from "./statements/Call.ts";
 import { Builtin } from "./Builtins.ts";
+import { DimBoundsExprs } from "./statements/Arrays.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -37,11 +38,13 @@ export class CodeGenerator extends QBasicParserListener {
   private _chunk: ProgramChunk;
   private _program: Program;
   private _syntheticLabelIndex = 0;
+  private _arrayBaseIndex: number = 0;
 
-  constructor(program: Program) {
+  constructor(program: Program, arrayBaseIndex: number) {
     super();
     this._program = program;
     this._chunk = program.chunks[0];
+    this._arrayBaseIndex = arrayBaseIndex;
   }
 
   get program() {
@@ -205,7 +208,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("missing symbol");
     }
     const variable = this.getLvalue(assignee._name!, symbol);
-    if (isArray(variable)) {
+    if (variable.array) {
       // Evaluate an array index expression for an lvalue first.
       const result = getTyperContext(assignee).$result;
       if (!result) {
@@ -236,12 +239,12 @@ export class CodeGenerator extends QBasicParserListener {
     this.call(procedure, ctx.start!, ctx.argument_list());
   }
 
-  private indexArray(array: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, result: Variable) {
-    if (!isArray(array)) {
+  private indexArray(variable: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, result: Variable) {
+    if (!variable.array) {
       throw new Error("indexing non array variable");
     }
     const args = argumentListCtx?.argument() ?? [];
-    if (array.arrayDimensions!.length != args.length) {
+    if (variable.array.dimensions.length != args.length) {
       throw ParseError.fromToken(token, "Wrong number of dimensions");
     }
     const indexExprs: parser.ExprContext[] = [];
@@ -252,7 +255,7 @@ export class CodeGenerator extends QBasicParserListener {
       }
       indexExprs.push(this.compileExpression(parseExpr, args[i].start!, {tag: TypeTag.INTEGER}));
     }
-    this.addStatement(statements.indexArray(array, indexExprs, result));
+    this.addStatement(statements.indexArray(variable, indexExprs, result));
   }
 
   private callBuiltin(builtin: Builtin, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
@@ -286,10 +289,18 @@ export class CodeGenerator extends QBasicParserListener {
     const stackVariables: StackVariable[] = [];
     for (let i = 0; i < args.length; i++) {
       const parseExpr = args[i].expr();
-      if (!parseExpr) {
-        throw new Error("unimplemented");
-      }
       const parameter = procedure.parameters[i];
+      if (!parseExpr) {
+        const result = getTyperContext(args[i]).$result;
+        if (!result) {
+          throw new Error("missing array reference");
+        }
+        if (!sameType(result.type, parameter.type)) {
+          throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
+        }
+        stackVariables.push({variable: parameter, value: reference(result)});
+        continue;
+      }
       const referenceParam = getVariableReference(parseExpr);
       if (referenceParam) {
         let [variable, variableCtx] = referenceParam;
@@ -297,7 +308,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!sameType(variable.type, parameter.type)) {
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
-        if (isArray(variable)) {
+        if (variable.array) {
           const result = getTyperContext(variableCtx).$result;
           if (!result) {
             throw new Error("missing result variable");
@@ -306,20 +317,8 @@ export class CodeGenerator extends QBasicParserListener {
           variable = result;
         }
         stackVariables.push({variable: parameter, value: reference(variable)});
-        if (parameter.type.tag == TypeTag.RECORD) {
-          if (!parameter.elements || !variable.elements) {
-            throw new Error("missing record elements");
-          }
-          for (const [name, parameterElement] of parameter.elements) {
-            const variableElement = variable.elements.get(name);
-            if (!variableElement) {
-              throw new Error("missing element variable");
-            }
-            stackVariables.push({variable: parameterElement, value: reference(variableElement)});
-          }
-        }
       } else {
-        if (parameter.type.tag == TypeTag.RECORD || parameter.type.tag == TypeTag.ARRAY) {
+        if (parameter.type.tag == TypeTag.RECORD || parameter.array) {
           // Can't pass records or arrays by value.
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
@@ -351,6 +350,31 @@ export class CodeGenerator extends QBasicParserListener {
   override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
   override enterData_statement = (ctx: parser.Data_statementContext) => {}
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
+
+  override enterDim_statement = (ctx: parser.Dim_statementContext) => {
+    for (const dim of ctx.dim_variable()) {
+      const result = getTyperContext(dim).$result;
+      if (!result) {
+        continue;
+      }
+      if (!result.array || !result.array.dynamic) {
+        throw new Error("found result on non-dynamic array dim")
+      }
+      const ranges = dim.dim_array_bounds();
+      if (!ranges) {
+        throw new Error("missing array bounds");
+      }
+      const bounds: DimBoundsExprs[] = [];
+      for (const range of ranges.dim_subscript()) {
+        const lower = range._lower ?
+          this.compileExpression(range._lower, range._lower.start!, {tag: TypeTag.INTEGER}) :
+          undefined;
+        const upper = this.compileExpression(range._upper!, range._upper!.start!, {tag: TypeTag.INTEGER});
+        bounds.push({lower, upper});
+      }
+      this.addStatement(statements.dim(this._arrayBaseIndex, dim.start!, bounds, result));
+    }
+  }
 
   override enterDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
     const labels = getCodeGeneratorContext(ctx);
@@ -762,7 +786,7 @@ export class CodeGenerator extends QBasicParserListener {
         }
         if (isVariable(symbol)) {
           const variable = symbol.variable;
-          if (isArray(variable)) {
+          if (variable.array) {
             const result = getTyperContext(ctx).$result;
             if (!result) {
               throw new Error("missing result variable");

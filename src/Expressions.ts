@@ -202,8 +202,11 @@ class ExpressionListener extends QBasicParserListener {
   }
 
   private readVariable(variable: Variable): values.Value {
+    if (variable.type.tag == TypeTag.RECORD) {
+      return values.getDefaultValue(variable);
+    }
     if (this._memory) {
-      const [_, value] = this._memory.dereference(variable.address!);
+      const [_, value] = this._memory.dereference(variable);
       if (value) {
         return value;
       }

@@ -1,6 +1,6 @@
 import { Token } from 'antlr4ng';
 import { sameType, Type, TypeTag } from './Types.ts'
-import type { Variable } from './Variables.ts'
+import type { ArrayBounds, ArrayDescriptor, Variable } from './Variables.ts'
 import { Address } from './Memory.ts';
 
 export type ErrorValue = {
@@ -39,6 +39,12 @@ export type ReferenceValue = {
   address: Address;
 }
 
+export type ArrayValue = {
+  tag: TypeTag.ARRAY;
+  array: Variable;
+  descriptor: ArrayDescriptor;
+}
+
 export type NumericValue =
   | SingleValue
   | DoubleValue
@@ -49,7 +55,8 @@ export type Value =
   | ErrorValue
   | StringValue
   | NumericValue
-  | ReferenceValue;
+  | ReferenceValue
+  | ArrayValue;
 
 export type Constant = {
   value: Value;
@@ -70,6 +77,10 @@ export function isNumeric(value: Value): value is NumericValue {
 
 export function isReference(value: Value): value is ReferenceValue {
   return 'variable' in value;
+}
+
+export function isArray(value: Value): value is ArrayValue {
+  return 'array' in value;
 }
 
 export function numericTypeOf(a: NumericValue): (number: number) => Value {
@@ -112,7 +123,6 @@ export function cast(value: Value, desiredType: Type): Value {
     case TypeTag.FIXED_STRING:
       return isString(value) ? string(value.string.slice(0, desiredType.maxLength)) : TYPE_MISMATCH;
     case TypeTag.RECORD:
-    case TypeTag.ARRAY:
       return isReference(value) && sameType(value.variable.type, desiredType) ? value : TYPE_MISMATCH;
     case TypeTag.ANY:
       return value;
@@ -150,7 +160,6 @@ export function getDefaultValue(variable: Variable): Value {
     case TypeTag.FIXED_STRING:
       return string("");
     case TypeTag.RECORD:
-    case TypeTag.ARRAY:
       return reference(variable);
     case TypeTag.ANY:
     case TypeTag.NUMERIC:
@@ -202,6 +211,10 @@ export function boolean(test: boolean): Value {
 
 export function reference(variable: Variable, address?: Address): Value {
   return {tag: TypeTag.REFERENCE, variable, address: address ? address : {...variable.address!}};
+}
+
+export function array(array: Variable, descriptor: ArrayDescriptor): Value {
+  return {tag: TypeTag.ARRAY, array, descriptor};
 }
 
 export const

@@ -137,8 +137,8 @@ export class SymbolTable {
   private _symbols: NameToSlotMap = new NameToSlotMap();
   private _stackIndex: number;
   private _staticIndex: number;
-  private _elementIndex: number;
-  private _itemSize: number;
+  private _record: Variable;
+  private _elementOffset: number;
   
   constructor({builtins, parent, name} : {builtins: StandardLibrary, parent?: SymbolTable, name?: string}) {
     this._builtins = builtins;
@@ -171,6 +171,28 @@ export class SymbolTable {
       if (builtin.returnType && builtin.returnType.tag == TypeTag.STRING) {
         // chr% can shadow chr$.
         return sigil === '$' ? builtin : undefined;
+      }
+    }
+  }
+
+  lookupArray(name: string, sigil: string | undefined, type: Type, token: Token): Variable | undefined {
+    const mySlot = this._symbols.get(name);
+    const parentSlot = this._parent?._symbols.get(name);
+    const slot = mySlot ?? parentSlot;
+    const isDefaultType = !sigil;
+    if (slot) {
+      if (slot.arrayVariables) {
+        const asType = slot.arrayAsType ?? slot.scalarAsType;
+        if (asType && isDefaultType) {
+          type = asType;
+        }
+        if (!asType || sameType(asType, type)) {
+          const variable = slot.arrayVariables.get(type.tag);
+          if (variable && this.isVisible(variable, slot, mySlot)) {
+            return variable;
+          }
+        }
+        throw ParseError.fromToken(token, "Duplicate definition");
       }
     }
   }
@@ -235,10 +257,10 @@ export class SymbolTable {
         if (!asType || sameType(asType, type)) {
           const variable = slot.arrayVariables.get(type.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
-            if (!variable.arrayDimensions) {
+            if (!variable.array) {
               throw new Error("missing array dimensions");
             }
-            if (variable.arrayDimensions.length != numDimensions) {
+            if (variable.array.dimensions.length != numDimensions) {
               throw ParseError.fromToken(token, "Wrong number of dimensions");
             }
             return {tag: SymbolTag.VARIABLE, variable};
@@ -246,12 +268,14 @@ export class SymbolTable {
         }
       }
     }
-    const arrayDimensions = numDimensions > 0 ? {
-      arrayDimensions: new Array(numDimensions).fill({
-        lower: arrayBaseIndex, upper: 10
-      })
+    const array = numDimensions > 0 ? {
+      array: {
+        dimensions: new Array(numDimensions).fill({
+          lower: arrayBaseIndex, upper: 10
+        })
+      },
     } : {};
-    const variable = { name, type, sigil, token, storageType, isAsType, ...arrayDimensions };
+    const variable = { name, type, sigil, token, storageType, isAsType, ...array };
     this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };
   }
@@ -281,7 +305,7 @@ export class SymbolTable {
       throw ParseError.fromToken(variable.token, "Cannot start with FN");
     }
     this.checkForAmbiguousRecord(variable);
-    if (!variable.arrayDimensions) {
+    if (!variable.array) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
       if (asType && variable.isAsType && !sameType(asType, variable.type)) {
         // dim x as string
@@ -304,8 +328,9 @@ export class SymbolTable {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       slot.scalarVariables.set(variable.type.tag, variable);
-      if (!variable.address) {
-        const size = getStorageSize(variable);
+      if (!element) {
+        // Parameters are passed by reference so only consume one stack slot.
+        const size = variable.isParameter ? 1 : getStorageSize(variable);
         variable.address = this.allocate(variable.storageType, size);
       }
     } else {
@@ -325,15 +350,24 @@ export class SymbolTable {
         throw ParseError.fromToken(variable.token, "Array already dimensioned");
       }
       slot.arrayVariables.set(variable.type.tag, variable);
-      if (!variable.address) {
-        variable.itemSize = getItemSize(variable);
-        const size = getStorageSize(variable);
-        if (size == 0 || variable.storageType == StorageType.AUTOMATIC) {
-          variable.storageType = StorageType.DYNAMIC;
-        } else if (size > 65535) {
+      if (!variable.array.itemSize) {
+        variable.array.itemSize = getItemSize(variable);
+      }
+      if (!element) {
+        // Parameters are passed by reference so only consume one stack slot.
+        const size = variable.isParameter ? 1 : getStorageSize(variable);
+        if (variable.storageType == StorageType.STATIC && size > 65535) {
           throw ParseError.fromToken(variable.token, "Subscript out of range");
-        } else if (variable.storageType != StorageType.DYNAMIC) {
-          variable.address = this.allocate(variable.storageType, size);
+        }
+        variable.address = this.allocate(variable.storageType, size);
+        if (variable.storageType == StorageType.STATIC) {
+          // If the array is static, values follow the first address which is
+          // always reserved for a descriptor.
+          variable.array.baseAddress = {...variable.address};
+          variable.array.baseAddress.index += 1;
+          variable.array.storageType = StorageType.STATIC;
+        } else {
+          variable.array.storageType = StorageType.DYNAMIC;
         }
       }
     }
@@ -354,17 +388,15 @@ export class SymbolTable {
       }
       variable.elements = new Map();
       if (!element) {
-        // The first value in a record type is a reference to the record.
-        this._elementIndex = variable.address!.index + 1;
-        this._itemSize = variable.itemSize!;
+        // The outermost record in a nested record type has the storage
+        // allocation, and element offsets are relative to that.
+        this._record = variable;
+        this._elementOffset = 0;
       }
       // Elements of user-defined type arrays get their own internal array
-      // symbols named t().element located at t(0).element.
-      const elementArray = !element && variable.arrayDimensions ? '()' : '';
+      // symbols named t().element.
+      const elementArray = !element && variable.array ? '()' : '';
       for (const {name: elementName, type: elementType} of variable.type.elements) {
-        const address = {...variable.address!};
-        address.index = this._elementIndex;
-        this._elementIndex++;
         const element = {
           name: `${variable.name}${elementArray}.${elementName}`,
           type: elementType,
@@ -372,10 +404,12 @@ export class SymbolTable {
           isParameter: variable.isParameter,
           token: variable.token,
           storageType: variable.storageType,
-          address,
-          arrayDimensions: variable.arrayDimensions,
-          itemSize: this._itemSize,
+          array: this._record.array,
+          recordOffset: {record: this._record, offset: this._elementOffset},
         };
+        if (elementType.tag != TypeTag.RECORD) {
+          this._elementOffset++;
+        }
         this.defineVariable(element, true);
         variable.elements.set(elementName, element);
       }

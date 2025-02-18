@@ -25,7 +25,7 @@ export class CaseStatement extends Statement {
   }
 
   private match(memory: Memory): boolean {
-    const [_, test] = memory.dereference(this.test.address!);
+    const [_, test] = memory.dereference(this.test);
     if (this.condition.IS()) {
       const other = this.evaluate(memory, this.condition._other!);
       const op = this.condition._op?.text;

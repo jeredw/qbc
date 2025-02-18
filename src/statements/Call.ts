@@ -40,6 +40,10 @@ export class CallStatement extends Statement {
         } else {
           writes.push([variable.address!, value]);
         }
+        // Pass static array descriptor
+        if (isReference(value) && value.variable.array) {
+          variable.array = value.variable.array;
+        }
       }
     }
     // Now create the new stack frame and initialize parameters.

@@ -396,7 +396,8 @@ const_assignment
   : ID '=' const_expr
   ;
 
-// TODO: Only a limited subset of expressions are supported here.
+// *** Only a limited subset of expressions are valid for constant arithmetic.
+// This is simpler to deal with outside the grammar.
 const_expr : expr ;
 
 // The IDE complains if you type a DATA statement inside a SUB or FUNCTION, but
@@ -896,7 +897,7 @@ argument_list
 
 argument
 // Special syntax for passing an array argument.
-  : ID '(' ')'
+  : array=ID '(' ')'
   | expr
   ;
 

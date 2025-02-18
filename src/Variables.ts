@@ -5,7 +5,7 @@ import { StorageType, Address } from "./Memory.ts";
 export interface Variable {
   name: string;
   type: Type;
-  arrayDimensions?: ArrayBounds[];
+  array?: ArrayDescriptor;
   sigil?: string;
   isAsType?: boolean;
   isParameter?: boolean;
@@ -14,19 +14,27 @@ export interface Variable {
   static?: boolean;
   token: Token;
   elements?: Map<string, Variable>;
+  recordOffset?: RecordOffset;
   storageType: StorageType;
   address?: Address;
-  elementOffset?: number;
+}
+
+export interface RecordOffset {
+  record: Variable;
+  offset: number;
+}
+
+export interface ArrayDescriptor {
+  storageType?: StorageType;
+  dynamic?: boolean;
+  baseAddress?: Address;
   itemSize?: number;
+  dimensions: ArrayBounds[];
 }
 
 export interface ArrayBounds {
   lower: number | undefined;
   upper: number | undefined;
-}
-
-export function isArray(variable: Variable) {
-  return variable.arrayDimensions && variable.arrayDimensions.length > 0;
 }
 
 export function getItemSize(variable: Variable): number {
@@ -36,15 +44,15 @@ export function getItemSize(variable: Variable): number {
 
 export function getStorageSize(variable: Variable): number {
   const itemSize = getItemSize(variable);
-  if (isArray(variable)) {
+  if (variable.array) {
     let itemCount = 1;
-    for (const bounds of variable.arrayDimensions!) {
+    for (const bounds of variable.array.dimensions) {
       if (bounds.upper === undefined || bounds.lower === undefined) {
-        return 0;
+        return 1;
       }
       itemCount = itemCount * (1 + bounds.upper - bounds.lower);
     }
-    return itemCount * itemSize;
+    return 1 + itemCount * itemSize;
   }
   return itemSize;
 }

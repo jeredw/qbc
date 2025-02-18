@@ -3,7 +3,7 @@ import { RuntimeError } from "../Errors.ts";
 import { evaluateExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
 import { sameType, TypeTag } from "../Types.ts";
-import { getDefaultValue, isError, isReference, Value } from "../Values.ts";
+import { getDefaultValue, isError, isReference, reference, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -38,11 +38,15 @@ function assign(variable: Variable, value: Value, memory: Memory) {
     }
     for (const [name, sourceVariable] of value.variable.elements!) {
       const targetVariable = variable.elements!.get(name)!;
-      const [_, sourceValue] = memory.dereference(sourceVariable.address!);
-      assign(targetVariable, sourceValue ?? getDefaultValue(sourceVariable), memory);
+      if (sourceVariable.type.tag == TypeTag.RECORD) {
+        assign(targetVariable, reference(sourceVariable), memory);
+      } else {
+        const [_, sourceValue] = memory.dereference(sourceVariable);
+        assign(targetVariable, sourceValue ?? getDefaultValue(sourceVariable), memory);
+      }
     }
     return;
   }
-  const [address, _] = memory.dereference(variable.address!);
+  const [address, _] = memory.dereference(variable);
   memory.write(address, value);
 }

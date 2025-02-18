@@ -1,0 +1,53 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id x) 
+          (array_declaration 
+            ( )) as 
+          (type_name_for_parameter integer)) , 
+        (parameter 
+          (untyped_id n) as 
+          (type_name_for_parameter single))) ) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) )) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id x) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) )) as 
+        (type_name integer)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument x 
+          ( )) , 
+        (argument 
+          (expr 
+            (variable_or_function_call x)))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 2)))) ))))) \n <EOF>)

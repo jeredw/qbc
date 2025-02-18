@@ -14,7 +14,7 @@ import {
   sameType,
   isNumericType
 } from "./Types.ts";
-import { ArrayBounds, isArray, Variable } from "./Variables.ts";
+import { ArrayBounds, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
 import { isError, isNumeric, isString, typeOfValue, Value } from "./Values.ts";
@@ -66,6 +66,10 @@ export class Typer extends QBasicParserListener {
 
   get program() {
     return this._program;
+  }
+
+  get arrayBaseIndex() {
+    return this._arrayBaseIndex;
   }
 
   private makeProgramChunk(symbols: SymbolTable, procedure?: Procedure): ProgramChunk {
@@ -248,7 +252,7 @@ export class Typer extends QBasicParserListener {
     }
     if (isVariable(symbol)) {
       const variable = symbol.variable;
-      if (isArray(variable)) {
+      if (variable.array) {
         this._optionBaseAllowed = false;
         // Note that for record arrays, result is a record with references to
         // each element at this index.  So t(2) creates _v0 = index(t, 2), but
@@ -258,6 +262,20 @@ export class Typer extends QBasicParserListener {
         getTyperContext(ctx).$result = result;
       }
       return;
+    }
+  }
+
+  override enterArgument = (ctx: parser.ArgumentContext) => {
+    // Look up arrays passed by reference and attach a symbol.  Other arguments
+    // are looked up by Variable_or_function_call.
+    if (ctx._array && ctx._array.text) {
+      const [name, sigil] = splitSigil(ctx._array.text);
+      const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+      const result = this._chunk.symbols.lookupArray(name, sigil, type, ctx._array);
+      if (!result) {
+        throw ParseError.fromToken(ctx._array, "Array not defined");
+      }
+      getTyperContext(ctx).$result = result;
     }
   }
 
@@ -277,19 +295,21 @@ export class Typer extends QBasicParserListener {
       throw ParseError.fromToken(ctx.SHARED()!.symbol, "Illegal in procedure or DEF FN");
     }
     for (const dim of ctx.dim_variable()) {
-      const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds())
-      if (arrayDimensions.some((bounds) => bounds.lower === undefined || bounds.upper === undefined)) {
-        throw new Error("TODO: dynamic arrays");
-      }
+      const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds());
       if (arrayDimensions.length > 0) {
         this._optionBaseAllowed = false;
       }
-      const dimensions = {...arrayDimensions.length ? {arrayDimensions} : {}};
+      const dimensions = {...arrayDimensions.length ? {
+        array: {
+          dimensions: arrayDimensions
+        }
+      } : {}};
+      let variable: Variable;
       if (!!dim.AS()) {
         const asType = this.getType(dim.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
-        this._chunk.symbols.defineVariable({
+        variable = {
           name,
           type: asType,
           isAsType: true,
@@ -297,7 +317,8 @@ export class Typer extends QBasicParserListener {
           storageType: this._storageType,
           shared: !!ctx.SHARED(),
           ...dimensions,
-        });
+        };
+        this._chunk.symbols.defineVariable(variable);
       } else {
         const [name, sigil] = splitSigil(dim.ID()?.getText()!);
         const asType = this._chunk.symbols.getAsType(name);
@@ -312,7 +333,7 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
         }
-        this._chunk.symbols.defineVariable({
+        variable = {
           name,
           type,
           sigil,
@@ -320,8 +341,10 @@ export class Typer extends QBasicParserListener {
           storageType: this._storageType,
           shared: !!ctx.SHARED(),
           ...dimensions,
-        });
+        };
+        this._chunk.symbols.defineVariable(variable);
       }
+      getTyperContext(ctx).$result = variable;
     }
   }
 
@@ -644,19 +667,19 @@ export class Typer extends QBasicParserListener {
     const asTypeCtx = ctx instanceof parser.ParameterContext ?
       ctx.type_name_for_parameter() :
       ctx.type_name_for_def_fn_parameter();
-    const typeSpec: Type = sigil ? typeOfSigil(sigil) :
+    const type: Type = sigil ? typeOfSigil(sigil) :
       asTypeCtx ? this.getType(asTypeCtx) :
       this.getDefaultType(name);
-    const type: Type = (ctx instanceof parser.ParameterContext && ctx.array_declaration()) ?
-      {tag: TypeTag.ARRAY, elementType: typeSpec} :
-      typeSpec;
+    const arrayDimensions = (ctx instanceof parser.ParameterContext && ctx.array_declaration()) ?
+      {array: {dimensions: [{lower: undefined, upper: undefined}]}} : {};
     return {
       type,
       name,
       isAsType: !!asTypeCtx,
       isParameter: true,
       token: ctx.start!,
-      storageType: StorageType.AUTOMATIC
+      storageType: StorageType.AUTOMATIC,
+      ...arrayDimensions
     };
   }
 

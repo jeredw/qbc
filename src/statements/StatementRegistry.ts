@@ -1,4 +1,5 @@
 import { AbsFunction } from "./Abs.ts";
+import { DimBoundsExprs, DimStatement, IndexArrayStatement } from "./Arrays.ts";
 import { AscFunction } from "./Asc.ts";
 import { AtnFunction, CosFunction, SinFunction, TanFunction } from "./Trig.ts";
 import { BeepStatement } from "./Beep.ts";
@@ -12,7 +13,6 @@ import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
          MkdFunction, MkdmbfFunction, MkiFunction, MklFunction, MksFunction, MksmbfFunction } from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
-import { IndexArrayStatement } from "./IndexArray.ts";
 import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
@@ -92,6 +92,10 @@ export function cvs(params: BuiltinParams) {
 
 export function cvsmbf(params: BuiltinParams) {
   return new CvsmbfFunction(params);
+}
+
+export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable) {
+  return new DimStatement(arrayBaseIndex, token, bounds, result);
 }
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {

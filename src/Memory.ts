@@ -1,4 +1,5 @@
 import { isReference, Value } from "./Values.ts";
+import { Variable } from "./Variables.ts";
 
 export enum StorageType {
   STATIC,
@@ -72,7 +73,15 @@ export class Memory {
     return this.stack.length - 1;
   }
 
-  dereference(address: Address): [Address, Value] {
+  dereference(variable: Variable): [Address, Value] {
+    // If variable is an element in a record, dereference the record variable
+    // first, then offset into it.
+    let address = variable.recordOffset ?
+      variable.recordOffset.record.address :
+      variable.address;
+    if (!address) {
+      throw new Error("invalid address");
+    }
     const MAX_DEPTH = 1000;
     let depth = 0;
     let value = this.read(address);
@@ -83,6 +92,11 @@ export class Memory {
     }
     if (depth == MAX_DEPTH) {
       throw new Error("probable reference cycle");
+    }
+    if (variable.recordOffset) {
+      address = {...address};
+      address.index += variable.recordOffset.offset;
+      value = this.read(address);
     }
     return [address, value];
   }
