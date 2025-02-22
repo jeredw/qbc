@@ -50,6 +50,7 @@ export class Typer extends QBasicParserListener {
   private _syntheticVariableIndex = 0;
   private _storageType: StorageType = StorageType.STATIC;
   private _builtins: StandardLibrary;
+  private _useStaticArrays = true;
 
   constructor(builtins: StandardLibrary) {
     super();
@@ -290,21 +291,32 @@ export class Typer extends QBasicParserListener {
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
   override enterData_statement = (ctx: parser.Data_statementContext) => {}
 
+  override enterStatic_metacommand = (ctx: parser.Static_metacommandContext) => {
+    this._useStaticArrays = true;
+  }
+
+  override enterDynamic_metacommand = (ctx: parser.Dynamic_metacommandContext) => {
+    this._useStaticArrays = false;
+  }
+
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
     if (ctx.SHARED() && this._chunk.procedure) {
       throw ParseError.fromToken(ctx.SHARED()!.symbol, "Illegal in procedure or DEF FN");
     }
     for (const dim of ctx.dim_variable()) {
-      const arrayDimensions = this.getArrayBounds(dim.dim_array_bounds());
-      const dynamic = arrayDimensions.some((bound) => bound.lower === undefined || bound.upper === undefined);
-      if (arrayDimensions.length > 0) {
+      const dimensions = this.getArrayBounds(dim.dim_array_bounds());
+      const nonConstantBounds = dimensions.some((bound) => bound.lower === undefined || bound.upper === undefined);
+      if (dimensions.length > 0) {
         this._optionBaseAllowed = false;
       }
-      const dimensions = {...arrayDimensions.length ? {
-        array: {
-          dynamic,
-          dimensions: arrayDimensions
-        }
+      const dynamic = nonConstantBounds ||
+        !this._useStaticArrays ||
+        (!!this._chunk.procedure && this._storageType != StorageType.STATIC);
+      // Dynamic arrays in static procedures parse but throw a runtime error.
+      const inStaticProcedure =
+        (!!this._chunk.procedure && this._storageType == StorageType.STATIC);
+      const arrayDescriptor = {...dimensions.length ? {
+        array: {dynamic, dimensions, inStaticProcedure}
       } : {}};
       let variable: Variable;
       if (!!dim.AS()) {
@@ -318,7 +330,7 @@ export class Typer extends QBasicParserListener {
           token: dim.untyped_id()!.start!,
           storageType: this._storageType,
           shared: !!ctx.SHARED(),
-          ...dimensions,
+          ...arrayDescriptor,
         };
         this._chunk.symbols.defineVariable(variable);
       } else {
@@ -342,11 +354,11 @@ export class Typer extends QBasicParserListener {
           token: dim.ID()!.symbol,
           storageType: this._storageType,
           shared: !!ctx.SHARED(),
-          ...dimensions,
+          ...arrayDescriptor,
         };
         this._chunk.symbols.defineVariable(variable);
       }
-      if (dynamic) {
+      if (dimensions.length > 0 && dynamic) {
         getTyperContext(dim).$result = variable;
       }
     }
@@ -653,6 +665,10 @@ export class Typer extends QBasicParserListener {
       }
       this._chunk.symbols.defineConstant(name, {value, token: assignment.ID().symbol});
     }
+  }
+
+  override enterInclude_metacommand = (ctx: parser.Include_metacommandContext) => {
+    throw ParseError.fromToken(ctx.start!, "Advanced feature unavailable")
   }
 
   private parseParameterList(ctx: parser.Parameter_listContext | null): Variable[] {

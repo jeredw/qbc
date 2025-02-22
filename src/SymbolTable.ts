@@ -354,19 +354,20 @@ export class SymbolTable {
         variable.array.itemSize = getItemSize(variable);
       }
       if (!element) {
-        // Parameters are passed by reference so only consume one stack slot.
-        const size = variable.isParameter ? 1 : getStorageSize(variable);
-        if (variable.storageType == StorageType.STATIC && size > 65535) {
-          throw ParseError.fromToken(variable.token, "Subscript out of range");
-        }
-        variable.address = this.allocate(variable.storageType, size);
         if (!variable.array.dynamic) {
+          // Parameters are passed by reference so only consume one stack slot.
+          const size = variable.isParameter ? 1 : getStorageSize(variable);
+          if (size > 65535) {
+            throw ParseError.fromToken(variable.token, "Subscript out of range");
+          }
           // If the array is static, values follow the first address which is
           // always reserved for a descriptor.
+          variable.address = this.allocate(variable.storageType, size);
           variable.array.baseAddress = {...variable.address};
           variable.array.baseAddress.index += 1;
           variable.array.storageType = StorageType.STATIC;
         } else {
+          variable.address = this.allocate(variable.storageType, 1);
           variable.array.storageType = StorageType.DYNAMIC;
         }
       }

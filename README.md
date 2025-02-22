@@ -110,7 +110,7 @@ parse those using baked in rules.
 | `AND`            | Operator    | ✅      | ✅      |
 | `ANY`            | Keyword     | ✅      | 🚧      |
 | `APPEND`         | Keyword     | ✅      | ⛔      |
-| `AS`             | Keyword     | ✅      | 🚧      |
+| `AS`             | Keyword     | ✅      | ✅      |
 | `ASC`            | Function    | -       | ✅      |
 | `ATN`            | Function    | -       | ✅      |
 | `BASE`           | Keyword     | ✅      | ⛔      |
@@ -155,9 +155,9 @@ parse those using baked in rules.
 | `DEFLNG`         | Statement   | ✅      | ✅      |
 | `DEFSNG`         | Statement   | ✅      | ✅      |
 | `DEFSTR`         | Statement   | ✅      | ✅      |
-| `DIM`            | Statement   | ✅      | 🚧      |
+| `DIM`            | Statement   | ✅      | ✅      |
 | `DO`...`LOOP`    | Statement   | ✅      | ✅      |
-| `$DYNAMIC`       | Metacommand | ✅      | ⛔      |
+| `$DYNAMIC`       | Metacommand | ✅      | ✅      |
 | `ELSE`           | Keyword     | ✅      | ✅      |
 | `ELSEIF`         | Keyword     | ✅      | ✅      |
 | `END`            | Statement   | ✅      | ✅      |
@@ -300,7 +300,7 @@ parse those using baked in rules.
 | `SPC`            | Function    | -       | ⛔      |
 | `SQR`            | Function    | -       | ⛔      |
 | `STATIC`         | Statement   | ✅      | 🚧      |
-| `$STATIC`        | Metacommand | ✅      | ⛔      |
+| `$STATIC`        | Metacommand | ✅      | ✅      |
 | `STEP`           | Keyword     | ✅      | ✅      |
 | `STICK`          | Function    | -       | ⛔      |
 | `STOP`           | Statement   | ✅      | ⛔      |

@@ -228,4 +228,5 @@ export const
   DIVISION_BY_ZERO = error('Division by zero'),
   ILLEGAL_FUNCTION_CALL = error('Illegal function call'),
   RETURN_WITHOUT_GOSUB = error('RETURN without GOSUB'),
-  SUBSCRIPT_OUT_OF_RANGE = error('Subscript out of range');
+  SUBSCRIPT_OUT_OF_RANGE = error('Subscript out of range'),
+  DUPLICATE_DEFINITION = error('Duplicate definition');

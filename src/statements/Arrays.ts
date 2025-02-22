@@ -4,7 +4,7 @@ import { RuntimeError } from "../Errors.ts";
 import { evaluateExpression } from "../Expressions.ts";
 import { StorageType } from "../Memory.ts";
 import { TypeTag } from "../Types.ts";
-import { array, isArray, isError, isNumeric, reference, SUBSCRIPT_OUT_OF_RANGE, TYPE_MISMATCH } from "../Values.ts";
+import { array, DUPLICATE_DEFINITION, isArray, isError, isNumeric, reference, SUBSCRIPT_OUT_OF_RANGE, TYPE_MISMATCH } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -34,6 +34,9 @@ export class DimStatement extends Statement {
     }
     if (!this.result.address) {
       throw new Error("result ref not allocated");
+    }
+    if (this.result.array.inStaticProcedure) {
+      throw RuntimeError.fromToken(this.token, DUPLICATE_DEFINITION);
     }
     const [descriptorAddress, _] = context.memory.dereference(this.result);
     const dimensions: ArrayBounds[] = [];

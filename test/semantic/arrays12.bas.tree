@@ -1,0 +1,72 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id n) as 
+          (type_name_for_parameter integer))) ) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable 
+            (untyped_id x) 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 4))) )) as 
+            (type_name integer)))) \n 
+      (statement 
+        (print_statement print 
+          (expr 
+            (variable_or_function_call x 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )) = 
+          (expr 
+            (literal 42)))) \n 
+      (if_block_statement if 
+        (expr 
+          (expr 
+            (variable_or_function_call n)) = 
+          (expr 
+            (literal 0))) then \n 
+        (then_block 
+          (statement 
+            (call_statement 
+              (untyped_id foo) 
+              (argument_list 
+                (argument 
+                  (expr 
+                    ( 
+                      (expr 
+                        (literal 1)) )))))) \n) 
+        (end_if_statement end if)) \n 
+      (statement 
+        (print_statement print 
+          (expr 
+            (variable_or_function_call x 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 0)))))) \n <EOF>)

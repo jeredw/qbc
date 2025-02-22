@@ -30,6 +30,7 @@ export interface ArrayDescriptor {
   baseAddress?: Address;
   itemSize?: number;
   dimensions: ArrayBounds[];
+  inStaticProcedure?: boolean;
 }
 
 export interface ArrayBounds {
@@ -51,6 +52,7 @@ export function getStorageSize(variable: Variable): number {
       }
       itemCount = itemCount * (1 + bounds.upper - bounds.lower);
     }
+    // Reserve one value for the array descriptor.
     return 1 + itemCount * itemSize;
   }
   return itemSize;

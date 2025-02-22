@@ -351,6 +351,9 @@ export class CodeGenerator extends QBasicParserListener {
   override enterData_statement = (ctx: parser.Data_statementContext) => {}
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
 
+  override enterStatic_metacommand = (ctx: parser.Static_metacommandContext) => {}
+  override enterDynamic_metacommand = (ctx: parser.Dynamic_metacommandContext) => {}
+
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
     for (const dim of ctx.dim_variable()) {
       const result = getTyperContext(dim).$result;
@@ -737,6 +740,10 @@ export class CodeGenerator extends QBasicParserListener {
     } else {
       throw new Error("invalid block type");
     }
+  }
+
+  override enterInclude_metacommand = (ctx: parser.Include_metacommandContext) => {
+    throw ParseError.fromToken(ctx.start!, "Advanced feature unavailable")
   }
 
   private addStatement(statement: Statement) {
