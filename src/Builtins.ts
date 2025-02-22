@@ -11,42 +11,87 @@ export interface BuiltinParams {
   result?: Variable;
 }
 
+export interface BuiltinArgument {
+  type: Type;
+  wantArray?: boolean;
+  optional?: boolean;
+}
+
 export interface Builtin {
   name: string;
   returnType?: Type;
-  arguments: Type[];
+  arguments: BuiltinArgument[];
   statement: (params: BuiltinParams) => Statement;
 }
 
+let _ = parseBuiltinSpec;
+
 export class StandardLibrary {
   builtins: Map<string, Builtin> = new Map([
-    ["abs", {name: "abs", returnType: {tag: TypeTag.NUMERIC}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.abs}],
-    ["asc", {name: "asc", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.STRING}], statement: statements.asc}],
-    ["atn", {name: "atn", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.atn}],
-    ["beep", {name: "beep", arguments: [], statement: statements.beep}],
-    ["cdbl", {name: "cdbl", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.cdbl}],
-    ["chr", {name: "chr", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.chr}],
-    ["cos", {name: "cos", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.cos}],
-    ["csng", {name: "csng", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.csng}],
-    ["cint", {name: "cint", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.cint}],
-    ["clng", {name: "clng", returnType: {tag: TypeTag.LONG}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.clng}],
-    ["cvi", {name: "cvi", returnType: {tag: TypeTag.INTEGER}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvi}],
-    ["cvd", {name: "cvd", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvd}],
-    ["cvdmbf", {name: "cvdmbf", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvdmbf}],
-    ["cvl", {name: "cvl", returnType: {tag: TypeTag.LONG}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvl}],
-    ["cvs", {name: "cvs", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvs}],
-    ["cvsmbf", {name: "cvsmbf", returnType: {tag: TypeTag.SINGLE}, arguments: [{tag: TypeTag.STRING}], statement: statements.cvsmbf}],
-    ["mki", {name: "mki", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mki}],
-    ["mkd", {name: "mkd", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mkd}],
-    ["mkdmbf", {name: "mkdmbf", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mkdmbf}],
-    ["mkl", {name: "mkl", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mkl}],
-    ["mks", {name: "mks", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mks}],
-    ["mksmbf", {name: "mksmbf", returnType: {tag: TypeTag.STRING}, arguments: [{tag: TypeTag.NUMERIC}], statement: statements.mksmbf}],
-    ["sin", {name: "sin", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.sin}],
-    ["tan", {name: "tan", returnType: {tag: TypeTag.DOUBLE}, arguments: [{tag: TypeTag.DOUBLE}], statement: statements.tan}],
+    _("abs numeric -> numeric", statements.abs),
+    _("asc string -> integer", statements.asc),
+    _("atn double -> double", statements.atn),
+    _("beep", statements.beep),
+    _("cdbl numeric -> double", statements.cdbl),
+    _("chr numeric -> string", statements.chr),
+    _("cos double -> double", statements.cos),
+    _("csng numeric -> single", statements.csng),
+    _("cint numeric -> integer", statements.cint),
+    _("clng numeric -> long", statements.clng),
+    _("cvi string -> integer", statements.cvi),
+    _("cvd string -> double", statements.cvd),
+    _("cvdmbf string -> double", statements.cvdmbf),
+    _("cvl string -> long", statements.cvl),
+    _("cvs string -> single", statements.cvs),
+    _("cvsmbf string -> single", statements.cvsmbf),
+    _("mki numeric -> string", statements.mki),
+    _("mkd numeric -> string", statements.mkd),
+    _("mkdmbf numeric -> string", statements.mkdmbf),
+    _("mkl numeric -> string", statements.mkl),
+    _("mks numeric -> string", statements.mks),
+    _("mksmbf numeric -> string", statements.mksmbf),
+    _("sin double -> double", statements.sin),
+    _("tan double -> double", statements.tan),
   ]);
 
   lookup(name: string): Builtin | undefined {
     return this.builtins.get(name.toLowerCase());
   }
+}
+
+function parseBuiltinSpec(spec: string, statement: (params: BuiltinParams) => Statement): [string, Builtin] {
+  const result = spec.match(/^([a-z]+)(\s+[a-z?, ]+)?(->\s+[a-z]+)?/);
+  if (!result) {
+    throw new Error(`invalid builtin definition: ${spec}`);
+  }
+  const [_, name, argSpec, returnSpec] = result;
+  const args: BuiltinArgument[] = [];
+  if (argSpec) {
+    for (let argType of argSpec.split(/\s*,\s*/)) {
+      const optional = argType.endsWith('?');
+      if (argType.endsWith('?')) {
+        argType = argType.slice(0, -1);
+      }
+      args.push(parseTypeSpec(argType.trim(), optional));
+    }
+  }
+  let returnType: Type | undefined;
+  if (returnSpec) {
+    const [_, typeSpec] = returnSpec.split(/\s*->\s*/);
+    returnType = parseTypeSpec(typeSpec.trim(), false).type;
+  }
+  return [name, {name, arguments: args, returnType, statement}];
+}
+
+function parseTypeSpec(name: string, optional: boolean): BuiltinArgument {
+  switch (name) {
+    case "single": return {type: {tag: TypeTag.SINGLE}, optional};
+    case "double": return {type: {tag: TypeTag.DOUBLE}, optional};
+    case "integer": return {type: {tag: TypeTag.INTEGER}, optional};
+    case "long": return {type: {tag: TypeTag.LONG}, optional};
+    case "string": return {type: {tag: TypeTag.STRING}, optional};
+    case "numeric": return {type: {tag: TypeTag.NUMERIC}, optional};
+    case "array": return {type: {tag: TypeTag.ANY}, wantArray: true, optional};
+  }
+  throw new Error(`invalid argument ${name}`);
 }
