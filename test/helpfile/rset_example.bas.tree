@@ -7,7 +7,7 @@
           (fixed_string STRING * 10))))) \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -15,7 +15,7 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (literal "123456789012345678901234567890")))) \n \n \n 
+        (literal "123456789012345678901234567890")))) \n ' \n ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call TmpStr$) = 
@@ -29,7 +29,7 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (variable_or_function_call TmpStr$)))) \n \n 
+        (variable_or_function_call TmpStr$)))) \n ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call TmpStr$) = 
@@ -48,7 +48,7 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (variable_or_function_call TmpStr$)))) \n \n 
+        (variable_or_function_call TmpStr$)))) \n ' \n 
   (statement 
     (rset_statement RSET 
       (variable_or_function_call TmpStr2) = 

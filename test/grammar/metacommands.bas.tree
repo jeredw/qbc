@@ -1,25 +1,29 @@
-(program \n \n \n \n 
-  (statement 
-    (rem_statement rem)) \n 
+(program ' \n ' \n ' \n ' \n rem \n 
   (statement 
     (print_statement print 
       (expr 
-        (literal "hi")))) \n 
+        (literal "hi")))) ' \n 
   (statement 
     (print_statement print 
       (expr 
-        (literal "hi")))) : 
+        (literal "hi")))) : rem \n ' 
   (statement 
-    (rem_statement rem)) \n \n \n \n \n 
+    (dynamic_metacommand  $DYNAMIC)) \n ' 
   (statement 
-    (rem_statement rem)) \n 
+    (dynamic_metacommand  $DYNAMICfoo)) \n ' 
+  (statement 
+    (dynamic_metacommand  $DYNAMIC foo bar)) \n ' \n rem 
+  (statement 
+    (dynamic_metacommand   $DYNAMIC)) \n 
   (statement 
     (print_statement print 
       (expr 
-        (literal "hi")))) \n 
+        (literal "hi")))) ' 
+  (statement 
+    (dynamic_metacommand  $DYNAMIC)) \n 
   (statement 
     (print_statement print 
       (expr 
-        (literal "hi")))) : 
+        (literal "hi")))) : rem 
   (statement 
-    (rem_statement rem)) \n <EOF>)
+    (dynamic_metacommand  $DYNAMIC)) \n <EOF>)

@@ -1,4 +1,4 @@
-(program \r\n 
+(program ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Plot$) = 
@@ -11,12 +11,12 @@
     (assignment_statement 
       (variable_or_function_call APage%) = 
       (expr 
-        (literal 1)))) \r\n 
+        (literal 1)))) ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call VPage%) = 
       (expr 
-        (literal 0)))) \r\n 
+        (literal 0)))) ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Angle%) = 
@@ -24,7 +24,7 @@
         (literal 0)))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
-      (block \r\n \r\n \r\n \r\n 
+      (block \r\n \r\n ' \r\n ' \r\n 
         (statement 
           (screen_statement SCREEN 
             (expr 
@@ -39,7 +39,7 @@
             (argument_list 
               (argument 
                 (expr 
-                  (literal 1)))))) \r\n \r\n \r\n 
+                  (literal 1)))))) \r\n \r\n ' \r\n 
         (statement 
           (call_statement 
             (untyped_id DRAW) 
@@ -57,7 +57,7 @@
                               (expr 
                                 (variable_or_function_call Angle%)))) )))) + 
                   (expr 
-                    (variable_or_function_call Plot$))))))) \r\n \r\n \r\n 
+                    (variable_or_function_call Plot$))))))) \r\n \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Angle%) = 
@@ -70,7 +70,7 @@
                     (expr 
                       (literal 15))) )) MOD 
               (expr 
-                (literal 360))))) \r\n \r\n \r\n 
+                (literal 360))))) \r\n \r\n ' \r\n 
         (statement 
           (call_statement 
             (untyped_id SWAP) 
@@ -86,6 +86,6 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \r\n \r\n 
+            (literal "")))))) ' \r\n \r\n 
   (statement 
     (end_statement END)) \r\n <EOF>)

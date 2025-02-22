@@ -49,7 +49,7 @@
           (expr 
             (literal "Y")))))) \r\n \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_statement END)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id DrawPattern) STATIC 
     (block \r\n 
@@ -71,7 +71,7 @@
           (expr 
             (literal 0)) , 
           (expr 
-            (literal 1)))) \r\n 
+            (literal 1)))) ' \r\n 
       (statement 
         (paint_statement PAINT 
           ( 
@@ -80,10 +80,10 @@
             (expr 
               (literal 1)) ) , 
           (expr 
-            (variable_or_function_call Pattern$)))) \r\n 
+            (variable_or_function_call Pattern$)))) ' \r\n 
       (statement 
-        (view_statement VIEW)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
+        (view_statement VIEW)) ' \r\n \r\n) 
+    (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id EditPattern) STATIC 
     (block \r\n 
@@ -99,7 +99,7 @@
         (assignment_statement 
           (variable_or_function_call ByteNum%) = 
           (expr 
-            (literal 1)))) \r\n 
+            (literal 1)))) ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BitNum%) = 
@@ -114,10 +114,10 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (literal 0)))) ))))) \r\n \r\n \r\n \r\n 
+                      (literal 0)))) ))))) ' \r\n ' \r\n ' \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
-          (block \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call X%) = 
@@ -148,7 +148,7 @@
                         (expr 
                           (literal 2))) )) * 
                   (expr 
-                    (literal 8))))) \r\n \r\n \r\n 
+                    (literal 8))))) \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call State%) = 
@@ -161,7 +161,7 @@
                   (literal 0)))) \r\n 
             (statement 
               (do_loop_statement DO 
-                (block \r\n \r\n \r\n 
+                (block \r\n \r\n ' \r\n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
@@ -189,7 +189,7 @@
                             (expr 
                               (literal 1)) - 
                             (expr 
-                              (variable_or_function_call State%))))) \r\n \r\n \r\n 
+                              (variable_or_function_call State%))))) \r\n \r\n ' \r\n 
                       (statement 
                         (line_statement LINE 
                           ( 
@@ -216,13 +216,13 @@
                     (assignment_statement 
                       (variable_or_function_call Check$) = 
                       (expr 
-                        (variable_or_function_call INKEY$)))) \r\n \r\n) LOOP 
+                        (variable_or_function_call INKEY$)))) ' \r\n \r\n) LOOP 
                 (loop_condition WHILE 
                   (expr 
                     (expr 
                       (variable_or_function_call Check$)) = 
                     (expr 
-                      (literal "")))))) \r\n \r\n \r\n 
+                      (literal "")))))) ' \r\n \r\n ' \r\n 
             (statement 
               (line_statement LINE 
                 ( 
@@ -248,7 +248,7 @@
               (select_case_statement SELECT CASE 
                 (expr 
                   (variable_or_function_call Check$)) 
-                (before_first_case \r\n \r\n) 
+                (before_first_case ' \r\n \r\n) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -259,9 +259,9 @@
                               (argument 
                                 (expr 
                                   (literal 27)))) ))))) 
-                  (block \r\n 
+                  (block ' \r\n 
                     (statement 
-                      (exit_statement EXIT SUB)) \r\n \r\n)) 
+                      (exit_statement EXIT SUB)) ' \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -272,7 +272,7 @@
                               (argument 
                                 (expr 
                                   (literal 32)))) ))))) 
-                  (block \r\n \r\n \r\n \r\n 
+                  (block ' \r\n ' \r\n \r\n ' \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrentByte%) = 
@@ -315,7 +315,7 @@
                               (argument_list 
                                 (argument 
                                   (expr 
-                                    (variable_or_function_call CurrentByte%)))) ))))) \r\n \r\n \r\n 
+                                    (variable_or_function_call CurrentByte%)))) ))))) \r\n \r\n ' \r\n 
                     (if_block_statement IF 
                       (expr 
                         (expr 
@@ -377,10 +377,10 @@
                               (argument 
                                 (expr 
                                   (literal 13)))) ))))) 
-                  (block \r\n 
+                  (block ' \r\n 
                     (statement 
                       (call_statement 
-                        (untyped_id DrawPattern))) \r\n \r\n)) 
+                        (untyped_id DrawPattern))) ' \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -394,7 +394,7 @@
                                 (argument 
                                   (expr 
                                     (literal 75)))) )))))) 
-                  (block \r\n \r\n 
+                  (block ' \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call BitNum%) = 
@@ -429,7 +429,7 @@
                                 (argument 
                                   (expr 
                                     (literal 77)))) )))))) 
-                  (block \r\n \r\n 
+                  (block ' \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call BitNum%) = 
@@ -464,7 +464,7 @@
                                 (argument 
                                   (expr 
                                     (literal 72)))) )))))) 
-                  (block \r\n \r\n 
+                  (block ' \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call ByteNum%) = 
@@ -499,7 +499,7 @@
                                 (argument 
                                   (expr 
                                     (literal 80)))) )))))) 
-                  (block \r\n \r\n 
+                  (block ' \r\n \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call ByteNum%) = 
@@ -523,9 +523,9 @@
                                 (literal 1))))))) \r\n \r\n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
-                  (block \r\n \r\n \r\n \r\n)) 
+                  (block \r\n ' \r\n ' \r\n ' \r\n)) 
                 (end_select_statement END SELECT))) \r\n) LOOP)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Initialize) STATIC 
     (block \r\n 
@@ -546,7 +546,7 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (literal 27)))) ))))) \r\n \r\n \r\n 
+                      (literal 27)))) ))))) ' \r\n \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
@@ -569,7 +569,7 @@
                     (variable_or_function_call I%))))) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (call_statement 
-          (untyped_id CLS))) \r\n \r\n \r\n 
+          (untyped_id CLS))) \r\n \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -614,7 +614,7 @@
                 (expr 
                   (variable_or_function_call PatternSize%)) > 
                 (expr 
-                  (literal 16))))))) \r\n \r\n \r\n 
+                  (literal 16))))))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Pattern$) = 
@@ -631,7 +631,7 @@
       (statement 
         (screen_statement SCREEN 
           (expr 
-            (literal 2)))) \r\n \r\n \r\n 
+            (literal 2)))) ' \r\n \r\n ' \r\n 
       (statement 
         (line_statement LINE 
           ( 
@@ -669,7 +669,7 @@
             (expr 
               (literal 302)) , 
             (expr 
-              (literal 199)) ))) \r\n \r\n \r\n 
+              (literal 199)) ))) \r\n \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -689,14 +689,14 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (literal "Pattern View")))) \r\n \r\n \r\n 
+            (literal "Pattern View")))) \r\n \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
             (literal 1)) TO 
           (expr 
             (variable_or_function_call PatternSize%)) 
-          (block \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -711,7 +711,7 @@
                 (expr 
                   (literal "##:")) ; 
                 (expr 
-                  (variable_or_function_call I%)))) \r\n \r\n \r\n 
+                  (variable_or_function_call I%)))) \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call X%) = 
@@ -762,7 +762,7 @@
                           (literal 16))))) \r\n) NEXT J%)) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (call_statement 
-          (untyped_id DrawPattern))) \r\n \r\n 
+          (untyped_id DrawPattern))) ' \r\n \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -785,7 +785,7 @@
         (print_statement PRINT 
           (expr 
             (literal "ESC.........................Quits")) ;)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowPattern) 
     ( 
@@ -795,7 +795,7 @@
       (statement 
         (shared_statement SHARED 
           (shared_variable Pattern$) , 
-          (shared_variable PatternSize%))) \r\n \r\n \r\n 
+          (shared_variable PatternSize%))) \r\n \r\n ' \r\n 
       (statement 
         (screen_statement SCREEN 
           (expr 
@@ -811,7 +811,7 @@
           (expr 
             (literal "The following characters make up your pattern:")))) \r\n 
       (statement 
-        (print_statement PRINT)) \r\n \r\n \r\n 
+        (print_statement PRINT)) \r\n \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 

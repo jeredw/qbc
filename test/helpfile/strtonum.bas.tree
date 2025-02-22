@@ -3,10 +3,10 @@
     ( 
       (declare_parameter_list 
         (declare_parameter Txt$) , 
-        (declare_parameter FilterString$)) )) \r\n \r\n \r\n 
+        (declare_parameter FilterString$)) )) \r\n \r\n ' \r\n 
   (statement 
     (line_input_statement LINE INPUT "Enter a number with commas: " , 
-      (variable_or_function_call A$))) \r\n \r\n \r\n \r\n 
+      (variable_or_function_call A$))) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call CleanNum$) = 
@@ -19,7 +19,7 @@
                   (variable_or_function_call A$))) , 
               (argument 
                 (expr 
-                  (literal "0123456789.-")))) ))))) \r\n \r\n \r\n 
+                  (literal "0123456789.-")))) ))))) \r\n \r\n ' \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -32,7 +32,7 @@
                 (expr 
                   (variable_or_function_call CleanNum$)))) ))))) \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_statement END)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION Filter$ 
     ( 
       (parameter_list 
@@ -58,7 +58,7 @@
             (literal 1)) TO 
           (expr 
             (variable_or_function_call TxtLength)) 
-          (block \r\n 
+          (block ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call C$) = 
@@ -70,7 +70,7 @@
                       (expr 
                         (variable_or_function_call I)) , 
                       (expr 
-                        (literal 1)) ))))) \r\n \r\n \r\n 
+                        (literal 1)) ))))) ' \r\n \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 

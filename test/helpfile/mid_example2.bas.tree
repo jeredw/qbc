@@ -1,10 +1,10 @@
 (program 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (input_statement INPUT "Binary number = " , 
-      (variable_or_function_call Binary$))) \n \n 
+      (variable_or_function_call Binary$))) ' \n ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Length) = 
@@ -12,7 +12,7 @@
         (builtin_function LEN 
           ( 
             (expr 
-              (variable_or_function_call Binary$)) ))))) \n 
+              (variable_or_function_call Binary$)) ))))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Decimal) = 
@@ -24,7 +24,7 @@
         (literal 1)) TO 
       (expr 
         (variable_or_function_call Length)) 
-      (block \n \n 
+      (block \n ' \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Digit$) = 
@@ -36,7 +36,7 @@
                   (expr 
                     (variable_or_function_call K)) , 
                   (expr 
-                    (literal 1)) ))))) \n \n 
+                    (literal 1)) ))))) \n ' \n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -49,7 +49,7 @@
                 (variable_or_function_call Digit$)) = 
               (expr 
                 (literal "1")))) THEN \n 
-          (then_block \n 
+          (then_block ' \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Decimal) = 

@@ -1,4 +1,4 @@
-(program \r\n \r\n 
+(program ' \r\n ' \r\n 
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \r\n 
@@ -24,7 +24,7 @@
               (expr 
                 (literal 1)) TO 
               (expr 
-                (variable_or_function_call ARRAYDIM))) ))))) \r\n \r\n 
+                (variable_or_function_call ARRAYDIM))) ))))) \r\n ' \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id Comline) 
@@ -50,7 +50,7 @@
           (variable_or_function_call Numargs)) > 
         (expr 
           (variable_or_function_call MAXFILES)))) THEN \r\n 
-    (then_block \r\n 
+    (then_block ' \r\n 
       (statement 
         (print_statement PRINT 
           (expr 
@@ -60,7 +60,7 @@
           (expr 
             (literal "files")))) \r\n) 
     (else_block_statement ELSE 
-      (else_block \r\n \r\n 
+      (else_block \r\n ' \r\n 
         (statement 
           (call_statement CALL 
             (untyped_id Printout) 
@@ -83,7 +83,7 @@
           (array_declaration 
             ( 1 ))) , 
         (parameter MaxArgs)) ) STATIC 
-    (block \r\n \r\n \r\n \r\n \r\n 
+    (block \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
       (statement 
         (const_statement CONST 
           (const_assignment TRUE = 
@@ -104,7 +104,7 @@
         (assignment_statement 
           (variable_or_function_call In) = 
           (expr 
-            (variable_or_function_call FALSE)))) \r\n \r\n 
+            (variable_or_function_call FALSE)))) \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Cl$) = 
@@ -117,7 +117,7 @@
             (builtin_function LEN 
               ( 
                 (expr 
-                  (variable_or_function_call Cl$)) ))))) \r\n \r\n 
+                  (variable_or_function_call Cl$)) ))))) \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -136,7 +136,7 @@
                       (expr 
                         (variable_or_function_call I)) , 
                       (expr 
-                        (literal 1)) ))))) \r\n \r\n 
+                        (literal 1)) ))))) \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 ( 
@@ -156,12 +156,12 @@
                               (argument 
                                 (expr 
                                   (literal 9)))) ))))) )) THEN \r\n 
-              (then_block \r\n \r\n 
+              (then_block ' \r\n ' \r\n 
                 (if_block_statement IF 
                   (expr NOT 
                     (expr 
                       (variable_or_function_call In))) THEN \r\n 
-                  (then_block \r\n \r\n 
+                  (then_block ' \r\n ' \r\n 
                     (statement 
                       (if_inline_statement IF 
                         (expr 
@@ -185,7 +185,7 @@
                         (variable_or_function_call In) = 
                         (expr 
                           (variable_or_function_call TRUE)))) \r\n) 
-                  (end_if_statement END IF)) \r\n \r\n 
+                  (end_if_statement END IF)) \r\n ' \r\n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call Args$ 
@@ -205,7 +205,7 @@
                       (expr 
                         (variable_or_function_call C$))))) \r\n) 
               (else_block_statement ELSE 
-                (else_block \r\n \r\n \r\n 
+                (else_block \r\n ' \r\n ' \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call In) = 
@@ -221,7 +221,7 @@
           (array_declaration 
             ( 1 ))) , 
         (parameter N)) ) STATIC 
-    (block \r\n \r\n 
+    (block \r\n ' \r\n 
       (statement 
         (open_statement OPEN 
           (expr 
@@ -233,7 +233,7 @@
                       (variable_or_function_call N)))) ))) FOR 
           (open_mode OUTPUT) AS # 
           (expr 
-            (literal 3)))) \r\n \r\n \r\n 
+            (literal 3)))) \r\n ' \r\n ' \r\n 
       (statement 
         (for_next_statement FOR File = 
           (expr 
@@ -267,13 +267,13 @@
                             (argument 
                               (expr 
                                 (literal 1)))) ))))) 
-                (block \r\n \r\n 
+                (block \r\n ' \r\n 
                   (statement 
                     (line_input_statement LINE INPUT 
                       (file_number # 
                         (expr 
                           (literal 1))) , 
-                      (variable_or_function_call Temp$))) \r\n \r\n 
+                      (variable_or_function_call Temp$))) \r\n ' \r\n 
                   (statement 
                     (print_statement PRINT 
                       (file_number # 

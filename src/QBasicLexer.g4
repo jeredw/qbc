@@ -48,7 +48,7 @@ DOUBLE_PRECISION_NUMBER
 fragment D_EXPONENT : [dD] [-+]? [0-9]+ ;
 STRING_LITERAL : '"' ~["\r\n]* '"' ;
 
-// Keywords
+// Keywords, statements and functions that are not parsed as builtins.
 ABSOLUTE : [Aa][Bb][Ss][Oo][Ll][Uu][Tt][Ee] ;
 ACCESS : [Aa][Cc][Cc][Ee][Ss][Ss] ;
 AND : [Aa][Nn][Dd] ;
@@ -131,7 +131,7 @@ PUT : [Pp][Uu][Tt] ;
 RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
 READ : [Rr][Ee][Aa][Dd] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
-REM : [Rr][Ee][Mm] -> pushMode(COMMENT_MODE) ;
+REM : [Rr][Ee][Mm] -> type(NL), pushMode(COMMENT_MODE) ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 RSET : [Rr][Ss][Ee][Tt] ;
@@ -188,18 +188,25 @@ fragment TYPE_SIGIL :
 // continued lines.
 CONTINUED_LINE : '_' '\r'? '\n' -> skip ;
 NL : '\r'? '\n' ;
-COMMENT : '\'' -> skip, pushMode(COMMENT_MODE) ;
+COMMENT : '\'' -> type(NL), pushMode(COMMENT_MODE) ;
 // Some old DOS programs have explicit ctrl+Z EOF markers.
 WS : [ \t\u001a]+ -> skip ;
 
 // Use a mode to capture just text so it can be checked for metacommands.
 mode COMMENT_MODE;
 
-// *** Should be checked for $STATIC and $DYNAMIC.
-// QBasic also parses $INCLUDE, but shows an error "Advanced feature
-// unavailable".
-COMMENT_TEXT : ~[\r\n]+ -> channel(HIDDEN) ;
-// The final NL must be passed through to terminate REM statements.
+// Metacommands are comments that begin with $command.  QBasic only supports
+// $STATIC and $DYNAMIC, but also parses $INCLUDE and shows an error "Advanced
+// feature unavailable".
+//
+// We parse these as statements by making the start of comment act as a newline
+// to terminate the current statement, slurping all the comment text for the
+// metacommand, then using the final NL to terminate the metacommand statement.
+COMMENT_META_DYNAMIC : [ \t]* '$' [Dd][Yy][Nn][Aa][Mm][Ii][Cc] ~[\r\n]* ;
+COMMENT_META_STATIC : [ \t]* '$' [Dd][Yy][Nn][Aa][Mm][Ii][Cc] ~[\r\n]* ;
+COMMENT_META_INCLUDE : [ \t]* '$' [Ii][Nn][Cc][Ll][Uu][Dd][Ee] ~[\r\n]* ;
+COMMENT_TEXT : ~[\r\n]+ -> skip ;
+// Pass through this NL to terminate a possible metacommand.
 COMMENT_NL : '\r'? '\n' -> type(NL), popMode ;
 
 // This mode turns ',' into a special NEXT keyword so we can parse
@@ -217,7 +224,7 @@ NEXT_NL : '\r'? '\n' -> type(NL), popMode ;
 NEXT_COLON : ':' -> type(COLON), popMode ;
 NEXT_WS : [ \t\u001a]+ -> skip ;
 // Do not pushMode, so that COMMENT_MODE pops back to DEFAULT_MODE.
-NEXT_COMMENT : '\'' -> skip, mode(COMMENT_MODE) ;
+NEXT_COMMENT : '\'' -> type(NL), mode(COMMENT_MODE) ;
 
 // DATA statements have CSV-like lexical rules, and don't support ' comments
 // or expressions.

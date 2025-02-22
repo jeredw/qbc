@@ -88,7 +88,7 @@
       (block \n 
         (statement 
           (do_loop_statement do 
-            (block \n \n) loop 
+            (block \n ' \n) loop 
             (loop_condition while 
               (expr 
                 (variable_or_function_call j))))) \n) loop 

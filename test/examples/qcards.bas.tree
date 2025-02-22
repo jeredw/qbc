@@ -8,10 +8,10 @@
         (declare_parameter LastCard%)) )) \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id Alarm) 
-    ( )) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    ( )) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n \r\n ' \r\n \r\n ' \r\n \r\n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n \r\n \r\n 
+      (letter_range A - Z))) ' \r\n \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment SPACE = 
@@ -101,7 +101,7 @@
       (const_assignment CTRLV = 
         (const_expr 
           (expr 
-            (literal 22)))))) \r\n \r\n \r\n \r\n 
+            (literal 22)))))) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment BLACK = 
@@ -141,7 +141,7 @@
       (const_assignment BRIGHT = 
         (const_expr 
           (expr 
-            (literal 8)))))) \r\n \r\n \r\n \r\n \r\n 
+            (literal 8)))))) \r\n \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment BACKGROUND = 
@@ -158,7 +158,7 @@
             (expr 
               (variable_or_function_call WHITE)) + 
             (expr 
-              (variable_or_function_call BRIGHT))))))) \r\n \r\n 
+              (variable_or_function_call BRIGHT))))))) \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment CNORMAL = 
@@ -168,7 +168,7 @@
       (const_assignment CHILITE = 
         (const_expr 
           (expr 
-            (literal 1)))))) \r\n \r\n \r\n \r\n 
+            (literal 1)))))) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment HELPTOP = 
@@ -196,7 +196,7 @@
       (const_assignment LASTROW = 
         (const_expr 
           (expr 
-            (literal 25)))))) \r\n \r\n \r\n 
+            (literal 25)))))) \r\n \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -217,13 +217,13 @@
       (const_assignment CURSOROFF = 
         (const_expr 
           (expr 
-            (literal 0)))))) \r\n \r\n \r\n 
+            (literal 0)))))) \r\n \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment TMPFILE$ = 
         (const_expr 
           (expr 
-            (literal "$$$87y$.$5$")))))) \r\n \r\n \r\n 
+            (literal "$$$87y$.$5$")))))) ' \r\n \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment NPERSON = 
@@ -274,49 +274,49 @@
             (expr 
               (variable_or_function_call NZIP)) + 
             (expr 
-              (literal 1))))))) \r\n \r\n \r\n 
+              (literal 1))))))) \r\n \r\n ' \r\n 
   (type_statement TYPE 
     (untyped_id Person) \r\n 
     (type_element 
       (untyped_id CardNum) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id Names) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 37)) \r\n) 
+        (fixed_string STRING * 37)) ' \r\n) 
     (type_element 
       (untyped_id Note) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 31)) \r\n) 
+        (fixed_string STRING * 31)) ' \r\n) 
     (type_element 
       (untyped_id Month) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id Day) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id Year) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id Phone) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 12)) \r\n) 
+        (fixed_string STRING * 12)) ' \r\n) 
     (type_element 
       (untyped_id Street) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 29)) \r\n) 
+        (fixed_string STRING * 29)) ' \r\n) 
     (type_element 
       (untyped_id City) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 13)) \r\n) 
+        (fixed_string STRING * 13)) ' \r\n) 
     (type_element 
       (untyped_id State) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 2)) \r\n) 
+        (fixed_string STRING * 2)) ' \r\n) 
     (type_element 
       (untyped_id Zip) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 5)) \r\n) END TYPE) \r\n \r\n \r\n \r\n \r\n \r\n 
+        (fixed_string STRING * 5)) ' \r\n) END TYPE) \r\n \r\n ' \r\n \r\n ' \r\n \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id AsciiKey) 
     ( 
@@ -384,7 +384,7 @@
     ( 
       (declare_parameter_list 
         (declare_parameter TopCard%) , 
-        (declare_parameter LastCard%)) )) \r\n \r\n \r\n 
+        (declare_parameter LastCard%)) )) \r\n \r\n ' \r\n 
   (declare_statement DECLARE FUNCTION EditString$ 
     ( 
       (declare_parameter_list 
@@ -404,7 +404,7 @@
         (declare_parameter Column%) , 
         (declare_parameter Length%)) )) \r\n 
   (declare_statement DECLARE FUNCTION SelectField% 
-    ( )) \r\n \r\n \r\n \r\n \r\n 
+    ( )) \r\n \r\n ' \r\n \r\n ' \r\n 
   (statement 
     (dim_statement REDIM SHARED 
       (dim_variable 
@@ -415,13 +415,13 @@
               (expr 
                 (literal 1))) )) AS 
         (type_name 
-          (untyped_id Person))))) \r\n \r\n \r\n 
+          (untyped_id Person))))) \r\n \r\n ' \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
         (untyped_id Card) AS 
         (type_name 
-          (untyped_id Person))))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+          (untyped_id Person))))) \r\n \r\n ' \r\n \r\n ' \r\n \r\n ' \r\n 
   (statement 
     (open_statement OPEN 
       (expr 
@@ -433,7 +433,7 @@
         (builtin_function LEN 
           ( 
             (expr 
-              (variable_or_function_call Card)) ))))) \r\n \r\n \r\n \r\n \r\n \r\n 
+              (variable_or_function_call Card)) ))))) \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call LastCard) = 
@@ -449,7 +449,7 @@
           (builtin_function LEN 
             ( 
               (expr 
-                (variable_or_function_call Card)) )))))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+                (variable_or_function_call Card)) )))))) \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
@@ -474,7 +474,7 @@
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
-        (line_number 0)))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+        (line_number 0)))) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -514,7 +514,7 @@
             (expr 
               (literal 1)) , 
             (variable_or_function_call Card))) \r\n)) 
-    (end_if_statement END IF)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_if_statement END IF)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (call_statement CALL 
       (untyped_id DrawCards))) \r\n 
@@ -533,10 +533,10 @@
               (variable_or_function_call TopCard))) , 
           (argument 
             (expr 
-              (variable_or_function_call LastCard)))) ))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+              (variable_or_function_call LastCard)))) ))) \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (do_loop_statement DO 
-      (block \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+      (block \r\n \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n 
@@ -550,7 +550,7 @@
                 (expr 
                   (variable_or_function_call Choice$)) = 
                 (expr 
-                  (literal "")))))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+                  (literal "")))))) \r\n \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -604,7 +604,7 @@
                       (argument 
                         (expr 
                           (variable_or_function_call LastCard)))) ))) \r\n)) 
-          (end_if_statement END IF)) \r\n \r\n \r\n \r\n \r\n 
+          (end_if_statement END IF)) \r\n \r\n \r\n ' \r\n ' \r\n 
         (statement 
           (if_inline_statement IF 
             (expr 
@@ -660,9 +660,9 @@
                     (variable_or_function_call TopCard))) , 
                 (argument 
                   (expr 
-                    (variable_or_function_call LastCard)))) ))) \r\n \r\n \r\n \r\n) LOOP)) \r\n \r\n 
+                    (variable_or_function_call LastCard)))) ))) \r\n \r\n \r\n ' \r\n) LOOP)) \r\n \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_statement END)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n \r\n ' \r\n \r\n 
   (label 
     (text_label 
       (untyped_id MemoryErr)) :) \r\n 
@@ -671,7 +671,7 @@
       (expr 
         (literal "Not enough memory. Can't read file.")))) \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n \r\n \r\n 
+    (end_statement END)) \r\n \r\n ' \r\n ' \r\n \r\n 
   (label 
     (text_label 
       (untyped_id CardScreen)) :) \r\n 
@@ -743,7 +743,7 @@
       (data_item "� City: ____________ ST: __  Zip: _____ �"))) \r\n 
   (statement 
     (data_statement DATA 
-      (data_item "�����������������������������������������"))) \r\n \r\n \r\n \r\n 
+      (data_item "�����������������������������������������"))) \r\n \r\n ' \r\n \r\n 
   (label 
     (text_label 
       (untyped_id ViewHelp)) :) \r\n 
@@ -782,7 +782,7 @@
   (statement 
     (data_statement DATA 
       (data_item 1) , 
-      (data_item ""))) \r\n \r\n \r\n \r\n 
+      (data_item ""))) \r\n \r\n ' \r\n \r\n 
   (label 
     (text_label 
       (untyped_id EditHelp)) :) \r\n 
@@ -821,7 +821,7 @@
   (statement 
     (data_statement DATA 
       (data_item 1) , 
-      (data_item "      INS     ESC"))) \r\n \r\n \r\n \r\n 
+      (data_item "      INS     ESC"))) \r\n \r\n ' \r\n \r\n 
   (label 
     (text_label 
       (untyped_id FieldPositions)) :) \r\n 
@@ -829,52 +829,52 @@
     (data_statement DATA 
       (data_item 14) , 
       (data_item 6) , 
-      (data_item 37))) : \r\n 
+      (data_item 37))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 16) , 
       (data_item 12) , 
-      (data_item 31))) : \r\n 
+      (data_item 31))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 18) , 
       (data_item 13) , 
-      (data_item 2))) : \r\n 
+      (data_item 2))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 18) , 
       (data_item 16) , 
-      (data_item 2))) : \r\n 
+      (data_item 2))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 18) , 
       (data_item 19) , 
-      (data_item 2))) : \r\n 
+      (data_item 2))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 18) , 
       (data_item 31) , 
-      (data_item 12))) : \r\n 
+      (data_item 12))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 20) , 
       (data_item 14) , 
-      (data_item 29))) : \r\n 
+      (data_item 29))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 22) , 
       (data_item 12) , 
-      (data_item 13))) : \r\n 
+      (data_item 13))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 22) , 
       (data_item 29) , 
-      (data_item 2))) : \r\n 
+      (data_item 2))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 22) , 
       (data_item 38) , 
-      (data_item 5))) : \r\n 
+      (data_item 5))) : ' \r\n 
   (statement 
     (data_statement DATA 
       (data_item 0) , 
@@ -905,7 +905,7 @@
                         (variable_or_function_call Tone)) / 
                       (expr 
                         (literal 7000))))))) \r\n) NEXT Tone)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id AsciiKey) 
     ( 
@@ -924,7 +924,7 @@
         (select_case_statement SELECT CASE 
           (expr 
             (variable_or_function_call UserChoice$)) 
-          (before_first_case \r\n \r\n) 
+          (before_first_case \r\n ' \r\n) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -989,7 +989,7 @@
                     (variable_or_function_call CURSOROFF)))) \r\n 
               (statement 
                 (call_statement CALL 
-                  (untyped_id ShowViewHelp))) \r\n \r\n \r\n)) 
+                  (untyped_id ShowViewHelp))) \r\n \r\n ' \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1015,14 +1015,14 @@
                             (argument_list 
                               (argument 
                                 (expr 
-                                  (variable_or_function_call TopCard)))) ))))) \r\n) 
+                                  (variable_or_function_call TopCard)))) ))))) ' \r\n) 
                 (else_block_statement ELSE 
                   (else_block \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call WorkCard.CardNum) = 
                         (expr 
-                          (literal 0)))) \r\n 
+                          (literal 0)))) ' \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call WorkCard.Names) = 
@@ -1176,7 +1176,7 @@
                     (variable_or_function_call CURSOROFF)))) \r\n 
               (statement 
                 (call_statement CALL 
-                  (untyped_id ShowViewHelp))) \r\n \r\n \r\n)) 
+                  (untyped_id ShowViewHelp))) \r\n \r\n ' \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1223,7 +1223,7 @@
                     (expr 
                       (variable_or_function_call LastCard)) - 
                     (expr 
-                      (literal 1))))) \r\n \r\n \r\n)) 
+                      (literal 1))))) \r\n \r\n ' \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1319,7 +1319,7 @@
                     (variable_or_function_call CURSOROFF)))) \r\n 
               (statement 
                 (call_statement CALL 
-                  (untyped_id ShowViewHelp))) \r\n \r\n \r\n)) 
+                  (untyped_id ShowViewHelp))) \r\n \r\n ' \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1371,7 +1371,7 @@
                     (literal 1)))) \r\n 
               (statement 
                 (call_statement CALL 
-                  (untyped_id ShowViewHelp))) \r\n \r\n \r\n)) 
+                  (untyped_id ShowViewHelp))) \r\n \r\n ' \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1390,7 +1390,7 @@
                               (argument_list 
                                 (argument 
                                   (expr 
-                                    (variable_or_function_call TopCard)))) ))))) ))) \r\n \r\n \r\n)) 
+                                    (variable_or_function_call TopCard)))) ))))) ))) \r\n \r\n ' \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1429,13 +1429,13 @@
                 (call_statement 
                   (untyped_id BEEP))) \r\n)) 
           (end_select_statement END SELECT))) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id CleanUp) 
     ( 
       (parameter_list 
         (parameter LastCard)) ) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (open_statement OPEN 
           (expr 
@@ -1471,7 +1471,7 @@
                     (argument_list 
                       (argument 
                         (expr 
-                          (variable_or_function_call Card)))) )))) \r\n) NEXT)) \r\n \r\n \r\n 
+                          (variable_or_function_call Card)))) )))) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (close_statement CLOSE)) \r\n 
       (statement 
@@ -1487,10 +1487,10 @@
             (variable_or_function_call TMPFILE$)) AS 
           (expr 
             (literal "QCARDS.DAT")))) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ClearHelp) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -1518,7 +1518,7 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (variable_or_function_call HELPWID)))) ))))) \r\n) NEXT)) \r\n \r\n \r\n 
+                            (variable_or_function_call HELPWID)))) ))))) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -1663,10 +1663,10 @@
                 (call_statement CALL 
                   (untyped_id Alarm))) \r\n)) 
           (end_select_statement END SELECT))) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id DrawCards) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (width_statement WIDTH 
           (expr 
@@ -1689,7 +1689,7 @@
           (expr 
             (literal 0)) , 
           (expr 
-            (literal 7)))) \r\n \r\n \r\n 
+            (literal 7)))) \r\n \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id RESTORE) 
@@ -1716,11 +1716,11 @@
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n \r\n 
+                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (call_statement CALL 
           (untyped_id ShowViewHelp))) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id EditCard) 
     ( 
@@ -1729,7 +1729,7 @@
           (untyped_id Card) AS 
           (type_name_for_parameter 
             (untyped_id Person)))) ) 
-    (block \r\n \r\n \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n ' \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NextFlag) = 
@@ -1744,7 +1744,7 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (variable_or_function_call FieldPositions)))))) \r\n \r\n \r\n 
+                      (variable_or_function_call FieldPositions)))))) \r\n \r\n ' \r\n 
             (statement 
               (read_statement READ 
                 (variable_or_function_call Row) , 
@@ -1755,7 +1755,7 @@
                 (expr 
                   (variable_or_function_call Row)) , 
                 (expr 
-                  (variable_or_function_call Column)))) \r\n \r\n 
+                  (variable_or_function_call Column)))) \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Card.Names) = 
@@ -1776,7 +1776,7 @@
                             (variable_or_function_call Length))) , 
                         (argument 
                           (expr 
-                            (variable_or_function_call NextFlag)))) ))))) \r\n \r\n 
+                            (variable_or_function_call NextFlag)))) ))))) \r\n ' \r\n 
             (statement 
               (if_inline_statement IF 
                 (expr 
@@ -1839,7 +1839,7 @@
                 (expr 
                   (variable_or_function_call Row)) , 
                 (expr 
-                  (variable_or_function_call Column)))) \r\n \r\n 
+                  (variable_or_function_call Column)))) \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Tmp$) = 
@@ -1870,7 +1870,7 @@
                             (variable_or_function_call Length))) , 
                         (argument 
                           (expr 
-                            (variable_or_function_call NextFlag)))) ))))) \r\n \r\n 
+                            (variable_or_function_call NextFlag)))) ))))) \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Card.Month) = 
@@ -2266,7 +2266,7 @@
                 (if_inline_action 
                   (statement 
                     (exit_statement EXIT SUB))))) \r\n \r\n) LOOP)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION EditString$ 
     ( 
       (parameter_list 
@@ -2276,7 +2276,7 @@
     (block \r\n 
       (statement 
         (static_statement STATIC 
-          (scope_variable Insert))) \r\n \r\n \r\n 
+          (scope_variable Insert))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Work$) = 
@@ -2323,7 +2323,7 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n \r\n \r\n \r\n \r\n 
+                      (variable_or_function_call Length)))) ))) ;)) \r\n \r\n ' \r\n ' \r\n ' \r\n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call Insert)) THEN \r\n 
@@ -2354,7 +2354,7 @@
                   (literal 0)) , 
                 (expr 
                   (literal 7)))) \r\n)) 
-        (end_if_statement END IF)) \r\n \r\n \r\n 
+        (end_if_statement END IF)) \r\n \r\n ' \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -2364,10 +2364,10 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (variable_or_function_call Work$)) ;)) \r\n \r\n \r\n 
+            (variable_or_function_call Work$)) ;)) \r\n \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
-          (block \r\n \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n ' \r\n 
             (statement 
               (do_loop_statement DO 
                 (block \r\n 
@@ -2381,7 +2381,7 @@
                     (expr 
                       (variable_or_function_call Choice$)) = 
                     (expr 
-                      (literal "")))))) \r\n \r\n \r\n 
+                      (literal "")))))) \r\n \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -2409,7 +2409,7 @@
                   (select_case_statement SELECT CASE 
                     (expr 
                       (variable_or_function_call Choice$)) 
-                    (before_first_case \r\n \r\n \r\n) 
+                    (before_first_case \r\n \r\n ' \r\n) 
                     (case_block 
                       (case_statement CASE 
                         (case_expr 
@@ -2493,7 +2493,7 @@
                                   (argument_list 
                                     (argument 
                                       (expr 
-                                        (variable_or_function_call CTRLG)))) ))))) \r\n \r\n \r\n \r\n)) 
+                                        (variable_or_function_call CTRLG)))) ))))) \r\n \r\n ' \r\n ' \r\n)) 
                     (case_block 
                       (case_statement CASE 
                         (case_expr 
@@ -2545,7 +2545,7 @@
                                   (argument_list 
                                     (argument 
                                       (expr 
-                                        (variable_or_function_call NULL)))) ))))) \r\n \r\n \r\n)) 
+                                        (variable_or_function_call NULL)))) ))))) \r\n \r\n ' \r\n)) 
                     (case_block 
                       (case_statement CASE ELSE) 
                       (block \r\n 
@@ -2560,7 +2560,7 @@
                                       (expr 
                                         (literal 1)))) ))))) \r\n)) 
                     (end_select_statement END SELECT))) \r\n) 
-              (end_if_statement END IF)) \r\n \r\n \r\n 
+              (end_if_statement END IF)) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -2570,13 +2570,13 @@
                         (argument 
                           (expr 
                             (variable_or_function_call Choice$)))) ))) 
-                (before_first_case \r\n \r\n \r\n) 
+                (before_first_case \r\n \r\n ' \r\n) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
                       (expr 
                         (variable_or_function_call NULL)))) 
-                  (block \r\n \r\n \r\n)) 
+                  (block \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2589,7 +2589,7 @@
                         (expr 
                           (variable_or_function_call FALSE)))) \r\n 
                     (statement 
-                      (exit_statement EXIT DO)) \r\n \r\n \r\n \r\n)) 
+                      (exit_statement EXIT DO)) \r\n \r\n ' \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2607,7 +2607,7 @@
                           (statement 
                             (call_statement 
                               (untyped_id BEEP))) \r\n)) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n)) 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2637,7 +2637,7 @@
                                   (expr 
                                     (variable_or_function_call MaxP)))) ))))) \r\n 
                     (statement 
-                      (exit_statement EXIT DO)) \r\n \r\n \r\n)) 
+                      (exit_statement EXIT DO)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2671,7 +2671,7 @@
                           (statement 
                             (call_statement 
                               (untyped_id BEEP))) \r\n)) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n)) 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2705,7 +2705,7 @@
                           (statement 
                             (call_statement 
                               (untyped_id BEEP))) \r\n)) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n)) 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2762,7 +2762,7 @@
                           (statement 
                             (call_statement 
                               (untyped_id BEEP))) \r\n)) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n)) 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2825,7 +2825,7 @@
                                 (variable_or_function_call MaxP)) - 
                               (expr 
                                 (literal 1))))) \r\n) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n)) 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2856,13 +2856,13 @@
                                 (literal 0)) , 
                               (expr 
                                 (literal 7)))) \r\n)) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n)) 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr IS >= 
                       (expr 
                         (variable_or_function_call SPACE)))) 
-                  (block \r\n \r\n \r\n \r\n 
+                  (block \r\n \r\n ' \r\n ' \r\n 
                     (if_block_statement IF 
                       (expr 
                         (variable_or_function_call FirstTime)) THEN \r\n 
@@ -2905,7 +2905,7 @@
                             (variable_or_function_call Work$) = 
                             (expr 
                               (literal "")))) \r\n) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n 
                     (if_block_statement IF 
                       (expr 
                         (variable_or_function_call Insert)) THEN \r\n 
@@ -2970,7 +2970,7 @@
                                   (untyped_id BEEP))) \r\n)) 
                           (end_if_statement END IF)) \r\n \r\n) 
                       (else_block_statement ELSE 
-                        (else_block \r\n \r\n \r\n 
+                        (else_block \r\n ' \r\n ' \r\n 
                           (if_block_statement IF 
                             (expr 
                               (expr 
@@ -3014,7 +3014,7 @@
                                     (statement 
                                       (call_statement 
                                         (untyped_id BEEP))) \r\n)) 
-                                (end_if_statement END IF)) \r\n \r\n \r\n) 
+                                (end_if_statement END IF)) \r\n \r\n ' \r\n) 
                             (else_block_statement ELSE 
                               (else_block \r\n 
                                 (statement 
@@ -3039,14 +3039,14 @@
                                       (expr 
                                         (literal 1))))) \r\n)) 
                             (end_if_statement END IF)) \r\n)) 
-                      (end_if_statement END IF)) \r\n \r\n \r\n)) 
+                      (end_if_statement END IF)) \r\n \r\n ' \r\n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n 
                     (statement 
                       (call_statement 
                         (untyped_id BEEP))) \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (color_statement COLOR 
                 (expr 
@@ -3079,7 +3079,7 @@
               (assignment_statement 
                 (variable_or_function_call FirstTime) = 
                 (expr 
-                  (variable_or_function_call FALSE)))) \r\n \r\n) LOOP)) \r\n \r\n \r\n 
+                  (variable_or_function_call FALSE)))) \r\n \r\n) LOOP)) \r\n \r\n ' \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -3109,7 +3109,7 @@
             (variable_or_function_call Row)) , 
           (expr 
             (variable_or_function_call Column)))) \r\n \r\n) 
-    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_function_statement END FUNCTION)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION FindCard% 
     ( 
       (parameter_list 
@@ -3122,7 +3122,7 @@
             (untyped_id TmpCard) AS 
             (type_name 
               (untyped_id Person))) , 
-          (scope_variable NotFirst))) \r\n \r\n \r\n \r\n \r\n 
+          (scope_variable NotFirst))) \r\n \r\n ' \r\n ' \r\n ' \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -3170,7 +3170,7 @@
               (variable_or_function_call NotFirst) = 
               (expr 
                 (variable_or_function_call TRUE)))) \r\n) 
-        (end_if_statement END IF)) \r\n \r\n \r\n \r\n 
+        (end_if_statement END IF)) \r\n \r\n ' \r\n ' \r\n 
       (statement 
         (call_statement CALL 
           (untyped_id ShowTopCard) 
@@ -3186,7 +3186,7 @@
             (argument_list 
               (argument 
                 (expr 
-                  (variable_or_function_call TmpCard)))) ))) \r\n \r\n \r\n 
+                  (variable_or_function_call TmpCard)))) ))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Card) = 
@@ -3220,7 +3220,7 @@
               (assignment_statement 
                 (variable_or_function_call Found) = 
                 (expr 
-                  (literal 0)))) \r\n \r\n \r\n 
+                  (literal 0)))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3271,7 +3271,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3322,7 +3322,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3353,7 +3353,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3384,7 +3384,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3415,7 +3415,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3466,7 +3466,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3517,7 +3517,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3568,7 +3568,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3619,7 +3619,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -3660,7 +3660,7 @@
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \r\n)) 
-                (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -3684,13 +3684,13 @@
               (expr 
                 (variable_or_function_call Card)) = 
               (expr 
-                (variable_or_function_call TopCard)))))) \r\n \r\n \r\n 
+                (variable_or_function_call TopCard)))))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call FindCard%) = 
           (expr 
             (variable_or_function_call FALSE)))) \r\n \r\n) 
-    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_function_statement END FUNCTION)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id InitIndex) 
     ( 
@@ -3709,7 +3709,7 @@
             (literal 1)) TO 
           (expr 
             (variable_or_function_call LastCard)) 
-          (block \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n 
             (statement 
               (get_io_statement GET # 
                 (expr 
@@ -3827,7 +3827,7 @@
                           (variable_or_function_call Record)))) ) . Zip) = 
                 (expr 
                   (variable_or_function_call Card.Zip)))) \r\n \r\n) NEXT Record)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id PrintLabel) 
     ( 
@@ -3857,7 +3857,7 @@
             (variable_or_function_call Card.Zip)))) \r\n 
       (statement 
         (lprint_statement LPRINT)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION Prompt$ 
     ( 
       (parameter_list 
@@ -3886,7 +3886,7 @@
               (case_expr IS <= 
                 (expr 
                   (literal 0)))) 
-            (block \r\n 
+            (block ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Prompt$) = 
@@ -3897,7 +3897,7 @@
               (case_expr 
                 (expr 
                   (literal 1)))) 
-            (block \r\n 
+            (block ' \r\n 
               (statement 
                 (locate_statement LOCATE , , 
                   (expr 
@@ -3912,7 +3912,7 @@
                           (literal 1)) ))))) \r\n)) 
           (case_block 
             (case_statement CASE ELSE) 
-            (block \r\n 
+            (block ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Prompt$) = 
@@ -3930,9 +3930,9 @@
                             (expr 
                               (variable_or_function_call FALSE)))) ))))) \r\n)) 
           (end_select_statement END SELECT))) \r\n \r\n) 
-    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_function_statement END FUNCTION)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION SelectField% 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id RESTORE) 
@@ -3949,10 +3949,10 @@
         (assignment_statement 
           (variable_or_function_call FieldNum) = 
           (expr 
-            (literal 0)))) \r\n \r\n \r\n 
+            (literal 0)))) \r\n \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
-          (block \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -3960,7 +3960,7 @@
                 (expr 
                   (variable_or_function_call Column)) , 
                 (expr 
-                  (variable_or_function_call CURSORON)))) \r\n \r\n \r\n 
+                  (variable_or_function_call CURSORON)))) \r\n \r\n ' \r\n 
             (statement 
               (do_loop_statement DO 
                 (block \r\n 
@@ -3992,7 +3992,7 @@
                           (expr 
                             (variable_or_function_call Ky)) = 
                           (expr 
-                            (variable_or_function_call TABKEY))) )))))) \r\n \r\n \r\n 
+                            (variable_or_function_call TABKEY))) )))))) \r\n \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -4010,7 +4010,7 @@
                     (expr 
                       (variable_or_function_call FieldNum)))) \r\n 
                 (statement 
-                  (exit_statement EXIT FUNCTION)) \r\n \r\n \r\n) 
+                  (exit_statement EXIT FUNCTION)) \r\n \r\n ' \r\n) 
               (else_block_statement ELSE 
                 (else_block \r\n \r\n 
                   (statement 
@@ -4052,14 +4052,14 @@
                             (literal 0)))) \r\n) 
                     (end_if_statement END IF)) \r\n \r\n)) 
               (end_if_statement END IF)) \r\n \r\n) LOOP)) \r\n \r\n) 
-    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_function_statement END FUNCTION)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowCards) 
     ( 
       (parameter_list 
         (parameter TopCard) , 
         (parameter LastCard)) ) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (call_statement CALL 
           (untyped_id ShowTopCard) 
@@ -4072,7 +4072,7 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (variable_or_function_call TopCard)))) ))))) ))) \r\n \r\n \r\n 
+                            (variable_or_function_call TopCard)))) ))))) ))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Card) = 
@@ -4096,7 +4096,7 @@
             (literal 2)) TO 
           (expr 
             (variable_or_function_call CARDSPERSCREEN)) 
-          (block \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Row) = 
@@ -4164,7 +4164,7 @@
                         (argument 
                           (expr 
                             (variable_or_function_call Card)))) ) . Names)))) \r\n \r\n) NEXT Count)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowCmdLine) 
     (block \r\n \r\n 
@@ -4334,10 +4334,10 @@
         (print_statement PRINT 
           (expr 
             (literal "uit ")) ;)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowEditHelp) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id ClearHelp))) \r\n 
@@ -4392,14 +4392,14 @@
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n \r\n 
+                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
             (variable_or_function_call NORMAL)) , 
           (expr 
             (variable_or_function_call BACKGROUND)))) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowTopCard) 
     ( 
@@ -4408,7 +4408,7 @@
           (untyped_id WorkCard) AS 
           (type_name_for_parameter 
             (untyped_id Person)))) ) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id RESTORE) 
@@ -4674,10 +4674,10 @@
         (print_statement PRINT 
           (expr 
             (variable_or_function_call WorkCard.Zip)) ;)) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowViewHelp) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id ClearHelp))) \r\n 
@@ -4732,7 +4732,7 @@
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n \r\n 
+                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4742,14 +4742,14 @@
       (statement 
         (call_statement 
           (untyped_id ShowCmdLine))) \r\n \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id SortIndex) 
     ( 
       (parameter_list 
         (parameter SortField) , 
         (parameter LastCard)) ) 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Offset) = 
@@ -4757,7 +4757,7 @@
             (expr 
               (variable_or_function_call LastCard)) \ 
             (expr 
-              (literal 2))))) \r\n \r\n \r\n 
+              (literal 2))))) \r\n \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -4777,12 +4777,12 @@
                     (variable_or_function_call Offset))))) \r\n \r\n 
             (statement 
               (do_loop_statement DO 
-                (block \r\n \r\n \r\n 
+                (block \r\n \r\n ' \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Switch) = 
                       (expr 
-                        (variable_or_function_call FALSE)))) \r\n \r\n \r\n \r\n 
+                        (variable_or_function_call FALSE)))) \r\n \r\n ' \r\n ' \r\n 
                   (statement 
                     (for_next_statement FOR i = 
                       (expr 
@@ -5345,7 +5345,7 @@
                                         (expr 
                                           (variable_or_function_call i)))) \r\n) 
                                   (end_if_statement END IF)) \r\n)) 
-                            (end_select_statement END SELECT))) \r\n \r\n) NEXT i)) \r\n \r\n \r\n 
+                            (end_select_statement END SELECT))) \r\n \r\n) NEXT i)) \r\n \r\n ' \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Limit) = 
@@ -5353,7 +5353,7 @@
                         (variable_or_function_call Switch)))) \r\n \r\n) LOOP 
                 (loop_condition WHILE 
                   (expr 
-                    (variable_or_function_call Switch))))) \r\n \r\n \r\n 
+                    (variable_or_function_call Switch))))) \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Offset) = 

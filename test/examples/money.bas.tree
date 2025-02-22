@@ -1,7 +1,7 @@
-(program \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
+(program ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n \n \n ' \n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \n \n \n 
+      (letter_range A - Z))) \n \n ' \n 
   (declare_statement DECLARE SUB 
     (untyped_id TransactionSummary) 
     ( 
@@ -120,7 +120,7 @@
   (declare_statement DECLARE FUNCTION Trim$ 
     ( 
       (declare_parameter_list 
-        (declare_parameter X$)) )) \n \n \n 
+        (declare_parameter X$)) )) \n \n ' \n 
   (statement 
     (const_statement CONST 
       (const_assignment TRUE = 
@@ -134,7 +134,7 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call TRUE))))))) \n \n \n 
+              (variable_or_function_call TRUE))))))) \n \n ' \n 
   (type_statement TYPE 
     (untyped_id AccountType) \n 
     (type_element 
@@ -168,7 +168,7 @@
       (type_name_for_type_element DOUBLE) \n) 
     (type_element 
       (untyped_id Fig2) AS 
-      (type_name_for_type_element DOUBLE) \n) END TYPE) \n \n \n 
+      (type_name_for_type_element DOUBLE) \n) END TYPE) \n \n ' \n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable 
@@ -181,10 +181,10 @@
               (expr 
                 (literal 19))) )) AS 
         (type_name 
-          (untyped_id AccountType))))) \n 
+          (untyped_id AccountType))))) ' \n 
   (statement 
     (dim_statement DIM SHARED 
-      (dim_variable ColorPref))) \n 
+      (dim_variable ColorPref))) ' \n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable colors 
@@ -199,7 +199,7 @@
               (expr 
                 (literal 1)) TO 
               (expr 
-                (literal 4))) ))))) \n 
+                (literal 4))) ))))) ' \n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable ScrollUpAsm 
@@ -209,7 +209,7 @@
               (expr 
                 (literal 1)) TO 
               (expr 
-                (literal 7))) ))))) \n 
+                (literal 7))) ))))) ' \n 
   (statement 
     (dim_statement DIM SHARED 
       (dim_variable ScrollDownAsm 
@@ -224,11 +224,11 @@
     (dim_statement DIM SHARED 
       (dim_variable 
         (untyped_id PrintErr) AS 
-        (type_name INTEGER)))) \n \n 
+        (type_name INTEGER)))) ' \n \n 
   (statement 
     (def_seg_statement DEF SEG = 
       (expr 
-        (literal 0)))) \n 
+        (literal 0)))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call KeyFlags) = 
@@ -250,7 +250,7 @@
           (expr 
             (literal &H0)))))) \n 
   (statement 
-    (def_seg_statement DEF SEG)) \n \n \n \n 
+    (def_seg_statement DEF SEG)) \n \n ' \n ' \n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
@@ -268,29 +268,29 @@
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
-        (line_number 0)))) \n \n 
+        (line_number 0)))) ' \n \n 
   (statement 
     (call_statement 
-      (untyped_id Initialize))) \n 
+      (untyped_id Initialize))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id Intro))) \n 
+      (untyped_id Intro))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id MenuSystem))) \n 
+      (untyped_id MenuSystem))) ' \n 
   (statement 
     (color_statement COLOR 
       (expr 
         (literal 7)) , 
       (expr 
-        (literal 0)))) \n 
+        (literal 0)))) ' \n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \n \n 
   (statement 
     (def_seg_statement DEF SEG = 
       (expr 
-        (literal 0)))) \n 
+        (literal 0)))) ' \n 
   (statement 
     (call_statement 
       (untyped_id POKE) 
@@ -304,7 +304,7 @@
   (statement 
     (def_seg_statement DEF SEG)) \n \n 
   (statement 
-    (end_statement END)) \n \n \n \n 
+    (end_statement END)) \n \n ' \n ' \n 
   (label 
     (text_label 
       (untyped_id ErrorTrap)) :) \n 
@@ -312,7 +312,7 @@
     (select_case_statement SELECT CASE 
       (expr 
         (variable_or_function_call ERR)) 
-      (before_first_case \n \n) 
+      (before_first_case \n ' \n) 
       (case_block 
         (case_statement CASE 
           (case_expr 
@@ -431,7 +431,7 @@
         (block \n)) 
       (end_select_statement END SELECT))) \n 
   (statement 
-    (resume_statement RESUME NEXT)) \n \n \n \n \n \n 
+    (resume_statement RESUME NEXT)) \n \n \n ' \n ' \n ' \n 
   (statement 
     (data_statement DATA 
       (data_item 0) , 
@@ -479,7 +479,7 @@
       (data_item 15) , 
       (data_item 15) , 
       (data_item 1) , 
-      (data_item 0))) \n \n \n \n 
+      (data_item 0))) \n \n ' \n ' \n 
   (statement 
     (data_statement DATA 
       (data_item &HB8) , 
@@ -511,7 +511,7 @@
       (data_item &H00) , 
       (data_item &HCD) , 
       (data_item &H10) , 
-      (data_item &HCB))) \n \n \n \n 
+      (data_item &HCB))) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id Box) 
     ( 
@@ -617,7 +617,7 @@
                       (literal "Ä")))) ))) ; 
           (expr 
             (literal "Ù")) ;)) \n \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id Center) 
     ( 
@@ -644,7 +644,7 @@
         (print_statement PRINT 
           (expr 
             (variable_or_function_call text$)) ;)) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (function_statement FUNCTION Cvdt$ 
     ( 
       (parameter_list 
@@ -679,7 +679,7 @@
                                         (variable_or_function_call X#)))) ))) ))) - 
                       (expr 
                         (literal 1))))) ))))) \n \n) 
-    (end_function_statement END FUNCTION)) \n \n \n \n 
+    (end_function_statement END FUNCTION)) \n \n ' \n ' \n 
   (function_statement FUNCTION Cvit$ 
     ( 
       (parameter_list 
@@ -714,7 +714,7 @@
                                         (variable_or_function_call X)))) ))) ))) - 
                       (expr 
                         (literal 1))))) ))))) \n) 
-    (end_function_statement END FUNCTION)) \n \n \n \n 
+    (end_function_statement END FUNCTION)) \n \n ' \n ' \n 
   (function_statement FUNCTION Cvst$ 
     ( 
       (parameter_list 
@@ -749,10 +749,10 @@
                                         (variable_or_function_call X!)))) ))) ))) - 
                       (expr 
                         (literal 1))))) ))))) \n) 
-    (end_function_statement END FUNCTION)) \n \n \n \n \n 
+    (end_function_statement END FUNCTION)) \n \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id EditAccounts) 
-    (block \n \n \n 
+    (block \n \n ' \n 
       (statement 
         (dim_statement REDIM 
           (dim_variable help$ 
@@ -787,7 +787,7 @@
                     (literal 19))) , 
                 (dim_subscript 
                   (expr 
-                    (literal 3))) ))))) \n \n \n 
+                    (literal 3))) ))))) \n \n ' \n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -967,7 +967,7 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (variable_or_function_call X)))) ) . AType)) ;)) \n) NEXT a)) \n \n \n 
+                            (variable_or_function_call X)))) ) . AType)) ;)) \n) NEXT a)) \n \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call help$ 
@@ -1176,7 +1176,7 @@
                     (argument_list 
                       (argument 
                         (expr 
-                          (variable_or_function_call CurrCol)))) ))))))) \n \n \n 
+                          (variable_or_function_call CurrCol)))) ))))))) \n \n ' \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -1184,10 +1184,10 @@
               (gosub_statement GOSUB 
                 (target 
                   (text_label 
-                    (untyped_id EditAccountsShowCursor))))) \n 
+                    (untyped_id EditAccountsShowCursor))))) ' \n 
             (statement 
               (do_loop_statement DO 
-                (block \n 
+                (block ' \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Kbd$) = 
@@ -1210,8 +1210,8 @@
                   (expr 
                     (variable_or_function_call Kbd$)) < 
                   (expr 
-                    (literal "~")))) THEN \n 
-              (then_block 
+                    (literal "~")))) THEN ' 
+              (then_block \n 
                 (statement 
                   (gosub_statement GOSUB 
                     (target 
@@ -1222,7 +1222,7 @@
               (gosub_statement GOSUB 
                 (target 
                   (text_label 
-                    (untyped_id EditAccountsHideCursor))))) \n \n 
+                    (untyped_id EditAccountsHideCursor))))) ' \n ' \n 
             (statement 
               (select_case_statement SELECT CASE 
                 (expr 
@@ -1241,7 +1241,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "H"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrRow) = 
@@ -1271,7 +1271,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "P"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrRow) = 
@@ -1314,7 +1314,7 @@
                                 (argument 
                                   (expr 
                                     (literal 15)))) )))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrCol) = 
@@ -1364,7 +1364,7 @@
                               (argument 
                                 (expr 
                                   (literal 9)))) ))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrCol) = 
@@ -1403,7 +1403,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "<"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call finished) = 
@@ -1424,7 +1424,7 @@
                               (argument 
                                 (expr 
                                   (literal 27)))) ))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call finished) = 
@@ -1445,7 +1445,7 @@
                               (argument 
                                 (expr 
                                   (literal 13)))) ))))) 
-                  (block \n)) 
+                  (block ' \n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \n 
@@ -1886,13 +1886,13 @@
           (untyped_id SaveState))) \n 
       (statement 
         (return_statement RETURN)) \n \n) 
-    (end_sub_statement END SUB)) \n \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id EditTrans) 
     ( 
       (parameter_list 
         (parameter item)) ) 
-    (block \n \n \n 
+    (block \n \n ' \n 
       (statement 
         (dim_statement REDIM 
           (dim_variable help$ 
@@ -1930,7 +1930,7 @@
               ( 
                 (dim_subscript 
                   (expr 
-                    (literal 5))) ))))) \n \n 
+                    (literal 5))) ))))) \n ' \n 
       (statement 
         (dim_statement REDIM 
           (dim_variable Balance# 
@@ -1938,7 +1938,7 @@
               ( 
                 (dim_subscript 
                   (expr 
-                    (literal 1000))) ))))) \n \n \n 
+                    (literal 1000))) ))))) \n \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call file$) = 
@@ -2000,7 +2000,7 @@
           (field_assignment 
             (expr 
               (literal 8)) AS 
-            (variable_or_function_call IoBalance$)))) \n \n \n 
+            (variable_or_function_call IoBalance$)))) \n \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call CurrString$ 
@@ -2421,7 +2421,7 @@
                   (expr 
                     (literal 5)))) )) = 
           (expr 
-            (literal 10)))) \n \n \n \n 
+            (literal 10)))) \n \n \n ' \n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -2636,7 +2636,7 @@
         (assignment_statement 
           (variable_or_function_call finished) = 
           (expr 
-            (variable_or_function_call FALSE)))) \n \n \n \n 
+            (variable_or_function_call FALSE)))) \n \n \n ' \n 
       (statement 
         (do_loop_statement DO 
           (block \n 
@@ -2644,7 +2644,7 @@
               (gosub_statement GOSUB 
                 (target 
                   (text_label 
-                    (untyped_id EditTransShowCursor))))) \n 
+                    (untyped_id EditTransShowCursor))))) ' \n 
             (statement 
               (do_loop_statement DO 
                 (block : 
@@ -2686,8 +2686,8 @@
                         (argument_list 
                           (argument 
                             (expr 
-                              (literal 8)))) ))))) THEN \n 
-              (then_block 
+                              (literal 8)))) ))))) THEN ' 
+              (then_block \n 
                 (statement 
                   (gosub_statement GOSUB 
                     (target 
@@ -2698,7 +2698,7 @@
               (select_case_statement SELECT CASE 
                 (expr 
                   (variable_or_function_call Kbd$)) 
-                (before_first_case \n) 
+                (before_first_case ' \n) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2712,7 +2712,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "H"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (gosub_statement GOSUB 
                         (target 
@@ -2731,7 +2731,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "P"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (gosub_statement GOSUB 
                         (target 
@@ -2766,7 +2766,7 @@
                                 (argument 
                                   (expr 
                                     (literal 15)))) )))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrCol) = 
@@ -2819,7 +2819,7 @@
                               (argument 
                                 (expr 
                                   (literal 9)))) ))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrCol) = 
@@ -2861,7 +2861,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "G"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrCol) = 
@@ -2880,7 +2880,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "O"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrCol) = 
@@ -2899,7 +2899,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "I"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrRow) = 
@@ -2949,7 +2949,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "Q"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrRow) = 
@@ -2999,7 +2999,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "<"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call finished) = 
@@ -3018,7 +3018,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "C"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (gosub_statement GOSUB 
                         (target 
@@ -3037,7 +3037,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "D"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (gosub_statement GOSUB 
                         (target 
@@ -3053,7 +3053,7 @@
                               (argument 
                                 (expr 
                                   (literal 13)))) ))))) 
-                  (block \n)) 
+                  (block ' \n)) 
                 (case_block 
                   (case_statement CASE ELSE) 
                   (block \n 
@@ -4928,7 +4928,7 @@
                       (variable_or_function_call IoFig2$)))) ))))) \n 
       (statement 
         (return_statement RETURN)) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id FancyCls) 
     ( 
@@ -5003,7 +5003,7 @@
                             (literal 250)))) ))) ;)) \n) NEXT a)) \n \n 
       (statement 
         (view_print_statement VIEW PRINT)) \n \n) 
-    (end_sub_statement END SUB)) \n \n \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n 
   (function_statement FUNCTION GetString$ 
     ( 
       (parameter_list 
@@ -5316,7 +5316,7 @@
                   (variable_or_function_call INKEY$)))) \n) WEND)) \n 
       (statement 
         (return_statement RETURN)) \n) 
-    (end_function_statement END FUNCTION)) \n \n \n \n 
+    (end_function_statement END FUNCTION)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id Initialize) 
     (block \n \n 
@@ -5464,7 +5464,7 @@
                       (variable_or_function_call J)))))) \n) NEXT I)) \n \n 
       (statement 
         (def_seg_statement DEF SEG)) \n \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id Intro) 
     (block \n 
@@ -5578,7 +5578,7 @@
       (statement 
         (call_statement 
           (untyped_id SparklePause))) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id LCenter) 
     ( 
@@ -5605,7 +5605,7 @@
                           (literal 2)))))) ))) ; 
           (expr 
             (variable_or_function_call text$)))) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id LoadState) 
     (block \n \n 
@@ -5664,7 +5664,7 @@
                           (variable_or_function_call a)))) ) . Desc))) \n) NEXT a)) \n \n 
       (statement 
         (close_statement CLOSE)) \n \n) 
-    (end_sub_statement END SUB)) \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (function_statement FUNCTION Menu 
     ( 
       (parameter_list 
@@ -5688,7 +5688,7 @@
         (assignment_statement 
           (variable_or_function_call currChoice) = 
           (expr 
-            (variable_or_function_call CurrChoiceX)))) \n \n \n \n 
+            (variable_or_function_call CurrChoiceX)))) \n \n ' \n ' \n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call BarMode)) THEN \n 
@@ -5968,7 +5968,7 @@
                         (argument 
                           (expr 
                             (literal 178)))) ))) ;)) \n)) 
-        (end_if_statement END IF)) \n \n \n 
+        (end_if_statement END IF)) \n \n ' \n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -6482,7 +6482,7 @@
                       (variable_or_function_call currChoice)))) ))) ;)) \n 
       (statement 
         (return_statement RETURN)) \n \n \n) 
-    (end_function_statement END FUNCTION)) \n \n \n \n \n \n 
+    (end_function_statement END FUNCTION)) \n \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id MenuSystem) 
     (block \n \n 
@@ -7842,7 +7842,7 @@
           (end_select_statement END SELECT))) \n 
       (statement 
         (return_statement RETURN)) \n \n \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id NetWorthReport) 
     (block \n 
@@ -7937,7 +7937,7 @@
                                 (variable_or_function_call maxLiability)))) )) = 
                       (expr 
                         (variable_or_function_call a)))) \n)) 
-              (end_if_statement END IF)) \n) NEXT a)) \n \n \n 
+              (end_if_statement END IF)) \n) NEXT a)) \n \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call finished) = 
@@ -8503,7 +8503,7 @@
               (select_case_statement SELECT CASE 
                 (expr 
                   (variable_or_function_call Kbd$)) 
-                (before_first_case \n) 
+                (before_first_case ' \n) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -8517,7 +8517,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "<"))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call finished) = 
@@ -8536,7 +8536,7 @@
                                     (literal 0)))) ))) + 
                         (expr 
                           (literal "="))))) 
-                  (block \n 
+                  (block ' \n 
                     (statement 
                       (gosub_statement GOSUB 
                         (target 
@@ -8702,7 +8702,7 @@
             (on_error_statement ON ERROR GOTO 
               (target 
                 (text_label 
-                  (untyped_id ErrorTrap))))) \n 
+                  (untyped_id ErrorTrap))))) ' \n 
           (statement 
             (lprint_statement LPRINT)) \n 
           (if_block_statement IF 
@@ -9083,7 +9083,7 @@
         (end_if_statement END IF)) \n 
       (statement 
         (return_statement RETURN)) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id PrintHelpLine) 
     ( 
@@ -9137,7 +9137,7 @@
             (argument 
               (expr 
                 (variable_or_function_call help$)))))) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id SaveState) 
     (block \n 
@@ -9202,7 +9202,7 @@
         (close_statement CLOSE # 
           (expr 
             (literal 2)))) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id ScrollDown) 
     (block \n 
@@ -9237,7 +9237,7 @@
                                   (literal 1)))) ))))) ))) ))) \n 
       (statement 
         (def_seg_statement DEF SEG)) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id ScrollUp) 
     (block \n 
@@ -9272,7 +9272,7 @@
                                   (literal 1)))) ))))) ))) ))) \n 
       (statement 
         (def_seg_statement DEF SEG)) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id SparklePause) 
     (block \n \n 
@@ -9294,7 +9294,7 @@
               (variable_or_function_call INKEY$)) <> 
             (expr 
               (literal ""))) 
-          (block :) WEND)) \n \n 
+          (block :) WEND)) ' \n \n 
       (statement 
         (while_wend_statement WHILE 
           (expr 
@@ -9315,7 +9315,7 @@
                       (expr 
                         (literal 1)) , 
                       (expr 
-                        (literal 1)))) \n 
+                        (literal 1)))) ' \n 
                   (statement 
                     (print_statement PRINT 
                       (expr 
@@ -9353,7 +9353,7 @@
                         (literal 2)) TO 
                       (expr 
                         (literal 21)) 
-                      (block \n 
+                      (block ' \n 
                         (statement 
                           (assignment_statement 
                             (variable_or_function_call c) = 
@@ -9423,7 +9423,7 @@
                                   (expr 
                                     (literal " ")) ;)) \n)) 
                           (end_if_statement END IF)) \n) NEXT b)) \n) NEXT a)) \n) WEND)) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id TransactionSummary) 
     ( 
@@ -9576,7 +9576,7 @@
             (on_error_statement ON ERROR GOTO 
               (target 
                 (text_label 
-                  (untyped_id ErrorTrap))))) \n 
+                  (untyped_id ErrorTrap))))) ' \n 
           (statement 
             (lprint_statement LPRINT)) \n 
           (if_block_statement IF 
@@ -9946,7 +9946,7 @@
           (statement 
             (close_statement CLOSE)) \n) 
         (end_if_statement END IF)) \n) 
-    (end_sub_statement END SUB)) \n \n \n \n 
+    (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (function_statement FUNCTION Trim$ 
     ( 
       (parameter_list 

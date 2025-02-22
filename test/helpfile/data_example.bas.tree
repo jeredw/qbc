@@ -1,9 +1,9 @@
-(program \n 
+(program ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call C$) = 
       (expr 
-        (variable_or_function_call DATE$)))) \n \n \n 
+        (variable_or_function_call DATE$)))) \n ' \n ' \n 
   (statement 
     (for_next_statement FOR I% = 
       (expr 
@@ -34,7 +34,7 @@
       (data_item September) , 
       (data_item October) , 
       (data_item November) , 
-      (data_item December))) \n \n \n 
+      (data_item December))) \n \n ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Day$) = 
@@ -75,7 +75,7 @@
                         (variable_or_function_call Day$))) , 
                     (argument 
                       (expr 
-                        (literal 1)))) )))))))) \n \n 
+                        (literal 1)))) )))))))) \n ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Year$) = 

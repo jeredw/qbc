@@ -2,14 +2,14 @@
   (statement 
     (screen_statement SCREEN 
       (expr 
-        (literal 1)))) \n \n 
+        (literal 1)))) ' \n \n 
   (statement 
     (line_statement LINE - 
       ( 
         (expr 
           (variable_or_function_call X2)) , 
         (expr 
-          (variable_or_function_call Y2)) ))) \n \n \n \n 
+          (variable_or_function_call Y2)) ))) ' \n ' \n ' \n ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n) LOOP 
@@ -18,10 +18,10 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \n 
+            (literal "")))))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (line_statement LINE 
       ( 
@@ -33,7 +33,7 @@
         (expr 
           (literal 319)) , 
         (expr 
-          (literal 199)) ))) \n \n 
+          (literal 199)) ))) ' \n ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n) LOOP 
@@ -42,10 +42,10 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \n 
+            (literal "")))))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (line_statement LINE 
       ( 
@@ -57,7 +57,7 @@
         (expr 
           (literal 319)) , 
         (expr 
-          (literal 100)) ))) \n \n 
+          (literal 100)) ))) ' \n ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n) LOOP 
@@ -66,10 +66,10 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \n 
+            (literal "")))))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (line_statement LINE 
       ( 
@@ -83,7 +83,7 @@
         (expr 
           (literal 20)) ) , 
       (expr 
-        (literal 2)))) \n 
+        (literal 2)))) ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n) LOOP 
@@ -92,17 +92,17 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \n 
+            (literal "")))))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (for_next_statement FOR X = 
       (expr 
         (literal 0)) to 
       (expr 
         (literal 319)) 
-      (block \n 
+      (block ' \n 
         (statement 
           (line_statement LINE 
             ( 
@@ -119,7 +119,7 @@
               (expr 
                 (variable_or_function_call X)) AND 
               (expr 
-                (literal 1))))) \n) NEXT)) \n 
+                (literal 1))))) ' \n) NEXT)) ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n) LOOP 
@@ -128,10 +128,10 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \n 
+            (literal "")))))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (line_statement LINE 
       ( 
@@ -144,7 +144,7 @@
           (literal 100)) , 
         (expr 
           (literal 100)) ) , , 
-      (box_style B))) \n \n \n 
+      (box_style B))) ' \n ' \n ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n) LOOP 
@@ -153,10 +153,10 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \n 
+            (literal "")))))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (line_statement LINE STEP 
       ( 
@@ -171,7 +171,7 @@
           (literal 200)) ) , 
       (expr 
         (literal 2)) , 
-      (box_style BF))) \n \n \n 
+      (box_style BF))) ' \n ' \n ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n) LOOP 
@@ -180,10 +180,10 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \n 
+            (literal "")))))) ' \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (line_statement LINE 
       ( 
@@ -199,4 +199,4 @@
       (expr 
         (literal 3)) , , 
       (expr 
-        (literal &HFF00)))) \n \n \n \n <EOF>)
+        (literal &HFF00)))) ' \n ' \n ' \n ' \n <EOF>)

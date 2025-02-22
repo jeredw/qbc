@@ -1,11 +1,11 @@
 (program 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n \r\n \r\n \r\n 
+      (letter_range A - Z))) ' \r\n \r\n ' \r\n ' \r\n 
   (declare_statement DECLARE FUNCTION Backup$ 
     ( 
       (declare_parameter_list 
-        (declare_parameter FileName$)) )) \r\n \r\n \r\n 
+        (declare_parameter FileName$)) )) \r\n \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -42,7 +42,7 @@
       (block \r\n 
         (statement 
           (call_statement 
-            (untyped_id CLS))) \r\n \r\n \r\n 
+            (untyped_id CLS))) \r\n \r\n ' \r\n 
         (statement 
           (input_statement INPUT "Which file do you want to convert" ; 
             (variable_or_function_call OutFile$))) \r\n \r\n 
@@ -55,22 +55,22 @@
                   (argument_list 
                     (argument 
                       (expr 
-                        (variable_or_function_call OutFile$)))) ))))) \r\n \r\n 
+                        (variable_or_function_call OutFile$)))) ))))) ' \r\n \r\n 
         (statement 
           (on_error_statement ON ERROR GOTO 
             (target 
               (text_label 
-                (untyped_id ErrorHandler))))) \r\n \r\n 
+                (untyped_id ErrorHandler))))) ' \r\n \r\n 
         (statement 
           (name_statement NAME 
             (expr 
               (variable_or_function_call OutFile$)) AS 
             (expr 
-              (variable_or_function_call InFile$)))) \r\n \r\n \r\n 
+              (variable_or_function_call InFile$)))) ' \r\n ' \r\n \r\n 
         (statement 
           (on_error_statement ON ERROR GOTO 
             (target 
-              (line_number 0)))) \r\n \r\n \r\n \r\n 
+              (line_number 0)))) ' \r\n \r\n ' \r\n ' \r\n 
         (statement 
           (open_statement OPEN 
             (expr 
@@ -84,12 +84,12 @@
               (variable_or_function_call OutFile$)) FOR 
             (open_mode OUTPUT) AS # 
             (expr 
-              (literal 2)))) \r\n \r\n \r\n \r\n 
+              (literal 2)))) \r\n \r\n ' \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call PrevCarReturn) = 
             (expr 
-              (variable_or_function_call FALSE)))) \r\n \r\n \r\n \r\n 
+              (variable_or_function_call FALSE)))) \r\n \r\n ' \r\n ' \r\n 
         (statement 
           (do_loop_statement DO 
             (do_condition UNTIL 
@@ -100,7 +100,7 @@
                       (argument 
                         (expr 
                           (literal 1)))) )))) 
-            (block \r\n \r\n \r\n 
+            (block \r\n \r\n ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call FileChar$) = 
@@ -121,7 +121,7 @@
                       (case_expr 
                         (expr 
                           (variable_or_function_call CarReturn$)))) 
-                    (block \r\n \r\n \r\n \r\n 
+                    (block ' \r\n \r\n ' \r\n ' \r\n 
                       (if_block_statement IF 
                         (expr 
                           (variable_or_function_call PrevCarReturn)) THEN \r\n 
@@ -134,7 +134,7 @@
                                   (variable_or_function_call LineFeed$)) + 
                                 (expr 
                                   (variable_or_function_call FileChar$))))) \r\n) 
-                        (end_if_statement END IF)) \r\n \r\n \r\n \r\n 
+                        (end_if_statement END IF)) \r\n \r\n ' \r\n ' \r\n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call PrevCarReturn) = 
@@ -145,7 +145,7 @@
                       (case_expr 
                         (expr 
                           (variable_or_function_call LineFeed$)))) 
-                    (block \r\n \r\n \r\n \r\n 
+                    (block ' \r\n \r\n ' \r\n ' \r\n 
                       (if_block_statement IF 
                         (expr NOT 
                           (expr 
@@ -159,7 +159,7 @@
                                   (variable_or_function_call CarReturn$)) + 
                                 (expr 
                                   (variable_or_function_call FileChar$))))) \r\n) 
-                        (end_if_statement END IF)) \r\n \r\n \r\n \r\n 
+                        (end_if_statement END IF)) \r\n \r\n ' \r\n ' \r\n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call PrevCarReturn) = 
@@ -167,7 +167,7 @@
                             (variable_or_function_call FALSE)))) \r\n \r\n)) 
                   (case_block 
                     (case_statement CASE ELSE) 
-                    (block \r\n \r\n \r\n \r\n \r\n 
+                    (block ' \r\n \r\n ' \r\n ' \r\n ' \r\n 
                       (if_block_statement IF 
                         (expr 
                           (variable_or_function_call PrevCarReturn)) THEN \r\n 
@@ -186,14 +186,14 @@
                                 (expr 
                                   (variable_or_function_call FileChar$))))) \r\n) 
                         (end_if_statement END IF)) \r\n \r\n)) 
-                  (end_select_statement END SELECT))) \r\n \r\n \r\n 
+                  (end_select_statement END SELECT))) \r\n \r\n ' \r\n 
               (statement 
                 (print_statement PRINT 
                   (file_number # 
                     (expr 
                       (literal 2))) , 
                   (expr 
-                    (variable_or_function_call FileChar$)) ;)) \r\n) LOOP)) \r\n \r\n \r\n 
+                    (variable_or_function_call FileChar$)) ;)) \r\n) LOOP)) \r\n \r\n ' \r\n 
         (statement 
           (if_inline_statement IF 
             (expr 
@@ -207,12 +207,12 @@
                   (expr 
                     (variable_or_function_call LineFeed$)) ;))))) \r\n \r\n 
         (statement 
-          (close_statement CLOSE)) \r\n 
+          (close_statement CLOSE)) ' \r\n 
         (statement 
           (print_statement PRINT 
             (expr 
               (literal "Another file 
-                (Y/N)?")))) \r\n \r\n \r\n 
+                (Y/N)?")))) ' \r\n \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call More$) = 
@@ -225,7 +225,7 @@
                         (builtin_function INPUT$ 
                           ( 
                             (expr 
-                              (literal 1)) ))))) ))))) \r\n \r\n \r\n) LOOP 
+                              (literal 1)) ))))) ))))) \r\n \r\n ' \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 
@@ -236,7 +236,7 @@
     (end_statement END)) \r\n \r\n 
   (label 
     (text_label 
-      (untyped_id ErrorHandler)) :) \r\n 
+      (untyped_id ErrorHandler)) :) ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment NOFILE = 
@@ -246,7 +246,7 @@
       (const_assignment FILEEXISTS = 
         (const_expr 
           (expr 
-            (literal 58)))))) \r\n \r\n \r\n 
+            (literal 58)))))) \r\n \r\n ' \r\n 
   (statement 
     (select_case_statement SELECT CASE 
       (expr 
@@ -257,7 +257,7 @@
           (case_expr 
             (expr 
               (variable_or_function_call NOFILE)))) 
-        (block \r\n \r\n 
+        (block ' \r\n ' \r\n 
           (statement 
             (print_statement PRINT 
               (expr 
@@ -282,7 +282,7 @@
           (case_expr 
             (expr 
               (variable_or_function_call FILEEXISTS)))) 
-        (block \r\n \r\n \r\n 
+        (block ' \r\n ' \r\n ' \r\n 
           (statement 
             (call_statement 
               (untyped_id KILL) 
@@ -294,17 +294,17 @@
             (resume_statement RESUME)) \r\n)) 
       (case_block 
         (case_statement CASE ELSE) 
-        (block \r\n \r\n 
+        (block ' \r\n ' \r\n 
           (statement 
             (on_error_statement ON ERROR GOTO 
               (target 
                 (line_number 0)))) \r\n)) 
-      (end_select_statement END SELECT))) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+      (end_select_statement END SELECT))) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION Backup$ 
     ( 
       (parameter_list 
         (parameter FileName$)) ) STATIC 
-    (block \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Extension) = 
@@ -317,7 +317,7 @@
                       (variable_or_function_call FileName$))) , 
                   (argument 
                     (expr 
-                      (literal ".")))) ))))) \r\n \r\n \r\n 
+                      (literal ".")))) ))))) \r\n \r\n ' \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -343,7 +343,7 @@
                             (expr 
                               (literal 1))))) ))) + 
                 (expr 
-                  (literal ".BAK"))))) \r\n \r\n \r\n) 
+                  (literal ".BAK"))))) \r\n \r\n ' \r\n) 
         (else_block_statement ELSE 
           (else_block \r\n 
             (statement 

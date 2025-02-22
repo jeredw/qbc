@@ -1,4 +1,4 @@
-(program \r\n 
+(program ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment UP = 
@@ -40,7 +40,7 @@
       (const_assignment SPACEBAR = 
         (const_expr 
           (expr 
-            (literal " ")))))) \r\n \r\n \r\n \r\n 
+            (literal " ")))))) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Null$) = 
@@ -50,7 +50,7 @@
             (argument_list 
               (argument 
                 (expr 
-                  (literal 0)))) ))))) \r\n \r\n \r\n \r\n 
+                  (literal 0)))) ))))) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Plot$) = 
@@ -312,7 +312,7 @@
                               (literal "")))))))) \r\n)) 
             (case_block 
               (case_statement CASE ELSE) 
-              (block \r\n \r\n \r\n \r\n)) 
+              (block \r\n ' \r\n ' \r\n ' \r\n)) 
             (end_select_statement END SELECT))) \r\n \r\n 
         (statement 
           (assignment_statement 

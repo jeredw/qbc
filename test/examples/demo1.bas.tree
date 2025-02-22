@@ -5,11 +5,11 @@
     (deftype_statement DEFINT 
       (letter_range A - Z))) \r\n 
   (label 
-    (line_number 10)) \r\n 
+    (line_number 10)) ' \r\n 
   (label 
-    (line_number 15)) \r\n 
+    (line_number 15)) ' \r\n 
   (label 
-    (line_number 20)) \r\n 
+    (line_number 20)) ' \r\n 
   (label 
     (line_number 25)) 
   (statement 
@@ -180,7 +180,7 @@
                         (literal "BFKSQbfksq"))) , 
                     (argument 
                       (expr 
-                        (variable_or_function_call Q$)))) ))))) \r\n 
+                        (variable_or_function_call Q$)))) ))))) ' \r\n 
         (label 
           (line_number 80)) 
         (statement 
@@ -197,7 +197,7 @@
           (line_number 85)) 
         (statement 
           (call_statement 
-            (untyped_id CLS))) \r\n 
+            (untyped_id CLS))) ' \r\n 
         (label 
           (line_number 90)) 
         (statement 
@@ -227,7 +227,7 @@
         (label 
           (line_number 95))) WEND)) \r\n 
   (label 
-    (line_number 100)) \r\n 
+    (line_number 100)) ' \r\n 
   (label 
     (line_number 105)) 
   (statement 
@@ -301,7 +301,7 @@
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 200)) \r\n 
+    (line_number 200)) ' \r\n 
   (label 
     (line_number 205)) 
   (statement 
@@ -359,7 +359,7 @@
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 300)) \r\n 
+    (line_number 300)) ' \r\n 
   (label 
     (line_number 305)) 
   (statement 
@@ -423,7 +423,7 @@
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 400)) \r\n 
+    (line_number 400)) ' \r\n 
   (label 
     (line_number 405)) 
   (statement 
@@ -513,7 +513,7 @@
   (statement 
     (return_statement RETURN)) \r\n 
   (label 
-    (line_number 500)) \r\n 
+    (line_number 500)) ' \r\n 
   (label 
     (line_number 505)) 
   (statement 

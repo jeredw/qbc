@@ -1,4 +1,4 @@
-(program \r\n \r\n 
+(program ' \r\n ' \r\n 
   (declare_statement DECLARE FUNCTION GetName$ 
     ( 
       (declare_parameter_list 
@@ -12,7 +12,7 @@
       (argument_list 
         (argument 
           (expr 
-            (literal "DIR > DIRFILE")))))) \r\n 
+            (literal "DIR > DIRFILE")))))) ' \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -28,7 +28,7 @@
             (MM-DD-YY): " , 
             (variable_or_function_call MDate$))) \r\n 
         (statement 
-          (print_statement PRINT)) \r\n \r\n 
+          (print_statement PRINT)) \r\n ' \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n 
@@ -37,7 +37,7 @@
                   (file_number # 
                     (expr 
                       (literal 1))) , 
-                  (variable_or_function_call DirLine$))) \r\n \r\n \r\n 
+                  (variable_or_function_call DirLine$))) \r\n ' \r\n ' \r\n 
               (if_block_statement IF 
                 (expr 
                   (expr 
@@ -76,14 +76,14 @@
                             (argument_list 
                               (argument 
                                 (expr 
-                                  (variable_or_function_call DirLine$)))) ))))) \r\n \r\n 
+                                  (variable_or_function_call DirLine$)))) ))))) \r\n ' \r\n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
                         (variable_or_function_call FileSpec$)) <> 
                       (expr 
                         (literal "DIRFILE"))) THEN \r\n 
-                    (then_block \r\n 
+                    (then_block ' \r\n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call DoLine$) = 
@@ -101,7 +101,7 @@
                       (statement 
                         (print_statement PRINT 
                           (expr 
-                            (variable_or_function_call DoLine$)))) \r\n \r\n 
+                            (variable_or_function_call DoLine$)))) \r\n ' \r\n 
                       (statement 
                         (call_statement 
                           (untyped_id SHELL) 
@@ -148,14 +148,14 @@
                     (expr 
                       (variable_or_function_call R$)))) ))) <> 
           (expr 
-            (literal "Y")))))) \r\n \r\n 
+            (literal "Y")))))) \r\n ' \r\n 
   (statement 
     (end_statement END)) \r\n \r\n 
   (function_statement FUNCTION GetName$ 
     ( 
       (parameter_list 
         (parameter DirLine$)) ) STATIC 
-    (block \r\n \r\n \r\n 
+    (block \r\n ' \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BaseName$) = 
@@ -173,7 +173,7 @@
                                 (variable_or_function_call DirLine$))) , 
                             (argument 
                               (expr 
-                                (literal 8)))) ))))) ))))) \r\n \r\n 
+                                (literal 8)))) ))))) ))))) \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ExtName$) = 

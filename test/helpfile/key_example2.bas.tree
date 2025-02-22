@@ -1,7 +1,7 @@
 (program 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (dim_statement DIM 
       (dim_variable KeyText$ 
@@ -14,7 +14,7 @@
     (data_statement DATA 
       (data_item Add) , 
       (data_item Delete) , 
-      (data_item Quit))) \n \n 
+      (data_item Quit))) \n ' \n 
   (statement 
     (for_next_statement FOR I = 
       (expr 
@@ -48,7 +48,7 @@
                     (argument_list 
                       (argument 
                         (expr 
-                          (literal 13)))) )))))) \n) NEXT I)) \n \n 
+                          (literal 13)))) )))))) \n) NEXT I)) \n ' \n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -71,7 +71,7 @@
         (literal "           Quit 
           (F3)")))) : 
   (statement 
-    (print_statement PRINT)) \n \n 
+    (print_statement PRINT)) \n ' \n 
   (statement 
     (do_loop_statement DO 
       (block \n 

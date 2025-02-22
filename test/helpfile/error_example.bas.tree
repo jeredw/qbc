@@ -1,4 +1,4 @@
-(program \n 
+(program ' \n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
@@ -12,7 +12,7 @@
       (argument_list 
         (argument 
           (expr 
-            (literal "a:\")))))) \n \n 
+            (literal "a:\")))))) ' \n ' \n 
   (label 
     (line_number 20)) 
   (statement 
@@ -29,7 +29,7 @@
         (expr 
           (literal 5)) / 
         (expr 
-          (variable_or_function_call y%))))) \n 
+          (variable_or_function_call y%))))) ' \n 
   (label 
     (line_number 40)) 
   (statement 
@@ -43,7 +43,7 @@
   (statement 
     (error_statement ERROR 
       (expr 
-        (literal 57)))) \n \n 
+        (literal 57)))) ' \n \n 
   (label 
     (text_label 
       (untyped_id Handler)) :) \n 
@@ -87,9 +87,9 @@
           (case_expr 
             (expr 
               (literal 11)))) 
-        (block \n \n 
+        (block \n ' \n 
           (statement 
-            (resume_statement RESUME)) \n)) 
+            (resume_statement RESUME)) ' \n)) 
       (case_block 
         (case_statement CASE ELSE) 
         (block \n 

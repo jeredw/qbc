@@ -22,7 +22,7 @@
   (statement 
     (screen_statement SCREEN 
       (expr 
-        (literal 8)))) \r\n \r\n 
+        (literal 8)))) ' \r\n \r\n 
   (statement 
     (call_statement 
       (untyped_id InitPalette))) \r\n 
@@ -40,9 +40,9 @@
           (expr 
             (variable_or_function_call INKEY$)) = 
           (expr 
-            (literal "")))))) \r\n \r\n 
+            (literal "")))))) ' \r\n \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_statement END)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id InitPalette) STATIC 
     (block \r\n 
@@ -63,7 +63,7 @@
                           (variable_or_function_call I)))) )) = 
                 (expr 
                   (variable_or_function_call I)))) \r\n) NEXT I)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id DrawEllipses) STATIC 
     (block \r\n 
@@ -116,7 +116,7 @@
                     (literal 100)) ) , 
                 (expr 
                   (variable_or_function_call ColorVal)))) \r\n) NEXT)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ChangePalette) STATIC 
     (block \r\n 
@@ -149,7 +149,7 @@
                         (expr 
                           (literal 15))) )) + 
                   (expr 
-                    (literal 1))))) \r\n) NEXT I)) \r\n \r\n \r\n \r\n 
+                    (literal 1))))) \r\n) NEXT I)) \r\n \r\n ' \r\n ' \r\n 
       (statement 
         (palette_statement PALETTE USING 
           (variable_or_function_call PaletteArray 

@@ -1,7 +1,7 @@
 (program 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n \r\n \r\n 
+      (letter_range A - Z))) \r\n \r\n ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -12,7 +12,7 @@
         (const_expr 
           (expr NOT 
             (expr 
-              (variable_or_function_call FALSE))))))) \r\n \r\n \r\n 
+              (variable_or_function_call FALSE))))))) \r\n \r\n ' \r\n 
   (type_statement TYPE 
     (untyped_id StockItem) \r\n 
     (type_element 
@@ -28,7 +28,7 @@
       (type_name_for_type_element SINGLE) \r\n) 
     (type_element 
       (untyped_id Quantity) AS 
-      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n \r\n \r\n 
+      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n \r\n ' \r\n 
   (type_statement TYPE 
     (untyped_id IndexType) \r\n 
     (type_element 
@@ -37,7 +37,7 @@
     (type_element 
       (untyped_id PartNumber) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 6)) \r\n) END TYPE) \r\n \r\n \r\n 
+        (fixed_string STRING * 6)) \r\n) END TYPE) \r\n \r\n ' \r\n 
   (declare_statement DECLARE FUNCTION Filter$ 
     ( 
       (declare_parameter_list 
@@ -79,7 +79,7 @@
     ( )) \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id ShowPartNumbers) 
-    ( )) \r\n \r\n \r\n \r\n 
+    ( )) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -96,7 +96,7 @@
               (expr 
                 (literal 100))) )) AS 
         (type_name 
-          (untyped_id IndexType))))) \r\n \r\n \r\n 
+          (untyped_id IndexType))))) \r\n \r\n ' \r\n 
   (statement 
     (open_statement OPEN 
       (expr 
@@ -108,7 +108,7 @@
         (builtin_function LEN 
           ( 
             (expr 
-              (variable_or_function_call StockRecord)) ))))) \r\n \r\n \r\n 
+              (variable_or_function_call StockRecord)) ))))) \r\n \r\n ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call NumberOfRecords) = 
@@ -124,7 +124,7 @@
           (builtin_function LEN 
             ( 
               (expr 
-                (variable_or_function_call StockRecord)) )))))) \r\n \r\n \r\n 
+                (variable_or_function_call StockRecord)) )))))) \r\n \r\n ' \r\n 
   (if_block_statement IF 
     (expr 
       (expr 
@@ -138,14 +138,14 @@
             (literal 1)) TO 
           (expr 
             (variable_or_function_call NumberOfRecords)) 
-          (block \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n 
             (statement 
               (get_io_statement GET # 
                 (expr 
                   (literal 1)) , 
                 (expr 
                   (variable_or_function_call RecordNumber)) , 
-                (variable_or_function_call StockRecord))) \r\n \r\n \r\n 
+                (variable_or_function_call StockRecord))) \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Index 
@@ -168,11 +168,11 @@
                   (variable_or_function_call StockRecord.PartNumber)))) \r\n) NEXT)) \r\n \r\n 
       (statement 
         (call_statement 
-          (untyped_id SortIndex))) \r\n) 
+          (untyped_id SortIndex))) ' \r\n) 
     (end_if_statement END IF)) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
-      (block \r\n 
+      (block ' \r\n 
         (statement 
           (call_statement 
             (untyped_id CLS))) \r\n 
@@ -201,7 +201,7 @@
           (print_statement PRINT 
             (expr 
               (literal "Type your choice 
-                (A, L, or Q) here: ")) ;)) \r\n \r\n \r\n 
+                (A, L, or Q) here: ")) ;)) \r\n \r\n ' \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n 
@@ -231,7 +231,7 @@
                           (expr 
                             (variable_or_function_call Choice$)))) ))) = 
                 (expr 
-                  (literal 0)))))) \r\n \r\n \r\n 
+                  (literal 0)))))) \r\n \r\n ' \r\n 
         (statement 
           (select_case_statement SELECT CASE 
             (expr 
@@ -296,7 +296,7 @@
                 (case_expr 
                   (expr 
                     (literal "Q")))) 
-              (block \r\n)) 
+              (block ' \r\n)) 
             (end_select_statement END SELECT))) \r\n) LOOP 
       (loop_condition UNTIL 
         (expr 
@@ -307,9 +307,9 @@
   (statement 
     (close_statement CLOSE # 
       (expr 
-        (literal 1)))) \r\n 
+        (literal 1)))) ' \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_statement END)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id AddRecord) 
     ( 
@@ -432,8 +432,8 @@
                 (literal "Y")))))) \r\n \r\n 
       (statement 
         (call_statement 
-          (untyped_id SortIndex))) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+          (untyped_id SortIndex))) ' \r\n) 
+    (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION Filter$ 
     ( 
       (parameter_list 
@@ -447,10 +447,10 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (variable_or_function_call Prompt$)) ;)) \r\n 
+            (variable_or_function_call Prompt$)) ;)) ' \r\n 
       (statement 
         (input_statement INPUT "" , 
-          (variable_or_function_call ValTemp1$))) \r\n \r\n 
+          (variable_or_function_call ValTemp1$))) ' \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call StringLength) = 
@@ -458,14 +458,14 @@
             (builtin_function LEN 
               ( 
                 (expr 
-                  (variable_or_function_call ValTemp1$)) ))))) \r\n 
+                  (variable_or_function_call ValTemp1$)) ))))) ' \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
             (literal 1)) TO 
           (expr 
             (variable_or_function_call StringLength)) 
-          (block \r\n 
+          (block ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Char$) = 
@@ -477,7 +477,7 @@
                       (expr 
                         (variable_or_function_call I%)) , 
                       (expr 
-                        (literal 1)) ))))) \r\n \r\n \r\n \r\n \r\n 
+                        (literal 1)) ))))) ' \r\n \r\n ' \r\n ' \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -500,7 +500,7 @@
                       (expr 
                         (variable_or_function_call ValTemp2$)) + 
                       (expr 
-                        (variable_or_function_call Char$))))) \r\n \r\n \r\n \r\n \r\n) 
+                        (variable_or_function_call Char$))))) \r\n \r\n ' \r\n ' \r\n ' \r\n) 
               (elseif_block_statement ELSEIF 
                 (expr 
                   (expr 
@@ -515,14 +515,14 @@
                         (expr 
                           (variable_or_function_call ValTemp2$)) + 
                         (expr 
-                          (literal "1"))))) \r\n)) 
+                          (literal "1"))))) ' \r\n)) 
               (end_if_statement END IF)) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Filter$) = 
           (expr 
-            (variable_or_function_call ValTemp2$)))) \r\n \r\n) 
-    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n 
+            (variable_or_function_call ValTemp2$)))) ' \r\n \r\n) 
+    (end_function_statement END FUNCTION)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION FindRecord% 
     ( 
       (parameter_list 
@@ -540,7 +540,7 @@
               ( )) AS 
             (type_name 
               (untyped_id IndexType))) , 
-          (shared_variable NumberOfRecords))) \r\n \r\n \r\n 
+          (shared_variable NumberOfRecords))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call TopRecord) = 
@@ -550,7 +550,7 @@
         (assignment_statement 
           (variable_or_function_call BottomRecord) = 
           (expr 
-            (literal 1)))) \r\n \r\n \r\n 
+            (literal 1)))) \r\n \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -561,7 +561,7 @@
                     (variable_or_function_call TopRecord)) < 
                   (expr 
                     (variable_or_function_call BottomRecord))) ))) 
-          (block \r\n \r\n \r\n 
+          (block \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Midpoint) = 
@@ -574,7 +574,7 @@
                         (expr 
                           (variable_or_function_call BottomRecord))) )) \ 
                   (expr 
-                    (literal 2))))) \r\n \r\n \r\n \r\n 
+                    (literal 2))))) \r\n \r\n ' \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Test$) = 
@@ -589,7 +589,7 @@
                                 (argument_list 
                                   (argument 
                                     (expr 
-                                      (variable_or_function_call Midpoint)))) ) . PartNumber)))) ))))) \r\n \r\n \r\n 
+                                      (variable_or_function_call Midpoint)))) ) . PartNumber)))) ))))) \r\n \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -598,7 +598,7 @@
                   (variable_or_function_call Part$))) THEN \r\n 
               (then_block 
                 (statement 
-                  (exit_statement EXIT DO)) \r\n \r\n \r\n \r\n) 
+                  (exit_statement EXIT DO)) \r\n \r\n ' \r\n ' \r\n) 
               (elseif_block_statement ELSEIF 
                 (expr 
                   (expr 
@@ -613,7 +613,7 @@
                         (expr 
                           (variable_or_function_call Midpoint)) + 
                         (expr 
-                          (literal 1))))) \r\n \r\n \r\n)) 
+                          (literal 1))))) \r\n \r\n ' \r\n)) 
               (else_block_statement ELSE 
                 (else_block \r\n 
                   (statement 
@@ -624,7 +624,7 @@
                           (variable_or_function_call Midpoint)) - 
                         (expr 
                           (literal 1))))) \r\n)) 
-              (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n \r\n \r\n 
+              (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n ' \r\n ' \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -648,7 +648,7 @@
             (assignment_statement 
               (variable_or_function_call FindRecord%) = 
               (expr 
-                (variable_or_function_call TRUE)))) \r\n \r\n \r\n \r\n) 
+                (variable_or_function_call TRUE)))) \r\n \r\n ' \r\n ' \r\n) 
         (else_block_statement ELSE 
           (else_block \r\n 
             (statement 
@@ -657,7 +657,7 @@
                 (expr 
                   (variable_or_function_call FALSE)))) \r\n)) 
         (end_if_statement END IF)) \r\n) 
-    (end_function_statement END FUNCTION)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_function_statement END FUNCTION)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id InputRecord) 
     ( 
@@ -672,7 +672,7 @@
           (untyped_id CLS))) \r\n 
       (statement 
         (call_statement 
-          (untyped_id ShowPartNumbers))) \r\n \r\n \r\n \r\n 
+          (untyped_id ShowPartNumbers))) ' \r\n \r\n ' \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n 
@@ -747,8 +747,8 @@
               (expr 
                 (literal "Q")))))) \r\n \r\n 
       (statement 
-        (view_print_statement VIEW PRINT)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
+        (view_print_statement VIEW PRINT)) ' \r\n) 
+    (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id PrintRecord) 
     ( 
@@ -782,7 +782,7 @@
             (literal "Quantity   :")) ; 
           (expr 
             (variable_or_function_call RecordVar.Quantity)))) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowPartNumbers) STATIC 
     (block \r\n 
@@ -807,7 +807,7 @@
                 (expr 
                   (literal 80)) \ 
                 (expr 
-                  (variable_or_function_call NUMCOLS))))))) \r\n \r\n \r\n \r\n \r\n \r\n 
+                  (variable_or_function_call NUMCOLS))))))) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ColumnLength) = 
@@ -925,7 +925,7 @@
                       (literal 80))) , 
                   (argument 
                     (expr 
-                      (literal "_")))) ))))) \r\n \r\n \r\n \r\n 
+                      (literal "_")))) ))))) ' \r\n \r\n ' \r\n ' \r\n 
       (statement 
         (view_print_statement VIEW PRINT 
           (expr 
@@ -935,7 +935,7 @@
               (literal 2))) TO 
           (expr 
             (literal 24)))) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id SortIndex) STATIC 
     (block \r\n 
@@ -947,7 +947,7 @@
               ( )) AS 
             (type_name 
               (untyped_id IndexType))) , 
-          (shared_variable NumberOfRecords))) \r\n \r\n \r\n \r\n 
+          (shared_variable NumberOfRecords))) \r\n \r\n ' \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Offset) = 
@@ -955,7 +955,7 @@
             (expr 
               (variable_or_function_call NumberOfRecords)) \ 
             (expr 
-              (literal 2))))) \r\n \r\n \r\n 
+              (literal 2))))) \r\n \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -975,12 +975,12 @@
                     (variable_or_function_call Offset))))) \r\n 
             (statement 
               (do_loop_statement DO 
-                (block \r\n \r\n \r\n 
+                (block \r\n \r\n ' \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Switch) = 
                       (expr 
-                        (variable_or_function_call FALSE)))) \r\n \r\n \r\n 
+                        (variable_or_function_call FALSE)))) \r\n \r\n ' \r\n 
                   (statement 
                     (for_next_statement FOR I = 
                       (expr 
@@ -1036,7 +1036,7 @@
                                 (variable_or_function_call Switch) = 
                                 (expr 
                                   (variable_or_function_call I)))) \r\n) 
-                          (end_if_statement END IF)) \r\n) NEXT I)) \r\n \r\n \r\n \r\n 
+                          (end_if_statement END IF)) \r\n) NEXT I)) \r\n \r\n ' \r\n ' \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Limit) = 
@@ -1044,7 +1044,7 @@
                         (variable_or_function_call Switch)))) \r\n) LOOP 
                 (loop_condition WHILE 
                   (expr 
-                    (variable_or_function_call Switch))))) \r\n \r\n \r\n 
+                    (variable_or_function_call Switch))))) \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Offset) = 

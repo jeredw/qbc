@@ -566,7 +566,6 @@ export class Typer extends QBasicParserListener {
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
   override enterRead_statement = (ctx: parser.Read_statementContext) => {}
-  override enterRem_statement = (ctx: parser.Rem_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 
   override enterRset_statement = (ctx: parser.Rset_statementContext) => {}

@@ -1,4 +1,4 @@
-(program \r\n \r\n \r\n 
+(program ' \r\n ' \r\n ' \r\n 
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \r\n 
@@ -80,7 +80,7 @@
     (block \r\n 
       (statement 
         (shared_statement SHARED 
-          (shared_variable N$))) \r\n \r\n \r\n 
+          (shared_variable N$))) \r\n ' \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call R) = 
@@ -88,7 +88,7 @@
             (expr 
               (variable_or_function_call D)) MOD 
             (expr 
-              (variable_or_function_call Nb))))) \r\n \r\n \r\n 
+              (variable_or_function_call Nb))))) \r\n ' \r\n ' \r\n 
       (statement 
         (if_inline_statement IF 
           (expr 

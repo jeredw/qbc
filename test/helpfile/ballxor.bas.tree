@@ -46,7 +46,9 @@
         (expr 
           (literal 3.56)) , 
         (expr 
-          (literal 1.01)) ))) \r\n \r\n \r\n \r\n \r\n 
+          (literal 1.01)) ))) \r\n \r\n ' 
+  (statement 
+    (dynamic_metacommand  $DYNAMIC)) \r\n ' \r\n ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call WLeft) = 
@@ -253,7 +255,7 @@
                       (expr 
                         (variable_or_function_call Decay))) - 
                     (expr 
-                      (literal .14))))) \r\n \r\n \r\n \r\n 
+                      (literal .14))))) \r\n \r\n ' \r\n ' \r\n 
               (statement 
                 (put_graphics_statement PUT 
                   ( 
@@ -261,7 +263,7 @@
                       (variable_or_function_call X)) , 
                     (expr 
                       (variable_or_function_call Y)) ) , 
-                  (variable_or_function_call Array) , XOR)) \r\n \r\n \r\n \r\n 
+                  (variable_or_function_call Array) , XOR)) \r\n \r\n ' \r\n ' \r\n 
               (statement 
                 (for_next_statement FOR I = 
                   (expr 
@@ -306,7 +308,7 @@
                         (literal .01)))) THEN 
                   (if_inline_action 
                     (statement 
-                      (exit_statement EXIT FOR))))) \r\n \r\n \r\n \r\n 
+                      (exit_statement EXIT FOR))))) \r\n \r\n ' \r\n ' \r\n 
               (statement 
                 (put_graphics_statement PUT 
                   ( 
@@ -348,11 +350,9 @@
             (expr 
               (literal 1)) ))))) \r\n 
   (statement 
-    (end_statement END)) \r\n 
+    (end_statement END)) \r\n REM \r\n REM 
   (statement 
-    (rem_statement REM)) \r\n 
-  (statement 
-    (rem_statement REM)) \r\n 
+    (dynamic_metacommand  $DYNAMIC)) \r\n 
   (function_statement FUNCTION GetArraySize 
     ( 
       (parameter_list 

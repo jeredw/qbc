@@ -1683,9 +1683,7 @@
       (untyped_id endscreen))) \n 
   (statement 
     (call_statement 
-      (untyped_id SYSTEM))) \n \n 
-  (statement 
-    (rem_statement REM)) \n \n 
+      (untyped_id SYSTEM))) \n \n REM \n \n 
   (label 
     (text_label 
       (untyped_id moveleft)) :) \n 
@@ -3460,7 +3458,7 @@
       (expr 
         (variable_or_function_call false)))) \n 
   (statement 
-    (resume_statement RESUME NEXT)) \n \n \n 
+    (resume_statement RESUME NEXT)) \n ' \n \n 
   (label 
     (text_label 
       (untyped_id scrolup)) :) \n 
@@ -6784,7 +6782,7 @@
                         (expr 
                           (literal 7)) , 
                         (expr 
-                          (literal 10)))) \n 
+                          (literal 10)))) ' \n 
                     (statement 
                       (paint_statement PAINT 
                         ( 
@@ -6795,7 +6793,7 @@
                         (expr 
                           (literal 8)) , 
                         (expr 
-                          (literal 10)))) \n) 
+                          (literal 10)))) ' \n) 
                   (elseif_block_statement ELSEIF 
                     (expr 
                       (expr 
@@ -6835,7 +6833,7 @@
                           (expr 
                             (literal 8)) , 
                           (expr 
-                            (literal 10)))) \n 
+                            (literal 10)))) ' \n 
                       (statement 
                         (paint_statement PAINT 
                           ( 
@@ -6846,7 +6844,7 @@
                           (expr 
                             (literal 7)) , 
                           (expr 
-                            (literal 10)))) \n)) 
+                            (literal 10)))) ' \n)) 
                   (end_if_statement END IF)) \n) LOOP 
               (loop_condition UNTIL 
                 (expr 
@@ -11066,7 +11064,7 @@
             (expr 
               (literal 85)) ) , 
           (expr 
-            (literal 120)))) \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n 
+            (literal 120)))) \n \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n \n 
       (label 
         (text_label 
           (untyped_id endit)) :) \n) 

@@ -26,7 +26,7 @@
         (declare_parameter Low%)) )) \r\n 
   (statement 
     (deftype_statement DEFINT 
-      (letter_range A - Z))) \r\n \r\n \r\n \r\n \r\n 
+      (letter_range A - Z))) \r\n \r\n ' \r\n \r\n ' \r\n 
   (statement 
     (do_loop_statement DO 
       (block \r\n 
@@ -144,7 +144,7 @@
         (statement 
           (print_statement PRINT 
             (expr 
-              (literal "Select: ")) ;)) \r\n \r\n \r\n 
+              (literal "Select: ")) ;)) \r\n \r\n ' \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n 
@@ -174,7 +174,7 @@
                           (expr 
                             (variable_or_function_call Q$)))) ))) = 
                 (expr 
-                  (literal 0)))))) \r\n \r\n \r\n 
+                  (literal 0)))))) \r\n \r\n ' \r\n 
         (statement 
           (call_statement 
             (untyped_id CLS))) \r\n 
@@ -285,7 +285,7 @@
           (expr 
             (literal "Q")))))) \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n 
+    (end_statement END)) \r\n \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Bounce) 
     ( 
@@ -335,7 +335,7 @@
                         (variable_or_function_call Count)) / 
                       (expr 
                         (literal 15))))))) \r\n) NEXT Count)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Fall) 
     ( 
@@ -367,7 +367,7 @@
                         (variable_or_function_call Del)) / 
                       (expr 
                         (variable_or_function_call Count))))))) \r\n) NEXT Count)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Klaxon) 
     ( 
@@ -404,7 +404,7 @@
                   (argument 
                     (expr 
                       (literal 5)))))) \r\n) LOOP)) \r\n) 
-    (end_sub_statement END SUB)) \r\n \r\n \r\n 
+    (end_sub_statement END SUB)) \r\n \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Siren) 
     ( 

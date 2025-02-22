@@ -1,4 +1,4 @@
-(program \r\n \r\n 
+(program ' \r\n \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id DumpSym) 
     ( 
@@ -10,51 +10,51 @@
           (untyped_id QHdrPos) AS 
           (type_name_for_declare_parameter LONG))) )) \r\n \r\n 
   (type_statement TYPE 
-    (untyped_id ExeHdr) \r\n 
+    (untyped_id ExeHdr) ' \r\n 
     (type_element 
       (untyped_id other1) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 8)) \r\n) 
+        (fixed_string STRING * 8)) ' \r\n) 
     (type_element 
       (untyped_id CParHdr) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id other2) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 10)) \r\n) 
+        (fixed_string STRING * 10)) ' \r\n) 
     (type_element 
       (untyped_id IP) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id CS) AS 
-      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n \r\n 
+      (type_name_for_type_element INTEGER) ' \r\n) END TYPE) \r\n \r\n 
   (type_statement TYPE 
-    (untyped_id QBHdr) \r\n 
+    (untyped_id QBHdr) ' \r\n 
     (type_element 
       (untyped_id QBHead) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 6)) \r\n) 
+        (fixed_string STRING * 6)) ' \r\n) 
     (type_element 
       (untyped_id Magic) AS 
-      (type_name_for_type_element INTEGER) \r\n \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n ' \r\n) 
     (type_element 
       (untyped_id SymStart) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id DatStart) AS 
-      (type_name_for_type_element INTEGER) \r\n) END TYPE) \r\n \r\n 
+      (type_name_for_type_element INTEGER) ' \r\n) END TYPE) \r\n \r\n 
   (type_statement TYPE 
-    (untyped_id QbSym) \r\n 
+    (untyped_id QbSym) ' \r\n 
     (type_element 
       (untyped_id Flags) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id NameStart) AS 
-      (type_name_for_type_element INTEGER) \r\n) 
+      (type_name_for_type_element INTEGER) ' \r\n) 
     (type_element 
       (untyped_id other) AS 
       (type_name_for_type_element 
-        (fixed_string STRING * 4)) \r\n) END TYPE) \r\n \r\n 
+        (fixed_string STRING * 4)) ' \r\n) END TYPE) \r\n \r\n 
   (statement 
     (dim_statement DIM 
       (dim_variable 
@@ -149,7 +149,7 @@
     (get_io_statement GET # 
       (expr 
         (literal 1)) , , 
-      (variable_or_function_call EHdr))) \r\n \r\n 
+      (variable_or_function_call EHdr))) ' \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call QHdrPos) = 
@@ -175,7 +175,7 @@
         (literal 1)) , 
       (expr 
         (variable_or_function_call QHdrPos)) , 
-      (variable_or_function_call Qhdr))) \r\n \r\n 
+      (variable_or_function_call Qhdr))) ' \r\n \r\n 
   (statement 
     (if_inline_statement IF 
       (expr 
@@ -211,7 +211,7 @@
             (variable_or_function_call Qhdr.SymStart))) , 
         (argument 
           (expr 
-            (variable_or_function_call QHdrPos)))))) \r\n 
+            (variable_or_function_call QHdrPos)))))) ' \r\n 
   (statement 
     (print_statement PRINT 
       (file_number # 
@@ -240,7 +240,7 @@
             (variable_or_function_call Qhdr.DatStart))) , 
         (argument 
           (expr 
-            (variable_or_function_call QHdrPos)))))) \r\n 
+            (variable_or_function_call QHdrPos)))))) ' \r\n 
   (statement 
     (print_statement PRINT 
       (file_number # 
@@ -272,7 +272,7 @@
             (type_name LONG)) , 
           (dim_variable 
             (untyped_id CurrentSym) AS 
-            (type_name LONG)))) \r\n \r\n \r\n 
+            (type_name LONG)))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NextSym) = 
@@ -298,7 +298,7 @@
                   (builtin_function SEEK 
                     ( 
                       (expr 
-                        (literal 1)) ))))) \r\n \r\n 
+                        (literal 1)) ))))) ' \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call CurrentSym) = 
@@ -312,7 +312,7 @@
                 (expr 
                   (literal 1)) , 
                 (expr 
-                  (variable_or_function_call CurrentSym)))) \r\n \r\n 
+                  (variable_or_function_call CurrentSym)))) ' \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Prospect$) = 
@@ -322,7 +322,7 @@
                       (expr 
                         (literal 40)) , 
                       (expr 
-                        (literal 1)) ))))) \r\n \r\n \r\n \r\n \r\n 
+                        (literal 1)) ))))) ' \r\n ' \r\n ' \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call SName$) = 
@@ -348,7 +348,7 @@
                                           (argument_list 
                                             (argument 
                                               (expr 
-                                                (literal 0)))) ))))) ))))) ))))) \r\n \r\n \r\n \r\n 
+                                                (literal 0)))) ))))) ))))) ))))) \r\n \r\n ' \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -414,8 +414,8 @@
                   (literal 1)) , 
                 (expr 
                   (variable_or_function_call NextSym)) , 
-                (variable_or_function_call QlbSym))) \r\n) LOOP 
+                (variable_or_function_call QlbSym))) ' \r\n) LOOP 
           (loop_condition WHILE 
             (expr 
-              (variable_or_function_call QlbSym.Flags))))) \r\n) 
+              (variable_or_function_call QlbSym.Flags))))) ' \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n <EOF>)

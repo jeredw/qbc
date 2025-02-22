@@ -12,7 +12,7 @@
             (argument_list 
               (argument 
                 (expr 
-                  (literal 27)))) ))))) \r\n \r\n \r\n \r\n 
+                  (literal 27)))) ))))) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (for_next_statement FOR ColorVal = 
       (expr 
@@ -64,7 +64,7 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (literal "Press any other key to continue.")))) \r\n \r\n \r\n 
+        (literal "Press any other key to continue.")))) \r\n \r\n ' \r\n 
   (statement 
     (view_print_statement VIEW PRINT 
       (expr 
@@ -81,7 +81,7 @@
               (literal 1)))) \r\n 
         (statement 
           (do_loop_statement DO 
-            (block \r\n \r\n \r\n 
+            (block \r\n \r\n ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call PaletteVal) = 
@@ -89,7 +89,7 @@
                     (expr 
                       (literal 1)) - 
                     (expr 
-                      (variable_or_function_call PaletteVal))))) \r\n \r\n \r\n 
+                      (variable_or_function_call PaletteVal))))) \r\n \r\n ' \r\n 
               (statement 
                 (color_statement COLOR 
                   (expr 
@@ -113,9 +113,9 @@
                     (builtin_function INPUT$ 
                       ( 
                         (expr 
-                          (literal 1)) ))))) \r\n 
+                          (literal 1)) ))))) ' \r\n 
               (statement 
-                (print_statement PRINT)) \r\n \r\n \r\n \r\n) LOOP 
+                (print_statement PRINT)) \r\n \r\n ' \r\n ' \r\n) LOOP 
             (loop_condition UNTIL 
               (expr 
                 (expr 
@@ -135,7 +135,7 @@
               (expr 
                 (variable_or_function_call BackGroundVal)) + 
               (expr 
-                (literal 1))))) \r\n \r\n \r\n \r\n) LOOP 
+                (literal 1))))) \r\n \r\n ' \r\n ' \r\n) LOOP 
       (loop_condition UNTIL 
         (expr 
           (expr 
@@ -151,8 +151,8 @@
   (statement 
     (screen_statement SCREEN 
       (expr 
-        (literal 0)))) \r\n 
+        (literal 0)))) ' \r\n 
   (statement 
     (width_statement WIDTH 
       (expr 
-        (literal 80)))) \r\n <EOF>)
+        (literal 80)))) ' \r\n <EOF>)

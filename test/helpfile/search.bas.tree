@@ -1,7 +1,7 @@
 (program 
   (statement 
     (deftype_statement DEFLNG 
-      (letter_range A - Z))) \r\n 
+      (letter_range A - Z))) ' \r\n 
   (statement 
     (line_input_statement LINE INPUT "File to search: " , 
       (variable_or_function_call FileName$))) \r\n 
@@ -53,7 +53,7 @@
     (assignment_statement 
       (variable_or_function_call FileOffset) = 
       (expr 
-        (literal 0)))) \r\n \r\n \r\n \r\n 
+        (literal 0)))) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (do_loop_statement DO 
       (do_condition WHILE 
@@ -62,7 +62,7 @@
             (variable_or_function_call BytesLeft)) > 
           (expr 
             (variable_or_function_call PatternLength%)))) 
-      (block \r\n \r\n \r\n \r\n \r\n \r\n \r\n 
+      (block \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Buffer$) = 
@@ -72,7 +72,7 @@
                   (expr 
                     (variable_or_function_call PACKETSIZE)) , # 
                   (expr 
-                    (literal 1)) ))))) \r\n \r\n \r\n 
+                    (literal 1)) ))))) \r\n \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Start%) = 
@@ -103,7 +103,7 @@
                     (variable_or_function_call StringPos%)) > 
                   (expr 
                     (literal 0))) THEN \r\n 
-                (then_block \r\n \r\n \r\n 
+                (then_block \r\n ' \r\n ' \r\n 
                   (statement 
                     (print_statement PRINT 
                       (expr 
@@ -134,7 +134,7 @@
                 (expr 
                   (variable_or_function_call StringPos%)) > 
                 (expr 
-                  (literal 0)))))) \r\n \r\n \r\n \r\n \r\n 
+                  (literal 0)))))) \r\n \r\n ' \r\n ' \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call FileOffset) = 

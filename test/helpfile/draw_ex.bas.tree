@@ -1,9 +1,9 @@
-(program \r\n \r\n \r\n 
+(program ' \r\n ' \r\n ' \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id Face) 
     ( 
       (declare_parameter_list 
-        (declare_parameter Min$)) )) \r\n \r\n \r\n 
+        (declare_parameter Min$)) )) \r\n ' \r\n ' \r\n 
   (statement 
     (screen_statement SCREEN 
       (expr 
@@ -13,7 +13,7 @@
       (block \r\n 
         (statement 
           (call_statement 
-            (untyped_id CLS))) \r\n \r\n 
+            (untyped_id CLS))) \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Min$) = 
@@ -25,17 +25,17 @@
                   (expr 
                     (literal 4)) , 
                   (expr 
-                    (literal 2)) ))))) \r\n \r\n 
+                    (literal 2)) ))))) \r\n ' \r\n 
         (statement 
           (call_statement 
             (untyped_id Face) 
             (argument_list 
               (argument 
                 (expr 
-                  (variable_or_function_call Min$)))))) \r\n \r\n 
+                  (variable_or_function_call Min$)))))) \r\n ' \r\n 
         (statement 
           (do_loop_statement DO 
-            (block \r\n \r\n 
+            (block \r\n ' \r\n 
               (statement 
                 (locate_statement LOCATE 
                   (expr 
@@ -45,7 +45,7 @@
               (statement 
                 (print_statement PRINT 
                   (expr 
-                    (variable_or_function_call TIME$)))) \r\n \r\n 
+                    (variable_or_function_call TIME$)))) \r\n ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Test$) = 
@@ -69,7 +69,7 @@
                   (expr 
                     (variable_or_function_call Test$)) = 
                   (expr 
-                    (literal ""))))))) \r\n \r\n) LOOP 
+                    (literal ""))))))) \r\n ' \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 
@@ -77,7 +77,7 @@
           (expr 
             (literal "")))))) \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n 
+    (end_statement END)) \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Face) 
     ( 
@@ -102,7 +102,7 @@
             (expr 
               (literal 100)) ) , 
           (expr 
-            (literal 175)))) \r\n \r\n 
+            (literal 175)))) \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Hr) = 
@@ -122,7 +122,7 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (variable_or_function_call Min$)))) ))))) \r\n \r\n 
+                      (variable_or_function_call Min$)))) ))))) \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Little) = 
@@ -154,7 +154,7 @@
                   (expr 
                     (literal 6)) * 
                   (expr 
-                    (variable_or_function_call Min))) ))))) \r\n \r\n 
+                    (variable_or_function_call Min))) ))))) \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id DRAW) 

@@ -1,4 +1,4 @@
-(program \r\n \r\n 
+(program ' \r\n ' \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id CapsOn) 
     ( )) \r\n 
@@ -86,11 +86,11 @@
     (end_statement END)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id CapsOn) STATIC 
-    (block \r\n \r\n \r\n 
+    (block \r\n ' \r\n ' \r\n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (literal 0)))) \r\n \r\n 
+            (literal 0)))) \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id POKE) 
@@ -108,17 +108,17 @@
                           (expr 
                             (literal &H0417)))) ))) OR 
                 (expr 
-                  (literal &H40))))))) \r\n \r\n 
+                  (literal &H40))))))) \r\n ' \r\n 
       (statement 
         (def_seg_statement DEF SEG)) \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id CapsOff) STATIC 
-    (block \r\n \r\n 
+    (block \r\n ' \r\n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (literal 0)))) \r\n \r\n 
+            (literal 0)))) \r\n ' \r\n 
       (statement 
         (call_statement 
           (untyped_id POKE) 
@@ -147,7 +147,7 @@
         (parameter Row%) , 
         (parameter Col%) , 
         (parameter Message$)) ) STATIC 
-    (block \r\n \r\n \r\n 
+    (block \r\n ' \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call CurRow%) = 
@@ -172,7 +172,7 @@
       (statement 
         (print_statement PRINT 
           (expr 
-            (variable_or_function_call Message$)) ;)) \r\n \r\n 
+            (variable_or_function_call Message$)) ;)) \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 

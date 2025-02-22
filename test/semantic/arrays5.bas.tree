@@ -21,14 +21,14 @@
               (expr 
                 (literal 0)))) )) = 
       (expr 
-        (literal 1)))) \n 
+        (literal 1)))) ' \n 
   (statement 
     (for_next_statement for i% = 
       (expr 
         (literal 0)) to 
       (expr 
         (literal 10)) 
-      (block \n 
+      (block ' \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call t 

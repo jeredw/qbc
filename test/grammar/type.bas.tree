@@ -1,11 +1,10 @@
 (program 
   (type_statement type 
-    (untyped_id thing) \n \n \n 
+    (untyped_id thing) \n \n ' \n 
     (type_element 
       (untyped_id x) as 
       (type_name_for_type_element 
-        (fixed_string string * 40)) \n) 
-    (rem_statement rem) \n 
+        (fixed_string string * 40)) \n rem \n) 
     (type_element 
       (untyped_id y) as 
       (type_name_for_type_element double) \n) 
@@ -42,12 +41,10 @@
     (untyped_id yep) \n 
     (type_element 
       (untyped_id a) as 
-      (type_name_for_type_element integer) :) 
-    (rem_statement rem) \n 
+      (type_name_for_type_element integer) : rem \n) 
     (type_element 
       (untyped_id b) as 
-      (type_name_for_type_element integer) :) 
-    (rem_statement rem) \n end type) \n 
+      (type_name_for_type_element integer) : rem \n) end type) \n 
   (type_statement type 
     (untyped_id ok) \n 
     (type_element 

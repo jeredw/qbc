@@ -12,7 +12,7 @@
           (const_assignment k = 
             (const_expr 
               (expr 
-                (literal 42)))))) \n 
+                (literal 42)))))) ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call fnfoo) = 
@@ -30,7 +30,7 @@
         (assignment_statement 
           (variable_or_function_call test) = 
           (expr 
-            (variable_or_function_call k2)))) \n) 
+            (variable_or_function_call k2)))) ' \n) 
     (end_function_statement end function)) \n \n 
   (statement 
     (print_statement print 

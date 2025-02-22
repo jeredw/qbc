@@ -7,7 +7,7 @@
             (literal 3.1415926536)))))) \n 
   (statement 
     (call_statement 
-      (untyped_id CLS))) \n 
+      (untyped_id CLS))) ' \n 
   (statement 
     (screen_statement SCREEN 
       (expr 
@@ -24,7 +24,7 @@
       (expr 
         (literal 1)) , , , 
       (expr 
-        (literal .3)))) \n 
+        (literal .3)))) ' \n 
   (statement 
     (circle_statement CIRCLE 
       ( 
@@ -37,7 +37,7 @@
       (expr 
         (literal 1)) , , , 
       (expr 
-        (literal .7)))) \n 
+        (literal .7)))) ' \n 
   (statement 
     (paint_statement PAINT 
       ( 
@@ -48,7 +48,7 @@
       (expr 
         (literal 2)) , 
       (expr 
-        (literal 1)))) \n \n 
+        (literal 1)))) ' \n \n 
   (statement 
     (line_statement LINE 
       ( 
@@ -63,7 +63,7 @@
           (expr 
             (literal 40))) ) , 
       (expr 
-        (literal 2)))) \n 
+        (literal 2)))) ' \n 
   (statement 
     (line_statement LINE - STEP 
       ( 
@@ -72,7 +72,7 @@
         (expr 
           (literal 20)) ) , 
       (expr 
-        (literal 2)))) \n 
+        (literal 2)))) ' \n 
   (statement 
     (line_statement LINE - STEP 
       ( 
@@ -82,7 +82,7 @@
         (expr 
           (literal 20)) ) , 
       (expr 
-        (literal 2)))) \n 
+        (literal 2)))) ' \n 
   (statement 
     (paint_statement PAINT 
       ( 
@@ -93,7 +93,7 @@
       (expr 
         (literal 1)) , 
       (expr 
-        (literal 2)))) \n \n 
+        (literal 2)))) ' \n \n 
   (statement 
     (circle_statement CIRCLE 
       ( 
@@ -122,7 +122,7 @@
         (expr 
           (literal 4))) , 
       (expr 
-        (literal 1.5)))) \n 
+        (literal 1.5)))) ' \n 
   (statement 
     (for_next_statement FOR Y = 
       (expr 
@@ -145,4 +145,4 @@
               (expr 
                 (variable_or_function_call Y)) ) , 
             (expr 
-              (literal 0)))) \n) NEXT)) \n <EOF>)
+              (literal 0)))) ' \n) NEXT)) \n <EOF>)

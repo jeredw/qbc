@@ -3,7 +3,7 @@ import * as statements from "./statements/StatementRegistry.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParseError } from "./Errors.ts";
 import { Program, ProgramChunk } from "./Programs.ts";
-import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
+import { ParserRuleContext, ParseTreeWalker, TerminalNode, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
 import { typeCheckExpression } from "./Expressions.ts";
 import { reference, isError, getDefaultValue } from "./Values.ts";
@@ -580,7 +580,6 @@ export class CodeGenerator extends QBasicParserListener {
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
   override enterRead_statement = (ctx: parser.Read_statementContext) => {}
-  override enterRem_statement = (ctx: parser.Rem_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 
   override enterReturn_statement = (ctx: parser.Return_statementContext) => {

@@ -1,4 +1,4 @@
-(program \n 
+(program ' \n 
   (statement 
     (open_statement OPEN 
       (expr 
@@ -23,7 +23,7 @@
       (expr 
         (literal 1)) , 
       (expr 
-        (literal 2)))) \n 
+        (literal 2)))) ' \n 
   (statement 
     (get_io_statement GET # 
       (expr 
@@ -36,4 +36,4 @@
       (expr 
         (literal 1)) , 
       (expr 
-        (literal 2)))) \n <EOF>)
+        (literal 2)))) ' \n <EOF>)

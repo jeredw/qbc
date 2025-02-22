@@ -1,4 +1,4 @@
-(program \r\n 
+(program ' \r\n 
   (statement 
     (const_statement CONST 
       (const_assignment FALSE = 
@@ -11,7 +11,7 @@
             (expr 
               (variable_or_function_call FALSE))))))) \r\n \r\n 
   (declare_statement DECLARE FUNCTION GetFileName$ 
-    ( )) \r\n \r\n \r\n \r\n 
+    ( )) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
@@ -32,7 +32,7 @@
           (assignment_statement 
             (variable_or_function_call FileName$) = 
             (expr 
-              (variable_or_function_call GetFileName$)))) \r\n \r\n 
+              (variable_or_function_call GetFileName$)))) ' \r\n \r\n 
         (if_block_statement IF 
           (expr 
             (expr 
@@ -41,9 +41,9 @@
               (literal ""))) THEN \r\n 
           (then_block 
             (statement 
-              (end_statement END)) \r\n) 
+              (end_statement END)) ' \r\n) 
           (else_block_statement ELSE 
-            (else_block \r\n \r\n \r\n \r\n 
+            (else_block \r\n \r\n ' \r\n ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call FileNum) = 
@@ -61,7 +61,7 @@
           (expr NOT 
             (expr 
               (variable_or_function_call Restart))) THEN \r\n 
-          (then_block \r\n \r\n 
+          (then_block \r\n ' \r\n 
             (statement 
               (line_input_statement LINE INPUT "Enter string to locate: " , 
                 (variable_or_function_call LocString$))) \r\n 
@@ -74,7 +74,7 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (variable_or_function_call LocString$)))) ))))) \r\n \r\n \r\n \r\n 
+                            (variable_or_function_call LocString$)))) ))))) \r\n \r\n ' \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call LineNum) = 
@@ -91,13 +91,13 @@
                             (argument 
                               (expr 
                                 (variable_or_function_call FileNum)))) ))))) 
-                (block \r\n \r\n \r\n 
+                (block \r\n \r\n ' \r\n 
                   (statement 
                     (line_input_statement LINE INPUT 
                       (file_number # 
                         (expr 
                           (variable_or_function_call FileNum))) , 
-                      (variable_or_function_call LineBuffer$))) \r\n \r\n \r\n \r\n 
+                      (variable_or_function_call LineBuffer$))) \r\n \r\n ' \r\n ' \r\n 
                   (if_block_statement IF 
                     (expr 
                       (expr 
@@ -138,7 +138,7 @@
             (statement 
               (close_statement CLOSE 
                 (expr 
-                  (variable_or_function_call FileNum)))) \r\n \r\n) 
+                  (variable_or_function_call FileNum)))) ' \r\n \r\n) 
           (end_if_statement END IF)) \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
@@ -161,16 +161,16 @@
           (case_expr 
             (expr 
               (literal 64)))) 
-        (block : \r\n 
+        (block : ' \r\n 
           (statement 
             (print_statement PRINT 
               (expr 
-                (literal "** ERROR - Invalid file name")))) \r\n \r\n \r\n 
+                (literal "** ERROR - Invalid file name")))) \r\n \r\n ' \r\n 
           (statement 
             (assignment_statement 
               (variable_or_function_call FileName$) = 
               (expr 
-                (variable_or_function_call GetFileName$)))) \r\n \r\n \r\n 
+                (variable_or_function_call GetFileName$)))) \r\n \r\n ' \r\n 
           (statement 
             (resume_statement RESUME)) \r\n \r\n)) 
       (case_block 
@@ -178,7 +178,7 @@
           (case_expr 
             (expr 
               (literal 71)))) 
-        (block : \r\n 
+        (block : ' \r\n 
           (statement 
             (print_statement PRINT 
               (expr 
@@ -211,7 +211,7 @@
                       (literal "C"))) THEN \r\n 
                   (then_block 
                     (statement 
-                      (resume_statement RESUME)) \r\n \r\n) 
+                      (resume_statement RESUME)) ' \r\n \r\n) 
                   (elseif_block_statement ELSEIF 
                     (expr 
                       (expr 
@@ -223,7 +223,7 @@
                         (assignment_statement 
                           (variable_or_function_call Restart) = 
                           (expr 
-                            (variable_or_function_call TRUE)))) \r\n 
+                            (variable_or_function_call TRUE)))) ' \r\n 
                       (statement 
                         (resume_statement RESUME NEXT)) \r\n \r\n)) 
                   (elseif_block_statement ELSEIF 
@@ -234,7 +234,7 @@
                         (literal "Q"))) THEN 
                     (else_block \r\n 
                       (statement 
-                        (end_statement END)) \r\n)) 
+                        (end_statement END)) ' \r\n)) 
                   (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n)) 
       (case_block 
         (case_statement CASE 
@@ -244,7 +244,7 @@
           (case_expr 
             (expr 
               (literal 76)))) 
-        (block : \r\n 
+        (block : ' \r\n 
           (statement 
             (print_statement PRINT 
               (expr 
@@ -258,12 +258,12 @@
             (resume_statement RESUME)) \r\n \r\n)) 
       (case_block 
         (case_statement CASE ELSE) 
-        (block : \r\n \r\n \r\n \r\n 
+        (block : ' \r\n \r\n ' \r\n ' \r\n 
           (statement 
             (on_error_statement ON ERROR GOTO 
               (target 
                 (line_number 0)))) \r\n)) 
-      (end_select_statement END SELECT))) \r\n \r\n \r\n \r\n \r\n \r\n 
+      (end_select_statement END SELECT))) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION GetFileName$ STATIC 
     (block \r\n 
       (statement 

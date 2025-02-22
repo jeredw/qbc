@@ -1,4 +1,4 @@
-(program \r\n \r\n \r\n \r\n \r\n 
+(program ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (declare_statement DECLARE SUB 
     (untyped_id Sort) 
     ( 
@@ -20,7 +20,7 @@
               (expr 
                 (literal 1)) TO 
               (expr 
-                (literal 20))) ))))) \r\n \r\n \r\n 
+                (literal 20))) ))))) \r\n \r\n ' \r\n 
   (statement 
     (call_statement 
       (untyped_id RANDOMIZE) 
@@ -44,7 +44,7 @@
                     (expr 
                       (variable_or_function_call I)))) )) = 
             (expr 
-              (variable_or_function_call RND)))) \r\n) NEXT I)) \r\n \r\n \r\n \r\n \r\n 
+              (variable_or_function_call RND)))) \r\n) NEXT I)) \r\n \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (call_statement 
       (untyped_id Sort) 
@@ -53,7 +53,7 @@
           ( )) , 
         (argument 
           (expr 
-            (literal 20 %)))))) \r\n \r\n \r\n 
+            (literal 20 %)))))) \r\n \r\n ' \r\n 
   (statement 
     (for_next_statement FOR I = 
       (expr 
@@ -71,7 +71,7 @@
                       (expr 
                         (variable_or_function_call I)))) ))))) \r\n) NEXT I)) \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n 
+    (end_statement END)) \r\n \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Sort) 
     ( 

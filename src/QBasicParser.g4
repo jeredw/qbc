@@ -104,6 +104,7 @@ statement
   | deftype_statement
   | dim_statement
   | do_loop_statement
+  | dynamic_metacommand
   | error_statement
   | event_control_statement
   | end_statement
@@ -115,6 +116,7 @@ statement
   | gosub_statement
   | goto_statement
   | if_inline_statement
+  | include_metacommand
   | input_statement
   | ioctl_statement
   | key_statement
@@ -143,7 +145,6 @@ statement
   | put_graphics_statement
   | put_io_statement
   | read_statement
-  | rem_statement
   | resume_statement
   | return_statement
   | rset_statement
@@ -151,6 +152,7 @@ statement
   | seek_statement
   | select_case_statement
   | shared_statement
+  | static_metacommand
   | static_statement
   | stop_statement
   | unlock_statement
@@ -294,7 +296,7 @@ type_statement
 // *** Types must have at least one element.
 // We admit empty types here so we can provide a better error message than
 // antlr's default.
-     (rem_statement NL | type_element)*
+     type_element*
      END TYPE
    ;
 
@@ -470,6 +472,8 @@ loop_condition
   : (WHILE expr | UNTIL expr)
   ;
 
+dynamic_metacommand : COMMENT_META_DYNAMIC ;
+
 end_statement
   : END
   ;
@@ -540,6 +544,8 @@ if_inline_action
   : statement (COLON statement?)*
   | implicit_goto_target
   ;
+
+include_metacommand : COMMENT_META_INCLUDE ;
 
 // The IDE does not seem to automatically insert missing ','s for INPUT the way
 // it does for PRINT statements.
@@ -714,12 +720,6 @@ read_statement
   : READ variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
-// The lexer slurps up the rest of the line and returns a REM token so that we
-// can match the start of a statement.
-rem_statement
-  : REM
-  ;
-
 // A special kind of return statement just for ON ERROR handlers.
 // *** RESUME is illegal inside procedures or def fns.
 resume_statement
@@ -753,9 +753,9 @@ select_case_statement
     end_select_statement
   ;
 
-// No real statements or labels are allowed before the first CASE.
+// No statements or labels are allowed before the first CASE.
 before_first_case
-  : (COLON | rem_statement | NL)*
+  : (COLON | NL)*
   ;
 
 case_block
@@ -787,6 +787,8 @@ shared_statement
 static_statement
   : STATIC scope_variable (COMMA scope_variable)*
   ;
+
+static_metacommand : COMMENT_META_STATIC ;
 
 stop_statement
   : STOP

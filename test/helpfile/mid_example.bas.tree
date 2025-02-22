@@ -14,7 +14,7 @@
             (expr 
               (literal 10)) , 
             (expr 
-              (literal 5)) ))))) \n 
+              (literal 5)) ))))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Text$) = 
@@ -23,7 +23,7 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (variable_or_function_call Text$)))) \n 
+        (variable_or_function_call Text$)))) ' \n 
   (statement 
     (mid_statement MID$ 
       ( 
@@ -35,4 +35,4 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (variable_or_function_call Text$)))) \n <EOF>)
+        (variable_or_function_call Text$)))) ' \n <EOF>)

@@ -12,7 +12,7 @@
       (expr 
         (literal 7)) , 
       (expr 
-        (literal 1)))) \r\n 
+        (literal 1)))) ' \r\n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \r\n \r\n 
@@ -33,7 +33,7 @@
               (argument_list 
                 (argument 
                   (expr 
-                    (literal 16)))) )))))) \r\n \r\n \r\n \r\n 
+                    (literal 16)))) )))))) ' \r\n ' \r\n \r\n ' \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -76,7 +76,7 @@
       (expr 
         (literal 1)) TO 
       (expr 
-        (literal 23)))) \r\n \r\n \r\n \r\n 
+        (literal 23)))) ' \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (open_statement OPEN 
       (expr 
@@ -88,36 +88,36 @@
         (literal 256)))) \r\n \r\n 
   (statement 
     (do_loop_statement DO 
-      (block \r\n \r\n 
+      (block ' \r\n \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call KeyInput$) = 
             (expr 
-              (variable_or_function_call INKEY$)))) \r\n \r\n 
+              (variable_or_function_call INKEY$)))) ' \r\n \r\n 
         (if_block_statement IF 
           (expr 
             (expr 
               (variable_or_function_call KeyInput$)) = 
             (expr 
-              (variable_or_function_call Quit$))) THEN \r\n 
-          (then_block 
+              (variable_or_function_call Quit$))) THEN ' 
+          (then_block \r\n 
             (statement 
-              (exit_statement EXIT DO)) \r\n \r\n) 
+              (exit_statement EXIT DO)) ' \r\n \r\n) 
           (elseif_block_statement ELSEIF 
             (expr 
               (expr 
                 (variable_or_function_call KeyInput$)) <> 
               (expr 
                 (literal ""))) THEN 
-            (else_block \r\n 
+            (else_block ' \r\n 
               (statement 
                 (print_statement PRINT 
                   (file_number # 
                     (expr 
                       (literal 1))) , 
                   (expr 
-                    (variable_or_function_call KeyInput$)) ;)) \r\n)) 
-          (end_if_statement END IF)) \r\n \r\n \r\n \r\n 
+                    (variable_or_function_call KeyInput$)) ;)) ' \r\n)) 
+          (end_if_statement END IF)) ' \r\n \r\n ' \r\n ' \r\n 
         (if_block_statement IF 
           (expr NOT 
             (expr 
@@ -127,7 +127,7 @@
                     (argument 
                       (expr 
                         (literal 1)))) )))) THEN \r\n 
-          (then_block \r\n \r\n 
+          (then_block \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call ModemInput$) = 
@@ -149,25 +149,25 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (variable_or_function_call ModemInput$)))))) \r\n 
+                      (variable_or_function_call ModemInput$)))))) ' \r\n 
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (variable_or_function_call ModemInput$)) ;)) \r\n) 
+                  (variable_or_function_call ModemInput$)) ;)) ' \r\n) 
           (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n 
   (statement 
-    (close_statement CLOSE)) \r\n 
+    (close_statement CLOSE)) ' \r\n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \r\n 
   (statement 
-    (end_statement END)) \r\n \r\n \r\n \r\n \r\n \r\n 
+    (end_statement END)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id Filter) 
     ( 
       (parameter_list 
         (parameter InString$)) ) STATIC 
-    (block \r\n \r\n \r\n \r\n 
+    (block \r\n \r\n ' \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n 
@@ -209,7 +209,7 @@
               (end_if_statement END IF)) \r\n) LOOP 
           (loop_condition WHILE 
             (expr 
-              (variable_or_function_call BackSpace))))) \r\n \r\n \r\n 
+              (variable_or_function_call BackSpace))))) \r\n \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n 

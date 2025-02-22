@@ -44,7 +44,7 @@
   (statement 
     (close_statement CLOSE # 
       (expr 
-        (literal 1)))) \n \n 
+        (literal 1)))) \n ' \n 
   (statement 
     (open_statement OPEN 
       (expr 
@@ -79,13 +79,13 @@
               (expr 
                 (literal 1))) , 
             (variable_or_function_call Rec1$) , 
-            (variable_or_function_call Rec2$))) \n 
+            (variable_or_function_call Rec2$))) ' \n 
         (statement 
           (print_statement PRINT 
             (expr 
               (variable_or_function_call Rec1$)) , 
             (expr 
-              (variable_or_function_call Rec2$)))) \n) LOOP)) \n 
+              (variable_or_function_call Rec2$)))) ' \n) LOOP)) \n 
   (statement 
     (close_statement CLOSE # 
       (expr 

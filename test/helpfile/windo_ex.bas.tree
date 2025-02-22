@@ -1,4 +1,4 @@
-(program \r\n \r\n \r\n 
+(program ' \r\n ' \r\n ' \r\n 
   (statement 
     (print_statement PRINT 
       (expr 
@@ -13,7 +13,7 @@
   (statement 
     (color_statement COLOR 
       (expr 
-        (literal 7)))) \r\n 
+        (literal 7)))) ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call X) = 
@@ -49,7 +49,7 @@
                     (expr 
                       (variable_or_function_call X)) + 
                     (expr 
-                      (variable_or_function_call Xdelta))))) \r\n 
+                      (variable_or_function_call Xdelta))))) ' \r\n 
               (statement 
                 (call_statement CALL 
                   (untyped_id Zoom) 
@@ -64,7 +64,7 @@
                     (literal 1)) TO 
                   (expr 
                     (literal 1000)) 
-                  (block \r\n 
+                  (block ' \r\n 
                     (statement 
                       (if_inline_statement IF 
                         (expr 
@@ -74,7 +74,7 @@
                             (literal ""))) THEN 
                         (if_inline_action 
                           (statement 
-                            (end_statement END))))) \r\n) NEXT)) \r\n) LOOP)) \r\n 
+                            (end_statement END))))) ' \r\n) NEXT)) \r\n) LOOP)) \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call X) = 
@@ -88,7 +88,7 @@
             (variable_or_function_call Xdelta) = 
             (expr - 
               (expr 
-                (variable_or_function_call Xdelta))))) \r\n) LOOP)) \r\n \r\n 
+                (variable_or_function_call Xdelta))))) ' \r\n) LOOP)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Zoom) 
     ( 
@@ -111,7 +111,7 @@
             (expr 
               (variable_or_function_call X)) , 
             (expr 
-              (variable_or_function_call X)) ))) \r\n 
+              (variable_or_function_call X)) ))) ' \r\n 
       (statement 
         (line_statement LINE 
           ( 
@@ -128,7 +128,7 @@
               (variable_or_function_call X)) ) , 
           (expr 
             (literal 1)) , 
-          (box_style B))) \r\n 
+          (box_style B))) ' \r\n 
       (statement 
         (circle_statement CIRCLE 
           ( 
@@ -141,7 +141,7 @@
           (expr 
             (literal 1)) , , , 
           (expr 
-            (literal .5)))) \r\n 
+            (literal .5)))) ' \r\n 
       (statement 
         (paint_statement PAINT 
           ( 
@@ -150,5 +150,5 @@
             (expr 
               (literal 0)) ) , 
           (expr 
-            (literal 1)))) \r\n) 
+            (literal 1)))) ' \r\n) 
     (end_sub_statement END SUB)) \r\n \n <EOF>)

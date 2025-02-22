@@ -75,9 +75,7 @@
     (select_case_statement select case 
       (expr 
         (variable_or_function_call i)) 
-      (before_first_case : 
-        (rem_statement rem) \n : : 
-        (rem_statement rem) \n) 
+      (before_first_case : rem \n : : rem \n) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -111,7 +109,7 @@
             (expr 
               (variable_or_function_call foo)) then \n then_block 
             (end_if_statement end if)) \n)) 
-      (end_select_statement end select))) \n \n \n \n \n \n \n \n 
+      (end_select_statement end select))) \n \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (statement 
     (select_case_statement select case 
       (expr 

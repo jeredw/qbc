@@ -1,4 +1,4 @@
-(program \r\n \r\n \r\n 
+(program ' \r\n ' \r\n ' \r\n 
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \r\n \r\n 
@@ -23,7 +23,7 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (literal 0)))) ))))) \r\n \r\n 
+                      (literal 0)))) ))))) \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -39,7 +39,7 @@
               (Y/N):")) ;)) \r\n 
       (statement 
         (do_loop_statement DO 
-          (block \r\n \r\n 
+          (block \r\n ' \r\n 
             (statement 
               (do_loop_statement DO 
                 (block \r\n 
@@ -63,7 +63,7 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (variable_or_function_call Resp$)))) ))))) \r\n \r\n 
+                            (variable_or_function_call Resp$)))) ))))) \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -84,17 +84,17 @@
                   (statement 
                     (call_statement 
                       (untyped_id BEEP))) \r\n)) 
-              (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n 
+              (end_if_statement END IF)) \r\n) LOOP)) \r\n ' \r\n 
       (statement 
         (print_statement PRINT 
           (expr 
-            (variable_or_function_call Resp$)) ;)) \r\n \r\n 
+            (variable_or_function_call Resp$)) ;)) \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
             (variable_or_function_call OldRow)) , 
           (expr 
-            (variable_or_function_call OldCol)))) \r\n \r\n 
+            (variable_or_function_call OldCol)))) \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call YesQues) = 
