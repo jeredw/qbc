@@ -145,6 +145,7 @@ statement
   | put_graphics_statement
   | put_io_statement
   | read_statement
+  | restore_statement
   | resume_statement
   | return_statement
   | rset_statement
@@ -718,6 +719,10 @@ put_io_statement
 
 read_statement
   : READ variable_or_function_call (COMMA variable_or_function_call)*
+  ;
+
+restore_statement
+  : RESTORE target?
   ;
 
 // A special kind of return statement just for ON ERROR handlers.

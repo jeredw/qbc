@@ -1691,12 +1691,10 @@
           (expr 
             (literal 7)))) \r\n \r\n ' \r\n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call CardScreen)))))) \r\n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id CardScreen))))) \r\n 
       (statement 
         (for_next_statement FOR Row = 
           (expr 
@@ -1739,12 +1737,10 @@
         (do_loop_statement DO 
           (block \r\n \r\n 
             (statement 
-              (call_statement 
-                (untyped_id RESTORE) 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call FieldPositions)))))) \r\n \r\n ' \r\n 
+              (restore_statement RESTORE 
+                (target 
+                  (text_label 
+                    (untyped_id FieldPositions))))) \r\n \r\n ' \r\n 
             (statement 
               (read_statement READ 
                 (variable_or_function_call Row) , 
@@ -3934,12 +3930,10 @@
   (function_statement FUNCTION SelectField% 
     (block \r\n \r\n ' \r\n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call FieldPositions)))))) \r\n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id FieldPositions))))) \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4034,12 +4028,10 @@
                         (literal 0))) THEN \r\n 
                     (then_block 
                       (statement 
-                        (call_statement 
-                          (untyped_id RESTORE) 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call FieldPositions)))))) \r\n 
+                        (restore_statement RESTORE 
+                          (target 
+                            (text_label 
+                              (untyped_id FieldPositions))))) \r\n 
                       (statement 
                         (read_statement READ 
                           (variable_or_function_call Row) , 
@@ -4079,12 +4071,10 @@
           (expr 
             (variable_or_function_call TopCard)))) \r\n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call FieldPositions)))))) \r\n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id FieldPositions))))) \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4342,12 +4332,10 @@
         (call_statement 
           (untyped_id ClearHelp))) \r\n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call EditHelp)))))) \r\n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id EditHelp))))) \r\n 
       (statement 
         (for_next_statement FOR Row = 
           (expr 
@@ -4410,12 +4398,10 @@
             (untyped_id Person)))) ) 
     (block \r\n \r\n ' \r\n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call FieldPositions)))))) \r\n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id FieldPositions))))) \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4682,12 +4668,10 @@
         (call_statement 
           (untyped_id ClearHelp))) \r\n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call ViewHelp)))))) \r\n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id ViewHelp))))) \r\n 
       (statement 
         (for_next_statement FOR Row = 
           (expr 

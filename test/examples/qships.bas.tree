@@ -4002,12 +4002,10 @@
           (expr 
             (literal 40)))) \n ' \n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call ShipPicData)))))) \n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id ShipPicData))))) \n 
       (statement 
         (for_next_statement FOR Counter = 
           (expr 

@@ -279,7 +279,7 @@ parse those using baked in rules.
 | `REDIM`          | Statement   | ✅      | ⛔      |
 | `REM`            | Statement   | ✅      | ⛔      |
 | `RESET`          | Statement   | -       | ⛔      |
-| `RESTORE`        | Statement   | -       | ⛔      |
+| `RESTORE`        | Statement   | ✅      | ⛔      |
 | `RESUME`         | Statement   | ✅      | ⛔      |
 | `RETURN`         | Statement   | ✅      | ✅      |
 | `RIGHT$`         | Function    | -       | ✅      |

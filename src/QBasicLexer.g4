@@ -133,6 +133,7 @@ RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
 READ : [Rr][Ee][Aa][Dd] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] -> type(NL), pushMode(COMMENT_MODE) ;
+RESTORE : [Rr][Ee][Ss][Tt][Oo][Rr][Ee] ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 RSET : [Rr][Ss][Ee][Tt] ;

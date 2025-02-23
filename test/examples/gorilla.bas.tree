@@ -625,12 +625,10 @@
           (expr 
             (literal 25)))) \n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call EGABanana)))))) \n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id EGABanana))))) \n 
       (statement 
         (dim_statement REDIM 
           (dim_variable LBan& 
@@ -740,12 +738,10 @@
             (expr 
               (literal 12)))) \n 
         (statement 
-          (call_statement 
-            (untyped_id RESTORE) 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call CGABanana)))))) \n 
+          (restore_statement RESTORE 
+            (target 
+              (text_label 
+                (untyped_id CGABanana))))) \n 
         (statement 
           (dim_statement REDIM 
             (dim_variable LBan& 

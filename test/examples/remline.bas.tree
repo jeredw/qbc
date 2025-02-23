@@ -981,12 +981,10 @@
     (untyped_id InitKeyTable) STATIC 
     (block \n \n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call KeyData)))))) \n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id KeyData))))) \n 
       (statement 
         (for_next_statement FOR Count = 
           (expr 

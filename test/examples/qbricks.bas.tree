@@ -5502,8 +5502,7 @@
               (literal 1))) THEN 
           (if_inline_action 
             (statement 
-              (call_statement 
-                (untyped_id RESTORE)))))) ' \n \n 
+              (restore_statement RESTORE))))) ' \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call MAXLEVELCount) = 

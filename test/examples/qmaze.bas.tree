@@ -7764,8 +7764,7 @@
           (expr 
             (variable_or_function_call DEFAULTMONSTERTIME)))) \n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE))) ' \n 
+        (restore_statement RESTORE)) ' \n 
       (statement 
         (for_next_statement FOR i = 
           (expr 

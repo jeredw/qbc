@@ -346,21 +346,17 @@
         (literal "M"))) THEN \n 
     (then_block 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call mono)))))) \n) 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id mono))))) \n) 
     (else_block_statement ELSE 
       (else_block \n 
         (statement 
-          (call_statement 
-            (untyped_id RESTORE) 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call normal)))))) \n)) 
+          (restore_statement RESTORE 
+            (target 
+              (text_label 
+                (untyped_id normal))))) \n)) 
     (end_if_statement END IF)) \n \n 
   (statement 
     (for_next_statement FOR a = 

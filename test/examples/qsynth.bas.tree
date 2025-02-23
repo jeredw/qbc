@@ -6578,21 +6578,17 @@
             (literal 1))) THEN ' 
         (then_block \n 
           (statement 
-            (call_statement 
-              (untyped_id RESTORE) 
-              (argument_list 
-                (argument 
-                  (expr 
-                    (variable_or_function_call SONG1)))))) \n) 
+            (restore_statement RESTORE 
+              (target 
+                (text_label 
+                  (untyped_id SONG1))))) \n) 
         (else_block_statement ELSE 
           (else_block \n 
             (statement 
-              (call_statement 
-                (untyped_id RESTORE) 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call SONG2)))))) \n)) 
+              (restore_statement RESTORE 
+                (target 
+                  (text_label 
+                    (untyped_id SONG2))))) \n)) 
         (end_if_statement END IF)) \n \n 
       (statement 
         (read_statement READ 
@@ -7220,12 +7216,10 @@
                     (expr 
                       (variable_or_function_call HeaderInfo.Count)))) ))))) ' \n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call SONG1)))))) ' \n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id SONG1))))) ' \n 
       (statement 
         (read_statement READ 
           (variable_or_function_call i$ 
@@ -7235,12 +7229,10 @@
                   (expr 
                     (literal 1)))) )))) \n 
       (statement 
-        (call_statement 
-          (untyped_id RESTORE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (variable_or_function_call SONG2)))))) \n 
+        (restore_statement RESTORE 
+          (target 
+            (text_label 
+              (untyped_id SONG2))))) \n 
       (statement 
         (read_statement READ 
           (variable_or_function_call i$ 
