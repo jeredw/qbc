@@ -302,7 +302,7 @@ parse those using baked in rules.
 | `SOUND`          | Statement   | -       | ⛔      |
 | `SPACE$`         | Function    | -       | ✅      |
 | `SPC`            | Function    | -       | ⛔      |
-| `SQR`            | Function    | -       | ⛔      |
+| `SQR`            | Function    | -       | ✅      |
 | `STATIC`         | Statement   | ✅      | 🚧      |
 | `$STATIC`        | Metacommand | ✅      | ✅      |
 | `STEP`           | Keyword     | ✅      | ✅      |

@@ -104,6 +104,22 @@ export class SinFunction extends BuiltinFunction1 {
   }
 }
 
+export class SqrFunction extends BuiltinFunction1 {
+  constructor(params: BuiltinStatementArgs) {
+    super(params);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    if (input.number < 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    return cast(double(Math.sqrt(input.number)), this.result.type);
+  }
+}
+
 export class TanFunction extends BuiltinFunction1 {
   constructor(params: BuiltinStatementArgs) {
     super(params);

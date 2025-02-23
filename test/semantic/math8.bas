@@ -1,0 +1,1 @@
+print sqr(-1)

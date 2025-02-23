@@ -6,6 +6,7 @@ import {
   LogFunction,
   SinFunction,
   SgnFunction,
+  SqrFunction,
   TanFunction
  } from "./Math.ts";
 import {
@@ -63,19 +64,19 @@ import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 
-export function abs(params: BuiltinStatementArgs) {
-  return new AbsFunction(params);
+export function abs(args: BuiltinStatementArgs) {
+  return new AbsFunction(args);
 }
 
-export function asc(params: BuiltinStatementArgs) {
-  return new AscFunction(params);
+export function asc(args: BuiltinStatementArgs) {
+  return new AscFunction(args);
 }
 
-export function atn(params: BuiltinStatementArgs) {
-  return new AtnFunction(params);
+export function atn(args: BuiltinStatementArgs) {
+  return new AtnFunction(args);
 }
 
-export function beep(_params: BuiltinStatementArgs) {
+export function beep(_args: BuiltinStatementArgs) {
   return new BeepStatement();
 }
 
@@ -87,52 +88,52 @@ export function case_(test: Variable, condition: parser.Case_exprContext) {
   return new CaseStatement(test, condition);
 }
 
-export function cdbl(params: BuiltinStatementArgs) {
-  return new CdblFunction(params);
+export function cdbl(args: BuiltinStatementArgs) {
+  return new CdblFunction(args);
 }
 
-export function chr(params: BuiltinStatementArgs) {
-  return new ChrFunction(params);
+export function chr(args: BuiltinStatementArgs) {
+  return new ChrFunction(args);
 }
 
-export function csng(params: BuiltinStatementArgs) {
-  return new CsngFunction(params);
+export function csng(args: BuiltinStatementArgs) {
+  return new CsngFunction(args);
 }
 
-export function cint(params: BuiltinStatementArgs) {
-  return new CintFunction(params);
+export function cint(args: BuiltinStatementArgs) {
+  return new CintFunction(args);
 }
 
-export function clng(params: BuiltinStatementArgs) {
-  return new ClngFunction(params);
+export function clng(args: BuiltinStatementArgs) {
+  return new ClngFunction(args);
 }
 
-export function cos(params: BuiltinStatementArgs) {
-  return new CosFunction(params);
+export function cos(args: BuiltinStatementArgs) {
+  return new CosFunction(args);
 }
 
-export function cvi(params: BuiltinStatementArgs) {
-  return new CviFunction(params);
+export function cvi(args: BuiltinStatementArgs) {
+  return new CviFunction(args);
 }
 
-export function cvd(params: BuiltinStatementArgs) {
-  return new CvdFunction(params);
+export function cvd(args: BuiltinStatementArgs) {
+  return new CvdFunction(args);
 }
 
-export function cvdmbf(params: BuiltinStatementArgs) {
-  return new CvdmbfFunction(params);
+export function cvdmbf(args: BuiltinStatementArgs) {
+  return new CvdmbfFunction(args);
 }
 
-export function cvl(params: BuiltinStatementArgs) {
-  return new CvlFunction(params);
+export function cvl(args: BuiltinStatementArgs) {
+  return new CvlFunction(args);
 }
 
-export function cvs(params: BuiltinStatementArgs) {
-  return new CvsFunction(params);
+export function cvs(args: BuiltinStatementArgs) {
+  return new CvsFunction(args);
 }
 
-export function cvsmbf(params: BuiltinStatementArgs) {
-  return new CvsmbfFunction(params);
+export function cvsmbf(args: BuiltinStatementArgs) {
+  return new CvsmbfFunction(args);
 }
 
 export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable) {
@@ -179,8 +180,8 @@ export function exitSub() {
   return new ReturnStatement(ControlFlowTag.CALL);
 }
 
-export function exp(params: BuiltinStatementArgs) {
-  return new ExpFunction(params);
+export function exp(args: BuiltinStatementArgs) {
+  return new ExpFunction(args);
 }
 
 export function for_(counter: Variable, end: Variable, increment: Variable | null) {
@@ -203,8 +204,8 @@ export function gosubIndex(expr: parser.ExprContext) {
   return new BranchIndexStatement({gosub: true, expr});
 }
 
-export function hex(params: BuiltinStatementArgs) {
-  return new HexFunction(params);
+export function hex(args: BuiltinStatementArgs) {
+  return new HexFunction(args);
 }
 
 export function if_(expr: parser.ExprContext) {
@@ -219,16 +220,16 @@ export function lbound(token: Token, array: Variable, result: Variable, whichExp
   return new LboundFunction(token, array, result, whichExpr);
 }
 
-export function lcase(params: BuiltinStatementArgs) {
-  return new LcaseFunction(params);
+export function lcase(args: BuiltinStatementArgs) {
+  return new LcaseFunction(args);
 }
 
-export function left(params: BuiltinStatementArgs) {
-  return new LeftFunction(params);
+export function left(args: BuiltinStatementArgs) {
+  return new LeftFunction(args);
 }
 
-export function ltrim(params: BuiltinStatementArgs) {
-  return new LtrimFunction(params);
+export function ltrim(args: BuiltinStatementArgs) {
+  return new LtrimFunction(args);
 }
 
 export function mid(
@@ -248,40 +249,40 @@ export function loop(isWhile: boolean, expr: parser.ExprContext) {
   return new LoopTest(isWhile, expr);
 }
 
-export function log(params: BuiltinStatementArgs) {
-  return new LogFunction(params);
+export function log(args: BuiltinStatementArgs) {
+  return new LogFunction(args);
 }
 
-export function mki(params: BuiltinStatementArgs) {
-  return new MkiFunction(params);
+export function mki(args: BuiltinStatementArgs) {
+  return new MkiFunction(args);
 }
 
-export function mkd(params: BuiltinStatementArgs) {
-  return new MkdFunction(params);
+export function mkd(args: BuiltinStatementArgs) {
+  return new MkdFunction(args);
 }
 
-export function mkdmbf(params: BuiltinStatementArgs) {
-  return new MkdmbfFunction(params);
+export function mkdmbf(args: BuiltinStatementArgs) {
+  return new MkdmbfFunction(args);
 }
 
-export function mkl(params: BuiltinStatementArgs) {
-  return new MklFunction(params);
+export function mkl(args: BuiltinStatementArgs) {
+  return new MklFunction(args);
 }
 
-export function mks(params: BuiltinStatementArgs) {
-  return new MksFunction(params);
+export function mks(args: BuiltinStatementArgs) {
+  return new MksFunction(args);
 }
 
-export function mksmbf(params: BuiltinStatementArgs) {
-  return new MksmbfFunction(params);
+export function mksmbf(args: BuiltinStatementArgs) {
+  return new MksmbfFunction(args);
 }
 
 export function next(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {
   return new NextStatement(forToken, counter, end, increment);
 }
 
-export function oct(params: BuiltinStatementArgs) {
-  return new OctFunction(params);
+export function oct(args: BuiltinStatementArgs) {
+  return new OctFunction(args);
 }
 
 export function print(ast: parser.Print_statementContext) {
@@ -292,36 +293,40 @@ export function return_(start: Token) {
   return new ReturnStatement(ControlFlowTag.GOSUB, start);
 }
 
-export function right(params: BuiltinStatementArgs) {
-  return new RightFunction(params);
+export function right(args: BuiltinStatementArgs) {
+  return new RightFunction(args);
 }
 
-export function rtrim(params: BuiltinStatementArgs) {
-  return new RtrimFunction(params);
+export function rtrim(args: BuiltinStatementArgs) {
+  return new RtrimFunction(args);
 }
 
-export function sgn(params: BuiltinStatementArgs) {
-  return new SgnFunction(params);
+export function sgn(args: BuiltinStatementArgs) {
+  return new SgnFunction(args);
 }
 
-export function sin(params: BuiltinStatementArgs) {
-  return new SinFunction(params);
+export function sin(args: BuiltinStatementArgs) {
+  return new SinFunction(args);
 }
 
-export function space(params: BuiltinStatementArgs) {
-  return new SpaceFunction(params);
+export function sqr(args: BuiltinStatementArgs) {
+  return new SqrFunction(args);
 }
 
-export function tan(params: BuiltinStatementArgs) {
-  return new TanFunction(params);
+export function space(args: BuiltinStatementArgs) {
+  return new SpaceFunction(args);
+}
+
+export function tan(args: BuiltinStatementArgs) {
+  return new TanFunction(args);
 }
 
 export function ubound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {
   return new UboundFunction(token, array, result, whichExpr);
 }
 
-export function ucase(params: BuiltinStatementArgs) {
-  return new UcaseFunction(params);
+export function ucase(args: BuiltinStatementArgs) {
+  return new UcaseFunction(args);
 }
 
 export function while_(expr: parser.ExprContext) {

@@ -1,0 +1,40 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call sqr 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call sqr 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 2)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (expr 
+          (variable_or_function_call sqr 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3)))) ))) / 
+        (expr 
+          (literal 2))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call sqr 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 16)))) ))))) \n <EOF>)
