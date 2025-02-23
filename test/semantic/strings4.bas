@@ -1,0 +1,1 @@
+print left$("hello", 60000)

@@ -45,7 +45,12 @@ import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
-import { LcaseFunction, UcaseFunction } from "./Strings.ts";
+import {
+  LcaseFunction,
+  LeftFunction,
+  RightFunction,
+  UcaseFunction
+} from "./Strings.ts";
 import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
@@ -208,6 +213,10 @@ export function lcase(params: BuiltinStatementArgs) {
   return new LcaseFunction(params);
 }
 
+export function left(params: BuiltinStatementArgs) {
+  return new LeftFunction(params);
+}
+
 export function let_(variable: Variable, expr: parser.ExprContext) {
   return new LetStatement(variable, expr);
 }
@@ -254,6 +263,10 @@ export function print(ast: parser.Print_statementContext) {
 
 export function return_(start: Token) {
   return new ReturnStatement(ControlFlowTag.GOSUB, start);
+}
+
+export function right(params: BuiltinStatementArgs) {
+  return new RightFunction(params);
 }
 
 export function sgn(params: BuiltinStatementArgs) {

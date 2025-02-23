@@ -202,7 +202,7 @@ parse those using baked in rules.
 | `KILL`           | Statement   | -       | ⛔      |
 | `LBOUND`         | Function    | ✅      | ✅      |
 | `LCASE$`         | Function    | -       | ✅      |
-| `LEFT$`          | Function    | -       | ⛔      |
+| `LEFT$`          | Function    | -       | ✅      |
 | `LEN`            | Function    | ✅      | ⛔      |
 | `LET`            | Statement   | ✅      | ✅      |
 | `LINE` Graphics  | Statement   | ✅      | ⛔      |
@@ -278,7 +278,7 @@ parse those using baked in rules.
 | `RESTORE`        | Statement   | -       | ⛔      |
 | `RESUME`         | Statement   | ✅      | ⛔      |
 | `RETURN`         | Statement   | ✅      | ✅      |
-| `RIGHT$`         | Function    | -       | ⛔      |
+| `RIGHT$`         | Function    | -       | ✅      |
 | `RMDIR`          | Statement   | -       | ⛔      |
 | `RND`            | Function    | -       | ⛔      |
 | `RSET`           | Statement   | ✅      | ⛔      |

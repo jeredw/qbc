@@ -1,10 +1,9 @@
 import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError } from "../Errors.ts";
-import { evaluateExpression } from "../Expressions.ts";
-import { StorageType } from "../Memory.ts";
-import { TypeTag } from "../Types.ts";
-import { array, DUPLICATE_DEFINITION, integer, isArray, isError, isNumeric, reference, SUBSCRIPT_OUT_OF_RANGE, TYPE_MISMATCH, Value } from "../Values.ts";
+import { evaluateIntegerExpression } from "../Expressions.ts";
+import { Memory, StorageType } from "../Memory.ts";
+import { array, DUPLICATE_DEFINITION, integer, isArray, isError, reference, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -42,8 +41,10 @@ export class DimStatement extends Statement {
     const dimensions: ArrayBounds[] = [];
     let numElements = 1;
     for (const boundsExprs of this.bounds) {
-      const lower = boundsExprs.lower ? evaluateIntegerExpression(boundsExprs.lower, context) : this.arrayBaseIndex;
-      const upper = evaluateIntegerExpression(boundsExprs.upper, context);
+      const lower = boundsExprs.lower ?
+        evaluateIntegerExpression(boundsExprs.lower, context.memory) :
+        this.arrayBaseIndex;
+      const upper = evaluateIntegerExpression(boundsExprs.upper, context.memory);
       if (upper < lower) {
         throw RuntimeError.fromToken(boundsExprs.upper.start!, SUBSCRIPT_OUT_OF_RANGE);
       }
@@ -77,12 +78,12 @@ export class IndexArrayStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const descriptor = getArrayDescriptor(this.array, context);
+    const descriptor = getArrayDescriptor(this.array, context.memory);
     let offset = this.array.recordOffset?.offset || 0;
     let stride = descriptor.itemSize!;
     for (let i = 0; i < this.indexExprs.length; i++) {
       const expr = this.indexExprs[i];
-      const index = evaluateIntegerExpression(expr, context);
+      const index = evaluateIntegerExpression(expr, context.memory);
       const bounds = descriptor.dimensions[i];
       if (bounds.lower === undefined || bounds.upper === undefined) {
         throw new Error("array bounds undefined");
@@ -123,7 +124,7 @@ abstract class ArrayBoundFunction extends Statement {
 
   override execute(context: ExecutionContext) {
     const which =
-      this.whichExpr ? evaluateIntegerExpression(this.whichExpr, context) : 1;
+      this.whichExpr ? evaluateIntegerExpression(this.whichExpr, context.memory) : 1;
     const output = this.getBound(context, which);
     if (isError(output)) {
       throw RuntimeError.fromToken(this.token, output);
@@ -140,7 +141,7 @@ export class LboundFunction extends ArrayBoundFunction {
   }
 
   override getBound(context: ExecutionContext, which: number): Value {
-    const descriptor = getArrayDescriptor(this.array, context);
+    const descriptor = getArrayDescriptor(this.array, context.memory);
     if (which == 0) {
       return integer(0);
     }
@@ -161,7 +162,7 @@ export class UboundFunction extends ArrayBoundFunction {
   }
 
   override getBound(context: ExecutionContext, which: number): Value {
-    const descriptor = getArrayDescriptor(this.array, context);
+    const descriptor = getArrayDescriptor(this.array, context.memory);
     if (which == 0) {
       return integer(-1);
     }
@@ -176,22 +177,7 @@ export class UboundFunction extends ArrayBoundFunction {
   }
 }
 
-function evaluateIntegerExpression(expr: ExprContext, context: ExecutionContext): number {
-  const value = evaluateExpression({
-    expr,
-    resultType: {tag: TypeTag.INTEGER},
-    memory: context.memory
-  });
-  if (isError(value)) {
-    throw RuntimeError.fromToken(expr.start!, value);
-  }
-  if (!isNumeric(value)) {
-    throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
-  }
-  return value.number;
-}
-
-function getArrayDescriptor(variable: Variable, context: ExecutionContext): ArrayDescriptor {
+function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor {
   if (!variable.array) {
     throw new Error("not an array");
   }
@@ -201,7 +187,7 @@ function getArrayDescriptor(variable: Variable, context: ExecutionContext): Arra
   if (!variable.address) {
     throw new Error("variable not allocated");
   }
-  const [_, value] = context.memory.dereference(variable);
+  const [_, value] = memory.dereference(variable);
   if (!isArray(value)) {
     throw new Error("expecting array value");
   }

@@ -1,9 +1,7 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
-import { RuntimeError } from "../Errors.ts";
-import { evaluateExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
-import { isError, isNumeric, TYPE_MISMATCH } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
@@ -18,7 +16,7 @@ export class DoTest extends Statement {
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
-    const test = evaluateBoolean(context.memory, this.expr);
+    const test = evaluateBooleanExpression(this.expr, context.memory);
     const shouldBranchOut = this.isWhile != test;
     if (shouldBranchOut) {
       return { tag: ControlFlowTag.GOTO };
@@ -37,7 +35,7 @@ export class LoopTest extends Statement {
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
-    const test = evaluateBoolean(context.memory, this.expr);
+    const test = evaluateBooleanExpression(this.expr, context.memory);
     const shouldBranchBack = this.isWhile == test;
     if (shouldBranchBack) {
       return { tag: ControlFlowTag.GOTO };
@@ -54,19 +52,12 @@ export class IfTest extends Statement {
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
-    if (!evaluateBoolean(context.memory, this.expr)) {
+    if (!evaluateBooleanExpression(this.expr, context.memory)) {
       return { tag: ControlFlowTag.GOTO };
     }
   }
 }
 
-function evaluateBoolean(memory: Memory, expr: ExprContext): boolean {
-  const value = evaluateExpression({expr: expr, memory});
-  if (isError(value)) {
-    throw RuntimeError.fromToken(expr.start!, value);
-  }
-  if (!isNumeric(value)) {
-    throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
-  }
-  return value.number != 0;
+function evaluateBooleanExpression(expr: ExprContext, memory: Memory): boolean {
+  return evaluateIntegerExpression(expr, memory) != 0 ;
 }

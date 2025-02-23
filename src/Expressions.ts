@@ -5,17 +5,46 @@ import {
   UnaryMinusExprContext,
   ValueExprContext,
   VarCallExprContext,
-  BuiltinExprContext,
   Builtin_functionContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTreeWalker } from "antlr4ng";
 import * as values from "./Values.ts";
 import { splitSigil, Type, TypeTag } from "./Types.ts";
-import { ParseError } from "./Errors.ts";
+import { ParseError, RuntimeError } from "./Errors.ts";
 import { isConstant, isVariable } from "./SymbolTable.ts";
 import { Memory } from "./Memory.ts";
 import { Variable } from "./Variables.ts";
+
+export function evaluateStringExpression(expr: ExprContext, memory: Memory): string {
+  const value = evaluateExpression({
+    expr,
+    resultType: {tag: TypeTag.STRING},
+    memory
+  });
+  if (values.isError(value)) {
+    throw RuntimeError.fromToken(expr.start!, value);
+  }
+  if (!values.isString(value)) {
+    throw RuntimeError.fromToken(expr.start!, values.TYPE_MISMATCH);
+  }
+  return value.string;
+}
+
+export function evaluateIntegerExpression(expr: ExprContext, memory: Memory): number {
+  const value = evaluateExpression({
+    expr,
+    resultType: {tag: TypeTag.INTEGER},
+    memory
+  });
+  if (values.isError(value)) {
+    throw RuntimeError.fromToken(expr.start!, value);
+  }
+  if (!values.isNumeric(value)) {
+    throw RuntimeError.fromToken(expr.start!, values.TYPE_MISMATCH);
+  }
+  return value.number;
+}
 
 export function evaluateAsConstantExpression({
   expr,
