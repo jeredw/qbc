@@ -132,3 +132,29 @@ export class TanFunction extends BuiltinFunction1 {
     return cast(double(Math.tan(input.number)), this.result.type);
   }
 }
+
+export class FixFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    return numericTypeOf(input)(Math.trunc(input.number));
+  }
+}
+
+export class IntFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    return numericTypeOf(input)(Math.floor(input.number));
+  }
+}

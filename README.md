@@ -178,7 +178,7 @@ parse those using baked in rules.
 | `FIELD`          | Statement   | ✅      | ⛔      |
 | `FILEATTR`       | Function    | -       | ⛔      |
 | `FILES`          | Statement   | -       | ⛔      |
-| `FIX`            | Function    | -       | ⛔      |
+| `FIX`            | Function    | -       | ✅      |
 | `FOR`...`NEXT`   | Statement   | ✅      | ✅      |
 | `FRE`            | Function    | -       | ⛔      |
 | `FREEFILE`       | Function    | -       | ⛔      |
@@ -195,7 +195,7 @@ parse those using baked in rules.
 | `INPUT`          | Statement   | ✅      | ⛔      |
 | `INPUT$`         | Function    | ✅      | ⛔      |
 | `INSTR`          | Function    | ⛔      | ⛔      |
-| `INT`            | Function    | -       | ⛔      |
+| `INT`            | Function    | -       | ✅      |
 | `INTEGER`        | Keyword     | ✅      | ✅      |
 | `IOCTL`          | Statement   | ✅      | ⛔      |
 | `IOCTL$`         | Function    | ✅      | ⛔      |
@@ -311,7 +311,7 @@ parse those using baked in rules.
 | `STR$`           | Function    | -       | 🚧      |
 | `STRIG`          | Function    | ✅      | ⛔      |
 | `STRIG`          | Statement   | ✅      | ⛔      |
-| `STRING`         | Keyword     | ✅      | ⛔      |
+| `STRING`         | Keyword     | ✅      | ✅      |
 | `STRING$`        | Function    | -       | ⛔      |
 | `SUB`            | Statement   | ✅      | ✅      |
 | `SWAP`           | Statement   | -       | ⛔      |

@@ -1,0 +1,115 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call int 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 99.3)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call int 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 99.5)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call int 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 99.7)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call int 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 99.3))))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call int 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 99.5))))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call int 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 99.7))))) ))))) \n \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fix 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 99.3)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fix 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 99.5)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fix 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 99.7)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fix 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 99.3))))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fix 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 99.5))))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call fix 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 99.7))))) ))))) \n <EOF>)

@@ -3,6 +3,8 @@ import {
   AtnFunction,
   CosFunction,
   ExpFunction,
+  FixFunction,
+  IntFunction,
   LogFunction,
   SinFunction,
   SgnFunction,
@@ -186,6 +188,10 @@ export function exp(args: BuiltinStatementArgs) {
   return new ExpFunction(args);
 }
 
+export function fix(args: BuiltinStatementArgs) {
+  return new FixFunction(args);
+}
+
 export function for_(counter: Variable, end: Variable, increment: Variable | null) {
   return new ForStatement(counter, end, increment);
 }
@@ -216,6 +222,10 @@ export function if_(expr: parser.ExprContext) {
 
 export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {
   return new IndexArrayStatement(array, indexExprs, result);
+}
+
+export function int(args: BuiltinStatementArgs) {
+  return new IntFunction(args);
 }
 
 export function lbound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {

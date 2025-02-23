@@ -1,0 +1,13 @@
+print int(99.3)
+print int(99.5)
+print int(99.7)
+print int(-99.3)
+print int(-99.5)
+print int(-99.7)
+
+print fix(99.3)
+print fix(99.5)
+print fix(99.7)
+print fix(-99.3)
+print fix(-99.5)
+print fix(-99.7)
