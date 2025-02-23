@@ -124,7 +124,7 @@ parse those using baked in rules.
 | `CDBL`           | Function    | -       | ✅      |
 | `CHAIN`          | Statement   | -       | ⛔      |
 | `CHDIR`          | Statement   | -       | ⛔      |
-| `CHR$`           | Function    | -       | ⛔      |
+| `CHR$`           | Function    | -       | ✅      |
 | `CINT`           | Function    | -       | ✅      |
 | `CIRCLE`         | Statement   | ✅      | ⛔      |
 | `CLEAR`          | Statement   | ✅      | ⛔      |
