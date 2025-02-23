@@ -172,7 +172,7 @@ parse those using baked in rules.
 | `ERR`            | Function    | -       | ⛔      |
 | `ERROR`          | Statement   | ✅      | ⛔      |
 | `EXIT`           | Statement   | ✅      | ✅      |
-| `EXP`            | Function    | -       | ⛔      |
+| `EXP`            | Function    | -       | ✅      |
 | `FIELD`          | Statement   | ✅      | ⛔      |
 | `FILEATTR`       | Function    | -       | ⛔      |
 | `FILES`          | Statement   | -       | ⛔      |

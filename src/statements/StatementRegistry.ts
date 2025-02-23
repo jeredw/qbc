@@ -15,7 +15,7 @@ import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
-import { LogFunction } from "./Log.ts";
+import { ExpFunction, LogFunction } from "./Log.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import * as parser from "../../build/QBasicParser.ts";
@@ -138,6 +138,10 @@ export function exitFunction() {
 
 export function exitSub() {
   return new ReturnStatement(ControlFlowTag.CALL);
+}
+
+export function exp(params: BuiltinStatementArgs) {
+  return new ExpFunction(params);
 }
 
 export function for_(counter: Variable, end: Variable, increment: Variable | null) {

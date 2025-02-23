@@ -50,6 +50,7 @@ export class StandardLibrary {
     _("cvl string -> long", statements.cvl),
     _("cvs string -> single", statements.cvs),
     _("cvsmbf string -> single", statements.cvsmbf),
+    _("exp double -> double", statements.exp),
     _("log double -> double", statements.log),
     _("mki numeric -> string", statements.mki),
     _("mkd numeric -> string", statements.mkd),

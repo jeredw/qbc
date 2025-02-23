@@ -22,3 +22,19 @@ export class LogFunction extends BuiltinFunction1 {
     return cast(single(Math.log(input.number)), this.result.type);
   }
 }
+
+export class ExpFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    if (input.tag == TypeTag.DOUBLE) {
+      return cast(double(Math.exp(input.number)), this.result.type);
+    }
+    return cast(single(Math.exp(input.number)), this.result.type);
+  }
+}
