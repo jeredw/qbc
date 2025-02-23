@@ -157,6 +157,8 @@ parse those using baked in rules.
 | `DEFSTR`         | Statement   | ✅      | ✅      |
 | `DIM`            | Statement   | ✅      | ✅      |
 | `DO`...`LOOP`    | Statement   | ✅      | ✅      |
+| `DOUBLE`         | Keyword     | ✅      | ✅      |
+| `DRAW`           | Statement   | -       | ⛔      |
 | `$DYNAMIC`       | Metacommand | ✅      | ✅      |
 | `ELSE`           | Keyword     | ✅      | ✅      |
 | `ELSEIF`         | Keyword     | ✅      | ✅      |
@@ -164,7 +166,7 @@ parse those using baked in rules.
 | `ENVIRON`        | Statement   | -       | ⛔      |
 | `ENVIRON$`       | Function    | -       | ⛔      |
 | `EOF`            | Function    | -       | ⛔      |
-| `EQV`            | Operator    | ✅      | ⛔      |
+| `EQV`            | Operator    | ✅      | ✅      |
 | `ERASE`          | Statement   | -       | ⛔      |
 | `ERDEV`          | Function    | -       | ⛔      |
 | `ERDEV$`         | Function    | -       | ⛔      |
@@ -187,11 +189,12 @@ parse those using baked in rules.
 | `GOTO`           | Statement   | ✅      | ✅      |
 | `HEX$`           | Function    | -       | ✅      |
 | `IF`...`THEN`... | Statement   | ✅      | ✅      |
-| `IMP`            | Operator    | ✅      | ⛔      |
+| `IMP`            | Operator    | ✅      | ✅      |
 | `INKEY$`         | Function    | -       | ⛔      |
 | `INP`            | Function    | -       | ⛔      |
 | `INPUT`          | Statement   | ✅      | ⛔      |
 | `INPUT$`         | Function    | ✅      | ⛔      |
+| `INSTR`          | Function    | ⛔      | ⛔      |
 | `INT`            | Function    | -       | ⛔      |
 | `INTEGER`        | Keyword     | ✅      | ✅      |
 | `IOCTL`          | Statement   | ✅      | ⛔      |
@@ -208,6 +211,7 @@ parse those using baked in rules.
 | `LINE` Graphics  | Statement   | ✅      | ⛔      |
 | `LINE INPUT`     | Statement   | ✅      | ⛔      |
 | `LIST`           | Keyword     | ✅      | ⛔      |
+| `LOC`            | Function    | ⛔      | ⛔      |
 | `LOCATE`         | Statement   | ✅      | ⛔      |
 | `LOCK`           | Statement   | ✅      | ⛔      |
 | `LOF`            | Function    | -       | ⛔      |
@@ -304,7 +308,6 @@ parse those using baked in rules.
 | `STEP`           | Keyword     | ✅      | ✅      |
 | `STICK`          | Function    | -       | ⛔      |
 | `STOP`           | Statement   | ✅      | ⛔      |
-| `STOP`           | Keyword     | ✅      | ⛔      |
 | `STR$`           | Function    | -       | ⛔      |
 | `STRIG`          | Function    | ✅      | ⛔      |
 | `STRIG`          | Statement   | ✅      | ⛔      |
@@ -317,6 +320,7 @@ parse those using baked in rules.
 | `TAN`            | Function    | -       | ✅      |
 | `THEN`           | Keyword     | ✅      | ✅      |
 | `TIME$`          | Function    | -       | ⛔      |
+| `TIME$`          | Statement   | -       | ⛔      |
 | `TIMER`          | Function    | ✅      | ⛔      |
 | `TIMER`          | Statement   | ✅      | ⛔      |
 | `TO`             | Keyword     | ✅      | ✅      |
@@ -328,6 +332,7 @@ parse those using baked in rules.
 | `UNLOCK`         | Statement   | ✅      | ⛔      |
 | `UNTIL`          | Keyword     | ✅      | ✅      |
 | `USING`          | Keyword     | ✅      | ⛔      |
+| `VAL`            | Function    | -       | ⛔      |
 | `VARPTR`         | Function    | -       | ⛔      |
 | `VARPTR$`        | Function    | -       | ⛔      |
 | `VARSEG`         | Function    | -       | ⛔      |
@@ -339,6 +344,7 @@ parse those using baked in rules.
 | `WIDTH`          | Statement   | ✅      | ⛔      |
 | `WINDOW`         | Statement   | ✅      | ⛔      |
 | `WRITE`          | Statement   | ✅      | ⛔      |
+| `XOR`            | Operator    | ✅      | ✅      |
 
 # Standard library
 
