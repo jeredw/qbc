@@ -1,0 +1,11 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (builtin_function 
+          (mid_function mid$ 
+            ( 
+              (expr 
+                (literal "hello")) , 
+              (expr 
+                (literal 0)) )))))) \n <EOF>)

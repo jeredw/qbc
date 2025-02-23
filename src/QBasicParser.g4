@@ -869,15 +869,19 @@ builtin_function
   : INPUT_STRING '(' n=expr (COMMA '#'? filenumber=expr)? ')'
   | IOCTL_STRING '(' '#'? filenumber=expr ')'
   | LEN '(' expr ')'
-  | MID_STRING '(' expr COMMA expr (COMMA expr)? ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | SEEK '(' expr ')'
   | STRIG '(' expr ')'
   | TIMER
+  | mid_function
   | lbound_function
   | ubound_function
+  ;
+
+mid_function
+  : MID_STRING '(' string=expr COMMA start=expr (COMMA length=expr)? ')'
   ;
 
 // lbound and ubound take array arguments but do not append () to these like

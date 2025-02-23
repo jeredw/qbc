@@ -173,14 +173,15 @@
                   (expr 
                     (literal " ")) ; 
                   (expr 
-                    (builtin_function MID$ 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Strout$)) , 
-                        (expr 
-                          (variable_or_function_call I)) , 
-                        (expr 
-                          (literal 2)) ))) ;)) \r\n) NEXT I)) \r\n 
+                    (builtin_function 
+                      (mid_function MID$ 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Strout$)) , 
+                          (expr 
+                            (variable_or_function_call I)) , 
+                          (expr 
+                            (literal 2)) )))) ;)) \r\n) NEXT I)) \r\n 
         (statement 
           (print_statement PRINT)) : 
         (statement 

@@ -9319,14 +9319,15 @@
                   (statement 
                     (print_statement PRINT 
                       (expr 
-                        (builtin_function MID$ 
-                          ( 
-                            (expr 
-                              (variable_or_function_call a$)) , 
-                            (expr 
-                              (variable_or_function_call a)) , 
-                            (expr 
-                              (literal 80)) ))) ;)) \n 
+                        (builtin_function 
+                          (mid_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call a$)) , 
+                              (expr 
+                                (variable_or_function_call a)) , 
+                              (expr 
+                                (literal 80)) )))) ;)) \n 
                   (statement 
                     (locate_statement LOCATE 
                       (expr 
@@ -9336,17 +9337,18 @@
                   (statement 
                     (print_statement PRINT 
                       (expr 
-                        (builtin_function MID$ 
-                          ( 
-                            (expr 
-                              (variable_or_function_call a$)) , 
-                            (expr 
+                        (builtin_function 
+                          (mid_function MID$ 
+                            ( 
                               (expr 
-                                (literal 6)) - 
+                                (variable_or_function_call a$)) , 
                               (expr 
-                                (variable_or_function_call a))) , 
-                            (expr 
-                              (literal 80)) ))) ;)) \n \n 
+                                (expr 
+                                  (literal 6)) - 
+                                (expr 
+                                  (variable_or_function_call a))) , 
+                              (expr 
+                                (literal 80)) )))) ;)) \n \n 
                   (statement 
                     (for_next_statement FOR b = 
                       (expr 
@@ -9985,14 +9987,15 @@
                     (assignment_statement 
                       (variable_or_function_call y$) = 
                       (expr 
-                        (builtin_function MID$ 
-                          ( 
-                            (expr 
-                              (variable_or_function_call X$)) , 
-                            (expr 
-                              (variable_or_function_call a)) , 
-                            (expr 
-                              (literal 1)) ))))) \n 
+                        (builtin_function 
+                          (mid_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call X$)) , 
+                              (expr 
+                                (variable_or_function_call a)) , 
+                              (expr 
+                                (literal 1)) )))))) \n 
                   (if_block_statement IF 
                     (expr 
                       (expr 

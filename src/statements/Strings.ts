@@ -1,5 +1,5 @@
 
-import { ILLEGAL_FUNCTION_CALL, Value, isError, isNumeric, isString, string } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, Value, isError, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
@@ -98,5 +98,40 @@ export class RightFunction extends LRFunction {
 
   override calculate(str: string, n: number): Value {
     return n === 0 ? string('') : string(str.slice(-n));
+  }
+}
+
+export class MidFunction extends Statement {
+  token: Token;
+  stringExpr: ExprContext;
+  startExpr: ExprContext;
+  lengthExpr: ExprContext | undefined;
+  result: Variable;
+
+  constructor(
+    token: Token,
+    stringExpr: ExprContext,
+    startExpr: ExprContext,
+    lengthExpr: ExprContext | undefined,
+    result: Variable) {
+    super();
+    this.token = token;
+    this.stringExpr = stringExpr;
+    this.startExpr = startExpr;
+    this.lengthExpr = lengthExpr;
+    this.result = result;
+  }
+
+  override execute(context: ExecutionContext) {
+    const str = evaluateStringExpression(this.stringExpr, context.memory);
+    const start = evaluateIntegerExpression(this.startExpr, context.memory);
+    const length = this.lengthExpr ?
+      evaluateIntegerExpression(this.lengthExpr, context.memory) :
+      str.length;
+    if (start <= 0 || length < 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const value = str.slice(start - 1, (start - 1) + length);
+    context.memory.write(this.result.address!, string(value));
   }
 }

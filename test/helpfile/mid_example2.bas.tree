@@ -29,14 +29,15 @@
           (assignment_statement 
             (variable_or_function_call Digit$) = 
             (expr 
-              (builtin_function MID$ 
-                ( 
-                  (expr 
-                    (variable_or_function_call Binary$)) , 
-                  (expr 
-                    (variable_or_function_call K)) , 
-                  (expr 
-                    (literal 1)) ))))) \n ' \n 
+              (builtin_function 
+                (mid_function MID$ 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Binary$)) , 
+                    (expr 
+                      (variable_or_function_call K)) , 
+                    (expr 
+                      (literal 1)) )))))) \n ' \n 
         (if_block_statement IF 
           (expr 
             (expr 

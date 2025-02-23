@@ -39,14 +39,15 @@
     (assignment_statement 
       (variable_or_function_call Day$) = 
       (expr 
-        (builtin_function MID$ 
-          ( 
-            (expr 
-              (variable_or_function_call C$)) , 
-            (expr 
-              (literal 4)) , 
-            (expr 
-              (literal 2)) ))))) \n 
+        (builtin_function 
+          (mid_function MID$ 
+            ( 
+              (expr 
+                (variable_or_function_call C$)) , 
+              (expr 
+                (literal 4)) , 
+              (expr 
+                (literal 2)) )))))) \n 
   (statement 
     (if_inline_statement IF 
       (expr 

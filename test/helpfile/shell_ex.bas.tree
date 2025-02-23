@@ -183,14 +183,15 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (builtin_function MID$ 
-                        ( 
-                          (expr 
-                            (variable_or_function_call DirLine$)) , 
-                          (expr 
-                            (literal 10)) , 
-                          (expr 
-                            (literal 3)) ))))) ))))) \r\n 
+                      (builtin_function 
+                        (mid_function MID$ 
+                          ( 
+                            (expr 
+                              (variable_or_function_call DirLine$)) , 
+                            (expr 
+                              (literal 10)) , 
+                            (expr 
+                              (literal 3)) )))))) ))))) \r\n 
       (if_block_statement IF 
         (expr 
           (expr 

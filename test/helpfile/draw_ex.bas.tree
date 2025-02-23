@@ -18,14 +18,15 @@
           (assignment_statement 
             (variable_or_function_call Min$) = 
             (expr 
-              (builtin_function MID$ 
-                ( 
-                  (expr 
-                    (variable_or_function_call TIME$)) , 
-                  (expr 
-                    (literal 4)) , 
-                  (expr 
-                    (literal 2)) ))))) \r\n ' \r\n 
+              (builtin_function 
+                (mid_function MID$ 
+                  ( 
+                    (expr 
+                      (variable_or_function_call TIME$)) , 
+                    (expr 
+                      (literal 4)) , 
+                    (expr 
+                      (literal 2)) )))))) \r\n ' \r\n 
         (statement 
           (call_statement 
             (untyped_id Face) 
@@ -57,14 +58,15 @@
                   (expr 
                     (variable_or_function_call Min$)) = 
                   (expr 
-                    (builtin_function MID$ 
-                      ( 
-                        (expr 
-                          (variable_or_function_call TIME$)) , 
-                        (expr 
-                          (literal 4)) , 
-                        (expr 
-                          (literal 2)) )))) AND 
+                    (builtin_function 
+                      (mid_function MID$ 
+                        ( 
+                          (expr 
+                            (variable_or_function_call TIME$)) , 
+                          (expr 
+                            (literal 4)) , 
+                          (expr 
+                            (literal 2)) ))))) AND 
                 (expr 
                   (expr 
                     (variable_or_function_call Test$)) = 

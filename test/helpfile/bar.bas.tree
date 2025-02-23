@@ -378,14 +378,15 @@
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (builtin_function MID$ 
-                    ( 
-                      (expr 
-                        (variable_or_function_call T.YTitle)) , 
-                      (expr 
-                        (variable_or_function_call I%)) , 
-                      (expr 
-                        (literal 1)) ))) ;)) \r\n) NEXT I%)) \r\n \r\n ' \r\n 
+                  (builtin_function 
+                    (mid_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call T.YTitle)) , 
+                        (expr 
+                          (variable_or_function_call I%)) , 
+                        (expr 
+                          (literal 1)) )))) ;)) \r\n) NEXT I%)) \r\n \r\n ' \r\n 
       (if_block_statement IF 
         (expr 
           (expr 

@@ -203,15 +203,16 @@
               (assignment_statement 
                 (variable_or_function_call Part2$) = 
                 (expr 
-                  (builtin_function MID$ 
-                    ( 
-                      (expr 
-                        (variable_or_function_call Temp$)) , 
-                      (expr 
+                  (builtin_function 
+                    (mid_function MID$ 
+                      ( 
                         (expr 
-                          (variable_or_function_call Mark)) + 
+                          (variable_or_function_call Temp$)) , 
                         (expr 
-                          (variable_or_function_call M))) ))))) \r\n 
+                          (expr 
+                            (variable_or_function_call Mark)) + 
+                          (expr 
+                            (variable_or_function_call M))) )))))) \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Temp$) = 

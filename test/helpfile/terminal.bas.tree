@@ -253,15 +253,16 @@
                                   (expr 
                                     (literal 1))))) ))) + 
                       (expr 
-                        (builtin_function MID$ 
-                          ( 
-                            (expr 
-                              (variable_or_function_call InString$)) , 
-                            (expr 
+                        (builtin_function 
+                          (mid_function MID$ 
+                            ( 
                               (expr 
-                                (variable_or_function_call LineFeed)) + 
+                                (variable_or_function_call InString$)) , 
                               (expr 
-                                (literal 1))) )))))) \r\n) 
+                                (expr 
+                                  (variable_or_function_call LineFeed)) + 
+                                (expr 
+                                  (literal 1))) ))))))) \r\n) 
               (end_if_statement END IF)) \r\n) LOOP 
           (loop_condition WHILE 
             (expr 

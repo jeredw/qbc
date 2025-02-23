@@ -63,14 +63,15 @@
               (assignment_statement 
                 (variable_or_function_call C$) = 
                 (expr 
-                  (builtin_function MID$ 
-                    ( 
-                      (expr 
-                        (variable_or_function_call Txt$)) , 
-                      (expr 
-                        (variable_or_function_call I)) , 
-                      (expr 
-                        (literal 1)) ))))) ' \r\n \r\n ' \r\n 
+                  (builtin_function 
+                    (mid_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Txt$)) , 
+                        (expr 
+                          (variable_or_function_call I)) , 
+                        (expr 
+                          (literal 1)) )))))) ' \r\n \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 

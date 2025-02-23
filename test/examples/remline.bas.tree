@@ -862,17 +862,18 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (builtin_function MID$ 
-                        ( 
-                          (expr 
-                            (variable_or_function_call SaveStr$)) , 
-                          (expr 
-                            (variable_or_function_call BegPos)) , 
-                          (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call SaveStr$)) ))) )))) , 
+                      (builtin_function 
+                        (mid_function MID$ 
+                          ( 
+                            (expr 
+                              (variable_or_function_call SaveStr$)) , 
+                            (expr 
+                              (variable_or_function_call BegPos)) , 
+                            (expr 
+                              (builtin_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call SaveStr$)) ))) ))))) , 
                   (argument 
                     (expr 
                       (variable_or_function_call Delim$)))) ))))) \n 
@@ -910,17 +911,18 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (builtin_function MID$ 
-                        ( 
-                          (expr 
-                            (variable_or_function_call SaveStr$)) , 
-                          (expr 
-                            (variable_or_function_call BegPos)) , 
-                          (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call SaveStr$)) ))) )))) , 
+                      (builtin_function 
+                        (mid_function MID$ 
+                          ( 
+                            (expr 
+                              (variable_or_function_call SaveStr$)) , 
+                            (expr 
+                              (variable_or_function_call BegPos)) , 
+                            (expr 
+                              (builtin_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call SaveStr$)) ))) ))))) , 
                   (argument 
                     (expr 
                       (variable_or_function_call Delim$)))) ))))) \n 
@@ -957,17 +959,18 @@
         (assignment_statement 
           (variable_or_function_call GetToken$) = 
           (expr 
-            (builtin_function MID$ 
-              ( 
-                (expr 
-                  (variable_or_function_call SaveStr$)) , 
-                (expr 
-                  (variable_or_function_call BegPos)) , 
-                (expr 
+            (builtin_function 
+              (mid_function MID$ 
+                ( 
                   (expr 
-                    (variable_or_function_call NewPos)) - 
+                    (variable_or_function_call SaveStr$)) , 
                   (expr 
-                    (variable_or_function_call BegPos))) ))))) \n ' \n 
+                    (variable_or_function_call BegPos)) , 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call NewPos)) - 
+                    (expr 
+                      (variable_or_function_call BegPos))) )))))) \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BegPos) = 
@@ -1098,14 +1101,15 @@
                           (variable_or_function_call Separator$))) , 
                       (argument 
                         (expr 
-                          (builtin_function MID$ 
-                            ( 
-                              (expr 
-                                (variable_or_function_call InString$)) , 
-                              (expr 
-                                (variable_or_function_call BegPos)) , 
-                              (expr 
-                                (literal 1)) ))))) ))) = 
+                          (builtin_function 
+                            (mid_function MID$ 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call InString$)) , 
+                                (expr 
+                                  (variable_or_function_call BegPos)) , 
+                                (expr 
+                                  (literal 1)) )))))) ))) = 
               (expr 
                 (literal 0)))) 
           (block \n 
@@ -1171,14 +1175,15 @@
                         (variable_or_function_call Separator$))) , 
                     (argument 
                       (expr 
-                        (builtin_function MID$ 
-                          ( 
-                            (expr 
-                              (variable_or_function_call InString$)) , 
-                            (expr 
-                              (variable_or_function_call BegPos)) , 
-                            (expr 
-                              (literal 1)) ))))) )))) 
+                        (builtin_function 
+                          (mid_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call InString$)) , 
+                              (expr 
+                                (variable_or_function_call BegPos)) , 
+                              (expr 
+                                (literal 1)) )))))) )))) 
           (block \n 
             (if_block_statement IF 
               (expr 

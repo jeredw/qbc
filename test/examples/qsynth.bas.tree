@@ -3414,12 +3414,13 @@
                           (expr 
                             (literal 221)))) ))) ; 
                 (expr 
-                  (builtin_function MID$ 
-                    ( 
-                      (expr 
-                        (variable_or_function_call temp$)) , 
-                      (expr 
-                        (literal 2)) ))) ; 
+                  (builtin_function 
+                    (mid_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call temp$)) , 
+                        (expr 
+                          (literal 2)) )))) ; 
                 (expr 
                   (variable_or_function_call temp$)) ;)) \n 
             (statement 
@@ -8061,12 +8062,13 @@
             (expr 
               (expr 
                 (expr 
-                  (builtin_function MID$ 
-                    ( 
-                      (expr 
-                        (variable_or_function_call n$)) , 
-                      (expr 
-                        (literal 10)) ))) + 
+                  (builtin_function 
+                    (mid_function MID$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call n$)) , 
+                        (expr 
+                          (literal 10)) )))) + 
                 (expr 
                   (variable_or_function_call n$))) + 
               (expr 
@@ -8439,14 +8441,15 @@
                                       (argument_list 
                                         (argument 
                                           (expr 
-                                            (builtin_function MID$ 
-                                              ( 
-                                                (expr 
-                                                  (variable_or_function_call n$)) , 
-                                                (expr 
-                                                  (variable_or_function_call keyloc)) , 
-                                                (expr 
-                                                  (literal 1)) ))))) ))))) \n 
+                                            (builtin_function 
+                                              (mid_function MID$ 
+                                                ( 
+                                                  (expr 
+                                                    (variable_or_function_call n$)) , 
+                                                  (expr 
+                                                    (variable_or_function_call keyloc)) , 
+                                                  (expr 
+                                                    (literal 1)) )))))) ))))) \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call NewOct) = 
@@ -8457,14 +8460,15 @@
                                         (argument_list 
                                           (argument 
                                             (expr 
-                                              (builtin_function MID$ 
-                                                ( 
-                                                  (expr 
-                                                    (variable_or_function_call o$)) , 
-                                                  (expr 
-                                                    (variable_or_function_call keyloc)) , 
-                                                  (expr 
-                                                    (literal 1)) ))))) ))) - 
+                                              (builtin_function 
+                                                (mid_function MID$ 
+                                                  ( 
+                                                    (expr 
+                                                      (variable_or_function_call o$)) , 
+                                                    (expr 
+                                                      (variable_or_function_call keyloc)) , 
+                                                    (expr 
+                                                      (literal 1)) )))))) ))) - 
                                   (expr 
                                     (literal 2))))) \n \n 
                             (if_block_statement IF 

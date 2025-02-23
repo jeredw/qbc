@@ -803,6 +803,15 @@ export class CodeGenerator extends QBasicParserListener {
         }
       }
 
+      override enterMid_function = (ctx: parser.Mid_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        codeGenerator.addStatement(
+          statements.mid(ctx.start!, ctx._string_!, ctx._start!, ctx._length, result));
+      }
+
       override exitLbound_function = (ctx: parser.Lbound_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {

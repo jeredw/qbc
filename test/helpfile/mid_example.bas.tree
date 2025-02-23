@@ -7,14 +7,15 @@
   (statement 
     (print_statement PRINT 
       (expr 
-        (builtin_function MID$ 
-          ( 
-            (expr 
-              (variable_or_function_call a$)) , 
-            (expr 
-              (literal 10)) , 
-            (expr 
-              (literal 5)) ))))) ' \n 
+        (builtin_function 
+          (mid_function MID$ 
+            ( 
+              (expr 
+                (variable_or_function_call a$)) , 
+              (expr 
+                (literal 10)) , 
+              (expr 
+                (literal 5)) )))))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Text$) = 

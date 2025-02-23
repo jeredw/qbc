@@ -219,7 +219,7 @@ parse those using baked in rules.
 | `LPRINT USING`   | Statement   | ✅      | ⛔      |
 | `LSET`           | Statement   | ✅      | ⛔      |
 | `LTRIM$`         | Function    | -       | ⛔      |
-| `MID$`           | Function    | ✅      | ⛔      |
+| `MID$`           | Function    | ✅      | ✅      |
 | `MID$`           | Statement   | ✅      | ⛔      |
 | `MKD$`           | Function    | -       | ✅      |
 | `MKDIR`          | Statement   | -       | ⛔      |

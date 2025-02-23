@@ -346,12 +346,13 @@
                           (argument_list 
                             (argument 
                               (expr 
-                                (builtin_function MID$ 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call CommandLine$)) , 
-                                    (expr 
-                                      (variable_or_function_call SpacePos)) ))))) ))))) \r\n) 
+                                (builtin_function 
+                                  (mid_function MID$ 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call CommandLine$)) , 
+                                      (expr 
+                                        (variable_or_function_call SpacePos)) )))))) ))))) \r\n) 
               (else_block_statement ELSE 
                 (else_block \r\n 
                   (statement 

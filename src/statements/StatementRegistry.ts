@@ -48,6 +48,7 @@ import { ReturnStatement } from "./Return.ts";
 import {
   LcaseFunction,
   LeftFunction,
+  MidFunction,
   RightFunction,
   UcaseFunction
 } from "./Strings.ts";
@@ -215,6 +216,15 @@ export function lcase(params: BuiltinStatementArgs) {
 
 export function left(params: BuiltinStatementArgs) {
   return new LeftFunction(params);
+}
+
+export function mid(
+  token: Token,
+  string: parser.ExprContext,
+  start: parser.ExprContext,
+  length: parser.ExprContext | undefined,
+  result: Variable) {
+  return new MidFunction(token, string, start, length, result);
 }
 
 export function let_(variable: Variable, expr: parser.ExprContext) {

@@ -44,11 +44,12 @@
                         (argument_list 
                           (argument 
                             (expr 
-                              (builtin_function MID$ 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call X$)) , 
-                                  (expr 
-                                    (literal 2)) ))))) )))))) \r\n)) 
+                              (builtin_function 
+                                (mid_function MID$ 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call X$)) , 
+                                    (expr 
+                                      (literal 2)) )))))) )))))) \r\n)) 
         (end_if_statement END IF)) \r\n) 
     (end_function_statement END FUNCTION)) \r\n <EOF>)

@@ -4389,14 +4389,15 @@
                                             (expr 
                                               (literal "&h")) + 
                                             (expr 
-                                              (builtin_function MID$ 
-                                                ( 
-                                                  (expr 
-                                                    (variable_or_function_call Available$)) , 
-                                                  (expr 
-                                                    (variable_or_function_call I)) , 
-                                                  (expr 
-                                                    (literal 1)) )))))) ))))) \n 
+                                              (builtin_function 
+                                                (mid_function MID$ 
+                                                  ( 
+                                                    (expr 
+                                                      (variable_or_function_call Available$)) , 
+                                                    (expr 
+                                                      (variable_or_function_call I)) , 
+                                                    (expr 
+                                                      (literal 1)) ))))))) ))))) \n 
                             (statement 
                               (print_using_statement PRINT USING 
                                 (expr 

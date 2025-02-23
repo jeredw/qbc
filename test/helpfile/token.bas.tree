@@ -126,14 +126,15 @@
                           (variable_or_function_call Delim$))) , 
                       (argument 
                         (expr 
-                          (builtin_function MID$ 
-                            ( 
-                              (expr 
-                                (variable_or_function_call SaveStr$)) , 
-                              (expr 
-                                (variable_or_function_call BegPos%)) , 
-                              (expr 
-                                (literal 1)) ))))) ))) <> 
+                          (builtin_function 
+                            (mid_function MID$ 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call SaveStr$)) , 
+                                (expr 
+                                  (variable_or_function_call BegPos%)) , 
+                                (expr 
+                                  (literal 1)) )))))) ))) <> 
               (expr 
                 (literal 0)))) 
           (block \r\n 
@@ -183,14 +184,15 @@
                           (variable_or_function_call Delim$))) , 
                       (argument 
                         (expr 
-                          (builtin_function MID$ 
-                            ( 
-                              (expr 
-                                (variable_or_function_call SaveStr$)) , 
-                              (expr 
-                                (variable_or_function_call EndPos%)) , 
-                              (expr 
-                                (literal 1)) ))))) ))) = 
+                          (builtin_function 
+                            (mid_function MID$ 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call SaveStr$)) , 
+                                (expr 
+                                  (variable_or_function_call EndPos%)) , 
+                                (expr 
+                                  (literal 1)) )))))) ))) = 
               (expr 
                 (literal 0)))) 
           (block \r\n 
@@ -206,17 +208,18 @@
         (assignment_statement 
           (variable_or_function_call StrTok$) = 
           (expr 
-            (builtin_function MID$ 
-              ( 
-                (expr 
-                  (variable_or_function_call SaveStr$)) , 
-                (expr 
-                  (variable_or_function_call BegPos%)) , 
-                (expr 
+            (builtin_function 
+              (mid_function MID$ 
+                ( 
                   (expr 
-                    (variable_or_function_call EndPos%)) - 
+                    (variable_or_function_call SaveStr$)) , 
                   (expr 
-                    (variable_or_function_call BegPos%))) ))))) \r\n ' \r\n 
+                    (variable_or_function_call BegPos%)) , 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call EndPos%)) - 
+                    (expr 
+                      (variable_or_function_call BegPos%))) )))))) \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Start%) = 

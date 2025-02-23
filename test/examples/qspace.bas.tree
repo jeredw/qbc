@@ -2982,23 +2982,24 @@
             (statement 
               (print_statement PRINT 
                 (expr 
-                  (builtin_function MID$ 
-                    ( 
-                      (expr 
-                        (variable_or_function_call M$)) , 
-                      (expr 
+                  (builtin_function 
+                    (mid_function MID$ 
+                      ( 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call M$)) ))) - 
+                          (variable_or_function_call M$)) , 
                         (expr 
-                          (variable_or_function_call i))) , 
-                      (expr 
+                          (expr 
+                            (builtin_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call M$)) ))) - 
+                          (expr 
+                            (variable_or_function_call i))) , 
                         (expr 
-                          (variable_or_function_call ScreenWidth)) - 
-                        (expr 
-                          (literal 1))) ))))) ' \n 
+                          (expr 
+                            (variable_or_function_call ScreenWidth)) - 
+                          (expr 
+                            (literal 1))) )))))) ' \n 
             (statement 
               (call_statement 
                 (untyped_id UpdateTarget))) ' \n 

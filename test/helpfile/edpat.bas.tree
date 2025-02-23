@@ -282,14 +282,15 @@
                               (argument_list 
                                 (argument 
                                   (expr 
-                                    (builtin_function MID$ 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call Pattern$)) , 
-                                        (expr 
-                                          (variable_or_function_call ByteNum%)) , 
-                                        (expr 
-                                          (literal 1)) ))))) ))))) \r\n 
+                                    (builtin_function 
+                                      (mid_function MID$ 
+                                        ( 
+                                          (expr 
+                                            (variable_or_function_call Pattern$)) , 
+                                          (expr 
+                                            (variable_or_function_call ByteNum%)) , 
+                                          (expr 
+                                            (literal 1)) )))))) ))))) \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call CurrentByte%) = 
@@ -828,14 +829,15 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (builtin_function MID$ 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call Pattern$)) , 
-                                (expr 
-                                  (variable_or_function_call I%)) , 
-                                (expr 
-                                  (literal 1)) ))))) ))))) \r\n 
+                            (builtin_function 
+                              (mid_function MID$ 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call Pattern$)) , 
+                                  (expr 
+                                    (variable_or_function_call I%)) , 
+                                  (expr 
+                                    (literal 1)) )))))) ))))) \r\n 
             (statement 
               (print_statement PRINT 
                 (expr 
