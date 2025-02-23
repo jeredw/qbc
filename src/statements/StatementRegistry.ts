@@ -1,5 +1,6 @@
 import { AbsFunction } from "./Abs.ts";
-import { DimBoundsExprs, DimStatement, IndexArrayStatement } from "./Arrays.ts";
+import { DimBoundsExprs, DimStatement, IndexArrayStatement,
+         LboundFunction, UboundFunction } from "./Arrays.ts";
 import { AscFunction } from "./Asc.ts";
 import { AtnFunction, CosFunction, SinFunction, TanFunction } from "./Trig.ts";
 import { BeepStatement } from "./Beep.ts";
@@ -20,21 +21,21 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { BuiltinParams } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 
-export function abs(params: BuiltinParams) {
+export function abs(params: BuiltinStatementArgs) {
   return new AbsFunction(params);
 }
 
-export function asc(params: BuiltinParams) {
+export function asc(params: BuiltinStatementArgs) {
   return new AscFunction(params);
 }
 
-export function atn(params: BuiltinParams) {
+export function atn(params: BuiltinStatementArgs) {
   return new AtnFunction(params);
 }
 
-export function beep() {
+export function beep(_params: BuiltinStatementArgs) {
   return new BeepStatement();
 }
 
@@ -46,51 +47,51 @@ export function case_(test: Variable, condition: parser.Case_exprContext) {
   return new CaseStatement(test, condition);
 }
 
-export function cdbl(params: BuiltinParams) {
+export function cdbl(params: BuiltinStatementArgs) {
   return new CdblFunction(params);
 }
 
-export function chr(params: BuiltinParams) {
+export function chr(params: BuiltinStatementArgs) {
   return new ChrFunction(params);
 }
 
-export function csng(params: BuiltinParams) {
+export function csng(params: BuiltinStatementArgs) {
   return new CsngFunction(params);
 }
 
-export function cint(params: BuiltinParams) {
+export function cint(params: BuiltinStatementArgs) {
   return new CintFunction(params);
 }
 
-export function clng(params: BuiltinParams) {
+export function clng(params: BuiltinStatementArgs) {
   return new ClngFunction(params);
 }
 
-export function cos(params: BuiltinParams) {
+export function cos(params: BuiltinStatementArgs) {
   return new CosFunction(params);
 }
 
-export function cvi(params: BuiltinParams) {
+export function cvi(params: BuiltinStatementArgs) {
   return new CviFunction(params);
 }
 
-export function cvd(params: BuiltinParams) {
+export function cvd(params: BuiltinStatementArgs) {
   return new CvdFunction(params);
 }
 
-export function cvdmbf(params: BuiltinParams) {
+export function cvdmbf(params: BuiltinStatementArgs) {
   return new CvdmbfFunction(params);
 }
 
-export function cvl(params: BuiltinParams) {
+export function cvl(params: BuiltinStatementArgs) {
   return new CvlFunction(params);
 }
 
-export function cvs(params: BuiltinParams) {
+export function cvs(params: BuiltinStatementArgs) {
   return new CvsFunction(params);
 }
 
-export function cvsmbf(params: BuiltinParams) {
+export function cvsmbf(params: BuiltinStatementArgs) {
   return new CvsmbfFunction(params);
 }
 
@@ -166,6 +167,10 @@ export function indexArray(array: Variable, indexExprs: parser.ExprContext[], re
   return new IndexArrayStatement(array, indexExprs, result);
 }
 
+export function lbound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {
+  return new LboundFunction(token, array, result, whichExpr);
+}
+
 export function let_(variable: Variable, expr: parser.ExprContext) {
   return new LetStatement(variable, expr);
 }
@@ -174,27 +179,27 @@ export function loop(isWhile: boolean, expr: parser.ExprContext) {
   return new LoopTest(isWhile, expr);
 }
 
-export function mki(params: BuiltinParams) {
+export function mki(params: BuiltinStatementArgs) {
   return new MkiFunction(params);
 }
 
-export function mkd(params: BuiltinParams) {
+export function mkd(params: BuiltinStatementArgs) {
   return new MkdFunction(params);
 }
 
-export function mkdmbf(params: BuiltinParams) {
+export function mkdmbf(params: BuiltinStatementArgs) {
   return new MkdmbfFunction(params);
 }
 
-export function mkl(params: BuiltinParams) {
+export function mkl(params: BuiltinStatementArgs) {
   return new MklFunction(params);
 }
 
-export function mks(params: BuiltinParams) {
+export function mks(params: BuiltinStatementArgs) {
   return new MksFunction(params);
 }
 
-export function mksmbf(params: BuiltinParams) {
+export function mksmbf(params: BuiltinStatementArgs) {
   return new MksmbfFunction(params);
 }
 
@@ -210,12 +215,16 @@ export function return_(start: Token) {
   return new ReturnStatement(ControlFlowTag.GOSUB, start);
 }
 
-export function sin(params: BuiltinParams) {
+export function sin(params: BuiltinStatementArgs) {
   return new SinFunction(params);
 }
 
-export function tan(params: BuiltinParams) {
+export function tan(params: BuiltinStatementArgs) {
   return new TanFunction(params);
+}
+
+export function ubound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {
+  return new UboundFunction(token, array, result, whichExpr);
 }
 
 export function while_(expr: parser.ExprContext) {

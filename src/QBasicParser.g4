@@ -876,6 +876,18 @@ builtin_function
   | SEEK '(' expr ')'
   | STRIG '(' expr ')'
   | TIMER
+  | lbound_function
+  | ubound_function
+  ;
+
+// lbound and ubound take array arguments but do not append () to these like
+// function calls, so it's simpler to special case these.
+lbound_function
+  : LBOUND '(' array=ID (COMMA which=expr)? ')'
+  ;
+
+ubound_function
+  : UBOUND '(' array=ID (COMMA which=expr)? ')'
   ;
 
 // Identifiers can contain '.', and '.' is also how to look up type elements.

@@ -1,13 +1,13 @@
 import { double, ILLEGAL_FUNCTION_CALL, integer, isError, isNumeric, isString, long, NumericValue, OVERFLOW, single, string, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
-import { BuiltinParams } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
 import { asciiToChar, charToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override calculate(input: Value): Value {
@@ -19,8 +19,8 @@ export class CdblFunction extends BuiltinFunction1 {
 }
 
 export class CsngFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override calculate(input: Value): Value {
@@ -32,8 +32,8 @@ export class CsngFunction extends BuiltinFunction1 {
 }
 
 export class CintFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override calculate(input: Value): Value {
@@ -45,8 +45,8 @@ export class CintFunction extends BuiltinFunction1 {
 }
 
 export class ClngFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override calculate(input: Value): Value {
@@ -58,8 +58,8 @@ export class ClngFunction extends BuiltinFunction1 {
 }
 
 abstract class BytesToString extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override calculate(input: Value): Value {
@@ -74,8 +74,8 @@ abstract class BytesToString extends BuiltinFunction1 {
 }
 
 export class MkiFunction extends BytesToString {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override getBytes(input: NumericValue): number[] {
@@ -95,8 +95,8 @@ export class MkiFunction extends BytesToString {
 }
 
 export class MklFunction extends BytesToString {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override getBytes(input: NumericValue): number[] {
@@ -118,8 +118,8 @@ export class MklFunction extends BytesToString {
 }
 
 export class MksFunction extends BytesToString {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override getBytes(input: NumericValue): number[] {
@@ -134,8 +134,8 @@ export class MksFunction extends BytesToString {
 }
 
 export class MkdFunction extends BytesToString {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override getBytes(input: NumericValue): number[] {
@@ -149,8 +149,8 @@ export class MkdFunction extends BytesToString {
 }
 
 export class MksmbfFunction extends BytesToString {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override getBytes(input: NumericValue): number[] {
@@ -170,8 +170,8 @@ export class MksmbfFunction extends BytesToString {
 }
 
 export class MkdmbfFunction extends BytesToString {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override getBytes(input: NumericValue): number[] {
@@ -198,8 +198,8 @@ export class MkdmbfFunction extends BytesToString {
 abstract class StringToBytes extends BuiltinFunction1 {
   expectedNumBytes: number;
 
-  constructor(params: BuiltinParams, expectedNumBytes: number) {
-    super(params);
+  constructor(args: BuiltinStatementArgs, expectedNumBytes: number) {
+    super(args);
     this.expectedNumBytes = expectedNumBytes;
   }
 
@@ -224,8 +224,8 @@ abstract class StringToBytes extends BuiltinFunction1 {
 }
 
 export class CviFunction extends StringToBytes {
-  constructor(params: BuiltinParams) {
-    super(params, 2);
+  constructor(args: BuiltinStatementArgs) {
+    super(args, 2);
   }
 
   override getValue(bytes: number[]): Value {
@@ -234,8 +234,8 @@ export class CviFunction extends StringToBytes {
 }
 
 export class CvlFunction extends StringToBytes {
-  constructor(params: BuiltinParams) {
-    super(params, 4);
+  constructor(args: BuiltinStatementArgs) {
+    super(args, 4);
   }
 
   override getValue(bytes: number[]): Value {
@@ -244,8 +244,8 @@ export class CvlFunction extends StringToBytes {
 }
 
 export class CvsFunction extends StringToBytes {
-  constructor(params: BuiltinParams) {
-    super(params, 4);
+  constructor(args: BuiltinStatementArgs) {
+    super(args, 4);
   }
 
   override getValue(bytes: number[]): Value {
@@ -255,8 +255,8 @@ export class CvsFunction extends StringToBytes {
 }
 
 export class CvdFunction extends StringToBytes {
-  constructor(params: BuiltinParams) {
-    super(params, 8);
+  constructor(args: BuiltinStatementArgs) {
+    super(args, 8);
   }
 
   override getValue(bytes: number[]): Value {
@@ -266,8 +266,8 @@ export class CvdFunction extends StringToBytes {
 }
 
 export class CvsmbfFunction extends StringToBytes {
-  constructor(params: BuiltinParams) {
-    super(params, 4);
+  constructor(args: BuiltinStatementArgs) {
+    super(args, 4);
   }
 
   override getValue(bytes: number[]): Value {
@@ -276,8 +276,8 @@ export class CvsmbfFunction extends StringToBytes {
 }
 
 export class CvdmbfFunction extends StringToBytes {
-  constructor(params: BuiltinParams) {
-    super(params, 8);
+  constructor(args: BuiltinStatementArgs) {
+    super(args, 8);
   }
 
   override getValue(bytes: number[]): Value {

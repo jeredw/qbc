@@ -6935,12 +6935,9 @@
                               (expr 
                                 (variable_or_function_call Cursor)) < 
                               (expr 
-                                (variable_or_function_call UBOUND 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call i$)))) ))))) THEN 
+                                (builtin_function 
+                                  (ubound_function UBOUND 
+                                    ( i$ )))))) THEN 
                           (else_block \n 
                             (statement 
                               (assignment_statement 
@@ -7130,12 +7127,9 @@
                                   (expr 
                                     (variable_or_function_call Cursor)) = 
                                   (expr 
-                                    (variable_or_function_call UBOUND 
-                                      ( 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call i$)))) )))) THEN 
+                                    (builtin_function 
+                                      (ubound_function UBOUND 
+                                        ( i$ ))))) THEN 
                                 (if_inline_action 
                                   (statement 
                                     (assignment_statement 
@@ -7259,12 +7253,9 @@
           (expr 
             (literal 3)) TO 
           (expr 
-            (variable_or_function_call UBOUND 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call i$)))) ))) 
+            (builtin_function 
+              (ubound_function UBOUND 
+                ( i$ )))) 
           (block ' \n 
             (statement 
               (get_io_statement GET # 
@@ -7320,12 +7311,9 @@
                   (expr 
                     (variable_or_function_call WindowTop))) <= 
                 (expr 
-                  (variable_or_function_call UBOUND 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call i$)))) )))) THEN \n 
+                  (builtin_function 
+                    (ubound_function UBOUND 
+                      ( i$ ))))) THEN \n 
               (then_block 
                 (statement 
                   (print_statement PRINT 

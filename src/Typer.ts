@@ -18,7 +18,7 @@ import { ArrayBounds, Variable } from "./Variables.ts";
 import { SymbolTable, QBasicSymbol, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
 import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
-import { typeCheckExpression, parseLiteral } from "./Expressions.ts";
+import { typeCheckExpression, parseLiteral, evaluateExpression, evaluateAsConstantExpression } from "./Expressions.ts";
 import { StorageType } from "./Memory.ts";
 import { Builtin, StandardLibrary } from "./Builtins.ts";
 
@@ -270,14 +270,14 @@ export class Typer extends QBasicParserListener {
     // Look up arrays passed by reference and attach a symbol.  Other arguments
     // are looked up by Variable_or_function_call.
     if (ctx._array && ctx._array.text) {
-      const [name, sigil] = splitSigil(ctx._array.text);
-      const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-      const result = this._chunk.symbols.lookupArray(name, sigil, type, ctx._array);
+      const result = this.lookupArray(ctx._array);
       if (!result) {
         throw ParseError.fromToken(ctx._array, "Array not defined");
       }
       getTyperContext(ctx).$result = result;
     }
+    // Builtin array args for e.g. lbound, ubound will be parsed as variables,
+    // and actually will get looked up as scalars!
   }
 
   private makeSyntheticVariable(type: Type, token: Token): Variable {
@@ -371,15 +371,14 @@ export class Typer extends QBasicParserListener {
     const tryToEvaluateAsConstant = (expr: parser.ExprContext) => {
       let result: Value | undefined;
       try {
-        result = typeCheckExpression({
+        result = evaluateAsConstantExpression({
           expr,
-          constantExpression: true,
           resultType: { tag: TypeTag.INTEGER },
         });
       } catch (error: any) {
-        // Thrown errors from typeCheckExpression() mean this is not a constant
-        // expression.  This array bound must be dynamic, so swallow the error
-        // and return undefined.
+        // Thrown errors from evaluateAsConstantExpression() mean this is not a
+        // constant expression.  This array bound must be dynamic, so swallow
+        // the error and return undefined.
         return;
       }
       // Error values mean the expression had some known issue, like a type
@@ -655,9 +654,8 @@ export class Typer extends QBasicParserListener {
   override enterConst_statement = (ctx: parser.Const_statementContext) => {
     for (const assignment of ctx.const_assignment()) {
       const [name, sigil] = splitSigil(assignment.ID().getText());
-      const value = typeCheckExpression({
+      const value = evaluateAsConstantExpression({
         expr: assignment.const_expr().expr(),
-        constantExpression: true,
         ...(sigil ? {resultType: typeOfSigil(sigil)} : {}),
       });
       if (isError(value)) {
@@ -669,6 +667,42 @@ export class Typer extends QBasicParserListener {
 
   override enterInclude_metacommand = (ctx: parser.Include_metacommandContext) => {
     throw ParseError.fromToken(ctx.start!, "Advanced feature unavailable")
+  }
+
+  override enterLbound_function = (ctx: parser.Lbound_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+    if (!ctx._array) {
+      throw new Error("missing array");
+    }
+    const array = this.lookupArray(ctx._array);
+    if (!array) {
+      throw ParseError.fromToken(ctx._array, "Array not defined");
+    }
+    getTyperContext(ctx).$result = array;
+  }
+
+  override enterUbound_function = (ctx: parser.Ubound_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+    if (!ctx._array) {
+      throw new Error("missing array");
+    }
+    const array = this.lookupArray(ctx._array);
+    if (!array) {
+      throw ParseError.fromToken(ctx._array, "Array not defined");
+    }
+    getTyperContext(ctx).$result = array;
+  }
+
+  private lookupArray(token: Token): Variable {
+    const [name, sigil] = splitSigil(token.text!);
+    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const result = this._chunk.symbols.lookupArray(name, sigil, type, token);
+    if (!result) {
+      throw ParseError.fromToken(token, "Array not defined");
+    }
+    return result;
   }
 
   private parseParameterList(ctx: parser.Parameter_listContext | null): Variable[] {

@@ -1,34 +1,33 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { Variable } from "../Variables.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { evaluateExpression } from "../Expressions.ts";
 import { isError, Value } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
-import { BuiltinParams } from "../Builtins.ts";
+import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 
 export abstract class BuiltinFunction1 extends Statement {
   token: Token;
-  params: ExprContext[];
+  params: BuiltinParam[];
   result: Variable;
 
-  constructor(params: BuiltinParams) {
+  constructor({token, params, result}: BuiltinStatementArgs) {
     super();
-    this.token = params.token;
-    this.params = params.params;
-    if (this.params.length != 1) {
-      throw new Error("expecting one argument");
+    this.token = token;
+    this.params = params;
+    if (this.params.length != 1 || !this.params[0].expr) {
+      throw new Error("expecting one expr argument");
     }
-    if (!params.result) {
+    if (!result) {
       throw new Error("expecting result")
     }
-    this.result = params.result;
+    this.result = result;
   }
 
   override execute(context: ExecutionContext) {
     const input = evaluateExpression({
-      expr: this.params[0],
+      expr: this.params[0].expr!,
       memory: context.memory
     });
     const output = this.calculate(input);

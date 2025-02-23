@@ -5,6 +5,8 @@ import {
   UnaryMinusExprContext,
   ValueExprContext,
   VarCallExprContext,
+  BuiltinExprContext,
+  Builtin_functionContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTreeWalker } from "antlr4ng";
@@ -15,16 +17,27 @@ import { isConstant, isVariable } from "./SymbolTable.ts";
 import { Memory } from "./Memory.ts";
 import { Variable } from "./Variables.ts";
 
-export function typeCheckExpression({
+export function evaluateAsConstantExpression({
   expr,
-  constantExpression,
   resultType,
 }: {
   expr: ExprContext,
-  constantExpression?: boolean,
   resultType?: Type,
 }): values.Value {
-  const expressionListener = new ExpressionListener(!!constantExpression);
+  const expressionListener = new ExpressionListener(true);
+  ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
+  const result = expressionListener.getResult();
+  return resultType ? values.cast(result, resultType) : result;
+}
+
+export function typeCheckExpression({
+  expr,
+  resultType,
+}: {
+  expr: ExprContext,
+  resultType?: Type,
+}): values.Value {
+  const expressionListener = new ExpressionListener(false);
   ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
   const result = expressionListener.getResult();
   return resultType ? values.cast(result, resultType) : result;
@@ -32,16 +45,14 @@ export function typeCheckExpression({
 
 export function evaluateExpression({
   expr,
-  constantExpression,
   resultType,
   memory,
 }: {
   expr: ExprContext,
-  constantExpression?: boolean,
   resultType?: Type,
   memory: Memory,
 }): values.Value {
-  const expressionListener = new ExpressionListener(!!constantExpression, memory);
+  const expressionListener = new ExpressionListener(false, memory);
   ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
   const result = expressionListener.getResult();
   return resultType ? values.cast(result, resultType) : result;
@@ -58,7 +69,7 @@ class ExpressionListener extends QBasicParserListener {
     super();
     this._constantExpression = constantExpression;
     this._callExpressionDepth = 0;
-    this._typeCheck = !memory;
+    this._typeCheck = !memory && !constantExpression;
     this._memory = memory;
   }
 
@@ -167,6 +178,17 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     this.push(parseLiteral(ctx.getText()));
+  }
+
+  override exitBuiltin_function = (ctx: Builtin_functionContext) => {
+    if (this._callExpressionDepth > 0) {
+      return;
+    }
+    const result = ctx['$result'];
+    if (!result) {
+      throw new Error('missing result variable');
+    }
+    this.push(this.readVariable(result));
   }
 
   override enterVarCallExpr = (dispatchCtx: VarCallExprContext) => {

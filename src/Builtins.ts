@@ -5,23 +5,29 @@ import { Variable } from "./Variables.ts";
 import { Token } from "antlr4ng";
 import * as statements from "./statements/StatementRegistry.ts";
 
-export interface BuiltinParams {
-  token: Token;
-  params: ExprContext[];
-  result?: Variable;
-}
-
-export interface BuiltinArgument {
-  type: Type;
-  wantArray?: boolean;
-  optional?: boolean;
-}
-
 export interface Builtin {
   name: string;
   returnType?: Type;
-  arguments: BuiltinArgument[];
-  statement: (params: BuiltinParams) => Statement;
+  arguments: BuiltinArgumentSpec[];
+  statement: StatementFactory;
+}
+
+export interface BuiltinArgumentSpec {
+  type: Type;
+  optional?: boolean;
+}
+
+type StatementFactory = (args: BuiltinStatementArgs) => Statement;
+
+export interface BuiltinStatementArgs {
+  token: Token;
+  params: BuiltinParam[];
+  result?: Variable;
+}
+
+export interface BuiltinParam {
+  expr?: ExprContext;
+  variable?: Variable;
 }
 
 let _ = parseBuiltinSpec;
@@ -59,15 +65,18 @@ export class StandardLibrary {
   }
 }
 
-function parseBuiltinSpec(spec: string, statement: (params: BuiltinParams) => Statement): [string, Builtin] {
-  const result = spec.match(/^([a-z]+)(\s+[a-z?, ]+)?(->\s+[a-z]+)?/);
+function parseBuiltinSpec(spec: string, statement: StatementFactory): [string, Builtin] {
+  const result = spec.match(/^([a-z]+)(\s+[a-z? ]+)?(->\s+[a-z]+)?/);
   if (!result) {
     throw new Error(`invalid builtin definition: ${spec}`);
   }
   const [_, name, argSpec, returnSpec] = result;
-  const args: BuiltinArgument[] = [];
+  const args: BuiltinArgumentSpec[] = [];
   if (argSpec) {
-    for (let argType of argSpec.split(/\s*,\s*/)) {
+    for (let argType of argSpec.split(/\s+/)) {
+      if (!argType) {
+        continue;
+      }
       const optional = argType.endsWith('?');
       if (argType.endsWith('?')) {
         argType = argType.slice(0, -1);
@@ -83,7 +92,7 @@ function parseBuiltinSpec(spec: string, statement: (params: BuiltinParams) => St
   return [name, {name, arguments: args, returnType, statement}];
 }
 
-function parseTypeSpec(name: string, optional: boolean): BuiltinArgument {
+function parseTypeSpec(name: string, optional: boolean): BuiltinArgumentSpec {
   switch (name) {
     case "single": return {type: {tag: TypeTag.SINGLE}, optional};
     case "double": return {type: {tag: TypeTag.DOUBLE}, optional};
@@ -91,7 +100,6 @@ function parseTypeSpec(name: string, optional: boolean): BuiltinArgument {
     case "long": return {type: {tag: TypeTag.LONG}, optional};
     case "string": return {type: {tag: TypeTag.STRING}, optional};
     case "numeric": return {type: {tag: TypeTag.NUMERIC}, optional};
-    case "array": return {type: {tag: TypeTag.ANY}, wantArray: true, optional};
   }
   throw new Error(`invalid argument ${name}`);
 }

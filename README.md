@@ -200,7 +200,7 @@ parse those using baked in rules.
 | `KEY` Assignment | Statement   | ✅      | ⛔      |
 | `KEY` Event      | Statement   | ✅      | ⛔      |
 | `KILL`           | Statement   | -       | ⛔      |
-| `LBOUND`         | Function    | -       | ⛔      |
+| `LBOUND`         | Function    | ✅      | ✅      |
 | `LCASE$`         | Function    | -       | ⛔      |
 | `LEFT$`          | Function    | -       | ⛔      |
 | `LEN`            | Function    | ✅      | ⛔      |
@@ -323,7 +323,7 @@ parse those using baked in rules.
 | `TROFF`          | Statement   | -       | ⛔      |
 | `TRON`           | Statement   | -       | ⛔      |
 | `TYPE`           | Statement   | ✅      | ✅      |
-| `UBOUND`         | Function    | -       | ⛔      |
+| `UBOUND`         | Function    | ✅      | ✅      |
 | `UCASE$`         | Function    | -       | ⛔      |
 | `UNLOCK`         | Statement   | ✅      | ⛔      |
 | `UNTIL`          | Keyword     | ✅      | ✅      |

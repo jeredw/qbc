@@ -2,11 +2,11 @@ import { RuntimeError } from "../Errors.ts";
 import { ILLEGAL_FUNCTION_CALL, integer, isString, Value } from "../Values.ts";
 import { charToAscii } from "../AsciiChart.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
-import { BuiltinParams } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 
 export class AscFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override calculate(input: Value): Value {

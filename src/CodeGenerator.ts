@@ -15,7 +15,7 @@ import { Procedure } from "./Procedures.ts";
 import { BranchIndexStatement } from "./statements/Branch.ts";
 import { StorageType } from "./Memory.ts";
 import { StackVariable } from "./statements/Call.ts";
-import { Builtin } from "./Builtins.ts";
+import { Builtin, BuiltinParam } from "./Builtins.ts";
 import { DimBoundsExprs } from "./statements/Arrays.ts";
 
 export interface CodeGeneratorContext {
@@ -263,16 +263,23 @@ export class CodeGenerator extends QBasicParserListener {
       throw ParseError.fromToken(token, "Duplicate definition");
     }
     const args = argumentListCtx?.argument() ?? [];
-    if (builtin.arguments.length != args.length) {
+    if (args.length > builtin.arguments.length) {
       throw ParseError.fromToken(token, "Argument-count mismatch");
     }
-    const params: parser.ExprContext[] = [];
-    for (let i = 0; i < args.length; i++) {
+    const params: BuiltinParam[] = [];
+    for (let i = 0; i < builtin.arguments.length; i++) {
+      if (!args[i]) {
+        if (builtin.arguments[i].optional) {
+          params.push({});
+          continue;
+        }
+        throw ParseError.fromToken(token, "Argument-count mismatch");
+      }
       const parseExpr = args[i].expr();
       if (!parseExpr) {
         throw new Error("unimplemented");
       }
-      params.push(this.compileExpression(parseExpr, args[i].start!, builtin.arguments[i].type));
+      params.push({expr: this.compileExpression(parseExpr, args[i].start!, builtin.arguments[i].type)});
     }
     this.addStatement(builtin.statement({token, params, result}));
   }
@@ -794,6 +801,30 @@ export class CodeGenerator extends QBasicParserListener {
             return;
           }
         }
+      }
+
+      override exitLbound_function = (ctx: parser.Lbound_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const array = getTyperContext(ctx).$result;
+        if (!array || !array.array) {
+          throw new Error("missing arary variable");
+        }
+        codeGenerator.addStatement(statements.lbound(ctx.start!, array, result, ctx._which));
+      }
+
+      override exitUbound_function = (ctx: parser.Ubound_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const array = getTyperContext(ctx).$result;
+        if (!array || !array.array) {
+          throw new Error("missing arary variable");
+        }
+        codeGenerator.addStatement(statements.ubound(ctx.start!, array, result, ctx._which));
       }
     }, expr);
     if (resultType && token) {

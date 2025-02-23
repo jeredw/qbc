@@ -4,7 +4,7 @@ import { RuntimeError } from "../Errors.ts";
 import { evaluateExpression } from "../Expressions.ts";
 import { StorageType } from "../Memory.ts";
 import { TypeTag } from "../Types.ts";
-import { array, DUPLICATE_DEFINITION, isArray, isError, isNumeric, reference, SUBSCRIPT_OUT_OF_RANGE, TYPE_MISMATCH } from "../Values.ts";
+import { array, DUPLICATE_DEFINITION, integer, isArray, isError, isNumeric, reference, SUBSCRIPT_OUT_OF_RANGE, TYPE_MISMATCH, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -104,6 +104,75 @@ export class IndexArrayStatement extends Statement {
       frameIndex: descriptor.baseAddress!.frameIndex,
       index: descriptor.baseAddress!.index + offset
     }));
+  }
+}
+
+abstract class ArrayBoundFunction extends Statement {
+  token: Token;
+  array: Variable;
+  whichExpr: ExprContext | undefined;
+  result: Variable;
+
+  constructor(token: Token, array: Variable, result: Variable, whichExpr?: ExprContext) {
+    super();
+    this.token = token;
+    this.array = array;
+    this.whichExpr = whichExpr;
+    this.result = result;
+  }
+
+  override execute(context: ExecutionContext) {
+    const which =
+      this.whichExpr ? evaluateIntegerExpression(this.whichExpr, context) : 1;
+    const output = this.getBound(context, which);
+    if (isError(output)) {
+      throw RuntimeError.fromToken(this.token, output);
+    }
+    context.memory.write(this.result.address!, output);
+  }
+
+  abstract getBound(context: ExecutionContext, which: number): Value;
+}
+
+export class LboundFunction extends ArrayBoundFunction {
+  constructor(token: Token, array: Variable, result: Variable, whichExpr?: ExprContext) {
+    super(token, array, result, whichExpr);
+  }
+
+  override getBound(context: ExecutionContext, which: number): Value {
+    const descriptor = getArrayDescriptor(this.array, context);
+    if (which == 0) {
+      return integer(0);
+    }
+    if (which < 0 || which > descriptor.dimensions.length) {
+      throw RuntimeError.fromToken(this.token, SUBSCRIPT_OUT_OF_RANGE);
+    }
+    const lower = descriptor.dimensions[which - 1].lower;
+    if (lower === undefined) {
+      throw new Error("undefined array bound")
+    }
+    return integer(lower);
+  }
+}
+
+export class UboundFunction extends ArrayBoundFunction {
+  constructor(token: Token, array: Variable, result: Variable, whichExpr?: ExprContext) {
+    super(token, array, result, whichExpr);
+  }
+
+  override getBound(context: ExecutionContext, which: number): Value {
+    const descriptor = getArrayDescriptor(this.array, context);
+    if (which == 0) {
+      return integer(-1);
+    }
+    if (which < 0 || which > descriptor.dimensions.length) {
+      throw RuntimeError.fromToken(this.token, SUBSCRIPT_OUT_OF_RANGE);
+    }
+    const upper = descriptor.dimensions[which - 1].upper;
+    if (upper === undefined) {
+      throw new Error("undefined array bound")
+    }
+    return integer(upper);
   }
 }
 

@@ -7883,12 +7883,9 @@
       (if_block_statement IF 
         (expr 
           (expr 
-            (variable_or_function_call UBOUND 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Monsters)))) ))) <> 
+            (builtin_function 
+              (ubound_function UBOUND 
+                ( Monsters )))) <> 
           (expr 
             (variable_or_function_call AvailMonsters))) THEN ' 
         (then_block \n 

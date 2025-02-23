@@ -71,48 +71,32 @@
       (statement 
         (for_next_statement FOR I% = 
           (expr 
-            (variable_or_function_call LBOUND 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call A))) , 
-                  (argument 
-                    (expr 
-                      (literal 1)))) ))) TO 
+            (builtin_function 
+              (lbound_function LBOUND 
+                ( A , 
+                  (expr 
+                    (literal 1)) )))) TO 
           (expr 
-            (variable_or_function_call UBOUND 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call A))) , 
-                  (argument 
-                    (expr 
-                      (literal 1)))) ))) 
+            (builtin_function 
+              (ubound_function UBOUND 
+                ( A , 
+                  (expr 
+                    (literal 1)) )))) 
           (block \r\n 
             (statement 
               (for_next_statement FOR J% = 
                 (expr 
-                  (variable_or_function_call LBOUND 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call A))) , 
-                        (argument 
-                          (expr 
-                            (literal 2)))) ))) TO 
+                  (builtin_function 
+                    (lbound_function LBOUND 
+                      ( A , 
+                        (expr 
+                          (literal 2)) )))) TO 
                 (expr 
-                  (variable_or_function_call UBOUND 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call A))) , 
-                        (argument 
-                          (expr 
-                            (literal 2)))) ))) 
+                  (builtin_function 
+                    (ubound_function UBOUND 
+                      ( A , 
+                        (expr 
+                          (literal 2)) )))) 
                 (block \r\n 
                   (statement 
                     (print_statement PRINT 

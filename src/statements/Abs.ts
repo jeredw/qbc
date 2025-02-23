@@ -1,10 +1,10 @@
 import { isNumeric, numericTypeOf, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
-import { BuiltinParams } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 
 export class AbsFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
-    super(params);
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
   }
 
   override calculate(input: Value): Value {

@@ -1,0 +1,11 @@
+dim x(-42 to 10)
+print lbound(x)
+print ubound(x)
+
+dim y(1, 2)
+print lbound(y, 0)
+print lbound(y, 1)
+print lbound(y, 2)
+print ubound(y, 0)
+print ubound(y, 1)
+print ubound(y, 2)
