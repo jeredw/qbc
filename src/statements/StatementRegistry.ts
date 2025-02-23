@@ -46,10 +46,12 @@ import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import {
+  HexFunction,
   LcaseFunction,
   LeftFunction,
   LtrimFunction,
   MidFunction,
+  OctFunction,
   RightFunction,
   RtrimFunction,
   SpaceFunction,
@@ -201,6 +203,10 @@ export function gosubIndex(expr: parser.ExprContext) {
   return new BranchIndexStatement({gosub: true, expr});
 }
 
+export function hex(params: BuiltinStatementArgs) {
+  return new HexFunction(params);
+}
+
 export function if_(expr: parser.ExprContext) {
   return new IfTest(expr);
 }
@@ -272,6 +278,10 @@ export function mksmbf(params: BuiltinStatementArgs) {
 
 export function next(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {
   return new NextStatement(forToken, counter, end, increment);
+}
+
+export function oct(params: BuiltinStatementArgs) {
+  return new OctFunction(params);
 }
 
 export function print(ast: parser.Print_statementContext) {

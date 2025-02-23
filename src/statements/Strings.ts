@@ -177,3 +177,41 @@ export class SpaceFunction extends BuiltinFunction1 {
     return string(' '.repeat(input.number));
   }
 }
+
+export class HexFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    if (input.number <= -32768) {
+      return string((0x100000000 + input.number).toString(16).toUpperCase());
+    }
+    if (input.number < 0) {
+      return string((0x10000 + input.number).toString(16).toUpperCase());
+    }
+    return string(input.number.toString(16).toUpperCase());
+  }
+}
+
+export class OctFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    if (input.number <= -32768) {
+      return string((0x100000000 + input.number).toString(8).toUpperCase());
+    }
+    if (input.number < 0) {
+      return string((0x10000 + input.number).toString(8).toUpperCase());
+    }
+    return string(input.number.toString(8).toUpperCase());
+  }
+}

@@ -185,7 +185,7 @@ parse those using baked in rules.
 | `GET` Graphics   | Statement   | ✅      | ⛔      |
 | `GOSUB`          | Statement   | ✅      | ✅      |
 | `GOTO`           | Statement   | ✅      | ✅      |
-| `HEX$`           | Function    | -       | ⛔      |
+| `HEX$`           | Function    | -       | ✅      |
 | `IF`...`THEN`... | Statement   | ✅      | ✅      |
 | `IMP`            | Operator    | ✅      | ⛔      |
 | `INKEY$`         | Function    | -       | ⛔      |
@@ -232,7 +232,7 @@ parse those using baked in rules.
 | `NAME`           | Statement   | ✅      | ⛔      |
 | `NEXT`           | Keyword     | ✅      | ✅      |
 | `NOT`            | Operator    | ✅      | ✅      |
-| `OCT$`           | Function    | -       | ⛔      |
+| `OCT$`           | Function    | -       | ✅      |
 | `OFF`            | Keyword     | ✅      | ⛔      |
 | `ON COM`         | Statement   | ✅      | ⛔      |
 | `ON ERROR`       | Statement   | ✅      | ⛔      |
