@@ -59,6 +59,7 @@ export class StandardLibrary {
     _("mks numeric -> string", statements.mks),
     _("mksmbf numeric -> string", statements.mksmbf),
     _("sin double -> double", statements.sin),
+    _("sgn numeric -> numeric", statements.sgn),
     _("tan double -> double", statements.tan),
   ]);
 

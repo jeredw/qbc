@@ -5,6 +5,7 @@ import {
   ExpFunction,
   LogFunction,
   SinFunction,
+  SgnFunction,
   TanFunction
  } from "./Math.ts";
 import {
@@ -248,6 +249,10 @@ export function print(ast: parser.Print_statementContext) {
 
 export function return_(start: Token) {
   return new ReturnStatement(ControlFlowTag.GOSUB, start);
+}
+
+export function sgn(params: BuiltinStatementArgs) {
+  return new SgnFunction(params);
 }
 
 export function sin(params: BuiltinStatementArgs) {

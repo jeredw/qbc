@@ -1,0 +1,6 @@
+print sgn(-42)
+print sgn(-42.245)
+print sgn(0)
+print sgn(0#)
+print sgn(1e2)
+print sgn(2 + 2)

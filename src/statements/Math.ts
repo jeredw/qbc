@@ -78,6 +78,19 @@ export class LogFunction extends BuiltinFunction1 {
   }
 }
 
+export class SgnFunction extends BuiltinFunction1 {
+  constructor(params: BuiltinStatementArgs) {
+    super(params);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    return numericTypeOf(input)(input.number < 0 ? -1 : input.number === 0 ? 0 : 1);
+  }
+}
+
 export class SinFunction extends BuiltinFunction1 {
   constructor(params: BuiltinStatementArgs) {
     super(params);
