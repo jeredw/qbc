@@ -1,21 +1,47 @@
-import { AbsFunction } from "./Abs.ts";
-import { DimBoundsExprs, DimStatement, IndexArrayStatement,
-         LboundFunction, UboundFunction } from "./Arrays.ts";
+import {
+  AbsFunction,
+  AtnFunction,
+  CosFunction,
+  ExpFunction,
+  LogFunction,
+  SinFunction,
+  TanFunction
+ } from "./Math.ts";
+import {
+  DimBoundsExprs,
+  DimStatement,
+  IndexArrayStatement,
+  LboundFunction,
+  UboundFunction
+} from "./Arrays.ts";
 import { AscFunction } from "./Asc.ts";
-import { AtnFunction, CosFunction, SinFunction, TanFunction } from "./Trig.ts";
 import { BeepStatement } from "./Beep.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { ChrFunction } from "./Chr.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
-import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
-         CvdFunction, CvdmbfFunction, CviFunction, CvlFunction, CvsFunction, CvsmbfFunction,
-         MkdFunction, MkdmbfFunction, MkiFunction, MklFunction, MksFunction, MksmbfFunction } from "./Convert.ts";
+import {
+  CdblFunction,
+  CintFunction,
+  ClngFunction,
+  CsngFunction,
+  CvdFunction,
+  CvdmbfFunction,
+  CviFunction,
+  CvlFunction,
+  CvsFunction,
+  CvsmbfFunction,
+  MkdFunction,
+  MkdmbfFunction,
+  MkiFunction,
+  MklFunction,
+  MksFunction,
+  MksmbfFunction
+} from "./Convert.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
-import { ExpFunction, LogFunction } from "./Log.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import * as parser from "../../build/QBasicParser.ts";
