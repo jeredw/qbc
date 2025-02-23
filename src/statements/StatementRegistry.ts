@@ -48,8 +48,10 @@ import { ReturnStatement } from "./Return.ts";
 import {
   LcaseFunction,
   LeftFunction,
+  LtrimFunction,
   MidFunction,
   RightFunction,
+  RtrimFunction,
   UcaseFunction
 } from "./Strings.ts";
 import * as parser from "../../build/QBasicParser.ts";
@@ -218,6 +220,10 @@ export function left(params: BuiltinStatementArgs) {
   return new LeftFunction(params);
 }
 
+export function ltrim(params: BuiltinStatementArgs) {
+  return new LtrimFunction(params);
+}
+
 export function mid(
   token: Token,
   string: parser.ExprContext,
@@ -277,6 +283,10 @@ export function return_(start: Token) {
 
 export function right(params: BuiltinStatementArgs) {
   return new RightFunction(params);
+}
+
+export function rtrim(params: BuiltinStatementArgs) {
+  return new RtrimFunction(params);
 }
 
 export function sgn(params: BuiltinStatementArgs) {

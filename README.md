@@ -218,7 +218,7 @@ parse those using baked in rules.
 | `LPRINT`         | Statement   | ✅      | ⛔      |
 | `LPRINT USING`   | Statement   | ✅      | ⛔      |
 | `LSET`           | Statement   | ✅      | ⛔      |
-| `LTRIM$`         | Function    | -       | ⛔      |
+| `LTRIM$`         | Function    | -       | ✅      |
 | `MID$`           | Function    | ✅      | ✅      |
 | `MID$`           | Statement   | ✅      | ⛔      |
 | `MKD$`           | Function    | -       | ✅      |
@@ -282,7 +282,7 @@ parse those using baked in rules.
 | `RMDIR`          | Statement   | -       | ⛔      |
 | `RND`            | Function    | -       | ⛔      |
 | `RSET`           | Statement   | ✅      | ⛔      |
-| `RTRIM$`         | Function    | -       | ⛔      |
+| `RTRIM$`         | Function    | -       | ✅      |
 | `RUN`            | Statement   | -       | ⛔      |
 | `SCREEN`         | Function    | ✅      | ⛔      |
 | `SCREEN`         | Statement   | ✅      | ⛔      |

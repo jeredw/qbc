@@ -135,3 +135,29 @@ export class MidFunction extends Statement {
     context.memory.write(this.result.address!, string(value));
   }
 }
+
+export class LtrimFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isString(input)) {
+      throw new Error("expecting string");
+    }
+    return string(input.string.replace(/^ */, ''));
+  }
+}
+
+export class RtrimFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isString(input)) {
+      throw new Error("expecting string");
+    }
+    return string(input.string.replace(/ *$/, ''));
+  }
+}
