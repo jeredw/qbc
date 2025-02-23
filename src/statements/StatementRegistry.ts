@@ -56,7 +56,8 @@ import {
   RightFunction,
   RtrimFunction,
   SpaceFunction,
-  UcaseFunction
+  UcaseFunction,
+  ValFunction,
 } from "./Strings.ts";
 import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
@@ -327,6 +328,10 @@ export function ubound(token: Token, array: Variable, result: Variable, whichExp
 
 export function ucase(args: BuiltinStatementArgs) {
   return new UcaseFunction(args);
+}
+
+export function val(args: BuiltinStatementArgs) {
+  return new ValFunction(args);
 }
 
 export function while_(expr: parser.ExprContext) {

@@ -332,7 +332,7 @@ parse those using baked in rules.
 | `UNLOCK`         | Statement   | ✅      | ⛔      |
 | `UNTIL`          | Keyword     | ✅      | ✅      |
 | `USING`          | Keyword     | ✅      | ⛔      |
-| `VAL`            | Function    | -       | ⛔      |
+| `VAL`            | Function    | -       | 🚧      |
 | `VARPTR`         | Function    | -       | ⛔      |
 | `VARPTR$`        | Function    | -       | ⛔      |
 | `VARSEG`         | Function    | -       | ⛔      |

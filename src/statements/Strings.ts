@@ -1,12 +1,12 @@
 
-import { ILLEGAL_FUNCTION_CALL, Value, isError, isNumeric, isString, string } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, Value, cast, double, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, parseLiteral } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
@@ -213,5 +213,22 @@ export class OctFunction extends BuiltinFunction1 {
       return string((0x10000 + input.number).toString(8).toUpperCase());
     }
     return string(input.number.toString(8).toUpperCase());
+  }
+}
+
+export class ValFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isString(input)) {
+      throw new Error("expecting string");
+    }
+    const value = parseLiteral(input.string);
+    if (!isNumeric(value) || isError(value)) {
+      return cast(double(0), this.result.type);
+    }
+    return cast(value, this.result.type);
   }
 }

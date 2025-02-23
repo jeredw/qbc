@@ -71,6 +71,7 @@ export class StandardLibrary {
     _("space numeric -> string", statements.space),
     _("tan double -> double", statements.tan),
     _("ucase string -> string", statements.ucase),
+    _("val string -> double", statements.val),
   ]);
 
   lookup(name: string): Builtin | undefined {

@@ -1,0 +1,26 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call chr$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 34)))) ))) + 
+                    (expr 
+                      (literal "hello"))) + 
+                  (expr 
+                    (variable_or_function_call chr$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 34)))) )))))) ))))) \n <EOF>)

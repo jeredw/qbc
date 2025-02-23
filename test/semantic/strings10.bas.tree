@@ -1,0 +1,100 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "&h42")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "&o20")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "50000&")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "-24.44")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "2+2")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "1e100")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "1d+100")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "=")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "moo")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "  42  ")))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call val 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "")))) ))))) \n <EOF>)

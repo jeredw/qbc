@@ -1,0 +1,1 @@
+print val(chr$(34) + "hello" + chr$(34))
