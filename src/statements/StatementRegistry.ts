@@ -15,6 +15,7 @@ import { CdblFunction, CintFunction, ClngFunction, CsngFunction,
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
+import { LogFunction } from "./Log.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import * as parser from "../../build/QBasicParser.ts";
@@ -177,6 +178,10 @@ export function let_(variable: Variable, expr: parser.ExprContext) {
 
 export function loop(isWhile: boolean, expr: parser.ExprContext) {
   return new LoopTest(isWhile, expr);
+}
+
+export function log(params: BuiltinStatementArgs) {
+  return new LogFunction(params);
 }
 
 export function mki(params: BuiltinStatementArgs) {

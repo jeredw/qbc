@@ -211,7 +211,7 @@ parse those using baked in rules.
 | `LOCATE`         | Statement   | ✅      | ⛔      |
 | `LOCK`           | Statement   | ✅      | ⛔      |
 | `LOF`            | Function    | -       | ⛔      |
-| `LOG`            | Function    | -       | ⛔      |
+| `LOG`            | Function    | -       | ✅      |
 | `LONG`           | Keyword     | ✅      | ✅      |
 | `LOOP`           | Keyword     | ✅      | ✅      |
 | `LPOS`           | Function    | -       | ⛔      |

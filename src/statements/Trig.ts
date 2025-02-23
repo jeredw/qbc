@@ -1,9 +1,9 @@
 import { cast, double, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
-import { BuiltinParams } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 
 export class AtnFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
+  constructor(params: BuiltinStatementArgs) {
     super(params);
   }
 
@@ -16,7 +16,7 @@ export class AtnFunction extends BuiltinFunction1 {
 }
 
 export class CosFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
+  constructor(params: BuiltinStatementArgs) {
     super(params);
   }
 
@@ -29,7 +29,7 @@ export class CosFunction extends BuiltinFunction1 {
 }
 
 export class SinFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
+  constructor(params: BuiltinStatementArgs) {
     super(params);
   }
 
@@ -42,7 +42,7 @@ export class SinFunction extends BuiltinFunction1 {
 }
 
 export class TanFunction extends BuiltinFunction1 {
-  constructor(params: BuiltinParams) {
+  constructor(params: BuiltinStatementArgs) {
     super(params);
   }
 
