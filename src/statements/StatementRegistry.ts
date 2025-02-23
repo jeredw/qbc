@@ -52,6 +52,7 @@ import {
   MidFunction,
   RightFunction,
   RtrimFunction,
+  SpaceFunction,
   UcaseFunction
 } from "./Strings.ts";
 import * as parser from "../../build/QBasicParser.ts";
@@ -295,6 +296,10 @@ export function sgn(params: BuiltinStatementArgs) {
 
 export function sin(params: BuiltinStatementArgs) {
   return new SinFunction(params);
+}
+
+export function space(params: BuiltinStatementArgs) {
+  return new SpaceFunction(params);
 }
 
 export function tan(params: BuiltinStatementArgs) {

@@ -1,5 +1,5 @@
 
-import { ILLEGAL_FUNCTION_CALL, Value, isError, isString, string } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, Value, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
@@ -159,5 +159,21 @@ export class RtrimFunction extends BuiltinFunction1 {
       throw new Error("expecting string");
     }
     return string(input.string.replace(/ *$/, ''));
+  }
+}
+
+export class SpaceFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    if (input.number < 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    return string(' '.repeat(input.number));
   }
 }

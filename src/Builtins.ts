@@ -65,6 +65,7 @@ export class StandardLibrary {
     _("rtrim string -> string", statements.rtrim),
     _("sin double -> double", statements.sin),
     _("sgn numeric -> numeric", statements.sgn),
+    _("space numeric -> string", statements.space),
     _("tan double -> double", statements.tan),
     _("ucase string -> string", statements.ucase),
   ]);

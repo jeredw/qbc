@@ -1,0 +1,37 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call space$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 5)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call space$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 3)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call space$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call space$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))))) \n <EOF>)

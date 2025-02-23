@@ -296,7 +296,7 @@ parse those using baked in rules.
 | `SINGLE`         | Keyword     | ✅      | ✅      |
 | `SLEEP`          | Statement   | -       | ⛔      |
 | `SOUND`          | Statement   | -       | ⛔      |
-| `SPACE$`         | Function    | -       | ⛔      |
+| `SPACE$`         | Function    | -       | ✅      |
 | `SPC`            | Function    | -       | ⛔      |
 | `SQR`            | Function    | -       | ⛔      |
 | `STATIC`         | Statement   | ✅      | 🚧      |
