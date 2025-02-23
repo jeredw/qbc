@@ -1,0 +1,2 @@
+print lcase$("ABCDEFGHIJKLMNOPQRSTUVWXYZÜabcdefghijklmnopqrstuvwxyzü")
+print ucase$("ABCDEFGHIJKLMNOPQRSTUVWXYZÜabcdefghijklmnopqrstuvwxyzü")

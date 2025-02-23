@@ -51,6 +51,7 @@ export class StandardLibrary {
     _("cvs string -> single", statements.cvs),
     _("cvsmbf string -> single", statements.cvsmbf),
     _("exp double -> double", statements.exp),
+    _("lcase string -> string", statements.lcase),
     _("log double -> double", statements.log),
     _("mki numeric -> string", statements.mki),
     _("mkd numeric -> string", statements.mkd),
@@ -61,6 +62,7 @@ export class StandardLibrary {
     _("sin double -> double", statements.sin),
     _("sgn numeric -> numeric", statements.sgn),
     _("tan double -> double", statements.tan),
+    _("ucase string -> string", statements.ucase),
   ]);
 
   lookup(name: string): Builtin | undefined {

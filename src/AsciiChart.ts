@@ -53,3 +53,23 @@ export const [asciiToChar, charToAscii] = (() => {
   }
   return [asciiToChar, charToAscii];
 })();
+
+export function stringToAscii(str: string): number[] {
+  return str.split('').map((char) => {
+    const code = charToAscii.get(char);
+    if (code === undefined) {
+      throw new Error("unmapped character in string");
+    }
+    return code;
+  });
+}
+
+export function asciiToString(codes: number[]): string {
+  return codes.map((code) => {
+    const char = asciiToChar.get(code);
+    if (char === undefined) {
+      throw new Error("unknown character code in string");
+    }
+    return char;
+  }).join('');
+}

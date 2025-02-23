@@ -201,7 +201,7 @@ parse those using baked in rules.
 | `KEY` Event      | Statement   | ✅      | ⛔      |
 | `KILL`           | Statement   | -       | ⛔      |
 | `LBOUND`         | Function    | ✅      | ✅      |
-| `LCASE$`         | Function    | -       | ⛔      |
+| `LCASE$`         | Function    | -       | ✅      |
 | `LEFT$`          | Function    | -       | ⛔      |
 | `LEN`            | Function    | ✅      | ⛔      |
 | `LET`            | Statement   | ✅      | ✅      |
@@ -324,7 +324,7 @@ parse those using baked in rules.
 | `TRON`           | Statement   | -       | ⛔      |
 | `TYPE`           | Statement   | ✅      | ✅      |
 | `UBOUND`         | Function    | ✅      | ✅      |
-| `UCASE$`         | Function    | -       | ⛔      |
+| `UCASE$`         | Function    | -       | ✅      |
 | `UNLOCK`         | Statement   | ✅      | ⛔      |
 | `UNTIL`          | Keyword     | ✅      | ✅      |
 | `USING`          | Keyword     | ✅      | ⛔      |

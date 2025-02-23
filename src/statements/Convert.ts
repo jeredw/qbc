@@ -2,7 +2,7 @@ import { double, ILLEGAL_FUNCTION_CALL, integer, isError, isNumeric, isString, l
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
-import { asciiToChar, charToAscii } from "../AsciiChart.ts";
+import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
@@ -67,7 +67,7 @@ abstract class BytesToString extends BuiltinFunction1 {
       throw new Error("expecting number");
     }
     const bytes = this.getBytes(input);
-    return string(bytes.map((code) => asciiToChar.get(code)).join(''));
+    return string(asciiToString(bytes));
   }
 
   abstract getBytes(value: Value): number[];
@@ -210,13 +210,7 @@ abstract class StringToBytes extends BuiltinFunction1 {
     if (input.string.length != this.expectedNumBytes) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    const bytes = input.string.split('').map((char) => {
-      const code = charToAscii.get(char);
-      if (code === undefined) {
-        throw new Error("unmapped character in string");
-      }
-      return code;
-    });
+    const bytes = stringToAscii(input.string);
     return this.getValue(bytes);
   }
 

@@ -45,6 +45,7 @@ import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
 import { PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
+import { LcaseFunction, UcaseFunction } from "./Strings.ts";
 import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
@@ -203,6 +204,10 @@ export function lbound(token: Token, array: Variable, result: Variable, whichExp
   return new LboundFunction(token, array, result, whichExpr);
 }
 
+export function lcase(params: BuiltinStatementArgs) {
+  return new LcaseFunction(params);
+}
+
 export function let_(variable: Variable, expr: parser.ExprContext) {
   return new LetStatement(variable, expr);
 }
@@ -265,6 +270,10 @@ export function tan(params: BuiltinStatementArgs) {
 
 export function ubound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {
   return new UboundFunction(token, array, result, whichExpr);
+}
+
+export function ucase(params: BuiltinStatementArgs) {
+  return new UcaseFunction(params);
 }
 
 export function while_(expr: parser.ExprContext) {
