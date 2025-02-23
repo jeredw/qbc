@@ -308,7 +308,7 @@ parse those using baked in rules.
 | `STEP`           | Keyword     | ✅      | ✅      |
 | `STICK`          | Function    | -       | ⛔      |
 | `STOP`           | Statement   | ✅      | ⛔      |
-| `STR$`           | Function    | -       | ⛔      |
+| `STR$`           | Function    | -       | 🚧      |
 | `STRIG`          | Function    | ✅      | ⛔      |
 | `STRIG`          | Statement   | ✅      | ⛔      |
 | `STRING`         | Keyword     | ✅      | ⛔      |

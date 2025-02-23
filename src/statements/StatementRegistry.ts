@@ -56,6 +56,7 @@ import {
   RightFunction,
   RtrimFunction,
   SpaceFunction,
+  StrFunction,
   UcaseFunction,
   ValFunction,
 } from "./Strings.ts";
@@ -312,6 +313,10 @@ export function sin(args: BuiltinStatementArgs) {
 
 export function sqr(args: BuiltinStatementArgs) {
   return new SqrFunction(args);
+}
+
+export function str(args: BuiltinStatementArgs) {
+  return new StrFunction(args);
 }
 
 export function space(args: BuiltinStatementArgs) {

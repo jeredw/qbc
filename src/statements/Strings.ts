@@ -10,6 +10,7 @@ import { evaluateIntegerExpression, evaluateStringExpression, parseLiteral } fro
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
+import { TypeTag } from "../Types.ts";
 
 export class LcaseFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -213,6 +214,22 @@ export class OctFunction extends BuiltinFunction1 {
       return string((0x10000 + input.number).toString(8).toUpperCase());
     }
     return string(input.number.toString(8).toUpperCase());
+  }
+}
+
+export class StrFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    if (input.tag === TypeTag.SINGLE) {
+      return string(input.number.toFixed(6).replace(/([^0])0*$/, '$1'))
+    }
+    return string(input.number.toString());
   }
 }
 

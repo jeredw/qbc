@@ -1,0 +1,65 @@
+(program 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call str$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 42)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call str$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 24.5)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call str$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr - 
+                  (expr 
+                    (literal 5))))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call str$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 6.022e23)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call str$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 3.14159)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call str$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal .1)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call str$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 0)))) ))))) \n <EOF>)
