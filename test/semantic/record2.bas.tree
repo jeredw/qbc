@@ -25,12 +25,14 @@
         (literal "hello")))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call x.b)))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x.b))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call y.b)))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call y.b))))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call y) = 
@@ -38,12 +40,14 @@
         (variable_or_function_call x)))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call x.b)))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x.b))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call y.b)))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call y.b))))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call y.b) = 
@@ -51,12 +55,14 @@
         (literal "ok")))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call x.b)))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x.b))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call y.b)))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call y.b))))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call x.b) = 
@@ -64,9 +70,11 @@
         (literal "yes")))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call x.b)))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x.b))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call y.b)))) ' \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call y.b))))) ' \n <EOF>)

@@ -1,8 +1,9 @@
 (program ' \r\n ' \r\n ' \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press ENTER to start.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Press ENTER to start."))))) \r\n 
   (statement 
     (input_statement INPUT ; "" , 
       (variable_or_function_call A$))) \r\n 

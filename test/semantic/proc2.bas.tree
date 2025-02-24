@@ -18,5 +18,6 @@
       (untyped_id foo))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "ok")))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)

@@ -17,11 +17,13 @@
             (if_inline_action 
               (statement 
                 (print_statement print 
-                  (expr 
-                    (literal "nope"))))) 
+                  (print_argument 
+                    (expr 
+                      (literal "nope")))))) 
             (if_inline_else_statement else 
               (if_inline_action 
                 (statement 
                   (print_statement print 
-                    (expr 
-                      (literal "nope"))))))))))) \n <EOF>)
+                    (print_argument 
+                      (expr 
+                        (literal "nope")))))))))))) \n <EOF>)

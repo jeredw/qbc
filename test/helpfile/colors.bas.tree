@@ -59,12 +59,14 @@
         (literal 1)))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press ESC to end.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Press ESC to end."))))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press any other key to continue.")))) \r\n \r\n ' \r\n 
+      (print_argument 
+        (expr 
+          (literal "Press any other key to continue."))))) \r\n \r\n ' \r\n 
   (statement 
     (view_print_statement VIEW PRINT 
       (expr 
@@ -98,14 +100,18 @@
                     (variable_or_function_call PaletteVal)))) \r\n 
               (statement 
                 (print_statement PRINT 
-                  (expr 
-                    (literal "Background =")) ; 
-                  (expr 
-                    (variable_or_function_call BackGroundVal)) ; 
-                  (expr 
-                    (literal "Palette =")) ; 
-                  (expr 
-                    (variable_or_function_call PaletteVal)) ;)) \r\n \r\n 
+                  (print_argument 
+                    (expr 
+                      (literal "Background =")) ;) 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call BackGroundVal)) ;) 
+                  (print_argument 
+                    (expr 
+                      (literal "Palette =")) ;) 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call PaletteVal)) ;))) \r\n \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Pause$) = 

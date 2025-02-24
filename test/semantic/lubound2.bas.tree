@@ -9,9 +9,10 @@
                 (literal 10))) ))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (lbound_function lbound 
-            ( x , 
-              (expr 
-                (literal 4)) )))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (lbound_function lbound 
+              ( x , 
+                (expr 
+                  (literal 4)) ))))))) \n <EOF>)

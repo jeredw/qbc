@@ -100,8 +100,9 @@
                               (variable_or_function_call PathSpec$))))) \r\n 
                       (statement 
                         (print_statement PRINT 
-                          (expr 
-                            (variable_or_function_call DoLine$)))) \r\n ' \r\n 
+                          (print_argument 
+                            (expr 
+                              (variable_or_function_call DoLine$))))) \r\n ' \r\n 
                       (statement 
                         (call_statement 
                           (untyped_id SHELL) 
@@ -125,8 +126,9 @@
               (literal 1)))) \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "New date?")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "New date?"))))) \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call R$) = 

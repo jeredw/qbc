@@ -161,13 +161,14 @@
                       (file_number # 
                         (expr 
                           (literal 2))) , 
-                      (expr 
-                        (variable_or_function_call CHR$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 9)))) ))) ;)) \r\n 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call CHR$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 9)))) ))) ;))) \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call LastColumn) = 
@@ -188,8 +189,9 @@
                   (file_number # 
                     (expr 
                       (literal 2))) , 
-                  (expr 
-                    (literal " ")) ;)) \r\n 
+                  (print_argument 
+                    (expr 
+                      (literal " ")) ;))) \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call LastColumn) = 
@@ -203,8 +205,9 @@
             (file_number # 
               (expr 
                 (literal 2))) , 
-            (expr 
-              (variable_or_function_call C$)) ;)) \r\n \r\n ' \r\n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call C$)) ;))) \r\n \r\n ' \r\n 
         (if_block_statement IF 
           (expr 
             (expr 

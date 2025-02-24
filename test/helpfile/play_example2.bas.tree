@@ -21,5 +21,6 @@
       (block :) WEND)) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Just about done!")))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "Just about done!"))))) \n <EOF>)

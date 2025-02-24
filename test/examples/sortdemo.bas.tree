@@ -282,8 +282,9 @@
               (literal 2))))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "QBasic Sorting Demo")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "QBasic Sorting Demo")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -304,13 +305,14 @@
                   (variable_or_function_call LEFTCOLUMN)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call OptionTitle 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call I)))) ))))) \n) NEXT I)) \n \n ' \n ' \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call OptionTitle 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) )))))) \n) NEXT I)) \n \n ' \n ' \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -325,13 +327,14 @@
                   (variable_or_function_call LEFTCOLUMN)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call OptionTitle 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call NUMOPTIONS)))) ))) ;))))) \n \n ' \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call OptionTitle 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call NUMOPTIONS)))) ))) ;)))))) \n \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call NoSound) = 
@@ -362,25 +365,28 @@
             (variable_or_function_call LEFTCOLUMN)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Type first character of")))) \n 
+          (print_argument 
+            (expr 
+              (literal "Type first character of"))))) \n 
       (statement 
         (locate_statement LOCATE , 
           (expr 
             (variable_or_function_call LEFTCOLUMN)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "choice 
-              ( I B H E S Q T < > )")))) \n 
+          (print_argument 
+            (expr 
+              (literal "choice 
+                ( I B H E S Q T < > )"))))) \n 
       (statement 
         (locate_statement LOCATE , 
           (expr 
             (variable_or_function_call LEFTCOLUMN)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "or ESC key to end program: ")) ;)) \n) 
+          (print_argument 
+            (expr 
+              (literal "or ESC key to end program: ")) ;))) \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id BubbleSort) STATIC 
@@ -508,8 +514,9 @@
             (literal 1)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "x")))) \n 
+          (print_argument 
+            (expr 
+              (literal "x"))))) \n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
@@ -546,8 +553,9 @@
                   (literal 1)))) \n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "y")))) \n 
+                (print_argument 
+                  (expr 
+                    (literal "y"))))) \n 
             (if_block_statement IF 
               (expr 
                 (expr 
@@ -658,30 +666,33 @@
             (variable_or_function_call LeftSide)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ULEFT)))) ))) ; 
-          (expr 
-            (variable_or_function_call STRING$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call FrameWidth))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call HORIZONTAL)))) ))) ; 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call URIGHT)))) ))) ;)) \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call ULEFT)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call FrameWidth))) , 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call HORIZONTAL)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call URIGHT)))) ))) ;))) \n 
       (statement 
         (for_next_statement FOR Row = 
           (expr 
@@ -703,27 +714,26 @@
                   (variable_or_function_call LeftSide)))) \n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call VERTICAL)))) ))) ; 
-                (expr 
-                  (variable_or_function_call SPC 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call FrameWidth)))) ))) ; 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call VERTICAL)))) ))) ;)) \n) NEXT Row)) \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call VERTICAL)))) ))) ;) 
+                (print_argument SPC 
+                  ( 
+                    (expr 
+                      (variable_or_function_call FrameWidth)) ) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call VERTICAL)))) ))) ;))) \n) NEXT Row)) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -732,30 +742,33 @@
             (variable_or_function_call LeftSide)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call LLEFT)))) ))) ; 
-          (expr 
-            (variable_or_function_call STRING$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call FrameWidth))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call HORIZONTAL)))) ))) ; 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call LRIGHT)))) ))) ;)) \n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call LLEFT)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call FrameWidth))) , 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call HORIZONTAL)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call LRIGHT)))) ))) ;))) \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id ElapsedTime) 
@@ -791,18 +804,20 @@
         (print_using_statement PRINT USING 
           (expr 
             (variable_or_function_call FORMAT)) ; 
-          (expr 
-            (variable_or_function_call OptionTitle 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Selection)))) ))) ; 
-          (expr 
+          (print_argument 
             (expr 
-              (builtin_function TIMER)) - 
+              (variable_or_function_call OptionTitle 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Selection)))) ))) ;) 
+          (print_argument 
             (expr 
-              (variable_or_function_call StartTime))) ;)) \n \n 
+              (expr 
+                (builtin_function TIMER)) - 
+              (expr 
+                (variable_or_function_call StartTime))) ;))) \n \n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call NoSound)) THEN \n 
@@ -1558,13 +1573,14 @@
                       (variable_or_function_call Row)))) ) . ColorVal)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SortArray 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Row)))) ) . BarString)) ;)) \n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SortArray 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Row)))) ) . BarString)) ;))) \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id QuickSort) 
@@ -1999,13 +2015,14 @@
                             (variable_or_function_call I)))) ) . ColorVal)))) \n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call SortArray 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call I)))) ) . BarString)) ;)) \n) NEXT I)) \n \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) ) . BarString)) ;))) \n) NEXT I)) \n \n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -2489,13 +2506,15 @@
         (then_block 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal ": OFF")) ;)) \n) 
+              (print_argument 
+                (expr 
+                  (literal ": OFF")) ;))) \n) 
         (else_block_statement ELSE 
           (else_block \n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal ": ON ")) ;)) \n)) 
+                (print_argument 
+                  (expr 
+                    (literal ": ON ")) ;))) \n)) 
         (end_if_statement END IF)) \n) 
     (end_sub_statement END SUB)) \n <EOF>)

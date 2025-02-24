@@ -26,8 +26,9 @@
         (literal 1)))) : 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press any key to stop.")) ;)) \n 
+      (print_argument 
+        (expr 
+          (literal "Press any key to stop.")) ;))) \n 
   (statement 
     (do_loop_statement DO 
       (do_condition WHILE 
@@ -58,13 +59,16 @@
         (literal 1)))) : 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Background called ")) ; 
-      (expr 
-        (variable_or_function_call i%)) ; 
-      (expr 
-        (literal "time
-          (s)")) ;)) \n 
+      (print_argument 
+        (expr 
+          (literal "Background called ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call i%)) ;) 
+      (print_argument 
+        (expr 
+          (literal "time
+            (s)")) ;))) \n 
   (statement 
     (play_statement PLAY 
       (expr 

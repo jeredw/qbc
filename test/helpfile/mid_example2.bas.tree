@@ -71,16 +71,20 @@
             (else_block \n 
               (statement 
                 (print_statement PRINT 
-                  (expr 
-                    (literal "Error--invalid binary digit: ")) ; 
-                  (expr 
-                    (variable_or_function_call Digit$)))) \n 
+                  (print_argument 
+                    (expr 
+                      (literal "Error--invalid binary digit: ")) ;) 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call Digit$))))) \n 
               (statement 
                 (exit_statement EXIT FOR)) \n)) 
           (end_if_statement END IF)) \n) NEXT)) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Decimal number =")) 
-      (expr 
-        (variable_or_function_call Decimal)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "Decimal number ="))) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Decimal))))) \n <EOF>)

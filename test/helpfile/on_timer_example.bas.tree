@@ -14,10 +14,12 @@
       (untyped_id CLS))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Time: ")) ; 
-      (expr 
-        (variable_or_function_call TIME$)))) \n 
+      (print_argument 
+        (expr 
+          (literal "Time: ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call TIME$))))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call StartTime) = 
@@ -52,7 +54,8 @@
         (literal 7)))) : 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call TIME$)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call TIME$))))) \n 
   (statement 
     (return_statement RETURN)) \n <EOF>)

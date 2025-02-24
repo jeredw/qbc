@@ -140,16 +140,18 @@
         (literal 7)))) : 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Working")) ;)) : 
+      (print_argument 
+        (expr 
+          (literal "Working")) ;))) : 
   (statement 
     (color_statement COLOR 
       (expr 
         (literal 23)))) : 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal " . . .")))) : 
+      (print_argument 
+        (expr 
+          (literal " . . ."))))) : 
   (statement 
     (color_statement COLOR 
       (expr 
@@ -216,8 +218,9 @@
       (untyped_id CLS))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "      Invalid file name")))) : 
+      (print_argument 
+        (expr 
+          (literal "      Invalid file name"))))) : 
   (statement 
     (print_statement PRINT)) \n 
   (statement 
@@ -614,8 +617,9 @@
               (then_block 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (variable_or_function_call InLin$)))) \n) 
+                    (print_argument 
+                      (expr 
+                        (variable_or_function_call InLin$))))) \n) 
               (else_block_statement ELSE 
                 (else_block \n 
                   (statement 
@@ -623,8 +627,9 @@
                       (file_number # 
                         (expr 
                           (literal 2))) , 
-                      (expr 
-                        (variable_or_function_call InLin$)))) \n)) 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call InLin$))))) \n)) 
               (end_if_statement END IF)) \n) LOOP)) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
@@ -635,13 +640,15 @@
           (untyped_id CLS))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal " Microsoft RemLine: Line Number Removal Utility")))) \n 
+          (print_argument 
+            (expr 
+              (literal " Microsoft RemLine: Line Number Removal Utility"))))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "       
-              (.BAS assumed if no extension given)")))) \n 
+          (print_argument 
+            (expr 
+              (literal "       
+                (.BAS assumed if no extension given)"))))) \n 
       (statement 
         (print_statement PRINT)) \n 
       (statement 

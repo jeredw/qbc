@@ -22,15 +22,17 @@
                   (literal "0123456789.-")))) ))))) \r\n \r\n ' \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "The number's value = ")) ; 
-      (expr 
-        (variable_or_function_call VAL 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call CleanNum$)))) ))))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "The number's value = ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call VAL 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call CleanNum$)))) )))))) \r\n 
   (statement 
     (end_statement END)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION Filter$ 

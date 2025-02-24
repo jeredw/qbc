@@ -276,8 +276,9 @@
             (block \r\n 
               (statement 
                 (print_statement PRINT 
-                  (expr 
-                    (literal "King ")) ;)) \r\n)) 
+                  (print_argument 
+                    (expr 
+                      (literal "King ")) ;))) \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -286,8 +287,9 @@
             (block \r\n 
               (statement 
                 (print_statement PRINT 
-                  (expr 
-                    (literal "Queen")) ;)) \r\n)) 
+                  (print_argument 
+                    (expr 
+                      (literal "Queen")) ;))) \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -296,8 +298,9 @@
             (block \r\n 
               (statement 
                 (print_statement PRINT 
-                  (expr 
-                    (literal "Jack ")) ;)) \r\n)) 
+                  (print_argument 
+                    (expr 
+                      (literal "Jack ")) ;))) \r\n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -306,8 +309,9 @@
             (block \r\n 
               (statement 
                 (print_statement PRINT 
-                  (expr 
-                    (literal "Ace  ")) ;)) \r\n)) 
+                  (print_argument 
+                    (expr 
+                      (literal "Ace  ")) ;))) \r\n)) 
           (case_block 
             (case_statement CASE ELSE) 
             (block \r\n 
@@ -315,13 +319,16 @@
                 (print_using_statement PRINT USING 
                   (expr 
                     (literal "  ## ")) ; 
-                  (expr 
-                    (variable_or_function_call SingleCard.Value)) ;)) \r\n)) 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call SingleCard.Value)) ;))) \r\n)) 
           (end_select_statement END SELECT))) \r\n \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal " ")) ; 
-          (expr 
-            (variable_or_function_call SingleCard.Suit)))) \r\n \r\n) 
+          (print_argument 
+            (expr 
+              (literal " ")) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SingleCard.Suit))))) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \n <EOF>)

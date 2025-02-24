@@ -35,8 +35,9 @@
             (untyped_id CLS))) \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Sound effects")))) : 
+            (print_argument 
+              (expr 
+                (literal "Sound effects"))))) : 
         (statement 
           (print_statement PRINT)) \r\n 
         (statement 
@@ -47,8 +48,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  B")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  B")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -57,8 +59,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "ouncing")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "ouncing"))))) \r\n 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -67,8 +70,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  F")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  F")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -77,8 +81,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "alling")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "alling"))))) \r\n 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -87,8 +92,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  K")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  K")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -97,8 +103,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "laxon")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "laxon"))))) \r\n 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -107,8 +114,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  S")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  S")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -117,8 +125,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "iren")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "iren"))))) \r\n 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -127,8 +136,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  Q")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  Q")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -137,14 +147,16 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "uit")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "uit"))))) \r\n 
         (statement 
           (print_statement PRINT)) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Select: ")) ;)) \r\n \r\n ' \r\n 
+            (print_argument 
+              (expr 
+                (literal "Select: ")) ;))) \r\n \r\n ' \r\n 
         (statement 
           (do_loop_statement DO 
             (block \r\n 
@@ -191,8 +203,9 @@
               (block \r\n 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (literal "Bouncing . . . ")))) \r\n 
+                    (print_argument 
+                      (expr 
+                        (literal "Bouncing . . . "))))) \r\n 
                 (statement 
                   (call_statement 
                     (untyped_id Bounce) 
@@ -211,8 +224,9 @@
               (block \r\n 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (literal "Falling . . . ")))) \r\n 
+                    (print_argument 
+                      (expr 
+                        (literal "Falling . . . "))))) \r\n 
                 (statement 
                   (call_statement 
                     (untyped_id Fall) 
@@ -234,12 +248,14 @@
               (block \r\n 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (literal "Wailing . . .")))) \r\n 
+                    (print_argument 
+                      (expr 
+                        (literal "Wailing . . ."))))) \r\n 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (literal " . . . press any key to end.")))) \r\n 
+                    (print_argument 
+                      (expr 
+                        (literal " . . . press any key to end."))))) \r\n 
                 (statement 
                   (call_statement 
                     (untyped_id Siren) 
@@ -258,12 +274,14 @@
               (block \r\n 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (literal "Oscillating . . .")))) \r\n 
+                    (print_argument 
+                      (expr 
+                        (literal "Oscillating . . ."))))) \r\n 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (literal " . . . press any key to end.")))) \r\n 
+                    (print_argument 
+                      (expr 
+                        (literal " . . . press any key to end."))))) \r\n 
                 (statement 
                   (call_statement 
                     (untyped_id Klaxon) 

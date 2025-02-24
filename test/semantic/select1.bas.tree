@@ -19,8 +19,9 @@
         (block : \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "nope")))) \n)) 
+              (print_argument 
+                (expr 
+                  (literal "nope"))))) \n)) 
       (case_block 
         (case_statement case 
           (case_expr is >= 
@@ -32,8 +33,9 @@
         (block : \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "nope")))) \n)) 
+              (print_argument 
+                (expr 
+                  (literal "nope"))))) \n)) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -42,13 +44,15 @@
         (block \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "nope")))) \n)) 
+              (print_argument 
+                (expr 
+                  (literal "nope"))))) \n)) 
       (case_block 
         (case_statement case else) 
         (block \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "ok")))) \n)) 
+              (print_argument 
+                (expr 
+                  (literal "ok"))))) \n)) 
       (end_select_statement end select))) \n <EOF>)

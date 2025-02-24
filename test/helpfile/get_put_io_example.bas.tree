@@ -68,16 +68,20 @@
       (variable_or_function_call MyClass))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "STUDENT:")) , 
-      (expr 
-        (variable_or_function_call MyClass.Student)))) \n 
+      (print_argument 
+        (expr 
+          (literal "STUDENT:")) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call MyClass.Student))))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "SCORE:")) , 
-      (expr 
-        (variable_or_function_call MyClass.Score)))) \n 
+      (print_argument 
+        (expr 
+          (literal "SCORE:")) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call MyClass.Score))))) \n 
   (statement 
     (close_statement CLOSE # 
       (expr 

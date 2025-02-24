@@ -22,8 +22,9 @@
               (literal 1))))) \n 
       (statement 
         (print_statement print 
-          (expr 
-            (variable_or_function_call i)))) \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call i))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call foo) = 
@@ -38,31 +39,33 @@
     (end_function_statement end function)) \n \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call foo 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 2))) , 
-              (argument 
-                (expr 
-                  (literal "hello"))) , 
-              (argument 
-                (expr 
-                  (literal 1)))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call foo 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2))) , 
+                (argument 
+                  (expr 
+                    (literal "hello"))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call foo 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 4))) , 
-              (argument 
-                (expr 
-                  (literal "goodbye"))) , 
-              (argument 
-                (expr 
-                  (literal 1)))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call foo 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 4))) , 
+                (argument 
+                  (expr 
+                    (literal "goodbye"))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n <EOF>)

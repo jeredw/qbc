@@ -1,10 +1,11 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call mkdmbf$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 2.93873587705572d+39)))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call mkdmbf$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2.93873587705572d+39)))) )))))) \n <EOF>)

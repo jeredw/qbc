@@ -143,8 +143,9 @@
         (literal 10)))) : 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press any key to quit.")) ;)) \r\n \r\n 
+      (print_argument 
+        (expr 
+          (literal "Press any key to quit.")) ;))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call XLength) = 
@@ -564,32 +565,38 @@
           (untyped_id CLS))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "This program prints the graphic representation of")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "This program prints the graphic representation of"))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "the complete Mandelbrot Set. The default window is")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "the complete Mandelbrot Set. The default window is"))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "from 
-              (-1000,625) to 
-              (250,-625). To zoom in on part")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "from 
+                (-1000,625) to 
+                (250,-625). To zoom in on part"))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "of the figure, input coordinates inside this window.")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "of the figure, input coordinates inside this window."))))) \r\n 
       (statement 
         (print_statement PRINT)) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Press <ENTER> to see the default window. Press any")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "Press <ENTER> to see the default window. Press any"))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "other key to input your own window coordinates: ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "other key to input your own window coordinates: ")) ;))) \r\n 
       (statement 
         (locate_statement LOCATE , , 
           (expr 
@@ -634,8 +641,9 @@
                   (then_block 
                     (statement 
                       (print_statement PRINT 
-                        (expr 
-                          (literal "Right corner must be greater than left corner.")))) \r\n) 
+                        (print_argument 
+                          (expr 
+                            (literal "Right corner must be greater than left corner."))))) \r\n) 
                   (end_if_statement END IF)) \r\n) LOOP 
               (loop_condition WHILE 
                 (expr 
@@ -661,8 +669,9 @@
                   (then_block 
                     (statement 
                       (print_statement PRINT 
-                        (expr 
-                          (literal "Bottom corner must be less than top corner.")))) \r\n) 
+                        (print_argument 
+                          (expr 
+                            (literal "Bottom corner must be less than top corner."))))) \r\n) 
                   (end_if_statement END IF)) \r\n) LOOP 
               (loop_condition WHILE 
                 (expr 

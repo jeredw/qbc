@@ -13,15 +13,17 @@
         (literal "yes")))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function ioctl$ 
-          ( 
-            (expr 
-              (literal 1)) ))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function ioctl$ 
+            ( 
+              (expr 
+                (literal 1)) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function ioctl$ 
-          ( # 
-            (expr 
-              (literal 1)) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (builtin_function ioctl$ 
+            ( # 
+              (expr 
+                (literal 1)) )))))) \n <EOF>)

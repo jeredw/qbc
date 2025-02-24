@@ -13,5 +13,6 @@
       (untyped_id bar)) :) 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "nope")))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n <EOF>)

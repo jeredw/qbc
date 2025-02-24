@@ -89,13 +89,14 @@
           (then_block 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call C)))) ))) ;)) \n) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call C)))) ))) ;))) \n) 
           (end_if_statement END IF)) \n \n) LOOP)) \n 
   (statement 
     (end_statement END)) \n \n <EOF>)

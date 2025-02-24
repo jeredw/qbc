@@ -3,44 +3,55 @@
     (print_statement print)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal 3)))) \n 
+      (print_argument 
+        (expr 
+          (literal 3))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal 1)) , 
-      (expr 
-        (literal 2)) ; 
-      (expr 
-        (literal 3)) , 
-      (expr 
-        (literal 4)) ; 
-      (expr 
-        (literal 5)) , 
-      (expr 
-        (literal 6)) ,)) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ,) 
+      (print_argument 
+        (expr 
+          (literal 2)) ;) 
+      (print_argument 
+        (expr 
+          (literal 3)) ,) 
+      (print_argument 
+        (expr 
+          (literal 4)) ;) 
+      (print_argument 
+        (expr 
+          (literal 5)) ,) 
+      (print_argument 
+        (expr 
+          (literal 6)) ,))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal 1)) ;)) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ;))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal 2)) ,)) \n 
+      (print_argument 
+        (expr 
+          (literal 2)) ,))) \n 
   (statement 
     (print_statement print 
       (file_number # 
         (expr 
           (literal 42))) , 
-      (expr 
-        (literal "hi")))) \n 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) \n 
   (statement 
     (print_statement print 
       (file_number # 
         (expr 
           (variable_or_function_call hello))) , 
-      (expr 
-        (literal "baz")))) \n 
+      (print_argument 
+        (expr 
+          (literal "baz"))))) \n 
   (statement 
     (print_statement print 
       (file_number # 
@@ -51,47 +62,60 @@
                 (literal 4)) \ 
               (expr 
                 (literal 4))) ))) , 
-      (expr 
-        (literal "baz")))) \n 
+      (print_argument 
+        (expr 
+          (literal "baz"))))) \n 
   (statement 
-    (print_statement print ,)) \n 
+    (print_statement print 
+      (print_argument ,))) \n 
   (statement 
     (print_statement print 
       (file_number # 
         (expr 
-          (literal 1))) , ,)) \n 
+          (literal 1))) , 
+      (print_argument ,))) \n 
   (statement 
-    (print_statement print ;)) \n 
-  (statement 
-    (print_using_statement print using 
-      (expr 
-        (literal "#.#")) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 3)))) \n 
+    (print_statement print 
+      (print_argument ;))) \n 
   (statement 
     (print_using_statement print using 
       (expr 
         (literal "#.#")) ; 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 3))))) \n 
+  (statement 
+    (print_using_statement print using 
       (expr 
-        (literal 1)) , 
-      (expr 
-        (literal 1)) , 
-      (expr 
-        (literal 3)))) \n 
+        (literal "#.#")) ; 
+      (print_argument 
+        (expr 
+          (literal 1)) ,) 
+      (print_argument 
+        (expr 
+          (literal 1)) ,) 
+      (print_argument 
+        (expr 
+          (literal 3))))) \n 
   (statement 
     (print_using_statement print using 
       (expr 
         (variable_or_function_call s$)) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 3)) ;)) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 3)) ;))) \n 
   (statement 
     (print_using_statement print using 
       (expr 
@@ -99,8 +123,9 @@
           (literal "#")) + 
         (expr 
           (literal ".#"))) ; 
-      (expr 
-        (literal 3.14)))) \n 
+      (print_argument 
+        (expr 
+          (literal 3.14))))) \n 
   (statement 
     (print_using_statement print 
       (file_number # 

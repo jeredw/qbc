@@ -15,13 +15,15 @@
     (block \n 
       (statement 
         (print_statement print 
-          (expr 
-            (literal "ok")))) :) 
+          (print_argument 
+            (expr 
+              (literal "ok"))))) :) 
     (end_function_statement end function : 
       (statement 
         (print_statement print 
-          (expr 
-            (literal "ignored")))))) \n 
+          (print_argument 
+            (expr 
+              (literal "ignored"))))))) \n 
   (function_statement function ParseLine 
     ( 
       (parameter_list 
@@ -37,12 +39,14 @@
     (block : 
       (statement 
         (print_statement print 
-          (expr 
-            (literal "hi")))) \n 
+          (print_argument 
+            (expr 
+              (literal "hi"))))) \n 
       (statement 
         (print_statement print 
-          (expr 
-            (literal "stuff")))) :) 
+          (print_argument 
+            (expr 
+              (literal "stuff"))))) :) 
     (end_function_statement end function)) \n 
   (function_statement function empty 
     ( ) 

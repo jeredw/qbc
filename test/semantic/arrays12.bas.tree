@@ -19,13 +19,14 @@
             (type_name integer)))) \n 
       (statement 
         (print_statement print 
-          (expr 
-            (variable_or_function_call x 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 0)))) ))))) \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call x 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call x 
@@ -55,13 +56,14 @@
         (end_if_statement end if)) \n 
       (statement 
         (print_statement print 
-          (expr 
-            (variable_or_function_call x 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 0)))) ))))) \n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call x 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )))))) \n) 
     (end_sub_statement end sub)) \n \n 
   (statement 
     (call_statement 

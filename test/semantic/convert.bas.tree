@@ -1,131 +1,145 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call cdbl 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cdbl 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (literal 1)) / 
+                    (expr 
+                      (literal 1)) / 
+                    (expr 
+                      (literal 3))))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call csng 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (literal 3))))) ))))) ' \n 
+                    (literal 975.3421515#)))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call csng 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 975.3421515#)))) ))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call cint 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 12.49)))) ))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call cint 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 12.51)))) ))))) \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call clng 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 338457.8)))) ))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call mki$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 22346)))) ))))) \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call mki$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr - 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cint 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (literal 2500))))) ))))) \n 
+                    (literal 12.49)))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call mkl$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 56256346)))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cint 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 12.51)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call mks$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1#)))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call clng 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 338457.8)))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call mkd$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 6.023e23)))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mki$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 22346)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call cvi 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "JW")))) ))))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mki$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 2500))))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call cvl 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "blah")))) ))))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mkl$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 56256346)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call cvs 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "⌂§ f")))) ))))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mks$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1#)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call cvd 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "blahblah")))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call mkd$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 6.023e23)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvi 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "JW")))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvl 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "blah")))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvs 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "⌂§ f")))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvd 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "blahblah")))) )))))) \n <EOF>)

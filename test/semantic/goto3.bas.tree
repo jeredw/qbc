@@ -18,32 +18,36 @@
     (line_number 10)) 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "nope")))) : 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) : 
   (statement 
     (end_statement end)) \n 
   (label 
     (line_number 20)) 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "nope")))) : 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) : 
   (statement 
     (end_statement end)) \n 
   (label 
     (line_number 30)) 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "nope")))) : 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) : 
   (statement 
     (end_statement end)) \n 
   (label 
     (line_number 40)) 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "ok")))) \n \n 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n \n 
   (statement 
     (on_expr_goto_statement on 
       (expr 
@@ -56,8 +60,9 @@
         (line_number 30)))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "ok")))) \n 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
   (statement 
     (on_expr_goto_statement on 
       (expr 
@@ -70,8 +75,9 @@
         (line_number 30)))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "ok")))) \n 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
   (statement 
     (on_expr_gosub_statement on 
       (expr 
@@ -86,5 +92,6 @@
     (line_number 50)) 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "ok")))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)

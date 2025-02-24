@@ -186,8 +186,9 @@
       (if_inline_action 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Not a QB UserLibrary")))) : 
+            (print_argument 
+              (expr 
+                (literal "Not a QB UserLibrary"))))) : 
         (statement 
           (end_statement END))))) \r\n \r\n 
   (statement 
@@ -195,8 +196,9 @@
       (file_number # 
         (expr 
           (literal 2))) , 
-      (expr 
-        (literal "Code Symbols:")))) : 
+      (print_argument 
+        (expr 
+          (literal "Code Symbols:"))))) : 
   (statement 
     (print_statement PRINT 
       (file_number # 
@@ -222,15 +224,17 @@
       (file_number # 
         (expr 
           (literal 2))) , 
-      (expr 
-        (literal "Data Symbols:")))) : 
+      (print_argument 
+        (expr 
+          (literal "Data Symbols:"))))) : 
   (statement 
     (print_statement PRINT 
       (file_number # 
         (expr 
           (literal 2))) , 
-      (expr 
-        (literal "")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal ""))))) \r\n 
   (statement 
     (call_statement 
       (untyped_id DumpSym) 
@@ -402,11 +406,12 @@
                     (file_number # 
                       (expr 
                         (literal 2))) , 
-                    (expr 
+                    (print_argument 
                       (expr 
-                        (literal "  ")) + 
-                      (expr 
-                        (variable_or_function_call SName$))))) \r\n) 
+                        (expr 
+                          (literal "  ")) + 
+                        (expr 
+                          (variable_or_function_call SName$)))))) \r\n) 
               (end_if_statement END IF)) \r\n \r\n 
             (statement 
               (get_io_statement GET # 

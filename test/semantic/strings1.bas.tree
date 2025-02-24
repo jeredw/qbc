@@ -1,19 +1,21 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call lcase$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "ABCDEFGHIJKLMNOPQRSTUVWXYZÜabcdefghijklmnopqrstuvwxyzü")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lcase$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "ABCDEFGHIJKLMNOPQRSTUVWXYZÜabcdefghijklmnopqrstuvwxyzü")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call ucase$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "ABCDEFGHIJKLMNOPQRSTUVWXYZÜabcdefghijklmnopqrstuvwxyzü")))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call ucase$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "ABCDEFGHIJKLMNOPQRSTUVWXYZÜabcdefghijklmnopqrstuvwxyzü")))) )))))) \n <EOF>)

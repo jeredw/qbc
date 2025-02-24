@@ -9,10 +9,11 @@
                 (literal 10))) ))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (ubound_function ubound 
-            ( x , 
-              (expr - 
-                (expr 
-                  (literal 1))) )))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( x , 
+                (expr - 
+                  (expr 
+                    (literal 1))) ))))))) \n <EOF>)

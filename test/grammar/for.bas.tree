@@ -8,8 +8,9 @@
       (block \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "hi")))) \n) next i)) \n 
+            (print_argument 
+              (expr 
+                (literal "hi"))))) \n) next i)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -84,8 +85,9 @@
         (block \n) next b) , a)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "hi")))) : 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) : 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -95,12 +97,14 @@
       (block : 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "hi")))) \n 
+            (print_argument 
+              (expr 
+                (literal "hi"))))) \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "foo")))) :) next)) \n 
+            (print_argument 
+              (expr 
+                (literal "foo"))))) :) next)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -117,10 +121,12 @@
             (block : 
               (statement 
                 (print_statement print 
-                  (expr 
-                    (variable_or_function_call i)) , 
-                  (expr 
-                    (variable_or_function_call j)))) :) next j)) :) next i)) \n 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call i)) ,) 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call j))))) :) next j)) :) next i)) \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -130,8 +136,9 @@
       (block :) next)) : 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "statement")))) \n 
+      (print_argument 
+        (expr 
+          (literal "statement"))))) \n 
   (statement 
     (for_next_statement for i = 
       (expr 

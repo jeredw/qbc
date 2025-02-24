@@ -38,14 +38,17 @@
       (variable_or_function_call Num))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call Num)) 
-      (expr 
-        (literal "factorial is")) 
-      (expr 
-        (variable_or_function_call FNFactorial# 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call Num)))) ))))) \r\n \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call Num))) 
+      (print_argument 
+        (expr 
+          (literal "factorial is"))) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call FNFactorial# 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call Num)))) )))))) \r\n \n <EOF>)

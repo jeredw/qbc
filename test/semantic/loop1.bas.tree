@@ -22,8 +22,9 @@
                 (variable_or_function_call i))))) \n) wend)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call i)))) \n \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call i))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call i) = 
@@ -48,8 +49,9 @@
             (literal 20)))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call i)))) \n \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call i))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call i) = 
@@ -74,5 +76,6 @@
                 (literal 1))))) \n) loop)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call i)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call i))))) \n <EOF>)

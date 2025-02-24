@@ -106,15 +106,17 @@
                 (then_block \r\n ' \r\n ' \r\n 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
-                        (literal "Found pattern at byte number")) ;)) \r\n 
+                      (print_argument 
+                        (expr 
+                          (literal "Found pattern at byte number")) ;))) \r\n 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
+                      (print_argument 
                         (expr 
-                          (variable_or_function_call FileOffset)) + 
-                        (expr 
-                          (variable_or_function_call StringPos%))))) \r\n 
+                          (expr 
+                            (variable_or_function_call FileOffset)) + 
+                          (expr 
+                            (variable_or_function_call StringPos%)))))) \r\n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call Start%) = 
@@ -175,5 +177,6 @@
       (if_inline_action 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Pattern not found."))))))) \r\n \r\n <EOF>)
+            (print_argument 
+              (expr 
+                (literal "Pattern not found.")))))))) \r\n \r\n <EOF>)

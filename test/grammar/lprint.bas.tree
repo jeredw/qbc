@@ -3,78 +3,103 @@
     (lprint_statement lprint)) \n 
   (statement 
     (lprint_statement lprint 
-      (expr 
-        (literal 3)))) \n 
+      (print_argument 
+        (expr 
+          (literal 3))))) \n 
   (statement 
     (lprint_statement lprint 
-      (expr 
-        (literal 1)) , 
-      (expr 
-        (literal 2)) ; 
-      (expr 
-        (literal 3)) , 
-      (expr 
-        (literal 4)) ; 
-      (expr 
-        (literal 5)) , 
-      (expr 
-        (literal 6)) ,)) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ,) 
+      (print_argument 
+        (expr 
+          (literal 2)) ;) 
+      (print_argument 
+        (expr 
+          (literal 3)) ,) 
+      (print_argument 
+        (expr 
+          (literal 4)) ;) 
+      (print_argument 
+        (expr 
+          (literal 5)) ,) 
+      (print_argument 
+        (expr 
+          (literal 6)) ,))) \n 
   (statement 
     (lprint_statement lprint 
-      (expr 
-        (literal 1)) ;)) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ;))) \n 
   (statement 
     (lprint_statement lprint 
-      (expr 
-        (literal 2)) ,)) \n 
+      (print_argument 
+        (expr 
+          (literal 2)) ,))) \n 
   (statement 
     (lprint_statement lprint 
-      (expr 
-        (literal "hi")))) \n 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) \n 
   (statement 
     (lprint_statement lprint 
-      (expr 
-        (literal "baz")))) \n 
+      (print_argument 
+        (expr 
+          (literal "baz"))))) \n 
   (statement 
     (lprint_statement lprint 
-      (expr 
-        (literal "baz")))) \n 
+      (print_argument 
+        (expr 
+          (literal "baz"))))) \n 
   (statement 
-    (lprint_statement lprint ,)) \n 
+    (lprint_statement lprint 
+      (print_argument ,))) \n 
   (statement 
-    (lprint_statement lprint , ,)) \n 
+    (lprint_statement lprint 
+      (print_argument ,) 
+      (print_argument ,))) \n 
   (statement 
-    (lprint_statement lprint ;)) \n 
+    (lprint_statement lprint 
+      (print_argument ;))) \n 
   (statement 
     (lprint_using_statement lprint using 
       (expr 
         (literal "#.#")) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 3)))) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 3))))) \n 
   (statement 
     (lprint_using_statement lprint using 
       (expr 
         (literal "#.#")) ; 
-      (expr 
-        (literal 1)) , 
-      (expr 
-        (literal 1)) , 
-      (expr 
-        (literal 3)))) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ,) 
+      (print_argument 
+        (expr 
+          (literal 1)) ,) 
+      (print_argument 
+        (expr 
+          (literal 3))))) \n 
   (statement 
     (lprint_using_statement lprint using 
       (expr 
         (variable_or_function_call s$)) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 1)) ; 
-      (expr 
-        (literal 3)) ;)) \n 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 3)) ;))) \n 
   (statement 
     (lprint_using_statement lprint using 
       (expr 
@@ -82,8 +107,9 @@
           (literal "#")) + 
         (expr 
           (literal ".#"))) ; 
-      (expr 
-        (literal 3.14)))) \n 
+      (print_argument 
+        (expr 
+          (literal 3.14))))) \n 
   (statement 
     (lprint_using_statement lprint using 
       (expr 

@@ -51,25 +51,29 @@
                           (literal 13)))) )))))) \n) NEXT I)) \n ' \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "                 Main Menu")))) : 
+      (print_argument 
+        (expr 
+          (literal "                 Main Menu"))))) : 
   (statement 
     (print_statement PRINT)) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "           Add to list 
-          (F1)")))) \n 
+      (print_argument 
+        (expr 
+          (literal "           Add to list 
+            (F1)"))))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "           Delete from list 
-          (F2)")))) \n 
+      (print_argument 
+        (expr 
+          (literal "           Delete from list 
+            (F2)"))))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "           Quit 
-          (F3)")))) : 
+      (print_argument 
+        (expr 
+          (literal "           Quit 
+            (F3)"))))) : 
   (statement 
     (print_statement PRINT)) \n ' \n 
   (statement 
@@ -83,13 +87,14 @@
               (literal 1)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call SPACE$ 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (literal 50)))) ))) ;)) \n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call SPACE$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 50)))) ))) ;))) \n 
         (statement 
           (locate_statement LOCATE 
             (expr 
@@ -121,13 +126,14 @@
                       (literal 1)))) : 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (variable_or_function_call SPACE$ 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 15)))) ))) ;)) \n 
+                    (print_argument 
+                      (expr 
+                        (variable_or_function_call SPACE$ 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 15)))) ))) ;))) \n 
                 (statement 
                   (locate_statement LOCATE 
                     (expr 
@@ -136,8 +142,9 @@
                       (literal 1)))) : 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (variable_or_function_call R$)) ;)) \n)) 
+                    (print_argument 
+                      (expr 
+                        (variable_or_function_call R$)) ;))) \n)) 
             (case_block 
               (case_statement CASE 
                 (case_expr 
@@ -157,6 +164,7 @@
                       (literal 1)))) : 
                 (statement 
                   (print_statement PRINT 
-                    (expr 
-                      (literal "Enter first word or press key.")))) \n)) 
+                    (print_argument 
+                      (expr 
+                        (literal "Enter first word or press key."))))) \n)) 
             (end_select_statement END SELECT))) \n) LOOP)) \n <EOF>)

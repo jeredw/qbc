@@ -122,10 +122,12 @@
                         (print_using_statement PRINT USING 
                           (expr 
                             (literal "#### &")) ; 
-                          (expr 
-                            (variable_or_function_call LineNum)) , 
-                          (expr 
-                            (variable_or_function_call LineBuffer$)))) \r\n) 
+                          (print_argument 
+                            (expr 
+                              (variable_or_function_call LineNum)) ,) 
+                          (print_argument 
+                            (expr 
+                              (variable_or_function_call LineBuffer$))))) \r\n) 
                     (end_if_statement END IF)) \r\n \r\n 
                   (statement 
                     (assignment_statement 
@@ -164,8 +166,9 @@
         (block : ' \r\n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "** ERROR - Invalid file name")))) \r\n \r\n ' \r\n 
+              (print_argument 
+                (expr 
+                  (literal "** ERROR - Invalid file name"))))) \r\n \r\n ' \r\n 
           (statement 
             (assignment_statement 
               (variable_or_function_call FileName$) = 
@@ -181,12 +184,14 @@
         (block : ' \r\n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "** ERROR - Disk drive not ready")))) \r\n 
+              (print_argument 
+                (expr 
+                  (literal "** ERROR - Disk drive not ready"))))) \r\n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "Press C to continue, R to restart, Q to quit: ")))) \r\n 
+              (print_argument 
+                (expr 
+                  (literal "Press C to continue, R to restart, Q to quit: "))))) \r\n 
           (statement 
             (do_loop_statement DO 
               (block \r\n 
@@ -247,8 +252,9 @@
         (block : ' \r\n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "** ERROR - File or path not found")))) \r\n 
+              (print_argument 
+                (expr 
+                  (literal "** ERROR - File or path not found"))))) \r\n 
           (statement 
             (assignment_statement 
               (variable_or_function_call FileName$) = 

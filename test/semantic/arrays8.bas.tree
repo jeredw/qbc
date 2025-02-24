@@ -33,10 +33,11 @@
                       (literal 2)))) ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call y 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 2)))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call y 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) )))))) \n <EOF>)

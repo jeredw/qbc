@@ -83,13 +83,14 @@
             (variable_or_function_call Ucol%)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ULEFTC)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call ULEFTC)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE , 
           (expr 
@@ -99,37 +100,39 @@
               (literal 1))))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call STRING$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
+          (print_argument 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
                       (expr 
-                        (variable_or_function_call Lcol%)) - 
+                        (expr 
+                          (variable_or_function_call Lcol%)) - 
+                        (expr 
+                          (variable_or_function_call Ucol%)))) , 
+                    (argument 
                       (expr 
-                        (variable_or_function_call Ucol%)))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call CHR$ 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call HORIZONTAL)))) ))))) ))) ;)) \r\n 
+                        (variable_or_function_call CHR$ 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call HORIZONTAL)))) ))))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE , 
           (expr 
             (variable_or_function_call Lcol%)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call URIGHTC)))) ))) ;)) \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call URIGHTC)))) ))) ;))) \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -151,26 +154,28 @@
                   (variable_or_function_call Ucol%)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call VERTICAL)))) ))) ;)) \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call VERTICAL)))) ))) ;))) \r\n 
             (statement 
               (locate_statement LOCATE , 
                 (expr 
                   (variable_or_function_call Lcol%)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call VERTICAL)))) ))) ;)) \r\n) NEXT I)) \r\n ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call VERTICAL)))) ))) ;))) \r\n) NEXT I)) \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -179,13 +184,14 @@
             (variable_or_function_call Ucol%)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call LLEFTC)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call LLEFTC)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE , 
           (expr 
@@ -195,35 +201,37 @@
               (literal 1))))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call STRING$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
+          (print_argument 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
                       (expr 
-                        (variable_or_function_call Lcol%)) - 
+                        (expr 
+                          (variable_or_function_call Lcol%)) - 
+                        (expr 
+                          (variable_or_function_call Ucol%)))) , 
+                    (argument 
                       (expr 
-                        (variable_or_function_call Ucol%)))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call CHR$ 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call HORIZONTAL)))) ))))) ))) ;)) \r\n 
+                        (variable_or_function_call CHR$ 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call HORIZONTAL)))) ))))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE , 
           (expr 
             (variable_or_function_call Lcol%)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call LRIGHTC)))) ))) ;)) \r\n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call LRIGHTC)))) ))) ;))) \r\n) 
     (end_sub_statement END SUB)) \r\n \n <EOF>)

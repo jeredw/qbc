@@ -8,8 +8,9 @@
       (block \n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call i%)))) \n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i%))))) \n 
         (statement 
           (if_inline_statement IF 
             (expr 

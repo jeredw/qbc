@@ -9,8 +9,9 @@
         (block \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "huh")))) \n)) 
+              (print_argument 
+                (expr 
+                  (literal "huh"))))) \n)) 
       (case_block 
         (case_statement case 
           (case_expr is >= 
@@ -68,8 +69,9 @@
         (block : 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "hi")))) :)) 
+              (print_argument 
+                (expr 
+                  (literal "hi"))))) :)) 
       (end_select_statement end select))) \n \n 
   (statement 
     (select_case_statement select case 
@@ -84,8 +86,9 @@
         (block : 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "hi")))) :)) 
+              (print_argument 
+                (expr 
+                  (literal "hi"))))) :)) 
       (case_block 
         (case_statement case 
           (case_expr 
@@ -94,8 +97,9 @@
         (block : 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "bye")))) \n)) 
+              (print_argument 
+                (expr 
+                  (literal "bye"))))) \n)) 
       (end_select_statement end select))) \n \n 
   (statement 
     (select_case_statement select case 
@@ -159,8 +163,9 @@
         (block \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "ok")))) \n 
+              (print_argument 
+                (expr 
+                  (literal "ok"))))) \n 
           (label 
             (text_label 
               (untyped_id bar)) :))) 
@@ -174,8 +179,9 @@
         (block \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "great")))) \n 
+              (print_argument 
+                (expr 
+                  (literal "great"))))) \n 
           (label 
             (line_number 10)))) 
       (case_block 
@@ -183,6 +189,7 @@
         (block \n 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "wow")))) \n)) 
+              (print_argument 
+                (expr 
+                  (literal "wow"))))) \n)) 
       (end_select_statement end select))) \n <EOF>)

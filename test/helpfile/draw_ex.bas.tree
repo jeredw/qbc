@@ -45,8 +45,9 @@
                     (literal 37)))) \r\n 
               (statement 
                 (print_statement PRINT 
-                  (expr 
-                    (variable_or_function_call TIME$)))) \r\n ' \r\n 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call TIME$))))) \r\n ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Test$) = 
@@ -94,8 +95,9 @@
             (literal 30)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Press any key to end")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "Press any key to end"))))) \r\n 
       (statement 
         (circle_statement CIRCLE 
           ( 

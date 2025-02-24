@@ -34,10 +34,12 @@
     (line_number 40)) 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "x% =")) ; 
-      (expr 
-        (variable_or_function_call x%)))) \n 
+      (print_argument 
+        (expr 
+          (literal "x% =")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x%))))) \n 
   (label 
     (line_number 50)) 
   (statement 
@@ -51,14 +53,18 @@
     (print_statement PRINT)) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Error ")) ; 
-      (expr 
-        (variable_or_function_call ERR)) ; 
-      (expr 
-        (literal " on line ")) ; 
-      (expr 
-        (variable_or_function_call ERL)))) \n 
+      (print_argument 
+        (expr 
+          (literal "Error ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call ERR)) ;) 
+      (print_argument 
+        (expr 
+          (literal " on line ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call ERL))))) \n 
   (statement 
     (select_case_statement SELECT CASE 
       (expr 
@@ -72,14 +78,18 @@
         (block \n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "Using device ")) ; 
-              (expr 
-                (variable_or_function_call ERDEV$)) ; 
-              (expr 
-                (literal " device error code = ")) ; 
-              (expr 
-                (variable_or_function_call ERDEV)))) \n 
+              (print_argument 
+                (expr 
+                  (literal "Using device ")) ;) 
+              (print_argument 
+                (expr 
+                  (variable_or_function_call ERDEV$)) ;) 
+              (print_argument 
+                (expr 
+                  (literal " device error code = ")) ;) 
+              (print_argument 
+                (expr 
+                  (variable_or_function_call ERDEV))))) \n 
           (statement 
             (resume_statement RESUME NEXT)) \n)) 
       (case_block 
@@ -95,8 +105,9 @@
         (block \n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "Unexpected error, ending program.")))) \n 
+              (print_argument 
+                (expr 
+                  (literal "Unexpected error, ending program."))))) \n 
           (statement 
             (end_statement END)) \n)) 
       (end_select_statement END SELECT))) \n <EOF>)

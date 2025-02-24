@@ -199,8 +199,9 @@
         (literal 29)))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press any key to end")))) \r\n \r\n 
+      (print_argument 
+        (expr 
+          (literal "Press any key to end"))))) \r\n \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call StepSize) = 

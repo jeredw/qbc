@@ -1,126 +1,137 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (literal 2)) ^ 
+            (expr 
+              (literal 2))) ^ 
+          (expr 
+            (literal 3)))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
         (expr 
           (expr 
             (literal 2)) ^ 
           (expr 
-            (literal 2))) ^ 
-        (expr 
-          (literal 3))))) ' \n 
+            ( 
+              (expr 
+                (expr 
+                  (literal 2)) ^ 
+                (expr 
+                  (literal 3))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
+      (print_argument 
         (expr 
-          (literal 2)) ^ 
-        (expr 
-          ( 
-            (expr 
-              (expr 
-                (literal 2)) ^ 
-              (expr 
-                (literal 3))) ))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (expr 
-          (literal 4)) ^ 
-        (expr - 
           (expr 
-            (literal 2)))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (expr 
-          (literal 5)) - 
-        (expr 
+            (literal 4)) ^ 
           (expr - 
-            (expr 
-              (literal 3))) * 
-          (expr 
-            (literal 2)))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (expr 
-          (expr 
-            (literal 4)) / 
-          (expr 
-            (literal 3))) \ 
-        (expr 
-          (literal 1))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (expr 
-          (expr 
-            (literal 4)) mod 
-          (expr 
-            (literal 3))) + 
-        (expr 
-          (literal 1))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (expr 
-          (expr 
-            (literal 3)) + 
-          (expr 
-            (expr 
-              (expr 
-                (literal 6)) / 
-              (expr 
-                (literal 12))) * 
-            (expr 
-              (literal 3)))) - 
-        (expr 
-          (literal 2))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr not 
-        (expr 
-          (expr 
-            (literal 1)) = 
-          (expr 
-            (literal 2)))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (expr 
-          (expr 
-            (literal 1)) > 
-          (expr 
-            (literal 2))) or 
-        (expr 
-          (expr 
-            (expr 
-              (literal 5)) > 
-            (expr 
-              (literal 4))) and 
-          (expr 
-            (expr 
-              (literal 1)) < 
             (expr 
               (literal 2))))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (expr 
-          (literal 2)) imp 
+      (print_argument 
         (expr 
           (expr 
-            (literal 3)) eqv 
+            (literal 5)) - 
           (expr 
+            (expr - 
+              (expr 
+                (literal 3))) * 
             (expr 
-              (literal 4)) xor 
-            (expr 
-              (literal 5))))))) ' \n 
+              (literal 2))))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (expr + 
-          (expr 
-            (literal 3))) * 
+      (print_argument 
         (expr 
-          (literal 2))))) ' \n <EOF>)
+          (expr 
+            (expr 
+              (literal 4)) / 
+            (expr 
+              (literal 3))) \ 
+          (expr 
+            (literal 1)))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (literal 4)) mod 
+            (expr 
+              (literal 3))) + 
+          (expr 
+            (literal 1)))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (literal 3)) + 
+            (expr 
+              (expr 
+                (expr 
+                  (literal 6)) / 
+                (expr 
+                  (literal 12))) * 
+              (expr 
+                (literal 3)))) - 
+          (expr 
+            (literal 2)))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr not 
+          (expr 
+            (expr 
+              (literal 1)) = 
+            (expr 
+              (literal 2))))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (literal 1)) > 
+            (expr 
+              (literal 2))) or 
+          (expr 
+            (expr 
+              (expr 
+                (literal 5)) > 
+              (expr 
+                (literal 4))) and 
+            (expr 
+              (expr 
+                (literal 1)) < 
+              (expr 
+                (literal 2)))))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 2)) imp 
+          (expr 
+            (expr 
+              (literal 3)) eqv 
+            (expr 
+              (expr 
+                (literal 4)) xor 
+              (expr 
+                (literal 5)))))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr + 
+            (expr 
+              (literal 3))) * 
+          (expr 
+            (literal 2)))))) ' \n <EOF>)

@@ -134,8 +134,9 @@
               (literal 1)))) ' \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "New Date? ")) ;)) ' \r\n 
+            (print_argument 
+              (expr 
+                (literal "New Date? ")) ;))) ' \r\n 
         (statement 
           (locate_statement LOCATE , , 
             (expr 
@@ -154,8 +155,9 @@
                     (literal 1)) ))))) ' \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call Resp$)))) ' \r\n \r\n) LOOP 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Resp$))))) ' \r\n \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 
@@ -382,8 +384,9 @@
             (literal 13)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Prompt$)) ;)) \r\n \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Prompt$)) ;))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Column) = 
@@ -405,13 +408,14 @@
                   (variable_or_function_call Column)))) ' \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call SPACE$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 10)))) ))))) ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call SPACE$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 10)))) )))))) ' \r\n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -558,21 +562,24 @@
               (literal 2))))) \r\n \r\n ' \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call TAB 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call LeftMargin)))) ))) ; 
-          (expr 
-            (variable_or_function_call Header$)))) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TAB 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call LeftMargin)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Header$))))) \r\n 
       (statement 
         (print_statement PRINT)) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Su    M   Tu    W   Th    F   Sa")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "Su    M   Tu    W   Th    F   Sa"))))) \r\n 
       (statement 
         (print_statement PRINT)) \r\n \r\n ' \r\n ' \r\n 
       (statement 
@@ -588,13 +595,14 @@
               (literal 1))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call TAB 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call LeftMargin)))) ))) ;)) \r\n \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TAB 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call LeftMargin)))) ))) ;))) \r\n \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -606,8 +614,9 @@
               (print_using_statement PRINT USING 
                 (expr 
                   (literal "##   ")) ; 
-                (expr 
-                  (variable_or_function_call I)) ;)) \r\n \r\n ' \r\n ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call I)) ;))) \r\n \r\n ' \r\n ' \r\n 
             (statement 
               (if_inline_statement IF 
                 (expr 

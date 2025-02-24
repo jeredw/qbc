@@ -43,17 +43,19 @@
         (literal 2)))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call Deck 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1)))) ) . Suit)) , 
-      (expr 
-        (variable_or_function_call Deck 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1)))) ) . Value)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call Deck 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . Suit)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Deck 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . Value))))) \n <EOF>)

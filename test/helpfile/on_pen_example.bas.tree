@@ -8,8 +8,9 @@
     (event_control_statement PEN ON)) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press Esc to exit.")))) \n 
+      (print_argument 
+        (expr 
+          (literal "Press Esc to exit."))))) \n 
   (statement 
     (do_loop_statement DO 
       (do_condition UNTIL 
@@ -31,19 +32,23 @@
       (untyped_id Handler)) :) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Pen is at row")) ; 
-      (expr 
-        (builtin_function PEN 
-          ( 
-            (expr 
-              (literal 6)) ))) ; 
-      (expr 
-        (literal ", column")) ; 
-      (expr 
-        (builtin_function PEN 
-          ( 
-            (expr 
-              (literal 7)) ))))) \n 
+      (print_argument 
+        (expr 
+          (literal "Pen is at row")) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function PEN 
+            ( 
+              (expr 
+                (literal 6)) ))) ;) 
+      (print_argument 
+        (expr 
+          (literal ", column")) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function PEN 
+            ( 
+              (expr 
+                (literal 7)) )))))) \n 
   (statement 
     (return_statement RETURN)) \n <EOF>)

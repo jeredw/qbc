@@ -648,8 +648,9 @@
             (literal 13)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "CGA, EGA Color, or VGA graphics required to run QSHIPS.BAS")))) \n) 
+          (print_argument 
+            (expr 
+              (literal "CGA, EGA Color, or VGA graphics required to run QSHIPS.BAS"))))) \n) 
     (else_block_statement ELSE 
       (else_block ' \n 
         (statement 
@@ -1139,8 +1140,9 @@
               (literal 1))))) ' \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call text$)) ;)) ' \n \n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call text$)) ;))) ' \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id ClearArea) 
@@ -1166,19 +1168,20 @@
                   (variable_or_function_call startCol)))) ' \n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call SPACE$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call SPACE$ 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
                               (expr 
-                                (variable_or_function_call endCol)) - 
+                                (expr 
+                                  (variable_or_function_call endCol)) - 
+                                (expr 
+                                  (variable_or_function_call startCol))) + 
                               (expr 
-                                (variable_or_function_call startCol))) + 
-                            (expr 
-                              (literal 1))))) ))))) ' \n) NEXT row)) \n \n) 
+                                (literal 1))))) )))))) ' \n) NEXT row)) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id CyclePalette) 
@@ -1408,30 +1411,33 @@
             (literal 2)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 201)))) ))) ; 
-          (expr 
-            (variable_or_function_call STRING$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 76))) , 
-                  (argument 
-                    (expr 
-                      (literal 205)))) ))) ; 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 187)))) ))) ;)) ' \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 201)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 76))) , 
+                    (argument 
+                      (expr 
+                        (literal 205)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 187)))) ))) ;))) ' \n 
       (statement 
         (for_next_statement FOR x% = 
           (expr 
@@ -1447,27 +1453,30 @@
                   (literal 2)))) \n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 186)))) ))) ; 
-                (expr 
-                  (variable_or_function_call TAB 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 79)))) ))) ; 
-                (expr 
-                  (variable_or_function_call CHR$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 186)))) ))) ;)) \n) NEXT x%)) \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 186)))) ))) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call TAB 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 79)))) ))) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 186)))) ))) ;))) \n) NEXT x%)) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -1476,30 +1485,33 @@
             (literal 2)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 200)))) ))) ; 
-          (expr 
-            (variable_or_function_call STRING$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 76))) , 
-                  (argument 
-                    (expr 
-                      (literal 205)))) ))) ; 
-          (expr 
-            (variable_or_function_call CHR$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 188)))) ))) ;)) ' \n \n ' \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 200)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 76))) , 
+                    (argument 
+                      (expr 
+                        (literal 205)))) ))) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 188)))) ))) ;))) ' \n \n ' \n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -1857,9 +1869,10 @@
                 (literal 30)))) : 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "Really quit? 
-                  (Y/N)")) ;)) \n 
+              (print_argument 
+                (expr 
+                  (literal "Really quit? 
+                    (Y/N)")) ;))) \n 
           (statement 
             (do_loop_statement DO 
               (block \n 
@@ -2735,13 +2748,14 @@
                   (literal 27)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call SPACE$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 50)))) ))) ;)) \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call SPACE$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 50)))) ))) ;))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -2916,13 +2930,14 @@
                   (literal 1)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call Player$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 1)))) ))))) \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Player$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1)))) )))))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -2944,13 +2959,14 @@
                                         (literal 2)))) ))) )))) )))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call Player$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 2)))) ))))) \n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Player$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 2)))) )))))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -2959,8 +2975,9 @@
                   (literal 19)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "Wind")) ;)) \n 
+                (print_argument 
+                  (expr 
+                    (literal "Wind")) ;))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -2969,15 +2986,17 @@
                   (literal 1)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "Hits:")) ; 
-                (expr 
-                  (variable_or_function_call TotalWins 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 1)))) ))) ;)) \n 
+                (print_argument 
+                  (expr 
+                    (literal "Hits:")) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call TotalWins 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1)))) ))) ;))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -3005,15 +3024,17 @@
                                               (literal 2)))) ))))) ))) )))))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "Hits:")) ; 
-                (expr 
-                  (variable_or_function_call TotalWins 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 2)))) ))) ;)) \n \n 
+                (print_argument 
+                  (expr 
+                    (literal "Hits:")) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call TotalWins 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 2)))) ))) ;))) \n \n 
             (statement 
               (call_statement CALL 
                 (untyped_id DrawWind))) ' \n \n ' \n 
@@ -3073,8 +3094,9 @@
                     (literal 2))))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "S = Shoot")))) \n 
+                (print_argument 
+                  (expr 
+                    (literal "S = Shoot"))))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -3086,8 +3108,9 @@
                     (literal 2))))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "M = Move ")))) \n 
+                (print_argument 
+                  (expr 
+                    (literal "M = Move "))))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -3099,8 +3122,9 @@
                     (literal 2))))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "Q = Quit ")))) \n \n 
+                (print_argument 
+                  (expr 
+                    (literal "Q = Quit "))))) \n \n 
             (statement 
               (do_loop_statement DO 
                 (block ' \n 
@@ -3179,9 +3203,10 @@
                           (literal 11)))) : 
                     (statement 
                       (print_statement PRINT 
-                        (expr 
-                          (literal "Really quit? 
-                            (Y/N)")) ;)) \n 
+                        (print_argument 
+                          (expr 
+                            (literal "Really quit? 
+                              (Y/N)")) ;))) \n 
                     (statement 
                       (do_loop_statement DO 
                         (block \n 
@@ -3527,8 +3552,9 @@
             (variable_or_function_call locateCol2)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Change angle ")))) \n 
+          (print_argument 
+            (expr 
+              (literal "Change angle "))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3537,8 +3563,9 @@
             (variable_or_function_call locateCol2)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "with  and .")))) \n 
+          (print_argument 
+            (expr 
+              (literal "with  and ."))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3547,8 +3574,9 @@
             (variable_or_function_call locateCol2)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Change speed ")))) \n 
+          (print_argument 
+            (expr 
+              (literal "Change speed "))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3557,30 +3585,31 @@
             (variable_or_function_call locateCol2)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
+          (print_argument 
             (expr 
               (expr 
                 (expr 
                   (expr 
-                    (literal "with ")) + 
+                    (expr 
+                      (literal "with ")) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 26)))) )))) + 
                   (expr 
-                    (variable_or_function_call CHR$ 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (literal 26)))) )))) + 
+                    (literal " and "))) + 
                 (expr 
-                  (literal " and "))) + 
+                  (variable_or_function_call CHR$ 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 27)))) )))) + 
               (expr 
-                (variable_or_function_call CHR$ 
-                  ( 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (literal 27)))) )))) + 
-            (expr 
-              (literal "."))))) \n 
+                (literal ".")))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3589,8 +3618,9 @@
             (variable_or_function_call locateCol2)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "ENTER to fire.")))) \n \n ' \n 
+          (print_argument 
+            (expr 
+              (literal "ENTER to fire."))))) \n \n ' \n 
       (statement 
         (call_statement CALL 
           (untyped_id PlotAngle) 
@@ -4576,8 +4606,9 @@
             (literal 2)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "To move your ship, press either the")))) \n 
+          (print_argument 
+            (expr 
+              (literal "To move your ship, press either the"))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4586,27 +4617,28 @@
             (literal 2)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
+          (print_argument 
             (expr 
               (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 26)))) ))) + 
+                  (expr 
+                    (literal " or "))) + 
                 (expr 
                   (variable_or_function_call CHR$ 
                     ( 
                       (argument_list 
                         (argument 
                           (expr 
-                            (literal 26)))) ))) + 
-                (expr 
-                  (literal " or "))) + 
+                            (literal 27)))) )))) + 
               (expr 
-                (variable_or_function_call CHR$ 
-                  ( 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (literal 27)))) )))) + 
-            (expr 
-              (literal " arrow keys, then press Enter."))))) \n \n ' \n ' \n 
+                (literal " arrow keys, then press Enter.")))))) \n \n ' \n ' \n 
       (statement 
         (do_loop_statement DO 
           (do_condition WHILE 
@@ -5542,8 +5574,9 @@
                   (literal 15)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "GAME OVER!")))) \n 
+                (print_argument 
+                  (expr 
+                    (literal "GAME OVER!"))))) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call diff) = 
@@ -5590,33 +5623,34 @@
                   (literal 4)))) ' \n 
             (statement 
               (print_statement PRINT 
-                (expr 
+                (print_argument 
                   (expr 
                     (expr 
                       (expr 
-                        (variable_or_function_call Player$ 
+                        (expr 
+                          (variable_or_function_call Player$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call ofst)))) ))) + 
+                        (expr 
+                          (literal " won by"))) + 
+                      (expr 
+                        (variable_or_function_call STR$ 
                           ( 
                             (argument_list 
                               (argument 
                                 (expr 
-                                  (variable_or_function_call ofst)))) ))) + 
-                      (expr 
-                        (literal " won by"))) + 
+                                  (variable_or_function_call ABS 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call diff)))) ))))) )))) + 
                     (expr 
-                      (variable_or_function_call STR$ 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call ABS 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call diff)))) ))))) )))) + 
-                  (expr 
-                    (literal " point
-                      (s)."))))) \n 
+                      (literal " point
+                        (s).")))))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -5625,8 +5659,9 @@
                   (literal 2)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "Player:       Hits:      Shots Fired:")))) \n 
+                (print_argument 
+                  (expr 
+                    (literal "Player:       Hits:      Shots Fired:"))))) \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -5635,8 +5670,9 @@
                   (literal 2)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "-------       -----      ------------")))) \n \n 
+                (print_argument 
+                  (expr 
+                    (literal "-------       -----      ------------"))))) \n \n 
             (statement 
               (for_next_statement FOR j = 
                 (expr 
@@ -5655,13 +5691,14 @@
                         (literal 2)))) : 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
-                        (variable_or_function_call Player$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (variable_or_function_call j)))) ))))) \n 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call Player$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call j)))) )))))) \n 
                   (statement 
                     (locate_statement LOCATE 
                       (expr 
@@ -5673,13 +5710,14 @@
                         (literal 17)))) : 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
-                        (variable_or_function_call TotalWins 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (variable_or_function_call j)))) ))))) \n 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call TotalWins 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call j)))) )))))) \n 
                   (statement 
                     (locate_statement LOCATE 
                       (expr 
@@ -5691,13 +5729,14 @@
                         (literal 32)))) : 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
-                        (variable_or_function_call TotalShots 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (variable_or_function_call j)))) ))))) \n) NEXT j)) \n \n 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call TotalShots 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call j)))) )))))) \n) NEXT j)) \n \n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -5706,9 +5745,10 @@
                   (literal 11)))) : 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "Play again? 
-                    (Y/N) ")))) ' \n 
+                (print_argument 
+                  (expr 
+                    (literal "Play again? 
+                      (Y/N) "))))) ' \n 
             (statement 
               (do_loop_statement DO 
                 (block \n 
@@ -5974,8 +6014,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "Angle: ##")) ; 
-          (expr 
-            (variable_or_function_call NewAngle#)))) \n \n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call NewAngle#))))) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id PlotBattleField) 
@@ -6778,8 +6819,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "Speed:###")) ; 
-          (expr 
-            (variable_or_function_call NewVelocity)))) \n \n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call NewVelocity))))) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (function_statement FUNCTION SinkShip 
     ( 

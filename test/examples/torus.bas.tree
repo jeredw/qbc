@@ -661,8 +661,9 @@
         (block \n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "Sorry. Graphics not available. Can't run Torus.")))) \n 
+              (print_argument 
+                (expr 
+                  (literal "Sorry. Graphics not available. Can't run Torus."))))) \n 
           (statement 
             (end_statement END)) \n)) 
       (end_select_statement END SELECT))) \n 
@@ -694,34 +695,43 @@
         (literal 1)))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Out of memory")))) \n 
+      (print_argument 
+        (expr 
+          (literal "Out of memory"))))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Reducing panels from")) ; 
-      (expr 
-        (variable_or_function_call TOR.Panel)) ; 
-      (expr 
-        (literal "to")) ; 
-      (expr 
+      (print_argument 
         (expr 
-          (variable_or_function_call TOR.Panel)) - 
+          (literal "Reducing panels from")) ;) 
+      (print_argument 
         (expr 
-          (literal 1))))) \n 
+          (variable_or_function_call TOR.Panel)) ;) 
+      (print_argument 
+        (expr 
+          (literal "to")) ;) 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call TOR.Panel)) - 
+          (expr 
+            (literal 1)))))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Reducing sections from")) ; 
-      (expr 
-        (variable_or_function_call TOR.Sect)) ; 
-      (expr 
-        (literal "to")) ; 
-      (expr 
+      (print_argument 
         (expr 
-          (variable_or_function_call TOR.Sect)) - 
+          (literal "Reducing sections from")) ;) 
+      (print_argument 
         (expr 
-          (literal 1))) ;)) \n 
+          (variable_or_function_call TOR.Sect)) ;) 
+      (print_argument 
+        (expr 
+          (literal "to")) ;) 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call TOR.Sect)) - 
+          (expr 
+            (literal 1))) ;))) \n 
   (statement 
     (do_loop_statement DO 
       (do_condition WHILE 
@@ -794,13 +804,14 @@
             (variable_or_function_call TCOL)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 19)))) ))) ;)) \n ' \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 19)))) ))) ;))) \n ' \n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -825,20 +836,23 @@
                 (variable_or_function_call TCOL)))) \n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "Tile ")) ;)) \n 
+              (print_argument 
+                (expr 
+                  (literal "Tile ")) ;))) \n 
           (statement 
             (print_using_statement PRINT USING 
               (expr 
                 (literal " ###")) ; 
-              (expr 
-                (variable_or_function_call T1)) ;)) \n 
+              (print_argument 
+                (expr 
+                  (variable_or_function_call T1)) ;))) \n 
           (statement 
             (print_using_statement PRINT USING 
               (expr 
                 (literal " ###")) ; 
-              (expr 
-                (variable_or_function_call T2)) ;)) \n) 
+              (print_argument 
+                (expr 
+                  (variable_or_function_call T2)) ;))) \n) 
         (end_if_statement END IF)) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n 
   (function_statement FUNCTION DegToRad! 
@@ -1397,13 +1411,14 @@
             (variable_or_function_call TCOL)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 19)))) ))) ;)) \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 19)))) ))) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -1416,16 +1431,18 @@
             (literal 7)))) ' \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Text$)) ;)) \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Text$)) ;))) \n 
       (statement 
         (color_statement COLOR 
           (expr 
             (literal 23)))) ' \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal " . . .")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal " . . .")) ;))) \n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -3699,8 +3716,9 @@
             (variable_or_function_call COL1)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "UP .............. Move to next field")))) \n 
+          (print_argument 
+            (expr 
+              (literal "UP .............. Move to next field"))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3709,8 +3727,9 @@
             (variable_or_function_call COL1)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "DOWN ........ Move to previous field")))) \n 
+          (print_argument 
+            (expr 
+              (literal "DOWN ........ Move to previous field"))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3719,8 +3738,9 @@
             (variable_or_function_call COL1)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "LEFT ......... Rotate field value up")))) \n 
+          (print_argument 
+            (expr 
+              (literal "LEFT ......... Rotate field value up"))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3729,8 +3749,9 @@
             (variable_or_function_call COL1)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "RIGHT ...... Rotate field value down")))) \n 
+          (print_argument 
+            (expr 
+              (literal "RIGHT ...... Rotate field value down"))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3739,8 +3760,9 @@
             (variable_or_function_call COL1)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "ENTER .... Start with current values")))) \n 
+          (print_argument 
+            (expr 
+              (literal "ENTER .... Start with current values"))))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3749,8 +3771,9 @@
             (variable_or_function_call COL1)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "ESCAPE .................. Quit Torus")))) \n \n ' \n 
+          (print_argument 
+            (expr 
+              (literal "ESCAPE .................. Quit Torus"))))) \n \n ' \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3771,8 +3794,9 @@
             (variable_or_function_call COL1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Thickness")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "Thickness")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3783,8 +3807,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "[ # ]")) ; 
-          (expr 
-            (variable_or_function_call TOR.Thick)) ;)) \n \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TOR.Thick)) ;))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3796,8 +3821,9 @@
             (variable_or_function_call COL1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Panels per Section")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "Panels per Section")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3811,8 +3837,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "[ ## ]")) ; 
-          (expr 
-            (variable_or_function_call TOR.Panel)) ;)) \n \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TOR.Panel)) ;))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3824,8 +3851,9 @@
             (variable_or_function_call COL1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Sections per Torus")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "Sections per Torus")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3839,8 +3867,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "[ ## ]")) ; 
-          (expr 
-            (variable_or_function_call TOR.Sect)) ;)) \n \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TOR.Sect)) ;))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3852,8 +3881,9 @@
             (variable_or_function_call COL1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Tilt around Horizontal Axis")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "Tilt around Horizontal Axis")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3867,8 +3897,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "[ ### ]")) ; 
-          (expr 
-            (variable_or_function_call TOR.XDegree)) ;)) \n \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TOR.XDegree)) ;))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3880,8 +3911,9 @@
             (variable_or_function_call COL1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Tilt around Vertical Axis")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "Tilt around Vertical Axis")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3895,8 +3927,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "[ ### ]")) ; 
-          (expr 
-            (variable_or_function_call TOR.YDegree)) ;)) \n \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TOR.YDegree)) ;))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3908,8 +3941,9 @@
             (variable_or_function_call COL1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Tile Border")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "Tile Border")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3923,8 +3957,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "[ & ] ")) ; 
-          (expr 
-            (variable_or_function_call TOR.Bord)) ;)) \n \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call TOR.Bord)) ;))) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3936,8 +3971,9 @@
             (variable_or_function_call COL1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Screen Mode")) ;)) \n 
+          (print_argument 
+            (expr 
+              (literal "Screen Mode")) ;))) \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -3951,8 +3987,9 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "[ ## ]")) ; 
-          (expr 
-            (variable_or_function_call VC.Scrn)))) \n \n ' \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call VC.Scrn))))) \n \n ' \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -4157,8 +4194,9 @@
                               (print_using_statement PRINT USING 
                                 (expr 
                                   (literal "#")) ; 
-                                (expr 
-                                  (variable_or_function_call TOR.Thick)))) \n)) 
+                                (print_argument 
+                                  (expr 
+                                    (variable_or_function_call TOR.Thick))))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
@@ -4188,8 +4226,9 @@
                               (print_using_statement PRINT USING 
                                 (expr 
                                   (literal "##")) ; 
-                                (expr 
-                                  (variable_or_function_call TOR.Panel)))) \n)) 
+                                (print_argument 
+                                  (expr 
+                                    (variable_or_function_call TOR.Panel))))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
@@ -4219,8 +4258,9 @@
                               (print_using_statement PRINT USING 
                                 (expr 
                                   (literal "##")) ; 
-                                (expr 
-                                  (variable_or_function_call TOR.Sect)))) \n)) 
+                                (print_argument 
+                                  (expr 
+                                    (variable_or_function_call TOR.Sect))))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
@@ -4255,8 +4295,9 @@
                               (print_using_statement PRINT USING 
                                 (expr 
                                   (literal "###")) ; 
-                                (expr 
-                                  (variable_or_function_call TOR.XDegree)))) \n)) 
+                                (print_argument 
+                                  (expr 
+                                    (variable_or_function_call TOR.XDegree))))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
@@ -4291,8 +4332,9 @@
                               (print_using_statement PRINT USING 
                                 (expr 
                                   (literal "###")) ; 
-                                (expr 
-                                  (variable_or_function_call TOR.YDegree)))) \n)) 
+                                (print_argument 
+                                  (expr 
+                                    (variable_or_function_call TOR.YDegree))))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
@@ -4329,8 +4371,9 @@
                               (end_if_statement END IF)) \n 
                             (statement 
                               (print_statement PRINT 
-                                (expr 
-                                  (variable_or_function_call TOR.Bord)))) \n)) 
+                                (print_argument 
+                                  (expr 
+                                    (variable_or_function_call TOR.Bord))))) \n)) 
                         (case_block 
                           (case_statement CASE 
                             (case_expr 
@@ -4402,8 +4445,9 @@
                               (print_using_statement PRINT USING 
                                 (expr 
                                   (literal "##")) ; 
-                                (expr 
-                                  (variable_or_function_call VC.Scrn)))) \n)) 
+                                (print_argument 
+                                  (expr 
+                                    (variable_or_function_call VC.Scrn))))) \n)) 
                         (case_block 
                           (case_statement CASE ELSE) 
                           (block \n)) 

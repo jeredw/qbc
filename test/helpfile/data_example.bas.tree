@@ -92,15 +92,21 @@
                   (literal 4)))) ))))) \n \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Today is ")) 
-      (expr 
-        (variable_or_function_call Month$)) 
-      (expr 
-        (literal " ")) 
-      (expr 
-        (variable_or_function_call Day$)) 
-      (expr 
-        (literal ", ")) 
-      (expr 
-        (variable_or_function_call Year$)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "Today is "))) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Month$))) 
+      (print_argument 
+        (expr 
+          (literal " "))) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Day$))) 
+      (print_argument 
+        (expr 
+          (literal ", "))) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Year$))))) \n <EOF>)

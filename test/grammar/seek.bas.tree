@@ -13,8 +13,9 @@
         (literal 42)))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function seek 
-          ( 
-            (expr 
-              (literal 1)) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (builtin_function seek 
+            ( 
+              (expr 
+                (literal 1)) )))))) \n <EOF>)

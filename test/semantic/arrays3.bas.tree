@@ -49,46 +49,49 @@
         (literal 1)))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call x 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1))) , 
-              (argument 
-                (expr 
-                  (literal 1)))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call y 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1))) , 
-              (argument 
-                (expr 
-                  (literal 1))) , 
-              (argument 
-                (expr 
-                  (literal 1)))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call y 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call z 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1))) , 
-              (argument 
-                (expr 
-                  (literal 1))) , 
-              (argument 
-                (expr 
-                  (literal 1))) , 
-              (argument 
-                (expr 
-                  (literal 1)))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call z 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n <EOF>)

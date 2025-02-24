@@ -1,12 +1,14 @@
 (program ' \n ' \n ' \n ' \n rem \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "hi")))) ' \n 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "hi")))) : rem \n ' 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) : rem \n ' 
   (statement 
     (dynamic_metacommand  $DYNAMIC)) \n ' 
   (statement 
@@ -17,13 +19,15 @@
     (dynamic_metacommand   $DYNAMIC)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "hi")))) ' 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) ' 
   (statement 
     (dynamic_metacommand  $DYNAMIC)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "hi")))) : rem 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) : rem 
   (statement 
     (dynamic_metacommand  $DYNAMIC)) \n <EOF>)

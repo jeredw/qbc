@@ -333,8 +333,9 @@
             (literal 15)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "No graphics screen mode available; cannot run REVERSI.BAS")))) \n) 
+          (print_argument 
+            (expr 
+              (literal "No graphics screen mode available; cannot run REVERSI.BAS"))))) \n) 
     (else_block_statement ELSE 
       (else_block \n 
         (statement 
@@ -1946,7 +1947,7 @@
   (expr 
     (variable_or_function_call GBoard)) , 
   (expr 
-    (literal 0)))) \n)) (end_if_statement END IF)) \n (statement (line_statement LINE ( (expr (literal 590)) , (expr (literal 25)) ) - ( (expr (literal 600)) , (expr (literal 460)) ) , (expr (literal 0)) , (box_style BF))) \n (statement (line_statement LINE ( (expr (literal 50)) , (expr (literal 450)) ) - ( (expr (literal 600)) , (expr (literal 460)) ) , (expr (literal 0)) , (box_style BF))) \n \n (statement (locate_statement LOCATE (expr (literal 2)) , (expr (literal 35)))) : (statement (print_statement PRINT (expr (literal "REVERSI HELP")))) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (literal 18)) (block \n (statement (locate_statement LOCATE 
+    (literal 0)))) \n)) (end_if_statement END IF)) \n (statement (line_statement LINE ( (expr (literal 590)) , (expr (literal 25)) ) - ( (expr (literal 600)) , (expr (literal 460)) ) , (expr (literal 0)) , (box_style BF))) \n (statement (line_statement LINE ( (expr (literal 50)) , (expr (literal 450)) ) - ( (expr (literal 600)) , (expr (literal 460)) ) , (expr (literal 0)) , (box_style BF))) \n \n (statement (locate_statement LOCATE (expr (literal 2)) , (expr (literal 35)))) : (statement (print_statement PRINT (print_argument (expr (literal "REVERSI HELP"))))) \n (statement (for_next_statement FOR i = (expr (literal 1)) TO (expr (literal 18)) (block \n (statement (locate_statement LOCATE 
   (expr 
     (expr 
       (literal 3)) + 
@@ -1954,13 +1955,14 @@
       (variable_or_function_call i))) , 
   (expr 
     (literal 7)))) \n (statement (print_statement PRINT 
-  (expr 
-    (variable_or_function_call a$ 
-      ( 
-        (argument_list 
-          (argument 
-            (expr 
-              (variable_or_function_call i)))) ))))) \n) NEXT i)) \n (statement (locate_statement LOCATE (expr (literal 23)) , (expr (literal 25)))) : (statement (print_statement PRINT (expr (literal "- Press any key to continue -")))) \n (label (text_label (untyped_id SLEEP)) :) (statement (assignment_statement (variable_or_function_call a$) = (expr (variable_or_function_call INKEY$)))) \n (statement (call_statement (untyped_id DrawGameBoard))) \n (statement (call_statement (untyped_id DrawCursor) (argument_list (argument (expr 
+  (print_argument 
+    (expr 
+      (variable_or_function_call a$ 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call i)))) )))))) \n) NEXT i)) \n (statement (locate_statement LOCATE (expr (literal 23)) , (expr (literal 25)))) : (statement (print_statement PRINT (print_argument (expr (literal "- Press any key to continue -"))))) \n (label (text_label (untyped_id SLEEP)) :) (statement (assignment_statement (variable_or_function_call a$) = (expr (variable_or_function_call INKEY$)))) \n (statement (call_statement (untyped_id DrawGameBoard))) \n (statement (call_statement (untyped_id DrawCursor) (argument_list (argument (expr 
   (variable_or_function_call GS.curRow))) , (argument (expr 
   (variable_or_function_call GS.curCol)))))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DisplayMsg) ( (parameter_list (parameter a$)) ) (block \n \n (statement (assignment_statement (variable_or_function_call slen) = (expr (builtin_function LEN ( 
   (expr 
@@ -2012,7 +2014,7 @@
     (expr 
       (literal 80)) - 
     (expr 
-      (variable_or_function_call slen))) )) / (expr (literal 2))))) \n (statement (print_statement PRINT (expr (variable_or_function_call a$)) ;)) \n (statement (assignment_statement (variable_or_function_call GS.mDisplay) = (expr (variable_or_function_call TRUE)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DrawCursor) ( (parameter_list (parameter row) , (parameter col)) ) (block \n (if_block_statement IF (expr (expr (variable_or_function_call GG ( 
+      (variable_or_function_call slen))) )) / (expr (literal 2))))) \n (statement (print_statement PRINT (print_argument (expr (variable_or_function_call a$)) ;))) \n (statement (assignment_statement (variable_or_function_call GS.mDisplay) = (expr (variable_or_function_call TRUE)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DrawCursor) ( (parameter_list (parameter row) , (parameter col)) ) (block \n (if_block_statement IF (expr (expr (variable_or_function_call GG ( 
   (argument_list 
     (argument 
       (expr 
@@ -2393,7 +2395,7 @@
     (expr 
       (literal 390)) ) , 
   (expr 
-    (literal 0)))) \n) NEXT i)) \n \n (statement (locate_statement LOCATE (expr (literal 2)) , (expr (literal 35)))) : (statement (print_statement PRINT (expr (literal "R E V E R S I")))) \n \n (statement (locate_statement LOCATE (expr (literal 5)) , (expr (literal 11)))) : (statement (print_statement PRINT (expr (literal "Game Controls")))) \n (statement (locate_statement LOCATE (expr (literal 7)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "S = Start New Game")))) \n (statement (locate_statement LOCATE (expr (literal 8)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "P = Pass Turn")))) \n (statement (locate_statement LOCATE (expr (literal 9)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "D = Set Difficulty")))) \n (statement (locate_statement LOCATE (expr (literal 10)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "H = Display Help")))) \n (statement (locate_statement LOCATE (expr (literal 11)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Q = Quit")))) \n (statement (locate_statement LOCATE (expr (literal 15)) , (expr (literal 12)))) : (statement (print_statement PRINT (expr (literal "Game Status")))) \n (statement (locate_statement LOCATE (expr (literal 17)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Your Score:      ")) ; (expr (variable_or_function_call GS.rScore)) ; (expr (literal "")))) \n (statement (locate_statement LOCATE (expr (literal 18)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Computer Score:  ")) ; (expr (variable_or_function_call GS.bScore)))) \n (statement (locate_statement LOCATE (expr (literal 20)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Difficulty:   ")) ; (expr (variable_or_function_call GS.dLevel)))) \n \n (statement (for_next_statement FOR row = (expr (literal 1)) TO (expr (literal 8)) (block \n (statement (for_next_statement FOR col = 
+    (literal 0)))) \n) NEXT i)) \n \n (statement (locate_statement LOCATE (expr (literal 2)) , (expr (literal 35)))) : (statement (print_statement PRINT (print_argument (expr (literal "R E V E R S I"))))) \n \n (statement (locate_statement LOCATE (expr (literal 5)) , (expr (literal 11)))) : (statement (print_statement PRINT (print_argument (expr (literal "Game Controls"))))) \n (statement (locate_statement LOCATE (expr (literal 7)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "S = Start New Game"))))) \n (statement (locate_statement LOCATE (expr (literal 8)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "P = Pass Turn"))))) \n (statement (locate_statement LOCATE (expr (literal 9)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "D = Set Difficulty"))))) \n (statement (locate_statement LOCATE (expr (literal 10)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "H = Display Help"))))) \n (statement (locate_statement LOCATE (expr (literal 11)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "Q = Quit"))))) \n (statement (locate_statement LOCATE (expr (literal 15)) , (expr (literal 12)))) : (statement (print_statement PRINT (print_argument (expr (literal "Game Status"))))) \n (statement (locate_statement LOCATE (expr (literal 17)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "Your Score:      ")) ;) (print_argument (expr (variable_or_function_call GS.rScore)) ;) (print_argument (expr (literal ""))))) \n (statement (locate_statement LOCATE (expr (literal 18)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "Computer Score:  ")) ;) (print_argument (expr (variable_or_function_call GS.bScore))))) \n (statement (locate_statement LOCATE (expr (literal 20)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "Difficulty:   ")) ;) (print_argument (expr (variable_or_function_call GS.dLevel))))) \n \n (statement (for_next_statement FOR row = (expr (literal 1)) TO (expr (literal 8)) (block \n (statement (for_next_statement FOR col = 
   (expr 
     (literal 1)) TO 
   (expr 
@@ -2629,20 +2631,22 @@
     (argument 
       (expr 
         (literal "You lost by")))))) \n (statement (print_statement PRINT 
-  (expr 
-    (variable_or_function_call ABS 
-      ( 
-        (argument_list 
-          (argument 
-            (expr 
-              (variable_or_function_call Scorediff)))) ))))) \n)) (else_block_statement ELSE (else_block \n (statement (call_statement 
+  (print_argument 
+    (expr 
+      (variable_or_function_call ABS 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call Scorediff)))) )))))) \n)) (else_block_statement ELSE (else_block \n (statement (call_statement 
   (untyped_id DisplayMsg) 
   (argument_list 
     (argument 
       (expr 
         (literal "You won by")))))) \n (statement (print_statement PRINT 
-  (expr 
-    (variable_or_function_call Scorediff)))) \n)) (end_if_statement END IF)) \n (statement (do_loop_statement DO (block \n (statement (assignment_statement 
+  (print_argument 
+    (expr 
+      (variable_or_function_call Scorediff))))) \n)) (end_if_statement END IF)) \n (statement (do_loop_statement DO (block \n (statement (assignment_statement 
   (variable_or_function_call GS.stat) = 
   (expr 
     (variable_or_function_call ASC 
@@ -3283,7 +3287,7 @@
                 (variable_or_function_call row))) , 
             (argument 
               (expr 
-                (variable_or_function_call col)))) ) . nTake))))) \n)) (end_if_statement END IF)) \n \n (statement (locate_statement LOCATE (expr (literal 17)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Your Score:      ")) ; (expr (variable_or_function_call GS.rScore)))) \n (statement (locate_statement LOCATE (expr (literal 18)) , (expr (literal 7)))) : (statement (print_statement PRINT (expr (literal "Computer Score:  ")) ; (expr (variable_or_function_call GS.bScore)))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id UserMove) (block \n \n (statement (call_statement (untyped_id DrawCursor) (argument_list (argument (expr 
+                (variable_or_function_call col)))) ) . nTake))))) \n)) (end_if_statement END IF)) \n \n (statement (locate_statement LOCATE (expr (literal 17)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "Your Score:      ")) ;) (print_argument (expr (variable_or_function_call GS.rScore))))) \n (statement (locate_statement LOCATE (expr (literal 18)) , (expr (literal 7)))) : (statement (print_statement PRINT (print_argument (expr (literal "Computer Score:  ")) ;) (print_argument (expr (variable_or_function_call GS.bScore))))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id UserMove) (block \n \n (statement (call_statement (untyped_id DrawCursor) (argument_list (argument (expr 
   (variable_or_function_call GS.curRow))) , (argument (expr 
   (variable_or_function_call GS.curCol)))))) \n (statement (do_loop_statement DO (block \n (statement (do_loop_statement DO 
   (block \n 
@@ -3612,10 +3616,12 @@
             (literal 7)))) \n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Difficulty:   ")) ; 
-          (expr 
-            (variable_or_function_call GS.dLevel)) ;)) \n)) 
+          (print_argument 
+            (expr 
+              (literal "Difficulty:   ")) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call GS.dLevel)) ;))) \n)) 
   (case_block 
     (case_statement CASE 
       (case_expr 

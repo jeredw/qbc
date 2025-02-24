@@ -47,19 +47,21 @@
         (literal 42)))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call z 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 2)))) ) . x)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call z 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ) . x))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call z 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 2)))) ) . y.n)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call z 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ) . y.n))))) \n <EOF>)

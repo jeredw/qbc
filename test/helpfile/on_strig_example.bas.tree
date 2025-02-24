@@ -14,8 +14,9 @@
           (literal 0)) ) ON)) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press Esc to exit.")))) \n 
+      (print_argument 
+        (expr 
+          (literal "Press Esc to exit."))))) \n 
   (statement 
     (do_loop_statement DO 
       (do_condition UNTIL 
@@ -37,7 +38,8 @@
       (untyped_id Handler)) :) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Joystick trigger is depressed.")))) \n 
+      (print_argument 
+        (expr 
+          (literal "Joystick trigger is depressed."))))) \n 
   (statement 
     (return_statement RETURN)) \n <EOF>)

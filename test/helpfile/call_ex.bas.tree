@@ -53,12 +53,15 @@
     (then_block ' \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Use more than 3 and fewer than")) ; 
-          (expr 
-            (variable_or_function_call MAXFILES)) ; 
-          (expr 
-            (literal "files")))) \r\n) 
+          (print_argument 
+            (expr 
+              (literal "Use more than 3 and fewer than")) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call MAXFILES)) ;) 
+          (print_argument 
+            (expr 
+              (literal "files"))))) \r\n) 
     (else_block_statement ELSE 
       (else_block \r\n ' \r\n 
         (statement 
@@ -280,12 +283,14 @@
                       (file_number # 
                         (expr 
                           (literal 3))) , 
-                      (expr 
-                        (variable_or_function_call Temp$)))) \r\n 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call Temp$))))) \r\n 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
-                        (variable_or_function_call Temp$)))) \r\n) LOOP)) \r\n 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call Temp$))))) \r\n) LOOP)) \r\n 
             (statement 
               (close_statement CLOSE # 
                 (expr 

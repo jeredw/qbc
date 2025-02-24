@@ -6,8 +6,9 @@
           (untyped_id foo))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call i)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call i))))) \n 
   (statement 
     (end_statement end)) \n \n 
   (label 

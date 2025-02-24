@@ -38,9 +38,11 @@
                   (literal 1))))) \n) next j) , i)) \n ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call sum)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call sum))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call loops)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call loops))))) \n <EOF>)

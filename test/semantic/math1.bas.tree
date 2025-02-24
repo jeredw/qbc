@@ -7,82 +7,87 @@
             (literal 3.141592654)))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call atn 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call tan 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call pi)) / 
+                              (expr 
+                                (literal 4.0))))) ))))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call pi)) / 
+          (expr 
+            (literal 4.0)))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
           ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call tan 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
+            (expr 
+              (variable_or_function_call cos 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (expr 
+                          (literal 180)) * 
+                        (expr 
+                          ( 
                             (expr 
-                              (variable_or_function_call pi)) / 
-                            (expr 
-                              (literal 4.0))))) ))))) ))))) ' \n 
+                              (expr 
+                                (variable_or_function_call pi)) / 
+                              (expr 
+                                (literal 180))) ))))) ))) ))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
+      (print_argument 
         (expr 
-          (variable_or_function_call pi)) / 
+          ( 
+            (expr 
+              (variable_or_function_call sin 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (expr 
+                          (literal 90)) * 
+                        (expr 
+                          ( 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call pi)) / 
+                              (expr 
+                                (literal 180))) ))))) ))) ))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
         (expr 
-          (literal 4.0))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        ( 
-          (expr 
-            (variable_or_function_call cos 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
+          ( 
+            (expr 
+              (variable_or_function_call tan 
+                ( 
+                  (argument_list 
+                    (argument 
                       (expr 
-                        (literal 180)) * 
-                      (expr 
-                        ( 
-                          (expr 
+                        (expr 
+                          (literal 45)) * 
+                        (expr 
+                          ( 
                             (expr 
-                              (variable_or_function_call pi)) / 
-                            (expr 
-                              (literal 180))) ))))) ))) )))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        ( 
-          (expr 
-            (variable_or_function_call sin 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (expr 
-                        (literal 90)) * 
-                      (expr 
-                        ( 
-                          (expr 
-                            (expr 
-                              (variable_or_function_call pi)) / 
-                            (expr 
-                              (literal 180))) ))))) ))) )))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        ( 
-          (expr 
-            (variable_or_function_call tan 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (expr 
-                        (literal 45)) * 
-                      (expr 
-                        ( 
-                          (expr 
-                            (expr 
-                              (variable_or_function_call pi)) / 
-                            (expr 
-                              (literal 180))) ))))) ))) )))) ' \n <EOF>)
+                              (expr 
+                                (variable_or_function_call pi)) / 
+                              (expr 
+                                (literal 180))) ))))) ))) ))))) ' \n <EOF>)

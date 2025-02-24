@@ -23,5 +23,6 @@
       (untyped_id test))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call x)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call x))))) \n <EOF>)

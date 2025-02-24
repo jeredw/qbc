@@ -69,28 +69,36 @@
             (file_number # 
               (expr 
                 (literal 2))) , 
-            (expr 
-              (variable_or_function_call Temp$)))) \r\n) LOOP)) \r\n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Temp$))))) \r\n) LOOP)) \r\n 
   (statement 
     (close_statement CLOSE)) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "There were ")) ; 
-      (expr 
-        (variable_or_function_call Rep)) ; 
-      (expr 
-        (literal " substitutions in ")) ; 
-      (expr 
-        (variable_or_function_call Num)) ; 
-      (expr 
-        (literal " lines.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "There were ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Rep)) ;) 
+      (print_argument 
+        (expr 
+          (literal " substitutions in ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Num)) ;) 
+      (print_argument 
+        (expr 
+          (literal " lines."))))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Substitutions are in file ")) ; 
-      (expr 
-        (variable_or_function_call F2$)))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Substitutions are in file ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call F2$))))) \r\n 
   (statement 
     (end_statement END)) \r\n \r\n 
   (sub_statement SUB 

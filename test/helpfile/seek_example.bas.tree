@@ -31,23 +31,29 @@
       (variable_or_function_call i%))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Data: ")) ; 
-      (expr 
-        (variable_or_function_call i%)) ; 
-      (expr 
-        (literal " Current record: ")) ; 
-      (expr 
-        (variable_or_function_call LOC 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1)))) ))) ; 
-      (expr 
-        (literal " Next: ")) ; 
-      (expr 
-        (builtin_function SEEK 
-          ( 
-            (expr 
-              (literal 1)) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "Data: ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call i%)) ;) 
+      (print_argument 
+        (expr 
+          (literal " Current record: ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call LOC 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (literal " Next: ")) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function SEEK 
+            ( 
+              (expr 
+                (literal 1)) )))))) \n <EOF>)

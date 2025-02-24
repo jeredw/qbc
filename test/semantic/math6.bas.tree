@@ -1,60 +1,66 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call sgn 
-          ( 
-            (argument_list 
-              (argument 
-                (expr - 
+      (print_argument 
+        (expr 
+          (variable_or_function_call sgn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 42))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call sgn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 42.245))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call sgn 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (literal 42))))) ))))) \n 
+                    (literal 0)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call sgn 
-          ( 
-            (argument_list 
-              (argument 
-                (expr - 
+      (print_argument 
+        (expr 
+          (variable_or_function_call sgn 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (literal 42.245))))) ))))) \n 
+                    (literal 0#)))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call sgn 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 0)))) ))))) \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call sgn 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 0#)))) ))))) \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call sgn 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 1e2)))) ))))) \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call sgn 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
+      (print_argument 
+        (expr 
+          (variable_or_function_call sgn 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (literal 2)) + 
+                    (literal 1e2)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call sgn 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (literal 2))))) ))))) \n <EOF>)
+                    (expr 
+                      (literal 2)) + 
+                    (expr 
+                      (literal 2))))) )))))) \n <EOF>)

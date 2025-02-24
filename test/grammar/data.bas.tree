@@ -15,16 +15,18 @@
       (data_item how ' exciting is this))) : 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "very")))) \n 
+      (print_argument 
+        (expr 
+          (literal "very"))))) \n 
   (if_block_statement if 
     (expr 
       (literal 1)) then \n 
     (then_block 
       (statement 
         (print_statement print 
-          (expr 
-            (literal "hi")))) : 
+          (print_argument 
+            (expr 
+              (literal "hi"))))) : 
       (statement 
         (data_statement data 
           (data_item 1) , 
@@ -32,6 +34,7 @@
           (data_item 3))) : 
       (statement 
         (print_statement print 
-          (expr 
-            (literal "bye")))) \n) 
+          (print_argument 
+            (expr 
+              (literal "bye"))))) \n) 
     (end_if_statement end if)) \n <EOF>)

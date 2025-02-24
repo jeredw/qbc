@@ -63,13 +63,14 @@
       (block \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call Array1 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call I)))) ))))) \r\n) NEXT I)) \r\n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Array1 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I)))) )))))) \r\n) NEXT I)) \r\n 
   (statement 
     (end_statement END)) \r\n \r\n ' \r\n 
   (sub_statement SUB 

@@ -25,14 +25,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "1->10 +1 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "1->10 +1 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "1->10 +1 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "1->10 +1 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -61,14 +63,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "1->10  0 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "1->10  0 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "1->10  0 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "1->10  0 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -96,14 +100,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "1->10 -1 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "1->10 -1 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "1->10 -1 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "1->10 -1 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -130,14 +136,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "10->1 +1 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "10->1 +1 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "10->1 +1 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "10->1 +1 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -166,14 +174,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "10->1  0 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "10->1  0 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "10->1  0 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "10->1  0 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -201,14 +211,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "10->1 -1 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "10->1 -1 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "10->1 -1 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "10->1 -1 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -235,14 +247,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "1->1  +1 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "1->1  +1 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "1->1  +1 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "1->1  +1 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -271,14 +285,16 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "1->1   0 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "1->1   0 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "1->1   0 fail")))))))) \n \n 
+              (print_argument 
+                (expr 
+                  (literal "1->1   0 fail"))))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call pass) = 
@@ -306,11 +322,13 @@
       (if_inline_action 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "1->1  -1 ok"))))) 
+            (print_argument 
+              (expr 
+                (literal "1->1  -1 ok")))))) 
       (if_inline_else_statement else 
         (if_inline_action 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "1->1  -1 fail")))))))) \n <EOF>)
+              (print_argument 
+                (expr 
+                  (literal "1->1  -1 fail"))))))))) \n <EOF>)

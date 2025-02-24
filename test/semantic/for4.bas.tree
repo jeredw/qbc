@@ -8,8 +8,9 @@
     (block \n 
       (statement 
         (print_statement print 
-          (expr 
-            (variable_or_function_call x)))) \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call x))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call ugh) = 

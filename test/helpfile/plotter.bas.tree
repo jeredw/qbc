@@ -58,16 +58,19 @@
         (literal "")))) \r\n \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Use the cursor movement keys to draw lines.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Use the cursor movement keys to draw lines."))))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press the spacebar to toggle line drawing on and off.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Press the spacebar to toggle line drawing on and off."))))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Press <ENTER> to begin. Press q to end the program.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Press <ENTER> to begin. Press q to end the program."))))) \r\n 
   (statement 
     (do_loop_statement DO 
       (block :) LOOP 

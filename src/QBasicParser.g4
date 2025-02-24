@@ -607,12 +607,12 @@ lock_statement
   ;
 
 lprint_statement
-  : LPRINT ((COMMA | ';') | (COMMA | ';')? expr)*
+  : LPRINT print_argument*
   ;
 
 // See note for PRINT USING for comma handling.
 lprint_using_statement
-  : LPRINT USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
+  : LPRINT USING expr ';' print_argument*
   ;
 
 lset_statement
@@ -620,7 +620,7 @@ lset_statement
   ;
 
 mid_statement
-  : MID_STRING '(' variable_or_function_call COMMA expr (COMMA expr)? ')' '=' expr
+  : MID_STRING '(' variable_or_function_call COMMA start=expr (COMMA length=expr)? ')' '=' string=expr
   ;
 
 name_statement
@@ -699,7 +699,7 @@ preset_statement
 // there is no other argument.  The IDE inserts a ';' between expressions that
 // have no separator.
 print_statement
-  : PRINT (file_number COMMA)? expr? ((COMMA | ';') | (COMMA | ';')? expr)*
+  : PRINT (file_number COMMA)? print_argument*
   ;
 
 // PRINT USING must use ';' expression separators - the IDE auto-corrects
@@ -707,7 +707,16 @@ print_statement
 // followed by ';'.  The IDE inserts a ';' between expressions that have no
 // separator.
 print_using_statement
-  : PRINT (file_number COMMA)? USING expr ';' expr? ((COMMA | ';') | (COMMA | ';')? expr)*
+  : PRINT (file_number COMMA)? USING expr ';' print_argument*
+  ;
+
+print_argument
+  : ( arg=expr separator=(COMMA | ';')?
+// The SPC function is only valid inside the print argument list.
+    | SPC '(' spaces=expr ')' separator=(COMMA | ';')?
+// Expressions can be empty e.g. just "PRINT ;"
+    | separator=(COMMA | ';')
+    )
   ;
 
 pset_statement

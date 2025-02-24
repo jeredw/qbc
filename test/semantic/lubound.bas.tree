@@ -12,16 +12,18 @@
                 (literal 10))) ))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (lbound_function lbound 
-            ( x )))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (lbound_function lbound 
+              ( x ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (ubound_function ubound 
-            ( x )))))) \n \n 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( x ))))))) \n \n 
   (statement 
     (dim_statement dim 
       (dim_variable y 
@@ -35,49 +37,55 @@
                 (literal 2))) ))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (lbound_function lbound 
-            ( y , 
-              (expr 
-                (literal 0)) )))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (lbound_function lbound 
+              ( y , 
+                (expr 
+                  (literal 0)) ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (lbound_function lbound 
-            ( y , 
-              (expr 
-                (literal 1)) )))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (lbound_function lbound 
+              ( y , 
+                (expr 
+                  (literal 1)) ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (lbound_function lbound 
-            ( y , 
-              (expr 
-                (literal 2)) )))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (lbound_function lbound 
+              ( y , 
+                (expr 
+                  (literal 2)) ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (ubound_function ubound 
-            ( y , 
-              (expr 
-                (literal 0)) )))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( y , 
+                (expr 
+                  (literal 0)) ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (ubound_function ubound 
-            ( y , 
-              (expr 
-                (literal 1)) )))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( y , 
+                (expr 
+                  (literal 1)) ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function 
-          (ubound_function ubound 
-            ( y , 
-              (expr 
-                (literal 2)) )))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( y , 
+                (expr 
+                  (literal 2)) ))))))) \n <EOF>)

@@ -579,9 +579,10 @@
             (literal 5)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Enter pattern size 
-              (1-16 rows):")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "Enter pattern size 
+                (1-16 rows):")) ;))) \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n 
@@ -593,8 +594,9 @@
                   (literal 38)))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "    ")) ;)) \r\n 
+                (print_argument 
+                  (expr 
+                    (literal "    ")) ;))) \r\n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -679,8 +681,9 @@
             (literal 13)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Pattern Bytes")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "Pattern Bytes"))))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -689,8 +692,9 @@
             (literal 53)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Pattern View")))) \r\n \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (literal "Pattern View"))))) \r\n \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 
@@ -711,8 +715,9 @@
               (print_using_statement PRINT USING 
                 (expr 
                   (literal "##:")) ; 
-                (expr 
-                  (variable_or_function_call I%)))) \r\n \r\n ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call I%))))) \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call X%) = 
@@ -772,20 +777,24 @@
             (literal 1)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "DIRECTION keys........Move cursor")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "DIRECTION keys........Move cursor"))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "SPACEBAR............Changes point")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "SPACEBAR............Changes point"))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "ENTER............Displays pattern")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "ENTER............Displays pattern"))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "ESC.........................Quits")) ;)) \r\n \r\n) 
+          (print_argument 
+            (expr 
+              (literal "ESC.........................Quits")) ;))) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowPattern) 
@@ -809,8 +818,9 @@
             (literal 80)))) \r\n \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "The following characters make up your pattern:")))) \r\n 
+          (print_argument 
+            (expr 
+              (literal "The following characters make up your pattern:"))))) \r\n 
       (statement 
         (print_statement PRINT)) \r\n \r\n ' \r\n 
       (statement 
@@ -840,23 +850,26 @@
                                     (literal 1)) )))))) ))))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "CHR$
-                    (")) ; 
+                (print_argument 
                   (expr 
-                    (variable_or_function_call LTRIM$ 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (variable_or_function_call STR$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call PatternByte%)))) ))))) ))) ; 
-                  (expr 
-                    (literal ")")))) \r\n) NEXT I%)) \r\n \r\n 
+                    (literal "CHR$
+                      (")) ;) 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call LTRIM$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call STR$ 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call PatternByte%)))) ))))) ))) ;) 
+                  (print_argument 
+                    (expr 
+                      (literal ")"))))) \r\n) NEXT I%)) \r\n \r\n 
       (statement 
         (print_statement PRINT)) \r\n 
       (statement 
@@ -865,8 +878,9 @@
             (literal 1)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "New pattern? ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "New pattern? ")) ;))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call OK$) = 

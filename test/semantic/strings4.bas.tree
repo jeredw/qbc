@@ -1,13 +1,14 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call left$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "hello"))) , 
-              (argument 
-                (expr 
-                  (literal 60000)))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call left$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "hello"))) , 
+                (argument 
+                  (expr 
+                    (literal 60000)))) )))))) \n <EOF>)

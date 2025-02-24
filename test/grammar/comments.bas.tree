@@ -1,5 +1,6 @@
 (program ' \n rem \n 
   (statement 
     (print_statement print 
-      (expr 
-        (literal 42)))) ' \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal 42))))) ' \n <EOF>)

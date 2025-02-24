@@ -1,244 +1,271 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&h42")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&h42")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o20")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o20")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "50000&")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "50000&")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "-24.44")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "-24.44")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "2+2")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "2+2")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "1e100")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "1e100")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "1d+100")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "1d+100")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "=")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "=")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "moo")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "moo")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "  42  ")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "  42  ")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "- 2  .   5 e  + 2")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "- 2  .   5 e  + 2")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&h12345678")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&h12345678")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&h123456789")))) ))))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&h123456789")))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&h12345678999")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&h12345678999")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&h7fffffff")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&h7fffffff")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&h7ffffffff")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&h7ffffffff")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "1 e 10")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "1 e 10")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&hffffffff")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&hffffffff")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&hffff")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&hffff")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o37777777777")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o37777777777")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o377777777777")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o377777777777")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o123456712")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o123456712")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o1234567123")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o1234567123")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o12345671234")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o12345671234")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o123456712345")))) ))))) ' \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o123456712345")))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call val 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "&o123456712345555")))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call val 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "&o123456712345555")))) )))))) \n <EOF>)

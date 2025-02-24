@@ -144,6 +144,7 @@ SEG : [Ss][Ee][Gg] ;
 SELECT : [Ss][Ee][Ll][Ee][Cc][Tt] ;
 SHARED : [Ss][Hh][Aa][Rr][Ee][Dd] ;
 SINGLE : [Ss][Ii][Nn][Gg][Ll][Ee] ;
+SPC : [Ss][Pp][Cc] ;
 STATIC : [Ss][Tt][Aa][Tt][Ii][Cc] ;
 STEP : [Ss][Tt][Ee][Pp] ;
 STOP : [Ss][Tt][Oo][Pp] ;

@@ -52,8 +52,9 @@
       (block \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call Token$)))) \r\n ' \r\n ' \r\n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Token$))))) \r\n ' \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Token$) = 

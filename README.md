@@ -287,7 +287,7 @@ parse those using baked in rules.
 | `RND`            | Function    | -       | ⛔      |
 | `RSET`           | Statement   | ✅      | ⛔      |
 | `RTRIM$`         | Function    | -       | ✅      |
-| `RUN`            | Statement   | -       | ⛔      |
+| `RUN`            | Statement   | ⛔      | ⛔      |
 | `SCREEN`         | Function    | ✅      | ⛔      |
 | `SCREEN`         | Statement   | ✅      | ⛔      |
 | `SEEK`           | Function    | ✅      | ⛔      |
@@ -301,7 +301,7 @@ parse those using baked in rules.
 | `SLEEP`          | Statement   | -       | ⛔      |
 | `SOUND`          | Statement   | -       | ⛔      |
 | `SPACE$`         | Function    | -       | ✅      |
-| `SPC`            | Function    | -       | ⛔      |
+| `SPC`            | Function    | ✅      | ⛔      |
 | `SQR`            | Function    | -       | ✅      |
 | `STATIC`         | Statement   | ✅      | 🚧      |
 | `$STATIC`        | Metacommand | ✅      | ✅      |

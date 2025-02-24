@@ -23,8 +23,9 @@
       (file_number # 
         (expr 
           (literal 1))) , 
-      (expr 
-        (variable_or_function_call Test$)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Test$))))) \n 
   (statement 
     (width_statement WIDTH 
       (file_number # 
@@ -37,7 +38,8 @@
       (file_number # 
         (expr 
           (literal 1))) , 
-      (expr 
-        (variable_or_function_call Test$)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Test$))))) \n 
   (statement 
     (close_statement CLOSE)) \n <EOF>)

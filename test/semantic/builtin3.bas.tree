@@ -6,5 +6,6 @@
         (literal "hi")))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call abs$)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call abs$))))) \n <EOF>)

@@ -668,8 +668,9 @@
       (untyped_id MemoryErr)) :) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Not enough memory. Can't read file.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Not enough memory. Can't read file."))))) \r\n 
   (statement 
     (end_statement END)) \r\n \r\n ' \r\n ' \r\n \r\n 
   (label 
@@ -1512,13 +1513,14 @@
                   (variable_or_function_call HELPLEFT)))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call SPACE$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call HELPWID)))) ))))) \r\n) NEXT)) \r\n \r\n ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call SPACE$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call HELPWID)))) )))))) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -1527,13 +1529,14 @@
             (literal 1)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 80)))) ))) ;)) \r\n \r\n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 80)))) ))) ;))) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n 
   (sub_statement SUB 
     (untyped_id DirectionKey) 
@@ -1713,8 +1716,9 @@
                 (variable_or_function_call Tmp$))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Tmp$)) ;))) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (call_statement CALL 
           (untyped_id ShowViewHelp))) \r\n \r\n) 
@@ -1887,8 +1891,9 @@
               (print_using_statement PRINT USING 
                 (expr 
                   (literal "##_/")) ; 
-                (expr 
-                  (variable_or_function_call Card.Month)) ;)) \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Card.Month)) ;))) \r\n 
             (statement 
               (if_inline_statement IF 
                 (expr 
@@ -1961,8 +1966,9 @@
               (print_using_statement PRINT USING 
                 (expr 
                   (literal "##_/")) ; 
-                (expr 
-                  (variable_or_function_call Card.Day)) ;)) \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Card.Day)) ;))) \r\n 
             (statement 
               (if_inline_statement IF 
                 (expr 
@@ -2035,8 +2041,9 @@
               (print_using_statement PRINT USING 
                 (expr 
                   (literal "##")) ; 
-                (expr 
-                  (variable_or_function_call Card.Year)) ;)) \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Card.Year)) ;))) \r\n 
             (statement 
               (if_inline_statement IF 
                 (expr 
@@ -2313,13 +2320,14 @@
             (variable_or_function_call P)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n \r\n ' \r\n ' \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n \r\n ' \r\n ' \r\n ' \r\n 
       (if_block_statement IF 
         (expr 
           (variable_or_function_call Insert)) THEN \r\n 
@@ -2359,8 +2367,9 @@
             (variable_or_function_call NORMAL)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Work$)) ;)) \r\n \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Work$)) ;))) \r\n \r\n ' \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n \r\n ' \r\n ' \r\n 
@@ -2625,13 +2634,14 @@
                           (variable_or_function_call CURSOROFF)))) \r\n 
                     (statement 
                       (print_statement PRINT 
-                        (expr 
-                          (variable_or_function_call SPACE$ 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call MaxP)))) ))))) \r\n 
+                        (print_argument 
+                          (expr 
+                            (variable_or_function_call SPACE$ 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call MaxP)))) )))))) \r\n 
                     (statement 
                       (exit_statement EXIT DO)) \r\n \r\n ' \r\n)) 
                 (case_block 
@@ -2875,13 +2885,14 @@
                               (variable_or_function_call BACKGROUND)))) \r\n 
                         (statement 
                           (print_statement PRINT 
-                            (expr 
-                              (variable_or_function_call SPACE$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call MaxP)))) ))) ;)) \r\n 
+                            (print_argument 
+                              (expr 
+                                (variable_or_function_call SPACE$ 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call MaxP)))) ))) ;))) \r\n 
                         (statement 
                           (locate_statement LOCATE , 
                             (expr 
@@ -3057,11 +3068,12 @@
                   (variable_or_function_call CURSOROFF)))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
+                (print_argument 
                   (expr 
-                    (variable_or_function_call Work$)) + 
-                  (expr 
-                    (literal " "))) ;)) \r\n 
+                    (expr 
+                      (variable_or_function_call Work$)) + 
+                    (expr 
+                      (literal " "))) ;))) \r\n 
             (statement 
               (locate_statement LOCATE , 
                 (expr 
@@ -3092,8 +3104,9 @@
             (variable_or_function_call CURSOROFF)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Work$)) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Work$)) ;))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call EditString$) = 
@@ -3835,22 +3848,28 @@
     (block \r\n \r\n 
       (statement 
         (lprint_statement LPRINT 
-          (expr 
-            (variable_or_function_call Card.Names)))) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Card.Names))))) \r\n 
       (statement 
         (lprint_statement LPRINT 
-          (expr 
-            (variable_or_function_call Card.Street)))) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Card.Street))))) \r\n 
       (statement 
         (lprint_statement LPRINT 
-          (expr 
-            (variable_or_function_call Card.City)) ; 
-          (expr 
-            (literal ", ")) ; 
-          (expr 
-            (variable_or_function_call Card.State)) ; 
-          (expr 
-            (variable_or_function_call Card.Zip)))) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Card.City)) ;) 
+          (print_argument 
+            (expr 
+              (literal ", ")) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Card.State)) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Card.Zip))))) \r\n 
       (statement 
         (lprint_statement LPRINT)) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
@@ -3870,8 +3889,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Msg$)) ;)) \r\n \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Msg$)) ;))) \r\n \r\n 
       (statement 
         (select_case_statement SELECT CASE 
           (expr 
@@ -4132,13 +4152,14 @@
                   (variable_or_function_call Column)))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call SPACE$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Length)))) ))))) \r\n \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call SPACE$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Length)))) )))))) \r\n \r\n 
             (statement 
               (locate_statement LOCATE 
                 (expr 
@@ -4147,13 +4168,14 @@
                   (variable_or_function_call Column)))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call Index 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Card)))) ) . Names)))) \r\n \r\n) NEXT Count)) \r\n \r\n) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Index 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Card)))) ) . Names))))) \r\n \r\n) NEXT Count)) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowCmdLine) 
@@ -4172,8 +4194,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal " E")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal " E")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4182,8 +4205,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "dit Top   ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "dit Top   ")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4192,8 +4216,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "A")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "A")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4202,8 +4227,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "dd New   ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "dd New   ")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4212,8 +4238,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "C")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "C")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4222,8 +4249,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "opy to New   ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "opy to New   ")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4232,8 +4260,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "D")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "D")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4242,8 +4271,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "elete   ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "elete   ")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4252,8 +4282,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "F")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "F")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4262,8 +4293,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "ind   ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "ind   ")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4272,8 +4304,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "S")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "S")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4282,8 +4315,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "ort   ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "ort   ")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4292,8 +4326,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "P")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "P")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4302,8 +4337,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "rint   ")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "rint   ")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4312,8 +4348,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Q")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "Q")) ;))) \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4322,8 +4359,9 @@
             (variable_or_function_call BACKGROUND)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "uit ")) ;)) \r\n \r\n) 
+          (print_argument 
+            (expr 
+              (literal "uit ")) ;))) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowEditHelp) 
@@ -4379,8 +4417,9 @@
                 (variable_or_function_call Tmp$))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Tmp$)) ;))) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (color_statement COLOR 
           (expr 
@@ -4415,13 +4454,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4430,8 +4470,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call WorkCard.Names)) ;)) \r\n \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Names)) ;))) \r\n \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4445,13 +4486,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4460,8 +4502,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call WorkCard.Note)) ;)) \r\n \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Note)) ;))) \r\n \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4475,13 +4518,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4492,16 +4536,19 @@
         (print_using_statement PRINT USING 
           (expr 
             (literal "##_/")) ; 
-          (expr 
-            (variable_or_function_call WorkCard.Month)) ; 
-          (expr 
-            (variable_or_function_call WorkCard.Day)) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Month)) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Day)) ;))) \r\n 
       (statement 
         (print_using_statement PRINT USING 
           (expr 
             (literal "##")) ; 
-          (expr 
-            (variable_or_function_call WorkCard.Year)) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Year)) ;))) \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4523,13 +4570,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4538,8 +4586,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call WorkCard.Phone)) ;)) \r\n \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Phone)) ;))) \r\n \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4553,13 +4602,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4568,8 +4618,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call WorkCard.Street)) ;)) \r\n \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Street)) ;))) \r\n \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4583,13 +4634,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4598,8 +4650,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call WorkCard.City)) ;)) \r\n \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.City)) ;))) \r\n \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4613,13 +4666,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4628,8 +4682,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call WorkCard.State)) ;)) \r\n \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.State)) ;))) \r\n \r\n 
       (statement 
         (read_statement READ 
           (variable_or_function_call Row) , 
@@ -4643,13 +4698,14 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Length)))) ))))) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Length)))) )))))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -4658,8 +4714,9 @@
             (variable_or_function_call Column)))) \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call WorkCard.Zip)) ;)) \r\n \r\n) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call WorkCard.Zip)) ;))) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowViewHelp) 
@@ -4715,8 +4772,9 @@
                 (variable_or_function_call Tmp$))) \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call Tmp$)) ;)) \r\n) NEXT)) \r\n \r\n ' \r\n 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Tmp$)) ;))) \r\n) NEXT)) \r\n \r\n ' \r\n 
       (statement 
         (color_statement COLOR 
           (expr 

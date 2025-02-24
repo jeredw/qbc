@@ -8,8 +8,9 @@
     (then_block 
       (statement 
         (print_statement print 
-          (expr 
-            (literal "nope")))) \n) 
+          (print_argument 
+            (expr 
+              (literal "nope"))))) \n) 
     (elseif_block_statement elseif 
       (expr 
         (expr 
@@ -25,8 +26,9 @@
       (else_block \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "nope")))) \n)) 
+            (print_argument 
+              (expr 
+                (literal "nope"))))) \n)) 
     (elseif_block_statement elseif 
       (expr not 
         (expr 
@@ -37,12 +39,14 @@
       (else_block \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "nope")))) \n)) 
+            (print_argument 
+              (expr 
+                (literal "nope"))))) \n)) 
     (else_block_statement else 
       (else_block \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "ok")))) \n)) 
+            (print_argument 
+              (expr 
+                (literal "ok"))))) \n)) 
     (end_if_statement end if)) \n <EOF>)

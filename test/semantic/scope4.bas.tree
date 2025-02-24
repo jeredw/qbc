@@ -27,13 +27,16 @@
     (end_function_statement end function)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call test)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call test))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call test)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call test))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call test)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call test))))) \n <EOF>)

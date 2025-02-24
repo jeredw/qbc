@@ -21,9 +21,10 @@
       (block \n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Enter radius 
-                (or 0 to quit).")))) \n 
+            (print_argument 
+              (expr 
+                (literal "Enter radius 
+                  (or 0 to quit)."))))) \n 
         (statement 
           (input_statement INPUT ; "If radius = " , 
             (variable_or_function_call R))) \n 
@@ -47,10 +48,12 @@
                       (literal 2)))))) \n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal ", the area of the circle =")) ; 
-                (expr 
-                  (variable_or_function_call A)))) \n) 
+                (print_argument 
+                  (expr 
+                    (literal ", the area of the circle =")) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call A))))) \n) 
           (end_if_statement END IF)) \n 
         (statement 
           (print_statement PRINT)) \n) LOOP)) \n <EOF>)

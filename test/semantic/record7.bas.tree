@@ -16,8 +16,9 @@
     (block \n 
       (statement 
         (print_statement print 
-          (expr 
-            (variable_or_function_call p.x)))) \n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call p.x))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call p.x) = 
@@ -59,10 +60,11 @@
                       (literal 2)))) ))))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call blah 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 2)))) ) . x)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call blah 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ) . x))))) \n <EOF>)

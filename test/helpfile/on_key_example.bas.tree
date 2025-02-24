@@ -52,8 +52,9 @@
       (block \n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Press Esc to stop, Ctrl+S to pause.")))) \n 
+            (print_argument 
+              (expr 
+                (literal "Press Esc to stop, Ctrl+S to pause."))))) \n 
         (statement 
           (print_statement PRINT)) \n) WEND)) \n 
   (statement 

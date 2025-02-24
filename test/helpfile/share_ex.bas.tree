@@ -29,10 +29,12 @@
               (literal "")))) \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call Decimal)) 
-            (expr 
-              (literal "base 10 equals ")) ;)) \r\n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Decimal))) 
+            (print_argument 
+              (expr 
+                (literal "base 10 equals ")) ;))) \r\n 
         (statement 
           (do_loop_statement DO 
             (do_condition WHILE 
@@ -63,12 +65,15 @@
                       (variable_or_function_call Newbase))))) \r\n) LOOP)) \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call N$)) 
-            (expr 
-              (literal " base")) 
-            (expr 
-              (variable_or_function_call Newbase)))) \r\n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call N$))) 
+            (print_argument 
+              (expr 
+                (literal " base"))) 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Newbase))))) \r\n 
         (statement 
           (print_statement PRINT)) \r\n) LOOP)) \r\n \r\n 
   (sub_statement SUB 

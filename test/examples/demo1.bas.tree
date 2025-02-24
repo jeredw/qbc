@@ -36,8 +36,9 @@
           (line_number 40)) 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Sound effects")))) : 
+            (print_argument 
+              (expr 
+                (literal "Sound effects"))))) : 
         (statement 
           (print_statement PRINT)) \r\n 
         (label 
@@ -50,8 +51,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  B")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  B")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -60,8 +62,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "ouncing")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "ouncing"))))) \r\n 
         (label 
           (line_number 50)) 
         (statement 
@@ -72,8 +75,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  F")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  F")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -82,8 +86,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "alling")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "alling"))))) \r\n 
         (label 
           (line_number 55)) 
         (statement 
@@ -94,8 +99,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  K")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  K")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -104,8 +110,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "laxon")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "laxon"))))) \r\n 
         (label 
           (line_number 60)) 
         (statement 
@@ -116,8 +123,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  S")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  S")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -126,8 +134,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "iren")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "iren"))))) \r\n 
         (label 
           (line_number 65)) 
         (statement 
@@ -138,8 +147,9 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "  Q")) ;)) : 
+            (print_argument 
+              (expr 
+                (literal "  Q")) ;))) : 
         (statement 
           (color_statement COLOR 
             (expr 
@@ -148,16 +158,18 @@
               (literal 0)))) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "uit")))) \r\n 
+            (print_argument 
+              (expr 
+                (literal "uit"))))) \r\n 
         (label 
           (line_number 70)) 
         (statement 
           (print_statement PRINT)) : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Select: ")) ;)) \r\n 
+            (print_argument 
+              (expr 
+                (literal "Select: ")) ;))) \r\n 
         (label 
           (line_number 75)) 
         (statement 
@@ -244,8 +256,9 @@
     (line_number 110)) 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Bouncing . . .")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Bouncing . . ."))))) \r\n 
   (label 
     (line_number 115)) 
   (statement 
@@ -323,8 +336,9 @@
     (line_number 210)) 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Falling . . .")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Falling . . ."))))) \r\n 
   (label 
     (line_number 215)) 
   (statement 
@@ -376,14 +390,16 @@
     (line_number 310)) 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Oscillating . . .")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Oscillating . . ."))))) \r\n 
   (label 
     (line_number 315)) 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal " . . . press any key to end.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal " . . . press any key to end."))))) \r\n 
   (label 
     (line_number 320)) 
   (statement 
@@ -440,14 +456,16 @@
     (line_number 410)) 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Wailing . . .")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Wailing . . ."))))) \r\n 
   (label 
     (line_number 415)) 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal " . . . press any key to end.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal " . . . press any key to end."))))) \r\n 
   (label 
     (line_number 420)) 
   (statement 

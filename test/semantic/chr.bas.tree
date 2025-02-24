@@ -8,10 +8,11 @@
       (block \n 
         (statement 
           (print_statement print 
-            (expr 
-              (variable_or_function_call chr$ 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call i)))) ))))) \n) next i)) \n <EOF>)
+            (print_argument 
+              (expr 
+                (variable_or_function_call chr$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) )))))) \n) next i)) \n <EOF>)

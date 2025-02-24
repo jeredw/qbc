@@ -32,11 +32,13 @@
             (variable_or_function_call Col)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Prompt$)) 
-          (expr 
-            (literal "
-              (Y/N):")) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Prompt$))) 
+          (print_argument 
+            (expr 
+              (literal "
+                (Y/N):")) ;))) \r\n 
       (statement 
         (do_loop_statement DO 
           (block \r\n ' \r\n 
@@ -87,8 +89,9 @@
               (end_if_statement END IF)) \r\n) LOOP)) \r\n ' \r\n 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Resp$)) ;)) \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Resp$)) ;))) \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 

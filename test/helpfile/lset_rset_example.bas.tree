@@ -69,22 +69,24 @@
         (literal 1)))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
+      (print_argument 
         (expr 
           (expr 
-            (literal "*")) + 
+            (expr 
+              (literal "*")) + 
+            (expr 
+              (variable_or_function_call Ls2$))) + 
           (expr 
-            (variable_or_function_call Ls2$))) + 
-        (expr 
-          (literal "*"))) , 
-      (expr 
+            (literal "*"))) ,) 
+      (print_argument 
         (expr 
           (expr 
-            (literal "*")) + 
+            (expr 
+              (literal "*")) + 
+            (expr 
+              (variable_or_function_call Rs2$))) + 
           (expr 
-            (variable_or_function_call Rs2$))) + 
-        (expr 
-          (literal "*"))))) \n 
+            (literal "*")))))) \n 
   (statement 
     (close_statement CLOSE # 
       (expr 

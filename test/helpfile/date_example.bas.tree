@@ -1,8 +1,9 @@
 (program 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call DATE$)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call DATE$))))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call DATE$) = 
@@ -10,7 +11,9 @@
         (literal "01-01-90")))) ' \n ' \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Date set to ")) ; 
-      (expr 
-        (variable_or_function_call DATE$)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (literal "Date set to ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call DATE$))))) \n <EOF>)

@@ -1,325 +1,333 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call cvs 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvs 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
                     (expr 
                       (expr 
-                        (variable_or_function_call chr$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 0)))) ))) + 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) ))) + 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) )))) + 
                       (expr 
                         (variable_or_function_call chr$ 
                           ( 
                             (argument_list 
                               (argument 
                                 (expr 
-                                  (literal 0)))) )))) + 
-                    (expr 
-                      (variable_or_function_call chr$ 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal &h80)))) )))) + 
-                  (expr 
-                    (variable_or_function_call chr$ 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (literal &h7f)))) )))))) ))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call cvs 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (expr 
-                    (expr 
-                      (expr 
-                        (variable_or_function_call chr$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 0)))) ))) + 
-                      (expr 
-                        (variable_or_function_call chr$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 0)))) )))) + 
+                                  (literal &h80)))) )))) + 
                     (expr 
                       (variable_or_function_call chr$ 
                         ( 
                           (argument_list 
                             (argument 
                               (expr 
-                                (literal &hc0)))) )))) + 
-                  (expr 
-                    (variable_or_function_call chr$ 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (literal &h7f)))) )))))) ))))) ' \n 
+                                (literal &h7f)))) )))))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call cvs 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvs 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
                     (expr 
                       (expr 
-                        (variable_or_function_call chr$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 0)))) ))) + 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) ))) + 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) )))) + 
                       (expr 
                         (variable_or_function_call chr$ 
                           ( 
                             (argument_list 
                               (argument 
                                 (expr 
-                                  (literal 0)))) )))) + 
-                    (expr 
-                      (variable_or_function_call chr$ 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal &hc0)))) )))) + 
-                  (expr 
-                    (variable_or_function_call chr$ 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (literal &hff)))) )))))) ))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call cvs 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (expr 
-                    (expr 
-                      (expr 
-                        (variable_or_function_call chr$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 0)))) ))) + 
-                      (expr 
-                        (variable_or_function_call chr$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 0)))) )))) + 
+                                  (literal &hc0)))) )))) + 
                     (expr 
                       (variable_or_function_call chr$ 
                         ( 
                           (argument_list 
                             (argument 
                               (expr 
-                                (literal &h40)))) )))) + 
+                                (literal &h7f)))) )))))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvs 
+            ( 
+              (argument_list 
+                (argument 
                   (expr 
-                    (variable_or_function_call chr$ 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) ))) + 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) )))) + 
+                      (expr 
+                        (variable_or_function_call chr$ 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal &hc0)))) )))) + 
+                    (expr 
+                      (variable_or_function_call chr$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal &hff)))) )))))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvs 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) ))) + 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) )))) + 
+                      (expr 
+                        (variable_or_function_call chr$ 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal &h40)))) )))) + 
+                    (expr 
+                      (variable_or_function_call chr$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal &h0)))) )))))) )))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mks$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call cvs 
                       ( 
                         (argument_list 
                           (argument 
                             (expr 
-                              (literal &h0)))) )))))) ))))) ' \n 
-  (statement 
-    (print_statement print 
-      (expr 
-        (variable_or_function_call mks$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call cvs 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (expr 
                               (expr 
                                 (expr 
-                                  (variable_or_function_call chr$ 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) )))) + 
                                 (expr 
                                   (variable_or_function_call chr$ 
                                     ( 
                                       (argument_list 
                                         (argument 
                                           (expr 
-                                            (literal 0)))) )))) + 
+                                            (literal &h80)))) )))) + 
                               (expr 
                                 (variable_or_function_call chr$ 
                                   ( 
                                     (argument_list 
                                       (argument 
                                         (expr 
-                                          (literal &h80)))) )))) + 
-                            (expr 
-                              (variable_or_function_call chr$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (literal &h7f)))) )))))) ))))) ))))) ' \n 
+                                          (literal &h7f)))) )))))) ))))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call mks$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call cvs 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mks$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call cvs 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
                               (expr 
                                 (expr 
-                                  (variable_or_function_call chr$ 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) )))) + 
                                 (expr 
                                   (variable_or_function_call chr$ 
                                     ( 
                                       (argument_list 
                                         (argument 
                                           (expr 
-                                            (literal 0)))) )))) + 
+                                            (literal &hc0)))) )))) + 
                               (expr 
                                 (variable_or_function_call chr$ 
                                   ( 
                                     (argument_list 
                                       (argument 
                                         (expr 
-                                          (literal &hc0)))) )))) + 
-                            (expr 
-                              (variable_or_function_call chr$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (literal &h7f)))) )))))) ))))) ))))) ' \n 
+                                          (literal &h7f)))) )))))) ))))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call mks$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call cvs 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mks$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call cvs 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
                               (expr 
                                 (expr 
-                                  (variable_or_function_call chr$ 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) )))) + 
                                 (expr 
                                   (variable_or_function_call chr$ 
                                     ( 
                                       (argument_list 
                                         (argument 
                                           (expr 
-                                            (literal 0)))) )))) + 
+                                            (literal &hc0)))) )))) + 
                               (expr 
                                 (variable_or_function_call chr$ 
                                   ( 
                                     (argument_list 
                                       (argument 
                                         (expr 
-                                          (literal &hc0)))) )))) + 
-                            (expr 
-                              (variable_or_function_call chr$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (literal &hff)))) )))))) ))))) ))))) ' \n 
+                                          (literal &hff)))) )))))) ))))) )))))) ' \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call mks$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call cvs 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
+      (print_argument 
+        (expr 
+          (variable_or_function_call mks$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call cvs 
+                      ( 
+                        (argument_list 
+                          (argument 
                             (expr 
                               (expr 
                                 (expr 
-                                  (variable_or_function_call chr$ 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) ))) + 
+                                  (expr 
+                                    (variable_or_function_call chr$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) )))) + 
                                 (expr 
                                   (variable_or_function_call chr$ 
                                     ( 
                                       (argument_list 
                                         (argument 
                                           (expr 
-                                            (literal 0)))) )))) + 
+                                            (literal &h40)))) )))) + 
                               (expr 
                                 (variable_or_function_call chr$ 
                                   ( 
                                     (argument_list 
                                       (argument 
                                         (expr 
-                                          (literal &h40)))) )))) + 
-                            (expr 
-                              (variable_or_function_call chr$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (literal &h0)))) )))))) ))))) ))))) ' \n <EOF>)
+                                          (literal &h0)))) )))))) ))))) )))))) ' \n <EOF>)

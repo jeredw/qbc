@@ -1,37 +1,41 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call ltrim$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "hello")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call ltrim$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "hello")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call ltrim$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal " hello ")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call ltrim$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal " hello ")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call rtrim$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal "hello")))) ))))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call rtrim$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "hello")))) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call rtrim$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal " hello ")))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call rtrim$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal " hello ")))) )))))) \n <EOF>)

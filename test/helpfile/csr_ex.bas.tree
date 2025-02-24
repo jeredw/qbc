@@ -53,8 +53,9 @@
             (variable_or_function_call Col%)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call Msg$)) ;)) \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Msg$)) ;))) \r\n ' \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 

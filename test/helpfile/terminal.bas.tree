@@ -44,16 +44,17 @@
         (literal 1)))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call STRING$ 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 80))) , 
-              (argument 
-                (expr 
-                  (literal "_")))) ))) ;)) \r\n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call STRING$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 80))) , 
+                (argument 
+                  (expr 
+                    (literal "_")))) ))) ;))) \r\n 
   (statement 
     (locate_statement LOCATE 
       (expr 
@@ -62,15 +63,17 @@
         (literal 1)))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call TAB 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 30)))) ))) ; 
-      (expr 
-        (literal "Press ALT+q to quit")) ;)) \r\n \r\n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call TAB 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 30)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (literal "Press ALT+q to quit")) ;))) \r\n \r\n 
   (statement 
     (view_print_statement VIEW PRINT 
       (expr 
@@ -115,8 +118,9 @@
                   (file_number # 
                     (expr 
                       (literal 1))) , 
-                  (expr 
-                    (variable_or_function_call KeyInput$)) ;)) ' \r\n)) 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call KeyInput$)) ;))) ' \r\n)) 
           (end_if_statement END IF)) ' \r\n \r\n ' \r\n ' \r\n 
         (if_block_statement IF 
           (expr NOT 
@@ -152,8 +156,9 @@
                       (variable_or_function_call ModemInput$)))))) ' \r\n 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (variable_or_function_call ModemInput$)) ;)) ' \r\n) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call ModemInput$)) ;))) ' \r\n) 
           (end_if_statement END IF)) \r\n) LOOP)) \r\n \r\n 
   (statement 
     (close_statement CLOSE)) ' \r\n 

@@ -22,8 +22,9 @@
             (if_inline_action 
               (statement 
                 (print_statement print 
-                  (expr 
-                    (literal "hi")))) : 
+                  (print_argument 
+                    (expr 
+                      (literal "hi"))))) : 
               (statement 
                 (goto_statement goto 
                   (target 
@@ -42,8 +43,9 @@
         (then_block 
           (statement 
             (print_statement print 
-              (expr 
-                (literal "hi")))) \n) 
+              (print_argument 
+                (expr 
+                  (literal "hi"))))) \n) 
         (end_if_statement end if)) \n) 
     (elseif_block_statement elseif 
       (expr 
@@ -51,14 +53,16 @@
       (else_block \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "yo")))) \n)) 
+            (print_argument 
+              (expr 
+                (literal "yo"))))) \n)) 
     (else_block_statement else 
       (else_block \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal 42)))) \n)) 
+            (print_argument 
+              (expr 
+                (literal 42))))) \n)) 
     (end_if_statement end if)) \n 
   (if_block_statement if 
     (expr 
@@ -69,12 +73,14 @@
       (else_block 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "yes")))) \n 
+            (print_argument 
+              (expr 
+                (literal "yes"))))) \n 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "more")))) \n)) 
+            (print_argument 
+              (expr 
+                (literal "more"))))) \n)) 
     (end_if_statement end if)) \n 
   (label 
     (line_number 10)) 
@@ -92,33 +98,38 @@
       (else_block : 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "ok")))) \n 
+            (print_argument 
+              (expr 
+                (literal "ok"))))) \n 
         (label 
           (line_number 40)) 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "yes ok")))) \n)) 
+            (print_argument 
+              (expr 
+                (literal "yes ok"))))) \n)) 
     (else_block_statement 
       (label 
         (line_number 50)) else 
       (else_block 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "baz")))) : 
+            (print_argument 
+              (expr 
+                (literal "baz"))))) : 
         (statement 
           (print_statement print 
-            (expr 
-              (literal "quux")))) \n)) 
+            (print_argument 
+              (expr 
+                (literal "quux"))))) \n)) 
     (end_if_statement 
       (label 
         (line_number 60)) end if)) : 
   (statement 
     (print_statement print 
-      (expr 
-        (literal "ok")))) \n 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
   (statement 
     (if_inline_statement if 
       (expr 

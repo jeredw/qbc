@@ -192,8 +192,9 @@
                   (file_number # 
                     (expr 
                       (literal 2))) , 
-                  (expr 
-                    (variable_or_function_call FileChar$)) ;)) \r\n) LOOP)) \r\n \r\n ' \r\n 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call FileChar$)) ;))) \r\n) LOOP)) \r\n \r\n ' \r\n 
         (statement 
           (if_inline_statement IF 
             (expr 
@@ -204,15 +205,17 @@
                   (file_number # 
                     (expr 
                       (literal 2))) , 
-                  (expr 
-                    (variable_or_function_call LineFeed$)) ;))))) \r\n \r\n 
+                  (print_argument 
+                    (expr 
+                      (variable_or_function_call LineFeed$)) ;)))))) \r\n \r\n 
         (statement 
           (close_statement CLOSE)) ' \r\n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (literal "Another file 
-                (Y/N)?")))) ' \r\n \r\n ' \r\n 
+            (print_argument 
+              (expr 
+                (literal "Another file 
+                  (Y/N)?"))))) ' \r\n \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call More$) = 
@@ -260,8 +263,9 @@
         (block ' \r\n ' \r\n 
           (statement 
             (print_statement PRINT 
-              (expr 
-                (literal "No such file in current directory.")))) \r\n 
+              (print_argument 
+                (expr 
+                  (literal "No such file in current directory."))))) \r\n 
           (statement 
             (input_statement INPUT "Enter new name: " , 
               (variable_or_function_call OutFile$))) \r\n 

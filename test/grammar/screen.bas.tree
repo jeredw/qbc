@@ -1,35 +1,38 @@
 (program 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function screen 
-          ( 
-            (expr 
-              (literal 1)) , 
-            (expr 
-              (literal 2)) ))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function screen 
+            ( 
+              (expr 
+                (literal 1)) , 
+              (expr 
+                (literal 2)) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function screen 
-          ( 
-            (expr 
-              (literal 1)) , 
-            (expr 
-              (literal 2)) , 
-            (expr 
-              (literal 1)) ))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function screen 
+            ( 
+              (expr 
+                (literal 1)) , 
+              (expr 
+                (literal 2)) , 
+              (expr 
+                (literal 1)) )))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (builtin_function screen 
-          ( 
-            (expr 
-              (literal 1)) , 
-            (expr 
-              (literal 2)) , 
-            (expr 
-              (literal 0)) ))))) \n 
+      (print_argument 
+        (expr 
+          (builtin_function screen 
+            ( 
+              (expr 
+                (literal 1)) , 
+              (expr 
+                (literal 2)) , 
+              (expr 
+                (literal 0)) )))))) \n 
   (statement 
     (screen_statement screen 
       (expr 

@@ -36,14 +36,17 @@
               (literal 10)))) ))) \r\n ' \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Number of arguments = ")) ; 
-      (expr 
-        (variable_or_function_call N)))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Number of arguments = ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call N))))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Arguments are: ")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Arguments are: "))))) \r\n 
   (statement 
     (for_next_statement FOR I = 
       (expr 
@@ -53,13 +56,14 @@
       (block : 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call A$ 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call I)))) ))))) :) NEXT I)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n \r\n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call A$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I)))) )))))) :) NEXT I)) \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n \r\n 
   (sub_statement SUB 
     (untyped_id Comline) 
     ( 

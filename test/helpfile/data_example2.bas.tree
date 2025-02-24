@@ -14,12 +14,15 @@
       (variable_or_function_call C$))) ' \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call A$)) , 
-      (expr 
-        (variable_or_function_call B$)) , 
-      (expr 
-        (variable_or_function_call C$)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call A$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call B$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call C$))))) \n 
   (statement 
     (print_statement PRINT)) \n 
   (statement 
@@ -29,9 +32,12 @@
       (variable_or_function_call C))) ' \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (variable_or_function_call A)) , 
-      (expr 
-        (variable_or_function_call B)) , 
-      (expr 
-        (variable_or_function_call C)))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call A)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call B)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call C))))) \n <EOF>)

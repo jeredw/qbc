@@ -4,15 +4,17 @@
       (variable_or_function_call InString$))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "The string length is")) ; 
-      (expr 
-        (variable_or_function_call StrLen 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call InString$)))) ))))) \r\n \r\n 
+      (print_argument 
+        (expr 
+          (literal "The string length is")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call StrLen 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call InString$)))) )))))) \r\n \r\n 
   (function_statement FUNCTION StrLen 
     ( 
       (parameter_list 

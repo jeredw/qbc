@@ -57,8 +57,9 @@
       (untyped_id CLS))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Entries in file:")))) : 
+      (print_argument 
+        (expr 
+          (literal "Entries in file:"))))) : 
   (statement 
     (print_statement PRINT)) \n 
   (statement 
@@ -82,10 +83,12 @@
             (variable_or_function_call Rec2$))) ' \n 
         (statement 
           (print_statement PRINT 
-            (expr 
-              (variable_or_function_call Rec1$)) , 
-            (expr 
-              (variable_or_function_call Rec2$)))) ' \n) LOOP)) \n 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Rec1$)) ,) 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Rec2$))))) ' \n) LOOP)) \n 
   (statement 
     (close_statement CLOSE # 
       (expr 

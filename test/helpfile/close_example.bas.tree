@@ -17,8 +17,9 @@
       (file_number # 
         (expr 
           (literal 1))) , 
-      (expr 
-        (literal "This is saved to the file.")))) \n 
+      (print_argument 
+        (expr 
+          (literal "This is saved to the file."))))) \n 
   (statement 
     (close_statement CLOSE)) \n 
   (statement 
@@ -36,9 +37,11 @@
       (variable_or_function_call a$))) \n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Read from file: ")) ; 
-      (expr 
-        (variable_or_function_call a$)))) \n 
+      (print_argument 
+        (expr 
+          (literal "Read from file: ")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$))))) \n 
   (statement 
     (close_statement CLOSE)) \n <EOF>)

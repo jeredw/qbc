@@ -79,12 +79,16 @@
           (if_inline_action 
             (statement 
               (print_statement PRINT 
-                (expr 
-                  (literal "Line #")) ; 
-                (expr 
-                  (variable_or_function_call Num)) ; 
-                (expr 
-                  (literal ": ")) ; 
-                (expr 
-                  (variable_or_function_call Test$))))))) \r\n) 
+                (print_argument 
+                  (expr 
+                    (literal "Line #")) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Num)) ;) 
+                (print_argument 
+                  (expr 
+                    (literal ": ")) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call Test$)))))))) \r\n) 
     (end_sub_statement END SUB)) \r\n \n <EOF>)

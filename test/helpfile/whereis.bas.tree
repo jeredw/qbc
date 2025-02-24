@@ -47,17 +47,20 @@
     (print_statement PRINT)) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Enter the directory where the search should start")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Enter the directory where the search should start"))))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "
-          (optional drive + directories). Press <ENTER> to begin")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "
+            (optional drive + directories). Press <ENTER> to begin"))))) \r\n 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "the search in the root directory of the current drive.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "the search in the root directory of the current drive."))))) \r\n 
   (statement 
     (print_statement PRINT)) \r\n 
   (statement 
@@ -174,8 +177,9 @@
         (literal 1)))) : 
   (statement 
     (print_statement PRINT 
-      (expr 
-        (literal "Search complete.")))) \r\n 
+      (print_argument 
+        (expr 
+          (literal "Search complete."))))) \r\n 
   (statement 
     (end_statement END)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION GetEntry$ 
@@ -395,15 +399,17 @@
             (literal 1)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (literal "Now searching")) ; 
-          (expr 
-            (variable_or_function_call SPACE$ 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (literal 50)))) ))) ;)) \r\n 
+          (print_argument 
+            (expr 
+              (literal "Now searching")) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call SPACE$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 50)))) ))) ;))) \r\n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -412,8 +418,9 @@
             (literal 15)))) : 
       (statement 
         (print_statement PRINT 
-          (expr 
-            (variable_or_function_call PathSpec$)) ;)) \r\n \r\n ' \r\n 
+          (print_argument 
+            (expr 
+              (variable_or_function_call PathSpec$)) ;))) \r\n \r\n ' \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call TempSpec$) = 
@@ -490,10 +497,12 @@
                           (literal 1)))) : 
                     (statement 
                       (print_statement PRINT 
-                        (expr 
-                          (variable_or_function_call PathSpec$)) ; 
-                        (expr 
-                          (variable_or_function_call DirEntry$)) ;)) \r\n 
+                        (print_argument 
+                          (expr 
+                            (variable_or_function_call PathSpec$)) ;) 
+                        (print_argument 
+                          (expr 
+                            (variable_or_function_call DirEntry$)) ;))) \r\n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call Row) = 
@@ -553,15 +562,17 @@
                         (literal 1)))) : 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
-                        (literal "Now searching")) ; 
-                      (expr 
-                        (variable_or_function_call SPACE$ 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 50)))) ))) ;)) \r\n 
+                      (print_argument 
+                        (expr 
+                          (literal "Now searching")) ;) 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call SPACE$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 50)))) ))) ;))) \r\n 
                   (statement 
                     (locate_statement LOCATE 
                       (expr 
@@ -570,8 +581,9 @@
                         (literal 15)))) : 
                   (statement 
                     (print_statement PRINT 
-                      (expr 
-                        (variable_or_function_call PathSpec$)) ;)) \r\n)) 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call PathSpec$)) ;))) \r\n)) 
               (end_if_statement END IF)) \r\n \r\n) LOOP 
           (loop_condition UNTIL 
             (expr 

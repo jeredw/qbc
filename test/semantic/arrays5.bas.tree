@@ -52,14 +52,16 @@
                           (variable_or_function_call i%)))) )))))) \n) next)) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call t)))) \n 
+      (print_argument 
+        (expr 
+          (variable_or_function_call t))))) \n 
   (statement 
     (print_statement print 
-      (expr 
-        (variable_or_function_call t 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (literal 11)))) ))))) \n <EOF>)
+      (print_argument 
+        (expr 
+          (variable_or_function_call t 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 11)))) )))))) \n <EOF>)

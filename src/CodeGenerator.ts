@@ -625,8 +625,8 @@ export class CodeGenerator extends QBasicParserListener {
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
   override enterPrint_statement = (ctx: parser.Print_statementContext) => {
-    for (const expr of ctx.expr()) {
-      this.compileExpression(expr);
+    for (const arg of ctx.print_argument()) {
+      this.compileExpression(arg._arg!);
     }
     this.addStatement(statements.print(ctx));
   }
