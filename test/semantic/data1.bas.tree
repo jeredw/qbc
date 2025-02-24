@@ -1,0 +1,23 @@
+(program 
+  (statement 
+    (data_statement data 
+      (data_item "hi") , 
+      (data_item 42) , 
+      (data_item hello))) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call x$) , 
+      (variable_or_function_call y) , 
+      (variable_or_function_call z$))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x$)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call y)))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call z$)))) \n <EOF>)

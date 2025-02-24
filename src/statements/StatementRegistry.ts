@@ -43,6 +43,7 @@ import {
   MksFunction,
   MksmbfFunction
 } from "./Convert.ts";
+import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
@@ -299,6 +300,14 @@ export function oct(args: BuiltinStatementArgs) {
 
 export function print(ast: parser.Print_statementContext) {
   return new PrintStatement(ast);
+}
+
+export function read(token: Token, result: Variable) {
+  return new ReadStatement(token, result);
+}
+
+export function restore() {
+  return new RestoreStatement();
 }
 
 export function return_(start: Token) {

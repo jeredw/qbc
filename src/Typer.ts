@@ -62,6 +62,7 @@ export class Typer extends QBasicParserListener {
       chunks: [topLevel],
       types: new Map(),
       staticSize: 0,
+      data: [],
     };
   }
 
@@ -257,8 +258,8 @@ export class Typer extends QBasicParserListener {
         this._optionBaseAllowed = false;
         // Note that for record arrays, result is a record with references to
         // each element at this index.  So t(2) creates _v0 = index(t, 2), but
-        // also _v0.element = index(t().element, 2), etc.  This simplifies
-        // procedure calls with record references.
+        // also _v0.element = index(t().element, 2), etc.
+        // TODO: Is this still necessary?
         const result = this.makeSyntheticVariable(variable.type, ctx._name!);
         getTyperContext(ctx).$result = result;
       }
@@ -276,8 +277,9 @@ export class Typer extends QBasicParserListener {
       }
       getTyperContext(ctx).$result = result;
     }
-    // Builtin array args for e.g. lbound, ubound will be parsed as variables,
-    // and actually will get looked up as scalars!
+    // Builtin array args for e.g. lbound, ubound would be parsed as variables,
+    // and actually would get looked up as scalars, so those are handled with
+    // special case parsing.
   }
 
   private makeSyntheticVariable(type: Type, token: Token): Variable {
@@ -289,7 +291,11 @@ export class Typer extends QBasicParserListener {
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
-  override enterData_statement = (ctx: parser.Data_statementContext) => {}
+
+  override enterData_statement = (ctx: parser.Data_statementContext) => {
+    // Allow data anywhere to match qbasic /run.  This might break restore.
+    // throw ParseError.fromToken(ctx.start!, "Illegal in procedure or DEF FN");
+  }
 
   override enterStatic_metacommand = (ctx: parser.Static_metacommandContext) => {
     this._useStaticArrays = true;

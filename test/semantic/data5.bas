@@ -1,0 +1,2 @@
+data moo
+read x

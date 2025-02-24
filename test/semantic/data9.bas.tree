@@ -1,0 +1,10 @@
+(program 
+  (statement 
+    (data_statement data 
+      (data_item 42))) \n 
+  (def_fn_statement def fnfoo = 
+    (expr 
+      (literal 42))) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call fnfoo))) \n <EOF>)

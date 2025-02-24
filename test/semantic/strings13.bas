@@ -1,2 +1,7 @@
-' TODO: should return 2147483647
-print val("&h7ffffffff")
+print str$(42)
+print str$(24.5)
+print str$(-5)
+print str$(6.022e23)
+print str$(3.14159)
+print str$(.1)
+print str$(0)

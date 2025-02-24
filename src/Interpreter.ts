@@ -78,6 +78,7 @@ class ParseErrorListener extends BaseErrorListener {
         case "LOOP":
           throw ParseError.fromToken(antlrError!.ctx!.start!, "DO without LOOP");
         case "ID":
+        case "{FNID, ID}":
           // Non-variable cases are probably "missing ID".
           throw ParseError.fromToken(token, "Expected: variable");
         default:

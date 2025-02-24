@@ -11,6 +11,13 @@ export interface Program {
   chunks: ProgramChunk[];
   types: Map<string, UserDefinedType>;
   staticSize: number;
+  data: DataItem[];
+}
+
+export interface DataItem {
+  // If text is absent, item is empty (e.g. DATA ,).
+  text?: string;
+  quoted?: boolean;
 }
 
 export interface TargetRef {

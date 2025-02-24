@@ -1,0 +1,41 @@
+(program 
+  (statement 
+    (data_statement data 
+      (data_item 1))) \n 
+  (statement 
+    (data_statement data 
+      (data_item 2))) \n 
+  (label 
+    (text_label 
+      (untyped_id z)) :) 
+  (statement 
+    (data_statement data 
+      (data_item 3))) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call x))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x)))) \n 
+  (statement 
+    (restore_statement restore)) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call x))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x)))) \n 
+  (statement 
+    (restore_statement restore 
+      (target 
+        (text_label 
+          (untyped_id z))))) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call x))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x)))) \n <EOF>)

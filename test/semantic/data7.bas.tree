@@ -1,0 +1,37 @@
+(program 
+  (statement 
+    (data_statement data 
+      (data_item 42) , 
+      (data_item 24))) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call x 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )) , 
+      (variable_or_function_call x 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 2)))) )))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (expr 
+        (variable_or_function_call x 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 2)))) ))))) \n <EOF>)

@@ -84,12 +84,17 @@ export function isArray(value: Value): value is ArrayValue {
 }
 
 export function numericTypeOf(a: NumericValue): (number: number) => Value {
-  switch (a.tag) {
+  return valueOfNumericType(a.tag);
+}
+
+export function valueOfNumericType(tag: TypeTag): (number: number) => Value {
+  switch (tag) {
     case TypeTag.SINGLE: return single;
     case TypeTag.DOUBLE: return double;
     case TypeTag.INTEGER: return integer;
     case TypeTag.LONG: return long;
   }
+  throw new Error('not numeric');
 }
 
 export function mostPreciseType(a: NumericValue, b: NumericValue): (number: number) => Value {
@@ -229,4 +234,6 @@ export const
   ILLEGAL_FUNCTION_CALL = error('Illegal function call'),
   RETURN_WITHOUT_GOSUB = error('RETURN without GOSUB'),
   SUBSCRIPT_OUT_OF_RANGE = error('Subscript out of range'),
-  DUPLICATE_DEFINITION = error('Duplicate definition');
+  DUPLICATE_DEFINITION = error('Duplicate definition'),
+  OUT_OF_DATA = error('Out of DATA'),
+  SYNTAX_ERROR = error('Syntax error');

@@ -400,7 +400,54 @@ export function parseLiteral(fullText: string): values.Value {
   return parseFloatConstant(text, sigil);
 }
 
-function parseFloatConstant(text: string, sigil: string): values.Value {
+export function parseNumberFromString(fullText: string): values.Value | undefined {
+  let [text, sigil] = splitSigil(fullText);
+  text = text.trim();
+  if (!isNumericLiteral(text)) {
+    return;
+  }
+  if (text.toLowerCase().startsWith('&h')) {
+    if (text.length == 2 + 9) {
+      // QBasic's hex parser has a bug that accepts 9 hex digits and does this.
+      // This only applies to VAL / DATA not literals in code.
+      text = `${text.slice(0, 6)}${text.slice(7, 10)}0`;
+    }
+    return parseAmpConstant(text, 16, sigil);
+  }
+  if (text.toLowerCase().startsWith('&o')) {
+    // &o123456712345 -> &o12345712340
+    if (text.length == 2 + 12) {
+      text = `${text.slice(0, 7)}${text.slice(8, 13)}0`;
+    }
+    return parseAmpConstant(text, 8, sigil);
+  }
+  text = text.replace(/ /g, '');
+  if (/^[0-9]+$/.test(text)) {
+    return parseIntegerConstant(text, sigil);
+  }
+  return parseFloatConstant(text, sigil, /* preventOverflow */ true);
+}
+
+export function parseNumberFromStringPrefix(fullText: string): values.Value | undefined {
+  fullText = fullText.trim();
+  for (let i = fullText.length; i > 0; i--) {
+    const prefix = fullText.slice(0, i);
+    if (isNumericLiteral(prefix)) {
+      return parseNumberFromString(prefix);
+    }
+  }
+}
+
+function isNumericLiteral(text: string): boolean {
+  return /^-?\s*[0-9]+\s*[!#%&]?$/.test(text) ||
+    /^&[Hh][0-9a-fA-F]{1,9}\s*[&%]?$/.test(text) ||
+    /^&[Oo][0-7]{1,12}\s*[&%]?$/.test(text) ||
+    /^-?\s*[0-9]+\s*\.\s*[0-9]*\s*([eEdD]\s*[-+]?\s*[0-9]+|[!#])?$/.test(text) ||
+    /^-?\s*\.\s*[0-9]+\s*([eEdD]\s*[-+]?\s*[0-9]+|[!#])?$/.test(text) ||
+    /^-?\s*[0-9]+\s*([eEdD]\s*[-+]?\s*[0-9]+|[!#])?$/.test(text);
+}
+
+function parseFloatConstant(text: string, sigil: string, preventOverflow: boolean = false): values.Value {
   const n = parseFloat(text.toLowerCase().replace('d', 'e'));
   if (!isFinite(n)) {
     return values.OVERFLOW;
@@ -413,7 +460,11 @@ function parseFloatConstant(text: string, sigil: string): values.Value {
   if (intPart.length + fracPart.length > 7) {
     return values.double(n);
   }
-  return values.single(n);
+  const result = values.single(n);
+  if (preventOverflow && values.isError(result)) {
+    return values.double(n);
+  }
+  return result;
 }
 
 function parseIntegerConstant(text: string, sigil: string): values.Value {
@@ -439,13 +490,15 @@ function parseAmpConstant(text: string, base: number, sigil: string): values.Val
   if (n > 0xffffffff) {
     return values.OVERFLOW;
   }
+  const signedInteger = n > 0x7fff ? n - 0x10000 : n;
+  const signedLong = n > 0x7fffffff ? n - 0x100000000 : n;
   if (sigil == '%') {
-    return n > 0xffff ? values.OVERFLOW : values.integer(n);
+    return n > 0xffff ? values.OVERFLOW : values.integer(signedInteger);
   }
   if (sigil == '&') {
-    return values.long(n);
+    return values.long(signedLong);
   }
-  return n > 0xffff ? values.long(n) : values.integer(n);
+  return n > 0xffff ? values.long(signedLong) : values.integer(signedInteger);
 }
 
 function withIntegerCast(a: values.NumericValue, b: values.NumericValue, fn: (a: values.NumericValue, b: values.NumericValue) => values.Value): values.Value {

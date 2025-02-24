@@ -6,7 +6,7 @@ import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { evaluateIntegerExpression, evaluateStringExpression, parseLiteral } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, parseNumberFromStringPrefix } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
@@ -242,8 +242,8 @@ export class ValFunction extends BuiltinFunction1 {
     if (!isString(input)) {
       throw new Error("expecting string");
     }
-    const value = parseLiteral(input.string);
-    if (!isNumeric(value) || isError(value)) {
+    const value = parseNumberFromStringPrefix(input.string);
+    if (!value) {
       return cast(double(0), this.result.type);
     }
     return cast(value, this.result.type);

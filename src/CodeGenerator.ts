@@ -17,6 +17,7 @@ import { StorageType } from "./Memory.ts";
 import { StackVariable } from "./statements/Call.ts";
 import { Builtin, BuiltinParam } from "./Builtins.ts";
 import { DimBoundsExprs } from "./statements/Arrays.ts";
+import { RestoreStatement } from "./statements/Data.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -39,6 +40,7 @@ export class CodeGenerator extends QBasicParserListener {
   private _program: Program;
   private _syntheticLabelIndex = 0;
   private _arrayBaseIndex: number = 0;
+  private _labelToDataIndex: Map<string, number> = new Map();
 
   constructor(program: Program, arrayBaseIndex: number) {
     super();
@@ -58,6 +60,14 @@ export class CodeGenerator extends QBasicParserListener {
   private assignTargets(chunk: ProgramChunk) {
     for (const [statementIndex, targetRef] of chunk.indexToTarget) {
       const statement = chunk.statements[statementIndex];
+      if (statement instanceof RestoreStatement) {
+        const dataIndex = this._labelToDataIndex.get(targetRef.label);
+        if (dataIndex === undefined) {
+          throw ParseError.fromToken(targetRef.token, "Label not defined");
+        }
+        (statement as RestoreStatement).dataIndex = dataIndex;
+        continue;
+      }
       const targetIndex = chunk.labelToIndex.get(targetRef.label);
       if (targetIndex === undefined) {
         throw ParseError.fromToken(targetRef.token, "Label not defined");
@@ -81,6 +91,7 @@ export class CodeGenerator extends QBasicParserListener {
     }
     this._allLabels.add(label);
     this.addLabelForNextStatement(label);
+    this._labelToDataIndex.set(label, this._program.data.length);
   }
 
   private makeSyntheticLabel(): string {
@@ -355,8 +366,46 @@ export class CodeGenerator extends QBasicParserListener {
   override enterClose_statement = (ctx: parser.Close_statementContext) => {}
   override enterColor_statement = (ctx: parser.Color_statementContext) => {}
   override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
-  override enterData_statement = (ctx: parser.Data_statementContext) => {}
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
+
+  override enterData_statement = (ctx: parser.Data_statementContext) => {
+    for (const item of ctx.data_item()) {
+      const quotedItem = item.DATA_QUOTED();
+      if (quotedItem) {
+        this._program.data.push({text: quotedItem.getText(), quoted: true});
+        continue;
+      }
+      const unquotedItem = item.DATA_UNQUOTED();
+      if (unquotedItem) {
+        this._program.data.push({text: unquotedItem.getText()});
+        continue;
+      }
+      this._program.data.push({});
+    }
+  }
+
+  override enterRead_statement = (ctx: parser.Read_statementContext) => {
+    for (const variableCtx of ctx.variable_or_function_call()) {
+      const symbol = getTyperContext(variableCtx).$symbol;
+      if (!isVariable(symbol)) {
+        throw ParseError.fromToken(variableCtx.start!, "Expected: variable");
+      }
+      let variable = symbol.variable;
+      if (variable.array) {
+        const result = getTyperContext(variableCtx).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        this.indexArray(variable, variableCtx.start!, variableCtx.argument_list(), result);
+        variable = result;
+      }
+      this.addStatement(statements.read(variableCtx.start!, variable));
+    }
+  }
+
+  override enterRestore_statement = (_ctx: parser.Restore_statementContext) => {
+    this.addStatement(statements.restore());
+  }
 
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
     for (const dim of ctx.dim_variable()) {
@@ -586,7 +635,6 @@ export class CodeGenerator extends QBasicParserListener {
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
-  override enterRead_statement = (ctx: parser.Read_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 
   override enterReturn_statement = (ctx: parser.Return_statementContext) => {

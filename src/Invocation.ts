@@ -5,6 +5,7 @@ import { ControlFlowTag } from "./ControlFlow.ts";
 import { RuntimeError } from "./Errors.ts";
 import { ReturnStatement } from "./statements/Return.ts";
 import { RETURN_WITHOUT_GOSUB } from "./Values.ts";
+import { ProgramData } from "./ProgramData.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program) {
   return new Invocation(devices, memory, program);
@@ -19,14 +20,15 @@ interface ProgramLocation {
 export class Invocation {
   private devices: Devices;
   private memory: Memory;
+  private data: ProgramData;
   private program: Program;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
-  private pendingWork?: Promise<void>;
 
   constructor(devices: Devices, memory: Memory, program: Program) {
     this.devices = devices;
     this.memory = memory;
+    this.data = new ProgramData(program.data);
     this.program = program;
   }
 
@@ -56,6 +58,7 @@ export class Invocation {
   async restart(): Promise<void> {
     const chunks = this.program.chunks;
     this.stack = [];
+    this.data.restore(0);
     if (chunks.length > 0 && chunks[0].statements.length > 0) {
       this.stack.push({chunkIndex: 0, statementIndex: 0});
     }
@@ -82,7 +85,11 @@ export class Invocation {
     }
     const statement = chunk.statements[statementIndex];
     try {
-      const controlFlow = statement.execute({devices: this.devices, memory: this.memory});
+      const controlFlow = statement.execute({
+        devices: this.devices,
+        memory: this.memory,
+        data: this.data
+      });
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
         return;

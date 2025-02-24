@@ -144,7 +144,7 @@ parse those using baked in rules.
 | `CVL`            | Function    | -       | ✅      |
 | `CVS`            | Function    | -       | ✅      |
 | `CVSMBF`         | Function    | -       | ✅      |
-| `DATA`           | Statement   | ✅      | ⛔      |
+| `DATA`           | Statement   | ✅      | ✅      |
 | `DATE$`          | Function    | -       | ⛔      |
 | `DATE$`          | Statement   | -       | ⛔      |
 | `DECLARE`        | Statement   | ✅      | ⛔      |
@@ -275,11 +275,11 @@ parse those using baked in rules.
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |
 | `RANDOM`         | Keyword     | ✅      | ⛔      |
 | `RANDOMIZE`      | Statement   | -       | ⛔      |
-| `READ`           | Statement   | ✅      | ⛔      |
+| `READ`           | Statement   | ✅      | ✅      |
 | `REDIM`          | Statement   | ✅      | ⛔      |
 | `REM`            | Statement   | ✅      | ⛔      |
 | `RESET`          | Statement   | -       | ⛔      |
-| `RESTORE`        | Statement   | ✅      | ⛔      |
+| `RESTORE`        | Statement   | ✅      | ✅      |
 | `RESUME`         | Statement   | ✅      | ⛔      |
 | `RETURN`         | Statement   | ✅      | ✅      |
 | `RIGHT$`         | Function    | -       | ✅      |
