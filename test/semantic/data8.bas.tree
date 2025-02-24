@@ -1,0 +1,11 @@
+(program 
+  (statement 
+    (data_statement data 
+      (data_item 42))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call foo))) \n <EOF>)

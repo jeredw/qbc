@@ -812,18 +812,7 @@
                   (expr 
                     (literal 15000)))) ' \n \n 
               (statement 
-                (call_statement 
-                  (untyped_id ERASE) 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call Starbase))) , 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call Incoming))) , 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call Explosion)))))) ' \n \n 
+                (erase_statement ERASE Starbase , Incoming , Explosion)) ' \n \n 
               (statement 
                 (for_next_statement FOR i = 
                   (expr 

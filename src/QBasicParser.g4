@@ -105,9 +105,10 @@ statement
   | dim_statement
   | do_loop_statement
   | dynamic_metacommand
+  | end_statement
+  | erase_statement
   | error_statement
   | event_control_statement
-  | end_statement
   | exit_statement
   | field_statement
   | for_next_statement
@@ -327,6 +328,12 @@ call_absolute_statement
 
 call_absolute_argument_list
   : expr (COMMA expr)*
+  ;
+
+// Erase needs to be parsed specially because if it were an implicit builtin
+// call, its array arguments would be bound to default scalar variables.
+erase_statement
+  : ERASE ID (COMMA ID)*
   ;
 
 error_statement

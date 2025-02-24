@@ -4691,12 +4691,7 @@
                 (expr 
                   (literal "")))) \n 
             (statement 
-              (call_statement 
-                (untyped_id ERASE) 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call WellBlocks)))))) ' \n 
+              (erase_statement ERASE WellBlocks)) ' \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Score) = 

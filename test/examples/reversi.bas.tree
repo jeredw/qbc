@@ -3687,8 +3687,7 @@
   (expr 
     (variable_or_function_call GS.stat)) <> 
   (expr 
-    (variable_or_function_call FMOVE))))))) \n \n) (end_sub_statement END SUB)) \n \n (function_statement FUNCTION ValidMove ( (parameter_list (parameter Opponent)) ) (block \n \n (statement (assignment_statement (variable_or_function_call ValidMove) = (expr (variable_or_function_call FALSE)))) \n (statement (call_statement (untyped_id ERASE) (argument_list (argument (expr 
-  (variable_or_function_call GP)))))) \n (statement (for_next_statement FOR row = (expr (literal 1)) TO (expr (literal 8)) (block \n (statement (for_next_statement FOR col = 
+    (variable_or_function_call FMOVE))))))) \n \n) (end_sub_statement END SUB)) \n \n (function_statement FUNCTION ValidMove ( (parameter_list (parameter Opponent)) ) (block \n \n (statement (assignment_statement (variable_or_function_call ValidMove) = (expr (variable_or_function_call FALSE)))) \n (statement (erase_statement ERASE GP)) \n (statement (for_next_statement FOR row = (expr (literal 1)) TO (expr (literal 8)) (block \n (statement (for_next_statement FOR col = 
   (expr 
     (literal 1)) TO 
   (expr 

@@ -1,2 +1,4 @@
 data 42
-read 42
+sub foo
+end sub
+read foo
