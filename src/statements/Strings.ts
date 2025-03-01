@@ -1,4 +1,3 @@
-
 import { ILLEGAL_FUNCTION_CALL, Value, cast, double, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";

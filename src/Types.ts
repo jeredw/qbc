@@ -10,6 +10,8 @@ export enum TypeTag {
   ANY,
   // Numeric is used for polymorphic builtins.
   NUMERIC,
+  // Used to type check print arguments.
+  PRINTABLE,
   // Reference and array are only used for values, not types.
   REFERENCE,
   ARRAY,
@@ -59,6 +61,10 @@ export interface NumericType {
   tag: TypeTag.NUMERIC;
 }
 
+export interface PrintableType {
+  tag: TypeTag.PRINTABLE;
+}
+
 export type Type =
   | StringType
   | SingleType
@@ -68,7 +74,8 @@ export type Type =
   | FixedStringType
   | UserDefinedType
   | AnyType
-  | NumericType;
+  | NumericType
+  | PrintableType;
 
 export function sameType(s: Type, t: Type) {
   if (isString(s) && isString(t)) {
