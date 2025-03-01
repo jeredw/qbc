@@ -71,24 +71,6 @@ function formatNumber(value: NumericValue): string {
   return value.number.toString();
 }
 
-//function formatFloat(number: number, digits: number, exponentChar: string): string {
-//  if (number === 0) {
-//    return '0';
-//  }
-//  const formatted = number.toPrecision(digits);
-//  // toPrecision() rounds correctly but doesn't format the same way qbasic does.
-//  if (formatted.includes('e')) {
-//    const mantissa = formatted.replace(/0*e.*/, '').replace('.', '');
-//    const exponent = parseInt(formatted.replace(/.*e/, ''));
-//    if (mantissa.length + exponent <= digits) {
-//    }
-//    return formatted
-//      .replace(/\.?0*e/, exponentChar)
-//      .replace(/([-+])([0-9])$/, '$10$2');
-//  }
-//  return formatted.replace(/^0*/, '').replace(/\.?0*$/, '');
-//}
-
 function formatFloat(number: number, precision: number, exponentChar: string): string {
   if (number === 0) {
     return '0';

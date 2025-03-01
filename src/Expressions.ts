@@ -425,7 +425,7 @@ export function parseNumberFromString(fullText: string): values.Value | undefine
   if (/^[0-9]+$/.test(text)) {
     return parseIntegerConstant(text, sigil);
   }
-  return parseFloatConstant(text, sigil, /* preventOverflow */ true);
+  return parseFloatConstant(text, sigil, /* forceDouble */ true);
 }
 
 export function parseNumberFromStringPrefix(fullText: string): values.Value | undefined {
@@ -447,10 +447,13 @@ function isNumericLiteral(text: string): boolean {
     /^-?\s*[0-9]+\s*([eEdD]\s*[-+]?\s*[0-9]+|[!#])?$/.test(text);
 }
 
-function parseFloatConstant(text: string, sigil: string, preventOverflow: boolean = false): values.Value {
+function parseFloatConstant(text: string, sigil: string, forceDouble: boolean = false): values.Value {
   const n = parseFloat(text.toLowerCase().replace('d', 'e'));
   if (!isFinite(n)) {
     return values.OVERFLOW;
+  }
+  if (forceDouble) {
+    return values.double(n);
   }
   const hasDoubleExponent = text.toLowerCase().includes('d');
   if (sigil == '#' || hasDoubleExponent) {
@@ -461,11 +464,7 @@ function parseFloatConstant(text: string, sigil: string, preventOverflow: boolea
   if (intPart.length + fracPart.length > 7) {
     return values.double(n);
   }
-  const result = values.single(n);
-  if (preventOverflow && values.isError(result)) {
-    return values.double(n);
-  }
-  return result;
+  return values.single(n);
 }
 
 function parseIntegerConstant(text: string, sigil: string): values.Value {
