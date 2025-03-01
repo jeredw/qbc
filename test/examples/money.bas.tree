@@ -5636,23 +5636,19 @@
     (block \n 
       (statement 
         (lprint_statement LPRINT 
-          (print_argument 
-            (expr 
-              (variable_or_function_call TAB 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
+          (print_argument TAB 
+            ( 
+              (expr 
+                (expr 
+                  (literal 41)) - 
+                (expr 
+                  (expr 
+                    (builtin_function LEN 
+                      ( 
                         (expr 
-                          (literal 41)) - 
-                        (expr 
-                          (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call text$)) ))) / 
-                          (expr 
-                            (literal 2)))))) ))) ;) 
+                          (variable_or_function_call text$)) ))) / 
+                  (expr 
+                    (literal 2)))) ) ;) 
           (print_argument 
             (expr 
               (variable_or_function_call text$))))) \n) 

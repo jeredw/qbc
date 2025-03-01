@@ -562,14 +562,10 @@
               (literal 2))))) \r\n \r\n ' \r\n 
       (statement 
         (print_statement PRINT 
-          (print_argument 
-            (expr 
-              (variable_or_function_call TAB 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call LeftMargin)))) ))) ;) 
+          (print_argument TAB 
+            ( 
+              (expr 
+                (variable_or_function_call LeftMargin)) ) ;) 
           (print_argument 
             (expr 
               (variable_or_function_call Header$))))) \r\n 
@@ -595,14 +591,10 @@
               (literal 1))))) \r\n 
       (statement 
         (print_statement PRINT 
-          (print_argument 
-            (expr 
-              (variable_or_function_call TAB 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call LeftMargin)))) ))) ;))) \r\n \r\n ' \r\n 
+          (print_argument TAB 
+            ( 
+              (expr 
+                (variable_or_function_call LeftMargin)) ) ;))) \r\n \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 

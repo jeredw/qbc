@@ -1,6 +1,6 @@
 import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
-import { evaluateExpression, evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
 import { isError, isNumeric, isString, NumericValue, TYPE_MISMATCH } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
@@ -11,6 +11,7 @@ export interface PrintArgument {
   token: Token;
   expr?: ExprContext;
   spaces?: ExprContext;
+  tab?: ExprContext;
   separator?: string;
 }
 
@@ -24,23 +25,26 @@ export class PrintStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const screen = context.devices.textScreen;
-    let lastSeparator: string | undefined;
-    for (const {token, expr, spaces, separator} of this.args) {
+    for (let i = 0; i < this.args.length; i++) {
+      const {token, expr, spaces, tab, separator} = this.args[i];
+      const isLastArg = i == this.args.length - 1;
+      const newLine = isLastArg && !separator;
       if (spaces) {
         const numSpaces = evaluateIntegerExpression(spaces, context.memory);
-        if (numSpaces > 0) {
-          // TODO take into account screen width
-          screen.print(' '.repeat(numSpaces % 80), false);
-        }
+        screen.space(numSpaces);
+      }
+      if (tab) {
+        const column = evaluateIntegerExpression(tab, context.memory);
+        screen.tab(column);
       }
       if (expr) {
         const value = evaluateExpression({expr, memory: context.memory});
         if (isNumeric(value)) {
           const formatted = formatNumber(value);
           const padded = formatted.startsWith('-') ? `${formatted} ` : ` ${formatted} `;
-          screen.print(padded, false);
+          screen.print(padded, newLine);
         } else if (isString(value)) {
-          screen.print(value.string, false);
+          screen.print(value.string, newLine);
         } else if (isError(value)) {
           throw RuntimeError.fromToken(token, value);
         } else {
@@ -50,11 +54,22 @@ export class PrintStatement extends Statement {
       if (separator == ',') {
         screen.tab();
       }
-      lastSeparator = separator;
     }
-    if (!lastSeparator) {
-      context.devices.textScreen.print('', true);
-    }
+  }
+}
+
+export class PrintUsingStatement extends Statement {
+  format: ExprContext;
+  args: PrintArgument[];
+
+  constructor(format: ExprContext, args: PrintArgument[]) {
+    super();
+    this.format = format;
+    this.args = args;
+  }
+
+  override execute(context: ExecutionContext) {
+    throw new Error("unimplemented");
   }
 }
 

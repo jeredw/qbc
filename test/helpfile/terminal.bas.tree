@@ -63,14 +63,10 @@
         (literal 1)))) \r\n 
   (statement 
     (print_statement PRINT 
-      (print_argument 
-        (expr 
-          (variable_or_function_call TAB 
-            ( 
-              (argument_list 
-                (argument 
-                  (expr 
-                    (literal 30)))) ))) ;) 
+      (print_argument TAB 
+        ( 
+          (expr 
+            (literal 30)) ) ;) 
       (print_argument 
         (expr 
           (literal "Press ALT+q to quit")) ;))) \r\n \r\n 

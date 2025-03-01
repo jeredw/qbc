@@ -633,13 +633,30 @@ export class CodeGenerator extends QBasicParserListener {
         arg._arg, arg._arg.start!, { tag: TypeTag.PRINTABLE });
       const spaces = arg._spaces && this.compileExpression(
         arg._spaces, arg._spaces.start!, { tag: TypeTag.INTEGER });
+      const tab = arg._tab && this.compileExpression(
+        arg._tab, arg._tab.start!, { tag: TypeTag.INTEGER });
       const separator = arg._separator?.text;
-      args.push({token, expr, spaces, separator});
+      args.push({token, expr, spaces, tab, separator});
     }
     this.addStatement(statements.print(args));
   }
 
-  override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {}
+  override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {
+    const args: PrintArgument[] = [];
+    for (const arg of ctx.print_argument()) {
+      const token = arg.start!;
+      const expr = arg._arg && this.compileExpression(
+        arg._arg, arg._arg.start!, { tag: TypeTag.PRINTABLE });
+      const spaces = arg._spaces && this.compileExpression(
+        arg._spaces, arg._spaces.start!, { tag: TypeTag.INTEGER });
+      const separator = arg._separator?.text;
+      args.push({token, expr, spaces, separator});
+    }
+    const format = this.compileExpression(
+      ctx._format!, ctx._format!.start!, { tag: TypeTag.STRING })
+    this.addStatement(statements.printUsing(format, args));
+  }
+
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}

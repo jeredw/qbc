@@ -5897,14 +5897,10 @@
           (print_argument 
             (expr 
               (variable_or_function_call Player1$)) ;) 
-          (print_argument 
-            (expr 
-              (variable_or_function_call TAB 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (literal 50)))) ))) ;) 
+          (print_argument TAB 
+            ( 
+              (expr 
+                (literal 50)) ) ;) 
           (print_argument 
             (expr 
               (variable_or_function_call TotalWins 
@@ -5924,14 +5920,10 @@
           (print_argument 
             (expr 
               (variable_or_function_call Player2$)) ;) 
-          (print_argument 
-            (expr 
-              (variable_or_function_call TAB 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (literal 50)))) ))) ;) 
+          (print_argument TAB 
+            ( 
+              (expr 
+                (literal 50)) ) ;) 
           (print_argument 
             (expr 
               (variable_or_function_call TotalWins 

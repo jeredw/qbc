@@ -707,13 +707,15 @@ print_statement
 // followed by ';'.  The IDE inserts a ';' between expressions that have no
 // separator.
 print_using_statement
-  : PRINT (file_number COMMA)? USING expr ';' print_argument*
+  : PRINT (file_number COMMA)? USING format=expr ';' print_argument*
   ;
 
 print_argument
   : ( arg=expr separator=(COMMA | ';')?
 // The SPC function is only valid inside the print argument list.
     | SPC '(' spaces=expr ')' separator=(COMMA | ';')?
+// Ditto TAB.
+    | TAB '(' tab=expr ')' separator=(COMMA | ';')?
 // Expressions can be empty e.g. just "PRINT ;"
     | separator=(COMMA | ';')
     )

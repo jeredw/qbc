@@ -55,14 +55,10 @@
       (block \r\n 
         (statement 
           (print_statement PRINT 
-            (print_argument 
-              (expr 
-                (variable_or_function_call TAB 
-                  ( 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (literal 20)))) ))) ;))) \r\n 
+            (print_argument TAB 
+              ( 
+                (expr 
+                  (literal 20)) ) ;))) \r\n 
         (statement 
           (input_statement INPUT "Number of cycles 
             (0 to end): " , 

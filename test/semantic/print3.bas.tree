@@ -1,0 +1,113 @@
+(program 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "0        1         2         3         4         5         6         7         8"))))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "12345678901234567890123456789012345678901234567890123456789012345678901234567890"))))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "hi")) ;) 
+      (print_argument TAB 
+        ( 
+          (expr 
+            (literal 2)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "ho")) ;) 
+      (print_argument TAB 
+        ( 
+          (expr 
+            (literal 200)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "---1")) ;) 
+      (print_argument TAB 
+        ( 
+          (expr 
+            (literal 90)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "---2"))))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "|")) ;) 
+      (print_argument TAB 
+        ( 
+          (expr 
+            (literal 80)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "|"))))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument TAB 
+        ( 
+          (expr 
+            (literal 0)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "!")) ;) 
+      (print_argument TAB 
+        ( 
+          (expr 
+            (literal 2)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "hello"))))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument SPC 
+        ( 
+          (expr - 
+            (expr 
+              (literal 10))) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "!")) ;) 
+      (print_argument SPC 
+        ( 
+          (expr 
+            (literal 100)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "!"))))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "hello")) ;) 
+      (print_argument SPC 
+        ( 
+          (expr 
+            (literal 2)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "ho")) ;) 
+      (print_argument SPC 
+        ( 
+          (expr 
+            (literal 100)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "yo")) ;) 
+      (print_argument SPC 
+        ( 
+          (expr 
+            (literal 79)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "ho"))))) \n <EOF>)

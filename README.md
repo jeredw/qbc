@@ -301,7 +301,7 @@ parse those using baked in rules.
 | `SLEEP`          | Statement   | -       | ⛔      |
 | `SOUND`          | Statement   | -       | ⛔      |
 | `SPACE$`         | Function    | -       | ✅      |
-| `SPC`            | Function    | ✅      | ⛔      |
+| `SPC`            | Function    | ✅      | ✅      |
 | `SQR`            | Function    | -       | ✅      |
 | `STATIC`         | Statement   | ✅      | 🚧      |
 | `$STATIC`        | Metacommand | ✅      | ✅      |
@@ -316,7 +316,7 @@ parse those using baked in rules.
 | `SUB`            | Statement   | ✅      | ✅      |
 | `SWAP`           | Statement   | -       | ⛔      |
 | `SYSTEM`         | Statement   | -       | ⛔      |
-| `TAB`            | Function    | -       | ⛔      |
+| `TAB`            | Function    | ✅      | ✅      |
 | `TAN`            | Function    | -       | ✅      |
 | `THEN`           | Keyword     | ✅      | ✅      |
 | `TIME$`          | Function    | -       | ⛔      |

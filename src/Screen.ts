@@ -33,7 +33,8 @@ const TAB_STOP = 14;
 
 export interface TextScreen {
   print(text: string, newline: boolean): void;
-  tab(): void;
+  space(numSpaces: number): void;
+  tab(targetColumn?: number): void;
 }
 
 export class TestTextScreen implements TextScreen {
@@ -72,7 +73,33 @@ export class TestTextScreen implements TextScreen {
     }
   }
 
-  tab() {
+  space(numSpaces: number) {
+    if (numSpaces > 0) {
+      numSpaces = numSpaces % this.width;
+      if (this.column + numSpaces >= this.width) {
+        const spacesOnThisLine = this.width - this.column;
+        this.putString(' '.repeat(spacesOnThisLine));
+        this.newLine();
+        numSpaces -= spacesOnThisLine;
+      }
+      if (numSpaces > 0) {
+        this.putString(' '.repeat(numSpaces));
+      }
+    }
+  }
+
+  tab(targetColumn?: number) {
+    if (targetColumn !== undefined) {
+      console.log(this.column, targetColumn);
+      targetColumn = wrapColumn(targetColumn, this.width);
+      if (this.column + 1 > targetColumn) {
+        this.newLine();
+      }
+      this.putString(' '.repeat(targetColumn - (this.column + 1)));
+      console.log(this.column, targetColumn);
+      return;
+    }
+
     const start = TAB_STOP * Math.floor(this.column / TAB_STOP);
     const nextStop = start + TAB_STOP;
     if (nextStop > this.width) {
@@ -162,16 +189,36 @@ export class CanvasTextScreen implements TextScreen {
   }
 
   print(text: string, newline: boolean = true) {
+    const startRow = this._row;
     for (let i = 0; i < text.length; i++) {
       this.printChar(text.charAt(i));
     }
-    if (newline) {
+    if (newline && this._row == startRow) {
       this._column = 1;
       this._row++;
     }
   }
 
-  tab() {
+  space(numSpaces: number) {
+    if (numSpaces > 0) {
+      this._column += (numSpaces % this._width);
+      if (this._column > this._width) {
+        this._row++;
+        this._column -= this._width;
+      }
+    }
+  }
+
+  tab(targetColumn?: number) {
+    if (targetColumn !== undefined) {
+      targetColumn = wrapColumn(targetColumn, this._width);
+      if (this._column > targetColumn) {
+        this._row++;
+      }
+      this._column = targetColumn;
+      return;
+    }
+
     const start = TAB_STOP * Math.floor(this.column / TAB_STOP);
     const nextStop = start + TAB_STOP;
     if (nextStop > this._width) {
@@ -208,9 +255,19 @@ export class CanvasTextScreen implements TextScreen {
     });
     this._dirty = true;
     this._column++;
-    if (this._column >= this._width) {
+    if (this._column > this._width) {
       this._column = 1;
       this._row++;
     }
   }
+}
+
+function wrapColumn(column: number, width: number): number {
+  if (column <= 0) {
+    return 1;
+  }
+  if (column > width) {
+    return column % width;
+  }
+  return column;
 }
