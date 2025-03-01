@@ -628,12 +628,13 @@ export class CodeGenerator extends QBasicParserListener {
   override enterPrint_statement = (ctx: parser.Print_statementContext) => {
     const args: PrintArgument[] = [];
     for (const arg of ctx.print_argument()) {
+      const token = arg.start!;
       const expr = arg._arg && this.compileExpression(
         arg._arg, arg._arg.start!, { tag: TypeTag.PRINTABLE });
       const spaces = arg._spaces && this.compileExpression(
         arg._spaces, arg._spaces.start!, { tag: TypeTag.INTEGER });
       const separator = arg._separator?.text;
-      args.push({expr, spaces, separator});
+      args.push({token, expr, spaces, separator});
     }
     this.addStatement(statements.print(args));
   }
