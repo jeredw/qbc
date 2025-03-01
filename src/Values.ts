@@ -133,6 +133,8 @@ export function cast(value: Value, desiredType: Type): Value {
       return value;
     case TypeTag.NUMERIC:
       return isNumeric(value) ? value : TYPE_MISMATCH;
+    case TypeTag.PRINTABLE:
+      return isNumeric(value) || isString(value) ? value : TYPE_MISMATCH;
   }
 }
 
@@ -168,6 +170,7 @@ export function getDefaultValue(variable: Variable): Value {
       return reference(variable);
     case TypeTag.ANY:
     case TypeTag.NUMERIC:
+    case TypeTag.PRINTABLE:
       throw new Error("unimplemented");
   }
 }

@@ -456,6 +456,7 @@ function parseFloatConstant(text: string, sigil: string, preventOverflow: boolea
   if (sigil == '#' || hasDoubleExponent) {
     return values.double(n);
   }
+  // The IDE counts digits, so it reads "0000000.1" and ".10000000" as .1#.
   const [, intPart, fracPart] = text.match(/^([0-9]*)\.?([0-9]*)/)!;
   if (intPart.length + fracPart.length > 7) {
     return values.double(n);

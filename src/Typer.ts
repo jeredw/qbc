@@ -574,10 +574,6 @@ export class Typer extends QBasicParserListener {
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
-  override enterPrint_statement = (ctx: parser.Print_statementContext) => {
-    // TODO: check that exprs are string or numeric
-  }
-
   override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {}
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}

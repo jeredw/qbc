@@ -18,6 +18,7 @@ import { StackVariable } from "./statements/Call.ts";
 import { Builtin, BuiltinParam } from "./Builtins.ts";
 import { DimBoundsExprs } from "./statements/Arrays.ts";
 import { RestoreStatement } from "./statements/Data.ts";
+import { PrintArgument } from "./statements/Print.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -625,10 +626,16 @@ export class CodeGenerator extends QBasicParserListener {
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
   override enterPrint_statement = (ctx: parser.Print_statementContext) => {
+    const args: PrintArgument[] = [];
     for (const arg of ctx.print_argument()) {
-      this.compileExpression(arg._arg!);
+      const expr = arg._arg && this.compileExpression(
+        arg._arg, arg._arg.start!, { tag: TypeTag.PRINTABLE });
+      const spaces = arg._spaces && this.compileExpression(
+        arg._spaces, arg._spaces.start!, { tag: TypeTag.INTEGER });
+      const separator = arg._separator?.text;
+      args.push({expr, spaces, separator});
     }
-    this.addStatement(statements.print(ctx));
+    this.addStatement(statements.print(args));
   }
 
   override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {}

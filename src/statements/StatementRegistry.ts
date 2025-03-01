@@ -47,7 +47,7 @@ import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
-import { PrintStatement } from "./Print.ts";
+import { PrintArgument, PrintStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import {
   HexFunction,
@@ -298,8 +298,8 @@ export function oct(args: BuiltinStatementArgs) {
   return new OctFunction(args);
 }
 
-export function print(ast: parser.Print_statementContext) {
-  return new PrintStatement(ast);
+export function print(args: PrintArgument[]) {
+  return new PrintStatement(args);
 }
 
 export function read(token: Token, result: Variable) {

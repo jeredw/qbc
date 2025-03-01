@@ -29,19 +29,57 @@ const DEFAULT_PALETTE = new Map([
   [14, "#ffff00"],
   [15, "#ffffff"],
 ]);
+const TAB_STOP = 14;
 
 export interface TextScreen {
   print(text: string, newline: boolean): void;
+  tab(): void;
 }
 
 export class TestTextScreen implements TextScreen {
   output: string = "";
+  column: number = 0;
+  width: number = 80;
 
-  print(text: string, newline_: boolean) {
+  private spaceLeftOnLine() {
+    return this.width - this.column;
+  }
+
+  private newLine() {
+    this.output += '\n';
+    this.column = 0;
+  }
+
+  private putString(text: string) {
     this.output += text;
-    if (newline_) {
-      this.output += '\n';
+    this.column += text.length;
+  }
+
+  print(text: string, newline: boolean) {
+    while (text.length > 0) {
+      const space = this.spaceLeftOnLine();
+      if (text.length > space) {
+        this.putString(text.slice(0, space));
+        text = text.slice(space);
+        this.newLine();
+      } else {
+        this.putString(text);
+        break;
+      }
     }
+    if (newline) {
+      this.newLine();
+    }
+  }
+
+  tab() {
+    const start = TAB_STOP * Math.floor(this.column / TAB_STOP);
+    const nextStop = start + TAB_STOP;
+    if (nextStop > this.width) {
+      this.newLine();
+      return;
+    }
+    this.putString(' '.repeat(nextStop - this.column));
   }
 }
 
@@ -131,6 +169,17 @@ export class CanvasTextScreen implements TextScreen {
       this._column = 1;
       this._row++;
     }
+  }
+
+  tab() {
+    const start = TAB_STOP * Math.floor(this.column / TAB_STOP);
+    const nextStop = start + TAB_STOP;
+    if (nextStop > this._width) {
+      this.column = 1;
+      this._row++;
+      return;
+    }
+    this.column = nextStop;
   }
 
   at(row: number, col: number) {

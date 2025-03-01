@@ -1,0 +1,176 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "0        1         2         3          "))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "1234567890123456789012345678901234556789"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "1234567890123")) ,) 
+      (print_argument 
+        (expr 
+          (literal 0))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "12345678901234")) ,) 
+      (print_argument 
+        (expr 
+          (literal 0))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call c))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call c))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 10)) ;) 
+      (print_argument 
+        (expr 
+          (literal 100))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 1000)) ;) 
+      (print_argument 
+        (expr 
+          (literal 10000)) ;) 
+      (print_argument 
+        (expr 
+          (literal 100000))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 1))) ;) 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 10))) ;) 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 100)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hi")) ;) 
+      (print_argument spc 
+        ( 
+          (expr 
+            (literal 5)) ) ;) 
+      (print_argument 
+        (expr 
+          (literal "yo"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal .0000011))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 1.1e-7))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal .0000000000000011#))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 1.1d-16))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 42)) ,))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 42))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument ,) 
+      (print_argument ,) 
+      (print_argument 
+        (expr 
+          (literal 42))))) \n 
+  (statement 
+    (print_statement print)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument ,) 
+      (print_argument ;) 
+      (print_argument 
+        (expr 
+          (literal "yay")) ;) 
+      (print_argument ;) 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 42)) ;) 
+      (print_argument ;) 
+      (print_argument 
+        (expr 
+          (literal 42))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "verylongstringverylongstringverylongstringverylongstringverylongstringverylongstringverylongstringverylongstring"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 100000.01#))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 100.1#))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 1.123456e-02))))) \n <EOF>)
