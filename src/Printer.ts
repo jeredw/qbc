@@ -1,3 +1,5 @@
+import { charToAscii } from './AsciiChart.ts'
+
 export interface Printer {
   print(text: string, newline: boolean): void;
   space(numSpaces: number): void;
@@ -6,7 +8,13 @@ export interface Printer {
 
 const TAB_STOP = 14;
 const CHAR_DELAY = 1000 / 80;
+const FONT_DELAY = 5 * CHAR_DELAY;
 const NEWLINE_DELAY = CHAR_DELAY * 80 * .5;
+
+interface ControlState {
+  bold?: boolean;
+  italic?: boolean;
+}
 
 export class LinePrinter implements Printer {
   width: number;
@@ -19,6 +27,7 @@ export class LinePrinter implements Printer {
   linesPrinted: number = 0;
   delay: number = 0;
   audio: HTMLAudioElement;
+  control: ControlState = {};
 
   constructor(width: number) {
     this.width = width;
@@ -37,8 +46,6 @@ export class LinePrinter implements Printer {
     this.paper.appendChild(leftTrack);
     this.paper.appendChild(rightTrack);
     this.paper.appendChild(this.text);
-    // Include some invisible text so the dot matrix webfont gets loaded.
-    this.paper.appendChild(document.createTextNode(" "));
     this.audio = document.createElement('audio');
     this.audio.src = "printer.wav";
     this.audio.loop = true;
@@ -68,15 +75,49 @@ export class LinePrinter implements Printer {
     }
     while (this.delay < 0 && this.buffer.length > 0) {
       const ch = this.buffer.shift()!;
-      this.text.innerText += ch;
-      if (ch === '\n') {
+      if (charToAscii.get(ch) === 0x1b) {
+        const command = this.buffer.shift();
+        const code = charToAscii.get(command || '');
+        switch (code) {
+          case 69:  // ESC E
+            this.control.bold = true;
+            this.delay += FONT_DELAY;
+            break;
+          case 70:  // ESC F
+            this.control.bold = false;
+            this.delay += FONT_DELAY;
+            break;
+          case 52:  // ESC 4
+            this.control.italic = true;
+            this.delay += FONT_DELAY;
+            break;
+          case 53:  // ESC 5
+            this.control.italic = false;
+            this.delay += FONT_DELAY;
+            break;
+        }
+      } else if (ch === '\n') {
         this.linesPrinted++;
         if (this.linesPrinted > 5) {
           this.paperWindow.scrollTop += 16;
         }
         this.delay += NEWLINE_DELAY;
+        this.text.innerHTML += '<br>';
       } else {
         this.delay += CHAR_DELAY;
+        if (this.control.bold || this.control.italic) {
+          const span = document.createElement('span');
+          span.innerText = ch;
+          if (this.control.bold) {
+            span.classList.add('bold');
+          }
+          if (this.control.italic) {
+            span.classList.add('italic');
+          }
+          this.text.appendChild(span);
+        } else {
+          this.text.innerHTML += ch;
+        }
       }
     }
     this.lastFrame = timestamp;

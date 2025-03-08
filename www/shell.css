@@ -23,15 +23,8 @@
 @font-face {
   font-family: 'Web IBM VGA 8x16';
   font-style: normal;
-  font-weight: 400;
+  font-weight: normal;
   src: url(web_ibm_vga_8x16.woff) format('woff');
-}
-
-@font-face {
-  font-family: 'DotMatrix Regular';
-  font-style: normal;
-  font-weight: 400;
-  src: url(DotMatrix-Regular.woff2) format('woff');
 }
 
 * {
@@ -150,6 +143,34 @@ button:active {
   pointer-events: none;
 }
 
+@font-face {
+  font-family: 'DotMatrix Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: url(DotMatrix-Regular.woff2) format('woff');
+}
+
+@font-face {
+  font-family: 'DotMatrix Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: url(DotMatrix-Bold.woff2) format('woff');
+}
+
+@font-face {
+  font-family: 'DotMatrix Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: url(DotMatrix-Italic.woff2) format('woff');
+}
+
+@font-face {
+  font-family: 'DotMatrix BoldItalic';
+  font-style: normal;
+  font-weight: normal;
+  src: url(DotMatrix-BoldItalic.woff2) format('woff');
+}
+
 .paper-window {
   height: 200px;
   overflow: auto;
@@ -170,6 +191,18 @@ button:active {
   color: var(--qbc-paper-font);
   min-height: 800px;
   position: relative;
+}
+
+.paper .bold {
+  font-family: 'DotMatrix Bold';
+}
+
+.paper .italic {
+  font-family: 'DotMatrix Italic';
+}
+
+.paper .bold.italic {
+  font-family: 'DotMatrix BoldItalic';
 }
 
 .track {
