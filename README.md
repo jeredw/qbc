@@ -269,7 +269,7 @@ parse those using baked in rules.
 | `POS`            | Function    | -       | ⛔      |
 | `PRESET`         | Statement   | ✅      | ⛔      |
 | `PRINT`          | Statement   | ✅      | 🚧      |
-| `PRINT USING`    | Statement   | ✅      | ⛔      |
+| `PRINT USING`    | Statement   | ✅      | 🚧      |
 | `PSET`           | Statement   | ✅      | ⛔      |
 | `PUT` I/O        | Statement   | ✅      | ⛔      |
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |

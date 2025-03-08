@@ -90,13 +90,11 @@ export class TestTextScreen implements TextScreen {
 
   tab(targetColumn?: number) {
     if (targetColumn !== undefined) {
-      console.log(this.column, targetColumn);
       targetColumn = wrapColumn(targetColumn, this.width);
       if (this.column + 1 > targetColumn) {
         this.newLine();
       }
       this.putString(' '.repeat(targetColumn - (this.column + 1)));
-      console.log(this.column, targetColumn);
       return;
     }
 
@@ -189,11 +187,10 @@ export class CanvasTextScreen implements TextScreen {
   }
 
   print(text: string, newline: boolean = true) {
-    const startRow = this._row;
     for (let i = 0; i < text.length; i++) {
       this.printChar(text.charAt(i));
     }
-    if (newline && this._row == startRow) {
+    if (newline) {
       this._column = 1;
       this._row++;
     }

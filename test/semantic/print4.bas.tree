@@ -1,0 +1,206 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call A$) = 
+      (expr 
+        (literal "LOOK")))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call B$) = 
+      (expr 
+        (literal "OUT")))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "!")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call A$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call B$))))) ' \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "\  \")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call A$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call B$))))) ' \n ' \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "\   \")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call A$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call B$)) ;) 
+      (print_argument 
+        (expr 
+          (literal "!!"))))) ' \n ' \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "!")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call A$)) ;))) ' \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "&")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call B$))))) ' \n \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "##.##")) ; 
+      (print_argument 
+        (expr 
+          (literal .78))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "###.##")) ; 
+      (print_argument 
+        (expr 
+          (literal 987.654))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "##.##   ")) ; 
+      (print_argument 
+        (expr 
+          (literal 10.2)) ,) 
+      (print_argument 
+        (expr 
+          (literal 5.3)) ,) 
+      (print_argument 
+        (expr 
+          (literal 66.789)) ,) 
+      (print_argument 
+        (expr 
+          (literal .234))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "+##.##   ")) ; 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 68.95))) ,) 
+      (print_argument 
+        (expr 
+          (literal 2.4)) ,) 
+      (print_argument 
+        (expr 
+          (literal 55.6)) ,) 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal .9)))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "##.##-   ")) ; 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 68.95))) ,) 
+      (print_argument 
+        (expr 
+          (literal 22.449)) ,) 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 7.01)))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "**#.#   ")) ; 
+      (print_argument 
+        (expr 
+          (literal 12.39)) ,) 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 0.9))) ,) 
+      (print_argument 
+        (expr 
+          (literal 765.1))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "$$###.##")) ; 
+      (print_argument 
+        (expr 
+          (literal 456.78))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "**$##.##")) ; 
+      (print_argument 
+        (expr 
+          (literal 2.34))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "####,.##")) ; 
+      (print_argument 
+        (expr 
+          (literal 1234.5))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "##.##^^^^")) ; 
+      (print_argument 
+        (expr 
+          (literal 234.56))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal ".####^^^^-")) ; 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 888888)))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "+.##^^^^")) ; 
+      (print_argument 
+        (expr 
+          (literal 123))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "+.##^^^^^")) ; 
+      (print_argument 
+        (expr 
+          (literal 123))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "_!##.##_!")) ; 
+      (print_argument 
+        (expr 
+          (literal 12.34))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "##.##")) ; 
+      (print_argument 
+        (expr 
+          (literal 111.22))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal ".##")) ; 
+      (print_argument 
+        (expr 
+          (literal .999))))) \n <EOF>)
