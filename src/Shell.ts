@@ -1,6 +1,7 @@
 import { Interpreter } from "./Interpreter.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
 import { CanvasTextScreen } from "./Screen.ts";
+import { LinePrinter } from "./Printer.ts";
 import { WebAudioSpeaker } from "./Speaker.ts";
 import { Invocation } from "./Invocation.ts";
 
@@ -20,16 +21,20 @@ class Shell {
 
   private screen: CanvasTextScreen;
   private speaker: WebAudioSpeaker;
+  private printer: LinePrinter;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.screen = new CanvasTextScreen(80, 25);
     this.speaker = new WebAudioSpeaker();
+    this.printer = new LinePrinter(80);
     this.root.appendChild(this.screen.canvas);
-    requestAnimationFrame(this.updateScreen);
+    this.root.appendChild(this.printer.paperWindow);
+    requestAnimationFrame(this.frame);
     this.interpreter = new Interpreter({
       textScreen: this.screen,
       speaker: this.speaker,
+      printer: this.printer,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
@@ -101,17 +106,20 @@ class Shell {
 
   playAudio() {
     this.speaker.enable();
+    this.printer.enableAudio();
     this.root.classList.add('sound-enabled');
   }
 
   muteAudio() {
     this.speaker.disable();
+    this.printer.disableAudio();
     this.root.classList.remove('sound-enabled');
   }
 
-  private updateScreen = () => {
+  private frame = (timestamp: number) => {
     this.screen.render();
-    requestAnimationFrame(this.updateScreen);
+    this.printer.render(timestamp);
+    requestAnimationFrame(this.frame);
   }
 
   private clearErrors() {

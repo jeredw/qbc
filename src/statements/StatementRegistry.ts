@@ -266,6 +266,14 @@ export function log(args: BuiltinStatementArgs) {
   return new LogFunction(args);
 }
 
+export function lprint(args: PrintArgument[]) {
+  return new PrintStatement({printer: true}, args);
+}
+
+export function lprintUsing(format: parser.ExprContext, args: PrintArgument[]) {
+  return new PrintUsingStatement({printer: true}, format, args);
+}
+
 export function mki(args: BuiltinStatementArgs) {
   return new MkiFunction(args);
 }
@@ -299,11 +307,11 @@ export function oct(args: BuiltinStatementArgs) {
 }
 
 export function print(args: PrintArgument[]) {
-  return new PrintStatement(args);
+  return new PrintStatement({screen: true}, args);
 }
 
 export function printUsing(format: parser.ExprContext, args: PrintArgument[]) {
-  return new PrintUsingStatement(format, args);
+  return new PrintUsingStatement({screen: true}, format, args);
 }
 
 export function read(token: Token, result: Variable) {

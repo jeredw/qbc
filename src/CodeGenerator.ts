@@ -600,8 +600,6 @@ export class CodeGenerator extends QBasicParserListener {
   override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {}
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
-  override enterLprint_statement = (ctx: parser.Lprint_statementContext) => {}
-  override enterLprint_using_statement = (ctx: parser.Lprint_using_statementContext) => {}
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
   override enterMid_statement = (ctx: parser.Mid_statementContext) => {}
   override enterName_statement = (ctx: parser.Name_statementContext) => {}
@@ -625,7 +623,23 @@ export class CodeGenerator extends QBasicParserListener {
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
+  override enterLprint_statement = (ctx: parser.Lprint_statementContext) => {
+    this.addPrintStatement(ctx, /* usePrinter= */ true);
+  }
+
   override enterPrint_statement = (ctx: parser.Print_statementContext) => {
+    this.addPrintStatement(ctx);
+  }
+
+  override enterLprint_using_statement = (ctx: parser.Lprint_using_statementContext) => {
+    this.addPrintUsingStatement(ctx, /* usePrinter= */ true);
+  }
+
+  override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {
+    this.addPrintUsingStatement(ctx);
+  }
+
+  private addPrintStatement(ctx: parser.Print_statementContext | parser.Lprint_statementContext, usePrinter = false) {
     const args: PrintArgument[] = [];
     for (const arg of ctx.print_argument()) {
       const token = arg.start!;
@@ -638,10 +652,12 @@ export class CodeGenerator extends QBasicParserListener {
       const separator = arg._separator?.text;
       args.push({token, expr, spaces, tab, separator});
     }
-    this.addStatement(statements.print(args));
+    this.addStatement(usePrinter ?
+      statements.lprint(args) :
+      statements.print(args));
   }
 
-  override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {
+  private addPrintUsingStatement(ctx: parser.Print_using_statementContext | parser.Lprint_using_statementContext, usePrinter = false) {
     const args: PrintArgument[] = [];
     for (const arg of ctx.print_argument()) {
       const token = arg.start!;
@@ -654,7 +670,9 @@ export class CodeGenerator extends QBasicParserListener {
     }
     const format = this.compileExpression(
       ctx._format!, ctx._format!.start!, { tag: TypeTag.STRING })
-    this.addStatement(statements.printUsing(format, args));
+    this.addStatement(usePrinter ?
+      statements.lprintUsing(format, args) :
+      statements.printUsing(format, args));
   }
 
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}

@@ -1,3 +1,5 @@
+import type { Printer } from './Printer.ts';
+
 interface Attributes {
   fgColor: number;
   bgColor: number;
@@ -31,16 +33,19 @@ const DEFAULT_PALETTE = new Map([
 ]);
 const TAB_STOP = 14;
 
-export interface TextScreen {
-  print(text: string, newline: boolean): void;
-  space(numSpaces: number): void;
-  tab(targetColumn?: number): void;
+export interface TextScreen extends Printer {
 }
 
-export class TestTextScreen implements TextScreen {
+export class TestPrinter implements TextScreen {
   output: string = "";
   column: number = 0;
   width: number = 80;
+  prefix: string = "";
+  lineHasPrefix: boolean = false;
+
+  constructor(prefix: string = "") {
+    this.prefix = prefix;
+  }
 
   private spaceLeftOnLine() {
     return this.width - this.column;
@@ -48,10 +53,18 @@ export class TestTextScreen implements TextScreen {
 
   private newLine() {
     this.output += '\n';
+    if (this.prefix) {
+      this.output += this.prefix;
+      this.lineHasPrefix = true;
+    }
     this.column = 0;
   }
 
   private putString(text: string) {
+    if (!this.lineHasPrefix && this.prefix) {
+      this.output += this.prefix;
+      this.lineHasPrefix = true;
+    }
     this.output += text;
     this.column += text.length;
   }

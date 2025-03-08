@@ -1,0 +1,16 @@
+(program 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (lprint_statement lprint 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ,) 
+            (print_argument 
+              (expr 
+                (literal "hello world"))))) \n) next i)) \n <EOF>)

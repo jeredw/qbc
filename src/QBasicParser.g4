@@ -612,7 +612,7 @@ lprint_statement
 
 // See note for PRINT USING for comma handling.
 lprint_using_statement
-  : LPRINT USING expr ';' print_argument*
+  : LPRINT USING format=expr ';' print_argument*
   ;
 
 lset_statement

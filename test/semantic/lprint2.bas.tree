@@ -1,0 +1,21 @@
+(program 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (lprint_using_statement lprint using 
+            (expr 
+              (literal "**$#.##   ###.##")) ; 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ;) 
+            (print_argument 
+              (expr 
+                (expr 
+                  (literal 3)) * 
+                (expr 
+                  (variable_or_function_call i)))))) \n) next i)) \n <EOF>)

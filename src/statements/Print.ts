@@ -15,36 +15,43 @@ export interface PrintArgument {
   separator?: string;
 }
 
+export interface PrintDestination {
+  screen?: boolean;
+  printer?: boolean;
+}
+
 export class PrintStatement extends Statement {
+  destination: PrintDestination;
   args: PrintArgument[];
 
-  constructor(args: PrintArgument[]) {
+  constructor(destination: PrintDestination, args: PrintArgument[]) {
     super();
+    this.destination = destination;
     this.args = args;
   }
 
   override execute(context: ExecutionContext) {
-    const screen = context.devices.textScreen;
+    const device = this.destination.printer ? context.devices.printer : context.devices.textScreen;
     for (let i = 0; i < this.args.length; i++) {
       const {token, expr, spaces, tab, separator} = this.args[i];
       const isLastArg = i == this.args.length - 1;
       const newLine = isLastArg && !separator;
       if (spaces) {
         const numSpaces = evaluateIntegerExpression(spaces, context.memory);
-        screen.space(numSpaces);
+        device.space(numSpaces);
       }
       if (tab) {
         const column = evaluateIntegerExpression(tab, context.memory);
-        screen.tab(column);
+        device.tab(column);
       }
       if (expr) {
         const value = evaluateExpression({expr, memory: context.memory});
         if (isNumeric(value)) {
           const formatted = formatNumber(value);
           const padded = formatted.startsWith('-') ? `${formatted} ` : ` ${formatted} `;
-          screen.print(padded, newLine);
+          device.print(padded, newLine);
         } else if (isString(value)) {
-          screen.print(value.string, newLine);
+          device.print(value.string, newLine);
         } else if (isError(value)) {
           throw RuntimeError.fromToken(token, value);
         } else {
@@ -52,7 +59,7 @@ export class PrintStatement extends Statement {
         }
       }
       if (separator == ',') {
-        screen.tab();
+        device.tab();
       }
     }
   }
@@ -94,17 +101,20 @@ function formatFloat(number: number, precision: number, exponentChar: string): s
 }
 
 export class PrintUsingStatement extends Statement {
+  destination: PrintDestination;
   format: ExprContext;
   args: PrintArgument[];
 
-  constructor(format: ExprContext, args: PrintArgument[]) {
+  
+  constructor(destination: PrintDestination, format: ExprContext, args: PrintArgument[]) {
     super();
+    this.destination = destination;
     this.format = format;
     this.args = args;
   }
 
   override execute(context: ExecutionContext) {
-    const screen = context.devices.textScreen;
+    const device = this.destination.printer ? context.devices.printer : context.devices.textScreen;
     const formatString = evaluateStringExpression(this.format, context.memory);
     const templates = parseFormatString(formatString);
     if (!templates.some((t: Template) => t.type !== TemplateType.LITERAL)) {
@@ -125,7 +135,7 @@ export class PrintUsingStatement extends Statement {
         const template = templates[templateIndex] as LiteralTemplate;
         nextTemplate();
         const isNextLiteral = templateIndex >= start && isLiteral();
-        screen.print(template.text, newLine && !isNextLiteral);
+        device.print(template.text, newLine && !isNextLiteral);
       }
     };
     for (let i = 0; i < this.args.length; i++) {
@@ -134,11 +144,11 @@ export class PrintUsingStatement extends Statement {
       const newLine = isLastArg && !separator;
       if (spaces) {
         const numSpaces = evaluateIntegerExpression(spaces, context.memory);
-        screen.space(numSpaces);
+        device.space(numSpaces);
       }
       if (tab) {
         const column = evaluateIntegerExpression(tab, context.memory);
-        screen.tab(column);
+        device.tab(column);
       }
       if (expr) {
         const value = evaluateExpression({expr, memory: context.memory});
@@ -152,7 +162,7 @@ export class PrintUsingStatement extends Statement {
           const number = value.tag === TypeTag.SINGLE ? 
             parseFloat(value.number.toPrecision(7)) : value.number;
           const formatted = formatUsingNumberTemplate(number, template);
-          screen.print(formatted, newLine && !isLiteral());
+          device.print(formatted, newLine && !isLiteral());
           printLiterals(newLine);
         } else if (isString(value)) {
           printLiterals(false);
@@ -162,7 +172,7 @@ export class PrintUsingStatement extends Statement {
             throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
           }
           const formatted = formatUsingStringTemplate(value.string, template);
-          screen.print(formatted, newLine && !isLiteral());
+          device.print(formatted, newLine && !isLiteral());
           printLiterals(newLine);
         } else if (isError(value)) {
           throw RuntimeError.fromToken(token, value);

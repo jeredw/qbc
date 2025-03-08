@@ -558,8 +558,6 @@ export class Typer extends QBasicParserListener {
   override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {}
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
-  override enterLprint_statement = (ctx: parser.Lprint_statementContext) => {}
-  override enterLprint_using_statement = (ctx: parser.Lprint_using_statementContext) => {}
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
   override enterMid_statement = (ctx: parser.Mid_statementContext) => {}
   override enterName_statement = (ctx: parser.Name_statementContext) => {}
@@ -574,7 +572,6 @@ export class Typer extends QBasicParserListener {
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
-  override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {}
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
