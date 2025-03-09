@@ -110,6 +110,7 @@ export class CanvasTextScreen extends BasePrinter implements TextScreen {
       }
       this.row = this.scrollEndRow - 1;
       this.column = 1;
+      this.dirty = true;
     }
   }
 

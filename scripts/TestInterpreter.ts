@@ -13,7 +13,12 @@ async function interpret(text: string): Promise<string> {
     const interpreter = new Interpreter({textScreen, speaker, printer, disk});
     const invocation = interpreter.run(text + '\n');
     await invocation.restart();
-    return textScreen.output + prefixLines("LPT1> ", printer.output) + speaker.output;
+    return [
+      textScreen.output,
+      prefixLines("LPT1> ", printer.output),
+      speaker.output,
+      prefixLines("FS> ", disk.dump()),
+    ].join('');
   } catch (e: unknown) {
     if (e instanceof ParseError) {
       return `ERROR ${e.location.line}:${e.location.column} ${e.message}`;

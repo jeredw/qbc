@@ -1,0 +1,20 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode append) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement print 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal "hello world"))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

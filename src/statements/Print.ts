@@ -2,10 +2,11 @@ import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
-import { BAD_FILE_NAME_OR_NUMBER, ILLEGAL_FUNCTION_CALL, isError, isNumeric, isString, NumericValue, TYPE_MISMATCH } from "../Values.ts";
+import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, ILLEGAL_FUNCTION_CALL, isError, isNumeric, isString, NumericValue, TYPE_MISMATCH } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
+import { Printer } from "../Printer.ts";
 
 export interface PrintStatementArgs {
   printer?: boolean;
@@ -22,7 +23,7 @@ export interface PrintExpr {
   separator?: string;
 }
 
-export class PrintStatement extends Statement {
+abstract class BasePrintStatement extends Statement {
   args: PrintStatementArgs;
 
   constructor(args: PrintStatementArgs) {
@@ -30,7 +31,7 @@ export class PrintStatement extends Statement {
     this.args = args;
   }
 
-  override execute(context: ExecutionContext) {
+  protected getPrinter(context: ExecutionContext): Printer {
     if (this.args.fileNumber) {
       const fileNumber = evaluateIntegerExpression(this.args.fileNumber, context.memory);
       if (fileNumber < 0 || fileNumber > 255) {
@@ -40,28 +41,42 @@ export class PrintStatement extends Statement {
       if (!handle) {
         throw RuntimeError.fromToken(this.args.fileNumber.start!, BAD_FILE_NAME_OR_NUMBER);
       }
+      if (!handle.printer) {
+        throw RuntimeError.fromToken(this.args.fileNumber.start!, BAD_FILE_MODE);
+      }
+      return handle.printer;
     }
-    const device = this.args.printer ? context.devices.printer : context.devices.textScreen;
+    return this.args.printer ? context.devices.printer : context.devices.textScreen;
+  }
+}
+
+export class PrintStatement extends BasePrintStatement {
+  constructor(args: PrintStatementArgs) {
+    super(args);
+  }
+
+  override execute(context: ExecutionContext) {
+    const printer = this.getPrinter(context);
     for (let i = 0; i < this.args.exprs.length; i++) {
       const {token, expr, spaces, tab, separator} = this.args.exprs[i];
       const isLastArg = i == this.args.exprs.length - 1;
       const newLine = isLastArg && !separator;
       if (spaces) {
         const numSpaces = evaluateIntegerExpression(spaces, context.memory);
-        device.space(numSpaces);
+        printer.space(numSpaces);
       }
       if (tab) {
         const column = evaluateIntegerExpression(tab, context.memory);
-        device.tab(column);
+        printer.tab(column);
       }
       if (expr) {
         const value = evaluateExpression({expr, memory: context.memory});
         if (isNumeric(value)) {
           const formatted = formatNumber(value);
           const padded = formatted.startsWith('-') ? `${formatted} ` : ` ${formatted} `;
-          device.print(padded, newLine);
+          printer.print(padded, newLine);
         } else if (isString(value)) {
-          device.print(value.string, newLine);
+          printer.print(value.string, newLine);
         } else if (isError(value)) {
           throw RuntimeError.fromToken(token, value);
         } else {
@@ -69,7 +84,7 @@ export class PrintStatement extends Statement {
         }
       }
       if (separator == ',') {
-        device.tab();
+        printer.tab();
       }
     }
   }
@@ -110,16 +125,13 @@ function formatFloat(number: number, precision: number, exponentChar: string): s
     .replace(`${exponentChar}+00`, '');
 }
 
-export class PrintUsingStatement extends Statement {
-  args: PrintStatementArgs;
-  
+export class PrintUsingStatement extends BasePrintStatement {
   constructor(args: PrintStatementArgs) {
-    super();
-    this.args = args;
+    super(args);
   }
 
   override execute(context: ExecutionContext) {
-    const device = this.args.printer ? context.devices.printer : context.devices.textScreen;
+    const printer = this.getPrinter(context);
     const formatString = evaluateStringExpression(this.args.format!, context.memory);
     const templates = parseFormatString(formatString);
     if (!templates.some((t: Template) => t.type !== TemplateType.LITERAL)) {
@@ -140,7 +152,7 @@ export class PrintUsingStatement extends Statement {
         const template = templates[templateIndex] as LiteralTemplate;
         nextTemplate();
         const isNextLiteral = templateIndex >= start && isLiteral();
-        device.print(template.text, newLine && !isNextLiteral);
+        printer.print(template.text, newLine && !isNextLiteral);
       }
     };
     for (let i = 0; i < this.args.exprs.length; i++) {
@@ -149,11 +161,11 @@ export class PrintUsingStatement extends Statement {
       const newLine = isLastArg && !separator;
       if (spaces) {
         const numSpaces = evaluateIntegerExpression(spaces, context.memory);
-        device.space(numSpaces);
+        printer.space(numSpaces);
       }
       if (tab) {
         const column = evaluateIntegerExpression(tab, context.memory);
-        device.tab(column);
+        printer.tab(column);
       }
       if (expr) {
         const value = evaluateExpression({expr, memory: context.memory});
@@ -167,7 +179,7 @@ export class PrintUsingStatement extends Statement {
           const number = value.tag === TypeTag.SINGLE ? 
             parseFloat(value.number.toPrecision(7)) : value.number;
           const formatted = formatUsingNumberTemplate(number, template);
-          device.print(formatted, newLine && !isLiteral());
+          printer.print(formatted, newLine && !isLiteral());
           printLiterals(newLine);
         } else if (isString(value)) {
           printLiterals(false);
@@ -177,7 +189,7 @@ export class PrintUsingStatement extends Statement {
             throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
           }
           const formatted = formatUsingStringTemplate(value.string, template);
-          device.print(formatted, newLine && !isLiteral());
+          printer.print(formatted, newLine && !isLiteral());
           printLiterals(newLine);
         } else if (isError(value)) {
           throw RuntimeError.fromToken(token, value);

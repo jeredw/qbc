@@ -240,4 +240,5 @@ export const
   DUPLICATE_DEFINITION = error('Duplicate definition'),
   OUT_OF_DATA = error('Out of DATA'),
   SYNTAX_ERROR = error('Syntax error'),
-  BAD_FILE_NAME_OR_NUMBER = error('Bad file name or number');
+  BAD_FILE_NAME_OR_NUMBER = error('Bad file name or number'),
+  BAD_FILE_MODE = error('Bad file mode');

@@ -1,8 +1,10 @@
 import { Device } from "./Devices.ts";
+import { Printer } from "./Printer.ts";
 
 export interface Handle {
   device: Device;
-  deviceHandle: Object;
+  data: unknown;
+  printer?: Printer;
 }
 
 export interface Files {
