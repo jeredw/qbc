@@ -1,4 +1,4 @@
-import type { Printer } from './Printer.ts';
+import { Printer, BasePrinter } from './Printer.ts';
 
 interface Attributes {
   fgColor: number;
@@ -31,158 +31,47 @@ const DEFAULT_PALETTE = new Map([
   [14, "#ffff00"],
   [15, "#ffffff"],
 ]);
-const TAB_STOP = 14;
 
 export interface TextScreen extends Printer {
 }
 
-export class TestPrinter implements TextScreen {
-  output: string = "";
-  column: number = 0;
-  width: number = 80;
-  prefix: string = "";
-  lineHasPrefix: boolean = false;
-
-  constructor(prefix: string = "") {
-    this.prefix = prefix;
-  }
-
-  private spaceLeftOnLine() {
-    return this.width - this.column;
-  }
-
-  private newLine() {
-    this.output += '\n';
-    if (this.prefix) {
-      this.output += this.prefix;
-      this.lineHasPrefix = true;
-    }
-    this.column = 0;
-  }
-
-  private putString(text: string) {
-    if (!this.lineHasPrefix && this.prefix) {
-      this.output += this.prefix;
-      this.lineHasPrefix = true;
-    }
-    this.output += text;
-    this.column += text.length;
-  }
-
-  print(text: string, newline: boolean) {
-    while (text.length > 0) {
-      const space = this.spaceLeftOnLine();
-      if (text.length > space) {
-        this.putString(text.slice(0, space));
-        text = text.slice(space);
-        this.newLine();
-      } else {
-        this.putString(text);
-        break;
-      }
-    }
-    if (newline) {
-      this.newLine();
-    }
-  }
-
-  space(numSpaces: number) {
-    if (numSpaces > 0) {
-      numSpaces = numSpaces % this.width;
-      if (this.column + numSpaces >= this.width) {
-        const spacesOnThisLine = this.width - this.column;
-        this.putString(' '.repeat(spacesOnThisLine));
-        this.newLine();
-        numSpaces -= spacesOnThisLine;
-      }
-      if (numSpaces > 0) {
-        this.putString(' '.repeat(numSpaces));
-      }
-    }
-  }
-
-  tab(targetColumn?: number) {
-    if (targetColumn !== undefined) {
-      targetColumn = wrapColumn(targetColumn, this.width);
-      if (this.column + 1 > targetColumn) {
-        this.newLine();
-      }
-      this.putString(' '.repeat(targetColumn - (this.column + 1)));
-      return;
-    }
-
-    const start = TAB_STOP * Math.floor(this.column / TAB_STOP);
-    const nextStop = start + TAB_STOP;
-    if (nextStop > this.width) {
-      this.newLine();
-      return;
-    }
-    this.putString(' '.repeat(nextStop - this.column));
-  }
-}
-
-export class CanvasTextScreen implements TextScreen {
-  private _width: number;
-  private _height: number;
-  private _color: Attributes;
-  private _row: number;
-  private _column: number;
-  private _scrollStartRow: number;
-  private _scrollEndRow: number;
-  private _buffer: CharacterCell[][];
-  private _canvas: HTMLCanvasElement;
-  private _dirty = true;
+export class CanvasTextScreen extends BasePrinter implements TextScreen {
+  private height: number;
+  private color: Attributes;
+  private scrollStartRow: number;
+  private scrollEndRow: number;
+  private buffer: CharacterCell[][];
+  private dirty = true;
+  canvas: HTMLCanvasElement;
 
   constructor(width: number, height: number) {
-    this._width = width;
-    this._height = height;
-    this._row = 1;
-    this._column = 1;
-    this._scrollStartRow = 1;
-    this._scrollEndRow = height - 1;
-    this._color = {fgColor: 15, bgColor: 0};
-    this._buffer = new Array(height);
+    super(width);
+    this.height = height;
+    this.scrollStartRow = 1;
+    this.scrollEndRow = height;
+    this.color = {fgColor: 15, bgColor: 0};
+    this.buffer = new Array(height);
     for (let y = 0; y < height; y++) {
-      this._buffer[y] = new Array(width).fill({
+      this.buffer[y] = new Array(width).fill({
         char: ' ',
-        attributes: {...this._color}
+        attributes: {...this.color}
       });
     }
-    this._canvas = document.createElement('canvas');
-    this._canvas.width = CELL_WIDTH * width;
-    this._canvas.height = CELL_HEIGHT * height;
-  }
-
-  get column() {
-    return this._column;
-  }
-
-  set column(column: number) {
-    this._column = column;
-  }
-
-  get row() {
-    return this._row;
-  }
-
-  set row(row: number) {
-    this._row = row;
-  }
-
-  get canvas() {
-    return this._canvas;
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = CELL_WIDTH * width;
+    this.canvas.height = CELL_HEIGHT * height;
   }
 
   render() {
-    if (!this._dirty) {
+    if (!this.dirty) {
       return
     }
-    const ctx = this._canvas.getContext('2d')!;
-    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+    const ctx = this.canvas.getContext('2d')!;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.font = `${FONT_SIZE}px 'Web IBM VGA 8x16'`;
     ctx.textBaseline = 'top';
-    for (let row = 1; row <= this._height; row++) {
-      for (let col = 1; col <= this._width; col++) {
+    for (let row = 1; row <= this.height; row++) {
+      for (let col = 1; col <= this.width; col++) {
         const x = (col - 1) * CELL_WIDTH;
         const y = (row - 1) * CELL_HEIGHT;
         const cell = this.at(row, col);
@@ -192,92 +81,42 @@ export class CanvasTextScreen implements TextScreen {
         ctx.fillText(cell.char, x, y);
       }
     }
-    this._dirty = false;
+    this.dirty = false;
   }
 
   private cssForColor(index: number): string {
     return DEFAULT_PALETTE.get(index) ?? '#fff';
   }
 
-  print(text: string, newline: boolean = true) {
-    for (let i = 0; i < text.length; i++) {
-      this.printChar(text.charAt(i));
-    }
-    if (newline) {
-      this._column = 1;
-      this._row++;
-    }
-  }
-
-  space(numSpaces: number) {
-    if (numSpaces > 0) {
-      this._column += (numSpaces % this._width);
-      if (this._column > this._width) {
-        this._row++;
-        this._column -= this._width;
-      }
-    }
-  }
-
-  tab(targetColumn?: number) {
-    if (targetColumn !== undefined) {
-      targetColumn = wrapColumn(targetColumn, this._width);
-      if (this._column > targetColumn) {
-        this._row++;
-      }
-      this._column = targetColumn;
-      return;
-    }
-
-    const start = TAB_STOP * Math.floor(this.column / TAB_STOP);
-    const nextStop = start + TAB_STOP;
-    if (nextStop > this._width) {
-      this.column = 1;
-      this._row++;
-      return;
-    }
-    this.column = nextStop;
-  }
-
   at(row: number, col: number) {
-    return this._buffer[row - 1][col - 1];
+    return this.buffer[row - 1][col - 1];
   }
 
   putAt(row: number, col: number, char: CharacterCell) {
-    this._buffer[row - 1][col - 1] = char;
+    this.buffer[row - 1][col - 1] = char;
   }
 
-  private printChar(char: string) {
-    if (this._row == this._scrollEndRow) {
-      for (let row = this._scrollStartRow; row < this._scrollEndRow; row++) {
-        this._buffer[row - 1] = this._buffer[row].slice();
+  protected override newLine() {
+    this.column = 1;
+    this.row++;
+    if (this.row == this.scrollEndRow) {
+      for (let row = this.scrollStartRow; row < this.scrollEndRow; row++) {
+        this.buffer[row - 1] = this.buffer[row].slice();
       }
-      if (this._scrollEndRow > this._scrollStartRow) {
-        this._buffer[this._scrollEndRow - 2].fill({
-          char: ' ', attributes: {...this._color}
+      if (this.scrollEndRow > this.scrollStartRow) {
+        this.buffer[this.scrollEndRow - 2].fill({
+          char: ' ', attributes: {...this.color}
         });
       }
-      this._row = this._scrollEndRow - 1;
-      this._column = 1;
-    }
-    this.putAt(this._row, this._column, {
-      char, attributes: {...this._color}
-    });
-    this._dirty = true;
-    this._column++;
-    if (this._column > this._width) {
-      this._column = 1;
-      this._row++;
+      this.row = this.scrollEndRow - 1;
+      this.column = 1;
     }
   }
-}
 
-function wrapColumn(column: number, width: number): number {
-  if (column <= 0) {
-    return 1;
+  override putChar(char: string) {
+    this.putAt(this.row, this.column, {
+      char, attributes: {...this.color}
+    });
+    this.dirty = true;
   }
-  if (column > width) {
-    return column % width;
-  }
-  return column;
 }

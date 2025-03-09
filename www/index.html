@@ -20,10 +20,14 @@
       <button class="mute-button">Mute </button>
     </div>
     <div class="code-box">
-      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">k = 15
-dim x(k)
-x(15) = 42
-print x(15)
+      <div class="code-pane" contenteditable autocorrect="false" spellcheck="false">boldon$ = chr$(27) + "E"
+boldoff$ = chr$(27) + "F"
+italon$ = chr$(27) + "4"
+italoff$ = chr$(27) + "5"
+lprint boldon$ + italon$ + "hello" +_
+       italoff$ + " world" + boldoff$ +_
+       " how are you?" +_
+       italon$ + " ciao" + italoff$
 </div>
     </div>
     <div class="status-line"> <span class="run-hint">&lt;⌘+Enter=Run &gt;</span> <span class="stop-hint">&lt;⌘+Enter=Stop&gt;</span></div>

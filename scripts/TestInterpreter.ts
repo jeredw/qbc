@@ -1,17 +1,19 @@
+import { MemoryFileSystem } from "../src/Disk.ts";
 import { ParseError, RuntimeError } from "../src/Errors.ts";
 import { Interpreter } from "../src/Interpreter.ts";
-import { TestPrinter } from "../src/Screen.ts";
+import { StringPrinter } from "../src/Printer.ts";
 import { TestSpeaker } from "../src/Speaker.ts";
 
 async function interpret(text: string): Promise<string> {
   try {
-    const textScreen = new TestPrinter();
+    const textScreen = new StringPrinter();
     const speaker = new TestSpeaker();
-    const printer = new TestPrinter('LPT1> ');
-    const interpreter = new Interpreter({textScreen, speaker, printer});
+    const printer = new StringPrinter();
+    const disk = new MemoryFileSystem();
+    const interpreter = new Interpreter({textScreen, speaker, printer, disk});
     const invocation = interpreter.run(text + '\n');
     await invocation.restart();
-    return textScreen.output + printer.output + speaker.output;
+    return textScreen.output + prefixLines("LPT1> ", printer.output) + speaker.output;
   } catch (e: unknown) {
     if (e instanceof ParseError) {
       return `ERROR ${e.location.line}:${e.location.column} ${e.message}`;
@@ -21,6 +23,10 @@ async function interpret(text: string): Promise<string> {
       throw e;
     }
   }
+}
+
+function prefixLines(prefix: string, output: string): string {
+  return output ? output.split('\n').map((line) => `${prefix}${line}`).join('\n') : output;
 }
 
 async function runTests(tests: string[]) {

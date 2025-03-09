@@ -1,0 +1,85 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call boldon$) = 
+      (expr 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 27)))) ))) + 
+        (expr 
+          (literal "E"))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call boldoff$) = 
+      (expr 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 27)))) ))) + 
+        (expr 
+          (literal "F"))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call italon$) = 
+      (expr 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 27)))) ))) + 
+        (expr 
+          (literal "4"))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call italoff$) = 
+      (expr 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 27)))) ))) + 
+        (expr 
+          (literal "5"))))) \n 
+  (statement 
+    (lprint_statement lprint 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (expr 
+                (expr 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call boldon$)) + 
+                          (expr 
+                            (variable_or_function_call italon$))) + 
+                        (expr 
+                          (literal "hello"))) + 
+                      (expr 
+                        (variable_or_function_call italoff$))) + 
+                    (expr 
+                      (literal " world"))) + 
+                  (expr 
+                    (variable_or_function_call boldoff$))) + 
+                (expr 
+                  (literal " how are you?"))) + 
+              (expr 
+                (variable_or_function_call italon$))) + 
+            (expr 
+              (literal " ciao"))) + 
+          (expr 
+            (variable_or_function_call italoff$)))))) \n <EOF>)

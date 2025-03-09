@@ -239,4 +239,5 @@ export const
   SUBSCRIPT_OUT_OF_RANGE = error('Subscript out of range'),
   DUPLICATE_DEFINITION = error('Duplicate definition'),
   OUT_OF_DATA = error('Out of DATA'),
-  SYNTAX_ERROR = error('Syntax error');
+  SYNTAX_ERROR = error('Syntax error'),
+  BAD_FILE_NAME_OR_NUMBER = error('Bad file name or number');

@@ -18,7 +18,7 @@ import { StackVariable } from "./statements/Call.ts";
 import { Builtin, BuiltinParam } from "./Builtins.ts";
 import { DimBoundsExprs } from "./statements/Arrays.ts";
 import { RestoreStatement } from "./statements/Data.ts";
-import { PrintArgument } from "./statements/Print.ts";
+import { PrintExpr } from "./statements/Print.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -364,7 +364,14 @@ export class CodeGenerator extends QBasicParserListener {
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
   override enterCircle_statement = (ctx: parser.Circle_statementContext) => {}
   override enterClear_statement = (ctx: parser.Clear_statementContext) => {}
-  override enterClose_statement = (ctx: parser.Close_statementContext) => {}
+
+  override enterClose_statement = (ctx: parser.Close_statementContext) => {
+    for (const expr of ctx.expr()) {
+      const fileNumber = this.compileExpression(expr, expr.start!, { tag: TypeTag.INTEGER });
+      this.addStatement(statements.close(fileNumber));
+    }
+  }
+
   override enterColor_statement = (ctx: parser.Color_statementContext) => {}
   override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
@@ -617,30 +624,45 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
-  override enterOpen_statement = (ctx: parser.Open_statementContext) => {}
+
+  override enterOpen_statement = (ctx: parser.Open_statementContext) => {
+    const token = ctx.start!;
+    const name = this.compileExpression(ctx._file!, ctx._file!.start!, { tag: TypeTag.STRING });
+    const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.open({token, name, fileNumber}));
+  }
+
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {}
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
   override enterLprint_statement = (ctx: parser.Lprint_statementContext) => {
-    this.addPrintStatement(ctx, /* usePrinter= */ true);
+    this.addPrintStatement({ctx, printer: true});
   }
 
   override enterPrint_statement = (ctx: parser.Print_statementContext) => {
-    this.addPrintStatement(ctx);
+    const fileNumber = ctx.file_number() && this.compileExpression(
+        ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER });
+    this.addPrintStatement({ctx, fileNumber: fileNumber ?? undefined});
   }
 
   override enterLprint_using_statement = (ctx: parser.Lprint_using_statementContext) => {
-    this.addPrintUsingStatement(ctx, /* usePrinter= */ true);
+    this.addPrintUsingStatement({ctx, printer: true});
   }
 
   override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {
-    this.addPrintUsingStatement(ctx);
+    const fileNumber = ctx.file_number() && this.compileExpression(
+        ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER });
+    this.addPrintUsingStatement({ctx, fileNumber: fileNumber ?? undefined});
   }
 
-  private addPrintStatement(ctx: parser.Print_statementContext | parser.Lprint_statementContext, usePrinter = false) {
-    const args: PrintArgument[] = [];
+  private addPrintStatement({ctx, fileNumber, printer}: {
+    ctx: parser.Print_statementContext | parser.Lprint_statementContext,
+    fileNumber?: parser.ExprContext,
+    printer?: boolean
+  }) {
+    const exprs: PrintExpr[] = [];
     for (const arg of ctx.print_argument()) {
       const token = arg.start!;
       const expr = arg._arg && this.compileExpression(
@@ -650,15 +672,17 @@ export class CodeGenerator extends QBasicParserListener {
       const tab = arg._tab && this.compileExpression(
         arg._tab, arg._tab.start!, { tag: TypeTag.INTEGER });
       const separator = arg._separator?.text;
-      args.push({token, expr, spaces, tab, separator});
+      exprs.push({token, expr, spaces, tab, separator});
     }
-    this.addStatement(usePrinter ?
-      statements.lprint(args) :
-      statements.print(args));
+    this.addStatement(statements.print({exprs, fileNumber, printer}));
   }
 
-  private addPrintUsingStatement(ctx: parser.Print_using_statementContext | parser.Lprint_using_statementContext, usePrinter = false) {
-    const args: PrintArgument[] = [];
+  private addPrintUsingStatement({ctx, fileNumber, printer}: {
+    ctx: parser.Print_using_statementContext | parser.Lprint_using_statementContext,
+    fileNumber?: parser.ExprContext,
+    printer?: boolean
+  }) {
+    const exprs: PrintExpr[] = [];
     for (const arg of ctx.print_argument()) {
       const token = arg.start!;
       const expr = arg._arg && this.compileExpression(
@@ -666,13 +690,11 @@ export class CodeGenerator extends QBasicParserListener {
       const spaces = arg._spaces && this.compileExpression(
         arg._spaces, arg._spaces.start!, { tag: TypeTag.INTEGER });
       const separator = arg._separator?.text;
-      args.push({token, expr, spaces, separator});
+      exprs.push({token, expr, spaces, separator});
     }
     const format = this.compileExpression(
       ctx._format!, ctx._format!.start!, { tag: TypeTag.STRING })
-    this.addStatement(usePrinter ?
-      statements.lprintUsing(format, args) :
-      statements.printUsing(format, args));
+    this.addStatement(statements.printUsing({format, exprs, fileNumber, printer}));
   }
 
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
@@ -774,8 +796,6 @@ export class CodeGenerator extends QBasicParserListener {
     }
   }
 
-  override enterShared_statement = (ctx: parser.Shared_statementContext) => {}
-  override enterStatic_statement = (ctx: parser.Static_statementContext) => {}
   override enterStop_statement = (ctx: parser.Stop_statementContext) => {}
   override enterUnlock_statement = (ctx: parser.Unlock_statementContext) => {}
   override enterView_statement = (ctx: parser.View_statementContext) => {}

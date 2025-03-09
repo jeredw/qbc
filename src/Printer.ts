@@ -7,6 +7,100 @@ export interface Printer {
 }
 
 const TAB_STOP = 14;
+
+export abstract class BasePrinter implements Printer {
+  width: number;
+  column: number = 1;
+  row: number = 1;
+
+  constructor(width: number) {
+    this.width = width;
+  }
+
+  abstract putChar(ch: string): void;
+
+  protected newLine() {
+    this.column = 1;
+    this.row++;
+    this.putChar('\n');
+  }
+
+  private spaceLeftOnLine() {
+    return this.width - this.column + 1;
+  }
+
+  private putString(text: string) {
+    for (const ch of text) {
+      this.putChar(ch);
+      this.column++;
+    }
+  }
+
+  print(text: string, newline: boolean) {
+    while (text.length > 0) {
+      const space = this.spaceLeftOnLine();
+      if (text.length > space) {
+        this.putString(text.slice(0, space));
+        text = text.slice(space);
+        this.newLine();
+      } else {
+        this.putString(text);
+        break;
+      }
+    }
+    if (newline) {
+      this.newLine();
+    }
+  }
+
+  space(numSpaces: number) {
+    if (numSpaces > 0) {
+      numSpaces = numSpaces % this.width;
+      if (this.column + numSpaces > this.width) {
+        const spacesOnThisLine = this.spaceLeftOnLine();
+        this.putString(' '.repeat(spacesOnThisLine));
+        this.newLine();
+        numSpaces -= spacesOnThisLine;
+      }
+      if (numSpaces > 0) {
+        this.putString(' '.repeat(numSpaces));
+      }
+    }
+  }
+
+  tab(targetColumn?: number) {
+    if (targetColumn !== undefined) {
+      targetColumn = wrapColumn(targetColumn, this.width);
+      if (this.column > targetColumn) {
+        this.newLine();
+      }
+      this.putString(' '.repeat(targetColumn - this.column));
+      return;
+    }
+
+    const start = 1 + TAB_STOP * Math.floor((this.column - 1) / TAB_STOP);
+    const nextStop = start + TAB_STOP;
+    const endOfLastFullZone = TAB_STOP * Math.floor((this.width - 1) / TAB_STOP);
+    if (nextStop > endOfLastFullZone) {
+      this.newLine();
+      return;
+    }
+    this.putString(' '.repeat(nextStop - this.column));
+  }
+}
+
+export class StringPrinter extends BasePrinter {
+  output: string = "";
+
+  constructor() {
+    super(80);
+  }
+
+  override putChar(ch: string) {
+    this.output += ch;
+  }
+}
+
 const CHAR_DELAY = 1000 / 80;
 const FONT_DELAY = 5 * CHAR_DELAY;
 const NEWLINE_DELAY = CHAR_DELAY * 80 * .5;
@@ -16,12 +110,10 @@ interface ControlState {
   italic?: boolean;
 }
 
-export class LinePrinter implements Printer {
-  width: number;
+export class LinePrinter extends BasePrinter {
   paperWindow: HTMLElement;
   paper: HTMLElement;
   text: HTMLElement;
-  column: number = 0;
   buffer: string[] = [];
   lastFrame: number = 0;
   linesPrinted: number = 0;
@@ -30,7 +122,7 @@ export class LinePrinter implements Printer {
   control: ControlState = {};
 
   constructor(width: number) {
-    this.width = width;
+    super(width);
     this.paperWindow = document.createElement('div');
     this.paperWindow.className = 'paper-window';
     this.paper = document.createElement('div');
@@ -76,6 +168,7 @@ export class LinePrinter implements Printer {
     while (this.delay < 0 && this.buffer.length > 0) {
       const ch = this.buffer.shift()!;
       if (charToAscii.get(ch) === 0x1b) {
+        // https://files.support.epson.com/pdf/general/escp2ref.pdf 
         const command = this.buffer.shift();
         const code = charToAscii.get(command || '');
         switch (code) {
@@ -123,75 +216,8 @@ export class LinePrinter implements Printer {
     this.lastFrame = timestamp;
   }
 
-  private spaceLeftOnLine() {
-    return this.width - this.column;
-  }
-
-  private putChar(ch: string) {
+  override putChar(ch: string) {
     this.buffer.push(ch);
-  }
-
-  private newLine() {
-    this.putChar('\n');
-    this.column = 0;
-  }
-
-  private putString(text: string) {
-    for (const ch of text) {
-      this.putChar(ch);
-    }
-    this.column += text.length;
-  }
-
-  print(text: string, newline: boolean) {
-    while (text.length > 0) {
-      const space = this.spaceLeftOnLine();
-      if (text.length > space) {
-        this.putString(text.slice(0, space));
-        text = text.slice(space);
-        this.newLine();
-      } else {
-        this.putString(text);
-        break;
-      }
-    }
-    if (newline) {
-      this.newLine();
-    }
-  }
-
-  space(numSpaces: number) {
-    if (numSpaces > 0) {
-      numSpaces = numSpaces % this.width;
-      if (this.column + numSpaces >= this.width) {
-        const spacesOnThisLine = this.width - this.column;
-        this.putString(' '.repeat(spacesOnThisLine));
-        this.newLine();
-        numSpaces -= spacesOnThisLine;
-      }
-      if (numSpaces > 0) {
-        this.putString(' '.repeat(numSpaces));
-      }
-    }
-  }
-
-  tab(targetColumn?: number) {
-    if (targetColumn !== undefined) {
-      targetColumn = wrapColumn(targetColumn, this.width);
-      if (this.column + 1 > targetColumn) {
-        this.newLine();
-      }
-      this.putString(' '.repeat(targetColumn - (this.column + 1)));
-      return;
-    }
-
-    const start = TAB_STOP * Math.floor(this.column / TAB_STOP);
-    const nextStop = start + TAB_STOP;
-    if (nextStop > this.width) {
-      this.newLine();
-      return;
-    }
-    this.putString(' '.repeat(nextStop - this.column));
   }
 }
 

@@ -47,7 +47,8 @@ import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
-import { PrintArgument, PrintStatement, PrintUsingStatement } from "./Print.ts";
+import { CloseStatement, OpenArgs, OpenStatement } from "./Open.ts";
+import { PrintStatement, PrintStatementArgs, PrintUsingStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import {
   HexFunction,
@@ -99,6 +100,10 @@ export function cdbl(args: BuiltinStatementArgs) {
 
 export function chr(args: BuiltinStatementArgs) {
   return new ChrFunction(args);
+}
+
+export function close(fileNumber: parser.ExprContext) {
+  return new CloseStatement(fileNumber);
 }
 
 export function csng(args: BuiltinStatementArgs) {
@@ -266,14 +271,6 @@ export function log(args: BuiltinStatementArgs) {
   return new LogFunction(args);
 }
 
-export function lprint(args: PrintArgument[]) {
-  return new PrintStatement({printer: true}, args);
-}
-
-export function lprintUsing(format: parser.ExprContext, args: PrintArgument[]) {
-  return new PrintUsingStatement({printer: true}, format, args);
-}
-
 export function mki(args: BuiltinStatementArgs) {
   return new MkiFunction(args);
 }
@@ -306,12 +303,16 @@ export function oct(args: BuiltinStatementArgs) {
   return new OctFunction(args);
 }
 
-export function print(args: PrintArgument[]) {
-  return new PrintStatement({screen: true}, args);
+export function open(args: OpenArgs) {
+  return new OpenStatement(args);
 }
 
-export function printUsing(format: parser.ExprContext, args: PrintArgument[]) {
-  return new PrintUsingStatement({screen: true}, format, args);
+export function print(args: PrintStatementArgs) {
+  return new PrintStatement(args);
+}
+
+export function printUsing(args: PrintStatementArgs) {
+  return new PrintUsingStatement(args);
 }
 
 export function read(token: Token, result: Variable) {

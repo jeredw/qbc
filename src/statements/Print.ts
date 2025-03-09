@@ -2,12 +2,19 @@ import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
-import { ILLEGAL_FUNCTION_CALL, isError, isNumeric, isString, NumericValue, TYPE_MISMATCH } from "../Values.ts";
+import { BAD_FILE_NAME_OR_NUMBER, ILLEGAL_FUNCTION_CALL, isError, isNumeric, isString, NumericValue, TYPE_MISMATCH } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
 
-export interface PrintArgument {
+export interface PrintStatementArgs {
+  printer?: boolean;
+  fileNumber?: ExprContext;
+  format?: ExprContext;
+  exprs: PrintExpr[];
+}
+
+export interface PrintExpr {
   token: Token;
   expr?: ExprContext;
   spaces?: ExprContext;
@@ -15,26 +22,29 @@ export interface PrintArgument {
   separator?: string;
 }
 
-export interface PrintDestination {
-  screen?: boolean;
-  printer?: boolean;
-}
-
 export class PrintStatement extends Statement {
-  destination: PrintDestination;
-  args: PrintArgument[];
+  args: PrintStatementArgs;
 
-  constructor(destination: PrintDestination, args: PrintArgument[]) {
+  constructor(args: PrintStatementArgs) {
     super();
-    this.destination = destination;
     this.args = args;
   }
 
   override execute(context: ExecutionContext) {
-    const device = this.destination.printer ? context.devices.printer : context.devices.textScreen;
-    for (let i = 0; i < this.args.length; i++) {
-      const {token, expr, spaces, tab, separator} = this.args[i];
-      const isLastArg = i == this.args.length - 1;
+    if (this.args.fileNumber) {
+      const fileNumber = evaluateIntegerExpression(this.args.fileNumber, context.memory);
+      if (fileNumber < 0 || fileNumber > 255) {
+        throw RuntimeError.fromToken(this.args.fileNumber.start!, BAD_FILE_NAME_OR_NUMBER);
+      }
+      const handle = context.files.handles.get(fileNumber);
+      if (!handle) {
+        throw RuntimeError.fromToken(this.args.fileNumber.start!, BAD_FILE_NAME_OR_NUMBER);
+      }
+    }
+    const device = this.args.printer ? context.devices.printer : context.devices.textScreen;
+    for (let i = 0; i < this.args.exprs.length; i++) {
+      const {token, expr, spaces, tab, separator} = this.args.exprs[i];
+      const isLastArg = i == this.args.exprs.length - 1;
       const newLine = isLastArg && !separator;
       if (spaces) {
         const numSpaces = evaluateIntegerExpression(spaces, context.memory);
@@ -101,24 +111,19 @@ function formatFloat(number: number, precision: number, exponentChar: string): s
 }
 
 export class PrintUsingStatement extends Statement {
-  destination: PrintDestination;
-  format: ExprContext;
-  args: PrintArgument[];
-
+  args: PrintStatementArgs;
   
-  constructor(destination: PrintDestination, format: ExprContext, args: PrintArgument[]) {
+  constructor(args: PrintStatementArgs) {
     super();
-    this.destination = destination;
-    this.format = format;
     this.args = args;
   }
 
   override execute(context: ExecutionContext) {
-    const device = this.destination.printer ? context.devices.printer : context.devices.textScreen;
-    const formatString = evaluateStringExpression(this.format, context.memory);
+    const device = this.args.printer ? context.devices.printer : context.devices.textScreen;
+    const formatString = evaluateStringExpression(this.args.format!, context.memory);
     const templates = parseFormatString(formatString);
     if (!templates.some((t: Template) => t.type !== TemplateType.LITERAL)) {
-      throw RuntimeError.fromToken(this.format.start!, ILLEGAL_FUNCTION_CALL);
+      throw RuntimeError.fromToken(this.args.format!.start!, ILLEGAL_FUNCTION_CALL);
     }
     let templateIndex = 0;
     const nextTemplate = () => {
@@ -138,9 +143,9 @@ export class PrintUsingStatement extends Statement {
         device.print(template.text, newLine && !isNextLiteral);
       }
     };
-    for (let i = 0; i < this.args.length; i++) {
-      const {token, expr, spaces, tab, separator} = this.args[i];
-      const isLastArg = i == this.args.length - 1;
+    for (let i = 0; i < this.args.exprs.length; i++) {
+      const {token, expr, spaces, tab, separator} = this.args.exprs[i];
+      const isLastArg = i == this.args.exprs.length - 1;
       const newLine = isLastArg && !separator;
       if (spaces) {
         const numSpaces = evaluateIntegerExpression(spaces, context.memory);

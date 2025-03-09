@@ -1,4 +1,5 @@
 import { Interpreter } from "./Interpreter.ts";
+import { OriginPrivateFileSystem } from "./Disk.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
 import { CanvasTextScreen } from "./Screen.ts";
 import { LinePrinter } from "./Printer.ts";
@@ -22,12 +23,14 @@ class Shell {
   private screen: CanvasTextScreen;
   private speaker: WebAudioSpeaker;
   private printer: LinePrinter;
+  private fileSystem: OriginPrivateFileSystem;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.screen = new CanvasTextScreen(80, 25);
     this.speaker = new WebAudioSpeaker();
     this.printer = new LinePrinter(80);
+    this.fileSystem = new OriginPrivateFileSystem();
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -35,6 +38,7 @@ class Shell {
       textScreen: this.screen,
       speaker: this.speaker,
       printer: this.printer,
+      disk: this.fileSystem,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));

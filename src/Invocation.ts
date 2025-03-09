@@ -6,6 +6,7 @@ import { RuntimeError } from "./Errors.ts";
 import { ReturnStatement } from "./statements/Return.ts";
 import { RETURN_WITHOUT_GOSUB } from "./Values.ts";
 import { ProgramData } from "./ProgramData.ts";
+import { Files } from "./Files.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program) {
   return new Invocation(devices, memory, program);
@@ -22,6 +23,7 @@ export class Invocation {
   private memory: Memory;
   private data: ProgramData;
   private program: Program;
+  private files: Files;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
 
@@ -29,6 +31,7 @@ export class Invocation {
     this.devices = devices;
     this.memory = memory;
     this.data = new ProgramData(program.data);
+    this.files = {handles: new Map()};
     this.program = program;
   }
 
@@ -88,7 +91,8 @@ export class Invocation {
       const controlFlow = statement.execute({
         devices: this.devices,
         memory: this.memory,
-        data: this.data
+        data: this.data,
+        files: this.files,
       });
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
