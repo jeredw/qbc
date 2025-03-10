@@ -53,6 +53,7 @@ export class StandardLibrary {
     _("exp double -> double", statements.exp),
     _("fix numeric -> numeric", statements.fix),
     _("hex long -> string", statements.hex),
+    _("inkey -> string", statements.inkey),
     _("int numeric -> numeric", statements.int),
     _("lcase string -> string", statements.lcase),
     _("left string integer -> string", statements.left),
@@ -83,7 +84,7 @@ export class StandardLibrary {
 }
 
 function parseBuiltinSpec(spec: string, statement: StatementFactory): [string, Builtin] {
-  const result = spec.match(/^([a-z]+)(\s+[a-z? ]+)?(->\s+[a-z]+)?/);
+  const result = spec.match(/^([a-z]+)(\s+[a-z? ]+)?\s*(->\s+[a-z]+)?/);
   if (!result) {
     throw new Error(`invalid builtin definition: ${spec}`);
   }

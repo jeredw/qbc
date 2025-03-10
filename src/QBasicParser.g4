@@ -119,6 +119,7 @@ statement
   | if_inline_statement
   | include_metacommand
   | input_statement
+  | input_file_statement
   | ioctl_statement
   | key_statement
   | line_statement
@@ -558,8 +559,14 @@ include_metacommand : COMMENT_META_INCLUDE ;
 // The IDE does not seem to automatically insert missing ','s for INPUT the way
 // it does for PRINT statements.
 input_statement
-  : INPUT ';'? (STRING_LITERAL (';' | COMMA))? variable_or_function_call (COMMA variable_or_function_call)*
-  | INPUT file_number COMMA variable_or_function_call (COMMA variable_or_function_call)*
+  : INPUT sameline=';'?
+    (prompt=STRING_LITERAL mark=(';' | COMMA))?
+    variable_or_function_call (COMMA variable_or_function_call)*
+  ;
+
+input_file_statement
+  : INPUT file_number COMMA
+    variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
 ioctl_statement

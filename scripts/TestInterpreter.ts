@@ -3,15 +3,24 @@ import { ParseError, RuntimeError } from "../src/Errors.ts";
 import { Interpreter } from "../src/Interpreter.ts";
 import { StringPrinter } from "../src/Printer.ts";
 import { TestSpeaker } from "../src/Speaker.ts";
+import { KeyboardListener, typeLines } from "../src/Keyboard.ts";
 
-async function interpret(text: string): Promise<string> {
+async function interpret(program: string, input: string[]): Promise<string> {
   try {
     const textScreen = new StringPrinter();
     const speaker = new TestSpeaker();
     const printer = new StringPrinter();
     const disk = new MemoryFileSystem();
-    const interpreter = new Interpreter({textScreen, speaker, printer, disk});
-    const invocation = interpreter.run(text + '\n');
+    const keyboard = new KeyboardListener();
+    const interpreter = new Interpreter({
+      textScreen,
+      speaker,
+      printer,
+      disk,
+      keyboard,
+    });
+    typeLines(input, keyboard);
+    const invocation = interpreter.run(program + '\n');
     await invocation.restart();
     return [
       textScreen.output,
@@ -38,8 +47,14 @@ async function runTests(tests: string[]) {
   for (const testPath of tests) {
     try {
       const goldenPath = testPath + '.output';
-      const input = Deno.readTextFileSync(testPath);
-      const output = await interpret(input);
+      const program = Deno.readTextFileSync(testPath);
+      let input = [];
+      try {
+        input = Deno.readTextFileSync(testPath + '.input').split('\n');
+      } catch {
+        // Assume no keyboard input.
+      }
+      const output = await interpret(program, input);
       const diffCommand = new Deno.Command('diff', {
         args: ['-du', goldenPath, '-'],
         stdin: 'piped',

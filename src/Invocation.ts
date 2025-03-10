@@ -72,6 +72,9 @@ export class Invocation {
     return this.stopped || this.stack.length == 0;
   }
 
+  tick() {
+  }
+
   async step() {
     if (this.isStopped()) {
       return;

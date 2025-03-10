@@ -69,6 +69,7 @@ import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
+import { InkeyFunction } from "./Inkey.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -224,6 +225,10 @@ export function hex(args: BuiltinStatementArgs) {
 
 export function if_(expr: parser.ExprContext) {
   return new IfTest(expr);
+}
+
+export function inkey(args: BuiltinStatementArgs) {
+  return new InkeyFunction(args);
 }
 
 export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {

@@ -22,7 +22,7 @@
       (variable_or_function_call Person.FullName) , 
       (variable_or_function_call Person.Age))) \n 
   (statement 
-    (input_statement input 
+    (input_file_statement input 
       (file_number # 
         (expr 
           (literal 1))) , 
@@ -30,7 +30,7 @@
       (variable_or_function_call bar%) , 
       (variable_or_function_call baz$))) \n 
   (statement 
-    (input_statement input 
+    (input_file_statement input 
       (file_number # 
         (expr 
           (variable_or_function_call a%))) , 

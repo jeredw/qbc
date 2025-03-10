@@ -190,7 +190,7 @@ parse those using baked in rules.
 | `HEX$`           | Function    | -       | ✅      |
 | `IF`...`THEN`... | Statement   | ✅      | ✅      |
 | `IMP`            | Operator    | ✅      | ✅      |
-| `INKEY$`         | Function    | -       | ⛔      |
+| `INKEY$`         | Function    | -       | ✅      |
 | `INP`            | Function    | -       | ⛔      |
 | `INPUT`          | Statement   | ✅      | ⛔      |
 | `INPUT$`         | Function    | ✅      | ⛔      |

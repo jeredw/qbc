@@ -5,6 +5,7 @@ import { CanvasTextScreen } from "./Screen.ts";
 import { LinePrinter } from "./Printer.ts";
 import { WebAudioSpeaker } from "./Speaker.ts";
 import { Invocation } from "./Invocation.ts";
+import { KeyboardListener } from "./Keyboard.ts";
 
 const TAB_STOPS = 8;
 
@@ -23,14 +24,16 @@ class Shell {
   private screen: CanvasTextScreen;
   private speaker: WebAudioSpeaker;
   private printer: LinePrinter;
-  private fileSystem: OriginPrivateFileSystem;
+  private disk: OriginPrivateFileSystem;
+  private keyboard: KeyboardListener;
 
   constructor(root: HTMLElement) {
     this.root = root;
     this.screen = new CanvasTextScreen(80, 25);
     this.speaker = new WebAudioSpeaker();
     this.printer = new LinePrinter(80);
-    this.fileSystem = new OriginPrivateFileSystem();
+    this.disk = new OriginPrivateFileSystem();
+    this.keyboard = new KeyboardListener();
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -38,7 +41,8 @@ class Shell {
       textScreen: this.screen,
       speaker: this.speaker,
       printer: this.printer,
-      disk: this.fileSystem,
+      disk: this.disk,
+      keyboard: this.keyboard,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
@@ -51,6 +55,7 @@ class Shell {
     this.muteButton.addEventListener('click', () => this.muteAudio());
     this.error = this.codePane.querySelector('.error');
     document.addEventListener('keydown', (e: KeyboardEvent) => {
+      this.keyboard.keydown(e);
       if (document.activeElement != this.codePane) {
         return;
       }
@@ -77,7 +82,9 @@ class Shell {
           return false;
       }
       this.clearErrors();
-      //console.log(e);
+    });
+    document.addEventListener('keyup', (e: KeyboardEvent) => {
+      this.keyboard.keyup(e);
     });
   }
 
@@ -85,6 +92,8 @@ class Shell {
     this.clearErrors();
     const text = this.codePane.innerText;
     try {
+      this.codePane.blur();
+      this.keyboard.reset();
       this.invocation = this.interpreter.run(text);
       this.root.classList.add('running');
       await this.invocation.restart();
@@ -123,6 +132,9 @@ class Shell {
   private frame = (timestamp: number) => {
     this.screen.render();
     this.printer.render(timestamp);
+    if (this.invocation && !this.invocation.isStopped()) {
+      this.invocation.tick();
+    }
     requestAnimationFrame(this.frame);
   }
 
