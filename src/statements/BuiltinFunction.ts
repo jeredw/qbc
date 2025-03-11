@@ -30,12 +30,12 @@ export abstract class BuiltinFunction1 extends Statement {
       expr: this.params[0].expr!,
       memory: context.memory
     });
-    const output = this.calculate(input);
+    const output = this.calculate(input, context);
     if (isError(output)) {
       throw RuntimeError.fromToken(this.token, output);
     }
     context.memory.write(this.result.address!, output);
   }
 
-  abstract calculate(input: Value): Value;
+  abstract calculate(input: Value, context: ExecutionContext): Value;
 }

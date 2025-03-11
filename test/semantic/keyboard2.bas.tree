@@ -1,0 +1,26 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inkey$))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h60)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h60)))) )))))) \n <EOF>)

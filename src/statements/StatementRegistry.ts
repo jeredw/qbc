@@ -70,6 +70,7 @@ import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
+import { InpFunction } from "./Ports.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -229,6 +230,10 @@ export function if_(expr: parser.ExprContext) {
 
 export function inkey(args: BuiltinStatementArgs) {
   return new InkeyFunction(args);
+}
+
+export function inp(args: BuiltinStatementArgs) {
+  return new InpFunction(args);
 }
 
 export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {

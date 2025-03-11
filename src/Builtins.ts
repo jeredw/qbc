@@ -54,6 +54,7 @@ export class StandardLibrary {
     _("fix numeric -> numeric", statements.fix),
     _("hex long -> string", statements.hex),
     _("inkey -> string", statements.inkey),
+    _("inp long -> integer", statements.inp),
     _("int numeric -> numeric", statements.int),
     _("lcase string -> string", statements.lcase),
     _("left string integer -> string", statements.left),

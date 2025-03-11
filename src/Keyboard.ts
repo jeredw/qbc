@@ -8,6 +8,7 @@ export interface Key {
 
 export interface Keyboard {
   input(): Key | undefined;
+  getLastScanCode(): number;
 }
 
 export function typeLines(lines: string[], listener: KeyboardListener) {
@@ -24,9 +25,11 @@ export function typeLines(lines: string[], listener: KeyboardListener) {
 
 export class KeyboardListener implements Keyboard {
   inputBuffer: Key[] = [];
+  lastScanCode: number = 0;
 
   reset() {
     this.inputBuffer = [];
+    this.lastScanCode = 0;
   }
 
   input(): Key | undefined {
@@ -39,6 +42,7 @@ export class KeyboardListener implements Keyboard {
       const char = keyToChar(e);
       const cursorCommand = decodeCursorCommand(e);
       this.inputBuffer.push({code, char, cursorCommand});
+      this.lastScanCode = code;
     }
   }
 
@@ -46,7 +50,12 @@ export class KeyboardListener implements Keyboard {
     const code = getScanCode(e);
     if (code !== undefined) {
       this.inputBuffer.push({code: 0x80 | code});
+      this.lastScanCode = 0x80 | code;
     }
+  }
+
+  getLastScanCode(): number {
+    return this.lastScanCode;
   }
 }
 

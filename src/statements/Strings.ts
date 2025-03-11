@@ -16,7 +16,7 @@ export class LcaseFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
     }
@@ -29,7 +29,7 @@ export class UcaseFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
     }
@@ -141,7 +141,7 @@ export class LtrimFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
     }
@@ -154,7 +154,7 @@ export class RtrimFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
     }
@@ -167,7 +167,7 @@ export class SpaceFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -183,7 +183,7 @@ export class HexFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -202,7 +202,7 @@ export class OctFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -221,7 +221,7 @@ export class StrFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -237,7 +237,7 @@ export class ValFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
     }

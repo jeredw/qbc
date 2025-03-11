@@ -3,13 +3,14 @@ import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
 
 export class AbsFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -22,7 +23,7 @@ export class AtnFunction extends BuiltinFunction1 {
     super(params);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -35,7 +36,7 @@ export class CosFunction extends BuiltinFunction1 {
     super(params);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -48,7 +49,7 @@ export class ExpFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -64,7 +65,7 @@ export class LogFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -83,7 +84,7 @@ export class SgnFunction extends BuiltinFunction1 {
     super(params);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -96,7 +97,7 @@ export class SinFunction extends BuiltinFunction1 {
     super(params);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -109,7 +110,7 @@ export class SqrFunction extends BuiltinFunction1 {
     super(params);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -125,7 +126,7 @@ export class TanFunction extends BuiltinFunction1 {
     super(params);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -138,7 +139,7 @@ export class FixFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -151,7 +152,7 @@ export class IntFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }

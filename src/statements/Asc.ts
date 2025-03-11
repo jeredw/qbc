@@ -3,13 +3,14 @@ import { ILLEGAL_FUNCTION_CALL, integer, isString, Value } from "../Values.ts";
 import { charToAscii } from "../AsciiChart.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
 
 export class AscFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
     }

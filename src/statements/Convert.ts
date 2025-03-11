@@ -4,13 +4,14 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -23,7 +24,7 @@ export class CsngFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -36,7 +37,7 @@ export class CintFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -49,7 +50,7 @@ export class ClngFunction extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -62,7 +63,7 @@ abstract class BytesToString extends BuiltinFunction1 {
     super(args);
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
@@ -203,7 +204,7 @@ abstract class StringToBytes extends BuiltinFunction1 {
     this.expectedNumBytes = expectedNumBytes;
   }
 
-  override calculate(input: Value): Value {
+  override calculate(input: Value, _context: ExecutionContext): Value {
     if (!isString(input)) {
       throw new Error("expecting string");
     }

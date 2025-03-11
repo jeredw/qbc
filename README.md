@@ -191,7 +191,7 @@ parse those using baked in rules.
 | `IF`...`THEN`... | Statement   | ✅      | ✅      |
 | `IMP`            | Operator    | ✅      | ✅      |
 | `INKEY$`         | Function    | -       | ✅      |
-| `INP`            | Function    | -       | ⛔      |
+| `INP`            | Function    | -       | 🚧      |
 | `INPUT`          | Statement   | ✅      | ⛔      |
 | `INPUT$`         | Function    | ✅      | ⛔      |
 | `INSTR`          | Function    | ⛔      | ⛔      |
