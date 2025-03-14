@@ -30,7 +30,7 @@ O          24      ║     ? or /       53      ║     End          79
 P          25      ║     Shift_2      54      ║     ArrowDown    80
 { or [     26      ║                  55      ║     PgDn         81
 } or ]     27      ║     Alt          56      ║     Insert       82
-Enter      28      ║                  57      ║     Delete       83
+Enter      28      ║     Spacebar     57      ║     Delete       83
 Control    29      ║                          ║
 `;
 export const keyToScanCode = (() => {
@@ -48,7 +48,7 @@ export const keyToScanCode = (() => {
       }
       const names = nameSpec.split(' or ');
       for (const name of names) {
-        map.set(name.toLowerCase(), code);
+        map.set(name === 'Spacebar' ? ' ' : name.toLowerCase(), code);
       }
     }
   }

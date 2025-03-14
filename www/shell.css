@@ -171,6 +171,15 @@ button:active {
   src: url(DotMatrix-BoldItalic.woff2) format('woff');
 }
 
+.screen {
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+}
+
+.screen:focus {
+  outline: 1px dotted red;
+}
+
 .paper-window {
   height: 200px;
   overflow: auto;

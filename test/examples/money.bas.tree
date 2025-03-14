@@ -5677,7 +5677,7 @@
             (literal 19)) 
           (block \n 
             (statement 
-              (line_input_statement LINE INPUT 
+              (line_input_file_statement LINE INPUT 
                 (file_number # 
                   (expr 
                     (literal 1))) , 
@@ -5688,7 +5688,7 @@
                         (expr 
                           (variable_or_function_call a)))) ) . Title))) \n 
             (statement 
-              (line_input_statement LINE INPUT 
+              (line_input_file_statement LINE INPUT 
                 (file_number # 
                   (expr 
                     (literal 1))) , 
@@ -5699,7 +5699,7 @@
                         (expr 
                           (variable_or_function_call a)))) ) . AType))) \n 
             (statement 
-              (line_input_statement LINE INPUT 
+              (line_input_file_statement LINE INPUT 
                 (file_number # 
                   (expr 
                     (literal 1))) , 

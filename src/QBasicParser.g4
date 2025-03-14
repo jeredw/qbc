@@ -124,6 +124,7 @@ statement
   | key_statement
   | line_statement
   | line_input_statement
+  | line_input_file_statement
   | locate_statement
   | lock_statement
   | lprint_statement
@@ -596,8 +597,13 @@ box_style
   ;
 
 line_input_statement
-  : LINE INPUT ';'? (STRING_LITERAL (';' | COMMA))? variable_or_function_call
-  | LINE INPUT file_number COMMA variable_or_function_call
+  : LINE INPUT sameline=';'?
+    (prompt=STRING_LITERAL mark=(';' | COMMA))?
+    variable_or_function_call
+  ;
+
+line_input_file_statement
+  : LINE INPUT file_number COMMA variable_or_function_call
   ;
 
 locate_statement

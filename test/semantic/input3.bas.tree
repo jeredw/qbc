@@ -1,0 +1,69 @@
+(program 
+  (statement 
+    (input_statement input 
+      (variable_or_function_call a) , 
+      (variable_or_function_call b) , 
+      (variable_or_function_call c))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call c))))) \n 
+  (statement 
+    (input_statement input 
+      (variable_or_function_call a$) , 
+      (variable_or_function_call b$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b$))))) \n 
+  (statement 
+    (input_statement input 
+      (variable_or_function_call a$) , 
+      (variable_or_function_call b) , 
+      (variable_or_function_call c$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call c$))))) \n 
+  (statement 
+    (input_statement input 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$))))) \n 
+  (statement 
+    (input_statement input 
+      (variable_or_function_call a%))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a%))))) \n 
+  (statement 
+    (input_statement input 
+      (variable_or_function_call a))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a))))) \n <EOF>)

@@ -12,7 +12,7 @@
     (line_input_statement line input ; 
       (variable_or_function_call line2$))) \n 
   (statement 
-    (line_input_statement line input 
+    (line_input_file_statement line input 
       (file_number # 
         (expr 
           (literal 1))) , 

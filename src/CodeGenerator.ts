@@ -3,11 +3,11 @@ import * as statements from "./statements/StatementRegistry.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParseError } from "./Errors.ts";
 import { Program, ProgramChunk } from "./Programs.ts";
-import { ParserRuleContext, ParseTreeWalker, TerminalNode, Token } from "antlr4ng";
+import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
-import { typeCheckExpression } from "./Expressions.ts";
-import { reference, isError, getDefaultValue } from "./Values.ts";
-import { sameType, splitSigil, Type, TypeTag } from "./Types.ts";
+import { parseLiteral, typeCheckExpression } from "./Expressions.ts";
+import { reference, isError, getDefaultValue, isString as isStringValue } from "./Values.ts";
+import { sameType, splitSigil, Type, TypeTag, isString as isStringType } from "./Types.ts";
 import { isBuiltin, isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
@@ -394,19 +394,7 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterRead_statement = (ctx: parser.Read_statementContext) => {
     for (const variableCtx of ctx.variable_or_function_call()) {
-      const symbol = getTyperContext(variableCtx).$symbol;
-      if (!isVariable(symbol)) {
-        throw ParseError.fromToken(variableCtx.start!, "Expected: variable");
-      }
-      let variable = symbol.variable;
-      if (variable.array) {
-        const result = getTyperContext(variableCtx).$result;
-        if (!result) {
-          throw new Error("missing result variable");
-        }
-        this.indexArray(variable, variableCtx.start!, variableCtx.argument_list(), result);
-        variable = result;
-      }
+      const variable = this.getVariableOutsideExpression(variableCtx);
       this.addStatement(statements.read(variableCtx.start!, variable));
     }
   }
@@ -600,11 +588,47 @@ export class CodeGenerator extends QBasicParserListener {
     this.addLabelForNextStatement(labels.$exitLabel);
   }
 
-  override enterInput_statement = (ctx: parser.Input_statementContext) => {}
+  override enterInput_statement = (ctx: parser.Input_statementContext) => {
+    const sameLine = !!ctx._sameline;
+    let prompt: string | undefined;
+    if (ctx._prompt) {
+      const value = parseLiteral(ctx._prompt.text!);
+      if (!isStringValue(value)) {
+        throw new Error("expecting string");
+      }
+      prompt = value.string;
+    }
+    const mark = !!(ctx._mark && ctx._mark.text === ';') || prompt === undefined;
+    const variables: Variable[] = [];
+    for (const variableCtx of ctx.variable_or_function_call()) {
+      const variable = this.getVariableOutsideExpression(variableCtx);
+      variables.push(variable);
+    }
+    this.addStatement(statements.input({sameLine, mark, prompt, variables}));
+  }
+
+  override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {
+    const sameLine = !!ctx._sameline;
+    const mark = !!(ctx._mark && ctx._mark.text === ';');
+    let prompt: string | undefined;
+    if (ctx._prompt) {
+      const value = parseLiteral(ctx._prompt.text!);
+      if (!isStringValue(value)) {
+        throw new Error("expecting string");
+      }
+      prompt = value.string;
+    }
+    const variable = this.getVariableOutsideExpression(ctx.variable_or_function_call());
+    if (!isStringType(variable.type)) {
+      throw ParseError.fromToken(variable.token, "Type mismatch");
+    }
+    const variables: Variable[] = [variable];
+    this.addStatement(statements.lineInput({sameLine, mark, prompt, variables}));
+  }
+
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
   override enterKey_statement = (ctx: parser.Key_statementContext) => {}
   override enterLine_statement = (ctx: parser.Line_statementContext) => {}
-  override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {}
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
@@ -873,6 +897,23 @@ export class CodeGenerator extends QBasicParserListener {
 
   private compileBoolean(expr: parser.ExprContext): parser.ExprContext {
     return this.compileExpression(expr, expr.start!, {tag: TypeTag.LONG});
+  }
+
+  private getVariableOutsideExpression(variableCtx: parser.Variable_or_function_callContext): Variable {
+    const symbol = getTyperContext(variableCtx).$symbol;
+    if (!isVariable(symbol)) {
+      throw ParseError.fromToken(variableCtx.start!, "Expected: variable");
+    }
+    let variable = symbol.variable;
+    if (variable.array) {
+      const result = getTyperContext(variableCtx).$result;
+      if (!result) {
+        throw new Error("missing result variable");
+      }
+      this.indexArray(variable, variableCtx.start!, variableCtx.argument_list(), result);
+      variable = result;
+    }
+    return variable;
   }
 
   private compileExpression(expr: parser.ExprContext, token?: Token, resultType?: Type): parser.ExprContext {

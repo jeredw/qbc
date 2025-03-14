@@ -94,7 +94,7 @@ export function isNumericType(s: Type): boolean {
   return s.tag == TypeTag.NUMERIC || s.tag == TypeTag.SINGLE || s.tag == TypeTag.DOUBLE || s.tag == TypeTag.INTEGER || s.tag == TypeTag.LONG;
 }
 
-function isString(s: Type): boolean {
+export function isString(s: Type): boolean {
   return s.tag == TypeTag.STRING || s.tag == TypeTag.FIXED_STRING;
 }
 

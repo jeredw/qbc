@@ -71,6 +71,7 @@ import { Variable } from "../Variables.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
+import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -236,6 +237,10 @@ export function inp(args: BuiltinStatementArgs) {
   return new InpFunction(args);
 }
 
+export function input(args: InputStatementArgs) {
+  return new InputStatement(args);
+}
+
 export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {
   return new IndexArrayStatement(array, indexExprs, result);
 }
@@ -254,6 +259,10 @@ export function lcase(args: BuiltinStatementArgs) {
 
 export function left(args: BuiltinStatementArgs) {
   return new LeftFunction(args);
+}
+
+export function lineInput(args: InputStatementArgs) {
+  return new LineInputStatement(args);
 }
 
 export function ltrim(args: BuiltinStatementArgs) {

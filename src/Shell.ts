@@ -55,7 +55,11 @@ class Shell {
     this.muteButton.addEventListener('click', () => this.muteAudio());
     this.error = this.codePane.querySelector('.error');
     document.addEventListener('keydown', (e: KeyboardEvent) => {
-      this.keyboard.keydown(e);
+      if (document.activeElement == this.screen.canvas) {
+        this.keyboard.keydown(e);
+        e.preventDefault();
+        return false;
+      }
       if (document.activeElement != this.codePane) {
         return;
       }
@@ -84,7 +88,11 @@ class Shell {
       this.clearErrors();
     });
     document.addEventListener('keyup', (e: KeyboardEvent) => {
-      this.keyboard.keyup(e);
+      if (document.activeElement == this.screen.canvas) {
+        this.keyboard.keyup(e);
+        e.preventDefault();
+        return false;
+      }
     });
   }
 
@@ -92,7 +100,7 @@ class Shell {
     this.clearErrors();
     const text = this.codePane.innerText;
     try {
-      this.codePane.blur();
+      this.screen.canvas.focus();
       this.keyboard.reset();
       this.invocation = this.interpreter.run(text);
       this.root.classList.add('running');
@@ -104,6 +112,7 @@ class Shell {
         throw error;
       }
     } finally {
+      this.codePane.focus();
       this.root.classList.remove('running');
     }
   }

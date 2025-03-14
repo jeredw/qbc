@@ -29,7 +29,7 @@ export abstract class BasePrinter implements Printer {
     return this.width - this.column + 1;
   }
 
-  private putString(text: string) {
+  protected putString(text: string) {
     for (const ch of text) {
       this.putChar(ch);
       this.column++;
@@ -39,10 +39,13 @@ export abstract class BasePrinter implements Printer {
   print(text: string, newline: boolean) {
     while (text.length > 0) {
       const space = this.spaceLeftOnLine();
-      if (text.length > space) {
+      if (text.length >= space) {
         this.putString(text.slice(0, space));
         text = text.slice(space);
         this.newLine();
+        if (text.length == 0) {
+          return;
+        }
       } else {
         this.putString(text);
         break;

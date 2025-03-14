@@ -1,0 +1,41 @@
+(program 
+  (statement 
+    (line_input_statement line input ; "test>" , 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$))))) \n 
+  (statement 
+    (line_input_statement line input "test>" , 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$))))) \n 
+  (statement 
+    (line_input_statement line input "test>" ; 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$))))) \n 
+  (statement 
+    (line_input_statement line input ; 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$))))) \n 
+  (statement 
+    (line_input_statement line input 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$))))) \n <EOF>)

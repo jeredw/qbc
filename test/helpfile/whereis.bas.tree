@@ -200,7 +200,7 @@
                         (variable_or_function_call FileNum)))) )))) 
           (block \r\n 
             (statement 
-              (line_input_statement LINE INPUT 
+              (line_input_file_statement LINE INPUT 
                 (file_number # 
                   (expr 
                     (variable_or_function_call FileNum))) , 

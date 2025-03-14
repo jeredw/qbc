@@ -12,11 +12,18 @@ export interface Keyboard {
 }
 
 export function typeLines(lines: string[], listener: KeyboardListener) {
-  const fakeKey = (key: string) => ({key} as unknown as KeyboardEvent);
+  const fakeKey = (key: string, ctrlKey?: boolean) => ({key, ctrlKey} as unknown as KeyboardEvent);
   for (const line of lines) {
-    for (const key of line) {
-      listener.keydown(fakeKey(key));
-      listener.keyup(fakeKey(key));
+    const keys = line.match(/⟨([^⟩]+)⟩|./g) || [];
+    for (const key of keys) {
+      let name = key.startsWith('⟨') ? key.slice(1, -1) : key;
+      let ctrlKey: boolean | undefined;
+      if (name.length > 1 && name.toLowerCase().startsWith('ctrl+')) {
+        ctrlKey = true;
+        name = name.slice(5);
+      }
+      listener.keydown(fakeKey(name, ctrlKey));
+      listener.keyup(fakeKey(name, ctrlKey));
     }
     listener.keydown(fakeKey('Enter'));
     listener.keyup(fakeKey('Enter'));
