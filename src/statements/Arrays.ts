@@ -37,7 +37,6 @@ export class DimStatement extends Statement {
     if (this.result.array.inStaticProcedure) {
       throw RuntimeError.fromToken(this.token, DUPLICATE_DEFINITION);
     }
-    const [descriptorAddress, _] = context.memory.dereference(this.result);
     const dimensions: ArrayBounds[] = [];
     let numElements = 1;
     for (const boundsExprs of this.bounds) {
@@ -61,7 +60,7 @@ export class DimStatement extends Statement {
       baseAddress,
       dimensions
     });
-    context.memory.write(descriptorAddress, descriptor);
+    context.memory.write(this.result, descriptor);
   }
 }
 
@@ -100,7 +99,7 @@ export class IndexArrayStatement extends Statement {
     if (!descriptor.baseAddress) {
       throw new Error("array not allocated");
     }
-    context.memory.write(this.result.address, reference(this.array, {
+    context.memory.writeAddress(this.result.address, reference(this.array, {
       storageType: descriptor.storageType!,
       frameIndex: descriptor.baseAddress!.frameIndex,
       index: descriptor.baseAddress!.index + offset
@@ -129,7 +128,7 @@ abstract class ArrayBoundFunction extends Statement {
     if (isError(output)) {
       throw RuntimeError.fromToken(this.token, output);
     }
-    context.memory.write(this.result.address!, output);
+    context.memory.write(this.result, output);
   }
 
   abstract getBound(context: ExecutionContext, which: number): Value;

@@ -47,6 +47,5 @@ function assign(variable: Variable, value: Value, memory: Memory) {
     }
     return;
   }
-  const [address, _] = memory.dereference(variable);
-  memory.write(address, value);
+  memory.write(variable, value);
 }

@@ -84,10 +84,10 @@ export class Memory {
     }
     const MAX_DEPTH = 1000;
     let depth = 0;
-    let value = this.read(address);
+    let value = this.readAddress(address);
     while (value && isReference(value) && depth < MAX_DEPTH) {
       address = value.address;
-      value = this.read(value.address);
+      value = this.readAddress(value.address);
       depth++;
     }
     if (depth == MAX_DEPTH) {
@@ -96,7 +96,7 @@ export class Memory {
     if (variable.recordOffset) {
       address = {...address};
       address.index += variable.recordOffset.offset;
-      value = this.read(address);
+      value = this.readAddress(address);
     }
     return [address, value];
   }
@@ -114,7 +114,7 @@ export class Memory {
     this.getDynamicFrame(address.frameIndex).dispose();
   }
 
-  read(address: Address): Value {
+  readAddress(address: Address): Value {
     switch (address.storageType) {
       case StorageType.AUTOMATIC:
         return this.getStackFrame(address.frameIndex).read(address.index);
@@ -125,7 +125,7 @@ export class Memory {
     }
   }
 
-  write(address: Address, value: Value) {
+  writeAddress(address: Address, value: Value) {
     switch (address.storageType) {
       case StorageType.AUTOMATIC:
         return this.getStackFrame(address.frameIndex).write(address.index, value);
@@ -134,6 +134,16 @@ export class Memory {
       case StorageType.DYNAMIC:
         return this.getDynamicFrame(address.frameIndex).write(address.index, value);
     }
+  }
+
+  read(variable: Variable): Value {
+    const [_, value] = this.dereference(variable);
+    return value;
+  }
+
+  write(variable: Variable, value: Value) {
+    const [address, _] = this.dereference(variable);
+    this.writeAddress(address, value);
   }
 
   private getStackFrame(frameIndexFromAddress: number | undefined): Frame {

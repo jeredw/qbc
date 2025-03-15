@@ -23,6 +23,6 @@ export class InkeyFunction extends Statement {
     const output = !key || (key.code & 0x80) || isModifier(key.code) ? string("") :
       key.char ? string(key.char) :
       string(asciiToString([0, key.code]));
-    context.memory.write(this.result.address!, output);
+    context.memory.write(this.result, output);
   }
 }

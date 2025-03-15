@@ -1,0 +1,28 @@
+(program 
+  (type_statement TYPE 
+    (untyped_id Demograph) \n 
+    (type_element 
+      (untyped_id FullName) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 25)) \n) 
+    (type_element 
+      (untyped_id Age) AS 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id Person) AS 
+        (type_name 
+          (untyped_id Demograph))))) \n 
+  (statement 
+    (input_statement INPUT "Enter name and age: " ; 
+      (variable_or_function_call Person.FullName) , 
+      (variable_or_function_call Person.Age))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Person.FullName)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Person.Age))))) \n <EOF>)

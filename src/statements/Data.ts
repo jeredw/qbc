@@ -56,7 +56,6 @@ export class ReadStatement extends Statement {
     if (isError(value)) {
       throw RuntimeError.fromToken(this.token, value);
     }
-    const [address, _] = context.memory.dereference(this.result);
-    context.memory.write(address, value);
+    context.memory.write(this.result, value);
   }
 }

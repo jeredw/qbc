@@ -49,7 +49,7 @@ export class CallStatement extends Statement {
     // Now create the new stack frame and initialize parameters.
     context.memory.pushStack(this.stackVariables.length);
     for (const [address, value] of writes) {
-      context.memory.write(address, value);
+      context.memory.writeAddress(address, value);
     }
     return {tag: ControlFlowTag.CALL, chunkIndex: this.chunkIndex};
   }

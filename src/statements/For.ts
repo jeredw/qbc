@@ -54,7 +54,7 @@ export class NextStatement extends Statement {
     if (isError(nextValue)) {
       throw RuntimeError.fromToken(this.forToken, nextValue);
     }
-    context.memory.write(counterAddress, nextValue);
+    context.memory.writeAddress(counterAddress, nextValue);
     const end = getValueOrDefault(context.memory, this.end);
     if (increment == 0 || (increment > 0 && next <= end) || (increment < 0 && next >= end)) {
       return {tag: ControlFlowTag.GOTO};
@@ -66,7 +66,7 @@ function getValueOrDefault(memory: Memory, variable: Variable | null, defaultVal
   if (!variable) {
     return defaultValue;
   }
-  const [_, value] = memory.dereference(variable);
+  const value = memory.read(variable);
   if (!value || !isNumeric(value)) {
     throw new Error("must be numeric");
   }

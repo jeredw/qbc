@@ -221,7 +221,7 @@ export class LineInputStatement extends BaseInputStatement {
 
   protected override parse(context: ExecutionContext, line: string): [boolean, string] {
     const result = this.args.variables[0];
-    context.memory.write(result.address!, string(line));
+    context.memory.write(result, string(line));
     return [true, ''];
   }
 }
@@ -283,8 +283,8 @@ export class InputStatement extends BaseInputStatement {
       expect(',');
       skipWhitespace();
     };
+    const items: Value[] = [];
     try {
-      const items: Value[] = [];
       for (let i = 0; i < this.args.variables.length; i++) {
         const variable = this.args.variables[i];
         if (isString(variable.type)) {
@@ -308,12 +308,14 @@ export class InputStatement extends BaseInputStatement {
       if (pos < line.length) {
         throw Error();
       }
-      for (let i = 0; i < this.args.variables.length; i++) {
-        context.memory.write(this.args.variables[i].address!, items[i]);
-      }
     } catch (e: unknown) {
       const message = (e as Error).message;
       return [false, message];
+    }
+    for (let i = 0; i < this.args.variables.length; i++) {
+      const variable = this.args.variables[i];
+      const [address, _] = context.memory.dereference(variable);
+      context.memory.write(variable, items[i]);
     }
     return [true, ''];
   }

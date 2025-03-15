@@ -75,7 +75,7 @@ abstract class LRFunction extends Statement {
     if (isError(output)) {
       throw RuntimeError.fromToken(this.token, output);
     }
-    context.memory.write(this.result.address!, output);
+    context.memory.write(this.result, output);
   }
 
   abstract calculate(str: string, n: number): Value;
@@ -132,7 +132,7 @@ export class MidFunction extends Statement {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
     const value = str.slice(start - 1, (start - 1) + length);
-    context.memory.write(this.result.address!, string(value));
+    context.memory.write(this.result, string(value));
   }
 }
 

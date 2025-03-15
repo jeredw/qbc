@@ -34,7 +34,7 @@ export abstract class BuiltinFunction1 extends Statement {
     if (isError(output)) {
       throw RuntimeError.fromToken(this.token, output);
     }
-    context.memory.write(this.result.address!, output);
+    context.memory.write(this.result, output);
   }
 
   abstract calculate(input: Value, context: ExecutionContext): Value;
