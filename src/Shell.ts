@@ -1,5 +1,5 @@
 import { Interpreter } from "./Interpreter.ts";
-import { OriginPrivateFileSystem } from "./Disk.ts";
+import { MemoryDrive } from "./Disk.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
 import { CanvasTextScreen } from "./Screen.ts";
 import { LinePrinter } from "./Printer.ts";
@@ -24,7 +24,7 @@ class Shell {
   private screen: CanvasTextScreen;
   private speaker: WebAudioSpeaker;
   private printer: LinePrinter;
-  private disk: OriginPrivateFileSystem;
+  private disk: MemoryDrive;
   private keyboard: KeyboardListener;
 
   constructor(root: HTMLElement) {
@@ -32,7 +32,7 @@ class Shell {
     this.screen = new CanvasTextScreen(80, 25);
     this.speaker = new WebAudioSpeaker();
     this.printer = new LinePrinter(80);
-    this.disk = new OriginPrivateFileSystem();
+    this.disk = new MemoryDrive();
     this.keyboard = new KeyboardListener();
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);

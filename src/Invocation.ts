@@ -62,6 +62,7 @@ export class Invocation {
     const chunks = this.program.chunks;
     this.stack = [];
     this.data.restore(0);
+    this.files = {handles: new Map()};
     if (chunks.length > 0 && chunks[0].statements.length > 0) {
       this.stack.push({chunkIndex: 0, statementIndex: 0});
     }

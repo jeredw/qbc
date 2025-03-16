@@ -86,3 +86,12 @@ export class RuntimeError extends Error {
     };
   }
 }
+
+export class IOError extends Error {
+  error: ErrorValue;
+
+  constructor(error: ErrorValue) {
+    super(error.errorMessage);
+    this.error = error;
+  }
+}

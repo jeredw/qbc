@@ -7,8 +7,12 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { isString, Type } from "../Types.ts";
 import { Statement } from "./Statement.ts";
 import { parseNumberFromString } from "../Expressions.ts";
+import { Token } from "antlr4ng";
+import { getSequentialReadAccessor } from "./Open.ts";
+import { tryIo } from "../Files.ts";
 
 export interface InputStatementArgs {
+  token: Token;
   prompt?: string;
   mark?: boolean;
   sameLine?: boolean;
@@ -24,11 +28,25 @@ abstract class BaseInputStatement extends Statement {
     this.args = args;
   }
 
-  override execute(context: ExecutionContext): ControlFlow {
+  override execute(context: ExecutionContext): ControlFlow | void {
+    if (this.args.fileNumber) {
+      tryIo(this.args.token, () => this.parseLineFromFile(context));
+      return;
+    }
     return {tag: ControlFlowTag.WAIT, promise: this.lineEditor(context)};
   }
 
   protected abstract parse(context: ExecutionContext, line: string): [boolean, string];
+
+  private parseLineFromFile(context: ExecutionContext) {
+    const accessor = getSequentialReadAccessor({
+      fileNumber: this.args.fileNumber!,
+      context
+    });
+    const line = accessor.readLine();
+    // input just silently fails if the line fails to parse.
+    this.parse(context, line);
+  }
 
   private lineEditor(context: ExecutionContext): Promise<void> {
     let position = 0;

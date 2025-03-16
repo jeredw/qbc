@@ -2,13 +2,16 @@ import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
-import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, ILLEGAL_FUNCTION_CALL, isError, isNumeric, isString, NumericValue, TYPE_MISMATCH } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, isError, isNumeric, isString, NumericValue, TYPE_MISMATCH } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Printer } from "../Printer.ts";
+import { tryIo } from "../Files.ts";
+import { getSequentialWriteAccessor } from "./Open.ts";
 
 export interface PrintStatementArgs {
+  token: Token;
   printer?: boolean;
   fileNumber?: ExprContext;
   format?: ExprContext;
@@ -33,18 +36,10 @@ abstract class BasePrintStatement extends Statement {
 
   protected getPrinter(context: ExecutionContext): Printer {
     if (this.args.fileNumber) {
-      const fileNumber = evaluateIntegerExpression(this.args.fileNumber, context.memory);
-      if (fileNumber < 0 || fileNumber > 255) {
-        throw RuntimeError.fromToken(this.args.fileNumber.start!, BAD_FILE_NAME_OR_NUMBER);
-      }
-      const handle = context.files.handles.get(fileNumber);
-      if (!handle) {
-        throw RuntimeError.fromToken(this.args.fileNumber.start!, BAD_FILE_NAME_OR_NUMBER);
-      }
-      if (!handle.printer) {
-        throw RuntimeError.fromToken(this.args.fileNumber.start!, BAD_FILE_MODE);
-      }
-      return handle.printer;
+      return getSequentialWriteAccessor({
+        fileNumber: this.args.fileNumber,
+        context
+      });
     }
     return this.args.printer ? context.devices.printer : context.devices.textScreen;
   }
@@ -56,6 +51,10 @@ export class PrintStatement extends BasePrintStatement {
   }
 
   override execute(context: ExecutionContext) {
+    tryIo(this.args.token, () => this.print(context));
+  }
+
+  private print(context: ExecutionContext) {
     const printer = this.getPrinter(context);
     for (let i = 0; i < this.args.exprs.length; i++) {
       const {token, expr, spaces, tab, separator} = this.args.exprs[i];
@@ -131,6 +130,10 @@ export class PrintUsingStatement extends BasePrintStatement {
   }
 
   override execute(context: ExecutionContext) {
+    tryIo(this.args.token, () => this.print(context));
+  }
+
+  private print(context: ExecutionContext) {
     const printer = this.getPrinter(context);
     const formatString = evaluateStringExpression(this.args.format!, context.memory);
     const templates = parseFormatString(formatString);

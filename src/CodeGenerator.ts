@@ -19,6 +19,7 @@ import { Builtin, BuiltinParam } from "./Builtins.ts";
 import { DimBoundsExprs } from "./statements/Arrays.ts";
 import { RestoreStatement } from "./statements/Data.ts";
 import { PrintExpr } from "./statements/Print.ts";
+import { OpenMode } from "./Files.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -589,6 +590,7 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterInput_statement = (ctx: parser.Input_statementContext) => {
+    const token = ctx.start!;
     const sameLine = !!ctx._sameline;
     let prompt: string | undefined;
     if (ctx._prompt) {
@@ -604,10 +606,11 @@ export class CodeGenerator extends QBasicParserListener {
       const variable = this.getVariableOutsideExpression(variableCtx);
       variables.push(variable);
     }
-    this.addStatement(statements.input({sameLine, mark, prompt, variables}));
+    this.addStatement(statements.input({token, sameLine, mark, prompt, variables}));
   }
 
   override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {
+    const token = ctx.start!;
     const sameLine = !!ctx._sameline;
     const mark = !!(ctx._mark && ctx._mark.text === ';');
     let prompt: string | undefined;
@@ -623,7 +626,18 @@ export class CodeGenerator extends QBasicParserListener {
       throw ParseError.fromToken(variable.token, "Type mismatch");
     }
     const variables: Variable[] = [variable];
-    this.addStatement(statements.lineInput({sameLine, mark, prompt, variables}));
+    this.addStatement(statements.lineInput({token, sameLine, mark, prompt, variables}));
+  }
+
+  override enterLine_input_file_statement = (ctx: parser.Line_input_file_statementContext) => {
+    const token = ctx.start!;
+    const fileNumber = this.compileExpression(ctx.file_number(), ctx.file_number().start!, { tag: TypeTag.INTEGER });
+    const variable = this.getVariableOutsideExpression(ctx.variable_or_function_call());
+    if (!isStringType(variable.type)) {
+      throw ParseError.fromToken(variable.token, "Type mismatch");
+    }
+    const variables: Variable[] = [variable];
+    this.addStatement(statements.lineInput({token, fileNumber, variables}));
   }
 
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
@@ -653,7 +667,12 @@ export class CodeGenerator extends QBasicParserListener {
     const token = ctx.start!;
     const name = this.compileExpression(ctx._file!, ctx._file!.start!, { tag: TypeTag.STRING });
     const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.open({token, name, fileNumber}));
+    const mode = ctx.open_mode()?.OUTPUT() ? OpenMode.OUTPUT : 
+      ctx.open_mode()?.INPUT() ? OpenMode.INPUT :
+      ctx.open_mode()?.APPEND() ? OpenMode.APPEND :
+      ctx.open_mode()?.BINARY() ? OpenMode.BINARY :
+      OpenMode.RANDOM;
+    this.addStatement(statements.open({token, name, fileNumber, mode}));
   }
 
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
@@ -698,7 +717,8 @@ export class CodeGenerator extends QBasicParserListener {
       const separator = arg._separator?.text;
       exprs.push({token, expr, spaces, tab, separator});
     }
-    this.addStatement(statements.print({exprs, fileNumber, printer}));
+    const token = ctx.start!;
+    this.addStatement(statements.print({token, exprs, fileNumber, printer}));
   }
 
   private addPrintUsingStatement({ctx, fileNumber, printer}: {
@@ -716,9 +736,10 @@ export class CodeGenerator extends QBasicParserListener {
       const separator = arg._separator?.text;
       exprs.push({token, expr, spaces, separator});
     }
+    const token = ctx.start!;
     const format = this.compileExpression(
       ctx._format!, ctx._format!.start!, { tag: TypeTag.STRING })
-    this.addStatement(statements.printUsing({format, exprs, fileNumber, printer}));
+    this.addStatement(statements.printUsing({token, format, exprs, fileNumber, printer}));
   }
 
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}

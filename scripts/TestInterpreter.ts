@@ -1,4 +1,4 @@
-import { MemoryFileSystem } from "../src/Disk.ts";
+import { MemoryDrive } from "../src/Disk.ts";
 import { ParseError, RuntimeError } from "../src/Errors.ts";
 import { Interpreter } from "../src/Interpreter.ts";
 import { StringPrinter } from "../src/Printer.ts";
@@ -6,12 +6,12 @@ import { TestTextScreen } from "../src/Screen.ts";
 import { TestSpeaker } from "../src/Speaker.ts";
 import { KeyboardListener, typeLines } from "../src/Keyboard.ts";
 
-async function interpret(program: string, input: string[]): Promise<string> {
+async function interpret(program: string, input: string[], diskJson: string): Promise<string> {
   try {
     const textScreen = new TestTextScreen();
     const speaker = new TestSpeaker();
     const printer = new StringPrinter();
-    const disk = new MemoryFileSystem();
+    const disk = new MemoryDrive();
     const keyboard = new KeyboardListener();
     const interpreter = new Interpreter({
       textScreen,
@@ -21,13 +21,16 @@ async function interpret(program: string, input: string[]): Promise<string> {
       keyboard,
     });
     typeLines(input, keyboard);
+    if (diskJson) {
+      disk.loadFromJson(diskJson);
+    }
     const invocation = interpreter.run(program + '\n');
     await invocation.restart();
     return [
       textScreen.output,
       prefixLines("LPT1> ", printer.output),
       speaker.output,
-      prefixLines("FS> ", disk.dump()),
+      disk.modified ? prefixLines("FS> ", disk.saveToJson()) : '',
     ].join('');
   } catch (e: unknown) {
     if (e instanceof ParseError) {
@@ -55,7 +58,13 @@ async function runTests(tests: string[]) {
       } catch {
         // Assume no keyboard input.
       }
-      const output = await interpret(program, input);
+      let diskJson = "";
+      try {
+        diskJson = Deno.readTextFileSync(testPath + '.disk');
+      } catch {
+        // Assume no disk image.
+      }
+      const output = await interpret(program, input, diskJson);
       const diffCommand = new Deno.Command('diff', {
         args: ['-du', goldenPath, '-'],
         stdin: 'piped',

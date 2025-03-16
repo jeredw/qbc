@@ -241,4 +241,11 @@ export const
   OUT_OF_DATA = error('Out of DATA'),
   SYNTAX_ERROR = error('Syntax error'),
   BAD_FILE_NAME_OR_NUMBER = error('Bad file name or number'),
-  BAD_FILE_MODE = error('Bad file mode');
+  BAD_FILE_MODE = error('Bad file mode'),
+  INPUT_PAST_END_OF_FILE = error('Input past end of file'),
+  PATH_NOT_FOUND = error('Path not found'),
+  PATH_FILE_ACCESS_ERROR = error('Path/File access error'),
+  FILE_NOT_FOUND = error('File not found'),
+  FILE_ALREADY_OPEN = error('File already open'),
+  BAD_RECORD_NUMBER = error('Bad record number'),
+  FIELD_OVERFLOW = error('FIELD overflow');
