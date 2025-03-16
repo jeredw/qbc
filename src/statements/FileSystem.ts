@@ -1,0 +1,191 @@
+import { Token } from "antlr4ng";
+import { ExprContext } from "../../build/QBasicParser.ts";
+import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
+import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, error } from "../Values.ts";
+import { IOError, RuntimeError } from "../Errors.ts";
+import { FileAccessor, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
+import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
+import { DiskEntry } from "../Disk.ts";
+
+export interface OpenArgs {
+  token: Token;
+  name: ExprContext;
+  fileNumber: ExprContext;
+  mode: OpenMode;
+}
+
+export class OpenStatement extends Statement {
+  args: OpenArgs;
+
+  constructor(args: OpenArgs) {
+    super();
+    this.args = args;
+  }
+
+  override execute(context: ExecutionContext) {
+    const name = evaluateStringExpression(this.args.name, context.memory);
+    const fileNumber = evaluateIntegerExpression(this.args.fileNumber, context.memory);
+    if (name.length < 1 || name.length > 255 || fileNumber < 0 || fileNumber > 255) {
+      throw RuntimeError.fromToken(this.args.token, BAD_FILE_NAME_OR_NUMBER);
+    }
+    tryIo(this.args.token, () => {
+      const handle = context.devices.disk.open(name, this.args.mode);
+      context.files.handles.set(fileNumber, handle);
+    });
+  }
+}
+
+export class CloseStatement extends Statement {
+  fileNumber: ExprContext;
+
+  constructor(fileNumber: ExprContext) {
+    super();
+    this.fileNumber = fileNumber;
+  }
+
+  override execute(context: ExecutionContext) {
+    const fileNumber = evaluateIntegerExpression(this.fileNumber, context.memory);
+    const handle = context.files.handles.get(fileNumber);
+    if (handle) {
+      handle.owner.close(handle);
+    }
+    context.files.handles.delete(fileNumber);
+  }
+}
+
+abstract class FileSystemStatement extends Statement {
+  token: Token;
+  params: BuiltinParam[];
+
+  constructor({token, params}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    this.params = params;
+    if (this.params.length != 1 || !this.params[0].expr) {
+      throw new Error("expecting one expr argument");
+    }
+  }
+
+  override execute(context: ExecutionContext) {
+    const arg = evaluateStringExpression(this.params[0].expr!, context.memory);
+    tryIo(this.token, () => this.access(arg, context));
+  }
+
+  abstract access(path: string, context: ExecutionContext): void;
+}
+
+export class ChdirStatement extends FileSystemStatement {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override access(path: string, context: ExecutionContext) {
+    context.devices.disk.changeDirectory(path);
+  }
+}
+
+export class MkdirStatement extends FileSystemStatement {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override access(path: string, context: ExecutionContext) {
+    context.devices.disk.makeDirectory(path);
+  }
+}
+
+export class RmdirStatement extends FileSystemStatement {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override access(path: string, context: ExecutionContext) {
+    context.devices.disk.removeDirectory(path);
+  }
+}
+
+export class FilesStatement extends FileSystemStatement {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override access(pattern: string, context: ExecutionContext) {
+    const entries = context.devices.disk.listFiles(pattern);
+    const screen = context.devices.textScreen;
+    screen.print(context.devices.disk.getCurrentDirectory(), true);
+    const formattedEntries = entries.map(formatEntry);
+    for (let i = 0; i < formattedEntries.length; i++) {
+      screen.print(formattedEntries[i], false);
+      if (i != formattedEntries.length - 1) {
+        if (i % 4 === 3) {
+          screen.print('', true);
+        } else {
+          screen.print(' ', false);
+        }
+      }
+    }
+    screen.print('', true);
+    screen.print(' 262144000 Bytes free', true);
+  }
+}
+
+function formatEntry(entry: DiskEntry): string {
+  if (entry.name === '.') {
+    return '        .   <DIR>';
+  }
+  if (entry.name === '..') {
+    return '        ..  <DIR>';
+  }
+  const [name, extension] = entry.name.split('.');
+  const extensionField = extension ? '.' + extension.padEnd(3) : '    ';
+  const directoryField = entry.isDirectory ? '<DIR>' : '     ';
+  return `${name.padEnd(8)}${extensionField}${directoryField}`
+}
+
+export class KillStatement extends FileSystemStatement {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override access(pattern: string, context: ExecutionContext) {
+    context.devices.disk.removeFiles(pattern);
+  }
+}
+
+//export class NameStatement extends Statement {
+//}
+
+interface GetFileAccessorArgs {
+  fileNumber: ExprContext;
+  context: ExecutionContext;
+}
+
+function getFileAccessor({fileNumber, context}: GetFileAccessorArgs): FileAccessor {
+  const file = evaluateIntegerExpression(fileNumber, context.memory);
+  if (file < 0 || file > 255) {
+    throw new IOError(BAD_FILE_NAME_OR_NUMBER);
+  }
+  const handle = context.files.handles.get(file);
+  if (!handle) {
+    throw new IOError(BAD_FILE_NAME_OR_NUMBER);
+  }
+  return handle.accessor;
+}
+
+export function getSequentialWriteAccessor(args: GetFileAccessorArgs): FileAccessor {
+  const accessor = getFileAccessor(args);
+  if (!isSequentialWriteMode(accessor.openMode())) {
+    throw new IOError(BAD_FILE_MODE);
+  }
+  return accessor;
+}
+
+export function getSequentialReadAccessor(args: GetFileAccessorArgs): FileAccessor {
+  const accessor = getFileAccessor(args);
+  if (!isSequentialReadMode(accessor.openMode())) {
+    throw new IOError(BAD_FILE_MODE);
+  }
+  return accessor;
+}

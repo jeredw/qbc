@@ -8,7 +8,7 @@ import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Printer } from "../Printer.ts";
 import { tryIo } from "../Files.ts";
-import { getSequentialWriteAccessor } from "./Open.ts";
+import { getSequentialWriteAccessor } from "./FileSystem.ts";
 
 export interface PrintStatementArgs {
   token: Token;

@@ -5,11 +5,12 @@ import { BasePrinter } from "./Printer.ts";
 import * as values from "./Values.ts";
 
 export interface Disk extends Opener {
+  getCurrentDirectory(): string;
   changeDirectory(path: string): void;
   makeDirectory(path: string): void;
   removeDirectory(path: string): void;
-  glob(spec: string): DiskEntry[];
-  remove(spec: string): void;
+  listFiles(pattern: string): DiskEntry[];
+  removeFiles(pattern: string): void;
   rename(oldPath: string, newPath: string): void;
 }
 
@@ -31,11 +32,7 @@ export type DiskEntry =
 
 export class MemoryDrive implements Disk {
   drive: string;
-  rootDirectory: DiskEntry = {
-    isDirectory: true,
-    name: '',
-    entries: new Map()
-  };
+  rootDirectory = directory('');
   currentDirectory: Path;
   handles: Map<string, Handle> = new Map();
   modified: boolean = false;
@@ -45,6 +42,11 @@ export class MemoryDrive implements Disk {
     this.currentDirectory = {drive, names: ['']};
   }
 
+  getCurrentDirectory(): string {
+    const path = this.currentDirectory.names.join('\\');
+    return `${this.currentDirectory.drive}:${path || '\\'}`
+  }
+
   changeDirectory(path: string) {
     const target = parsePath(path, this.currentDirectory);
     this.lookupOrThrow(target);
@@ -52,13 +54,7 @@ export class MemoryDrive implements Disk {
   }
 
   makeDirectory(path: string): DiskEntry {
-    const target = parsePath(path, this.currentDirectory);
-    const [parentDir, name] = splitPath(target);
-    const newEntry: DiskDirectory = {name, isDirectory: true, entries: new Map()};
-    const parent = this.lookupOrThrow(parentDir);
-    if (!parent.isDirectory || !name) {
-      throw new IOError(values.PATH_NOT_FOUND);
-    }
+    const [parent, name] = this.getParentDirectoryAndFileName(path);
     const existingEntry = parent.entries.get(name);
     if (existingEntry) {
       if (existingEntry.isDirectory) {
@@ -66,22 +62,77 @@ export class MemoryDrive implements Disk {
       }
       throw new IOError(values.PATH_NOT_FOUND);
     }
-    parent.entries.set(name, newEntry);
+    const entry = directory(name);
+    parent.entries.set(name, entry);
     this.flush(parent);
-    return newEntry;
+    return entry;
   }
 
   removeDirectory(path: string) {
+    const [parent, name] = this.getParentDirectoryAndFileName(path);
+    const entry = parent.entries.get(name);
+    if (!entry || !entry.isDirectory) {
+      throw new IOError(values.PATH_NOT_FOUND);
+    }
+    if (entry.entries.size > 0) {
+      throw new IOError(values.PATH_FILE_ACCESS_ERROR);
+    }
+    parent.entries.delete(name);
+    this.flush(parent);
   }
 
-  glob(spec: string): DiskEntry[] {
-    return [];
+  listFiles(pattern: string): DiskEntry[] {
+    if (pattern === '') {
+      const path = this.getCurrentDirectory();
+      const pathBackslash = path.endsWith('\\') ? path : `${path}\\`;
+      pattern = pathBackslash;
+    }
+    const [parent, name] = this.getParentDirectoryAndFileName(pattern, /* allowEmptyName= */ true);
+    if (name === '') {
+      return [directory('.'), directory('..'), ...parent.entries.values()];
+    }
+    return Array.from(parent.entries.entries())
+      .filter((entry: [string, DiskEntry]) => matchPattern(entry[0], name))
+      .map((entry: [string, DiskEntry]) => entry[1]);
   }
 
-  remove(spec: string) {
+  removeFiles(pattern: string) {
+    if (pattern === '') {
+      const path = this.getCurrentDirectory();
+      const pathBackslash = path.endsWith('\\') ? path : `${path}\\`;
+      pattern = pathBackslash;
+    }
+    const [parent, name] = this.getParentDirectoryAndFileName(pattern, /* allowEmptyName= */ true);
+    const matches = Array.from(parent.entries.entries())
+      .filter((entry: [string, DiskEntry]) =>
+        !entry[1].isDirectory && matchPattern(entry[0], name));
+    if (matches.length === 0) {
+      throw new IOError(values.FILE_NOT_FOUND);
+    }
+    for (const [name, entry] of matches) {
+      parent.entries.delete(name);
+    }
+    this.flush(parent);
   }
 
   rename(oldPath: string, newPath: string) {
+    const [sourceParent, sourceName] = this.getParentDirectoryAndFileName(oldPath);
+    const entry = sourceParent.entries.get(sourceName);
+    if (!entry) {
+      throw new IOError(values.PATH_NOT_FOUND);
+    }
+
+    const [targetParent, targetName] = this.getParentDirectoryAndFileName(newPath);
+    if (!targetParent.isDirectory || !targetName) {
+      throw new IOError(values.PATH_NOT_FOUND);
+    }
+    if (targetParent.entries.get(targetName)) {
+      throw new IOError(values.FILE_ALREADY_EXISTS);
+    }
+    sourceParent.entries.delete(sourceName);
+    targetParent.entries.set(targetName, entry);
+    this.flush(sourceParent);
+    this.flush(targetParent);
   }
 
   open(path: string, mode: OpenMode, recordLength?: number): Handle {
@@ -147,6 +198,16 @@ export class MemoryDrive implements Disk {
 
   private flush(entry: DiskEntry) {
     this.modified = true;
+  }
+
+  private getParentDirectoryAndFileName(path: string, allowEmptyName = false): [DiskDirectory, string] {
+    const target = parsePath(path, this.currentDirectory);
+    const [parentDir, name] = splitPath(target);
+    const parent = this.lookupOrThrow(parentDir);
+    if (!parent.isDirectory || (!allowEmptyName && !name)) {
+      throw new IOError(values.PATH_NOT_FOUND);
+    }
+    return [parent, name];
   }
 
   private lookupOrThrow(path: Path): DiskEntry {
@@ -319,10 +380,12 @@ function parsePath(path: string, base: Path): Path {
   if (path.length == 0) {
     return base;
   }
+  if (path === '\\') {
+    return {drive, names: ['']};
+  }
   const pathParts = path.split('\\');
   const absolute = pathParts[0] === '';
-  const relNames: string[] = absolute ? pathParts :
-    base.names.slice().concat(pathParts);
+  const relNames: string[] = absolute ? pathParts : [...base.names, ...pathParts];
   const names: string[] = [];
   for (const name of relNames) {
     if (name === '..') {
@@ -345,6 +408,21 @@ function splitPath(path: Path): [Path, string] {
   }
   const parentDir = {drive: path.drive, names: path.names.slice(0, -1)};
   return [parentDir, path.names.at(-1)!]
+}
+
+function matchPattern(name: string, pattern: string): boolean {
+  if (pattern === name) {
+    return true;
+  }
+  const regexp = (p: string) => new RegExp('^' + p.replace(/\*/g, '.*').replace(/\?/g, '.') + '$');
+  const [baseName, extension] = name.split('.');
+  const [basePattern, extensionPattern] = pattern.split('.');
+  return regexp(basePattern ?? '').test(baseName ?? '') &&
+    regexp(extensionPattern ?? '').test(extension ?? '');
+}
+
+function directory(name: string): DiskDirectory {
+  return {isDirectory: true, name, entries: new Map()};
 }
 
 function zeros(count: number): number[] {

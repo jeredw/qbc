@@ -1,0 +1,40 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "text")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id kill) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "te?t")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "")))))) \n <EOF>)

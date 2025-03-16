@@ -123,7 +123,7 @@ parse those using baked in rules.
 | `CASE`           | Keyword     | ✅      | ✅      |
 | `CDBL`           | Function    | -       | ✅      |
 | `CHAIN`          | Statement   | -       | ⛔      |
-| `CHDIR`          | Statement   | -       | ⛔      |
+| `CHDIR`          | Statement   | -       | ✅      |
 | `CHR$`           | Function    | -       | ✅      |
 | `CINT`           | Function    | -       | ✅      |
 | `CIRCLE`         | Statement   | ✅      | ⛔      |
@@ -177,7 +177,7 @@ parse those using baked in rules.
 | `EXP`            | Function    | -       | ✅      |
 | `FIELD`          | Statement   | ✅      | ⛔      |
 | `FILEATTR`       | Function    | -       | ⛔      |
-| `FILES`          | Statement   | -       | ⛔      |
+| `FILES`          | Statement   | -       | ✅      |
 | `FIX`            | Function    | -       | ✅      |
 | `FOR`...`NEXT`   | Statement   | ✅      | ✅      |
 | `FRE`            | Function    | -       | ⛔      |
@@ -202,7 +202,7 @@ parse those using baked in rules.
 | `IS`             | Keyword     | ✅      | ✅      |
 | `KEY` Assignment | Statement   | ✅      | ⛔      |
 | `KEY` Event      | Statement   | ✅      | ⛔      |
-| `KILL`           | Statement   | -       | ⛔      |
+| `KILL`           | Statement   | -       | ✅      |
 | `LBOUND`         | Function    | ✅      | ✅      |
 | `LCASE$`         | Function    | -       | ✅      |
 | `LEFT$`          | Function    | -       | ✅      |
@@ -226,7 +226,7 @@ parse those using baked in rules.
 | `MID$`           | Function    | ✅      | ✅      |
 | `MID$`           | Statement   | ✅      | ⛔      |
 | `MKD$`           | Function    | -       | ✅      |
-| `MKDIR`          | Statement   | -       | ⛔      |
+| `MKDIR`          | Statement   | -       | ✅      |
 | `MKDMBF$`        | Function    | -       | ✅      |
 | `MKI$`           | Function    | -       | ✅      |
 | `MKL$`           | Function    | -       | ✅      |
@@ -283,7 +283,7 @@ parse those using baked in rules.
 | `RESUME`         | Statement   | ✅      | ⛔      |
 | `RETURN`         | Statement   | ✅      | ✅      |
 | `RIGHT$`         | Function    | -       | ✅      |
-| `RMDIR`          | Statement   | -       | ⛔      |
+| `RMDIR`          | Statement   | -       | ✅      |
 | `RND`            | Function    | -       | ⛔      |
 | `RSET`           | Statement   | ✅      | ⛔      |
 | `RTRIM$`         | Function    | -       | ✅      |

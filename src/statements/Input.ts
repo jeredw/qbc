@@ -8,7 +8,7 @@ import { isString, Type } from "../Types.ts";
 import { Statement } from "./Statement.ts";
 import { parseNumberFromString } from "../Expressions.ts";
 import { Token } from "antlr4ng";
-import { getSequentialReadAccessor } from "./Open.ts";
+import { getSequentialReadAccessor } from "./FileSystem.ts";
 import { tryIo } from "../Files.ts";
 
 export interface InputStatementArgs {

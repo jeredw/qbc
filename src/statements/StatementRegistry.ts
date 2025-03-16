@@ -47,7 +47,16 @@ import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement } from "./Let.ts";
-import { CloseStatement, OpenArgs, OpenStatement } from "./Open.ts";
+import {
+  ChdirStatement,
+  CloseStatement,
+  FilesStatement,
+  KillStatement,
+  MkdirStatement,
+  OpenArgs,
+  OpenStatement,
+  RmdirStatement
+} from "./FileSystem.ts";
 import { PrintStatement, PrintStatementArgs, PrintUsingStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import {
@@ -99,6 +108,10 @@ export function case_(test: Variable, condition: parser.Case_exprContext) {
 
 export function cdbl(args: BuiltinStatementArgs) {
   return new CdblFunction(args);
+}
+
+export function chdir(args: BuiltinStatementArgs) {
+  return new ChdirStatement(args);
 }
 
 export function chr(args: BuiltinStatementArgs) {
@@ -197,6 +210,10 @@ export function exp(args: BuiltinStatementArgs) {
   return new ExpFunction(args);
 }
 
+export function files(args: BuiltinStatementArgs) {
+  return new FilesStatement(args);
+}
+
 export function fix(args: BuiltinStatementArgs) {
   return new FixFunction(args);
 }
@@ -249,6 +266,10 @@ export function int(args: BuiltinStatementArgs) {
   return new IntFunction(args);
 }
 
+export function kill(args: BuiltinStatementArgs) {
+  return new KillStatement(args);
+}
+
 export function lbound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {
   return new LboundFunction(token, array, result, whichExpr);
 }
@@ -296,6 +317,10 @@ export function mki(args: BuiltinStatementArgs) {
 
 export function mkd(args: BuiltinStatementArgs) {
   return new MkdFunction(args);
+}
+
+export function mkdir(args: BuiltinStatementArgs) {
+  return new MkdirStatement(args);
 }
 
 export function mkdmbf(args: BuiltinStatementArgs) {
@@ -348,6 +373,10 @@ export function return_(start: Token) {
 
 export function right(args: BuiltinStatementArgs) {
   return new RightFunction(args);
+}
+
+export function rmdir(args: BuiltinStatementArgs) {
+  return new RmdirStatement(args);
 }
 
 export function rtrim(args: BuiltinStatementArgs) {

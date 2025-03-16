@@ -1,0 +1,113 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id chdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id chdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "..")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test\foo")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test\bar")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test\baz")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test\quux")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test\moo")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id mkdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test\yup")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test\")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id chdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id rmdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "moo")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id chdir) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "..")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "")))))) \n <EOF>)
