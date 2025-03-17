@@ -211,10 +211,10 @@ parse those using baked in rules.
 | `LINE` Graphics  | Statement   | ✅      | ⛔      |
 | `LINE INPUT`     | Statement   | ✅      | 🚧      |
 | `LIST`           | Keyword     | ✅      | ⛔      |
-| `LOC`            | Function    | ⛔      | ⛔      |
+| `LOC`            | Function    | -       | ✅      |
 | `LOCATE`         | Statement   | ✅      | ⛔      |
 | `LOCK`           | Statement   | ✅      | ⛔      |
-| `LOF`            | Function    | -       | ⛔      |
+| `LOF`            | Function    | -       | ✅      |
 | `LOG`            | Function    | -       | ✅      |
 | `LONG`           | Keyword     | ✅      | ✅      |
 | `LOOP`           | Keyword     | ✅      | ✅      |

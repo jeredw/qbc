@@ -53,6 +53,8 @@ import {
   EofFunction,
   FilesStatement,
   KillStatement,
+  LocFunction,
+  LofFunction,
   MkdirStatement,
   NameStatement,
   OpenArgs,
@@ -290,6 +292,14 @@ export function left(args: BuiltinStatementArgs) {
 
 export function lineInput(args: InputStatementArgs) {
   return new LineInputStatement(args);
+}
+
+export function loc(args: BuiltinStatementArgs) {
+  return new LocFunction(args);
+}
+
+export function lof(args: BuiltinStatementArgs) {
+  return new LofFunction(args);
 }
 
 export function ltrim(args: BuiltinStatementArgs) {

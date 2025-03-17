@@ -3,7 +3,7 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, error, integer, isNumeric, Value } from "../Values.ts";
+import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, error, integer, isNumeric, long, Value } from "../Values.ts";
 import { IOError, RuntimeError } from "../Errors.ts";
 import { FileAccessor, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
@@ -192,6 +192,42 @@ export class EofFunction extends BuiltinFunction1 {
       result = accessor.eof() ? -1 : 0;
     });
     return integer(result);
+  }
+}
+
+export class LocFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value, context: ExecutionContext): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    let result = 0;
+    tryIo(this.token, () => {
+      const accessor = getFileAccessor({fileNumber: input.number, context});
+      result = accessor.getLoc();
+    });
+    return long(result);
+  }
+}
+
+export class LofFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value, context: ExecutionContext): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    let result = 0;
+    tryIo(this.token, () => {
+      const accessor = getFileAccessor({fileNumber: input.number, context});
+      result = accessor.length();
+    });
+    return long(result);
   }
 }
 

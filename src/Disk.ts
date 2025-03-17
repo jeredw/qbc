@@ -357,10 +357,13 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
   }
 
   getLoc(): number {
+    if (this.mode === OpenMode.RANDOM) {
+      return Math.floor(this.lastAccessPosition / this.recordLength) + 1;
+    }
     if (this.mode === OpenMode.BINARY) {
       return this.lastAccessPosition + 1;
     }
-    return Math.floor(this.lastAccessPosition / this.recordLength) + 1;
+    return Math.floor((this.lastAccessPosition + 1) / 128);
   }
 }
 

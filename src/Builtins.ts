@@ -62,6 +62,8 @@ export class StandardLibrary {
     _("kill string", statements.kill),
     _("lcase string -> string", statements.lcase),
     _("left string integer -> string", statements.left),
+    _("loc integer -> long", statements.loc),
+    _("lof integer -> long", statements.lof),
     _("log double -> double", statements.log),
     _("ltrim string -> string", statements.ltrim),
     _("mkd numeric -> string", statements.mkd),
