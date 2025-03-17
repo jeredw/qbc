@@ -109,13 +109,13 @@ parse those using baked in rules.
 | `ACCESS`         | Keyword     | ✅      | ⛔      |
 | `AND`            | Operator    | ✅      | ✅      |
 | `ANY`            | Keyword     | ✅      | 🚧      |
-| `APPEND`         | Keyword     | ✅      | ⛔      |
+| `APPEND`         | Keyword     | ✅      | ✅      |
 | `AS`             | Keyword     | ✅      | ✅      |
 | `ASC`            | Function    | -       | ✅      |
 | `ATN`            | Function    | -       | ✅      |
-| `BASE`           | Keyword     | ✅      | ⛔      |
+| `BASE`           | Keyword     | ✅      | ✅      |
 | `BEEP`           | Statement   | -       | ✅      |
-| `BINARY`         | Keyword     | ✅      | ⛔      |
+| `BINARY`         | Keyword     | ✅      | ✅      |
 | `BLOAD`          | Statement   | -       | ⛔      |
 | `BSAVE`          | Statement   | -       | ⛔      |
 | `CALL`           | Statement   | ✅      | ✅      |
@@ -129,7 +129,7 @@ parse those using baked in rules.
 | `CIRCLE`         | Statement   | ✅      | ⛔      |
 | `CLEAR`          | Statement   | ✅      | ⛔      |
 | `CLNG`           | Function    | -       | ✅      |
-| `CLOSE`          | Statement   | ✅      | ⛔      |
+| `CLOSE`          | Statement   | ✅      | ✅      |
 | `CLS`            | Statement   | -       | ⛔      |
 | `COLOR`          | Statement   | ✅      | ⛔      |
 | `COM`            | Statement   | ✅      | ⛔      |
@@ -248,12 +248,12 @@ parse those using baked in rules.
 | `ON TIMER`       | Statement   | ✅      | ⛔      |
 | `ON`...`GOSUB`   | Statement   | ✅      | ✅      |
 | `ON`...`GOTO`    | Statement   | ✅      | ✅      |
-| `OPEN`           | Statement   | ✅      | ⛔      |
+| `OPEN`           | Statement   | ✅      | 🚧      |
 | `OPEN COM`       | Statement   | ✅      | ⛔      |
 | `OPTION BASE`    | Statement   | ✅      | ✅      |
 | `OR`             | Operator    | ✅      | ✅      |
 | `OUT`            | Statement   | -       | ⛔      |
-| `OUTPUT`         | Keyword     | ✅      | ⛔      |
+| `OUTPUT`         | Keyword     | ✅      | ✅      |
 | `PAINT`          | Statement   | ✅      | ⛔      |
 | `PALETTE`        | Statement   | ✅      | ⛔      |
 | `PALETTE USING`  | Statement   | ✅      | ⛔      |
@@ -273,11 +273,11 @@ parse those using baked in rules.
 | `PSET`           | Statement   | ✅      | ⛔      |
 | `PUT` I/O        | Statement   | ✅      | ⛔      |
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |
-| `RANDOM`         | Keyword     | ✅      | ⛔      |
+| `RANDOM`         | Keyword     | ✅      | ✅      |
 | `RANDOMIZE`      | Statement   | -       | ⛔      |
 | `READ`           | Statement   | ✅      | ✅      |
 | `REDIM`          | Statement   | ✅      | ⛔      |
-| `REM`            | Statement   | ✅      | ⛔      |
+| `REM`            | Statement   | ✅      | ✅      |
 | `RESET`          | Statement   | -       | ⛔      |
 | `RESTORE`        | Statement   | ✅      | ✅      |
 | `RESUME`         | Statement   | ✅      | ⛔      |
