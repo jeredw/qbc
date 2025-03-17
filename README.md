@@ -165,7 +165,7 @@ parse those using baked in rules.
 | `END`            | Statement   | ✅      | ✅      |
 | `ENVIRON`        | Statement   | -       | ⛔      |
 | `ENVIRON$`       | Function    | -       | ⛔      |
-| `EOF`            | Function    | -       | ⛔      |
+| `EOF`            | Function    | -       | ✅      |
 | `EQV`            | Operator    | ✅      | ✅      |
 | `ERASE`          | Statement   | ✅      | ⛔      |
 | `ERDEV`          | Function    | -       | ⛔      |

@@ -1,0 +1,87 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement print 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal "hello there"))))) \n 
+  (statement 
+    (print_statement print 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal "this is a test"))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode input) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call eof 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (line_input_file_statement line input 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call eof 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (line_input_file_statement line input 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call eof 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

@@ -40,7 +40,7 @@ abstract class BaseInputStatement extends Statement {
 
   private parseLineFromFile(context: ExecutionContext) {
     const accessor = getSequentialReadAccessor({
-      fileNumber: this.args.fileNumber!,
+      expr: this.args.fileNumber!,
       context
     });
     const line = accessor.readLine();

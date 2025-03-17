@@ -37,7 +37,7 @@ abstract class BasePrintStatement extends Statement {
   protected getPrinter(context: ExecutionContext): Printer {
     if (this.args.fileNumber) {
       return getSequentialWriteAccessor({
-        fileNumber: this.args.fileNumber,
+        expr: this.args.fileNumber,
         context
       });
     }

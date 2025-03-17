@@ -50,6 +50,7 @@ import { LetStatement } from "./Let.ts";
 import {
   ChdirStatement,
   CloseStatement,
+  EofFunction,
   FilesStatement,
   KillStatement,
   MkdirStatement,
@@ -78,7 +79,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { BuiltinStatementArgs } from "../Builtins.ts";
+import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -185,6 +186,10 @@ export function endFunction() {
 
 export function endSub() {
   return new ReturnStatement(ControlFlowTag.CALL);
+}
+
+export function eof(args: BuiltinStatementArgs) {
+  return new EofFunction(args);
 }
 
 export function exitDef() {

@@ -51,6 +51,7 @@ export class StandardLibrary {
     _("cvl string -> long", statements.cvl),
     _("cvs string -> single", statements.cvs),
     _("cvsmbf string -> single", statements.cvsmbf),
+    _("eof integer -> integer", statements.eof),
     _("exp double -> double", statements.exp),
     _("files string?", statements.files),
     _("fix numeric -> numeric", statements.fix),

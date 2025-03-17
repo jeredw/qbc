@@ -3,11 +3,12 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, error } from "../Values.ts";
+import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, error, integer, isNumeric, Value } from "../Values.ts";
 import { IOError, RuntimeError } from "../Errors.ts";
 import { FileAccessor, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { DiskEntry } from "../Disk.ts";
+import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 
 export interface OpenArgs {
   token: Token;
@@ -176,13 +177,32 @@ export class NameStatement extends Statement {
   }
 }
 
+export class EofFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value, context: ExecutionContext): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    let result = 0;
+    tryIo(this.token, () => {
+      const accessor = getFileAccessor({fileNumber: input.number, context});
+      result = accessor.eof() ? -1 : 0;
+    });
+    return integer(result);
+  }
+}
+
 interface GetFileAccessorArgs {
-  fileNumber: ExprContext;
+  expr?: ExprContext;
+  fileNumber?: number;
   context: ExecutionContext;
 }
 
-function getFileAccessor({fileNumber, context}: GetFileAccessorArgs): FileAccessor {
-  const file = evaluateIntegerExpression(fileNumber, context.memory);
+function getFileAccessor({expr, fileNumber, context}: GetFileAccessorArgs): FileAccessor {
+  const file = fileNumber ?? evaluateIntegerExpression(expr!, context.memory);
   if (file < 0 || file > 255) {
     throw new IOError(BAD_FILE_NAME_OR_NUMBER);
   }
