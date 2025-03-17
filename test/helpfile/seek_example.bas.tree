@@ -53,7 +53,8 @@
           (literal " Next: ")) ;) 
       (print_argument 
         (expr 
-          (builtin_function SEEK 
-            ( 
-              (expr 
-                (literal 1)) )))))) \n <EOF>)
+          (builtin_function 
+            (seek_function SEEK 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) \n <EOF>)

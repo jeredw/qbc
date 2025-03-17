@@ -778,7 +778,7 @@ screen_statement
   ;
 
 seek_statement
-  : SEEK '#'? expr COMMA expr
+  : SEEK '#'? filenum=expr COMMA offset=expr
   ;
 
 // SELECT CASE matches CASE statements at the top level, but not inside nested
@@ -902,18 +902,22 @@ expr
 // These functions use keywords or special syntax like file numbers so can't
 // just be pre-defined by the runtime.
 builtin_function
-  : INPUT_STRING '(' n=expr (COMMA '#'? filenumber=expr)? ')'
-  | IOCTL_STRING '(' '#'? filenumber=expr ')'
+  : INPUT_STRING '(' n=expr (COMMA '#'? filenum=expr)? ')'
+  | IOCTL_STRING '(' '#'? filenum=expr ')'
   | LEN '(' expr ')'
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
-  | SEEK '(' expr ')'
+  | seek_function
   | STRIG '(' expr ')'
   | TIMER
   | mid_function
   | lbound_function
   | ubound_function
+  ;
+
+seek_function
+  : SEEK '(' filenum=expr ')'
   ;
 
 mid_function

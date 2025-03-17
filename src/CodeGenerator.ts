@@ -759,7 +759,13 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterRset_statement = (ctx: parser.Rset_statementContext) => {}
   override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
-  override enterSeek_statement = (ctx: parser.Seek_statementContext) => {}
+
+  override enterSeek_statement = (ctx: parser.Seek_statementContext) => {
+    const token = ctx.start!;
+    const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
+    const offset = this.compileExpression(ctx._offset!, ctx._offset!.start!, { tag: TypeTag.LONG });
+    this.addStatement(statements.seekStatement(token, fileNumber, offset));
+  }
 
   override enterSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
     // First evaluate the test expression, then evaluate each "case" in sequence
@@ -980,6 +986,14 @@ export class CodeGenerator extends QBasicParserListener {
             return;
           }
         }
+      }
+
+      override enterSeek_function = (ctx: parser.Seek_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        codeGenerator.addStatement(statements.seekFunction(ctx.start!, ctx._filenum!, result));
       }
 
       override enterMid_function = (ctx: parser.Mid_functionContext) => {

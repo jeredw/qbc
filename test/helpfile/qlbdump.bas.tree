@@ -299,10 +299,11 @@
               (assignment_statement 
                 (variable_or_function_call NextSym) = 
                 (expr 
-                  (builtin_function SEEK 
-                    ( 
-                      (expr 
-                        (literal 1)) ))))) ' \r\n ' \r\n 
+                  (builtin_function 
+                    (seek_function SEEK 
+                      ( 
+                        (expr 
+                          (literal 1)) )))))) ' \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call CurrentSym) = 

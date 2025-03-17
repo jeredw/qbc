@@ -290,8 +290,8 @@ parse those using baked in rules.
 | `RUN`            | Statement   | ⛔      | ⛔      |
 | `SCREEN`         | Function    | ✅      | ⛔      |
 | `SCREEN`         | Statement   | ✅      | ⛔      |
-| `SEEK`           | Function    | ✅      | ⛔      |
-| `SEEK`           | Statement   | ✅      | ⛔      |
+| `SEEK`           | Function    | ✅      | ✅      |
+| `SEEK`           | Statement   | ✅      | ✅      |
 | `SELECT CASE`    | Statement   | ✅      | ✅      |
 | `SGN`            | Function    | -       | ✅      |
 | `SHARED`         | Statement   | ✅      | 🚧      |

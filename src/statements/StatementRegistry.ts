@@ -59,7 +59,9 @@ import {
   NameStatement,
   OpenArgs,
   OpenStatement,
-  RmdirStatement
+  RmdirStatement,
+  SeekFunction,
+  SeekStatement
 } from "./FileSystem.ts";
 import { PrintStatement, PrintStatementArgs, PrintUsingStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
@@ -401,6 +403,14 @@ export function rmdir(args: BuiltinStatementArgs) {
 
 export function rtrim(args: BuiltinStatementArgs) {
   return new RtrimFunction(args);
+}
+
+export function seekFunction(token: Token, fileNumber: parser.ExprContext, result: Variable) {
+  return new SeekFunction(token, fileNumber, result);
+}
+
+export function seekStatement(token: Token, fileNumber: parser.ExprContext, offset: parser.ExprContext) {
+  return new SeekStatement(token, fileNumber, offset);
 }
 
 export function sgn(args: BuiltinStatementArgs) {

@@ -142,10 +142,11 @@
             (variable_or_function_call FileOffset) = 
             (expr 
               (expr 
-                (builtin_function SEEK 
-                  ( 
-                    (expr 
-                      (literal 1)) ))) - 
+                (builtin_function 
+                  (seek_function SEEK 
+                    ( 
+                      (expr 
+                        (literal 1)) )))) - 
               (expr 
                 (variable_or_function_call PatternLength%))))) \r\n 
         (statement 

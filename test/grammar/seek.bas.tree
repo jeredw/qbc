@@ -15,7 +15,8 @@
     (print_statement print 
       (print_argument 
         (expr 
-          (builtin_function seek 
-            ( 
-              (expr 
-                (literal 1)) )))))) \n <EOF>)
+          (builtin_function 
+            (seek_function seek 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) \n <EOF>)

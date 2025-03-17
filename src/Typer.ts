@@ -668,6 +668,11 @@ export class Typer extends QBasicParserListener {
     throw ParseError.fromToken(ctx.start!, "Advanced feature unavailable")
   }
 
+  override enterSeek_function = (ctx: parser.Seek_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.LONG}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
   override enterMid_function = (ctx: parser.Mid_functionContext) => {
     const result = this.makeSyntheticVariable({tag: TypeTag.STRING}, ctx.start!);
     getTyperContext(ctx.parent!).$result = result;

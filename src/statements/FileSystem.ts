@@ -9,6 +9,7 @@ import { FileAccessor, isSequentialReadMode, isSequentialWriteMode, OpenMode, tr
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { DiskEntry } from "../Disk.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
+import { Variable } from "../Variables.ts";
 
 export interface OpenArgs {
   token: Token;
@@ -228,6 +229,49 @@ export class LofFunction extends BuiltinFunction1 {
       result = accessor.length();
     });
     return long(result);
+  }
+}
+
+export class SeekFunction extends Statement {
+  token: Token;
+  fileNumber: ExprContext;
+  result: Variable;
+
+  constructor(token: Token, fileNumber: ExprContext, result: Variable) {
+    super();
+    this.token = token;
+    this.fileNumber = fileNumber;
+    this.result = result;
+  }
+
+  override execute(context: ExecutionContext) {
+    let result = 0;
+    tryIo(this.token, () => {
+      const accessor = getFileAccessor({expr: this.fileNumber, context});
+      result = accessor.getSeek();
+    });
+    context.memory.write(this.result, long(result));
+  }
+}
+
+export class SeekStatement extends Statement {
+  token: Token;
+  fileNumber: ExprContext;
+  offset: ExprContext;
+
+  constructor(token: Token, fileNumber: ExprContext, offset: ExprContext) {
+    super();
+    this.token = token;
+    this.fileNumber = fileNumber;
+    this.offset = offset;
+  }
+
+  override execute(context: ExecutionContext) {
+    tryIo(this.token, () => {
+      const accessor = getFileAccessor({expr: this.fileNumber, context});
+      const offset = evaluateIntegerExpression(this.offset, context.memory);
+      accessor.seek(offset);
+    });
   }
 }
 
