@@ -248,4 +248,5 @@ export const
   FILE_NOT_FOUND = error('File not found'),
   FILE_ALREADY_OPEN = error('File already open'),
   BAD_RECORD_NUMBER = error('Bad record number'),
-  FIELD_OVERFLOW = error('FIELD overflow');
+  FIELD_OVERFLOW = error('FIELD overflow'),
+  FILE_ALREADY_EXISTS = error('File already exists');

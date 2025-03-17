@@ -63,13 +63,16 @@ abstract class FileSystemStatement extends Statement {
     super();
     this.token = token;
     this.params = params;
-    if (this.params.length != 1 || !this.params[0].expr) {
-      throw new Error("expecting one expr argument");
+    if (this.params.length != 1) {
+      throw new Error("expecting one argument");
     }
   }
 
   override execute(context: ExecutionContext) {
-    const arg = evaluateStringExpression(this.params[0].expr!, context.memory);
+    // expr is optional for the "files" statement.
+    const arg = this.params[0].expr ?
+      evaluateStringExpression(this.params[0].expr, context.memory) :
+      '';
     tryIo(this.token, () => this.access(arg, context));
   }
 
@@ -154,8 +157,24 @@ export class KillStatement extends FileSystemStatement {
   }
 }
 
-//export class NameStatement extends Statement {
-//}
+export class NameStatement extends Statement {
+  token: Token;
+  oldPathExpr: ExprContext;
+  newPathExpr: ExprContext;
+
+  constructor(token: Token, oldPathExpr: ExprContext, newPathExpr: ExprContext) {
+    super();
+    this.token = token;
+    this.oldPathExpr = oldPathExpr;
+    this.newPathExpr = newPathExpr;
+  }
+
+  override execute(context: ExecutionContext) {
+    const oldPath = evaluateStringExpression(this.oldPathExpr, context.memory);
+    const newPath = evaluateStringExpression(this.newPathExpr, context.memory);
+    tryIo(this.token, () => context.devices.disk.rename(oldPath, newPath));
+  }
+}
 
 interface GetFileAccessorArgs {
   fileNumber: ExprContext;

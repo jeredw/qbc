@@ -647,7 +647,13 @@ export class CodeGenerator extends QBasicParserListener {
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
   override enterMid_statement = (ctx: parser.Mid_statementContext) => {}
-  override enterName_statement = (ctx: parser.Name_statementContext) => {}
+
+  override enterName_statement = (ctx: parser.Name_statementContext) => {
+    const oldPathExpr = this.compileExpression(ctx._oldpath!, ctx._oldpath!.start!, { tag: TypeTag.STRING });
+    const newPathExpr = this.compileExpression(ctx._newpath!, ctx._newpath!.start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.name(ctx.start!, oldPathExpr, newPathExpr));
+  }
+
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
   override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {}
 

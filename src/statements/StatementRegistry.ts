@@ -53,6 +53,7 @@ import {
   FilesStatement,
   KillStatement,
   MkdirStatement,
+  NameStatement,
   OpenArgs,
   OpenStatement,
   RmdirStatement
@@ -337,6 +338,10 @@ export function mks(args: BuiltinStatementArgs) {
 
 export function mksmbf(args: BuiltinStatementArgs) {
   return new MksmbfFunction(args);
+}
+
+export function name(token: Token, oldPathExpr: parser.ExprContext, newPathExpr: parser.ExprContext) {
+  return new NameStatement(token, oldPathExpr, newPathExpr);
 }
 
 export function next(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {

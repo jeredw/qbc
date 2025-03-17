@@ -233,7 +233,7 @@ parse those using baked in rules.
 | `MKS$`           | Function    | -       | ✅      |
 | `MKSMBF$`        | Function    | -       | ✅      |
 | `MOD`            | Operator    | ✅      | ✅      |
-| `NAME`           | Statement   | ✅      | ⛔      |
+| `NAME`           | Statement   | ✅      | ✅      |
 | `NEXT`           | Keyword     | ✅      | ✅      |
 | `NOT`            | Operator    | ✅      | ✅      |
 | `OCT$`           | Function    | -       | ✅      |

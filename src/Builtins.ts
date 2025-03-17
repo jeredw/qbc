@@ -52,7 +52,7 @@ export class StandardLibrary {
     _("cvs string -> single", statements.cvs),
     _("cvsmbf string -> single", statements.cvsmbf),
     _("exp double -> double", statements.exp),
-    _("files string", statements.files),
+    _("files string?", statements.files),
     _("fix numeric -> numeric", statements.fix),
     _("hex long -> string", statements.hex),
     _("inkey -> string", statements.inkey),

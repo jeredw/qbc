@@ -637,7 +637,7 @@ mid_statement
   ;
 
 name_statement
-  : NAME oldspec=expr AS newspec=expr
+  : NAME oldpath=expr AS newpath=expr
   ;
 
 on_error_statement

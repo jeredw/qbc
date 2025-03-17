@@ -1,0 +1,24 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "file1")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files))) \n 
+  (statement 
+    (name_statement name 
+      (expr 
+        (literal "file1")) as 
+      (expr 
+        (literal "file2")))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id files))) \n <EOF>)

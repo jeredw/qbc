@@ -131,6 +131,7 @@ export class MemoryDrive implements Disk {
     }
     sourceParent.entries.delete(sourceName);
     targetParent.entries.set(targetName, entry);
+    entry.name = targetName;
     this.flush(sourceParent);
     this.flush(targetParent);
   }
