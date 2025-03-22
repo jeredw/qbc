@@ -885,6 +885,16 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterStop_statement = (ctx: parser.Stop_statementContext) => {}
+
+  override enterSwap_statement = (ctx: parser.Swap_statementContext) => {
+    const a = this.getVariableOutsideExpression(ctx._a!);
+    const b = this.getVariableOutsideExpression(ctx._b!);
+    if (!sameType(a.type, b.type)) {
+      throw ParseError.fromToken(ctx.start!, "Type mismatch");
+    }
+    this.addStatement(statements.swap(a, b));
+  }
+
   override enterUnlock_statement = (ctx: parser.Unlock_statementContext) => {}
   override enterView_statement = (ctx: parser.View_statementContext) => {}
   override enterView_print_statement = (ctx: parser.View_print_statementContext) => {}

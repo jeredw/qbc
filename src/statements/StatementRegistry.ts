@@ -91,6 +91,7 @@ import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
 import { EventTrapState } from "../Events.ts";
+import { SwapStatement } from "./Swap.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -459,6 +460,10 @@ export function str(args: BuiltinStatementArgs) {
 
 export function space(args: BuiltinStatementArgs) {
   return new SpaceFunction(args);
+}
+
+export function swap(a: Variable, b: Variable) {
+  return new SwapStatement(a, b);
 }
 
 export function tan(args: BuiltinStatementArgs) {
