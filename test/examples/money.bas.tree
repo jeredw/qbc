@@ -8061,7 +8061,8 @@
                     (expr 
                       (literal "Net Worth Report: ")) + 
                     (expr 
-                      (variable_or_function_call DATE$))) ;))) \n 
+                      (builtin_function 
+                        (date_function DATE$)))) ;))) \n 
             (statement 
               (call_statement 
                 (untyped_id PrintHelpLine) 
@@ -8819,7 +8820,8 @@
                         (expr 
                           (literal "NET WORTH REPORT:  ")) + 
                         (expr 
-                          (variable_or_function_call DATE$))))))) \n 
+                          (builtin_function 
+                            (date_function DATE$)))))))) \n 
               (statement 
                 (call_statement 
                   (untyped_id LCenter) 
@@ -9740,7 +9742,8 @@
                   (argument_list 
                     (argument 
                       (expr 
-                        (variable_or_function_call DATE$)))))) \n 
+                        (builtin_function 
+                          (date_function DATE$))))))) \n 
               (statement 
                 (lprint_statement LPRINT)) \n 
               (statement 

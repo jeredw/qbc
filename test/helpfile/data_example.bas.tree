@@ -3,7 +3,8 @@
     (assignment_statement 
       (variable_or_function_call C$) = 
       (expr 
-        (variable_or_function_call DATE$)))) \n ' \n ' \n 
+        (builtin_function 
+          (date_function DATE$))))) \n ' \n ' \n 
   (statement 
     (for_next_statement FOR I% = 
       (expr 

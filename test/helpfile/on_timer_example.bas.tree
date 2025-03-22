@@ -19,7 +19,8 @@
           (literal "Time: ")) ;) 
       (print_argument 
         (expr 
-          (variable_or_function_call TIME$))))) \n 
+          (builtin_function 
+            (time_function TIME$)))))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call StartTime) = 
@@ -58,6 +59,7 @@
     (print_statement PRINT 
       (print_argument 
         (expr 
-          (variable_or_function_call TIME$))))) \n 
+          (builtin_function 
+            (time_function TIME$)))))) \n 
   (statement 
     (return_statement RETURN)) \n <EOF>)

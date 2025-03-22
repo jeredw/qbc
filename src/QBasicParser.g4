@@ -100,6 +100,7 @@ statement
   | common_statement
   | const_statement
   | data_statement
+  | date_statement
   | def_seg_statement
   | deftype_statement
   | dim_statement
@@ -159,6 +160,7 @@ statement
   | static_metacommand
   | static_statement
   | stop_statement
+  | time_statement
   | unlock_statement
   | view_statement
   | view_print_statement
@@ -424,6 +426,9 @@ data_item
   | DATA_UNQUOTED
   |  // Empty items are allowed e.g. DATA 1,,2
   ;
+
+date_statement
+  : DATE_STRING '=' expr;
 
 def_seg_statement
   : DEF SEG ('=' expr)?;
@@ -830,6 +835,9 @@ stop_statement
   : STOP
   ;
 
+time_statement
+  : TIME_STRING '=' expr;
+
 unlock_statement
   : UNLOCK '#'? expr (COMMA (expr | expr TO expr))?
   ;
@@ -902,7 +910,8 @@ expr
 // These functions use keywords or special syntax like file numbers so can't
 // just be pre-defined by the runtime.
 builtin_function
-  : INPUT_STRING '(' n=expr (COMMA '#'? filenum=expr)? ')'
+  : date_function
+  | INPUT_STRING '(' n=expr (COMMA '#'? filenum=expr)? ')'
   | instr_function
   | IOCTL_STRING '(' '#'? filenum=expr ')'
   | lbound_function
@@ -913,8 +922,13 @@ builtin_function
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | seek_function
   | STRIG '(' expr ')'
+  | time_function
   | timer_function
   | ubound_function
+  ;
+
+date_function
+  : DATE_STRING
   ;
 
 instr_function
@@ -933,6 +947,10 @@ mid_function
 
 seek_function
   : SEEK '(' filenum=expr ')'
+  ;
+
+time_function
+  : TIME_STRING
   ;
 
 timer_function

@@ -145,8 +145,8 @@ parse those using baked in rules.
 | `CVS`            | Function    | -       | ✅      |
 | `CVSMBF`         | Function    | -       | ✅      |
 | `DATA`           | Statement   | ✅      | ✅      |
-| `DATE$`          | Function    | -       | ⛔      |
-| `DATE$`          | Statement   | -       | ⛔      |
+| `DATE$`          | Function    | ✅      | ⛔      |
+| `DATE$`          | Statement   | ✅      | ⛔      |
 | `DECLARE`        | Statement   | ✅      | ⛔      |
 | `DEF FN`         | Statement   | ✅      | ✅      |
 | `DEF SEG`        | Statement   | ✅      | ⛔      |
@@ -319,8 +319,8 @@ parse those using baked in rules.
 | `TAB`            | Function    | ✅      | ✅      |
 | `TAN`            | Function    | -       | ✅      |
 | `THEN`           | Keyword     | ✅      | ✅      |
-| `TIME$`          | Function    | -       | ⛔      |
-| `TIME$`          | Statement   | -       | ⛔      |
+| `TIME$`          | Function    | ✅      | ⛔      |
+| `TIME$`          | Statement   | ✅      | ⛔      |
 | `TIMER`          | Function    | ✅      | ✅      |
 | `TIMER`          | Statement   | ✅      | ⛔      |
 | `TO`             | Keyword     | ✅      | ✅      |

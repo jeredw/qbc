@@ -22,7 +22,8 @@
                 (mid_function MID$ 
                   ( 
                     (expr 
-                      (variable_or_function_call TIME$)) , 
+                      (builtin_function 
+                        (time_function TIME$))) , 
                     (expr 
                       (literal 4)) , 
                     (expr 
@@ -47,7 +48,8 @@
                 (print_statement PRINT 
                   (print_argument 
                     (expr 
-                      (variable_or_function_call TIME$))))) \r\n ' \r\n 
+                      (builtin_function 
+                        (time_function TIME$)))))) \r\n ' \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call Test$) = 
@@ -63,7 +65,8 @@
                       (mid_function MID$ 
                         ( 
                           (expr 
-                            (variable_or_function_call TIME$)) , 
+                            (builtin_function 
+                              (time_function TIME$))) , 
                           (expr 
                             (literal 4)) , 
                           (expr 
@@ -116,7 +119,8 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (variable_or_function_call TIME$)))) ))))) \r\n 
+                      (builtin_function 
+                        (time_function TIME$))))) ))))) \r\n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Min) = 

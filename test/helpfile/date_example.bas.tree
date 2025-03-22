@@ -3,10 +3,10 @@
     (print_statement PRINT 
       (print_argument 
         (expr 
-          (variable_or_function_call DATE$))))) \n 
+          (builtin_function 
+            (date_function DATE$)))))) \n 
   (statement 
-    (assignment_statement 
-      (variable_or_function_call DATE$) = 
+    (date_statement DATE$ = 
       (expr 
         (literal "01-01-90")))) ' \n ' \n 
   (statement 
@@ -16,4 +16,5 @@
           (literal "Date set to ")) ;) 
       (print_argument 
         (expr 
-          (variable_or_function_call DATE$))))) \n <EOF>)
+          (builtin_function 
+            (date_function DATE$)))))) \n <EOF>)
