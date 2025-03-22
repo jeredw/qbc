@@ -913,7 +913,7 @@ builtin_function
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | seek_function
   | STRIG '(' expr ')'
-  | TIMER
+  | timer_function
   | ubound_function
   ;
 
@@ -933,6 +933,10 @@ mid_function
 
 seek_function
   : SEEK '(' filenum=expr ')'
+  ;
+
+timer_function
+  : TIMER
   ;
 
 ubound_function

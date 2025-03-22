@@ -4096,7 +4096,8 @@
         (assignment_statement 
           (variable_or_function_call x!) = 
           (expr 
-            (builtin_function TIMER)))) \n 
+            (builtin_function 
+              (timer_function TIMER))))) \n 
       (statement 
         (for_next_statement FOR g! = 
           (expr 
@@ -4109,7 +4110,8 @@
           (variable_or_function_call x!) = 
           (expr 
             (expr 
-              (builtin_function TIMER)) - 
+              (builtin_function 
+                (timer_function TIMER))) - 
             (expr 
               (variable_or_function_call x!))))) \n 
       (statement 
@@ -5214,7 +5216,8 @@
               (expr 
                 ( 
                   (expr 
-                    (builtin_function TIMER)) )))))) \n 
+                    (builtin_function 
+                      (timer_function TIMER))) )))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Counter) = 
@@ -6234,7 +6237,8 @@
               (assignment_statement 
                 (variable_or_function_call t1#) = 
                 (expr 
-                  (builtin_function TIMER)))) \n \n ' \n ' \n 
+                  (builtin_function 
+                    (timer_function TIMER))))) \n \n ' \n ' \n 
             (statement 
               (do_loop_statement DO 
                 (block \n \n ' \n 
@@ -6548,7 +6552,8 @@
                         (if_block_statement IF 
                           (expr 
                             (expr 
-                              (builtin_function TIMER)) < 
+                              (builtin_function 
+                                (timer_function TIMER))) < 
                             (expr 
                               (variable_or_function_call t1#))) THEN \n 
                           (then_block 
@@ -6570,7 +6575,8 @@
                                   ( 
                                     (expr 
                                       (expr 
-                                        (builtin_function TIMER)) - 
+                                        (builtin_function 
+                                          (timer_function TIMER))) - 
                                       (expr 
                                         (variable_or_function_call t1#))) )) * 
                                 (expr 

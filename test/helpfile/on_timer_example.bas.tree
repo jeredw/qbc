@@ -24,7 +24,8 @@
     (assignment_statement 
       (variable_or_function_call StartTime) = 
       (expr 
-        (builtin_function TIMER)))) \n 
+        (builtin_function 
+          (timer_function TIMER))))) \n 
   (statement 
     (while_wend_statement WHILE 
       (expr 
@@ -38,7 +39,8 @@
             (variable_or_function_call TimePast) = 
             (expr 
               (expr 
-                (builtin_function TIMER)) - 
+                (builtin_function 
+                  (timer_function TIMER))) - 
               (expr 
                 (variable_or_function_call StartTime))))) \n) WEND)) \n 
   (statement 

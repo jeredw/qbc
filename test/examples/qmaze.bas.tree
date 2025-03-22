@@ -688,7 +688,8 @@
         (argument 
           (expr 
             (expr 
-              (builtin_function TIMER)) MOD 
+              (builtin_function 
+                (timer_function TIMER))) MOD 
             (expr 
               (literal 32768))))))) ' \n \n ' \n 
   (statement 
@@ -3070,7 +3071,8 @@
         (assignment_statement 
           (variable_or_function_call TimeOfMaze!) = 
           (expr 
-            (builtin_function TIMER)))) ' \n 
+            (builtin_function 
+              (timer_function TIMER))))) ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call MazeError) = 
@@ -3109,7 +3111,8 @@
                           (expr 
                             (expr 
                               (expr 
-                                (builtin_function TIMER)) - 
+                                (builtin_function 
+                                  (timer_function TIMER))) - 
                               (expr 
                                 (variable_or_function_call TimeOfMaze!))) > 
                             (expr 
@@ -5658,14 +5661,16 @@
               (assignment_statement 
                 (variable_or_function_call first!) = 
                 (expr 
-                  (builtin_function TIMER)))) ' \n 
+                  (builtin_function 
+                    (timer_function TIMER))))) ' \n 
             (statement 
               (do_loop_statement DO 
                 (block :) LOOP 
                 (loop_condition UNTIL 
                   (expr 
                     (expr 
-                      (builtin_function TIMER)) > 
+                      (builtin_function 
+                        (timer_function TIMER))) > 
                     (expr 
                       (expr 
                         (variable_or_function_call first!)) + 
@@ -8189,7 +8194,8 @@
           (expr 
             (expr 
               (expr 
-                (builtin_function TIMER)) - 
+                (builtin_function 
+                  (timer_function TIMER))) - 
               (expr 
                 (variable_or_function_call LastUpdate!))) < 
             (expr 
@@ -8201,7 +8207,8 @@
         (assignment_statement 
           (variable_or_function_call LastUpdate!) = 
           (expr 
-            (builtin_function TIMER)))) \n \n 
+            (builtin_function 
+              (timer_function TIMER))))) \n \n 
       (statement 
         (for_next_statement FOR i = 
           (expr 

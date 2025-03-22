@@ -171,7 +171,8 @@
                               (argument 
                                 (expr 
                                   (expr 
-                                    (builtin_function TIMER)) - 
+                                    (builtin_function 
+                                      (timer_function TIMER))) - 
                                   (expr 
                                     (variable_or_function_call RefTime))))) ))) > 
                       (expr 
@@ -181,7 +182,8 @@
                         (assignment_statement 
                           (variable_or_function_call RefTime) = 
                           (expr 
-                            (builtin_function TIMER)))) \r\n 
+                            (builtin_function 
+                              (timer_function TIMER))))) \r\n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call State%) = 

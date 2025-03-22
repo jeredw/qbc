@@ -215,7 +215,8 @@
       (argument_list 
         (argument 
           (expr 
-            (builtin_function TIMER)))))) \n 
+            (builtin_function 
+              (timer_function TIMER))))))) \n 
   (statement 
     (gosub_statement GOSUB 
       (target 
@@ -953,7 +954,8 @@
         (assignment_statement 
           (variable_or_function_call startTime#) = 
           (expr 
-            (builtin_function TIMER)))) ' \n 
+            (builtin_function 
+              (timer_function TIMER))))) ' \n 
       (statement 
         (for_next_statement FOR i# = 
           (expr 
@@ -965,7 +967,8 @@
         (assignment_statement 
           (variable_or_function_call stopTime#) = 
           (expr 
-            (builtin_function TIMER)))) \n 
+            (builtin_function 
+              (timer_function TIMER))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call speed) = 

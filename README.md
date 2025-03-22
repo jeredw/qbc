@@ -331,7 +331,7 @@ parse those using baked in rules.
 | `UCASE$`         | Function    | -       | ✅      |
 | `UNLOCK`         | Statement   | ✅      | ⛔      |
 | `UNTIL`          | Keyword     | ✅      | ✅      |
-| `USING`          | Keyword     | ✅      | ⛔      |
+| `USING`          | Keyword     | ✅      | ✅      |
 | `VAL`            | Function    | -       | 🚧      |
 | `VARPTR`         | Function    | -       | ⛔      |
 | `VARPTR$`        | Function    | -       | ⛔      |

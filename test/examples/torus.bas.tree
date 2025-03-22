@@ -887,7 +887,8 @@
         (assignment_statement 
           (variable_or_function_call Begin!) = 
           (expr 
-            (builtin_function TIMER)))) \n 
+            (builtin_function 
+              (timer_function TIMER))))) \n 
       (statement 
         (do_loop_statement DO 
           (do_condition UNTIL 
@@ -897,7 +898,8 @@
                   (expr 
                     (expr 
                       (expr 
-                        (builtin_function TIMER)) - 
+                        (builtin_function 
+                          (timer_function TIMER))) - 
                       (expr 
                         (variable_or_function_call Begin!))) > 
                     (expr 
@@ -907,7 +909,8 @@
                   (expr 
                     (expr 
                       (expr 
-                        (builtin_function TIMER)) - 
+                        (builtin_function 
+                          (timer_function TIMER))) - 
                       (expr 
                         (variable_or_function_call Begin!))) < 
                     (expr 
@@ -4529,7 +4532,8 @@
           (argument_list 
             (argument 
               (expr 
-                (builtin_function TIMER)))))) \n \n) 
+                (builtin_function 
+                  (timer_function TIMER))))))) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id TorusDraw) 

@@ -542,7 +542,8 @@
       (argument_list 
         (argument 
           (expr 
-            (builtin_function TIMER)))))) ' \n \n 
+            (builtin_function 
+              (timer_function TIMER))))))) ' \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call special) = 
@@ -698,7 +699,8 @@
               (if_block_statement IF 
                 (expr 
                   (expr 
-                    (builtin_function TIMER)) >= 
+                    (builtin_function 
+                      (timer_function TIMER))) >= 
                   (expr 
                     (variable_or_function_call TimeToMoveBall))) THEN ' 
                 (then_block \n 
@@ -707,7 +709,8 @@
                       (variable_or_function_call TimeToMoveBall) = 
                       (expr 
                         (expr 
-                          (builtin_function TIMER)) + 
+                          (builtin_function 
+                            (timer_function TIMER))) + 
                         (expr 
                           (variable_or_function_call Ball.speed))))) ' \n 
                   (statement 
@@ -4269,7 +4272,8 @@
         (assignment_statement 
           (variable_or_function_call X!) = 
           (expr 
-            (builtin_function TIMER)))) \n 
+            (builtin_function 
+              (timer_function TIMER))))) \n 
       (statement 
         (for_next_statement FOR g! = 
           (expr 
@@ -4282,7 +4286,8 @@
           (variable_or_function_call X!) = 
           (expr 
             (expr 
-              (builtin_function TIMER)) - 
+              (builtin_function 
+                (timer_function TIMER))) - 
             (expr 
               (variable_or_function_call X!))))) \n 
       (statement 
@@ -4608,7 +4613,8 @@
                 (variable_or_function_call Delay!) = 
                 (expr 
                   (expr 
-                    (builtin_function TIMER)) + 
+                    (builtin_function 
+                      (timer_function TIMER))) + 
                   (expr 
                     (literal .05))))) ' \n 
             (statement 
@@ -4616,7 +4622,8 @@
                 (do_condition WHILE 
                   (expr 
                     (expr 
-                      (builtin_function TIMER)) < 
+                      (builtin_function 
+                        (timer_function TIMER))) < 
                     (expr 
                       (variable_or_function_call Delay!)))) 
                 (block : 
@@ -5142,7 +5149,8 @@
                 (variable_or_function_call Restart&) = 
                 (expr 
                   (expr 
-                    (builtin_function TIMER)) + 
+                    (builtin_function 
+                      (timer_function TIMER))) + 
                   (expr 
                     (literal .9))))) ' \n 
             (statement 
@@ -5156,7 +5164,8 @@
                 (loop_condition WHILE 
                   (expr 
                     (expr 
-                      (builtin_function TIMER)) < 
+                      (builtin_function 
+                        (timer_function TIMER))) < 
                     (expr 
                       (variable_or_function_call Restart&)))))) \n) NEXT Indx)) \n \n ' \n 
       (statement 
@@ -5376,7 +5385,8 @@
                       (variable_or_function_call PauseLen#) = 
                       (expr 
                         (expr 
-                          (builtin_function TIMER)) + 
+                          (builtin_function 
+                            (timer_function TIMER))) + 
                         (expr 
                           (expr 
                             (literal 1)) / 
@@ -5386,7 +5396,8 @@
                     (while_wend_statement WHILE 
                       (expr 
                         (expr 
-                          (builtin_function TIMER)) < 
+                          (builtin_function 
+                            (timer_function TIMER))) < 
                         (expr 
                           (variable_or_function_call PauseLen#))) 
                       (block :) WEND)) \n) NEXT Indx)) \n 

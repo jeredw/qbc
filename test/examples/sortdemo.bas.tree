@@ -815,7 +815,8 @@
           (print_argument 
             (expr 
               (expr 
-                (builtin_function TIMER)) - 
+                (builtin_function 
+                  (timer_function TIMER))) - 
               (expr 
                 (variable_or_function_call StartTime))) ;))) \n \n 
       (if_block_statement IF 
@@ -1061,7 +1062,8 @@
           (argument_list 
             (argument 
               (expr 
-                (builtin_function TIMER)))))) ' \n 
+                (builtin_function 
+                  (timer_function TIMER))))))) ' \n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -2255,7 +2257,8 @@
                   (assignment_statement 
                     (variable_or_function_call StartTime) = 
                     (expr 
-                      (builtin_function TIMER)))) ' \n) 
+                      (builtin_function 
+                        (timer_function TIMER))))) ' \n) 
               (end_if_statement END IF)) \n \n ' \n 
             (statement 
               (select_case_statement SELECT CASE 

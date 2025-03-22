@@ -594,7 +594,8 @@
             (argument_list 
               (argument 
                 (expr 
-                  (builtin_function TIMER)))))) ' \n 
+                  (builtin_function 
+                    (timer_function TIMER))))))) ' \n 
         (statement 
           (call_statement 
             (untyped_id DisplayIntro))) ' \n \n 
@@ -1662,7 +1663,8 @@
                 (variable_or_function_call DelayTime!) = 
                 (expr 
                   (expr 
-                    (builtin_function TIMER)) + 
+                    (builtin_function 
+                      (timer_function TIMER))) + 
                   (expr 
                     (literal .02))))) \n 
             (statement 
@@ -1670,7 +1672,8 @@
                 (do_condition WHILE 
                   (expr 
                     (expr 
-                      (builtin_function TIMER)) < 
+                      (builtin_function 
+                        (timer_function TIMER))) < 
                     (expr 
                       (variable_or_function_call DelayTime!)))) 
                 (block :) LOOP)) \n 
@@ -1693,7 +1696,8 @@
                 (variable_or_function_call DelayTime!) = 
                 (expr 
                   (expr 
-                    (builtin_function TIMER)) + 
+                    (builtin_function 
+                      (timer_function TIMER))) + 
                   (expr 
                     (literal .02))))) \n 
             (statement 
@@ -1701,7 +1705,8 @@
                 (do_condition WHILE 
                   (expr 
                     (expr 
-                      (builtin_function TIMER)) < 
+                      (builtin_function 
+                        (timer_function TIMER))) < 
                     (expr 
                       (variable_or_function_call DelayTime!)))) 
                 (block :) LOOP)) \n) NEXT Flash)) \n \n ' \n 
@@ -4754,7 +4759,8 @@
                 (variable_or_function_call TargetTime) = 
                 (expr 
                   (expr 
-                    (builtin_function TIMER)) + 
+                    (builtin_function 
+                      (timer_function TIMER))) + 
                   (expr 
                     (expr 
                       (literal 1)) / 
@@ -5055,7 +5061,8 @@
                                                 (variable_or_function_call TargetTime) = 
                                                 (expr 
                                                   (expr 
-                                                    (builtin_function TIMER)) - 
+                                                    (builtin_function 
+                                                      (timer_function TIMER))) - 
                                                   (expr 
                                                     (literal 1))))) ' \n)) 
                                         (case_block 
@@ -5174,7 +5181,8 @@
                             (loop_condition UNTIL 
                               (expr 
                                 (expr 
-                                  (builtin_function TIMER)) >= 
+                                  (builtin_function 
+                                    (timer_function TIMER))) >= 
                                 (expr 
                                   (variable_or_function_call TargetTime)))))) ' \n \n 
                         (statement 
@@ -5182,7 +5190,8 @@
                             (variable_or_function_call TargetTime) = 
                             (expr 
                               (expr 
-                                (builtin_function TIMER)) + 
+                                (builtin_function 
+                                  (timer_function TIMER))) + 
                               (expr 
                                 (expr 
                                   (literal 1)) / 

@@ -27,7 +27,8 @@
       (argument_list 
         (argument 
           (expr 
-            (builtin_function TIMER)))))) \r\n 
+            (builtin_function 
+              (timer_function TIMER))))))) \r\n 
   (statement 
     (for_next_statement FOR I = 
       (expr 

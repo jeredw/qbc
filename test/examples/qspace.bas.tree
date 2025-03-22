@@ -689,7 +689,8 @@
             (argument_list 
               (argument 
                 (expr 
-                  (builtin_function TIMER)))))) ' \n 
+                  (builtin_function 
+                    (timer_function TIMER))))))) ' \n 
         (statement 
           (call_statement 
             (untyped_id DisplayIntro))) ' \n \n 
@@ -781,12 +782,14 @@
                 (assignment_statement 
                   (variable_or_function_call NextIncoming) = 
                   (expr 
-                    (builtin_function TIMER)))) ' \n 
+                    (builtin_function 
+                      (timer_function TIMER))))) ' \n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call NextExplosion) = 
                   (expr 
-                    (builtin_function TIMER)))) ' \n 
+                    (builtin_function 
+                      (timer_function TIMER))))) ' \n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call TotalIncoming) = 
@@ -1050,7 +1053,8 @@
                     (if_block_statement IF 
                       (expr 
                         (expr 
-                          (builtin_function TIMER)) >= 
+                          (builtin_function 
+                            (timer_function TIMER))) >= 
                         (expr 
                           (variable_or_function_call NextIncoming))) THEN ' 
                       (then_block \n 
@@ -1059,7 +1063,8 @@
                             (variable_or_function_call NextIncoming) = 
                             (expr 
                               (expr 
-                                (builtin_function TIMER)) + 
+                                (builtin_function 
+                                  (timer_function TIMER))) + 
                               (expr 
                                 (variable_or_function_call IncomingDelay))))) ' \n 
                         (statement 
@@ -1092,7 +1097,8 @@
                         (if_block_statement IF 
                           (expr 
                             (expr 
-                              (builtin_function TIMER)) >= 
+                              (builtin_function 
+                                (timer_function TIMER))) >= 
                             (expr 
                               (variable_or_function_call NextExplosion))) THEN ' 
                           (then_block \n 
@@ -1101,7 +1107,8 @@
                                 (variable_or_function_call NextExplosion) = 
                                 (expr 
                                   (expr 
-                                    (builtin_function TIMER)) + 
+                                    (builtin_function 
+                                      (timer_function TIMER))) + 
                                   (expr 
                                     (variable_or_function_call EXPLOSIONDELAY))))) ' \n 
                             (statement 
@@ -2637,7 +2644,8 @@
         (assignment_statement 
           (variable_or_function_call NextExplosion) = 
           (expr 
-            (builtin_function TIMER)))) ' \n \n) 
+            (builtin_function 
+              (timer_function TIMER))))) ' \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id GameOver) 
@@ -3007,7 +3015,8 @@
                 (variable_or_function_call Delay!) = 
                 (expr 
                   (expr 
-                    (builtin_function TIMER)) + 
+                    (builtin_function 
+                      (timer_function TIMER))) + 
                   (expr 
                     (literal .05))))) ' \n 
             (statement 
@@ -3015,7 +3024,8 @@
                 (do_condition WHILE 
                   (expr 
                     (expr 
-                      (builtin_function TIMER)) < 
+                      (builtin_function 
+                        (timer_function TIMER))) < 
                     (expr 
                       (variable_or_function_call Delay!)))) 
                 (block :) LOOP)) \n) NEXT i)) \n \n) 
