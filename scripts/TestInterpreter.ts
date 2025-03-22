@@ -5,6 +5,7 @@ import { StringPrinter } from "../src/Printer.ts";
 import { TestTextScreen } from "../src/Screen.ts";
 import { TestSpeaker } from "../src/Speaker.ts";
 import { KeyboardListener, typeLines } from "../src/Keyboard.ts";
+import { TestTimer } from "../src/Timer.ts";
 
 async function interpret(program: string, input: string[], diskJson: string): Promise<string> {
   try {
@@ -13,12 +14,14 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
     const printer = new StringPrinter();
     const disk = new MemoryDrive();
     const keyboard = new KeyboardListener();
+    const timer = new TestTimer();
     const interpreter = new Interpreter({
       textScreen,
       speaker,
       printer,
       disk,
       keyboard,
+      timer,
     });
     typeLines(input, keyboard);
     if (diskJson) {

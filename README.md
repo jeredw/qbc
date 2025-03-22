@@ -321,7 +321,7 @@ parse those using baked in rules.
 | `THEN`           | Keyword     | ✅      | ✅      |
 | `TIME$`          | Function    | -       | ⛔      |
 | `TIME$`          | Statement   | -       | ⛔      |
-| `TIMER`          | Function    | ✅      | ⛔      |
+| `TIMER`          | Function    | ✅      | ✅      |
 | `TIMER`          | Statement   | ✅      | ⛔      |
 | `TO`             | Keyword     | ✅      | ✅      |
 | `TROFF`          | Statement   | -       | ⛔      |

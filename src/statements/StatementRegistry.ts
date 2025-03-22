@@ -88,6 +88,7 @@ import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
+import { TimerFunction } from "./Timer.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -440,6 +441,10 @@ export function space(args: BuiltinStatementArgs) {
 
 export function tan(args: BuiltinStatementArgs) {
   return new TanFunction(args);
+}
+
+export function timer(result: Variable) {
+  return new TimerFunction(result);
 }
 
 export function ubound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {

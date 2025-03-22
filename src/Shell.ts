@@ -6,6 +6,7 @@ import { LinePrinter } from "./Printer.ts";
 import { WebAudioSpeaker } from "./Speaker.ts";
 import { Invocation } from "./Invocation.ts";
 import { KeyboardListener } from "./Keyboard.ts";
+import { RealTimeTimer } from "./Timer.ts";
 
 const TAB_STOPS = 8;
 
@@ -26,6 +27,7 @@ class Shell {
   private printer: LinePrinter;
   private disk: MemoryDrive;
   private keyboard: KeyboardListener;
+  private timer: RealTimeTimer;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -34,6 +36,7 @@ class Shell {
     this.printer = new LinePrinter(80);
     this.disk = new MemoryDrive();
     this.keyboard = new KeyboardListener();
+    this.timer = new RealTimeTimer();
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -43,6 +46,7 @@ class Shell {
       printer: this.printer,
       disk: this.disk,
       keyboard: this.keyboard,
+      timer: this.timer,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
