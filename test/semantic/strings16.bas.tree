@@ -1,0 +1,14 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal "")))) )))))) \n <EOF>)

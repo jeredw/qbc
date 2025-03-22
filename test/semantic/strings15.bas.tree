@@ -1,0 +1,66 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5))) , 
+                (argument 
+                  (expr 
+                    (literal "-")))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 20))) , 
+                (argument 
+                  (expr 
+                    (literal 34)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0))) , 
+                (argument 
+                  (expr 
+                    (literal "hello")))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal "@")))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 4))) , 
+                (argument 
+                  (expr 
+                    (literal 127)))) )))))) \n <EOF>)

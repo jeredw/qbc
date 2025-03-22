@@ -312,7 +312,7 @@ parse those using baked in rules.
 | `STRIG`          | Function    | ✅      | ⛔      |
 | `STRIG`          | Statement   | ✅      | ⛔      |
 | `STRING`         | Keyword     | ✅      | ✅      |
-| `STRING$`        | Function    | -       | ⛔      |
+| `STRING$`        | Function    | -       | ✅      |
 | `SUB`            | Statement   | ✅      | ✅      |
 | `SWAP`           | Statement   | ✅      | ✅      |
 | `SYSTEM`         | Statement   | -       | ⛔      |

@@ -1,0 +1,5 @@
+print string$(5, "-")
+print string$(20, 34)
+print string$(0, "hello")
+print string$(1, "@")
+print string$(4, 127)

@@ -18,12 +18,10 @@ import {
   LboundFunction,
   UboundFunction
 } from "./Arrays.ts";
-import { AscFunction } from "./Asc.ts";
 import { BeepStatement } from "./Beep.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
-import { ChrFunction } from "./Chr.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import {
   CdblFunction,
@@ -66,6 +64,8 @@ import {
 import { PrintStatement, PrintStatementArgs, PrintUsingStatement } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import {
+  AscFunction,
+  ChrFunction,
   HexFunction,
   InstrFunction,
   LcaseFunction,
@@ -77,6 +77,7 @@ import {
   RtrimFunction,
   SpaceFunction,
   StrFunction,
+  StringFunction,
   UcaseFunction,
   ValFunction,
 } from "./Strings.ts";
@@ -456,6 +457,10 @@ export function sqr(args: BuiltinStatementArgs) {
 
 export function str(args: BuiltinStatementArgs) {
   return new StrFunction(args);
+}
+
+export function string(args: BuiltinStatementArgs) {
+  return new StringFunction(args);
 }
 
 export function space(args: BuiltinStatementArgs) {

@@ -1,15 +1,57 @@
-import { ILLEGAL_FUNCTION_CALL, Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH, Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { asciiToString, stringToAscii } from "../AsciiChart.ts";
+import { asciiToChar, asciiToString, charToAscii, stringToAscii } from "../AsciiChart.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { evaluateIntegerExpression, evaluateStringExpression, parseNumberFromStringPrefix } from "../Expressions.ts";
+import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression, parseNumberFromStringPrefix } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
+
+export class AscFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value, _context: ExecutionContext): Value {
+    if (!isString(input)) {
+      throw new Error("expecting string");
+    }
+    const firstChar = input.string.at(0);
+    if (firstChar === undefined) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const code = charToAscii.get(firstChar);
+    if (code === undefined) {
+      throw new Error("unmapped character code");
+    }
+    return integer(code);
+  }
+}
+
+export class ChrFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value, _context: ExecutionContext): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    const code = Math.round(input.number);
+    if (code < 0 || code > 255) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const char = asciiToChar.get(code);
+    if (char === undefined) {
+      throw new Error("unmapped character code");
+    }
+    return string(char);
+  }
+}
 
 export class LcaseFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -219,6 +261,71 @@ export class StrFunction extends BuiltinFunction1 {
       return string(input.number.toFixed(6).replace(/([^0])0*$/, '$1'))
     }
     return string(input.number.toString());
+  }
+}
+
+export class StringFunction extends Statement {
+  token: Token;
+  result: Variable;
+  length: ExprContext;
+  asciiCodeOrString: ExprContext;
+
+  constructor({token, result, params}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    if (!result) {
+      throw new Error("missing result");
+    }
+    this.result = result;
+    if (!params[0] || !params[0].expr) {
+      throw new Error("missing length arg");
+    }
+    this.length = params[0].expr;
+    if (!params[1] || !params[1].expr) {
+      throw new Error("missing string arg");
+    }
+    this.asciiCodeOrString = params[1].expr;
+  }
+
+  override execute(context: ExecutionContext) {
+    const length = evaluateIntegerExpression(this.length, context.memory);
+    if (length < 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const asciiCodeOrString = evaluateExpression({
+      expr: this.asciiCodeOrString,
+      memory: context.memory
+    });
+    const char = this.getCharacterToRepeat(asciiCodeOrString);
+    context.memory.write(this.result, string(char.repeat(length)));
+  }
+
+  private getCharacterToRepeat(value: Value): string {
+    if (isError(value)) {
+      throw RuntimeError.fromToken(this.token, value);
+    }
+    if (isNumeric(value)) {
+      const code = integer(value.number);
+      if (isError(code)) {
+        throw RuntimeError.fromToken(this.token, code);
+      }
+      if (!isNumeric(code)) {
+        throw RuntimeError.fromToken(this.token, TYPE_MISMATCH);
+      }
+      const char = asciiToChar.get(code.number & 0xff);
+      if (!char) {
+        throw new Error('unmapped character');
+      }
+      return char;
+    }
+    if (isString(value)) {
+      const char = value.string.at(0);
+      if (char === undefined) {
+        throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+      }
+      return char;
+    }
+    throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
   }
 }
 

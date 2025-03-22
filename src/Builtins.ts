@@ -83,6 +83,7 @@ export class StandardLibrary {
     _("space numeric -> string", statements.space),
     _("sqr double -> double", statements.sqr),
     _("str numeric -> string", statements.str),
+    _("string integer any -> string", statements.string),
     _("tan double -> double", statements.tan),
     _("ucase string -> string", statements.ucase),
     _("val string -> double", statements.val),
@@ -128,6 +129,7 @@ function parseTypeSpec(name: string, optional: boolean): BuiltinArgumentSpec {
     case "long": return {type: {tag: TypeTag.LONG}, optional};
     case "string": return {type: {tag: TypeTag.STRING}, optional};
     case "numeric": return {type: {tag: TypeTag.NUMERIC}, optional};
+    case "any": return {type: {tag: TypeTag.ANY}, optional};
   }
   throw new Error(`invalid argument ${name}`);
 }
