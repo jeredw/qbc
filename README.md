@@ -298,7 +298,7 @@ parse those using baked in rules.
 | `SHELL`          | Statement   | -       | ⛔      |
 | `SIN`            | Function    | -       | ✅      |
 | `SINGLE`         | Keyword     | ✅      | ✅      |
-| `SLEEP`          | Statement   | -       | ⛔      |
+| `SLEEP`          | Statement   | -       | ✅      |
 | `SOUND`          | Statement   | -       | ⛔      |
 | `SPACE$`         | Function    | -       | ✅      |
 | `SPC`            | Function    | ✅      | ✅      |

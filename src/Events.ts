@@ -5,8 +5,15 @@ export interface Trap {
   trap: EventTrap;
 }
 
+export interface SleepArgs {
+  start: number;
+  duration: number;
+  numKeysPending: number;
+}
+
 export class Events {
   timer: TimerEventTrap;
+  asleep?: SleepArgs;
 
   constructor() {
     this.timer = new TimerEventTrap();
@@ -14,13 +21,36 @@ export class Events {
 
   poll(devices: Devices) {
     this.timer.poll(devices);
+    if (this.asleep) {
+      if (this.asleep.duration !== 0 &&
+          devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
+        this.wakeUp();
+      } else if (devices.keyboard.numKeysPending() > this.asleep.numKeysPending) {
+        this.wakeUp();
+      }
+    }
   }
 
   trap(devices: Devices): Trap | void {
-    const timer = this.timer.trap(devices);
-    if (timer) {
-      return timer;
+    const result = (
+      this.timer.trap(devices)
+    );
+    if (result) {
+      this.wakeUp();
     }
+    return result;
+  }
+
+  sleep(asleep: SleepArgs) {
+    this.asleep = asleep;
+  }
+
+  private wakeUp() {
+    this.asleep = undefined;
+  }
+
+  sleeping(): boolean {
+    return !!this.asleep;
   }
 }
 

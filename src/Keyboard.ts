@@ -8,6 +8,7 @@ export interface Key {
 
 export interface Keyboard {
   input(): Key | undefined;
+  numKeysPending(): number;
   getLastScanCode(): number;
 }
 
@@ -41,6 +42,10 @@ export class KeyboardListener implements Keyboard {
 
   input(): Key | undefined {
     return this.inputBuffer.shift();
+  }
+
+  numKeysPending(): number {
+    return this.inputBuffer.length;
   }
 
   keydown(e: KeyboardEvent) {

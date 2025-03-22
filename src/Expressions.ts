@@ -31,10 +31,10 @@ export function evaluateStringExpression(expr: ExprContext, memory: Memory): str
   return value.string;
 }
 
-export function evaluateIntegerExpression(expr: ExprContext, memory: Memory): number {
+export function evaluateIntegerExpression(expr: ExprContext, memory: Memory, resultType?: Type): number {
   const value = evaluateExpression({
     expr,
-    resultType: {tag: TypeTag.INTEGER},
+    resultType: resultType ?? {tag: TypeTag.INTEGER},
     memory
   });
   if (values.isError(value)) {

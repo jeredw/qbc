@@ -89,7 +89,7 @@ import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
-import { EventControlStatement, EventHandlerStatement, EventType } from "./Events.ts";
+import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
 import { EventTrapState } from "../Events.ts";
 
 export function abs(args: BuiltinStatementArgs) {
@@ -443,6 +443,10 @@ export function sgn(args: BuiltinStatementArgs) {
 
 export function sin(args: BuiltinStatementArgs) {
   return new SinFunction(args);
+}
+
+export function sleep(args: BuiltinStatementArgs) {
+  return new SleepStatement(args);
 }
 
 export function sqr(args: BuiltinStatementArgs) {

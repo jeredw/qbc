@@ -107,6 +107,9 @@ export class Invocation {
       });
       return;
     }
+    if (this.events.sleeping()) {
+      return;
+    }
     try {
       const controlFlow = statement.execute({
         devices: this.devices,

@@ -1,6 +1,9 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
+import { ControlFlow } from "../ControlFlow.ts";
 import { EventTrapState } from "../Events.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
+import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
@@ -39,5 +42,24 @@ export class EventControlStatement extends Statement {
         context.events.timer.setState(this.state);
         break;
     }
+  }
+}
+
+export class SleepStatement extends Statement {
+  durationExpr?: ExprContext;
+
+  constructor(private args: BuiltinStatementArgs) {
+    super();
+    if (args.params[0] && args.params[0].expr) {
+      this.durationExpr = args.params[0].expr;
+    }
+  }
+
+  override execute(context: ExecutionContext) {
+    const duration = this.durationExpr ?
+      evaluateIntegerExpression(this.durationExpr, context.memory, { tag: TypeTag.LONG }) : 0;
+    const start = context.devices.timer.timer();
+    const numKeysPending = context.devices.keyboard.numKeysPending();
+    context.events.sleep({start, duration, numKeysPending});
   }
 }
