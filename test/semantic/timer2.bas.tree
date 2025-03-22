@@ -1,0 +1,83 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (date_function date$)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (time_function time$)))))) \n 
+  (statement 
+    (date_statement date$ = 
+      (expr 
+        (literal "1/1/1980")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (date_function date$)))))) \n 
+  (statement 
+    (date_statement date$ = 
+      (expr 
+        (literal "2/29/2000")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (date_function date$)))))) \n 
+  (statement 
+    (date_statement date$ = 
+      (expr 
+        (literal "12/31/2099")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (date_function date$)))))) \n 
+  (statement 
+    (date_statement date$ = 
+      (expr 
+        (literal "1/9/84")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (date_function date$)))))) \n 
+  (statement 
+    (time_statement time$ = 
+      (expr 
+        (literal "1:23")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (time_function time$)))))) \n 
+  (statement 
+    (time_statement time$ = 
+      (expr 
+        (literal "22:50:47")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (time_function time$)))))) \n 
+  (statement 
+    (time_statement time$ = 
+      (expr 
+        (literal "0:00")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (time_function time$)))))) \n <EOF>)

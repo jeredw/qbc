@@ -429,6 +429,18 @@ export class CodeGenerator extends QBasicParserListener {
     }
   }
 
+  override enterDate_statement = (ctx: parser.Date_statementContext) => {
+    const token = ctx.start!;
+    const expr = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.dateStatement(token, expr));
+  }
+
+  override enterTime_statement = (ctx: parser.Time_statementContext) => {
+    const token = ctx.start!;
+    const expr = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.timeStatement(token, expr));
+  }
+
   override enterDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
     const labels = getCodeGeneratorContext(ctx);
     labels.$exitLabel = this.makeSyntheticLabel();
@@ -988,6 +1000,14 @@ export class CodeGenerator extends QBasicParserListener {
         }
       }
 
+      override enterDate_function = (ctx: parser.Date_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        codeGenerator.addStatement(statements.dateFunction(result));
+      }
+
       override enterInstr_function = (ctx: parser.Instr_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
@@ -1029,6 +1049,14 @@ export class CodeGenerator extends QBasicParserListener {
         }
         const fileNum = codeGenerator.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
         codeGenerator.addStatement(statements.seekFunction(ctx.start!, fileNum, result));
+      }
+
+      override enterTime_function = (ctx: parser.Time_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        codeGenerator.addStatement(statements.timeFunction(result));
       }
 
       override enterTimer_function = (ctx: parser.Timer_functionContext) => {

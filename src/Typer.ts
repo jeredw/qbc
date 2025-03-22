@@ -668,8 +668,13 @@ export class Typer extends QBasicParserListener {
     throw ParseError.fromToken(ctx.start!, "Advanced feature unavailable")
   }
 
-  override enterSeek_function = (ctx: parser.Seek_functionContext) => {
-    const result = this.makeSyntheticVariable({tag: TypeTag.LONG}, ctx.start!);
+  override enterDate_function = (ctx: parser.Date_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.STRING}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
+  override enterInstr_function = (ctx: parser.Instr_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
     getTyperContext(ctx.parent!).$result = result;
   }
 
@@ -678,8 +683,13 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx.parent!).$result = result;
   }
 
-  override enterInstr_function = (ctx: parser.Instr_functionContext) => {
-    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+  override enterSeek_function = (ctx: parser.Seek_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.LONG}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
+  override enterTime_function = (ctx: parser.Time_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.STRING}, ctx.start!);
     getTyperContext(ctx.parent!).$result = result;
   }
 

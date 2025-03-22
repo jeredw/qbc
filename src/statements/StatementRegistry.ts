@@ -88,7 +88,7 @@ import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
-import { TimerFunction } from "./Timer.ts";
+import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -168,6 +168,14 @@ export function cvs(args: BuiltinStatementArgs) {
 
 export function cvsmbf(args: BuiltinStatementArgs) {
   return new CvsmbfFunction(args);
+}
+
+export function dateFunction(result: Variable) {
+  return new DateFunction(result);
+}
+
+export function dateStatement(token: Token, expr: parser.ExprContext) {
+  return new DateStatement(token, expr);
 }
 
 export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable) {
@@ -441,6 +449,14 @@ export function space(args: BuiltinStatementArgs) {
 
 export function tan(args: BuiltinStatementArgs) {
   return new TanFunction(args);
+}
+
+export function timeFunction(result: Variable) {
+  return new TimeFunction(result);
+}
+
+export function timeStatement(token: Token, expr: parser.ExprContext) {
+  return new TimeStatement(token, expr);
 }
 
 export function timer(result: Variable) {
