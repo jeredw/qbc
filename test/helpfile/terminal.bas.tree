@@ -176,20 +176,18 @@
               (assignment_statement 
                 (variable_or_function_call BackSpace) = 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Instring$))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call CHR$ 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (literal 8)))) ))))) ))))) \r\n 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Instring$)) , 
+                        (expr 
+                          (variable_or_function_call CHR$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 8)))) ))) )))))) \r\n 
             (if_block_statement IF 
               (expr 
                 (variable_or_function_call BackSpace)) THEN \r\n 
@@ -218,20 +216,18 @@
               (assignment_statement 
                 (variable_or_function_call LineFeed) = 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Instring$))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call CHR$ 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (literal 10)))) ))))) ))))) \r\n 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Instring$)) , 
+                        (expr 
+                          (variable_or_function_call CHR$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 10)))) ))) )))))) \r\n 
             (if_block_statement IF 
               (expr 
                 (variable_or_function_call LineFeed)) THEN \r\n 

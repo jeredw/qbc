@@ -689,15 +689,13 @@
       (if_block_statement IF 
         (expr 
           (expr 
-            (variable_or_function_call INSTR 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call InputFile$))) , 
-                  (argument 
-                    (expr 
-                      (literal ".")))) ))) = 
+            (builtin_function 
+              (instr_function INSTR 
+                ( 
+                  (expr 
+                    (variable_or_function_call InputFile$)) , 
+                  (expr 
+                    (literal ".")) )))) = 
           (expr 
             (literal 0))) THEN \n 
         (then_block 
@@ -713,15 +711,13 @@
       (if_block_statement IF 
         (expr 
           (expr 
-            (variable_or_function_call INSTR 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call OutputFile$))) , 
-                  (argument 
-                    (expr 
-                      (literal ".")))) ))) = 
+            (builtin_function 
+              (instr_function INSTR 
+                ( 
+                  (expr 
+                    (variable_or_function_call OutputFile$)) , 
+                  (expr 
+                    (literal ".")) )))) = 
           (expr 
             (literal 0))) THEN \n 
         (then_block 
@@ -794,15 +790,13 @@
                               (variable_or_function_call InputFile$))) , 
                           (argument 
                             (expr 
-                              (variable_or_function_call INSTR 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call InputFile$))) , 
-                                    (argument 
-                                      (expr 
-                                        (literal ".")))) ))))) ))) + 
+                              (builtin_function 
+                                (instr_function INSTR 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call InputFile$)) , 
+                                    (expr 
+                                      (literal ".")) )))))) ))) + 
                   (expr 
                     (literal "BAK"))))) \n 
             (statement 
@@ -1098,23 +1092,21 @@
           (do_condition WHILE 
             (expr 
               (expr 
-                (variable_or_function_call INSTR 
-                  ( 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Separator$))) , 
-                      (argument 
-                        (expr 
-                          (builtin_function 
-                            (mid_function MID$ 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call InString$)) , 
-                                (expr 
-                                  (variable_or_function_call BegPos)) , 
-                                (expr 
-                                  (literal 1)) )))))) ))) = 
+                (builtin_function 
+                  (instr_function INSTR 
+                    ( 
+                      (expr 
+                        (variable_or_function_call Separator$)) , 
+                      (expr 
+                        (builtin_function 
+                          (mid_function MID$ 
+                            ( 
+                              (expr 
+                                (variable_or_function_call InString$)) , 
+                              (expr 
+                                (variable_or_function_call BegPos)) , 
+                              (expr 
+                                (literal 1)) )))) )))) = 
               (expr 
                 (literal 0)))) 
           (block \n 
@@ -1172,23 +1164,21 @@
         (do_loop_statement DO 
           (do_condition WHILE 
             (expr 
-              (variable_or_function_call INSTR 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call Separator$))) , 
-                    (argument 
-                      (expr 
-                        (builtin_function 
-                          (mid_function MID$ 
-                            ( 
-                              (expr 
-                                (variable_or_function_call InString$)) , 
-                              (expr 
-                                (variable_or_function_call BegPos)) , 
-                              (expr 
-                                (literal 1)) )))))) )))) 
+              (builtin_function 
+                (instr_function INSTR 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Separator$)) , 
+                    (expr 
+                      (builtin_function 
+                        (mid_function MID$ 
+                          ( 
+                            (expr 
+                              (variable_or_function_call InString$)) , 
+                            (expr 
+                              (variable_or_function_call BegPos)) , 
+                            (expr 
+                              (literal 1)) )))) ))))) 
           (block \n 
             (if_block_statement IF 
               (expr 

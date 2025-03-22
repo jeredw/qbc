@@ -176,15 +176,13 @@
             (loop_condition WHILE 
               (expr 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal "BFKSQ"))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Q$)))) ))) = 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (literal "BFKSQ")) , 
+                        (expr 
+                          (variable_or_function_call Q$)) )))) = 
                 (expr 
                   (literal 0)))))) \r\n \r\n ' \r\n 
         (statement 

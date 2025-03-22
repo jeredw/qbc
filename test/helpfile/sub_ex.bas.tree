@@ -60,15 +60,13 @@
         (assignment_statement 
           (variable_or_function_call X) = 
           (expr 
-            (variable_or_function_call INSTR 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Test$))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call P$)))) ))))) \r\n 
+            (builtin_function 
+              (instr_function INSTR 
+                ( 
+                  (expr 
+                    (variable_or_function_call Test$)) , 
+                  (expr 
+                    (variable_or_function_call P$)) )))))) \r\n 
       (statement 
         (if_inline_statement IF 
           (expr 

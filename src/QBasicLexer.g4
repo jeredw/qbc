@@ -95,6 +95,7 @@ IF : [Ii][Ff] ;
 IMP : [Ii][Mm][Pp] ;
 INPUT : [Ii][Nn][Pp][Uu][Tt] ;
 INPUT_STRING : [Ii][Nn][Pp][Uu][Tt] '$' ;
+INSTR : [Ii][Nn][Ss][Tt][Rr] ;
 IOCTL : [Ii][Oo][Cc][Tt][Ll] ;
 IOCTL_STRING : [Ii][Oo][Cc][Tt][Ll] '$' ;
 IS : [Ii][Ss] ;

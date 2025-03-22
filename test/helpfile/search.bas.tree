@@ -85,18 +85,15 @@
                 (assignment_statement 
                   (variable_or_function_call StringPos%) = 
                   (expr 
-                    (variable_or_function_call INSTR 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (variable_or_function_call Start%))) , 
-                          (argument 
-                            (expr 
-                              (variable_or_function_call Buffer$))) , 
-                          (argument 
-                            (expr 
-                              (variable_or_function_call Pattern$)))) ))))) \r\n 
+                    (builtin_function 
+                      (instr_function INSTR 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Start%)) , 
+                          (expr 
+                            (variable_or_function_call Buffer$)) , 
+                          (expr 
+                            (variable_or_function_call Pattern$)) )))))) \r\n 
               (if_block_statement IF 
                 (expr 
                   (expr 

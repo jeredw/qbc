@@ -6942,23 +6942,21 @@
                 (expr 
                   (expr 
                     (expr 
-                      (variable_or_function_call INSTR 
-                        ( 
-                          (argument_list 
-                            (argument 
+                      (builtin_function 
+                        (instr_function INSTR 
+                          ( 
+                            (expr 
                               (expr 
-                                (expr 
-                                  (literal "PSERDQ")) + 
-                                (expr 
-                                  (variable_or_function_call CHR$ 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (literal 13)))) ))))) , 
-                            (argument 
+                                (literal "PSERDQ")) + 
                               (expr 
-                                (variable_or_function_call x$)))) ))) = 
+                                (variable_or_function_call CHR$ 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (literal 13)))) )))) , 
+                            (expr 
+                              (variable_or_function_call x$)) )))) = 
                     (expr 
                       (literal 0))) OR 
                   (expr 
@@ -8380,20 +8378,18 @@
                         (assignment_statement 
                           (variable_or_function_call keyloc) = 
                           (expr 
-                            (variable_or_function_call INSTR 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (literal "Q2WE4R5TY7U8I9OP-[=]ZSXDCFVBHNJM,L.;/'"))) , 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call UCASE$ 
-                                        ( 
-                                          (argument_list 
-                                            (argument 
-                                              (expr 
-                                                (variable_or_function_call i$)))) ))))) ))))) \n 
+                            (builtin_function 
+                              (instr_function INSTR 
+                                ( 
+                                  (expr 
+                                    (literal "Q2WE4R5TY7U8I9OP-[=]ZSXDCFVBHNJM,L.;/'")) , 
+                                  (expr 
+                                    (variable_or_function_call UCASE$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call i$)))) ))) )))))) \n 
                       (if_block_statement IF 
                         (expr 
                           (expr 

@@ -112,15 +112,13 @@
         (assignment_statement 
           (variable_or_function_call Mark) = 
           (expr 
-            (variable_or_function_call INSTR 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call F1$))) , 
-                  (argument 
-                    (expr 
-                      (literal ".")))) ))))) \r\n 
+            (builtin_function 
+              (instr_function INSTR 
+                ( 
+                  (expr 
+                    (variable_or_function_call F1$)) , 
+                  (expr 
+                    (literal ".")) )))))) \r\n 
       (if_block_statement IF 
         (expr 
           (expr 
@@ -177,15 +175,13 @@
         (assignment_statement 
           (variable_or_function_call Mark) = 
           (expr 
-            (variable_or_function_call INSTR 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Temp$))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Old$)))) ))))) \r\n 
+            (builtin_function 
+              (instr_function INSTR 
+                ( 
+                  (expr 
+                    (variable_or_function_call Temp$)) , 
+                  (expr 
+                    (variable_or_function_call Old$)) )))))) \r\n 
       (statement 
         (while_wend_statement WHILE 
           (expr 
@@ -244,15 +240,13 @@
               (assignment_statement 
                 (variable_or_function_call Mark) = 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Temp$))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Old$)))) ))))) \r\n) WEND)) \r\n 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Temp$)) , 
+                        (expr 
+                          (variable_or_function_call Old$)) )))))) \r\n) WEND)) \r\n 
       (if_block_statement IF 
         (expr 
           (expr 

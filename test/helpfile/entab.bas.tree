@@ -308,15 +308,13 @@
               (assignment_statement 
                 (variable_or_function_call SpacePos) = 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call CommandLine$))) , 
-                        (argument 
-                          (expr 
-                            (literal " ")))) ))))) \r\n 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (variable_or_function_call CommandLine$)) , 
+                        (expr 
+                          (literal " ")) )))))) \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 

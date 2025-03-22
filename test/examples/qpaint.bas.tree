@@ -10355,15 +10355,13 @@
                   (argument 
                     (expr 
                       (expr 
-                        (variable_or_function_call INSTR 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (variable_or_function_call file$))) , 
-                              (argument 
-                                (expr 
-                                  (literal " ")))) ))) - 
+                        (builtin_function 
+                          (instr_function INSTR 
+                            ( 
+                              (expr 
+                                (variable_or_function_call file$)) , 
+                              (expr 
+                                (literal " ")) )))) - 
                       (expr 
                         (literal 1))))) ))))) \n 
       (statement 

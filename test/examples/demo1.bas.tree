@@ -184,15 +184,13 @@
           (assignment_statement 
             (variable_or_function_call Q) = 
             (expr 
-              (variable_or_function_call INSTR 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (literal "BFKSQbfksq"))) , 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call Q$)))) ))))) ' \r\n 
+              (builtin_function 
+                (instr_function INSTR 
+                  ( 
+                    (expr 
+                      (literal "BFKSQbfksq")) , 
+                    (expr 
+                      (variable_or_function_call Q$)) )))))) ' \r\n 
         (label 
           (line_number 80)) 
         (statement 

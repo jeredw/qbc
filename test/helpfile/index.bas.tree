@@ -225,15 +225,13 @@
             (loop_condition WHILE 
               (expr 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal "ALQ"))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Choice$)))) ))) = 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (literal "ALQ")) , 
+                        (expr 
+                          (variable_or_function_call Choice$)) )))) = 
                 (expr 
                   (literal 0)))))) \r\n \r\n ' \r\n 
         (statement 
@@ -490,15 +488,13 @@
             (if_block_statement IF 
               (expr 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal ".0123456789"))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Char$)))) ))) > 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (literal ".0123456789")) , 
+                        (expr 
+                          (variable_or_function_call Char$)) )))) > 
                 (expr 
                   (literal 0))) THEN \r\n 
               (then_block 

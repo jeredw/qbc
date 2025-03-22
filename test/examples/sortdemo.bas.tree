@@ -2210,15 +2210,13 @@
               (assignment_statement 
                 (variable_or_function_call Selection) = 
                 (expr 
-                  (variable_or_function_call INSTR 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Option$))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Choice$)))) ))))) ' \n \n ' \n 
+                  (builtin_function 
+                    (instr_function INSTR 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Option$)) , 
+                        (expr 
+                          (variable_or_function_call Choice$)) )))))) ' \n \n ' \n 
             (if_block_statement IF 
               (expr 
                 (expr 

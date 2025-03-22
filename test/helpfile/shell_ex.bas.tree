@@ -42,15 +42,13 @@
                 (expr 
                   (expr 
                     (expr 
-                      (variable_or_function_call INSTR 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call DirLine$))) , 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call MDate$)))) ))) > 
+                      (builtin_function 
+                        (instr_function INSTR 
+                          ( 
+                            (expr 
+                              (variable_or_function_call DirLine$)) , 
+                            (expr 
+                              (variable_or_function_call MDate$)) )))) > 
                     (expr 
                       (literal 0))) AND 
                   (expr 

@@ -146,15 +146,13 @@
           (while_wend_statement WHILE 
             (expr 
               (expr 
-                (variable_or_function_call INSTR 
-                  ( 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (literal "BFKSQbfksq"))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Q$)))) ))) = 
+                (builtin_function 
+                  (instr_function INSTR 
+                    ( 
+                      (expr 
+                        (literal "BFKSQbfksq")) , 
+                      (expr 
+                        (variable_or_function_call Q$)) )))) = 
               (expr 
                 (literal 0))) 
             (block \r\n 

@@ -3751,15 +3751,13 @@
                     (if_block_statement IF 
                       (expr 
                         (expr 
-                          (variable_or_function_call INSTR 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call Result$))) , 
-                                (argument 
-                                  (expr 
-                                    (literal ".")))) ))) = 
+                          (builtin_function 
+                            (instr_function INSTR 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call Result$)) , 
+                                (expr 
+                                  (literal ".")) )))) = 
                         (expr 
                           (literal 0))) THEN \n 
                       (then_block 

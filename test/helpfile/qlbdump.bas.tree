@@ -85,15 +85,13 @@
     (if_inline_statement IF 
       (expr 
         (expr 
-          (variable_or_function_call INSTR 
-            ( 
-              (argument_list 
-                (argument 
-                  (expr 
-                    (variable_or_function_call FileName$))) , 
-                (argument 
-                  (expr 
-                    (literal ".QLB")))) ))) = 
+          (builtin_function 
+            (instr_function INSTR 
+              ( 
+                (expr 
+                  (variable_or_function_call FileName$)) , 
+                (expr 
+                  (literal ".QLB")) )))) = 
         (expr 
           (literal 0))) THEN 
       (if_inline_action 
@@ -340,20 +338,18 @@
                             (variable_or_function_call Prospect$))) , 
                         (argument 
                           (expr 
-                            (variable_or_function_call INSTR 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call Prospect$))) , 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call CHR$ 
-                                        ( 
-                                          (argument_list 
-                                            (argument 
-                                              (expr 
-                                                (literal 0)))) ))))) ))))) ))))) \r\n \r\n ' \r\n ' \r\n 
+                            (builtin_function 
+                              (instr_function INSTR 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call Prospect$)) , 
+                                  (expr 
+                                    (variable_or_function_call CHR$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 0)))) ))) )))))) ))))) \r\n \r\n ' \r\n ' \r\n 
             (if_block_statement IF 
               (expr 
                 (expr 

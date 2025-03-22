@@ -4384,20 +4384,18 @@
                               (assignment_statement 
                                 (variable_or_function_call I) = 
                                 (expr 
-                                  (variable_or_function_call INSTR 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (variable_or_function_call Available$))) , 
-                                        (argument 
-                                          (expr 
-                                            (variable_or_function_call HEX$ 
-                                              ( 
-                                                (argument_list 
-                                                  (argument 
-                                                    (expr 
-                                                      (variable_or_function_call VC.Scrn)))) ))))) ))))) \n 
+                                  (builtin_function 
+                                    (instr_function INSTR 
+                                      ( 
+                                        (expr 
+                                          (variable_or_function_call Available$)) , 
+                                        (expr 
+                                          (variable_or_function_call HEX$ 
+                                            ( 
+                                              (argument_list 
+                                                (argument 
+                                                  (expr 
+                                                    (variable_or_function_call VC.Scrn)))) ))) )))))) \n 
                             (statement 
                               (assignment_statement 
                                 (variable_or_function_call I) = 

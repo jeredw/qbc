@@ -903,31 +903,36 @@ expr
 // just be pre-defined by the runtime.
 builtin_function
   : INPUT_STRING '(' n=expr (COMMA '#'? filenum=expr)? ')'
+  | instr_function
   | IOCTL_STRING '(' '#'? filenum=expr ')'
+  | lbound_function
   | LEN '(' expr ')'
+  | mid_function
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | seek_function
   | STRIG '(' expr ')'
   | TIMER
-  | mid_function
-  | lbound_function
   | ubound_function
   ;
 
-seek_function
-  : SEEK '(' filenum=expr ')'
-  ;
-
-mid_function
-  : MID_STRING '(' string=expr COMMA start=expr (COMMA length=expr)? ')'
+instr_function
+  : INSTR '(' (start=expr COMMA)? haystack=expr COMMA needle=expr ')'
   ;
 
 // lbound and ubound take array arguments but do not append () to these like
 // function calls, so it's simpler to special case these.
 lbound_function
   : LBOUND '(' array=ID (COMMA which=expr)? ')'
+  ;
+
+mid_function
+  : MID_STRING '(' string=expr COMMA start=expr (COMMA length=expr)? ')'
+  ;
+
+seek_function
+  : SEEK '(' filenum=expr ')'
   ;
 
 ubound_function
