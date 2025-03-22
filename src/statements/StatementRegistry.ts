@@ -89,6 +89,8 @@ import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
+import { EventControlStatement, EventHandlerStatement, EventType } from "./Events.ts";
+import { EventTrapState } from "../Events.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -204,6 +206,14 @@ export function endSub() {
 
 export function eof(args: BuiltinStatementArgs) {
   return new EofFunction(args);
+}
+
+export function eventControl(eventType: EventType, param: parser.ExprContext | undefined, state: EventTrapState) {
+  return new EventControlStatement(eventType, param, state);
+}
+
+export function eventHandler(eventType: EventType, param: parser.ExprContext | undefined) {
+  return new EventHandlerStatement(eventType, param);
 }
 
 export function exitDef() {

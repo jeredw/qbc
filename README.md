@@ -237,15 +237,15 @@ parse those using baked in rules.
 | `NEXT`           | Keyword     | ✅      | ✅      |
 | `NOT`            | Operator    | ✅      | ✅      |
 | `OCT$`           | Function    | -       | ✅      |
-| `OFF`            | Keyword     | ✅      | ⛔      |
+| `OFF`            | Keyword     | ✅      | 🚧      |
 | `ON COM`         | Statement   | ✅      | ⛔      |
 | `ON ERROR`       | Statement   | ✅      | ⛔      |
-| `ON`             | Keyword     | ✅      | ⛔      |
+| `ON`             | Keyword     | ✅      | 🚧      |
 | `ON KEY`         | Statement   | ✅      | ⛔      |
 | `ON PEN`         | Statement   | ✅      | ⛔      |
 | `ON PLAY`        | Statement   | ✅      | ⛔      |
 | `ON STRIG`       | Statement   | ✅      | ⛔      |
-| `ON TIMER`       | Statement   | ✅      | ⛔      |
+| `ON TIMER`       | Statement   | ✅      | ✅      |
 | `ON`...`GOSUB`   | Statement   | ✅      | ✅      |
 | `ON`...`GOTO`    | Statement   | ✅      | ✅      |
 | `OPEN`           | Statement   | ✅      | 🚧      |
@@ -307,7 +307,7 @@ parse those using baked in rules.
 | `$STATIC`        | Metacommand | ✅      | ✅      |
 | `STEP`           | Keyword     | ✅      | ✅      |
 | `STICK`          | Function    | -       | ⛔      |
-| `STOP`           | Statement   | ✅      | ⛔      |
+| `STOP`           | Statement   | ✅      | 🚧      |
 | `STR$`           | Function    | -       | 🚧      |
 | `STRIG`          | Function    | ✅      | ⛔      |
 | `STRIG`          | Statement   | ✅      | ⛔      |
@@ -322,7 +322,7 @@ parse those using baked in rules.
 | `TIME$`          | Function    | ✅      | ✅      |
 | `TIME$`          | Statement   | ✅      | ✅      |
 | `TIMER`          | Function    | ✅      | ✅      |
-| `TIMER`          | Statement   | ✅      | ⛔      |
+| `TIMER`          | Statement   | ✅      | ✅      |
 | `TO`             | Keyword     | ✅      | ✅      |
 | `TROFF`          | Statement   | -       | ⛔      |
 | `TRON`           | Statement   | -       | ⛔      |

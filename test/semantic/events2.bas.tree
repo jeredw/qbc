@@ -1,0 +1,60 @@
+(program 
+  (statement 
+    (on_event_gosub_statement on timer 
+      ( 
+        (expr 
+          (literal 1)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id sayhionce))))) \n 
+  (statement 
+    (event_control_statement timer on)) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 0)))) ' \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id sayhionce)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) \n 
+  (statement 
+    (event_control_statement timer off)) \n 
+  (statement 
+    (return_statement return)) \n <EOF>)

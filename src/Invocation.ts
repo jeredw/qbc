@@ -7,6 +7,7 @@ import { ReturnStatement } from "./statements/Return.ts";
 import { RETURN_WITHOUT_GOSUB } from "./Values.ts";
 import { ProgramData } from "./ProgramData.ts";
 import { Files } from "./Files.ts";
+import { Events, EventTrap } from "./Events.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program) {
   return new Invocation(devices, memory, program);
@@ -16,6 +17,7 @@ interface ProgramLocation {
   chunkIndex: number;
   statementIndex: number;
   pusher?: ControlFlowTag;
+  trap?: EventTrap;
 }
 
 export class Invocation {
@@ -24,6 +26,7 @@ export class Invocation {
   private data: ProgramData;
   private program: Program;
   private files: Files;
+  private events: Events;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
 
@@ -32,6 +35,7 @@ export class Invocation {
     this.memory = memory;
     this.data = new ProgramData(program.data);
     this.files = {handles: new Map()};
+    this.events = new Events();
     this.program = program;
   }
 
@@ -91,12 +95,25 @@ export class Invocation {
       return;
     }
     const statement = chunk.statements[statementIndex];
+    // TODO: check for program statement boundaries
+    this.events.poll(this.devices);
+    const eventTrap = this.events.trap(this.devices);
+    if (eventTrap) {
+      this.stack.push({
+        chunkIndex: 0,
+        statementIndex: eventTrap.targetIndex,
+        pusher: ControlFlowTag.GOSUB,
+        trap: eventTrap.trap
+      });
+      return;
+    }
     try {
       const controlFlow = statement.execute({
         devices: this.devices,
         memory: this.memory,
         data: this.data,
         files: this.files,
+        events: this.events,
       });
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
@@ -132,6 +149,7 @@ export class Invocation {
               const returnStatement = statement as ReturnStatement;
               throw RuntimeError.fromToken(returnStatement.start!, RETURN_WITHOUT_GOSUB);
             }
+            this.stack[this.stack.length - 1].trap?.enableIfStopped();
             this.stack.pop();
             if (statement.targetIndex !== undefined) {
               // For RETURN to a specific label.

@@ -20,6 +20,8 @@ import { DimBoundsExprs } from "./statements/Arrays.ts";
 import { RestoreStatement } from "./statements/Data.ts";
 import { PrintExpr } from "./statements/Print.ts";
 import { OpenMode } from "./Files.ts";
+import { EventType } from "./statements/Events.ts";
+import { EventTrapState } from "./Events.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -362,7 +364,6 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
-  override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
   override enterCircle_statement = (ctx: parser.Circle_statementContext) => {}
   override enterClear_statement = (ctx: parser.Clear_statementContext) => {}
 
@@ -667,7 +668,25 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
-  override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {}
+
+  override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {
+    const paramExpr = ctx.expr();
+    const param = paramExpr && this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
+    if (ctx.TIMER()) {
+      this.addStatement(statements.eventHandler(EventType.TIMER, param ?? undefined));
+    }
+  }
+
+  override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {
+    const paramExpr = ctx.expr();
+    const param = paramExpr && this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
+    const state = ctx.ON() ? EventTrapState.ON :
+      ctx.OFF() ? EventTrapState.OFF :
+      EventTrapState.STOPPED;
+    if (ctx.TIMER()) {
+      this.addStatement(statements.eventControl(EventType.TIMER, param ?? undefined, state));
+    }
+  }
 
   override enterOn_expr_gosub_statement = (ctx: parser.On_expr_gosub_statementContext) => {
     const expr = this.compileExpression(ctx.expr(), ctx.start!, { tag: TypeTag.INTEGER });
