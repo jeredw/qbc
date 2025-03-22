@@ -1195,28 +1195,22 @@
                       (literal 1))) 
                   (block \r\n 
                     (statement 
-                      (call_statement 
-                        (untyped_id SWAP) 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (variable_or_function_call Index 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (expr 
-                                          (variable_or_function_call Card)) + 
-                                        (expr 
-                                          (literal 1))))) )))) , 
-                          (argument 
-                            (expr 
-                              (variable_or_function_call Index 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call Card)))) ))))))) \r\n) NEXT Card)) \r\n 
+                      (swap_statement SWAP 
+                        (variable_or_function_call Index 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call Card)) + 
+                                  (expr 
+                                    (literal 1))))) )) , 
+                        (variable_or_function_call Index 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call Card)))) )))) \r\n) NEXT Card)) \r\n 
               (statement 
                 (assignment_statement 
                   (variable_or_function_call LastCard) = 
@@ -4864,28 +4858,22 @@
                                                   (variable_or_function_call Offset))))) ) . Names))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -4919,28 +4907,22 @@
                                                   (variable_or_function_call Offset))))) ) . Note))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -4974,28 +4956,22 @@
                                                   (variable_or_function_call Offset))))) ) . Month))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -5029,28 +5005,22 @@
                                                   (variable_or_function_call Offset))))) ) . Day))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -5084,28 +5054,22 @@
                                                   (variable_or_function_call Offset))))) ) . Year))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -5139,28 +5103,22 @@
                                                   (variable_or_function_call Offset))))) ) . Phone))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -5194,28 +5152,22 @@
                                                   (variable_or_function_call Offset))))) ) . Street))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -5249,28 +5201,22 @@
                                                   (variable_or_function_call Offset))))) ) . City))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -5304,28 +5250,22 @@
                                                   (variable_or_function_call Offset))))) ) . State))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 
@@ -5359,28 +5299,22 @@
                                                   (variable_or_function_call Offset))))) ) . Zip))) THEN \r\n 
                                   (then_block 
                                     (statement 
-                                      (call_statement 
-                                        (untyped_id SWAP) 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call i)))) )))) , 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call Index 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (expr 
-                                                          (variable_or_function_call i)) + 
-                                                        (expr 
-                                                          (variable_or_function_call Offset))))) ))))))) \r\n 
+                                      (swap_statement SWAP 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call i)))) )) , 
+                                        (variable_or_function_call Index 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (expr 
+                                                    (variable_or_function_call i)) + 
+                                                  (expr 
+                                                    (variable_or_function_call Offset))))) )))) \r\n 
                                     (statement 
                                       (assignment_statement 
                                         (variable_or_function_call Switch) = 

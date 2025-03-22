@@ -119,28 +119,22 @@
                               (literal 1))))) )))) THEN \r\n 
               (then_block 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Amount 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call I%)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Amount 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (expr 
-                                      (variable_or_function_call I%)) + 
-                                    (expr 
-                                      (literal 1))))) ))))))) \r\n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call Amount 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I%)))) )) , 
+                    (variable_or_function_call Amount 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call I%)) + 
+                              (expr 
+                                (literal 1))))) )))) \r\n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call Swaps%) = 

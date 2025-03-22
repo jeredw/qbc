@@ -72,15 +72,9 @@
               (expr 
                 (literal 360))))) \r\n \r\n ' \r\n 
         (statement 
-          (call_statement 
-            (untyped_id SWAP) 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call APage%))) , 
-              (argument 
-                (expr 
-                  (variable_or_function_call VPage%)))))) \r\n \r\n) LOOP 
+          (swap_statement SWAP 
+            (variable_or_function_call APage%) , 
+            (variable_or_function_call VPage%))) \r\n \r\n) LOOP 
       (loop_condition WHILE 
         (expr 
           (expr 

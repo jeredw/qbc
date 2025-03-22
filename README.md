@@ -314,7 +314,7 @@ parse those using baked in rules.
 | `STRING`         | Keyword     | ✅      | ✅      |
 | `STRING$`        | Function    | -       | ⛔      |
 | `SUB`            | Statement   | ✅      | ✅      |
-| `SWAP`           | Statement   | -       | ⛔      |
+| `SWAP`           | Statement   | ✅      | ⛔      |
 | `SYSTEM`         | Statement   | -       | ⛔      |
 | `TAB`            | Function    | ✅      | ✅      |
 | `TAN`            | Function    | -       | ✅      |

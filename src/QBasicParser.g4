@@ -160,6 +160,7 @@ statement
   | static_metacommand
   | static_statement
   | stop_statement
+  | swap_statement
   | time_statement
   | unlock_statement
   | view_statement
@@ -833,6 +834,10 @@ static_metacommand : COMMENT_META_STATIC ;
 
 stop_statement
   : STOP
+  ;
+
+swap_statement
+  : SWAP a=variable_or_function_call COMMA b=variable_or_function_call
   ;
 
 time_statement

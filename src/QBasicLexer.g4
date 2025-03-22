@@ -153,6 +153,7 @@ STOP : [Ss][Tt][Oo][Pp] ;
 STRIG : [Ss][Tt][Rr][Ii][Gg] ;
 STRING : [Ss][Tt][Rr][Ii][Nn][Gg] ;
 SUB : [Ss][Uu][Bb] ;
+SWAP : [Ss][Ww][Aa][Pp] ;
 TAB : [Tt][Aa][Bb] ;
 THEN : [Tt][Hh][Ee][Nn] ;
 TIMER : [Tt][Ii][Mm][Ee][Rr] ;

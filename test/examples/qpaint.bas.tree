@@ -1179,15 +1179,9 @@
                                   (variable_or_function_call line2x))) THEN 
                               (if_inline_action 
                                 (statement 
-                                  (call_statement 
-                                    (untyped_id SWAP) 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call line1x))) , 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call line2x))))))))) \n 
+                                  (swap_statement SWAP 
+                                    (variable_or_function_call line1x) , 
+                                    (variable_or_function_call line2x)))))) \n 
                           (statement 
                             (if_inline_statement IF 
                               (expr 
@@ -1197,15 +1191,9 @@
                                   (variable_or_function_call line2y))) THEN 
                               (if_inline_action 
                                 (statement 
-                                  (call_statement 
-                                    (untyped_id SWAP) 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call line1y))) , 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call line2y))))))))) \n 
+                                  (swap_statement SWAP 
+                                    (variable_or_function_call line1y) , 
+                                    (variable_or_function_call line2y)))))) \n 
                           (if_block_statement IF 
                             (expr 
                               (expr 
@@ -1465,15 +1453,9 @@
                                 (variable_or_function_call line2x))) THEN 
                             (if_inline_action 
                               (statement 
-                                (call_statement 
-                                  (untyped_id SWAP) 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call line1x))) , 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call line2x))))))))) \n 
+                                (swap_statement SWAP 
+                                  (variable_or_function_call line1x) , 
+                                  (variable_or_function_call line2x)))))) \n 
                         (statement 
                           (if_inline_statement IF 
                             (expr 
@@ -1483,15 +1465,9 @@
                                 (variable_or_function_call line2y))) THEN 
                             (if_inline_action 
                               (statement 
-                                (call_statement 
-                                  (untyped_id SWAP) 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call line1y))) , 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call line2y))))))))) \n 
+                                (swap_statement SWAP 
+                                  (variable_or_function_call line1y) , 
+                                  (variable_or_function_call line2y)))))) \n 
                         (if_block_statement IF 
                           (expr 
                             (expr 
@@ -5915,15 +5891,9 @@
                               (variable_or_function_call line2x))) THEN 
                           (if_inline_action 
                             (statement 
-                              (call_statement 
-                                (untyped_id SWAP) 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call line1x))) , 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call line2x))))))))) \n 
+                              (swap_statement SWAP 
+                                (variable_or_function_call line1x) , 
+                                (variable_or_function_call line2x)))))) \n 
                       (statement 
                         (if_inline_statement IF 
                           (expr 
@@ -5933,15 +5903,9 @@
                               (variable_or_function_call line2y))) THEN 
                           (if_inline_action 
                             (statement 
-                              (call_statement 
-                                (untyped_id SWAP) 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call line1y))) , 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call line2y))))))))) \n \n 
+                              (swap_statement SWAP 
+                                (variable_or_function_call line1y) , 
+                                (variable_or_function_call line2y)))))) \n \n 
                       (statement 
                         (assignment_statement LET 
                           (variable_or_function_call xlength) = 
@@ -9983,28 +9947,22 @@
                                     (literal 1))))) )))) THEN \n 
                     (then_block 
                       (statement 
-                        (call_statement 
-                          (untyped_id SWAP) 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call gfxlist$ 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call a)))) )))) , 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call gfxlist$ 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (expr 
-                                            (variable_or_function_call a)) + 
-                                          (expr 
-                                            (literal 1))))) ))))))) \n) 
+                        (swap_statement SWAP 
+                          (variable_or_function_call gfxlist$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call a)))) )) , 
+                          (variable_or_function_call gfxlist$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call a)) + 
+                                    (expr 
+                                      (literal 1))))) )))) \n) 
                     (end_if_statement END IF)) \n) NEXT)) \n) NEXT)) \n \n 
       (statement 
         (locate_statement LOCATE 

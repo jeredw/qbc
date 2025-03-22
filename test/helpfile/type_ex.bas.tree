@@ -235,25 +235,19 @@
                             (expr 
                               (literal 1))))) ))))) \r\n ' \r\n 
             (statement 
-              (call_statement 
-                (untyped_id SWAP) 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Deck 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call CardOne%)))) )))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call Deck 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call CardTwo%)))) ))))))) \r\n) NEXT I%)) \r\n \r\n) 
+              (swap_statement SWAP 
+                (variable_or_function_call Deck 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call CardOne%)))) )) , 
+                (variable_or_function_call Deck 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call CardTwo%)))) )))) \r\n) NEXT I%)) \r\n \r\n) 
     (end_sub_statement END SUB)) \r\n \r\n ' \r\n ' \r\n 
   (sub_statement SUB 
     (untyped_id ShowCard) 

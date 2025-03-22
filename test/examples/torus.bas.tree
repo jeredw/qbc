@@ -4991,25 +4991,19 @@
                           (expr 
                             (variable_or_function_call Low)))))) \n 
                   (statement 
-                    (call_statement 
-                      (untyped_id SWAP) 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Index 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call Low)))) )))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call Index 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call High)))) ))))))) \n) 
+                    (swap_statement SWAP 
+                      (variable_or_function_call Index 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call Low)))) )) , 
+                      (variable_or_function_call Index 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call High)))) )))) \n) 
                 (end_if_statement END IF)) \n) 
             (else_block_statement ELSE 
               (else_block \n ' \n 
@@ -5048,25 +5042,19 @@
                         (expr 
                           (variable_or_function_call Low)))))) \n 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Index 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call High)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Index 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call RandIndex%)))) ))))))) \n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call Index 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call High)))) )) , 
+                    (variable_or_function_call Index 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call RandIndex%)))) )))) \n 
                 (statement 
                   (assignment_statement 
                     (variable_or_function_call Partition) = 
@@ -5187,25 +5175,19 @@
                                   (expr 
                                     (variable_or_function_call Low)))))) \n 
                           (statement 
-                            (call_statement 
-                              (untyped_id SWAP) 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call Index 
-                                      ( 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call I)))) )))) , 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call Index 
-                                      ( 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call J)))) ))))))) \n) 
+                            (swap_statement SWAP 
+                              (variable_or_function_call Index 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call I)))) )) , 
+                              (variable_or_function_call Index 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call J)))) )))) \n) 
                         (end_if_statement END IF)) \n) LOOP 
                     (loop_condition WHILE 
                       (expr 
@@ -5224,25 +5206,19 @@
                         (expr 
                           (variable_or_function_call Low)))))) \n 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Index 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call I)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call Index 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call High)))) ))))))) \n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call Index 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) )) , 
+                    (variable_or_function_call Index 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call High)))) )))) \n 
                 (if_block_statement IF 
                   (expr 
                     (expr 

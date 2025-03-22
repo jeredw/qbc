@@ -437,28 +437,22 @@
                                     (literal 1))))) ) . Length))) THEN \n 
                     (then_block 
                       (statement 
-                        (call_statement 
-                          (untyped_id SWAP) 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call SortArray 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call Row)))) )))) , 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call SortArray 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (expr 
-                                            (variable_or_function_call Row)) + 
-                                          (expr 
-                                            (literal 1))))) ))))))) \n 
+                        (swap_statement SWAP 
+                          (variable_or_function_call SortArray 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Row)))) )) , 
+                          (variable_or_function_call SortArray 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (expr 
+                                      (variable_or_function_call Row)) + 
+                                    (expr 
+                                      (literal 1))))) )))) \n 
                       (statement 
                         (call_statement 
                           (untyped_id SwapBars) 
@@ -919,25 +913,19 @@
                   (variable_or_function_call Row))) THEN \n 
               (then_block 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call Row)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call SmallestRow)))) ))))))) \n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Row)))) )) , 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call SmallestRow)))) )))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id SwapBars) 
@@ -978,25 +966,19 @@
               (literal 1))) 
           (block \n 
             (statement 
-              (call_statement 
-                (untyped_id SWAP) 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call SortArray 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 1)))) )))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call SortArray 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (variable_or_function_call I)))) ))))))) \n 
+              (swap_statement SWAP 
+                (variable_or_function_call SortArray 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 1)))) )) , 
+                (variable_or_function_call SortArray 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I)))) )))) \n 
             (statement 
               (call_statement 
                 (untyped_id SwapBars) 
@@ -1426,25 +1408,19 @@
                             (variable_or_function_call Child)))) ) . Length))) THEN \n 
               (then_block 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call I)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call Child)))) ))))))) \n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) )) , 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Child)))) )))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id SwapBars) 
@@ -1512,25 +1488,19 @@
                             (variable_or_function_call Parent)))) ) . Length))) THEN \n 
               (then_block 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call Parent)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call I)))) ))))))) \n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Parent)))) )) , 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) )))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id SwapBars) 
@@ -1626,25 +1596,19 @@
                               (variable_or_function_call High)))) ) . Length))) THEN \n 
                 (then_block 
                   (statement 
-                    (call_statement 
-                      (untyped_id SWAP) 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call SortArray 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call Low)))) )))) , 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call SortArray 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call High)))) ))))))) \n 
+                    (swap_statement SWAP 
+                      (variable_or_function_call SortArray 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call Low)))) )) , 
+                      (variable_or_function_call SortArray 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call High)))) )))) \n 
                   (statement 
                     (call_statement 
                       (untyped_id SwapBars) 
@@ -1672,25 +1636,19 @@
                               (expr 
                                 (variable_or_function_call High)))) ))))) \n 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call High)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call RandIndex)))) ))))))) \n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call High)))) )) , 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call RandIndex)))) )))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id SwapBars) 
@@ -1796,25 +1754,19 @@
                             (variable_or_function_call J))) THEN \n 
                         (then_block 
                           (statement 
-                            (call_statement 
-                              (untyped_id SWAP) 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call SortArray 
-                                      ( 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call I)))) )))) , 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call SortArray 
-                                      ( 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (variable_or_function_call J)))) ))))))) \n 
+                            (swap_statement SWAP 
+                              (variable_or_function_call SortArray 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call I)))) )) , 
+                              (variable_or_function_call SortArray 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call J)))) )))) \n 
                           (statement 
                             (call_statement 
                               (untyped_id SwapBars) 
@@ -1833,25 +1785,19 @@
                         (expr 
                           (variable_or_function_call J)))))) \n \n ' \n 
                 (statement 
-                  (call_statement 
-                    (untyped_id SWAP) 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call I)))) )))) , 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call SortArray 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call High)))) ))))))) \n 
+                  (swap_statement SWAP 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call I)))) )) , 
+                    (variable_or_function_call SortArray 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call High)))) )))) \n 
                 (statement 
                   (call_statement 
                     (untyped_id SwapBars) 
@@ -2096,28 +2042,22 @@
                                           (variable_or_function_call Offset))))) ) . Length))) THEN \n 
                           (then_block 
                             (statement 
-                              (call_statement 
-                                (untyped_id SWAP) 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call SortArray 
-                                        ( 
-                                          (argument_list 
-                                            (argument 
-                                              (expr 
-                                                (variable_or_function_call Row)))) )))) , 
-                                  (argument 
-                                    (expr 
-                                      (variable_or_function_call SortArray 
-                                        ( 
-                                          (argument_list 
-                                            (argument 
-                                              (expr 
-                                                (expr 
-                                                  (variable_or_function_call Row)) + 
-                                                (expr 
-                                                  (variable_or_function_call Offset))))) ))))))) \n 
+                              (swap_statement SWAP 
+                                (variable_or_function_call SortArray 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call Row)))) )) , 
+                                (variable_or_function_call SortArray 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (expr 
+                                            (variable_or_function_call Row)) + 
+                                          (expr 
+                                            (variable_or_function_call Offset))))) )))) \n 
                             (statement 
                               (call_statement 
                                 (untyped_id SwapBars) 
