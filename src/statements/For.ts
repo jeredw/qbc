@@ -8,15 +8,12 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Memory } from "../Memory.ts";
 
 export class ForStatement extends Statement {
-  counter: Variable;
-  end: Variable;
-  increment: Variable | null;
-
-  constructor(counter: Variable, end: Variable, increment: Variable | null) {
+  constructor(
+    private counter: Variable,
+    private end: Variable,
+    private increment: Variable | null
+  ) {
     super();
-    this.counter = counter;
-    this.end = end;
-    this.increment = increment;
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
@@ -30,17 +27,13 @@ export class ForStatement extends Statement {
 }
 
 export class NextStatement extends Statement {
-  forToken: Token;
-  counter: Variable;
-  end: Variable;
-  increment: Variable | null;
-
-  constructor(forToken: Token, counter: Variable, end: Variable, increment: Variable | null) {
+  constructor(
+    private forToken: Token,
+    private counter: Variable,
+    private end: Variable,
+    private increment: Variable | null
+  ) {
     super();
-    this.forToken = forToken;
-    this.counter = counter;
-    this.end = end;
-    this.increment = increment;
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {

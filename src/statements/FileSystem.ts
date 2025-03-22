@@ -19,11 +19,8 @@ export interface OpenArgs {
 }
 
 export class OpenStatement extends Statement {
-  args: OpenArgs;
-
-  constructor(args: OpenArgs) {
+  constructor(private args: OpenArgs) {
     super();
-    this.args = args;
   }
 
   override execute(context: ExecutionContext) {
@@ -40,11 +37,8 @@ export class OpenStatement extends Statement {
 }
 
 export class CloseStatement extends Statement {
-  fileNumber: ExprContext;
-
-  constructor(fileNumber: ExprContext) {
+  constructor(private fileNumber: ExprContext) {
     super();
-    this.fileNumber = fileNumber;
   }
 
   override execute(context: ExecutionContext) {
@@ -160,15 +154,12 @@ export class KillStatement extends FileSystemStatement {
 }
 
 export class NameStatement extends Statement {
-  token: Token;
-  oldPathExpr: ExprContext;
-  newPathExpr: ExprContext;
-
-  constructor(token: Token, oldPathExpr: ExprContext, newPathExpr: ExprContext) {
+  constructor(
+    private token: Token,
+    private oldPathExpr: ExprContext,
+    private newPathExpr: ExprContext
+  ) {
     super();
-    this.token = token;
-    this.oldPathExpr = oldPathExpr;
-    this.newPathExpr = newPathExpr;
   }
 
   override execute(context: ExecutionContext) {
@@ -233,15 +224,12 @@ export class LofFunction extends BuiltinFunction1 {
 }
 
 export class SeekFunction extends Statement {
-  token: Token;
-  fileNumber: ExprContext;
-  result: Variable;
-
-  constructor(token: Token, fileNumber: ExprContext, result: Variable) {
+  constructor(
+    private token: Token,
+    private fileNumber: ExprContext,
+    private result: Variable
+  ) {
     super();
-    this.token = token;
-    this.fileNumber = fileNumber;
-    this.result = result;
   }
 
   override execute(context: ExecutionContext) {
@@ -255,15 +243,12 @@ export class SeekFunction extends Statement {
 }
 
 export class SeekStatement extends Statement {
-  token: Token;
-  fileNumber: ExprContext;
-  offset: ExprContext;
-
-  constructor(token: Token, fileNumber: ExprContext, offset: ExprContext) {
+  constructor(
+    private token: Token,
+    private fileNumber: ExprContext,
+    private offset: ExprContext
+  ) {
     super();
-    this.token = token;
-    this.fileNumber = fileNumber;
-    this.offset = offset;
   }
 
   override execute(context: ExecutionContext) {

@@ -3,13 +3,8 @@ import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { Statement } from "./Statement.ts";
 
 export class ReturnStatement extends Statement {
-  start?: Token;
-  where: ControlFlowTag;
-
-  constructor(where: ControlFlowTag, start?: Token) {
+  constructor(private where: ControlFlowTag, private start?: Token) {
     super();
-    this.where = where;
-    this.start = start;
   }
 
   override execute(): ControlFlow {

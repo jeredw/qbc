@@ -6,13 +6,8 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
 export class DoTest extends Statement {
-  isWhile: boolean;
-  expr: ExprContext;
-
-  constructor(isWhile: boolean, expr: ExprContext) {
+  constructor(private isWhile: boolean, private expr: ExprContext) {
     super();
-    this.isWhile = isWhile;
-    this.expr = expr;
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
@@ -25,13 +20,8 @@ export class DoTest extends Statement {
 }
 
 export class LoopTest extends Statement {
-  isWhile: boolean;
-  expr: ExprContext;
-
-  constructor(isWhile: boolean, expr: ExprContext) {
+  constructor(private isWhile: boolean, private expr: ExprContext) {
     super();
-    this.isWhile = isWhile;
-    this.expr = expr;
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
@@ -44,11 +34,8 @@ export class LoopTest extends Statement {
 }
 
 export class IfTest extends Statement {
-  expr: ExprContext;
-
-  constructor(expr: ExprContext) {
+  constructor(private expr: ExprContext) {
     super();
-    this.expr = expr;
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {

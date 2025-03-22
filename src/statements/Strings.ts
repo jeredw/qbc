@@ -102,24 +102,14 @@ export class RightFunction extends LRFunction {
 }
 
 export class MidFunction extends Statement {
-  token: Token;
-  stringExpr: ExprContext;
-  startExpr: ExprContext;
-  lengthExpr: ExprContext | undefined;
-  result: Variable;
-
   constructor(
-    token: Token,
-    stringExpr: ExprContext,
-    startExpr: ExprContext,
-    lengthExpr: ExprContext | undefined,
-    result: Variable) {
+    private token: Token,
+    private stringExpr: ExprContext,
+    private startExpr: ExprContext,
+    private lengthExpr: ExprContext | undefined,
+    private result: Variable
+  ) {
     super();
-    this.token = token;
-    this.stringExpr = stringExpr;
-    this.startExpr = startExpr;
-    this.lengthExpr = lengthExpr;
-    this.result = result;
   }
 
   override execute(context: ExecutionContext) {

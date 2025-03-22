@@ -9,10 +9,10 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
 export class CaseStatement extends Statement {
-  test: Variable;
-  condition: Case_exprContext;
-
-  constructor(test: Variable, condition: Case_exprContext) {
+  constructor(
+    private test: Variable,
+    private condition: Case_exprContext
+  ) {
     super();
     this.test = test;
     this.condition = condition;

@@ -197,11 +197,8 @@ export class MkdmbfFunction extends BytesToString {
 }
 
 abstract class StringToBytes extends BuiltinFunction1 {
-  expectedNumBytes: number;
-
-  constructor(args: BuiltinStatementArgs, expectedNumBytes: number) {
+  constructor(args: BuiltinStatementArgs, private expectedNumBytes: number) {
     super(args);
-    this.expectedNumBytes = expectedNumBytes;
   }
 
   override calculate(input: Value, _context: ExecutionContext): Value {

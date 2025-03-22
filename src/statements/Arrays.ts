@@ -14,17 +14,13 @@ export interface DimBoundsExprs {
 }
 
 export class DimStatement extends Statement {
-  arrayBaseIndex: number;
-  token: Token;
-  bounds: DimBoundsExprs[];
-  result: Variable;
-
-  constructor(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable) {
+  constructor(
+    private arrayBaseIndex: number,
+    private token: Token,
+    private bounds: DimBoundsExprs[],
+    private result: Variable
+  ) {
     super();
-    this.arrayBaseIndex = arrayBaseIndex;
-    this.token = token;
-    this.bounds = bounds;
-    this.result = result;
   }
 
   override execute(context: ExecutionContext) {
@@ -65,15 +61,12 @@ export class DimStatement extends Statement {
 }
 
 export class IndexArrayStatement extends Statement {
-  array: Variable;
-  indexExprs: ExprContext[];
-  result: Variable;
-
-  constructor(array: Variable, indexExprs: ExprContext[], result: Variable) {
+  constructor(
+    private array: Variable,
+    private indexExprs: ExprContext[],
+    private result: Variable
+  ) {
     super();
-    this.array = array;
-    this.indexExprs = indexExprs;
-    this.result = result;
   }
 
   override execute(context: ExecutionContext) {
@@ -108,17 +101,13 @@ export class IndexArrayStatement extends Statement {
 }
 
 abstract class ArrayBoundFunction extends Statement {
-  token: Token;
-  array: Variable;
-  whichExpr: ExprContext | undefined;
-  result: Variable;
-
-  constructor(token: Token, array: Variable, result: Variable, whichExpr?: ExprContext) {
+  constructor(
+    protected token: Token,
+    protected array: Variable,
+    protected result: Variable,
+    protected whichExpr?: ExprContext
+  ) {
     super();
-    this.token = token;
-    this.array = array;
-    this.whichExpr = whichExpr;
-    this.result = result;
   }
 
   override execute(context: ExecutionContext) {

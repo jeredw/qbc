@@ -21,11 +21,8 @@ export interface InputStatementArgs {
 }
 
 abstract class BaseInputStatement extends Statement {
-  args: InputStatementArgs;
-
-  constructor(args: InputStatementArgs) {
+  constructor(protected args: InputStatementArgs) {
     super();
-    this.args = args;
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {

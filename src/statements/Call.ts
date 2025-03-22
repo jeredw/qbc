@@ -15,13 +15,11 @@ export interface StackVariable {
 }
 
 export class CallStatement extends Statement {
-  chunkIndex: number;
-  stackVariables: StackVariable[];
-
-  constructor(chunkIndex: number, stackVariables: StackVariable[]) {
+  constructor(
+    private chunkIndex: number,
+    private stackVariables: StackVariable[]
+  ) {
     super();
-    this.chunkIndex = chunkIndex;
-    this.stackVariables = stackVariables;
   }
 
   override execute(context: ExecutionContext): ControlFlow {

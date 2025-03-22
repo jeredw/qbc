@@ -21,13 +21,8 @@ export class RestoreStatement extends Statement {
 }
 
 export class ReadStatement extends Statement {
-  token: Token;
-  result: Variable;
-
-  constructor(token: Token, result: Variable) {
+  constructor(private token: Token, private result: Variable) {
     super();
-    this.token = token;
-    this.result = result;
   }
 
   override execute(context: ExecutionContext) {

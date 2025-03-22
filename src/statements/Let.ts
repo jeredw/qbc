@@ -9,13 +9,8 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
 export class LetStatement extends Statement {
-  variable: Variable;
-  expr: ExprContext;
-
-  constructor(variable: Variable, expr: ExprContext) {
+  constructor(private variable: Variable, private expr: ExprContext) {
     super();
-    this.variable = variable;
-    this.expr = expr;
   }
 
   override execute(context: ExecutionContext) {

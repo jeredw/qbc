@@ -27,11 +27,8 @@ export interface PrintExpr {
 }
 
 abstract class BasePrintStatement extends Statement {
-  args: PrintStatementArgs;
-
-  constructor(args: PrintStatementArgs) {
+  constructor(protected args: PrintStatementArgs) {
     super();
-    this.args = args;
   }
 
   protected getPrinter(context: ExecutionContext): Printer {
