@@ -1,0 +1,86 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (instr_function instr 
+              ( 
+                (expr 
+                  (literal "hello world")) , 
+                (expr 
+                  (literal "hello")) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (instr_function instr 
+              ( 
+                (expr 
+                  (literal "hello world")) , 
+                (expr 
+                  (literal "world")) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (instr_function instr 
+              ( 
+                (expr 
+                  (literal 3)) , 
+                (expr 
+                  (literal "hello world")) , 
+                (expr 
+                  (literal "hello")) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (instr_function instr 
+              ( 
+                (expr 
+                  (literal 3)) , 
+                (expr 
+                  (literal "hello world")) , 
+                (expr 
+                  (literal "l")) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (instr_function instr 
+              ( 
+                (expr 
+                  (literal 4)) , 
+                (expr 
+                  (literal "hello world")) , 
+                (expr 
+                  (literal "l")) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (instr_function instr 
+              ( 
+                (expr 
+                  (literal 5)) , 
+                (expr 
+                  (literal "hello world")) , 
+                (expr 
+                  (literal "l")) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (instr_function instr 
+              ( 
+                (expr 
+                  (literal "hello world")) , 
+                (expr 
+                  (literal "bye")) ))))))) \n <EOF>)

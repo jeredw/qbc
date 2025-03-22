@@ -67,6 +67,7 @@ import { PrintStatement, PrintStatementArgs, PrintUsingStatement } from "./Print
 import { ReturnStatement } from "./Return.ts";
 import {
   HexFunction,
+  InstrFunction,
   LcaseFunction,
   LeftFunction,
   LtrimFunction,
@@ -270,6 +271,10 @@ export function input(args: InputStatementArgs) {
 
 export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {
   return new IndexArrayStatement(array, indexExprs, result);
+}
+
+export function instr(token: Token, start: parser.ExprContext | undefined, haystack: parser.ExprContext, needle: parser.ExprContext, result: Variable) {
+  return new InstrFunction(token, start, haystack, needle, result);
 }
 
 export function int(args: BuiltinStatementArgs) {

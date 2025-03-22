@@ -1,0 +1,7 @@
+print instr("hello world", "hello")
+print instr("hello world", "world")
+print instr(3, "hello world", "hello")
+print instr(3, "hello world", "l")
+print instr(4, "hello world", "l")
+print instr(5, "hello world", "l")
+print instr("hello world", "bye")

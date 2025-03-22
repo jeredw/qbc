@@ -988,21 +988,15 @@ export class CodeGenerator extends QBasicParserListener {
         }
       }
 
-      override enterSeek_function = (ctx: parser.Seek_functionContext) => {
+      override enterInstr_function = (ctx: parser.Instr_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
         }
-        codeGenerator.addStatement(statements.seekFunction(ctx.start!, ctx._filenum!, result));
-      }
-
-      override enterMid_function = (ctx: parser.Mid_functionContext) => {
-        const result = getTyperContext(ctx.parent!).$result;
-        if (!result) {
-          throw new Error("missing result variable");
-        }
-        codeGenerator.addStatement(
-          statements.mid(ctx.start!, ctx._string_!, ctx._start!, ctx._length, result));
+        const start = ctx._start && codeGenerator.compileExpression(ctx._start!, ctx._start!.start!, {tag: TypeTag.INTEGER })
+        const haystack = codeGenerator.compileExpression(ctx._haystack!, ctx._haystack!.start!, { tag: TypeTag.STRING });
+        const needle = codeGenerator.compileExpression(ctx._needle!, ctx._needle!.start!, { tag: TypeTag.STRING });
+        codeGenerator.addStatement(statements.instr(ctx.start!, start, haystack, needle, result));
       }
 
       override exitLbound_function = (ctx: parser.Lbound_functionContext) => {
@@ -1012,9 +1006,29 @@ export class CodeGenerator extends QBasicParserListener {
         }
         const array = getTyperContext(ctx).$result;
         if (!array || !array.array) {
-          throw new Error("missing arary variable");
+          throw new Error("missing array variable");
         }
         codeGenerator.addStatement(statements.lbound(ctx.start!, array, result, ctx._which));
+      }
+
+      override enterMid_function = (ctx: parser.Mid_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const string = codeGenerator.compileExpression(ctx._string_!, ctx._string_!.start!, {tag: TypeTag.STRING })
+        const start = codeGenerator.compileExpression(ctx._start!, ctx._start!.start!, { tag: TypeTag.INTEGER });
+        const length = ctx._length && codeGenerator.compileExpression(ctx._length, ctx._length.start!, { tag: TypeTag.INTEGER });
+        codeGenerator.addStatement(statements.mid(ctx.start!, string, start, length, result));
+      }
+
+      override enterSeek_function = (ctx: parser.Seek_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const fileNum = codeGenerator.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
+        codeGenerator.addStatement(statements.seekFunction(ctx.start!, fileNum, result));
       }
 
       override exitUbound_function = (ctx: parser.Ubound_functionContext) => {
@@ -1024,7 +1038,7 @@ export class CodeGenerator extends QBasicParserListener {
         }
         const array = getTyperContext(ctx).$result;
         if (!array || !array.array) {
-          throw new Error("missing arary variable");
+          throw new Error("missing array variable");
         }
         codeGenerator.addStatement(statements.ubound(ctx.start!, array, result, ctx._which));
       }

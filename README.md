@@ -194,7 +194,7 @@ parse those using baked in rules.
 | `INP`            | Function    | -       | 🚧      |
 | `INPUT`          | Statement   | ✅      | 🚧      |
 | `INPUT$`         | Function    | ✅      | ⛔      |
-| `INSTR`          | Function    | ⛔      | ⛔      |
+| `INSTR`          | Function    | ✅      | ✅      |
 | `INT`            | Function    | -       | ✅      |
 | `INTEGER`        | Keyword     | ✅      | ✅      |
 | `IOCTL`          | Statement   | ✅      | ⛔      |

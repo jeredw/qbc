@@ -1,4 +1,4 @@
-import { ILLEGAL_FUNCTION_CALL, Value, cast, double, isError, isNumeric, isString, string } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
@@ -246,5 +246,29 @@ export class ValFunction extends BuiltinFunction1 {
       return cast(double(0), this.result.type);
     }
     return cast(value, this.result.type);
+  }
+}
+
+export class InstrFunction extends Statement {
+  constructor(
+    private token: Token,
+    private start: ExprContext | undefined,
+    private haystack: ExprContext,
+    private needle: ExprContext,
+    private result: Variable
+  ) {
+    super()
+  }
+
+  override execute(context: ExecutionContext) {
+    const start = this.start ? evaluateIntegerExpression(this.start, context.memory) : 1;
+    const haystack = evaluateStringExpression(this.haystack, context.memory);
+    const needle = evaluateStringExpression(this.needle, context.memory);
+    if (start < 1 || start > 32767) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const position = haystack.indexOf(needle, start - 1);
+    // -1 -> 0 means not found, other indices are also 1-based.
+    context.memory.write(this.result, integer(position + 1));
   }
 }
