@@ -555,10 +555,11 @@
                   (expr 
                     (literal 35)) - 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Header$)) )))) )) \ 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Header$)) ))))) )) \ 
             (expr 
               (literal 2))))) \r\n \r\n ' \r\n 
       (statement 

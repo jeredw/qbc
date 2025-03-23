@@ -430,10 +430,11 @@
       (expr 
         (literal 1)) LEN = 
       (expr 
-        (builtin_function LEN 
-          ( 
-            (expr 
-              (variable_or_function_call Card)) ))))) \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n 
+        (builtin_function 
+          (len_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call Card)) )))))) \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (assignment_statement 
       (variable_or_function_call LastCard) = 
@@ -446,10 +447,11 @@
                   (expr 
                     (literal 1)))) ))) \ 
         (expr 
-          (builtin_function LEN 
-            ( 
-              (expr 
-                (variable_or_function_call Card)) )))))) \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
+          (builtin_function 
+            (len_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call Card)) ))))))) \r\n \r\n \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
@@ -554,10 +556,11 @@
         (if_block_statement IF 
           (expr 
             (expr 
-              (builtin_function LEN 
-                ( 
-                  (expr 
-                    (variable_or_function_call Choice$)) ))) = 
+              (builtin_function 
+                (len_function LEN 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Choice$)) )))) = 
             (expr 
               (literal 1))) THEN \r\n 
           (then_block 
@@ -1439,15 +1442,16 @@
           (expr 
             (literal 2)) LEN = 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call Index 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 1)))) ))) ))))) \r\n 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call Index 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1)))) ))) )))))) \r\n 
       (statement 
         (for_next_statement FOR Card = 
           (expr 
@@ -2303,10 +2307,11 @@
         (assignment_statement 
           (variable_or_function_call P) = 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call Work$)) ))))) : 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call Work$)) )))))) : 
       (statement 
         (assignment_statement 
           (variable_or_function_call MaxP) = 
@@ -2384,10 +2389,11 @@
             (if_block_statement IF 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call Choice$)) ))) = 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Choice$)) )))) = 
                 (expr 
                   (literal 2))) THEN \r\n 
               (then_block 

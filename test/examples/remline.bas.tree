@@ -580,10 +580,11 @@
                                   (argument_list 
                                     (argument 
                                       (expr 
-                                        (builtin_function LEN 
-                                          ( 
-                                            (expr 
-                                              (variable_or_function_call Token$)) ))))) ))))) \n 
+                                        (builtin_function 
+                                          (len_function LEN 
+                                            ( 
+                                              (expr 
+                                                (variable_or_function_call Token$)) )))))) ))))) \n 
                         (statement 
                           (mid_statement MID$ 
                             ( 
@@ -599,10 +600,11 @@
                                         (expr 
                                           (variable_or_function_call Sep$)))) ))) , 
                               (expr 
-                                (builtin_function LEN 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call Token$)) ))) ) = 
+                                (builtin_function 
+                                  (len_function LEN 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call Token$)) )))) ) = 
                             (expr 
                               (variable_or_function_call Token$)))) \n) 
                       (end_if_statement END IF)) \n \n ' \n ' \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n \n) 
@@ -871,10 +873,11 @@
                             (expr 
                               (variable_or_function_call BegPos)) , 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call SaveStr$)) ))) ))))) , 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call SaveStr$)) )))) ))))) , 
                   (argument 
                     (expr 
                       (variable_or_function_call Delim$)))) ))))) \n 
@@ -920,10 +923,11 @@
                             (expr 
                               (variable_or_function_call BegPos)) , 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call SaveStr$)) ))) ))))) , 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call SaveStr$)) )))) ))))) , 
                   (argument 
                     (expr 
                       (variable_or_function_call Delim$)))) ))))) \n 
@@ -949,10 +953,11 @@
                 (variable_or_function_call NewPos) = 
                 (expr 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call SaveStr$)) ))) + 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call SaveStr$)) )))) + 
                   (expr 
                     (literal 1))))) \n)) 
         (end_if_statement END IF)) \n ' \n 
@@ -1078,10 +1083,11 @@
         (assignment_statement 
           (variable_or_function_call Ln) = 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call InString$)) ))))) \n 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call InString$)) )))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BegPos) = 
@@ -1151,10 +1157,11 @@
         (assignment_statement 
           (variable_or_function_call Ln) = 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call InString$)) ))))) \n 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call InString$)) )))))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call BegPos) = 

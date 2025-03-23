@@ -3999,18 +3999,19 @@
                               (argument 
                                 (expr 
                                   (expr 
-                                    (builtin_function LEN 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call STR$ 
-                                            ( 
-                                              (argument_list 
-                                                (argument 
-                                                  (expr 
+                                    (builtin_function 
+                                      (len_function LEN 
+                                        ( 
+                                          (expr 
+                                            (variable_or_function_call STR$ 
+                                              ( 
+                                                (argument_list 
+                                                  (argument 
                                                     (expr 
-                                                      (variable_or_function_call col)) MOD 
-                                                    (expr 
-                                                      (literal 15))))) ))) ))) - 
+                                                      (expr 
+                                                        (variable_or_function_call col)) MOD 
+                                                      (expr 
+                                                        (literal 15))))) ))) )))) - 
                                   (expr 
                                     (literal 1))))) ))) ;))) \n) 
               (else_block_statement ELSE 
@@ -4060,23 +4061,24 @@
                               (argument 
                                 (expr 
                                   (expr 
-                                    (builtin_function LEN 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call STR$ 
-                                            ( 
-                                              (argument_list 
-                                                (argument 
-                                                  (expr 
-                                                    (variable_or_function_call INT 
-                                                      ( 
-                                                        (argument_list 
-                                                          (argument 
-                                                            (expr 
+                                    (builtin_function 
+                                      (len_function LEN 
+                                        ( 
+                                          (expr 
+                                            (variable_or_function_call STR$ 
+                                              ( 
+                                                (argument_list 
+                                                  (argument 
+                                                    (expr 
+                                                      (variable_or_function_call INT 
+                                                        ( 
+                                                          (argument_list 
+                                                            (argument 
                                                               (expr 
-                                                                (variable_or_function_call col)) / 
-                                                              (expr 
-                                                                (literal 15))))) ))))) ))) ))) - 
+                                                                (expr 
+                                                                  (variable_or_function_call col)) / 
+                                                                (expr 
+                                                                  (literal 15))))) ))))) ))) )))) - 
                                   (expr 
                                     (literal 1))))) ))) ;) 
                     (print_argument 
@@ -4116,26 +4118,27 @@
                                 (argument 
                                   (expr 
                                     (expr 
-                                      (builtin_function LEN 
-                                        ( 
-                                          (expr 
-                                            (variable_or_function_call STR$ 
-                                              ( 
-                                                (argument_list 
-                                                  (argument 
-                                                    (expr 
-                                                      (variable_or_function_call INT 
-                                                        ( 
-                                                          (argument_list 
-                                                            (argument 
-                                                              (expr 
+                                      (builtin_function 
+                                        (len_function LEN 
+                                          ( 
+                                            (expr 
+                                              (variable_or_function_call STR$ 
+                                                ( 
+                                                  (argument_list 
+                                                    (argument 
+                                                      (expr 
+                                                        (variable_or_function_call INT 
+                                                          ( 
+                                                            (argument_list 
+                                                              (argument 
                                                                 (expr 
                                                                   (expr 
-                                                                    (variable_or_function_call col)) / 
+                                                                    (expr 
+                                                                      (variable_or_function_call col)) / 
+                                                                    (expr 
+                                                                      (literal 15))) + 
                                                                   (expr 
-                                                                    (literal 15))) + 
-                                                                (expr 
-                                                                  (literal 1))))) ))))) ))) ))) - 
+                                                                    (literal 1))))) ))))) ))) )))) - 
                                     (expr 
                                       (literal 1))))) ))) ;) 
                       (print_argument 
@@ -7348,10 +7351,11 @@
                         (if_block_statement IF 
                           (expr 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call name$)) ))) < 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call name$)) )))) < 
                             (expr 
                               (literal 8))) THEN \n 
                           (then_block 
@@ -7401,10 +7405,11 @@
                                         (literal 8)))) )))) AND 
                           (expr 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call name$)) ))) > 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call name$)) )))) > 
                             (expr 
                               (literal 0)))) THEN 
                         (else_block \n 
@@ -7421,10 +7426,11 @@
                                       (argument 
                                         (expr 
                                           (expr 
-                                            (builtin_function LEN 
-                                              ( 
-                                                (expr 
-                                                  (variable_or_function_call name$)) ))) - 
+                                            (builtin_function 
+                                              (len_function LEN 
+                                                ( 
+                                                  (expr 
+                                                    (variable_or_function_call name$)) )))) - 
                                           (expr 
                                             (literal 1))))) ))))) \n 
                           (statement 
@@ -7465,10 +7471,11 @@
                                     (literal 13)))) )))) AND 
                       (expr 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call name$)) ))) > 
+                          (builtin_function 
+                            (len_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call name$)) )))) > 
                         (expr 
                           (literal 0))))))) \n \n 
               (statement 
@@ -8217,15 +8224,16 @@
                                   (argument 
                                     (expr 
                                       (expr 
-                                        (builtin_function LEN 
-                                          ( 
-                                            (expr 
-                                              (variable_or_function_call STR$ 
-                                                ( 
-                                                  (argument_list 
-                                                    (argument 
-                                                      (expr 
-                                                        (variable_or_function_call arraylength)))) ))) ))) - 
+                                        (builtin_function 
+                                          (len_function LEN 
+                                            ( 
+                                              (expr 
+                                                (variable_or_function_call STR$ 
+                                                  ( 
+                                                    (argument_list 
+                                                      (argument 
+                                                        (expr 
+                                                          (variable_or_function_call arraylength)))) ))) )))) - 
                                       (expr 
                                         (literal 1))))) )))))) \n 
                     (statement 
@@ -12154,10 +12162,11 @@
                 (if_block_statement IF 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call name$)) ))) < 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call name$)) )))) < 
                     (expr 
                       (literal 8))) THEN \n 
                   (then_block 
@@ -12207,10 +12216,11 @@
                                 (literal 8)))) )))) AND 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call name$)) ))) > 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call name$)) )))) > 
                     (expr 
                       (literal 0)))) THEN 
                 (else_block \n 
@@ -12227,10 +12237,11 @@
                               (argument 
                                 (expr 
                                   (expr 
-                                    (builtin_function LEN 
-                                      ( 
-                                        (expr 
-                                          (variable_or_function_call name$)) ))) - 
+                                    (builtin_function 
+                                      (len_function LEN 
+                                        ( 
+                                          (expr 
+                                            (variable_or_function_call name$)) )))) - 
                                   (expr 
                                     (literal 1))))) ))))) \n 
                   (statement 
@@ -12271,10 +12282,11 @@
                             (literal 13)))) )))) AND 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call name$)) ))) > 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call name$)) )))) > 
                 (expr 
                   (literal 0))))))) \n \n 
       (statement 
@@ -13387,18 +13399,19 @@
                           (argument 
                             (expr 
                               (expr 
-                                (builtin_function LEN 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call STR$ 
-                                        ( 
-                                          (argument_list 
-                                            (argument 
-                                              (expr 
+                                (builtin_function 
+                                  (len_function LEN 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call STR$ 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
                                                 (expr 
-                                                  (variable_or_function_call x)) - 
-                                                (expr 
-                                                  (literal 1))))) ))) ))) - 
+                                                  (expr 
+                                                    (variable_or_function_call x)) - 
+                                                  (expr 
+                                                    (literal 1))))) ))) )))) - 
                               (expr 
                                 (literal 1))))) )))))) \n) NEXT)) \n \n 
       (statement 

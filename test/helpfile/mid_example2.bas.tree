@@ -9,10 +9,11 @@
     (assignment_statement 
       (variable_or_function_call Length) = 
       (expr 
-        (builtin_function LEN 
-          ( 
-            (expr 
-              (variable_or_function_call Binary$)) ))))) ' \n 
+        (builtin_function 
+          (len_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call Binary$)) )))))) ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call Decimal) = 

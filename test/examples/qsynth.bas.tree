@@ -1195,10 +1195,11 @@
                 (literal 40)) - 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call text$)) ))) \ 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call text$)) )))) \ 
                 (expr 
                   (literal 2)))) + 
             (expr 
@@ -1368,10 +1369,11 @@
                                             (literal 20)) - 
                                           (expr 
                                             (expr 
-                                              (builtin_function LEN 
-                                                ( 
-                                                  (expr 
-                                                    (variable_or_function_call Title$)) ))) \ 
+                                              (builtin_function 
+                                                (len_function LEN 
+                                                  ( 
+                                                    (expr 
+                                                      (variable_or_function_call Title$)) )))) \ 
                                             (expr 
                                               (literal 2)))))) ))) + 
                               (expr 
@@ -1619,18 +1621,20 @@
           (expr 
             (expr 
               (expr 
-                (builtin_function LEN 
-                  ( 
-                    (expr 
-                      (variable_or_function_call HeaderInfo)) ))) + 
+                (builtin_function 
+                  (len_function LEN 
+                    ( 
+                      (expr 
+                        (variable_or_function_call HeaderInfo)) )))) + 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call S)) ))) * 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call S)) )))) * 
                     (expr 
                       ( 
                         (expr 
@@ -1717,18 +1721,20 @@
                 (expr 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call HeaderInfo)) ))) + 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call HeaderInfo)) )))) + 
                     (expr 
                       ( 
                         (expr 
                           (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call S)) ))) * 
+                            (builtin_function 
+                              (len_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call S)) )))) * 
                           (expr 
                             ( 
                               (expr 
@@ -1763,18 +1769,20 @@
                 (expr 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call HeaderInfo)) ))) + 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call HeaderInfo)) )))) + 
                     (expr 
                       ( 
                         (expr 
                           (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call S)) ))) * 
+                            (builtin_function 
+                              (len_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call S)) )))) * 
                           (expr 
                             ( 
                               (expr 
@@ -1797,15 +1805,17 @@
             (expr 
               (variable_or_function_call HeaderInfo.NextNote)) - 
             (expr 
-              (builtin_function LEN 
+              (builtin_function 
+                (len_function LEN 
+                  ( 
+                    (expr 
+                      (variable_or_function_call n)) ))))) STEP 
+          (expr 
+            (builtin_function 
+              (len_function LEN 
                 ( 
                   (expr 
-                    (variable_or_function_call n)) )))) STEP 
-          (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call n)) ))) 
+                    (variable_or_function_call n)) )))) 
           (block \n 
             (statement 
               (seek_statement SEEK # 
@@ -1814,18 +1824,20 @@
                 (expr 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call HeaderInfo)) ))) + 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call HeaderInfo)) )))) + 
                     (expr 
                       ( 
                         (expr 
                           (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call S)) ))) * 
+                            (builtin_function 
+                              (len_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call S)) )))) * 
                           (expr 
                             (variable_or_function_call MAXSONG))) ))) + 
                   (expr 
@@ -1842,18 +1854,20 @@
                 (expr 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call HeaderInfo)) ))) + 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call HeaderInfo)) )))) + 
                     (expr 
                       ( 
                         (expr 
                           (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call S)) ))) * 
+                            (builtin_function 
+                              (len_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call S)) )))) * 
                           (expr 
                             (variable_or_function_call MAXSONG))) ))) + 
                   (expr 
@@ -1870,10 +1884,11 @@
                   (expr 
                     (variable_or_function_call BackPtr)) + 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call n)) )))))) ' \n) NEXT i)) \n \n ' \n ' \n ' \n ' \n ' \n 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call n)) ))))))) ' \n) NEXT i)) \n \n ' \n ' \n ' \n ' \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call HeaderInfo.Count) = 
@@ -2592,15 +2607,16 @@
                       ( 
                         (expr 
                           (expr 
-                            (builtin_function LEN 
-                              ( 
-                                (expr 
-                                  (variable_or_function_call RTRIM$ 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (variable_or_function_call SongDesc)))) ))) ))) \ 
+                            (builtin_function 
+                              (len_function LEN 
+                                ( 
+                                  (expr 
+                                    (variable_or_function_call RTRIM$ 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (variable_or_function_call SongDesc)))) ))) )))) \ 
                           (expr 
                             (literal 2))) ))))) \n 
               (statement 
@@ -2792,15 +2808,16 @@
                       (literal 58)) - 
                     (expr 
                       (expr 
-                        (builtin_function LEN 
-                          ( 
-                            (expr 
-                              (variable_or_function_call RTRIM$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (variable_or_function_call SongDesc)))) ))) ))) \ 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call RTRIM$ 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call SongDesc)))) ))) )))) \ 
                       (expr 
                         (literal 2)))))) \n 
               (statement 
@@ -3251,10 +3268,11 @@
                   ( 
                     (expr 
                       (expr 
-                        (builtin_function LEN 
-                          ( 
-                            (expr 
-                              (variable_or_function_call Title$)) ))) \ 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call Title$)) )))) \ 
                       (expr 
                         (literal 2))) ))))) \n 
           (statement 
@@ -3978,10 +3996,11 @@
             (if_block_statement IF 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call x$)) ))) > 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call x$)) )))) > 
                 (expr 
                   (literal 1))) THEN ' 
               (then_block \n 
@@ -4793,10 +4812,11 @@
             (if_block_statement IF 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call k$)) ))) > 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call k$)) )))) > 
                 (expr 
                   (literal 1))) THEN \n 
               (then_block 
@@ -5311,10 +5331,11 @@
               (literal 40)) - 
             (expr 
               (expr 
-                (builtin_function LEN 
-                  ( 
-                    (expr 
-                      (variable_or_function_call msg$)) ))) \ 
+                (builtin_function 
+                  (len_function LEN 
+                    ( 
+                      (expr 
+                        (variable_or_function_call msg$)) )))) \ 
               (expr 
                 (literal 2)))))) \n 
       (statement 
@@ -6778,18 +6799,20 @@
           (expr 
             (expr 
               (expr 
-                (builtin_function LEN 
-                  ( 
-                    (expr 
-                      (variable_or_function_call HeaderInfo)) ))) + 
+                (builtin_function 
+                  (len_function LEN 
+                    ( 
+                      (expr 
+                        (variable_or_function_call HeaderInfo)) )))) + 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call S)) ))) * 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call S)) )))) * 
                     (expr 
                       ( 
                         (expr 
@@ -6826,18 +6849,20 @@
           (expr 
             (expr 
               (expr 
-                (builtin_function LEN 
-                  ( 
-                    (expr 
-                      (variable_or_function_call HeaderInfo)) ))) + 
+                (builtin_function 
+                  (len_function LEN 
+                    ( 
+                      (expr 
+                        (variable_or_function_call HeaderInfo)) )))) + 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call S)) ))) * 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call S)) )))) * 
                     (expr 
                       (variable_or_function_call MAXSONG))) ))) + 
             (expr 
@@ -6978,10 +7003,11 @@
                   (if_block_statement IF 
                     (expr 
                       (expr 
-                        (builtin_function LEN 
-                          ( 
-                            (expr 
-                              (variable_or_function_call x$)) ))) > 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call x$)) )))) > 
                       (expr 
                         (literal 1))) THEN \n 
                     (then_block 
@@ -8817,10 +8843,11 @@
                           ( 
                             (expr 
                               (expr 
-                                (builtin_function LEN 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call Hld$)) ))) < 
+                                (builtin_function 
+                                  (len_function LEN 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call Hld$)) )))) < 
                               (expr 
                                 (literal 2))) )) AND 
                         (expr 
@@ -8956,10 +8983,11 @@
                         (if_inline_statement IF 
                           (expr 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call Hld$)) ))) > 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call Hld$)) )))) > 
                             (expr 
                               (literal 1))) THEN 
                           (if_inline_action 
@@ -9207,10 +9235,11 @@
                           (if_inline_statement IF 
                             (expr 
                               (expr 
-                                (builtin_function LEN 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call Hld$)) ))) > 
+                                (builtin_function 
+                                  (len_function LEN 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call Hld$)) )))) > 
                               (expr 
                                 (literal 1))) THEN 
                             (if_inline_action 
@@ -9558,18 +9587,20 @@
           (expr 
             (expr 
               (expr 
-                (builtin_function LEN 
-                  ( 
-                    (expr 
-                      (variable_or_function_call HeaderInfo)) ))) + 
+                (builtin_function 
+                  (len_function LEN 
+                    ( 
+                      (expr 
+                        (variable_or_function_call HeaderInfo)) )))) + 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call S)) ))) * 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call S)) )))) * 
                     (expr 
                       (variable_or_function_call HeaderInfo.Count))) ))) + 
             (expr 
@@ -9606,18 +9637,20 @@
           (expr 
             (expr 
               (expr 
-                (builtin_function LEN 
-                  ( 
-                    (expr 
-                      (variable_or_function_call HeaderInfo)) ))) + 
+                (builtin_function 
+                  (len_function LEN 
+                    ( 
+                      (expr 
+                        (variable_or_function_call HeaderInfo)) )))) + 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call S)) ))) * 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call S)) )))) * 
                     (expr 
                       (variable_or_function_call MAXSONG))) ))) + 
             (expr 
@@ -9659,15 +9692,16 @@
                   (expr 
                     (variable_or_function_call Counter)) * 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call Song 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (literal 1)))) ))) )))) ))))) \n 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call Song 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (literal 1)))) ))) ))))) ))))) \n 
       (statement 
         (seek_statement SEEK # 
           (expr 
@@ -9803,10 +9837,11 @@
                     (if_block_statement IF 
                       (expr 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call text$)) ))) > 
+                          (builtin_function 
+                            (len_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call text$)) )))) > 
                         (expr 
                           (literal 0))) THEN \n 
                       (then_block 
@@ -9823,10 +9858,11 @@
                                     (argument 
                                       (expr 
                                         (expr 
-                                          (builtin_function LEN 
-                                            ( 
-                                              (expr 
-                                                (variable_or_function_call text$)) ))) - 
+                                          (builtin_function 
+                                            (len_function LEN 
+                                              ( 
+                                                (expr 
+                                                  (variable_or_function_call text$)) )))) - 
                                         (expr 
                                           (literal 1))))) ))))) \n 
                         (statement 
@@ -9851,10 +9887,11 @@
                               (expr 
                                 (variable_or_function_call col)) + 
                               (expr 
-                                (builtin_function LEN 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call text$)) )))))) \n) 
+                                (builtin_function 
+                                  (len_function LEN 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call text$)) ))))))) \n) 
                       (end_if_statement END IF)) \n \n)) 
                 (case_block 
                   (case_statement CASE 
@@ -9877,10 +9914,11 @@
                     (if_block_statement IF 
                       (expr 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call text$)) ))) < 
+                          (builtin_function 
+                            (len_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call text$)) )))) < 
                         (expr 
                           (variable_or_function_call MaxLen))) THEN ' 
                       (then_block \n 

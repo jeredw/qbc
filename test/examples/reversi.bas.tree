@@ -1964,9 +1964,10 @@
               (expr 
                 (variable_or_function_call i)))) )))))) \n) NEXT i)) \n (statement (locate_statement LOCATE (expr (literal 23)) , (expr (literal 25)))) : (statement (print_statement PRINT (print_argument (expr (literal "- Press any key to continue -"))))) \n (label (text_label (untyped_id SLEEP)) :) (statement (assignment_statement (variable_or_function_call a$) = (expr (variable_or_function_call INKEY$)))) \n (statement (call_statement (untyped_id DrawGameBoard))) \n (statement (call_statement (untyped_id DrawCursor) (argument_list (argument (expr 
   (variable_or_function_call GS.curRow))) , (argument (expr 
-  (variable_or_function_call GS.curCol)))))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DisplayMsg) ( (parameter_list (parameter a$)) ) (block \n \n (statement (assignment_statement (variable_or_function_call slen) = (expr (builtin_function LEN ( 
-  (expr 
-    (variable_or_function_call a$)) ))))) \n (statement (assignment_statement (variable_or_function_call LX) = (expr (expr ( 
+  (variable_or_function_call GS.curCol)))))) \n \n) (end_sub_statement END SUB)) \n \n (sub_statement SUB (untyped_id DisplayMsg) ( (parameter_list (parameter a$)) ) (block \n \n (statement (assignment_statement (variable_or_function_call slen) = (expr (builtin_function (len_function LEN 
+  ( 
+    (expr 
+      (variable_or_function_call a$)) )))))) \n (statement (assignment_statement (variable_or_function_call LX) = (expr (expr ( 
   (expr 
     (expr 
       (literal 640)) - 

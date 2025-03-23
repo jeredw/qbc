@@ -3997,10 +3997,11 @@
         (if_inline_statement IF 
           (expr 
             (expr 
-              (builtin_function LEN 
-                ( 
-                  (expr 
-                    (variable_or_function_call Available$)) ))) = 
+              (builtin_function 
+                (len_function LEN 
+                  ( 
+                    (expr 
+                      (variable_or_function_call Available$)) )))) = 
             (expr 
               (literal 1))) THEN 
           (if_inline_action 
@@ -4411,10 +4412,11 @@
                                             (literal 1))) , 
                                         (argument 
                                           (expr 
-                                            (builtin_function LEN 
-                                              ( 
-                                                (expr 
-                                                  (variable_or_function_call Available$)) )))) , 
+                                            (builtin_function 
+                                              (len_function LEN 
+                                                ( 
+                                                  (expr 
+                                                    (variable_or_function_call Available$)) ))))) , 
                                         (argument 
                                           (expr 
                                             (variable_or_function_call I))) , 

@@ -920,8 +920,8 @@ builtin_function
   | input_function
   | instr_function
   | IOCTL_STRING '(' '#'? filenum=expr ')'
+  | len_function
   | lbound_function
-  | LEN '(' expr ')'
   | mid_function
   | PEN '(' expr ')'
   | PLAY '(' expr ')'
@@ -943,6 +943,13 @@ input_function
 
 instr_function
   : INSTR '(' (start=expr COMMA)? haystack=expr COMMA needle=expr ')'
+  ;
+
+// *** expr must be either a string expression or a variable reference.
+// Because variable_or_function_call may be a function call expression, we admit
+// all expressions here and reject unsupported expressions later.
+len_function
+  : LEN '(' expr ')'
   ;
 
 // lbound and ubound take array arguments but do not append () to these like

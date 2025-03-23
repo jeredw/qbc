@@ -1151,10 +1151,11 @@
                     (if_block_statement IF 
                       (expr 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call K$)) ))) > 
+                          (builtin_function 
+                            (len_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call K$)) )))) > 
                         (expr 
                           (literal 0))) THEN ' 
                       (then_block \n 
@@ -1527,10 +1528,11 @@
                     (expr 
                       (variable_or_function_call ScreenWidth)) - 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Text$)) )))) )) \ 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Text$)) ))))) )) \ 
               (expr 
                 (literal 2))) + 
             (expr 
@@ -2972,10 +2974,11 @@
             (literal 1)) TO 
           (expr 
             (expr 
-              (builtin_function LEN 
-                ( 
-                  (expr 
-                    (variable_or_function_call M$)) ))) - 
+              (builtin_function 
+                (len_function LEN 
+                  ( 
+                    (expr 
+                      (variable_or_function_call M$)) )))) - 
             (expr 
               (literal 1))) 
           (block ' \n 
@@ -2996,10 +2999,11 @@
                             (variable_or_function_call M$)) , 
                           (expr 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call M$)) ))) - 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call M$)) )))) - 
                             (expr 
                               (variable_or_function_call i))) , 
                           (expr 

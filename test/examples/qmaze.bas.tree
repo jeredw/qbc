@@ -1696,10 +1696,11 @@
                     (expr 
                       (variable_or_function_call SCREENWIDTH)) - 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call text$)) )))) )) \ 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call text$)) ))))) )) \ 
               (expr 
                 (literal 2))) + 
             (expr 
@@ -6331,10 +6332,11 @@
                     (literal "2")))) OR 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call InputHold$)) ))) = 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call InputHold$)) )))) = 
                 (expr 
                   (literal 0))))))) \n 
       (statement 
@@ -6447,20 +6449,22 @@
                           (variable_or_function_call MAXLEVEL)))) AND 
                     (expr 
                       (expr 
-                        (builtin_function LEN 
-                          ( 
-                            (expr 
-                              (variable_or_function_call InputHold$)) ))) < 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call InputHold$)) )))) < 
                       (expr 
                         (literal 2)))) )) OR 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call InputHold$)) ))) = 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call InputHold$)) )))) = 
                     (expr 
                       (literal 0))) )))))) \n 
       (statement 
@@ -6563,20 +6567,22 @@
                           (variable_or_function_call MAXMAZES)))) AND 
                     (expr 
                       (expr 
-                        (builtin_function LEN 
-                          ( 
-                            (expr 
-                              (variable_or_function_call InputHold$)) ))) < 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call InputHold$)) )))) < 
                       (expr 
                         (literal 3)))) )) OR 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call InputHold$)) ))) = 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call InputHold$)) )))) = 
                     (expr 
                       (literal 0))) )))))) \n 
       (statement 
@@ -6700,30 +6706,33 @@
                           (variable_or_function_call MAXMONSTERS)))) AND 
                     (expr 
                       (expr 
-                        (builtin_function LEN 
-                          ( 
-                            (expr 
-                              (variable_or_function_call InputHold$)) ))) < 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call InputHold$)) )))) < 
                       (expr 
                         (literal 3)))) )) OR 
               (expr 
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call InputHold$)) ))) = 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call InputHold$)) )))) = 
                     (expr 
                       (literal 0))) )))))) \n 
       (statement 
         (if_inline_statement IF 
           (expr 
             (expr 
-              (builtin_function LEN 
-                ( 
-                  (expr 
-                    (variable_or_function_call InputHold$)) ))) = 
+              (builtin_function 
+                (len_function LEN 
+                  ( 
+                    (expr 
+                      (variable_or_function_call InputHold$)) )))) = 
             (expr 
               (literal 0))) THEN 
           (if_inline_action 
@@ -6833,10 +6842,11 @@
                 ( 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call InputHold$)) ))) = 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call InputHold$)) )))) = 
                     (expr 
                       (literal 0))) )))))) \n 
       (if_block_statement IF 

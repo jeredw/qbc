@@ -22,10 +22,11 @@
     (assignment_statement 
       (variable_or_function_call M) = 
       (expr 
-        (builtin_function LEN 
-          ( 
-            (expr 
-              (variable_or_function_call Old$)) ))))) \r\n 
+        (builtin_function 
+          (len_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call Old$)) )))))) \r\n 
   (statement 
     (open_statement OPEN 
       (expr 

@@ -1034,10 +1034,11 @@
               (if_block_statement IF 
                 (expr 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call k$)) ))) > 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call k$)) )))) > 
                   (expr 
                     (literal 0))) THEN ' 
                 (then_block \n 
@@ -2544,10 +2545,11 @@
                       (literal 2))) )) - 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call text$)) ))) \ 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call text$)) )))) \ 
                 (expr 
                   (literal 2)))) + 
             (expr 
@@ -4514,10 +4516,11 @@
                     (literal "2")))) OR 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call PaddleHold$)) ))) = 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call PaddleHold$)) )))) = 
                 (expr 
                   (literal 0))))))) \n 
       (statement 
@@ -4573,10 +4576,11 @@
             (literal 1)) TO 
           (expr 
             (expr 
-              (builtin_function LEN 
-                ( 
-                  (expr 
-                    (variable_or_function_call M$)) ))) - 
+              (builtin_function 
+                (len_function LEN 
+                  ( 
+                    (expr 
+                      (variable_or_function_call M$)) )))) - 
             (expr 
               (literal 1))) 
           (block ' \n 
@@ -4597,10 +4601,11 @@
                             (variable_or_function_call M$)) , 
                           (expr 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call M$)) ))) - 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call M$)) )))) - 
                             (expr 
                               (variable_or_function_call i))) , 
                           (expr 

@@ -117,10 +117,11 @@
         (assignment_statement 
           (variable_or_function_call L) = 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call Cl$)) ))))) \r\n ' \r\n 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call Cl$)) )))))) \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I = 
           (expr 

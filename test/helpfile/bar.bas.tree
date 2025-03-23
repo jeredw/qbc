@@ -298,15 +298,16 @@
               ( 
                 (expr 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call RTRIM$ 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call T.MainTitle)))) ))) ))) / 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call RTRIM$ 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call T.MainTitle)))) ))) )))) / 
                   (expr 
                     (literal 2))) ))))) \r\n 
       (statement 
@@ -338,15 +339,16 @@
                         (literal 13)) - 
                       (expr 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call RTRIM$ 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call T.YTitle)))) ))) ))) / 
+                          (builtin_function 
+                            (len_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call RTRIM$ 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call T.YTitle)))) ))) )))) / 
                         (expr 
                           (literal 2)))))) ))))) \r\n 
       (statement 
@@ -354,15 +356,16 @@
           (expr 
             (literal 1)) TO 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call RTRIM$ 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call T.YTitle)))) ))) ))) 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call RTRIM$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call T.YTitle)))) ))) )))) 
           (block \r\n 
             (statement 
               (locate_statement LOCATE 
@@ -611,15 +614,16 @@
               ( 
                 (expr 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call RTRIM$ 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call T.XTitle)))) ))) ))) / 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call RTRIM$ 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call T.XTitle)))) ))) )))) / 
                   (expr 
                     (literal 2))) ))))) \r\n 
       (statement 
@@ -856,20 +860,21 @@
                           (argument 
                             (expr 
                               (expr 
-                                (builtin_function LEN 
-                                  ( 
-                                    (expr 
-                                      (variable_or_function_call RTRIM$ 
-                                        ( 
-                                          (argument_list 
-                                            (argument 
-                                              (expr 
-                                                (variable_or_function_call Label$ 
-                                                  ( 
-                                                    (argument_list 
-                                                      (argument 
-                                                        (expr 
-                                                          (variable_or_function_call I%)))) ))))) ))) ))) / 
+                                (builtin_function 
+                                  (len_function LEN 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call RTRIM$ 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
+                                                (expr 
+                                                  (variable_or_function_call Label$ 
+                                                    ( 
+                                                      (argument_list 
+                                                        (argument 
+                                                          (expr 
+                                                            (variable_or_function_call I%)))) ))))) ))) )))) / 
                               (expr 
                                 (literal 2))))) )))))) \r\n 
             (statement 

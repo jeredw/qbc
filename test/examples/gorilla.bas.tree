@@ -972,10 +972,11 @@
                 (expr 
                   (expr 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call Text$)) ))) / 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call Text$)) )))) / 
                     (expr 
                       (literal 2))) + 
                   (expr 
@@ -3570,18 +3571,20 @@
                     (literal 0))) AND 
                 (expr 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call game$)) ))) < 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call game$)) )))) < 
                   (expr 
                     (literal 3)))) OR 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call game$)) ))) = 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call game$)) )))) = 
                 (expr 
                   (literal 0))))))) \n 
       (statement 
@@ -3645,10 +3648,11 @@
                   (literal 0))) OR 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call grav$)) ))) = 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call grav$)) )))) = 
                 (expr 
                   (literal 0))))))) \n 
       (statement 
@@ -3822,10 +3826,11 @@
                     (if_block_statement IF 
                       (expr 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call Result$)) ))) > 
+                          (builtin_function 
+                            (len_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call Result$)) )))) > 
                         (expr 
                           (literal 0))) THEN \n 
                       (then_block 
@@ -3842,10 +3847,11 @@
                                     (argument 
                                       (expr 
                                         (expr 
-                                          (builtin_function LEN 
-                                            ( 
-                                              (expr 
-                                                (variable_or_function_call Result$)) ))) - 
+                                          (builtin_function 
+                                            (len_function LEN 
+                                              ( 
+                                                (expr 
+                                                  (variable_or_function_call Result$)) )))) - 
                                         (expr 
                                           (literal 1))))) ))))) \n) 
                       (end_if_statement END IF)) \n)) 
@@ -3855,10 +3861,11 @@
                     (if_block_statement IF 
                       (expr 
                         (expr 
-                          (builtin_function LEN 
-                            ( 
-                              (expr 
-                                (variable_or_function_call Kbd$)) ))) > 
+                          (builtin_function 
+                            (len_function LEN 
+                              ( 
+                                (expr 
+                                  (variable_or_function_call Kbd$)) )))) > 
                         (expr 
                           (literal 0))) THEN \n 
                       (then_block 
@@ -5706,10 +5713,11 @@
                               (expr 
                                 (literal 1))) - 
                             (expr 
-                              (builtin_function LEN 
-                                ( 
-                                  (expr 
-                                    (variable_or_function_call Player2$)) )))) )))) \n 
+                              (builtin_function 
+                                (len_function LEN 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call Player2$)) ))))) )))) \n 
                   (statement 
                     (print_statement PRINT 
                       (print_argument 

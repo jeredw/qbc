@@ -991,10 +991,11 @@
                     (expr 
                       (variable_or_function_call ScreenWidth)) - 
                     (expr 
-                      (builtin_function LEN 
-                        ( 
-                          (expr 
-                            (variable_or_function_call text$)) )))) )) \ 
+                      (builtin_function 
+                        (len_function LEN 
+                          ( 
+                            (expr 
+                              (variable_or_function_call text$)) ))))) )) \ 
               (expr 
                 (literal 2))) + 
             (expr 

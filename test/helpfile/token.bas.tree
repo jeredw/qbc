@@ -105,10 +105,11 @@
         (assignment_statement 
           (variable_or_function_call Ln%) = 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call SaveStr$)) ))))) \r\n ' \r\n 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call SaveStr$)) )))))) \r\n ' \r\n 
       (statement 
         (while_wend_statement WHILE 
           (expr 

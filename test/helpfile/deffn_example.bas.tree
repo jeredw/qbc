@@ -23,10 +23,11 @@
           (expr 
             (literal 1)) TO 
           (expr 
-            (builtin_function LEN 
-              ( 
-                (expr 
-                  (variable_or_function_call A$)) ))) 
+            (builtin_function 
+              (len_function LEN 
+                ( 
+                  (expr 
+                    (variable_or_function_call A$)) )))) 
           (block \n 
             (if_block_statement IF 
               (expr 

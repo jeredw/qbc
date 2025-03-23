@@ -22,10 +22,11 @@
       (expr 
         (literal 1)) LEN = 
       (expr 
-        (builtin_function LEN 
-          ( 
-            (expr 
-              (variable_or_function_call MyClass)) ))))) \n 
+        (builtin_function 
+          (len_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call MyClass)) )))))) \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call MyClass.Student) = 
@@ -55,10 +56,11 @@
       (expr 
         (literal 1)) LEN = 
       (expr 
-        (builtin_function LEN 
-          ( 
-            (expr 
-              (variable_or_function_call MyClass)) ))))) \n 
+        (builtin_function 
+          (len_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call MyClass)) )))))) \n 
   (statement 
     (get_io_statement GET # 
       (expr 

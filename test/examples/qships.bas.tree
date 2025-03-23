@@ -1130,10 +1130,11 @@
                 (literal 40)) - 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call text$)) ))) \ 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call text$)) )))) \ 
                 (expr 
                   (literal 2)))) + 
             (expr 
@@ -2789,18 +2790,20 @@
                     (literal 0))) AND 
                 (expr 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call NumHold$)) ))) < 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call NumHold$)) )))) < 
                   (expr 
                     (literal 3)))) OR 
               (expr 
                 (expr 
-                  (builtin_function LEN 
-                    ( 
-                      (expr 
-                        (variable_or_function_call NumHold$)) ))) = 
+                  (builtin_function 
+                    (len_function LEN 
+                      ( 
+                        (expr 
+                          (variable_or_function_call NumHold$)) )))) = 
                 (expr 
                   (literal 0))))))) \n 
       (statement 
@@ -2944,15 +2947,16 @@
                       (expr 
                         (variable_or_function_call MaxCol)) - 
                       (expr 
-                        (builtin_function LEN 
-                          ( 
-                            (expr 
-                              (variable_or_function_call Player$ 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (literal 2)))) ))) )))) )))) : 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call Player$ 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (literal 2)))) ))) ))))) )))) : 
             (statement 
               (print_statement PRINT 
                 (print_argument 
@@ -3004,20 +3008,21 @@
                     (expr 
                       (literal 6))) - 
                   (expr 
-                    (builtin_function LEN 
-                      ( 
-                        (expr 
-                          (variable_or_function_call STR$ 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call TotalWins 
-                                      ( 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (literal 2)))) ))))) ))) )))))) : 
+                    (builtin_function 
+                      (len_function LEN 
+                        ( 
+                          (expr 
+                            (variable_or_function_call STR$ 
+                              ( 
+                                (argument_list 
+                                  (argument 
+                                    (expr 
+                                      (variable_or_function_call TotalWins 
+                                        ( 
+                                          (argument_list 
+                                            (argument 
+                                              (expr 
+                                                (literal 2)))) ))))) ))) ))))))) : 
             (statement 
               (print_statement PRINT 
                 (print_argument 
