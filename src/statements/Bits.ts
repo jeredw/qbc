@@ -5,6 +5,11 @@ import { RuntimeError } from "../Errors.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
+import { getSimpleVariableSizeInBytes, Variable } from "../Variables.ts";
+import { ExprContext } from "../../build/QBasicParser.ts";
+import { Statement } from "./Statement.ts";
+import { ControlFlow } from "../ControlFlow.ts";
+import { evaluateStringExpression } from "../Expressions.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -274,6 +279,37 @@ export class CvdmbfFunction extends StringToBytes {
 
   override getValue(bytes: number[]): Value {
     return double(mbfBytesToFloat64(bytes));
+  }
+}
+
+export class LenStatement extends Statement {
+  constructor(
+    private variable: Variable | undefined,
+    private stringExpr: ExprContext | undefined,
+    private result: Variable
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    if (this.stringExpr) {
+      const str = evaluateStringExpression(this.stringExpr, context.memory);
+      context.memory.write(this.result, long(str.length));
+      return;
+    }
+    if (!this.variable) {
+      throw new Error("missing both string expr and variable");
+    }
+    if (this.variable.type.tag === TypeTag.STRING) {
+      const value = context.memory.read(this.variable);
+      if (!isString(value)) {
+        throw new Error("nonstring value in string var");
+      }
+      context.memory.write(this.result, long(value.string.length));
+      return;
+    }
+    const size = getSimpleVariableSizeInBytes(this.variable);
+    context.memory.write(this.result, long(size));
   }
 }
 

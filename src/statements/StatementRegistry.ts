@@ -34,13 +34,14 @@ import {
   CvlFunction,
   CvsFunction,
   CvsmbfFunction,
+  LenStatement,
   MkdFunction,
   MkdmbfFunction,
   MkiFunction,
   MklFunction,
   MksFunction,
   MksmbfFunction
-} from "./Convert.ts";
+} from "./Bits.ts";
 import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
@@ -359,6 +360,10 @@ export function mid(
 
 export function let_(variable: Variable, expr: parser.ExprContext) {
   return new LetStatement(variable, expr);
+}
+
+export function len(variable: Variable | undefined, stringExpr: parser.ExprContext | undefined, result: Variable) {
+  return new LenStatement(variable, stringExpr, result);
 }
 
 export function loop(isWhile: boolean, expr: parser.ExprContext) {

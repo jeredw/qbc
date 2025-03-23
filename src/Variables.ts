@@ -57,3 +57,23 @@ export function getStorageSize(variable: Variable): number {
   }
   return itemSize;
 }
+
+export function getSimpleVariableSizeInBytes(variable: Variable): number {
+  switch (variable.type.tag) {
+    case TypeTag.SINGLE:
+      return 4;
+    case TypeTag.DOUBLE:
+      return 8;
+    case TypeTag.INTEGER:
+      return 2;
+    case TypeTag.LONG:
+      return 4;
+    case TypeTag.FIXED_STRING:
+      return variable.type.maxLength;
+    case TypeTag.RECORD:
+      return Array.from(variable.elements?.values() ?? [])
+        .map((element: Variable) => getSimpleVariableSizeInBytes(element))
+        .reduce((acc: number, sum: number) => acc + sum, 0);
+  }
+  throw new Error("unimplemented");
+}

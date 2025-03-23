@@ -1089,6 +1089,26 @@ export class CodeGenerator extends QBasicParserListener {
         codeGenerator.addStatement(statements.lbound(ctx.start!, array, result, ctx._which));
       }
 
+      override enterLen_function = (ctx: parser.Len_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const variableReference = getVariableReference(ctx.expr());
+        let variable: Variable | undefined;
+        let stringExpr: parser.ExprContext | undefined;
+        if (!variableReference) {
+          try {
+            stringExpr = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, {tag: TypeTag.STRING });
+          } catch (e: unknown) {
+            throw ParseError.fromToken(ctx.expr().start!, "Variable required");
+          }
+        } else {
+          variable = variableReference[0];
+        }
+        codeGenerator.addStatement(statements.len(variable, stringExpr, result));
+      }
+
       override enterMid_function = (ctx: parser.Mid_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {

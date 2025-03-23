@@ -206,7 +206,7 @@ parse those using baked in rules.
 | `LBOUND`         | Function    | ✅      | ✅      |
 | `LCASE$`         | Function    | -       | ✅      |
 | `LEFT$`          | Function    | -       | ✅      |
-| `LEN`            | Function    | ✅      | ⛔      |
+| `LEN`            | Function    | ✅      | ✅      |
 | `LET`            | Statement   | ✅      | ✅      |
 | `LINE` Graphics  | Statement   | ✅      | ⛔      |
 | `LINE INPUT`     | Statement   | ✅      | ✅      |
