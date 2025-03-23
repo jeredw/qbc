@@ -1,0 +1,20 @@
+(program 
+  (statement 
+    (const_statement const 
+      (const_assignment false = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment true = 
+        (const_expr 
+          (expr not 
+            (expr 
+              (variable_or_function_call false))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call false)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call true))))) \n <EOF>)
