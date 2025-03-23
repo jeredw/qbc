@@ -1091,6 +1091,16 @@ export class CodeGenerator extends QBasicParserListener {
         codeGenerator.addStatement(statements.seekFunction(ctx.start!, fileNum, result));
       }
 
+      override enterStrig_function = (ctx: parser.Strig_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const n = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
+        codeGenerator.addStatement(
+          statements.strig({token: ctx.start!, params: [{expr: n}], result}));
+      }
+
       override enterTime_function = (ctx: parser.Time_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {

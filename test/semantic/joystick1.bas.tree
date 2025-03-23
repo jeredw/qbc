@@ -1,0 +1,49 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stick 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stick 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (strig_function strig 
+              ( 
+                (expr 
+                  (literal 0)) )))) ,) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (strig_function strig 
+              ( 
+                (expr 
+                  (literal 1)) )))) ,) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (strig_function strig 
+              ( 
+                (expr 
+                  (literal 4)) )))) ,) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (strig_function strig 
+              ( 
+                (expr 
+                  (literal 5)) ))))))) \n <EOF>)

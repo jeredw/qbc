@@ -4,6 +4,7 @@ import { Printer } from "./Printer.ts";
 import { Disk } from "./Disk.ts";
 import { Keyboard } from "./Keyboard.ts";
 import { Timer } from "./Timer.ts";
+import { Joystick } from "./Joystick.ts";
 
 export interface Devices {
   textScreen: TextScreen;
@@ -12,4 +13,5 @@ export interface Devices {
   disk: Disk;
   keyboard: Keyboard;
   timer: Timer;
+  joystick: Joystick;
 }

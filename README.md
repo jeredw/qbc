@@ -306,10 +306,10 @@ parse those using baked in rules.
 | `STATIC`         | Statement   | ✅      | 🚧      |
 | `$STATIC`        | Metacommand | ✅      | ✅      |
 | `STEP`           | Keyword     | ✅      | ✅      |
-| `STICK`          | Function    | -       | ⛔      |
+| `STICK`          | Function    | -       | ✅      |
 | `STOP`           | Statement   | ✅      | 🚧      |
 | `STR$`           | Function    | -       | 🚧      |
-| `STRIG`          | Function    | ✅      | ⛔      |
+| `STRIG`          | Function    | ✅      | ✅      |
 | `STRIG`          | Statement   | ✅      | ⛔      |
 | `STRING`         | Keyword     | ✅      | ✅      |
 | `STRING$`        | Function    | -       | ✅      |

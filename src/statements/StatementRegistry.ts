@@ -94,6 +94,7 @@ import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
 import { EventTrapState } from "../Events.ts";
 import { SwapStatement } from "./Swap.ts";
+import { StickFunction, StrigFunction } from "./Joystick.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -464,8 +465,16 @@ export function sqr(args: BuiltinStatementArgs) {
   return new SqrFunction(args);
 }
 
+export function stick(args: BuiltinStatementArgs) {
+  return new StickFunction(args);
+}
+
 export function str(args: BuiltinStatementArgs) {
   return new StrFunction(args);
+}
+
+export function strig(args: BuiltinStatementArgs) {
+  return new StrigFunction(args);
 }
 
 export function string(args: BuiltinStatementArgs) {

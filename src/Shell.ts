@@ -7,6 +7,7 @@ import { WebAudioSpeaker } from "./Speaker.ts";
 import { Invocation } from "./Invocation.ts";
 import { KeyboardListener } from "./Keyboard.ts";
 import { RealTimeTimer } from "./Timer.ts";
+import { GamepadListener } from "./Joystick.ts";
 
 const TAB_STOPS = 8;
 
@@ -28,6 +29,7 @@ class Shell {
   private disk: MemoryDrive;
   private keyboard: KeyboardListener;
   private timer: RealTimeTimer;
+  private gamepad: GamepadListener;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -37,6 +39,7 @@ class Shell {
     this.disk = new MemoryDrive();
     this.keyboard = new KeyboardListener();
     this.timer = new RealTimeTimer();
+    this.gamepad = new GamepadListener();
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -47,6 +50,7 @@ class Shell {
       disk: this.disk,
       keyboard: this.keyboard,
       timer: this.timer,
+      joystick: this.gamepad,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
@@ -148,6 +152,7 @@ class Shell {
     if (this.invocation && !this.invocation.isStopped()) {
       this.invocation.tick();
     }
+    this.gamepad.update();
     requestAnimationFrame(this.frame);
   }
 

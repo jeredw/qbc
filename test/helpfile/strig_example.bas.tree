@@ -11,10 +11,11 @@
           (if_inline_statement IF 
             (expr 
               (expr 
-                (builtin_function STRIG 
-                  ( 
-                    (expr 
-                      (literal 0)) ))) OR 
+                (builtin_function 
+                  (strig_function STRIG 
+                    ( 
+                      (expr 
+                        (literal 0)) )))) OR 
               (expr 
                 (expr 
                   (variable_or_function_call INKEY$)) = 
@@ -36,7 +37,8 @@
             (untyped_id BEEP))) ' \n) LOOP 
       (loop_condition WHILE 
         (expr 
-          (builtin_function STRIG 
-            ( 
-              (expr 
-                (literal 1)) )))))) \n <EOF>)
+          (builtin_function 
+            (strig_function STRIG 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) \n <EOF>)

@@ -693,6 +693,11 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx.parent!).$result = result;
   }
 
+  override enterStrig_function = (ctx: parser.Strig_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
   override enterTime_function = (ctx: parser.Time_functionContext) => {
     const result = this.makeSyntheticVariable({tag: TypeTag.STRING}, ctx.start!);
     getTyperContext(ctx.parent!).$result = result;

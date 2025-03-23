@@ -926,7 +926,7 @@ builtin_function
   | PLAY '(' expr ')'
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | seek_function
-  | STRIG '(' expr ')'
+  | strig_function
   | time_function
   | timer_function
   | ubound_function
@@ -956,6 +956,10 @@ mid_function
 
 seek_function
   : SEEK '(' filenum=expr ')'
+  ;
+
+strig_function
+  : STRIG '(' expr ')'
   ;
 
 time_function
