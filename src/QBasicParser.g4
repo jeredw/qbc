@@ -672,7 +672,7 @@ open_legacy_statement
   ;
 
 open_statement
-  : OPEN file=expr (FOR open_mode)? (ACCESS open_access)? open_lock? AS ('#'? filenum=expr) (LEN '=' reclen=expr)?
+  : OPEN file=expr (FOR open_mode)? (ACCESS open_access)? open_lock? AS '#'? filenum=expr (LEN '=' reclen=expr)?
   ;
 
 open_mode
