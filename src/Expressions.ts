@@ -232,14 +232,17 @@ class ExpressionListener extends QBasicParserListener {
       this.push(this.readVariable(result));
       return;
     }
+    if (this._constantExpression) {
+      const constant = ctx['$constant'];
+      if (!constant) {
+        throw ParseError.fromToken(ctx.start!, "Invalid constant");
+      }
+      this.push(constant.value);
+      return;
+    }
     const symbol = ctx['$symbol'];
     if (!symbol) {
       throw new Error("missing symbol");
-    }
-    if (this._constantExpression) {
-      if (!isConstant(symbol)) {
-        throw ParseError.fromToken(ctx.start!, "Invalid constant");
-      }
     }
     if (isConstant(symbol)) {
       this.push(symbol.constant.value);
