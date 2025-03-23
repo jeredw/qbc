@@ -1,36 +1,24 @@
+import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { ControlFlow } from "../ControlFlow.ts";
-import { EventTrapState } from "../Events.ts";
+import { RuntimeError } from "../Errors.ts";
+import { EventChannelState } from "../Events.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
+import { ILLEGAL_FUNCTION_CALL } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
 export enum EventType {
-  TIMER
+  TIMER,
+  JOYSTICK,
 }
 
 export class EventHandlerStatement extends Statement {
-  constructor(private eventType: EventType, private param: ExprContext | undefined) {
-    super();
-  }
-
-  override execute(context: ExecutionContext) {
-    const param = this.param ? evaluateIntegerExpression(this.param, context.memory) : 0;
-    switch (this.eventType) {
-      case EventType.TIMER:
-        context.events.timer.start(context.devices.timer.timer(), param, this.targetIndex!);
-        break;
-    }
-  }
-}
-
-export class EventControlStatement extends Statement {
   constructor(
+    private token: Token,
     private eventType: EventType,
-    private param: ExprContext | undefined,
-    private state: EventTrapState,
+    private param: ExprContext | undefined
   ) {
     super();
   }
@@ -39,7 +27,51 @@ export class EventControlStatement extends Statement {
     const param = this.param ? evaluateIntegerExpression(this.param, context.memory) : 0;
     switch (this.eventType) {
       case EventType.TIMER:
-        context.events.timer.setState(this.state);
+        if (param <= 0) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        context.events.timer.configure(param, this.targetIndex!);
+        break;
+      case EventType.JOYSTICK:
+        if (!(param === 0 || param === 2 || param === 4 || param === 6)) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        context.events.joystick.configure(Math.floor(param / 2), this.targetIndex!);
+        break;
+    }
+  }
+}
+
+export class EventControlStatement extends Statement {
+  constructor(
+    private token: Token,
+    private eventType: EventType,
+    private param: ExprContext | undefined,
+    private state: EventChannelState,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const param = this.param ? evaluateIntegerExpression(this.param, context.memory) : 0;
+    switch (this.eventType) {
+      case EventType.TIMER:
+        if (this.state === EventChannelState.TEST) {
+          context.devices.timer.testTick?.();
+        } else {
+          context.events.timer.setState(param, this.state);
+        }
+        break;
+      case EventType.JOYSTICK:
+        if (!(param === 0 || param === 2 || param === 4 || param === 6)) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        const buttonIndex = Math.floor(param / 2);
+        if (this.state === EventChannelState.TEST) {
+          context.devices.joystick.testTrigger?.(buttonIndex);
+        } else {
+          context.events.joystick.setState(buttonIndex, this.state);
+        }
         break;
     }
   }

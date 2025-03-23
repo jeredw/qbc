@@ -1,12 +1,6 @@
 on timer(1) gosub sayhionce
 timer on
-i = 0
-i = 0
-i = 0
-i = 0
-i = 0
-i = 0
-i = 0 ' timer has ticked a lot now, should be no more "hi"s
+for i = 1 to 20: timer step: next i
 end
 
 sayhionce:

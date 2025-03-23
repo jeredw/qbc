@@ -1,7 +1,7 @@
-on timer(4) gosub ok
-timer on
-print "yo"
-sleep ' timer should wake us up
-print "hi"
+on strig(0) gosub button
+strig(0) on
+strig(0) step  ' button pressed
+strig(0) step  ' button pressed again
 end
-ok: print "ok": return
+
+button: print "pushed": return

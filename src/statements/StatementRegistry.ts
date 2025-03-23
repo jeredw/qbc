@@ -92,7 +92,7 @@ import { InpFunction } from "./Ports.ts";
 import { InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
-import { EventTrapState } from "../Events.ts";
+import { EventChannelState } from "../Events.ts";
 import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
 
@@ -212,12 +212,12 @@ export function eof(args: BuiltinStatementArgs) {
   return new EofFunction(args);
 }
 
-export function eventControl(eventType: EventType, param: parser.ExprContext | undefined, state: EventTrapState) {
-  return new EventControlStatement(eventType, param, state);
+export function eventControl(token: Token, eventType: EventType, param: parser.ExprContext | undefined, state: EventChannelState) {
+  return new EventControlStatement(token, eventType, param, state);
 }
 
-export function eventHandler(eventType: EventType, param: parser.ExprContext | undefined) {
-  return new EventHandlerStatement(eventType, param);
+export function eventHandler(token: Token, eventType: EventType, param: parser.ExprContext | undefined) {
+  return new EventHandlerStatement(token, eventType, param);
 }
 
 export function exitDef() {

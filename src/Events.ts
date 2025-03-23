@@ -1,8 +1,10 @@
 import { Devices } from "./Devices.ts";
+import { Joystick } from "./Joystick.ts";
+import { Timer } from "./Timer.ts";
 
 export interface Trap {
   targetIndex: number;
-  trap: EventTrap;
+  reenableEvents: () => void;
 }
 
 export interface SleepArgs {
@@ -12,28 +14,31 @@ export interface SleepArgs {
 }
 
 export class Events {
-  timer: TimerEventTrap;
+  timer: TimerEventMonitor;
+  joystick: JoystickEventMonitor;
+  devices: Devices;
   asleep?: SleepArgs;
 
-  constructor() {
-    this.timer = new TimerEventTrap();
+  constructor(devices: Devices) {
+    this.devices = devices;
+    this.timer = new TimerEventMonitor(devices.timer);
+    this.joystick = new JoystickEventMonitor(devices.joystick);
   }
 
-  poll(devices: Devices) {
-    this.timer.poll(devices);
+  poll(): Trap | void {
+    this.timer.poll();
+    this.joystick.poll();
     if (this.asleep) {
       if (this.asleep.duration !== 0 &&
-          devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
+          this.devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
         this.wakeUp();
-      } else if (devices.keyboard.numKeysPending() > this.asleep.numKeysPending) {
+      } else if (this.devices.keyboard.numKeysPending() > this.asleep.numKeysPending) {
         this.wakeUp();
       }
     }
-  }
-
-  trap(devices: Devices): Trap | void {
     const result = (
-      this.timer.trap(devices)
+      this.timer.trap() ||
+      this.joystick.trap()
     );
     if (result) {
       this.wakeUp();
@@ -54,87 +59,131 @@ export class Events {
   }
 }
 
-export enum EventTrapState {
+export enum EventChannelState {
   ON,
   OFF,
-  STOPPED
+  STOPPED,
+  TEST
 }
 
-export abstract class EventTrap {
-  state: EventTrapState;
+class EventChannel {
+  state: EventChannelState = EventChannelState.OFF;
   triggered: boolean = false;
-  targetIndex?: number;
+  targetIndex: number;
 
-  constructor() {
-    this.state = EventTrapState.OFF;
-  }
-
-  setState(state: EventTrapState) {
+  setState(state: EventChannelState) {
     this.state = state;
-    if (state === EventTrapState.OFF) {
+    if (state === EventChannelState.OFF) {
       this.triggered = false;
     }
   }
 
-  enableIfStopped() {
-    if (this.state === EventTrapState.STOPPED) {
-      this.setState(EventTrapState.ON);
-    }
-  }
-
-  stop() {
-    this.state = EventTrapState.STOPPED;
-  }
-
   isDisabled(): boolean {
-    return this.state === EventTrapState.OFF;
+    return this.state === EventChannelState.OFF;
   }
 
   isStopped(): boolean {
-    return this.state === EventTrapState.STOPPED;
+    return this.state === EventChannelState.STOPPED;
   }
-
-  abstract poll(devices: Devices): void;
-
-  abstract trap(devices: Devices): Trap | void;
 }
 
-export class TimerEventTrap extends EventTrap {
+export abstract class EventMonitor {
+  channels: EventChannel[];
+
+  constructor(numChannels: number) {
+    this.channels = [];
+    for (let i = 0; i < numChannels; i++) {
+      this.channels[i] = new EventChannel();
+    }
+  }
+
+  configure(channelIndex: number, targetIndex: number) {
+    this.channels[channelIndex].targetIndex = targetIndex;
+  }
+
+  setState(channelIndex: number, state: EventChannelState) {
+    this.channels[channelIndex].setState(state);
+  }
+
+  abstract poll(): void;
+
+  trap(): Trap | void {
+    for (let channelIndex = 0; channelIndex < this.channels.length; channelIndex++) {
+      const channel = this.channels[channelIndex];
+      if (channel.isStopped()) {
+        continue;
+      }
+      if (channel.triggered) {
+        this.setState(channelIndex, EventChannelState.STOPPED);
+        channel.triggered = false;
+        return {
+          targetIndex: channel.targetIndex!,
+          reenableEvents: () => {
+            if (!channel.isDisabled()) {
+              this.setState(channelIndex, EventChannelState.ON);
+            }
+          },
+        };
+      }
+    }
+  }
+}
+
+export class TimerEventMonitor extends EventMonitor {
   startTime: number | undefined;
   duration: number = 1;
 
-  constructor() {
-    super();
+  constructor(private timer: Timer) {
+    super(1);
   }
 
-  start(startTime: number, duration: number, targetIndex: number) {
-    this.startTime = startTime;
+  override configure(duration: number, targetIndex: number) {
     this.duration = duration;
-    this.targetIndex = targetIndex;
+    super.configure(0, targetIndex);
   }
 
-  override poll(devices: Devices) {
-    if (this.isDisabled()) {
+  override setState(channelIndex: number, state: EventChannelState) {
+    if (state === EventChannelState.OFF) {
+      this.startTime = undefined;
+    } else if (this.startTime === undefined) {
+      this.startTime = this.timer.timer();
+    }
+    super.setState(channelIndex, state);
+  }
+
+  override poll() {
+    if (this.channels[0].isDisabled()) {
       return;
     }
     if (this.startTime === undefined) {
       return;
     }
-    const now = devices.timer.timer();
+    const now = this.timer.timer();
     if (now >= this.startTime + this.duration) {
-      this.triggered = true;
+      this.startTime = undefined;
+      this.channels[0].triggered = true;
     }
   }
+}
 
-  override trap(devices: Devices): Trap | void {
-    if (this.isStopped()) {
-      return;
-    }
-    if (this.triggered) {
-      this.stop();
-      this.startTime = devices.timer.timer();
-      this.triggered = false;
-      return {targetIndex: this.targetIndex!, trap: this};
+export class JoystickEventMonitor extends EventMonitor {
+  constructor(private joystick: Joystick) {
+    super(4);
+  }
+
+  override poll() {
+    const state = this.joystick.getState();
+    const buttons = [
+      !!state[0]?.stickyButtons[0],
+      !!state[0]?.stickyButtons[1],
+      !!state[1]?.stickyButtons[0],
+      !!state[1]?.stickyButtons[1],
+    ];
+    for (let channelIndex = 0; channelIndex < 4; channelIndex++) {
+      const channel = this.channels[channelIndex];
+      if (!channel.isDisabled() && buttons[channelIndex]) {
+        channel.triggered = true;
+      }
     }
   }
 }

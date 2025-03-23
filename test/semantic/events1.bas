@@ -1,13 +1,7 @@
 on timer(5) gosub sayhi
 timer on
-i = 0
-i = 0
-i = 0
-i = 0
-' 5 ticks elapsed so print "hi" now
-i = 0
-i = 0
-' 5 more ticks elapsed so print "hi" again
+for i = 1 to 5: timer step: next i
+for i = 1 to 5: timer step: next i
 end
 
 sayhi:

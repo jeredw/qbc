@@ -244,7 +244,7 @@ parse those using baked in rules.
 | `ON KEY`         | Statement   | ✅      | ⛔      |
 | `ON PEN`         | Statement   | ✅      | ⛔      |
 | `ON PLAY`        | Statement   | ✅      | ⛔      |
-| `ON STRIG`       | Statement   | ✅      | ⛔      |
+| `ON STRIG`       | Statement   | ✅      | ✅      |
 | `ON TIMER`       | Statement   | ✅      | ✅      |
 | `ON`...`GOSUB`   | Statement   | ✅      | ✅      |
 | `ON`...`GOTO`    | Statement   | ✅      | ✅      |
@@ -310,7 +310,7 @@ parse those using baked in rules.
 | `STOP`           | Statement   | ✅      | 🚧      |
 | `STR$`           | Function    | -       | 🚧      |
 | `STRIG`          | Function    | ✅      | ✅      |
-| `STRIG`          | Statement   | ✅      | ⛔      |
+| `STRIG`          | Statement   | ✅      | ✅      |
 | `STRING`         | Keyword     | ✅      | ✅      |
 | `STRING$`        | Function    | -       | ✅      |
 | `SUB`            | Statement   | ✅      | ✅      |

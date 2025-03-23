@@ -4,6 +4,8 @@ export interface Timer {
   setTime(hours: number, minutes: number, seconds: number): void;
   time(): string;
   timer(): number;
+
+  testTick?(): void;
 }
 
 export class TestTimer {
@@ -28,7 +30,11 @@ export class TestTimer {
   }
 
   timer() {
-    return this.ticks++;
+    return this.ticks;
+  }
+
+  testTick() {
+    this.ticks++;
   }
 }
 

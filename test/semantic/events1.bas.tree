@@ -10,35 +10,23 @@
   (statement 
     (event_control_statement timer on)) \n 
   (statement 
-    (assignment_statement 
-      (variable_or_function_call i) = 
+    (for_next_statement for i = 
       (expr 
-        (literal 0)))) \n 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) 
+      (block : 
+        (statement 
+          (event_control_statement timer step)) :) next i)) \n 
   (statement 
-    (assignment_statement 
-      (variable_or_function_call i) = 
+    (for_next_statement for i = 
       (expr 
-        (literal 0)))) \n 
-  (statement 
-    (assignment_statement 
-      (variable_or_function_call i) = 
+        (literal 1)) to 
       (expr 
-        (literal 0)))) \n 
-  (statement 
-    (assignment_statement 
-      (variable_or_function_call i) = 
-      (expr 
-        (literal 0)))) \n ' \n 
-  (statement 
-    (assignment_statement 
-      (variable_or_function_call i) = 
-      (expr 
-        (literal 0)))) \n 
-  (statement 
-    (assignment_statement 
-      (variable_or_function_call i) = 
-      (expr 
-        (literal 0)))) \n ' \n 
+        (literal 5)) 
+      (block : 
+        (statement 
+          (event_control_statement timer step)) :) next i)) \n 
   (statement 
     (end_statement end)) \n \n 
   (label 

@@ -20,13 +20,12 @@ export class StickFunction extends BuiltinFunction1 {
     if (axis < 0 || axis > 3) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    const joystickA = context.devices.joystick.getState(0);
-    const joystickB = context.devices.joystick.getState(1);
+    const state = context.devices.joystick.getState();
     const position = [
-      joystickA.axes[0],
-      joystickA.axes[1],
-      joystickB.axes[0],
-      joystickB.axes[1]
+      state[0]?.axes[0] ?? 0,
+      state[0]?.axes[1] ?? 0,
+      state[1]?.axes[0] ?? 0,
+      state[1]?.axes[1] ?? 0,
     ][axis];
     const t = (position + 1) / 2;
     const scaledPosition = Math.floor((1 - t) * MIN_STICK + t * MAX_STICK);
@@ -47,17 +46,17 @@ export class StrigFunction extends BuiltinFunction1 {
     if (index < 0 || index > 7) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    const joystickA = context.devices.joystick.getState(0);
-    const joystickB = context.devices.joystick.getState(1);
+    const joystick = context.devices.joystick;
+    const state = joystick.getState();
     const button = [
-      joystickA.stickyButtons[0],
-      joystickA.buttons[0],
-      joystickB.stickyButtons[0],
-      joystickB.buttons[0],
-      joystickA.stickyButtons[1],
-      joystickA.buttons[1],
-      joystickB.stickyButtons[1],
-      joystickB.buttons[1],
+      !!state[0]?.stickyButtons[0],
+      !!state[0]?.buttons[0],
+      !!state[1]?.stickyButtons[0],
+      !!state[1]?.buttons[0],
+      !!state[0]?.stickyButtons[1],
+      !!state[0]?.buttons[1],
+      !!state[1]?.stickyButtons[1],
+      !!state[1]?.buttons[1],
     ][index];
     return boolean(button);
   }

@@ -21,7 +21,7 @@ import { RestoreStatement } from "./statements/Data.ts";
 import { PrintExpr } from "./statements/Print.ts";
 import { OpenMode } from "./Files.ts";
 import { EventType } from "./statements/Events.ts";
-import { EventTrapState } from "./Events.ts";
+import { EventChannelState } from "./Events.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -670,21 +670,28 @@ export class CodeGenerator extends QBasicParserListener {
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
 
   override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {
+    const token = ctx.start!;
     const paramExpr = ctx.expr();
     const param = paramExpr && this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
     if (ctx.TIMER()) {
-      this.addStatement(statements.eventHandler(EventType.TIMER, param ?? undefined));
+      this.addStatement(statements.eventHandler(token, EventType.TIMER, param ?? undefined));
+    } else if (ctx.STRIG()) {
+      this.addStatement(statements.eventHandler(token, EventType.JOYSTICK, param ?? undefined));
     }
   }
 
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {
+    const token = ctx.start!;
     const paramExpr = ctx.expr();
     const param = paramExpr && this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
-    const state = ctx.ON() ? EventTrapState.ON :
-      ctx.OFF() ? EventTrapState.OFF :
-      EventTrapState.STOPPED;
+    const state = ctx.ON() ? EventChannelState.ON :
+      ctx.OFF() ? EventChannelState.OFF :
+      ctx.STEP() ? EventChannelState.TEST :
+      EventChannelState.STOPPED;
     if (ctx.TIMER()) {
-      this.addStatement(statements.eventControl(EventType.TIMER, param ?? undefined, state));
+      this.addStatement(statements.eventControl(token, EventType.TIMER, param ?? undefined, state));
+    } else if (ctx.STRIG()) {
+      this.addStatement(statements.eventControl(token, EventType.JOYSTICK, param ?? undefined, state));
     }
   }
 

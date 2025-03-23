@@ -7,7 +7,7 @@ import { ReturnStatement } from "./statements/Return.ts";
 import { RETURN_WITHOUT_GOSUB } from "./Values.ts";
 import { ProgramData } from "./ProgramData.ts";
 import { Files } from "./Files.ts";
-import { Events, EventTrap } from "./Events.ts";
+import { Events } from "./Events.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program) {
   return new Invocation(devices, memory, program);
@@ -17,7 +17,7 @@ interface ProgramLocation {
   chunkIndex: number;
   statementIndex: number;
   pusher?: ControlFlowTag;
-  trap?: EventTrap;
+  reenableEvents?: () => void;
 }
 
 export class Invocation {
@@ -35,7 +35,7 @@ export class Invocation {
     this.memory = memory;
     this.data = new ProgramData(program.data);
     this.files = new Files();
-    this.events = new Events();
+    this.events = new Events(devices);
     this.program = program;
   }
 
@@ -96,17 +96,17 @@ export class Invocation {
     }
     const statement = chunk.statements[statementIndex];
     // TODO: check for program statement boundaries
-    this.events.poll(this.devices);
-    const eventTrap = this.events.trap(this.devices);
+    const eventTrap = this.events.poll();
     if (eventTrap) {
       this.stack.push({
         chunkIndex: 0,
         statementIndex: eventTrap.targetIndex,
         pusher: ControlFlowTag.GOSUB,
-        trap: eventTrap.trap
+        reenableEvents: eventTrap.reenableEvents
       });
       return;
     }
+    // TODO: move sleep polling to rAF().
     if (this.events.sleeping()) {
       return;
     }
@@ -152,7 +152,7 @@ export class Invocation {
               const returnStatement = statement as ReturnStatement;
               throw RuntimeError.fromToken(returnStatement.start!, RETURN_WITHOUT_GOSUB);
             }
-            this.stack[this.stack.length - 1].trap?.enableIfStopped();
+            this.stack[this.stack.length - 1].reenableEvents?.();
             this.stack.pop();
             if (statement.targetIndex !== undefined) {
               // For RETURN to a specific label.

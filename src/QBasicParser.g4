@@ -345,13 +345,14 @@ error_statement
   : ERROR expr
   ;
 
+// For testing, allow the "STEP" keyword to trigger different sorts of events.
 event_control_statement
-  : COM '(' expr ')' (ON | OFF | STOP)
-  | KEY '(' expr ')' (ON | OFF | STOP)
-  | PEN (ON | OFF | STOP)
-  | PLAY (ON | OFF | STOP)
-  | STRIG '(' expr ')' (ON | OFF | STOP)
-  | TIMER (ON | OFF | STOP)
+  : COM '(' expr ')' (ON | OFF | STOP | STEP)
+  | KEY '(' expr ')' (ON | OFF | STOP | STEP)
+  | PEN (ON | OFF | STOP | STEP)
+  | PLAY (ON | OFF | STOP | STEP)
+  | STRIG '(' expr ')' (ON | OFF | STOP | STEP)
+  | TIMER (ON | OFF | STOP | STEP)
   ;
 
 circle_statement

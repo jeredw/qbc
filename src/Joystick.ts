@@ -1,5 +1,6 @@
 export interface Joystick {
-  getState(n: number): JoystickState
+  getState(): JoystickState[]
+  testTrigger?(buttonIndex: number): void;
 }
 
 export interface JoystickState {
@@ -8,33 +9,50 @@ export interface JoystickState {
   axes: number[];
 }
 
+const IDLE_STICK = {
+  buttons: [false, false],
+  stickyButtons: [false, false],
+  axes: [0, 0]
+};
+
 export class TestJoystick implements Joystick {
-  constructor() {
+  state: JoystickState[] = [{...IDLE_STICK}, {...IDLE_STICK}];
+
+  getState(): JoystickState[] {
+    const result = this.state.map((state) => ({...state}));
+    for (const joystick of this.state) {
+      joystick.stickyButtons = joystick.buttons.map((_value) => false);
+    }
+    return result;
   }
 
-  getState(n: number): JoystickState {
-    return {
-      buttons: [false, false],
-      stickyButtons: [false, false],
-      axes: [0, 0]
-    };
+  testTrigger(buttonIndex: number) {
+    switch (buttonIndex) {
+      case 0:
+        this.state[0].stickyButtons[0] = true;
+        break;
+      case 1:
+        this.state[0].stickyButtons[1] = true;
+        break;
+      case 2:
+        this.state[1].stickyButtons[0] = true;
+        break;
+      case 3:
+        this.state[1].stickyButtons[1] = true;
+        break;
+    }
   }
 }
 
 export class GamepadListener implements Joystick {
-  state: JoystickState[] = [];
+  state: JoystickState[] = [{...IDLE_STICK}, {...IDLE_STICK}];
 
-  getState(n: number): JoystickState {
-    if (!this.state[n]) {
-      return {
-        buttons: [false, false],
-        stickyButtons: [false, false],
-        axes: [0, 0]
-      };
+  getState(): JoystickState[] {
+    const result = this.state.map((state) => ({...state}));
+    for (const joystick of this.state) {
+      joystick.stickyButtons = joystick.buttons.map((_value) => false);
     }
-    const state = {...this.state[n]};
-    this.state[n].stickyButtons = Array(state.buttons.length).fill(false);
-    return state;
+    return result;
   }
 
   update() {

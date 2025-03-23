@@ -1,36 +1,36 @@
 (program 
   (statement 
-    (on_event_gosub_statement on timer 
+    (on_event_gosub_statement on strig 
       ( 
         (expr 
-          (literal 4)) ) gosub 
+          (literal 0)) ) gosub 
       (target 
         (text_label 
-          (untyped_id ok))))) \n 
+          (untyped_id button))))) \n 
   (statement 
-    (event_control_statement timer on)) \n 
-  (statement 
-    (print_statement print 
-      (print_argument 
+    (event_control_statement strig 
+      ( 
         (expr 
-          (literal "yo"))))) \n 
+          (literal 0)) ) on)) \n 
   (statement 
-    (call_statement 
-      (untyped_id sleep))) ' \n 
-  (statement 
-    (print_statement print 
-      (print_argument 
+    (event_control_statement strig 
+      ( 
         (expr 
-          (literal "hi"))))) \n 
+          (literal 0)) ) step)) ' \n 
   (statement 
-    (end_statement end)) \n 
+    (event_control_statement strig 
+      ( 
+        (expr 
+          (literal 0)) ) step)) ' \n 
+  (statement 
+    (end_statement end)) \n \n 
   (label 
     (text_label 
-      (untyped_id ok)) :) 
+      (untyped_id button)) :) 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
-          (literal "ok"))))) : 
+          (literal "pushed"))))) : 
   (statement 
     (return_statement return)) \n <EOF>)
