@@ -552,22 +552,15 @@ export class Typer extends QBasicParserListener {
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}
   override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {}
 
-  override enterInput_statement = (ctx: parser.Input_statementContext) => {}
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
   override enterKey_statement = (ctx: parser.Key_statementContext) => {}
-  override enterLine_statement = (ctx: parser.Line_statementContext) => {}
-  override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {}
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
   override enterMid_statement = (ctx: parser.Mid_statementContext) => {}
-  override enterName_statement = (ctx: parser.Name_statementContext) => {}
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
   override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {}
-  override enterOn_expr_gosub_statement = (ctx: parser.On_expr_gosub_statementContext) => {}
-  override enterOn_expr_goto_statement = (ctx: parser.On_expr_goto_statementContext) => {}
   override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
-  override enterOpen_statement = (ctx: parser.Open_statementContext) => {}
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {}
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
@@ -576,12 +569,10 @@ export class Typer extends QBasicParserListener {
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
-  override enterRead_statement = (ctx: parser.Read_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 
   override enterRset_statement = (ctx: parser.Rset_statementContext) => {}
   override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
-  override enterSeek_statement = (ctx: parser.Seek_statementContext) => {}
 
   override exitSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
     const value = typeCheckExpression({expr: ctx.expr()});

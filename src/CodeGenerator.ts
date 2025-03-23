@@ -622,6 +622,17 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.input({token, sameLine, mark, prompt, variables}));
   }
 
+  override enterInput_file_statement = (ctx: parser.Input_file_statementContext) => {
+    const token = ctx.start!;
+    const fileNumber = this.compileExpression(ctx.file_number(), ctx.file_number().start!, { tag: TypeTag.INTEGER });
+    const variables: Variable[] = [];
+    for (const variableCtx of ctx.variable_or_function_call()) {
+      const variable = this.getVariableOutsideExpression(variableCtx);
+      variables.push(variable);
+    }
+    this.addStatement(statements.inputFile({token, fileNumber, variables}));
+  }
+
   override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {
     const token = ctx.start!;
     const sameLine = !!ctx._sameline;

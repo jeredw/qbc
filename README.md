@@ -192,7 +192,7 @@ parse those using baked in rules.
 | `IMP`            | Operator    | ✅      | ✅      |
 | `INKEY$`         | Function    | -       | ✅      |
 | `INP`            | Function    | -       | 🚧      |
-| `INPUT`          | Statement   | ✅      | 🚧      |
+| `INPUT`          | Statement   | ✅      | ✅      |
 | `INPUT$`         | Function    | ✅      | ✅      |
 | `INSTR`          | Function    | ✅      | ✅      |
 | `INT`            | Function    | -       | ✅      |
@@ -209,7 +209,7 @@ parse those using baked in rules.
 | `LEN`            | Function    | ✅      | ⛔      |
 | `LET`            | Statement   | ✅      | ✅      |
 | `LINE` Graphics  | Statement   | ✅      | ⛔      |
-| `LINE INPUT`     | Statement   | ✅      | 🚧      |
+| `LINE INPUT`     | Statement   | ✅      | ✅      |
 | `LIST`           | Keyword     | ✅      | ⛔      |
 | `LOC`            | Function    | -       | ✅      |
 | `LOCATE`         | Statement   | ✅      | ⛔      |
@@ -268,8 +268,8 @@ parse those using baked in rules.
 | `POKE`           | Statement   | -       | ⛔      |
 | `POS`            | Function    | -       | ⛔      |
 | `PRESET`         | Statement   | ✅      | ⛔      |
-| `PRINT`          | Statement   | ✅      | 🚧      |
-| `PRINT USING`    | Statement   | ✅      | 🚧      |
+| `PRINT`          | Statement   | ✅      | ✅      |
+| `PRINT USING`    | Statement   | ✅      | ✅      |
 | `PSET`           | Statement   | ✅      | ⛔      |
 | `PUT` I/O        | Statement   | ✅      | ⛔      |
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |

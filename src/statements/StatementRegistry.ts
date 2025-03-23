@@ -89,7 +89,7 @@ import { Variable } from "../Variables.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
-import { InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
+import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
 import { EventChannelState } from "../Events.ts";
@@ -294,6 +294,10 @@ export function inp(args: BuiltinStatementArgs) {
 
 export function input(args: InputStatementArgs) {
   return new InputStatement(args);
+}
+
+export function inputFile(args: InputStatementArgs) {
+  return new InputFileStatement(args);
 }
 
 export function inputFunction(token: Token, n: parser.ExprContext, fileNumber: parser.ExprContext | undefined, result: Variable) {

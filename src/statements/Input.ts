@@ -1,7 +1,7 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { CursorCommand } from "../Keyboard.ts";
-import { cast, ILLEGAL_FUNCTION_CALL, isError, string, Value } from "../Values.ts";
+import { cast, getDefaultValue, ILLEGAL_FUNCTION_CALL, isError, isNumeric, OVERFLOW, string, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { isString, Type } from "../Types.ts";
@@ -21,6 +21,12 @@ export interface InputStatementArgs {
   variables: Variable[];
 }
 
+enum ParseStatus {
+  OK,
+  REDO,
+  OVERFLOW
+};
+
 abstract class BaseInputStatement extends Statement {
   constructor(protected args: InputStatementArgs) {
     super();
@@ -34,7 +40,7 @@ abstract class BaseInputStatement extends Statement {
     return {tag: ControlFlowTag.WAIT, promise: this.lineEditor(context)};
   }
 
-  protected abstract parse(context: ExecutionContext, line: string): [boolean, string];
+  protected abstract parse(context: ExecutionContext, line: string): ParseStatus;
 
   private parseLineFromFile(context: ExecutionContext) {
     const accessor = getSequentialReadAccessor({
@@ -89,14 +95,14 @@ abstract class BaseInputStatement extends Statement {
           if (!this.args.sameLine) {
             textScreen.print('', true);
           }
-          const [success, errorMessage] = this.parse(context, buffer.join(''));
-          if (success) {
+          const status = this.parse(context, buffer.join(''));
+          if (status === ParseStatus.OK) {
             finished();
             return;
           }
           textScreen.print('', true);
-          if (errorMessage) {
-            textScreen.print(errorMessage, true);
+          if (status === ParseStatus.OVERFLOW) {
+            textScreen.print(OVERFLOW.errorMessage, true);
           }
           textScreen.print('Redo from start', true);
           prompt();
@@ -235,10 +241,10 @@ export class LineInputStatement extends BaseInputStatement {
     super(args);
   }
 
-  protected override parse(context: ExecutionContext, line: string): [boolean, string] {
+  protected override parse(context: ExecutionContext, line: string): ParseStatus {
     const result = this.args.variables[0];
     context.memory.write(result, string(line));
-    return [true, ''];
+    return ParseStatus.OK;
   }
 }
 
@@ -247,7 +253,7 @@ export class InputStatement extends BaseInputStatement {
     super(args);
   }
 
-  protected override parse(context: ExecutionContext, line: string): [boolean, string] {
+  protected override parse(context: ExecutionContext, line: string): ParseStatus {
     let pos = 0;
     const expect = (ch: string) => {
       if (pos >= line.length || line[pos] != ch) {
@@ -310,9 +316,9 @@ export class InputStatement extends BaseInputStatement {
           const data = numericItem(variable.type);
           if (isError(data)) {
             if (data.errorMessage === 'Overflow') {
-              throw new Error(data.errorMessage);
+              return ParseStatus.OVERFLOW;
             }
-            throw new Error();
+            return ParseStatus.REDO;
           }
           items.push(data);
         }
@@ -322,18 +328,85 @@ export class InputStatement extends BaseInputStatement {
       }
       skipWhitespace();
       if (pos < line.length) {
-        throw Error();
+        throw new Error();
       }
     } catch (e: unknown) {
-      const message = (e as Error).message;
-      return [false, message];
+      return ParseStatus.REDO;
     }
     for (let i = 0; i < this.args.variables.length; i++) {
       const variable = this.args.variables[i];
-      const [address, _] = context.memory.dereference(variable);
       context.memory.write(variable, items[i]);
     }
-    return [true, ''];
+    return ParseStatus.OK;
+  }
+}
+
+export class InputFileStatement extends Statement {
+  constructor(private args: InputStatementArgs) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    tryIo(this.args.token, () => {
+      const accessor = getSequentialReadAccessor({
+        expr: this.args.fileNumber!,
+        context
+      });
+      let char = '';
+      const nextChar = () => {
+        char = accessor.readChars(1);
+      };
+      const nextField = () => {
+        if (!accessor.eof()) {
+          nextChar();
+        }
+        while (!accessor.eof() && " \r\n".includes(char)) {
+          nextChar();
+        }
+      };
+      const readUntilStringDelimiter = () => {
+        let result = "";
+        if (char === '"') {
+          nextChar();
+          while (!accessor.eof() && char !== '"') {
+            result += char;
+            nextChar();
+          }
+          return result;
+        }
+        while (!accessor.eof() && !",\r\n".includes(char)) {
+          result += char;
+          nextChar();
+        }
+        return result;
+      };
+      const readUntilNumberDelimiter = () => {
+        let result = "";
+        while (!accessor.eof() && !", \r\n".includes(char)) {
+          result += char;
+          nextChar();
+        }
+        return result;
+      };
+      for (let i = 0; i < this.args.variables.length; i++) {
+        const variable = this.args.variables[i];
+        nextField();
+        if (isString(variable.type)) {
+          const field = readUntilStringDelimiter();
+          context.memory.write(variable, string(field));
+        } else {
+          const field = readUntilNumberDelimiter();
+          let value = parseNumberFromString(field.trim()) ?? getDefaultValue(variable);
+          if (isNumeric(value)) {
+            value = cast(value, variable.type);
+          }
+          if (isError(value) && value.errorMessage === 'Overflow') {
+            throw RuntimeError.fromToken(this.args.token, value);
+          }
+          context.memory.write(variable, value);
+        }
+      }
+    });
   }
 }
 
