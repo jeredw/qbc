@@ -1,15 +1,16 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { CursorCommand } from "../Keyboard.ts";
-import { cast, isError, string, Value } from "../Values.ts";
+import { cast, ILLEGAL_FUNCTION_CALL, isError, string, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { isString, Type } from "../Types.ts";
 import { Statement } from "./Statement.ts";
-import { parseNumberFromString } from "../Expressions.ts";
+import { evaluateIntegerExpression, parseNumberFromString } from "../Expressions.ts";
 import { Token } from "antlr4ng";
 import { getSequentialReadAccessor } from "./FileSystem.ts";
 import { tryIo } from "../Files.ts";
+import { RuntimeError } from "../Errors.ts";
 
 export interface InputStatementArgs {
   token: Token;
@@ -333,5 +334,64 @@ export class InputStatement extends BaseInputStatement {
       context.memory.write(variable, items[i]);
     }
     return [true, ''];
+  }
+}
+
+export class InputFunction extends Statement {
+  constructor(
+    private token: Token,
+    private n: ExprContext,
+    private fileNumber: ExprContext | undefined,
+    private result: Variable
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext): ControlFlow | void {
+    const numBytes = evaluateIntegerExpression(this.n, context.memory);
+    if (numBytes < 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    if (numBytes === 0) {
+      context.memory.write(this.result, string(""));
+      return;
+    }
+    if (this.fileNumber) {
+      let result = "";
+      tryIo(this.token, () => {
+        const accessor = getSequentialReadAccessor({
+          expr: this.fileNumber!,
+          context
+        });
+        result = accessor.readChars(numBytes);
+      });
+      context.memory.write(this.result, string(result));
+      return;
+    }
+    return {tag: ControlFlowTag.WAIT, promise: this.readStdin(numBytes, context)};
+  }
+
+  private readStdin(numBytes: number, context: ExecutionContext): Promise<void> {
+    let buffer: string[] = [];
+    let finished: () => void;
+    const frame = globalThis.requestAnimationFrame ?? setTimeout;
+    const keyWaitFrame = () => {
+      const key = context.devices.keyboard.input();
+      if (!key || !key.char) {
+        frame(keyWaitFrame);
+        return;
+      }
+      buffer.push(key.char);
+      if (buffer.length >= numBytes) {
+        context.memory.write(this.result, string(buffer.join('')));
+        finished();
+        return;
+      }
+      frame(keyWaitFrame);
+    };
+    return new Promise((resolve) => {
+      finished = resolve;
+      frame(keyWaitFrame);
+    });
   }
 }

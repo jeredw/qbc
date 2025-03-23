@@ -86,10 +86,10 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
-import { InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
+import { InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
 import { EventTrapState } from "../Events.ts";
@@ -293,6 +293,10 @@ export function inp(args: BuiltinStatementArgs) {
 
 export function input(args: InputStatementArgs) {
   return new InputStatement(args);
+}
+
+export function inputFunction(token: Token, n: parser.ExprContext, fileNumber: parser.ExprContext | undefined, result: Variable) {
+  return new InputFunction(token, n, fileNumber, result);
 }
 
 export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {

@@ -1,0 +1,23 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode input) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (input_function input$ 
+              ( 
+                (expr 
+                  (literal 5)) , 
+                (expr 
+                  (literal 1)) ))))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

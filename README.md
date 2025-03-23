@@ -193,7 +193,7 @@ parse those using baked in rules.
 | `INKEY$`         | Function    | -       | ✅      |
 | `INP`            | Function    | -       | 🚧      |
 | `INPUT`          | Statement   | ✅      | 🚧      |
-| `INPUT$`         | Function    | ✅      | ⛔      |
+| `INPUT$`         | Function    | ✅      | ✅      |
 | `INSTR`          | Function    | ✅      | ✅      |
 | `INT`            | Function    | -       | ✅      |
 | `INTEGER`        | Keyword     | ✅      | ✅      |

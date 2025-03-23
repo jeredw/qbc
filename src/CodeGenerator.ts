@@ -1037,6 +1037,17 @@ export class CodeGenerator extends QBasicParserListener {
         codeGenerator.addStatement(statements.dateFunction(result));
       }
 
+      override enterInput_function = (ctx: parser.Input_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const n = codeGenerator.compileExpression(ctx._n!, ctx._n!.start!, { tag: TypeTag.INTEGER });
+        const fileNumber = ctx._filenum &&
+          codeGenerator.compileExpression(ctx._filenum, ctx._filenum.start!, { tag: TypeTag.INTEGER });
+        codeGenerator.addStatement(statements.inputFunction(ctx.start!, n, fileNumber, result));
+      }
+
       override enterInstr_function = (ctx: parser.Instr_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
