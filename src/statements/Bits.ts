@@ -302,6 +302,10 @@ export class LenStatement extends Statement {
     }
     if (this.variable.type.tag === TypeTag.STRING) {
       const value = context.memory.read(this.variable);
+      if (!value) {
+        context.memory.write(this.result, long(0));
+        return;
+      }
       if (!isString(value)) {
         throw new Error("nonstring value in string var");
       }

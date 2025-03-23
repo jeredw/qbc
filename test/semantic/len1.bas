@@ -1,13 +1,14 @@
-print len("hello world")
+print len("hello world") ' 11
 a$ = "sup dog"
-print len(a$)
-print len(a%)
-print len(a!)
-print len(a&)
-print len(a#)
+print len(a$) ' 7
+print len(a%) ' 2
+print len(a!) ' 4
+print len(a&) ' 4
+print len(a#) ' 8
+print len(x$) ' 0
 
-dim x(10) as double
-print len(x)
+dim z(10) as double
+print len(z) ' 4
 
 type inner
   a as integer     ' 2
