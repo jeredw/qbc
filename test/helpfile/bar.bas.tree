@@ -966,10 +966,11 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (builtin_function INPUT$ 
-                        ( 
-                          (expr 
-                            (literal 1)) ))))) ))))) \r\n \r\n) 
+                      (builtin_function 
+                        (input_function INPUT$ 
+                          ( 
+                            (expr 
+                              (literal 1)) )))))) ))))) \r\n \r\n) 
     (end_function_statement END FUNCTION)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION InputData% 
     ( 
@@ -1181,10 +1182,11 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (builtin_function INPUT$ 
-                              ( 
-                                (expr 
-                                  (literal 1)) ))))) ))))) \r\n) LOOP 
+                            (builtin_function 
+                              (input_function INPUT$ 
+                                ( 
+                                  (expr 
+                                    (literal 1)) )))))) ))))) \r\n) LOOP 
           (loop_condition UNTIL 
             (expr 
               (expr 

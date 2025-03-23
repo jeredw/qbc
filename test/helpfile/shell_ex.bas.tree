@@ -131,10 +131,11 @@
           (assignment_statement 
             (variable_or_function_call R$) = 
             (expr 
-              (builtin_function INPUT$ 
-                ( 
-                  (expr 
-                    (literal 1)) ))))) \r\n 
+              (builtin_function 
+                (input_function INPUT$ 
+                  ( 
+                    (expr 
+                      (literal 1)) )))))) \r\n 
         (statement 
           (call_statement 
             (untyped_id CLS))) \r\n) LOOP 

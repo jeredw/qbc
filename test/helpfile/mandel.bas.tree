@@ -605,10 +605,11 @@
         (assignment_statement 
           (variable_or_function_call Resp$) = 
           (expr 
-            (builtin_function INPUT$ 
-              ( 
-                (expr 
-                  (literal 1)) ))))) \r\n \r\n ' \r\n 
+            (builtin_function 
+              (input_function INPUT$ 
+                ( 
+                  (expr 
+                    (literal 1)) )))))) \r\n \r\n ' \r\n 
       (if_block_statement IF 
         (expr 
           (expr 

@@ -320,12 +320,13 @@
               (assignment_statement 
                 (variable_or_function_call Prospect$) = 
                 (expr 
-                  (builtin_function INPUT$ 
-                    ( 
-                      (expr 
-                        (literal 40)) , 
-                      (expr 
-                        (literal 1)) ))))) ' \r\n ' \r\n ' \r\n \r\n ' \r\n 
+                  (builtin_function 
+                    (input_function INPUT$ 
+                      ( 
+                        (expr 
+                          (literal 40)) , 
+                        (expr 
+                          (literal 1)) )))))) ' \r\n ' \r\n ' \r\n \r\n ' \r\n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call SName$) = 

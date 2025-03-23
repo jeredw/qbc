@@ -67,12 +67,13 @@
           (assignment_statement 
             (variable_or_function_call Buffer$) = 
             (expr 
-              (builtin_function INPUT$ 
-                ( 
-                  (expr 
-                    (variable_or_function_call PACKETSIZE)) , # 
-                  (expr 
-                    (literal 1)) ))))) \r\n \r\n ' \r\n 
+              (builtin_function 
+                (input_function INPUT$ 
+                  ( 
+                    (expr 
+                      (variable_or_function_call PACKETSIZE)) , # 
+                    (expr 
+                      (literal 1)) )))))) \r\n \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call Start%) = 

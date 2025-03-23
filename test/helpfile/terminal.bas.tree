@@ -132,17 +132,18 @@
               (assignment_statement 
                 (variable_or_function_call ModemInput$) = 
                 (expr 
-                  (builtin_function INPUT$ 
-                    ( 
-                      (expr 
-                        (variable_or_function_call LOC 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 1)))) ))) , # 
-                      (expr 
-                        (literal 1)) ))))) \r\n \r\n 
+                  (builtin_function 
+                    (input_function INPUT$ 
+                      ( 
+                        (expr 
+                          (variable_or_function_call LOC 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 1)))) ))) , # 
+                        (expr 
+                          (literal 1)) )))))) \r\n \r\n 
             (statement 
               (call_statement 
                 (untyped_id Filter) 

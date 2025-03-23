@@ -916,7 +916,7 @@ expr
 // just be pre-defined by the runtime.
 builtin_function
   : date_function
-  | INPUT_STRING '(' n=expr (COMMA '#'? filenum=expr)? ')'
+  | input_function
   | instr_function
   | IOCTL_STRING '(' '#'? filenum=expr ')'
   | lbound_function
@@ -934,6 +934,10 @@ builtin_function
 
 date_function
   : DATE_STRING
+  ;
+
+input_function
+  : INPUT_STRING '(' n=expr (COMMA '#'? filenum=expr)? ')'
   ;
 
 instr_function

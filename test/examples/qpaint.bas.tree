@@ -7281,10 +7281,11 @@
                       (assignment_statement LET 
                         (variable_or_function_call temp$) = 
                         (expr 
-                          (builtin_function INPUT$ 
-                            ( 
-                              (expr 
-                                (literal 1)) ))))) \n 
+                          (builtin_function 
+                            (input_function INPUT$ 
+                              ( 
+                                (expr 
+                                  (literal 1)) )))))) \n 
                     (statement 
                       (assignment_statement LET 
                         (variable_or_function_call temp$) = 
@@ -7712,10 +7713,11 @@
                           (assignment_statement LET 
                             (variable_or_function_call cont$) = 
                             (expr 
-                              (builtin_function INPUT$ 
-                                ( 
-                                  (expr 
-                                    (literal 1)) ))))) \n) LOOP)) \n \n 
+                              (builtin_function 
+                                (input_function INPUT$ 
+                                  ( 
+                                    (expr 
+                                      (literal 1)) )))))) \n) LOOP)) \n \n 
                   (statement 
                     (if_inline_statement IF 
                       (expr 
@@ -8540,10 +8542,11 @@
                       (assignment_statement LET 
                         (variable_or_function_call cont$) = 
                         (expr 
-                          (builtin_function INPUT$ 
-                            ( 
-                              (expr 
-                                (literal 1)) ))))) \n \n 
+                          (builtin_function 
+                            (input_function INPUT$ 
+                              ( 
+                                (expr 
+                                  (literal 1)) )))))) \n \n 
                     (statement 
                       (for_next_statement FOR x = 
                         (expr 
@@ -9787,17 +9790,18 @@
         (assignment_statement 
           (variable_or_function_call file$) = 
           (expr 
-            (builtin_function INPUT$ 
-              ( 
-                (expr 
-                  (variable_or_function_call LOF 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 1)))) ))) , 
-                (expr 
-                  (literal 1)) ))))) \n \n 
+            (builtin_function 
+              (input_function INPUT$ 
+                ( 
+                  (expr 
+                    (variable_or_function_call LOF 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1)))) ))) , 
+                  (expr 
+                    (literal 1)) )))))) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -11642,10 +11646,11 @@
               (assignment_statement LET 
                 (variable_or_function_call cont$) = 
                 (expr 
-                  (builtin_function INPUT$ 
-                    ( 
-                      (expr 
-                        (literal 1)) ))))) \n) LOOP)) \n 
+                  (builtin_function 
+                    (input_function INPUT$ 
+                      ( 
+                        (expr 
+                          (literal 1)) )))))) \n) LOOP)) \n 
       (statement 
         (if_inline_statement IF 
           (expr 
@@ -12082,10 +12087,11 @@
               (assignment_statement LET 
                 (variable_or_function_call temp$) = 
                 (expr 
-                  (builtin_function INPUT$ 
-                    ( 
-                      (expr 
-                        (literal 1)) ))))) \n 
+                  (builtin_function 
+                    (input_function INPUT$ 
+                      ( 
+                        (expr 
+                          (literal 1)) )))))) \n 
             (statement 
               (assignment_statement LET 
                 (variable_or_function_call temp$) = 
@@ -12513,10 +12519,11 @@
                   (assignment_statement LET 
                     (variable_or_function_call cont$) = 
                     (expr 
-                      (builtin_function INPUT$ 
-                        ( 
-                          (expr 
-                            (literal 1)) ))))) \n) LOOP)) \n \n 
+                      (builtin_function 
+                        (input_function INPUT$ 
+                          ( 
+                            (expr 
+                              (literal 1)) )))))) \n) LOOP)) \n \n 
           (statement 
             (if_inline_statement IF 
               (expr 

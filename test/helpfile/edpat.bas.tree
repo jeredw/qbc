@@ -892,8 +892,9 @@
                 (argument_list 
                   (argument 
                     (expr 
-                      (builtin_function INPUT$ 
-                        ( 
-                          (expr 
-                            (literal 1)) ))))) ))))) \r\n) 
+                      (builtin_function 
+                        (input_function INPUT$ 
+                          ( 
+                            (expr 
+                              (literal 1)) )))))) ))))) \r\n) 
     (end_sub_statement END SUB)) \r\n <EOF>)

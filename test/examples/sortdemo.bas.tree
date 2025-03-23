@@ -2144,10 +2144,11 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (builtin_function INPUT$ 
-                              ( 
-                                (expr 
-                                  (literal 1)) ))))) ))))) ' \n 
+                            (builtin_function 
+                              (input_function INPUT$ 
+                                ( 
+                                  (expr 
+                                    (literal 1)) )))))) ))))) ' \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Selection) = 

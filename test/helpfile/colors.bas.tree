@@ -116,10 +116,11 @@
                 (assignment_statement 
                   (variable_or_function_call Pause$) = 
                   (expr 
-                    (builtin_function INPUT$ 
-                      ( 
-                        (expr 
-                          (literal 1)) ))))) ' \r\n 
+                    (builtin_function 
+                      (input_function INPUT$ 
+                        ( 
+                          (expr 
+                            (literal 1)) )))))) ' \r\n 
               (statement 
                 (print_statement PRINT)) \r\n \r\n ' \r\n ' \r\n) LOOP 
             (loop_condition UNTIL 

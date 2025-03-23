@@ -3916,10 +3916,11 @@
                 (assignment_statement 
                   (variable_or_function_call Prompt$) = 
                   (expr 
-                    (builtin_function INPUT$ 
-                      ( 
-                        (expr 
-                          (literal 1)) ))))) \r\n)) 
+                    (builtin_function 
+                      (input_function INPUT$ 
+                        ( 
+                          (expr 
+                            (literal 1)) )))))) \r\n)) 
           (case_block 
             (case_statement CASE ELSE) 
             (block ' \r\n 
@@ -3981,10 +3982,11 @@
                             (argument_list 
                               (argument 
                                 (expr 
-                                  (builtin_function INPUT$ 
-                                    ( 
-                                      (expr 
-                                        (literal 1)) ))))) ))))) \r\n) LOOP 
+                                  (builtin_function 
+                                    (input_function INPUT$ 
+                                      ( 
+                                        (expr 
+                                          (literal 1)) )))))) ))))) \r\n) LOOP 
                 (loop_condition UNTIL 
                   (expr 
                     (expr 

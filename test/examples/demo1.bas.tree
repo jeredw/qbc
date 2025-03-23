@@ -176,10 +176,11 @@
           (assignment_statement 
             (variable_or_function_call Q$) = 
             (expr 
-              (builtin_function INPUT$ 
-                ( 
-                  (expr 
-                    (literal 1)) ))))) : 
+              (builtin_function 
+                (input_function INPUT$ 
+                  ( 
+                    (expr 
+                      (literal 1)) )))))) : 
         (statement 
           (assignment_statement 
             (variable_or_function_call Q) = 

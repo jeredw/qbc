@@ -218,10 +218,11 @@
                         (argument_list 
                           (argument 
                             (expr 
-                              (builtin_function INPUT$ 
-                                ( 
-                                  (expr 
-                                    (literal 1)) ))))) ))))) \r\n) LOOP 
+                              (builtin_function 
+                                (input_function INPUT$ 
+                                  ( 
+                                    (expr 
+                                      (literal 1)) )))))) ))))) \r\n) LOOP 
             (loop_condition WHILE 
               (expr 
                 (expr 
@@ -281,10 +282,11 @@
                       (assignment_statement 
                         (variable_or_function_call Pause$) = 
                         (expr 
-                          (builtin_function INPUT$ 
-                            ( 
-                              (expr 
-                                (literal 1)) ))))) \r\n) 
+                          (builtin_function 
+                            (input_function INPUT$ 
+                              ( 
+                                (expr 
+                                  (literal 1)) )))))) \r\n) 
                   (else_block_statement ELSE 
                     (else_block \r\n 
                       (statement 
@@ -425,10 +427,11 @@
                       (argument_list 
                         (argument 
                           (expr 
-                            (builtin_function INPUT$ 
-                              ( 
-                                (expr 
-                                  (literal 1)) ))))) ))))) \r\n) LOOP 
+                            (builtin_function 
+                              (input_function INPUT$ 
+                                ( 
+                                  (expr 
+                                    (literal 1)) )))))) ))))) \r\n) LOOP 
           (loop_condition WHILE 
             (expr 
               (expr 

@@ -41,12 +41,13 @@
           (assignment_statement 
             (variable_or_function_call S$) = 
             (expr 
-              (builtin_function INPUT$ 
-                ( 
-                  (expr 
-                    (literal 1)) , # 
-                  (expr 
-                    (literal 1)) ))))) \n ' \n ' \n ' \n 
+              (builtin_function 
+                (input_function INPUT$ 
+                  ( 
+                    (expr 
+                      (literal 1)) , # 
+                    (expr 
+                      (literal 1)) )))))) \n ' \n ' \n ' \n 
         (statement 
           (assignment_statement 
             (variable_or_function_call C) = 
