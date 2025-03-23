@@ -36,8 +36,13 @@ export interface Handle {
   accessor: FileAccessor;
 }
 
-export interface Files {
-  handles: Map<number, Handle>;
+export class Files {
+  handles: Map<number, Handle> = new Map();
+
+  getFreeHandle(): number {
+    const maxHandle = Math.max(...this.handles.keys());
+    return isFinite(maxHandle) ? maxHandle + 1 : 1;
+  }
 }
 
 export function isSequentialWriteMode(mode: OpenMode): boolean {

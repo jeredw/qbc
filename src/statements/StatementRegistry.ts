@@ -50,6 +50,7 @@ import {
   CloseStatement,
   EofFunction,
   FilesStatement,
+  FreefileFunction,
   KillStatement,
   LocFunction,
   LofFunction,
@@ -252,6 +253,10 @@ export function fix(args: BuiltinStatementArgs) {
 
 export function for_(counter: Variable, end: Variable, increment: Variable | null) {
   return new ForStatement(counter, end, increment);
+}
+
+export function freefile(args: BuiltinStatementArgs) {
+  return new FreefileFunction(args);
 }
 
 export function goto() {

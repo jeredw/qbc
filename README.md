@@ -181,7 +181,7 @@ parse those using baked in rules.
 | `FIX`            | Function    | -       | ✅      |
 | `FOR`...`NEXT`   | Statement   | ✅      | ✅      |
 | `FRE`            | Function    | -       | ⛔      |
-| `FREEFILE`       | Function    | -       | ⛔      |
+| `FREEFILE`       | Function    | -       | ✅      |
 | `FUNCTION`       | Statement   | ✅      | ✅      |
 | `GET` I/O        | Statement   | ✅      | ⛔      |
 | `GET` Graphics   | Statement   | ✅      | ⛔      |

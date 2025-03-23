@@ -34,7 +34,7 @@ export class Invocation {
     this.devices = devices;
     this.memory = memory;
     this.data = new ProgramData(program.data);
-    this.files = {handles: new Map()};
+    this.files = new Files();
     this.events = new Events();
     this.program = program;
   }
@@ -66,7 +66,7 @@ export class Invocation {
     const chunks = this.program.chunks;
     this.stack = [];
     this.data.restore(0);
-    this.files = {handles: new Map()};
+    this.files = new Files();
     if (chunks.length > 0 && chunks[0].statements.length > 0) {
       this.stack.push({chunkIndex: 0, statementIndex: 0});
     }

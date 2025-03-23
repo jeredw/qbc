@@ -1,0 +1,30 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call freefile))))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode output) as 
+      (expr 
+        (variable_or_function_call freefile)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call freefile))))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test2.txt")) for 
+      (open_mode output) as 
+      (expr 
+        (variable_or_function_call freefile)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call freefile))))) \n <EOF>)

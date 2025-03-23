@@ -10,6 +10,7 @@ import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { DiskEntry } from "../Disk.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { Variable } from "../Variables.ts";
+import { ControlFlow } from "../ControlFlow.ts";
 
 export interface OpenArgs {
   token: Token;
@@ -257,6 +258,22 @@ export class SeekStatement extends Statement {
       const offset = evaluateIntegerExpression(this.offset, context.memory);
       accessor.seek(offset);
     });
+  }
+}
+
+export class FreefileFunction extends Statement {
+  result: Variable;
+
+  constructor({result}: BuiltinStatementArgs) {
+    super();
+    if (!result) {
+      throw new Error('missing result variable');
+    }
+    this.result = result;
+  }
+
+  override execute(context: ExecutionContext) {
+    context.memory.write(this.result, integer(context.files.getFreeHandle()));
   }
 }
 

@@ -55,6 +55,7 @@ export class StandardLibrary {
     _("exp double -> double", statements.exp),
     _("files string?", statements.files),
     _("fix numeric -> numeric", statements.fix),
+    _("freefile -> integer", statements.freefile),
     _("hex long -> string", statements.hex),
     _("inkey -> string", statements.inkey),
     _("inp long -> integer", statements.inp),
