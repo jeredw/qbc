@@ -1,0 +1,37 @@
+(program 
+  (function_statement function stringer$ 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call stringer$) = 
+          (expr 
+            (literal "whee")))) \n) 
+    (end_function_statement end function)) \n \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call chr$ 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 34)))) ))) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stringer$))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call stringer$)) ))))))) \n <EOF>)

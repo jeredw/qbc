@@ -307,7 +307,7 @@ export class SymbolTable {
     this.checkForAmbiguousRecord(variable);
     if (!variable.array) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
-      if (asType && variable.isAsType && !sameType(asType, variable.type)) {
+      if (asType && (variable.isAsType || variable.sigil) && !sameType(asType, variable.type)) {
         // dim x as string
         // dim x as integer
         throw ParseError.fromToken(variable.token, "Duplicate definition");
@@ -335,7 +335,7 @@ export class SymbolTable {
       }
     } else {
       const asType = slot.arrayAsType ?? slot.scalarAsType;
-      if (asType && variable.isAsType && !sameType(asType, variable.type)) {
+      if (asType && (variable.isAsType || variable.sigil) && !sameType(asType, variable.type)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       if (variable.isAsType) {

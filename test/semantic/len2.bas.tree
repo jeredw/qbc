@@ -1,0 +1,13 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (expr 
+                    (literal 2)) + 
+                  (expr 
+                    (literal 2))) ))))))) \n <EOF>)
