@@ -1,0 +1,96 @@
+(program ' \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "LIST")) FOR 
+      (open_mode OUTPUT) AS # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n 
+        (statement 
+          (input_statement INPUT "   NAME:       " , 
+            (variable_or_function_call Name$))) \n 
+        (statement 
+          (input_statement INPUT "   AGE:        " , 
+            (variable_or_function_call Age$))) \n 
+        (statement 
+          (write_statement WRITE 
+            (file_number # 
+              (expr 
+                (literal 1))) , 
+            (expr 
+              (variable_or_function_call Name$)) , 
+            (expr 
+              (variable_or_function_call Age$)))) \n 
+        (statement 
+          (input_statement INPUT "Add another entry" ; 
+            (variable_or_function_call R$))) \n) LOOP 
+      (loop_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call UCASE$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call R$)))) ))) = 
+          (expr 
+            (literal "Y")))))) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n ' \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "LIST")) FOR 
+      (open_mode INPUT) AS # 
+      (expr 
+        (literal 1)))) \n ' \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Entries in file:"))))) : 
+  (statement 
+    (print_statement PRINT)) \n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr NOT 
+          (expr 
+            (variable_or_function_call EOF 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 1)))) ))))) 
+      (block \n 
+        (statement 
+          (input_file_statement INPUT 
+            (file_number # 
+              (expr 
+                (literal 1))) , 
+            (variable_or_function_call Rec1$) , 
+            (variable_or_function_call Rec2$))) ' \n 
+        (statement 
+          (print_statement PRINT 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Rec1$)) ,) 
+            (print_argument 
+              (expr 
+                (variable_or_function_call Rec2$))))) ' \n) LOOP)) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id KILL) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "LIST")))))) \n <EOF>)

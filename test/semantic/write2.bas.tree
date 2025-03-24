@@ -1,0 +1,37 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (write_statement write 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 42.4)) , 
+      (expr 
+        (literal 2e20)) , 
+      (expr 
+        (literal "hello world")))) \n 
+  (statement 
+    (write_statement write 
+      (file_number # 
+        (expr 
+          (literal 1))) ,)) \n 
+  (statement 
+    (write_statement write 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal "mcstringface, stringy")))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

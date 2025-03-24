@@ -64,7 +64,12 @@ import {
   SeekFunction,
   SeekStatement
 } from "./FileSystem.ts";
-import { PrintStatement, PrintStatementArgs, PrintUsingStatement } from "./Print.ts";
+import {
+  PrintStatement,
+  PrintStatementArgs,
+  PrintUsingStatement,
+  WriteStatement
+} from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
 import {
   AscFunction,
@@ -88,7 +93,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -533,4 +538,8 @@ export function val(args: BuiltinStatementArgs) {
 
 export function while_(expr: parser.ExprContext) {
   return new DoTest(true, expr);
+}
+
+export function write(args: PrintStatementArgs) {
+  return new WriteStatement(args);
 }

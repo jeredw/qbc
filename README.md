@@ -343,7 +343,7 @@ parse those using baked in rules.
 | `WHILE`...`WEND` | Statement   | ✅      | ✅      |
 | `WIDTH`          | Statement   | ✅      | ⛔      |
 | `WINDOW`         | Statement   | ✅      | ⛔      |
-| `WRITE`          | Statement   | ✅      | ⛔      |
+| `WRITE`          | Statement   | ✅      | ✅      |
 | `XOR`            | Operator    | ✅      | ✅      |
 
 # Standard library

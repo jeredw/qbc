@@ -554,3 +554,36 @@ function formatUsingStringTemplate(string: string, template: StringTemplate): st
   }
   return string.padEnd(template.length, ' ');
 }
+
+export class WriteStatement extends BasePrintStatement {
+  constructor(args: PrintStatementArgs) {
+    super(args);
+  }
+
+  override execute(context: ExecutionContext) {
+    const printer = this.getPrinter(context);
+    if (!this.args.exprs.length) {
+      printer.print('', true);
+      return;
+    }
+    for (let i = 0; i < this.args.exprs.length; i++) {
+      const {token, expr} = this.args.exprs[i];
+      if (!expr) {
+        throw new Error('expecting expr in write');
+      }
+      const newLine = i === this.args.exprs.length - 1;
+      const value = evaluateExpression({expr, memory: context.memory});
+      const comma = i === 0 ? '' : ',';
+      if (isNumeric(value)) {
+        const formatted = formatNumber(value);
+        printer.print(`${comma}${formatted}`, newLine);
+      } else if (isString(value)) {
+        printer.print(`${comma}"${value.string}"`, newLine);
+      } else if (isError(value)) {
+        throw RuntimeError.fromToken(token, value);
+      } else {
+        throw RuntimeError.fromToken(token, TYPE_MISMATCH);
+      }
+    }
+  }
+}

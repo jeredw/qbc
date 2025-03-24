@@ -1,0 +1,17 @@
+(program 
+  (statement 
+    (write_statement write 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 42.4)) , 
+      (expr 
+        (literal 2e20)) , 
+      (expr 
+        (literal "hello world")))) \n 
+  (statement 
+    (write_statement write)) \n 
+  (statement 
+    (write_statement write 
+      (expr 
+        (literal "mcstringface, stringy")))) \n <EOF>)

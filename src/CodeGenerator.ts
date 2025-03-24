@@ -936,7 +936,19 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterWidth_statement = (ctx: parser.Width_statementContext) => {}
   override enterWindow_statement = (ctx: parser.Window_statementContext) => {}
-  override enterWrite_statement = (ctx: parser.Write_statementContext) => {}
+
+  override enterWrite_statement = (ctx: parser.Write_statementContext) => {
+    const fileNumber = ctx.file_number() && this.compileExpression(
+        ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER });
+    const exprs: PrintExpr[] = [];
+    for (const writeExpr of ctx.expr()) {
+      const token = writeExpr.start!;
+      const expr = this.compileExpression(writeExpr, writeExpr.start!, { tag: TypeTag.PRINTABLE });
+      exprs.push({token, expr});
+    }
+    const token = ctx.start!;
+    this.addStatement(statements.write({token, exprs, fileNumber: fileNumber ?? undefined}));
+  }
 
   override enterExit_statement = (ctx: parser.Exit_statementContext) => {
     if (ctx.DEF()) {
