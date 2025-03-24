@@ -3,14 +3,13 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, error, integer, isNumeric, long, Value } from "../Values.ts";
+import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, ILLEGAL_FUNCTION_CALL, integer, isNumeric, long, Value } from "../Values.ts";
 import { IOError, RuntimeError } from "../Errors.ts";
 import { FileAccessor, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { DiskEntry } from "../Disk.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { Variable } from "../Variables.ts";
-import { ControlFlow } from "../ControlFlow.ts";
 
 export interface OpenArgs {
   token: Token;
@@ -274,6 +273,60 @@ export class FreefileFunction extends Statement {
 
   override execute(context: ExecutionContext) {
     context.memory.write(this.result, integer(context.files.getFreeHandle()));
+  }
+}
+
+export class FileattrFunction extends Statement {
+  token: Token;
+  fileNumber: ExprContext;
+  attribute: ExprContext;
+  result: Variable;
+
+  constructor({token, result, params}: BuiltinStatementArgs) {
+    super();
+    if (!params[0] || !params[0].expr) {
+      throw new Error('missing file number');
+    }
+    this.fileNumber = params[0].expr;
+    if (!params[1] || !params[1].expr) {
+      throw new Error('missing attribute');
+    }
+    this.attribute = params[1].expr;
+    this.token = token;
+    if (!result) {
+      throw new Error('missing result variable');
+    }
+    this.result = result;
+  }
+
+  override execute(context: ExecutionContext) {
+    const fileNumber = evaluateIntegerExpression(this.fileNumber, context.memory);
+    const handle = context.files.handles.get(fileNumber);
+    if (!handle) {
+      throw RuntimeError.fromToken(this.token, BAD_FILE_NAME_OR_NUMBER);
+    }
+    const attribute = evaluateIntegerExpression(this.attribute, context.memory);
+    if (!(attribute === 1 || attribute === 2)) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const attributeValue = attribute === 1 ? encodeOpenMode(handle.accessor.openMode())
+      : fileNumber;
+    context.memory.write(this.result, integer(attributeValue));
+  }
+}
+
+function encodeOpenMode(openMode: OpenMode): number {
+  switch (openMode) {
+    case OpenMode.INPUT:
+      return 1;
+    case OpenMode.OUTPUT:
+      return 2;
+    case OpenMode.RANDOM:
+      return 4;
+    case OpenMode.APPEND:
+      return 8;
+    case OpenMode.BINARY:
+      return 32;
   }
 }
 

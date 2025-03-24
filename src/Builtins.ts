@@ -53,6 +53,7 @@ export class StandardLibrary {
     _("cvsmbf string -> single", statements.cvsmbf),
     _("eof integer -> integer", statements.eof),
     _("exp double -> double", statements.exp),
+    _("fileattr integer integer -> integer", statements.fileattr),
     _("files string?", statements.files),
     _("fix numeric -> numeric", statements.fix),
     _("freefile -> integer", statements.freefile),

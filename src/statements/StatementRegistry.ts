@@ -50,6 +50,7 @@ import {
   ChdirStatement,
   CloseStatement,
   EofFunction,
+  FileattrFunction,
   FilesStatement,
   FreefileFunction,
   KillStatement,
@@ -87,7 +88,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { BuiltinStatementArgs } from "../Builtins.ts";
+import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction } from "./Inkey.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -243,6 +244,10 @@ export function exitSub() {
 
 export function exp(args: BuiltinStatementArgs) {
   return new ExpFunction(args);
+}
+
+export function fileattr(args: BuiltinStatementArgs) {
+  return new FileattrFunction(args);
 }
 
 export function files(args: BuiltinStatementArgs) {
