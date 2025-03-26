@@ -1,0 +1,57 @@
+(program 
+  (statement 
+    (on_event_gosub_statement on key 
+      ( 
+        (expr 
+          (literal 1)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id yay))))) \n 
+  (statement 
+    (on_event_gosub_statement on key 
+      ( 
+        (expr 
+          (literal 2)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id yay))))) \n 
+  (statement 
+    (on_event_gosub_statement on key 
+      ( 
+        (expr 
+          (literal 3)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id yay))))) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 0)) ) on)) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 1)) ) step)) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 2)) ) step)) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 3)) ) step)) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id yay)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "yay"))))) : 
+  (statement 
+    (return_statement return)) \n <EOF>)

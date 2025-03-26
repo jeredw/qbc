@@ -200,8 +200,8 @@ parse those using baked in rules.
 | `IOCTL`          | Statement   | ✅      | ⛔      |
 | `IOCTL$`         | Function    | ✅      | ⛔      |
 | `IS`             | Keyword     | ✅      | ✅      |
-| `KEY` Assignment | Statement   | ✅      | ⛔      |
-| `KEY` Event      | Statement   | ✅      | ⛔      |
+| `KEY` Assignment | Statement   | ✅      | 🚧      |
+| `KEY` Event      | Statement   | ✅      | ✅      |
 | `KILL`           | Statement   | -       | ✅      |
 | `LBOUND`         | Function    | ✅      | ✅      |
 | `LCASE$`         | Function    | -       | ✅      |
@@ -241,7 +241,7 @@ parse those using baked in rules.
 | `ON COM`         | Statement   | ✅      | ⛔      |
 | `ON ERROR`       | Statement   | ✅      | ⛔      |
 | `ON`             | Keyword     | ✅      | 🚧      |
-| `ON KEY`         | Statement   | ✅      | ⛔      |
+| `ON KEY`         | Statement   | ✅      | ✅      |
 | `ON PEN`         | Statement   | ✅      | ⛔      |
 | `ON PLAY`        | Statement   | ✅      | ⛔      |
 | `ON STRIG`       | Statement   | ✅      | ✅      |

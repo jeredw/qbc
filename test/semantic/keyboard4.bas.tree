@@ -1,0 +1,31 @@
+(program 
+  (statement 
+    (on_event_gosub_statement on key 
+      ( 
+        (expr 
+          (literal 1)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id hi))))) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 1)) ) on)) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 1)) ) step)) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id hi)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) : 
+  (statement 
+    (return_statement return)) \n <EOF>)

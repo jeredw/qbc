@@ -94,7 +94,7 @@ import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { InkeyFunction } from "./Inkey.ts";
+import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
@@ -325,6 +325,10 @@ export function instr(token: Token, start: parser.ExprContext | undefined, hayst
 
 export function int(args: BuiltinStatementArgs) {
   return new IntFunction(args);
+}
+
+export function key(args: KeyStatementArgs) {
+  return new KeyStatement(args);
 }
 
 export function kill(args: BuiltinStatementArgs) {

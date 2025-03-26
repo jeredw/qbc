@@ -1,4 +1,4 @@
-import { keyToScanCode } from "./ScanCodeChart.ts"
+import { isExtendedKey, keyToScanCode, scanCodeToKey } from "./ScanCodeChart.ts"
 
 export interface Key {
   code: number;
@@ -10,10 +10,15 @@ export interface Keyboard {
   input(): Key | undefined;
   numKeysPending(): number;
   getLastScanCode(): number;
+  setMacro(functionKey: number, text: string): void;
+  getMacro(functionKey: number): string;
+  mapKey(flags: number, scanCode: number, keyNumber: number): void;
+  monitorKey(keyNumber: number, enable: boolean): void;
+  checkKey(keyNumber: number): boolean;
+  testKey?(keyNumber: number): void;
 }
 
 export function typeLines(lines: string[], listener: KeyboardListener) {
-  const fakeKey = (key: string, ctrlKey?: boolean) => ({key, ctrlKey} as unknown as KeyboardEvent);
   for (const line of lines) {
     const keys = line.match(/⟨([^⟩]+)⟩|./g) || [];
     for (const key of keys) {
@@ -31,13 +36,38 @@ export function typeLines(lines: string[], listener: KeyboardListener) {
   }
 }
 
+function fakeKey(key: string, ctrlKey?: boolean): KeyboardEvent {
+  return {
+    key,
+    ctrlKey: !!ctrlKey,
+    shiftKey: false,
+    altKey: false,
+    getModifierState: () => false,
+  } as unknown as KeyboardEvent;
+}
+
+interface CustomKey {
+  flags: number;
+  scanCode: number;
+  enabled?: boolean;
+  state?: boolean; 
+}
+
 export class KeyboardListener implements Keyboard {
   inputBuffer: Key[] = [];
   lastScanCode: number = 0;
+  macros: Map<string, string> = new Map();
+  customKeys: CustomKey[] = [];
+
+  constructor() {
+    this.reset();
+  }
 
   reset() {
     this.inputBuffer = [];
     this.lastScanCode = 0;
+    this.macros = new Map();
+    this.customKeys = defaultCustomKeys();
   }
 
   input(): Key | undefined {
@@ -48,9 +78,50 @@ export class KeyboardListener implements Keyboard {
     return this.inputBuffer.length;
   }
 
+  monitorKey(keyNumber: number, enabled: boolean) {
+    const key = this.getCustomKey(keyNumber);
+    key.enabled = enabled;
+    if (!enabled) {
+      key.state = false;
+    }
+  }
+
+  checkKey(keyNumber: number) {
+    const key = this.getCustomKey(keyNumber);
+    const state = !!key.state;
+    key.state = false;
+    return state;
+  }
+
+  testKey(keyNumber: number) {
+    const key = this.getCustomKey(keyNumber);
+    if (key) {
+      const keyName = scanCodeToKey.get(key.scanCode);
+      if (!keyName) {
+        throw new Error(`unmapped key ${keyName}`);
+      }
+      this.keydown(fakeKey(keyName));
+    }
+  }
+
   keydown(e: KeyboardEvent) {
     const code = getScanCode(e);
-    if (code !== undefined) {
+    const customKey = this.detectCustomKey(e, code || 0);
+    if (customKey !== undefined) {
+      if (customKey.enabled) {
+        // Consume the key immediately and don't enqueue it.  For example, if
+        // you press F1 during INPUT x$ with KEY(1) ON, the ON KEY(1) handler
+        // runs immediately after the input statement (and no KEY 1 macro
+        // happens).
+        customKey.state = true;
+        return;
+      }
+    }
+    const macro = this.macros.get(e.key);
+    if (macro) {
+      const keys = macro.split('').map((char) => ({code: 0, char}));
+      this.inputBuffer.push(...keys);
+    } else if (code !== undefined) {
       const char = keyToChar(e);
       const cursorCommand = decodeCursorCommand(e);
       this.inputBuffer.push({code, char, cursorCommand});
@@ -58,9 +129,40 @@ export class KeyboardListener implements Keyboard {
     }
   }
 
+  private detectCustomKey(e: KeyboardEvent, code: number): CustomKey | undefined {
+    for (let keyNumber = 1; keyNumber < 32; keyNumber++) {
+      // Lower numbered keys take precedence over higher numbered keys.
+      // So if we map F1 as KEY 15, CHR$(0) + CHR$(59) and have both KEY(15) ON
+      // and KEY(1) ON, KEY(1) will happen but not KEY(15).
+      const customKey = this.customKeys[keyNumber];
+      if (!customKey) {
+        continue;
+      }
+      const modifiersMatch = (
+        !!(customKey.flags & 3) === e.shiftKey &&
+        !!(customKey.flags & 4) === e.ctrlKey &&
+        !!(customKey.flags & 8) === e.altKey &&
+        !!(customKey.flags & 32) === e.getModifierState('NumLock') &&
+        !!(customKey.flags & 64) === e.getModifierState('CapsLock') &&
+        !!(customKey.flags & 128) === isExtendedKey(code)
+      );
+      const codeMatches = code === customKey.scanCode;
+      if (modifiersMatch && codeMatches) {
+        return customKey;
+      }
+    }
+  }
+
   keyup(e: KeyboardEvent) {
     const code = getScanCode(e);
-    if (code !== undefined) {
+    const keyNumber = this.detectCustomKey(e, code || 0);
+    if (keyNumber !== undefined) {
+      // Skip keyup for monitored keys.
+      return;
+    }
+    if (this.macros.has(e.key)) {
+      // Skip this event.
+    } else if (code !== undefined) {
       this.inputBuffer.push({code: 0x80 | code});
       this.lastScanCode = 0x80 | code;
     }
@@ -68,6 +170,28 @@ export class KeyboardListener implements Keyboard {
 
   getLastScanCode(): number {
     return this.lastScanCode;
+  }
+
+  setMacro(functionKey: number, text: string) {
+    this.macros.set(`F${functionKey}`, text);
+  }
+
+  getMacro(functionKey: number): string {
+    return this.macros.get(`F${functionKey}`) ?? '';
+  }
+
+  mapKey(flags: number, scanCode: number, keyNumber: number) {
+    const key = this.getCustomKey(keyNumber);
+    key.flags = flags;
+    key.scanCode = scanCode;
+  }
+
+  private getCustomKey(keyNumber: number): CustomKey {
+    const key = this.customKeys[keyNumber];
+    if (!key) {
+      throw new Error(`bad key number ${keyNumber}`);
+    }
+    return key;
   }
 }
 
@@ -139,4 +263,18 @@ function keyToChar(e: KeyboardEvent): string | undefined {
     case 'Escape': return '\x27';
     case 'Tab': return '\x09';
   }
+}
+
+function defaultCustomKeys(): CustomKey[] {
+  const keys: CustomKey[] = new Array(32);
+  for (let i = 1; i <= 10; i++) {
+    keys[i] = { flags: 0, scanCode: keyToScanCode.get(`F${i}`)! };
+  }
+  // numpad arrow keys 11-14 are intentionally left unmapped.
+  for (let i = 11; i <= 25; i++) {
+    keys[i] = { flags: 0, scanCode: 0 };
+  }
+  keys[30] = { flags: 0, scanCode: keyToScanCode.get(`F11`)! };
+  keys[31] = { flags: 0, scanCode: keyToScanCode.get(`F12`)! };
+  return keys;
 }

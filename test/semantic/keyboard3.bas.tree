@@ -1,0 +1,29 @@
+(program 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal "hello")))) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 1)) ) step)) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inkey$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inkey$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inkey$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inkey$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inkey$))))) \n <EOF>)

@@ -1,0 +1,13 @@
+key 1, "help"
+key 2, "edit"
+key 3, "stuff"
+key 4, "nothing"
+key 5, "a very long bit of text that doesn't fit"
+key 6, "something"
+key 7, "i forget"
+key 8, "launch"
+key 9, "fire"
+key 10, "DO NOT PUSH"
+key 30, "stuff"
+key 31, "yeah"
+key list

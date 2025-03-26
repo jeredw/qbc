@@ -22,6 +22,7 @@ import { PrintExpr } from "./statements/Print.ts";
 import { OpenMode } from "./Files.ts";
 import { EventType } from "./statements/Events.ts";
 import { EventChannelState } from "./Events.ts";
+import { KeyStatement, KeyStatementOperation } from "./statements/Keyboard.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -665,7 +666,22 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
-  override enterKey_statement = (ctx: parser.Key_statementContext) => {}
+
+  override enterKey_statement = (ctx: parser.Key_statementContext) => {
+    const token = ctx.start!;
+    const operation = ctx.LIST() ? KeyStatementOperation.LIST :
+      ctx.ON() ? KeyStatementOperation.ON :
+      ctx.OFF() ? KeyStatementOperation.OFF :
+      KeyStatementOperation.BIND;
+    let keyNumber: parser.ExprContext | undefined;
+    let stringExpr: parser.ExprContext | undefined;
+    if (operation === KeyStatementOperation.BIND) {
+      keyNumber = this.compileExpression(ctx._keynum!, ctx._keynum!.start!, { tag: TypeTag.INTEGER });
+      stringExpr = this.compileExpression(ctx._bind!, ctx._bind!.start!, { tag: TypeTag.STRING });
+    }
+    this.addStatement(statements.key({token, operation, keyNumber, stringExpr}))
+  }
+
   override enterLine_statement = (ctx: parser.Line_statementContext) => {}
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
@@ -680,30 +696,41 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
 
+  private getEventType(ctx: parser.On_event_gosub_statementContext | parser.Event_control_statementContext): EventType {
+    const eventType = ctx.TIMER() ? EventType.TIMER :
+      ctx.STRIG() ? EventType.JOYSTICK :
+      ctx.KEY() ? EventType.KEYBOARD :
+      undefined;
+    if (eventType === undefined) {
+      throw new Error("unimplemented");
+    }
+    return eventType;
+  }
+
   override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {
     const token = ctx.start!;
     const paramExpr = ctx.expr();
-    const param = paramExpr && this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
-    if (ctx.TIMER()) {
-      this.addStatement(statements.eventHandler(token, EventType.TIMER, param ?? undefined));
-    } else if (ctx.STRIG()) {
-      this.addStatement(statements.eventHandler(token, EventType.JOYSTICK, param ?? undefined));
+    let param: parser.ExprContext | undefined;
+    if (paramExpr) {
+      param = this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
     }
+    const eventType = this.getEventType(ctx);
+    this.addStatement(statements.eventHandler(token, eventType, param));
   }
 
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {
     const token = ctx.start!;
     const paramExpr = ctx.expr();
-    const param = paramExpr && this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
+    let param: parser.ExprContext | undefined;
+    if (paramExpr) {
+      param = this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
+    }
     const state = ctx.ON() ? EventChannelState.ON :
       ctx.OFF() ? EventChannelState.OFF :
       ctx.STEP() ? EventChannelState.TEST :
       EventChannelState.STOPPED;
-    if (ctx.TIMER()) {
-      this.addStatement(statements.eventControl(token, EventType.TIMER, param ?? undefined, state));
-    } else if (ctx.STRIG()) {
-      this.addStatement(statements.eventControl(token, EventType.JOYSTICK, param ?? undefined, state));
-    }
+    const eventType = this.getEventType(ctx);
+    this.addStatement(statements.eventControl(token, eventType, param, state));
   }
 
   override enterOn_expr_gosub_statement = (ctx: parser.On_expr_gosub_statementContext) => {

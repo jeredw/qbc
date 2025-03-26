@@ -1,5 +1,6 @@
 import { Devices } from "./Devices.ts";
 import { Joystick } from "./Joystick.ts";
+import { Keyboard } from "./Keyboard.ts";
 import { Timer } from "./Timer.ts";
 
 export interface Trap {
@@ -16,6 +17,7 @@ export interface SleepArgs {
 export class Events {
   timer: TimerEventMonitor;
   joystick: JoystickEventMonitor;
+  keyboard: KeyboardEventMonitor;
   devices: Devices;
   asleep?: SleepArgs;
 
@@ -23,11 +25,13 @@ export class Events {
     this.devices = devices;
     this.timer = new TimerEventMonitor(devices.timer);
     this.joystick = new JoystickEventMonitor(devices.joystick);
+    this.keyboard = new KeyboardEventMonitor(devices.keyboard);
   }
 
   poll(): Trap | void {
     this.timer.poll();
     this.joystick.poll();
+    this.keyboard.poll();
     if (this.asleep) {
       if (this.asleep.duration !== 0 &&
           this.devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
@@ -38,7 +42,8 @@ export class Events {
     }
     const result = (
       this.timer.trap() ||
-      this.joystick.trap()
+      this.joystick.trap() ||
+      this.keyboard.trap()
     );
     if (result) {
       this.wakeUp();
@@ -183,6 +188,30 @@ export class JoystickEventMonitor extends EventMonitor {
       const channel = this.channels[channelIndex];
       if (!channel.isDisabled() && buttons[channelIndex]) {
         channel.triggered = true;
+      }
+    }
+  }
+}
+
+export class KeyboardEventMonitor extends EventMonitor {
+  constructor(private keyboard: Keyboard) {
+    super(32);
+  }
+
+  override setState(channelIndex: number, state: EventChannelState) {
+    const enable = state !== EventChannelState.OFF;
+    this.keyboard.monitorKey(channelIndex, enable);
+    super.setState(channelIndex, state);
+  }
+
+  override poll() {
+    for (let channelIndex = 1; channelIndex < 32; channelIndex++) {
+      const channel = this.channels[channelIndex];
+      if (!channel.isDisabled()) {
+        const newKeyPress = this.keyboard.checkKey(channelIndex);
+        if (newKeyPress) {
+          channel.triggered = true;
+        }
       }
     }
   }

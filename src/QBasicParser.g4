@@ -584,7 +584,7 @@ ioctl_statement
 key_statement
   : KEY LIST
   | KEY (ON | OFF)
-  | KEY expr COMMA expr
+  | KEY keynum=expr COMMA bind=expr
   ;
 
 line_statement

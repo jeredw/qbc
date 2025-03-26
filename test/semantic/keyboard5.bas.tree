@@ -1,0 +1,50 @@
+(program 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 15)) , 
+      (expr 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 128)))) ))) + 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 79)))) )))))) \n 
+  (statement 
+    (on_event_gosub_statement on key 
+      ( 
+        (expr 
+          (literal 15)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id hi))))) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 15)) ) on)) \n 
+  (statement 
+    (event_control_statement key 
+      ( 
+        (expr 
+          (literal 15)) ) step)) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id hi)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "end"))))) : 
+  (statement 
+    (return_statement return)) \n <EOF>)

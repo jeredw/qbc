@@ -109,6 +109,8 @@ class Shell {
     const text = this.codePane.innerText;
     try {
       this.screen.canvas.focus();
+      // The QBasic IDE keeps key bindings around even if you start a new
+      // program, but it is more convenient to reset everything on a fresh run.
       this.keyboard.reset();
       this.invocation = this.interpreter.run(text);
       this.root.classList.add('running');

@@ -2,6 +2,10 @@
 // the key name uses the JavaScript keyboard event.  When looking up key
 // mappings, the specific location is tried first, so Shift_1 matches left
 // shift.
+//
+// All cursor navigation keys are mapped as 101-key "Extended" keys, e.g.
+// ArrowLeft is assumed to be the gray ← not the numpad 4 key on a notional
+// Model M keyboard.
 const chart = `
 Escape     1       ║     A            30      ║     CapsLock     58
 ! or 1     2       ║     S            31      ║     F1           59
@@ -33,8 +37,9 @@ P          25      ║     Shift_2      54      ║     ArrowDown    80
 Enter      28      ║     Spacebar     57      ║     Delete       83
 Control    29      ║                          ║
 `;
-export const keyToScanCode = (() => {
-  const map: Map<string, number> = new Map();
+export const [keyToScanCode, scanCodeToKey] = (() => {
+  const keyToCode: Map<string, number> = new Map();
+  const codeToKey: Map<number, string> = new Map();
   for (const line of chart.split('\n')) {
     if (!line) {
       continue;
@@ -48,13 +53,21 @@ export const keyToScanCode = (() => {
       }
       const names = nameSpec.split(' or ');
       for (const name of names) {
-        map.set(name === 'Spacebar' ? ' ' : name.toLowerCase(), code);
+        const key = name === 'Spacebar' ? ' ' : name;
+        keyToCode.set(key, code);
+        // Include lowercase names to simplify key lookup for unit tests.
+        keyToCode.set(key.toLowerCase(), code);
+        codeToKey.set(code, key);
       }
     }
   }
-  return map;
+  return [keyToCode, codeToKey];
 })();
 
 export function isModifier(code: number): boolean {
   return code === 42 || code == 54 || code == 56 || code == 29 || code == 58;
+}
+
+export function isExtendedKey(code: number): boolean {
+  return code >= 71;
 }

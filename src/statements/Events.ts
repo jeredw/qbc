@@ -12,6 +12,7 @@ import { Statement } from "./Statement.ts";
 export enum EventType {
   TIMER,
   JOYSTICK,
+  KEYBOARD,
 }
 
 export class EventHandlerStatement extends Statement {
@@ -37,6 +38,12 @@ export class EventHandlerStatement extends Statement {
           throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
         }
         context.events.joystick.configure(Math.floor(param / 2), this.targetIndex!);
+        break;
+      case EventType.KEYBOARD:
+        if (!isValidKey(param)) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        context.events.keyboard.configure(param, this.targetIndex!);
         break;
     }
   }
@@ -73,8 +80,31 @@ export class EventControlStatement extends Statement {
           context.events.joystick.setState(buttonIndex, this.state);
         }
         break;
+      case EventType.KEYBOARD:
+        if (param === 0) {
+          // 0 toggles state for all keys at once.
+          for (let i = 1; i < 32; i++) {
+            if (isValidKey(i)) {
+              context.events.keyboard.setState(i, this.state);
+            }
+          }
+          return;
+        }
+        if (!isValidKey(param)) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        if (this.state === EventChannelState.TEST) {
+          context.devices.keyboard.testKey?.(param);
+        } else {
+          context.events.keyboard.setState(param, this.state);
+        }
+        break;
     }
   }
+}
+
+function isValidKey(param: number): boolean {
+  return (param >= 1 && param <= 25) || param === 30 || param === 31; 
 }
 
 export class SleepStatement extends Statement {
