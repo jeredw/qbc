@@ -1,4 +1,4 @@
-import { isExtendedKey, keyToScanCode, scanCodeToKey } from "./ScanCodeChart.ts"
+import { keyToScanCode, scanCodeToKey } from "./ScanCodeChart.ts"
 
 export interface Key {
   code: number;
@@ -49,6 +49,7 @@ function fakeKey(key: string, ctrlKey?: boolean): KeyboardEvent {
 interface CustomKey {
   flags: number;
   scanCode: number;
+  location?: number;
   enabled?: boolean;
   state?: boolean; 
 }
@@ -58,6 +59,7 @@ export class KeyboardListener implements Keyboard {
   lastScanCode: number = 0;
   macros: Map<string, string> = new Map();
   customKeys: CustomKey[] = [];
+  softNumLockState: boolean = false;
 
   constructor() {
     this.reset();
@@ -68,6 +70,7 @@ export class KeyboardListener implements Keyboard {
     this.lastScanCode = 0;
     this.macros = new Map();
     this.customKeys = defaultCustomKeys();
+    this.softNumLockState = false;
   }
 
   input(): Key | undefined {
@@ -105,6 +108,11 @@ export class KeyboardListener implements Keyboard {
   }
 
   keydown(e: KeyboardEvent) {
+    e['softNumLock'] = this.softNumLockState;
+    if (e.key === 'Clear') {
+      // Use the "Clear" key as a software numlock for os x.
+      this.softNumLockState = !this.softNumLockState;
+    }
     const code = getScanCode(e);
     const customKey = this.detectCustomKey(e, code || 0);
     if (customKey !== undefined) {
@@ -138,22 +146,27 @@ export class KeyboardListener implements Keyboard {
       if (!customKey) {
         continue;
       }
+      // numpad arrows trigger arrow key events even if numlock is turned on.
+      const ignoreNumLock = keyNumber >= 11 && keyNumber <= 14;
       const modifiersMatch = (
         !!(customKey.flags & 3) === e.shiftKey &&
         !!(customKey.flags & 4) === e.ctrlKey &&
         !!(customKey.flags & 8) === e.altKey &&
-        !!(customKey.flags & 32) === e.getModifierState('NumLock') &&
+        (!!(customKey.flags & 32) === isNumLockOn(e) || ignoreNumLock) &&
         !!(customKey.flags & 64) === e.getModifierState('CapsLock') &&
-        !!(customKey.flags & 128) === isExtendedKey(code)
+        !!(customKey.flags & 128) === isExtendedKey(e, code)
       );
+      const locationMatches = customKey.location === undefined ||
+        e.location === customKey.location;
       const codeMatches = code === customKey.scanCode;
-      if (modifiersMatch && codeMatches) {
+      if (modifiersMatch && locationMatches && codeMatches) {
         return customKey;
       }
     }
   }
 
   keyup(e: KeyboardEvent) {
+    e['softNumLock'] = this.softNumLockState;
     const code = getScanCode(e);
     const keyNumber = this.detectCustomKey(e, code || 0);
     if (keyNumber !== undefined) {
@@ -219,18 +232,6 @@ export enum CursorCommand {
 };
 
 function decodeCursorCommand(e: KeyboardEvent): CursorCommand | undefined {
-  switch (e.key) {
-    case 'ArrowLeft': return CursorCommand.LEFT;
-    case 'ArrowRight': return CursorCommand.RIGHT;
-    case 'Home': return CursorCommand.HOME;
-    case 'End': return CursorCommand.END;
-    case 'Insert': return CursorCommand.INSERT;
-    case 'Tab': return CursorCommand.TAB;
-    case 'Delete': return CursorCommand.DELETE;
-    case 'Backspace': return CursorCommand.BACKSPACE;
-    case 'Escape': return CursorCommand.DELETE_LINE;
-    case 'Enter': return CursorCommand.ENTER;
-  }
   if (e.ctrlKey) {
     switch (e.key.toLowerCase()) {
       case '\\': return CursorCommand.RIGHT;
@@ -252,15 +253,53 @@ function decodeCursorCommand(e: KeyboardEvent): CursorCommand | undefined {
       case 'break': return CursorCommand.BREAK;
       case 'c': return CursorCommand.BREAK;
     }
+    if (e.location === 3 && !isNumLockOn(e)) {
+      switch (e.key) {
+        case '4': return CursorCommand.BACK_WORD;
+        case '6': return CursorCommand.FORWARD_WORD;
+        case '1': return CursorCommand.DELETE_TO_END;
+      }
+    }
+  }
+  switch (e.key) {
+    case 'ArrowLeft': return CursorCommand.LEFT;
+    case 'ArrowRight': return CursorCommand.RIGHT;
+    case 'Home': return CursorCommand.HOME;
+    case 'End': return CursorCommand.END;
+    case 'Insert': return CursorCommand.INSERT;
+    case 'Tab': return CursorCommand.TAB;
+    case 'Delete': return CursorCommand.DELETE;
+    case 'Backspace': return CursorCommand.BACKSPACE;
+    case 'Escape': return CursorCommand.DELETE_LINE;
+    case 'Enter': return CursorCommand.ENTER;
+  }
+  if (e.location === 3 && !isNumLockOn(e)) {
+    switch (e.key) {
+      case '4': return CursorCommand.LEFT;
+      case '6': return CursorCommand.RIGHT;
+      case '7': return CursorCommand.HOME;
+      case '1': return CursorCommand.END;
+      case '0': return CursorCommand.INSERT;
+      case '.': return CursorCommand.DELETE;
+    }
   }
 }
 
+function isNumLockOn(e: KeyboardEvent) {
+  return e.getModifierState('NumLock') || e['softNumLock'];
+}
+
 function keyToChar(e: KeyboardEvent): string | undefined {
-  if (e.key.length === 1) return e.key;
+  if (e.key.length === 1) {
+    if (e.location === 3 && !isNumLockOn(e)) {
+      return;
+    }
+    return e.key;
+  }
   switch (e.key) {
     case 'Enter': return '\x0d';
-    case 'Backspace': return '\x08';
-    case 'Escape': return '\x27';
+    case 'Backspace': return '◘';
+    case 'Escape': return '←';
     case 'Tab': return '\x09';
   }
 }
@@ -270,11 +309,20 @@ function defaultCustomKeys(): CustomKey[] {
   for (let i = 1; i <= 10; i++) {
     keys[i] = { flags: 0, scanCode: keyToScanCode.get(`F${i}`)! };
   }
-  // numpad arrow keys 11-14 are intentionally left unmapped.
-  for (let i = 11; i <= 25; i++) {
+  // Arrow key events only match numpad arrows, not extended arrow keys.
+  keys[11] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowUp')! };
+  keys[12] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowLeft')! };
+  keys[13] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowRight')! };
+  keys[14] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowDown')! };
+  for (let i = 15; i <= 25; i++) {
     keys[i] = { flags: 0, scanCode: 0 };
   }
   keys[30] = { flags: 0, scanCode: keyToScanCode.get(`F11`)! };
   keys[31] = { flags: 0, scanCode: keyToScanCode.get(`F12`)! };
   return keys;
+}
+
+function isExtendedKey(e: KeyboardEvent, code: number): boolean {
+  // This matches movement keys not on the numpad (not F11/F12).
+  return code >= 71 && e.location !== 3;
 }
