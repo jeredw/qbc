@@ -239,6 +239,17 @@ export class CodeGenerator extends QBasicParserListener {
     }
   }
 
+  override enterMid_statement = (ctx: parser.Mid_statementContext) => {
+    const variable = this.getVariableOutsideExpression(ctx.variable_or_function_call());
+    const startExpr = this.compileExpression(ctx._start!, ctx._start!.start!, { tag: TypeTag.INTEGER });
+    let lengthExpr: parser.ExprContext | undefined;
+    if (ctx._length) {
+      lengthExpr = this.compileExpression(ctx._length!, ctx._length!.start!, { tag: TypeTag.INTEGER });
+    }
+    const stringExpr = this.compileExpression(ctx._string_!, ctx._string_!.start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.midStatement(ctx.start!, variable, startExpr, lengthExpr, stringExpr));
+  }
+
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
     const builtin = getTyperContext(ctx).$builtin;
     if (builtin) {
@@ -686,7 +697,6 @@ export class CodeGenerator extends QBasicParserListener {
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
-  override enterMid_statement = (ctx: parser.Mid_statementContext) => {}
 
   override enterName_statement = (ctx: parser.Name_statementContext) => {
     const oldPathExpr = this.compileExpression(ctx._oldpath!, ctx._oldpath!.start!, { tag: TypeTag.STRING });
@@ -1157,7 +1167,7 @@ export class CodeGenerator extends QBasicParserListener {
         const string = codeGenerator.compileExpression(ctx._string_!, ctx._string_!.start!, {tag: TypeTag.STRING })
         const start = codeGenerator.compileExpression(ctx._start!, ctx._start!.start!, { tag: TypeTag.INTEGER });
         const length = ctx._length && codeGenerator.compileExpression(ctx._length, ctx._length.start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(statements.mid(ctx.start!, string, start, length, result));
+        codeGenerator.addStatement(statements.midFunction(ctx.start!, string, start, length, result));
       }
 
       override enterPen_function = (ctx: parser.Pen_functionContext) => {

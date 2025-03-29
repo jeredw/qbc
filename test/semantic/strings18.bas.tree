@@ -1,0 +1,16 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "abc")))) \n 
+  (statement 
+    (mid_statement mid$ 
+      ( 
+        (variable_or_function_call s$) , 
+        (expr 
+          (literal 4)) , 
+        (expr 
+          (literal 1)) ) = 
+      (expr 
+        (literal "d")))) \n <EOF>)

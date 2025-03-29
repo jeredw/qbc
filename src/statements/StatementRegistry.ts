@@ -80,6 +80,7 @@ import {
   LeftFunction,
   LtrimFunction,
   MidFunction,
+  MidStatement,
   OctFunction,
   RightFunction,
   RtrimFunction,
@@ -364,13 +365,22 @@ export function ltrim(args: BuiltinStatementArgs) {
   return new LtrimFunction(args);
 }
 
-export function mid(
+export function midFunction(
   token: Token,
   string: parser.ExprContext,
   start: parser.ExprContext,
   length: parser.ExprContext | undefined,
   result: Variable) {
   return new MidFunction(token, string, start, length, result);
+}
+
+export function midStatement(
+  token: Token,
+  variable: Variable,
+  startExpr: parser.ExprContext,
+  lengthExpr: parser.ExprContext | undefined,
+  stringExpr: parser.ExprContext) {
+  return new MidStatement(token, variable, startExpr, lengthExpr, stringExpr);
 }
 
 export function let_(variable: Variable, expr: parser.ExprContext) {

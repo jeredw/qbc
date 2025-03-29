@@ -168,6 +168,44 @@ export class MidFunction extends Statement {
   }
 }
 
+export class MidStatement extends Statement {
+  constructor(
+    private token: Token,
+    private variable: Variable,
+    private startExpr: ExprContext,
+    private lengthExpr: ExprContext | undefined,
+    private stringExpr: ExprContext,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const value = context.memory.read(this.variable);
+    if (!isString(value)) {
+      throw RuntimeError.fromToken(this.token, TYPE_MISMATCH);
+    }
+    const start = evaluateIntegerExpression(this.startExpr, context.memory);
+    const fullMid = evaluateStringExpression(this.stringExpr, context.memory);
+    const midLength = this.lengthExpr ?
+      Math.min(fullMid.length, evaluateIntegerExpression(this.lengthExpr, context.memory)) :
+      fullMid.length;
+    if (start <= 0 || midLength < 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const origLength = value.string.length;
+    if (start > origLength) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const [left, mid, right] = [
+      value.string.slice(0, start - 1),
+      fullMid.slice(0, midLength),
+      value.string.slice(start - 1 + midLength)
+    ];
+    const result = (left + mid + right).slice(0, origLength);
+    context.memory.write(this.variable, string(result));
+  }
+}
+
 export class LtrimFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
     super(args);

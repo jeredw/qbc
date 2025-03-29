@@ -224,7 +224,7 @@ parse those using baked in rules.
 | `LSET`           | Statement   | ✅      | ⛔      |
 | `LTRIM$`         | Function    | -       | ✅      |
 | `MID$`           | Function    | ✅      | ✅      |
-| `MID$`           | Statement   | ✅      | ⛔      |
+| `MID$`           | Statement   | ✅      | ✅      |
 | `MKD$`           | Function    | -       | ✅      |
 | `MKDIR`          | Statement   | -       | ✅      |
 | `MKDMBF$`        | Function    | -       | ✅      |

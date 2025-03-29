@@ -557,7 +557,6 @@ export class Typer extends QBasicParserListener {
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
-  override enterMid_statement = (ctx: parser.Mid_statementContext) => {}
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
   override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {}
   override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
