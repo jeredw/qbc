@@ -923,7 +923,7 @@ builtin_function
   | len_function
   | lbound_function
   | mid_function
-  | PEN '(' expr ')'
+  | pen_function
   | PLAY '(' expr ')'
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | seek_function
@@ -960,6 +960,10 @@ lbound_function
 
 mid_function
   : MID_STRING '(' string=expr COMMA start=expr (COMMA length=expr)? ')'
+  ;
+
+pen_function
+  : PEN '(' expr ')'
   ;
 
 seek_function

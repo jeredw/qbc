@@ -242,7 +242,7 @@ parse those using baked in rules.
 | `ON ERROR`       | Statement   | ✅      | ⛔      |
 | `ON`             | Keyword     | ✅      | 🚧      |
 | `ON KEY`         | Statement   | ✅      | ✅      |
-| `ON PEN`         | Statement   | ✅      | ⛔      |
+| `ON PEN`         | Statement   | ✅      | ✅      |
 | `ON PLAY`        | Statement   | ✅      | ⛔      |
 | `ON STRIG`       | Statement   | ✅      | ✅      |
 | `ON TIMER`       | Statement   | ✅      | ✅      |
@@ -259,8 +259,8 @@ parse those using baked in rules.
 | `PALETTE USING`  | Statement   | ✅      | ⛔      |
 | `PCOPY`          | Statement   | -       | ⛔      |
 | `PEEK`           | Function    | -       | ⛔      |
-| `PEN`            | Function    | ✅      | ⛔      |
-| `PEN`            | Statement   | ✅      | ⛔      |
+| `PEN`            | Function    | ✅      | ✅      |
+| `PEN`            | Statement   | ✅      | ✅      |
 | `PLAY`           | Function    | ✅      | ⛔      |
 | `PLAY`           | Statement   | ✅      | ⛔      |
 | `PLAY` Events    | Statement   | ✅      | ⛔      |

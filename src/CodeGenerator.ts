@@ -700,6 +700,7 @@ export class CodeGenerator extends QBasicParserListener {
     const eventType = ctx.TIMER() ? EventType.TIMER :
       ctx.STRIG() ? EventType.JOYSTICK :
       ctx.KEY() ? EventType.KEYBOARD :
+      ctx.PEN() ? EventType.PEN :
       undefined;
     if (eventType === undefined) {
       throw new Error("unimplemented");
@@ -1157,6 +1158,16 @@ export class CodeGenerator extends QBasicParserListener {
         const start = codeGenerator.compileExpression(ctx._start!, ctx._start!.start!, { tag: TypeTag.INTEGER });
         const length = ctx._length && codeGenerator.compileExpression(ctx._length, ctx._length.start!, { tag: TypeTag.INTEGER });
         codeGenerator.addStatement(statements.mid(ctx.start!, string, start, length, result));
+      }
+
+      override enterPen_function = (ctx: parser.Pen_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const n = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
+        codeGenerator.addStatement(
+          statements.pen({token: ctx.start!, params: [{expr: n}], result}));
       }
 
       override enterSeek_function = (ctx: parser.Seek_functionContext) => {

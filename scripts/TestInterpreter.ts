@@ -7,6 +7,7 @@ import { TestSpeaker } from "../src/Speaker.ts";
 import { KeyboardListener, typeLines } from "../src/Keyboard.ts";
 import { TestTimer } from "../src/Timer.ts";
 import { TestJoystick } from "../src/Joystick.ts";
+import { PointerListener } from "../src/LightPen.ts";
 
 async function interpret(program: string, input: string[], diskJson: string): Promise<string> {
   try {
@@ -17,6 +18,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
     const keyboard = new KeyboardListener();
     const timer = new TestTimer();
     const joystick = new TestJoystick();
+    const lightPen = new PointerListener(textScreen);
     const interpreter = new Interpreter({
       textScreen,
       speaker,
@@ -25,6 +27,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       keyboard,
       timer,
       joystick,
+      lightPen,
     });
     typeLines(input, keyboard);
     if (diskJson) {

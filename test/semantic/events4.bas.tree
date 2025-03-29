@@ -1,0 +1,41 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello"))))) \n 
+  (statement 
+    (on_event_gosub_statement on pen gosub 
+      (target 
+        (text_label 
+          (untyped_id wow))))) \n 
+  (statement 
+    (event_control_statement pen on)) \n 
+  (statement 
+    (event_control_statement pen step)) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id wow)) :) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 9)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ,) 
+            (print_argument 
+              (expr 
+                (builtin_function 
+                  (pen_function pen 
+                    ( 
+                      (expr 
+                        (variable_or_function_call i)) ))))))) \n) next i)) \n 
+  (statement 
+    (return_statement return)) \n <EOF>)

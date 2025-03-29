@@ -1,3 +1,4 @@
+import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 
 interface Attributes {
@@ -32,7 +33,7 @@ const DEFAULT_PALETTE = new Map([
   [15, "#ffffff"],
 ]);
 
-export interface TextScreen extends Printer {
+export interface TextScreen extends Printer, LightPenTarget {
   showCursor(insert: boolean): void;
   hideCursor(): void;
   moveCursor(dx: number): void;
@@ -53,6 +54,15 @@ export class TestTextScreen extends StringPrinter {
 
   moveCursor(dx: number) {
     this.putString((dx < 0 ? '←' : '→').repeat(Math.abs(dx)));
+  }
+
+  triggerPen(x: number, y: number): LightPenTrigger | void {
+    return {
+      row: Math.floor(y / 8),
+      column: Math.floor(x / 8),
+      x: Math.floor(x / 8) * 8,
+      y: Math.floor(y / 8) * 8
+    };
   }
 }
 
@@ -199,5 +209,20 @@ export class CanvasTextScreen extends BasePrinter implements TextScreen {
       this.row--;
     }
     this.dirty = true;
+  }
+
+  triggerPen(x: number, y: number): LightPenTrigger | void {
+    if (x < 0 || y < 0 || x > this.canvas.width || y > this.canvas.height) {
+      return;
+    }
+    const [row, column] = [
+      1 + Math.floor(y / CELL_HEIGHT),
+      1 + Math.floor(x / CELL_WIDTH),
+    ];
+    const cell = this.at(row, column);
+    if (cell.char === ' ' || (cell.attributes.fgColor === 0 && cell.attributes.bgColor === 0)) {
+      return;
+    }
+    return { row, column, x: (column - 1) * CELL_WIDTH, y: (row - 1) * CELL_HEIGHT };
   }
 }

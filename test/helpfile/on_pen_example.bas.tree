@@ -37,18 +37,20 @@
           (literal "Pen is at row")) ;) 
       (print_argument 
         (expr 
-          (builtin_function PEN 
-            ( 
-              (expr 
-                (literal 6)) ))) ;) 
+          (builtin_function 
+            (pen_function PEN 
+              ( 
+                (expr 
+                  (literal 6)) )))) ;) 
       (print_argument 
         (expr 
           (literal ", column")) ;) 
       (print_argument 
         (expr 
-          (builtin_function PEN 
-            ( 
-              (expr 
-                (literal 7)) )))))) \n 
+          (builtin_function 
+            (pen_function PEN 
+              ( 
+                (expr 
+                  (literal 7)) ))))))) \n 
   (statement 
     (return_statement RETURN)) \n <EOF>)

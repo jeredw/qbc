@@ -1,6 +1,7 @@
 import { Devices } from "./Devices.ts";
 import { Joystick } from "./Joystick.ts";
 import { Keyboard } from "./Keyboard.ts";
+import { LightPen } from "./LightPen.ts";
 import { Timer } from "./Timer.ts";
 
 export interface Trap {
@@ -18,6 +19,7 @@ export class Events {
   timer: TimerEventMonitor;
   joystick: JoystickEventMonitor;
   keyboard: KeyboardEventMonitor;
+  lightPen: LightPenEventMonitor;
   devices: Devices;
   asleep?: SleepArgs;
 
@@ -26,12 +28,14 @@ export class Events {
     this.timer = new TimerEventMonitor(devices.timer);
     this.joystick = new JoystickEventMonitor(devices.joystick);
     this.keyboard = new KeyboardEventMonitor(devices.keyboard);
+    this.lightPen = new LightPenEventMonitor(devices.lightPen);
   }
 
   poll(): Trap | void {
     this.timer.poll();
     this.joystick.poll();
     this.keyboard.poll();
+    this.lightPen.poll();
     if (this.asleep) {
       if (this.asleep.duration !== 0 &&
           this.devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
@@ -43,7 +47,8 @@ export class Events {
     const result = (
       this.timer.trap() ||
       this.joystick.trap() ||
-      this.keyboard.trap()
+      this.keyboard.trap() ||
+      this.lightPen.trap()
     );
     if (result) {
       this.wakeUp();
@@ -212,6 +217,22 @@ export class KeyboardEventMonitor extends EventMonitor {
         if (newKeyPress) {
           channel.triggered = true;
         }
+      }
+    }
+  }
+}
+
+export class LightPenEventMonitor extends EventMonitor {
+  constructor(private lightPen: LightPen) {
+    super(1);
+  }
+
+  override poll() {
+    const channel = this.channels[0];
+    if (!channel.isDisabled()) {
+      const state = this.lightPen.getState();
+      if (state.stickyPressed) {
+        channel.triggered = true;
       }
     }
   }

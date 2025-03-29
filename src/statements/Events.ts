@@ -13,6 +13,7 @@ export enum EventType {
   TIMER,
   JOYSTICK,
   KEYBOARD,
+  PEN,
 }
 
 export class EventHandlerStatement extends Statement {
@@ -44,6 +45,9 @@ export class EventHandlerStatement extends Statement {
           throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
         }
         context.events.keyboard.configure(param, this.targetIndex!);
+        break;
+      case EventType.PEN:
+        context.events.lightPen.configure(0, this.targetIndex!);
         break;
     }
   }
@@ -97,6 +101,13 @@ export class EventControlStatement extends Statement {
           context.devices.keyboard.testKey?.(param);
         } else {
           context.events.keyboard.setState(param, this.state);
+        }
+        break;
+      case EventType.PEN:
+        if (this.state === EventChannelState.TEST) {
+          context.devices.lightPen.testPress?.();
+        } else {
+          context.events.lightPen.setState(param, this.state);
         }
         break;
     }

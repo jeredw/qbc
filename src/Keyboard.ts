@@ -1,11 +1,5 @@
 import { keyToScanCode, scanCodeToKey } from "./ScanCodeChart.ts"
 
-export interface Key {
-  code: number;
-  char?: string;
-  cursorCommand?: CursorCommand;
-}
-
 export interface Keyboard {
   input(): Key | undefined;
   numKeysPending(): number;
@@ -16,6 +10,12 @@ export interface Keyboard {
   monitorKey(keyNumber: number, enable: boolean): void;
   checkKey(keyNumber: number): boolean;
   testKey?(keyNumber: number): void;
+}
+
+export interface Key {
+  code: number;
+  char?: string;
+  cursorCommand?: CursorCommand;
 }
 
 export function typeLines(lines: string[], listener: KeyboardListener) {

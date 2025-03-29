@@ -102,6 +102,7 @@ import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement
 import { EventChannelState } from "../Events.ts";
 import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
+import { PenFunction } from "./LightPen.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -430,6 +431,10 @@ export function oct(args: BuiltinStatementArgs) {
 
 export function open(args: OpenArgs) {
   return new OpenStatement(args);
+}
+
+export function pen(args: BuiltinStatementArgs) {
+  return new PenFunction(args);
 }
 
 export function print(args: PrintStatementArgs) {

@@ -5,9 +5,10 @@ import { CanvasTextScreen } from "./Screen.ts";
 import { LinePrinter } from "./Printer.ts";
 import { WebAudioSpeaker } from "./Speaker.ts";
 import { Invocation } from "./Invocation.ts";
-import { KeyboardListener } from "./Keyboard.ts";
+import { Keyboard, KeyboardListener } from "./Keyboard.ts";
 import { RealTimeTimer } from "./Timer.ts";
 import { GamepadListener } from "./Joystick.ts";
+import { PointerListener } from "./LightPen.ts";
 
 const TAB_STOPS = 8;
 
@@ -30,6 +31,7 @@ class Shell {
   private keyboard: KeyboardListener;
   private timer: RealTimeTimer;
   private gamepad: GamepadListener;
+  private pointer: PointerListener;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -40,6 +42,7 @@ class Shell {
     this.keyboard = new KeyboardListener();
     this.timer = new RealTimeTimer();
     this.gamepad = new GamepadListener();
+    this.pointer = new PointerListener(this.screen);
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -51,6 +54,7 @@ class Shell {
       keyboard: this.keyboard,
       timer: this.timer,
       joystick: this.gamepad,
+      lightPen: this.pointer,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
@@ -62,46 +66,71 @@ class Shell {
     this.muteButton = assertHTMLElement(root.querySelector('.mute-button'));
     this.muteButton.addEventListener('click', () => this.muteAudio());
     this.error = this.codePane.querySelector('.error');
-    document.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (document.activeElement == this.screen.canvas) {
-        this.keyboard.keydown(e);
-        e.preventDefault();
-        return false;
-      }
-      if (document.activeElement != this.codePane) {
-        return;
-      }
-      switch (e.key) {
-        case 'Enter':
-          if (e.altKey || e.metaKey) {
-            if (!this.invocation || this.invocation.isStopped()) {
-              setTimeout(() => this.run());
-            } else {
-              setTimeout(() => this.stop());
-            }
+    document.addEventListener('keydown', (e: KeyboardEvent) => this.keydown(e));
+    document.addEventListener('keyup', (e: KeyboardEvent) => this.keyup(e));
+    this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
+    this.screen.canvas.addEventListener('pointerup', (e: PointerEvent) => this.pointerup(e));
+    this.screen.canvas.addEventListener('pointermove', (e: PointerEvent) => this.pointermove(e));
+  }
+
+  private pointerdown(e: PointerEvent) {
+    if (document.activeElement == this.screen.canvas) {
+      this.pointer.pointerdown(e);
+    }
+  }
+
+  private pointerup(e: PointerEvent) {
+    if (document.activeElement == this.screen.canvas) {
+      this.pointer.pointerup(e);
+    }
+  }
+
+  private pointermove(e: PointerEvent) {
+    if (document.activeElement == this.screen.canvas) {
+      this.pointer.pointermove(e);
+    }
+  }
+
+  private keydown(e: KeyboardEvent): boolean | void {
+    if (document.activeElement == this.screen.canvas) {
+      this.keyboard.keydown(e);
+      e.preventDefault();
+      return false;
+    }
+    if (document.activeElement != this.codePane) {
+      return;
+    }
+    switch (e.key) {
+      case 'Enter':
+        if (e.altKey || e.metaKey) {
+          if (!this.invocation || this.invocation.isStopped()) {
+            setTimeout(() => this.run());
           } else {
-            // Default behavior is to insert <br> nodes.
-            insertText(this.codePane, '\n');
-            this.clearErrors();
+            setTimeout(() => this.stop());
           }
-          e.preventDefault();
-          return false;
-        case 'Tab':
-          // Default behavior is to switch focus.
-          insertText(this.codePane, '\t');
+        } else {
+          // Default behavior is to insert <br> nodes.
+          insertText(this.codePane, '\n');
           this.clearErrors();
-          e.preventDefault();
-          return false;
-      }
-      this.clearErrors();
-    });
-    document.addEventListener('keyup', (e: KeyboardEvent) => {
-      if (document.activeElement == this.screen.canvas) {
-        this.keyboard.keyup(e);
+        }
         e.preventDefault();
         return false;
-      }
-    });
+      case 'Tab':
+        // Default behavior is to switch focus.
+        insertText(this.codePane, '\t');
+        this.clearErrors();
+        e.preventDefault();
+        return false;
+    }
+    this.clearErrors();
+  }
+
+  private keyup(e: KeyboardEvent): boolean | void {
+    if (document.activeElement == this.screen.canvas) {
+      this.keyboard.keyup(e);
+      e.preventDefault();
+      return false;
+    }
   }
 
   async run() {
