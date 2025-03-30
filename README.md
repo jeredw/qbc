@@ -175,7 +175,7 @@ parse those using baked in rules.
 | `ERROR`          | Statement   | ✅      | ⛔      |
 | `EXIT`           | Statement   | ✅      | ✅      |
 | `EXP`            | Function    | -       | ✅      |
-| `FIELD`          | Statement   | ✅      | ⛔      |
+| `FIELD`          | Statement   | ✅      | ✅      |
 | `FILEATTR`       | Function    | -       | ✅      |
 | `FILES`          | Statement   | -       | ✅      |
 | `FIX`            | Function    | -       | ✅      |
@@ -183,7 +183,7 @@ parse those using baked in rules.
 | `FRE`            | Function    | -       | ⛔      |
 | `FREEFILE`       | Function    | -       | ✅      |
 | `FUNCTION`       | Statement   | ✅      | ✅      |
-| `GET` I/O        | Statement   | ✅      | ⛔      |
+| `GET` I/O        | Statement   | ✅      | 🚧      |
 | `GET` Graphics   | Statement   | ✅      | ⛔      |
 | `GOSUB`          | Statement   | ✅      | ✅      |
 | `GOTO`           | Statement   | ✅      | ✅      |
@@ -221,7 +221,7 @@ parse those using baked in rules.
 | `LPOS`           | Function    | -       | ⛔      |
 | `LPRINT`         | Statement   | ✅      | ✅      |
 | `LPRINT USING`   | Statement   | ✅      | ✅      |
-| `LSET`           | Statement   | ✅      | 🚧      |
+| `LSET`           | Statement   | ✅      | ✅      |
 | `LTRIM$`         | Function    | -       | ✅      |
 | `MID$`           | Function    | ✅      | ✅      |
 | `MID$`           | Statement   | ✅      | ✅      |
@@ -271,7 +271,7 @@ parse those using baked in rules.
 | `PRINT`          | Statement   | ✅      | ✅      |
 | `PRINT USING`    | Statement   | ✅      | ✅      |
 | `PSET`           | Statement   | ✅      | ⛔      |
-| `PUT` I/O        | Statement   | ✅      | ⛔      |
+| `PUT` I/O        | Statement   | ✅      | 🚧      |
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |
 | `RANDOM`         | Keyword     | ✅      | ✅      |
 | `RANDOMIZE`      | Statement   | -       | ⛔      |
@@ -285,7 +285,7 @@ parse those using baked in rules.
 | `RIGHT$`         | Function    | -       | ✅      |
 | `RMDIR`          | Statement   | -       | ✅      |
 | `RND`            | Function    | -       | ⛔      |
-| `RSET`           | Statement   | ✅      | ⛔      |
+| `RSET`           | Statement   | ✅      | ✅      |
 | `RTRIM$`         | Function    | -       | ✅      |
 | `RUN`            | Statement   | ⛔      | ⛔      |
 | `SCREEN`         | Function    | ✅      | ⛔      |

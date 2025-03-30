@@ -1,4 +1,4 @@
-import { ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH, Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, StringValue, TYPE_MISMATCH, Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToChar, asciiToString, charToAscii, stringToAscii } from "../AsciiChart.ts";
@@ -10,6 +10,7 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
+import { updateRecordBuffer } from "./FileSystem.ts";
 
 export class AscFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -180,7 +181,7 @@ export class MidStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const value = context.memory.read(this.variable);
+    const value = context.memory.read(this.variable) ?? string("");
     if (!isString(value)) {
       throw RuntimeError.fromToken(this.token, TYPE_MISMATCH);
     }
@@ -201,8 +202,53 @@ export class MidStatement extends Statement {
       fullMid.slice(0, midLength),
       value.string.slice(start - 1 + midLength)
     ];
-    const result = (left + mid + right).slice(0, origLength);
-    context.memory.write(this.variable, string(result));
+    value.string = (left + mid + right).slice(0, origLength);
+    updateRecordBuffer(value);
+    context.memory.write(this.variable, value);
+  }
+}
+
+abstract class JustifyStringStatement extends Statement {
+  constructor(
+    private token: Token,
+    private variable: Variable,
+    private stringExpr: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const value = context.memory.read(this.variable) ?? string("");
+    if (!isString(value)) {
+      throw RuntimeError.fromToken(this.token, TYPE_MISMATCH);
+    }
+    const fieldWidth = value.string.length;
+    const insert = evaluateStringExpression(this.stringExpr, context.memory);
+    value.string = this.justify(insert, fieldWidth);
+    updateRecordBuffer(value);
+    context.memory.write(this.variable, value);
+  }
+
+  abstract justify(string: string, width: number): string;
+}
+
+export class LsetStringStatement extends JustifyStringStatement {
+  constructor(token: Token, variable: Variable, stringExpr: ExprContext) {
+    super(token, variable, stringExpr);
+  }
+
+  override justify(string: string, width: number): string {
+    return string.slice(0, width).padEnd(width);
+  }
+}
+
+export class RsetStringStatement extends JustifyStringStatement {
+  constructor(token: Token, variable: Variable, stringExpr: ExprContext) {
+    super(token, variable, stringExpr);
+  }
+
+  override justify(string: string, width: number): string {
+    return string.slice(0, width).padStart(width);
   }
 }
 

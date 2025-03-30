@@ -3,19 +3,21 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, ILLEGAL_FUNCTION_CALL, integer, isNumeric, long, Value } from "../Values.ts";
+import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, FIELD_OVERFLOW, FIELD_STATEMENT_ACTIVE, ILLEGAL_FUNCTION_CALL, integer, isNumeric, isString, long, string, StringValue, TYPE_MISMATCH, Value } from "../Values.ts";
 import { IOError, RuntimeError } from "../Errors.ts";
-import { FileAccessor, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
+import { FileAccessor, Handle, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { DiskEntry } from "../Disk.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { Variable } from "../Variables.ts";
+import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 
 export interface OpenArgs {
   token: Token;
   name: ExprContext;
   fileNumber: ExprContext;
   mode: OpenMode;
+  recordLength?: ExprContext;
 }
 
 export class OpenStatement extends Statement {
@@ -29,8 +31,13 @@ export class OpenStatement extends Statement {
     if (name.length < 1 || name.length > 255 || fileNumber < 0 || fileNumber > 255) {
       throw RuntimeError.fromToken(this.args.token, BAD_FILE_NAME_OR_NUMBER);
     }
+    const recordLength = this.args.recordLength &&
+      evaluateIntegerExpression(this.args.recordLength, context.memory);
+    if (recordLength && recordLength <= 0) {
+      throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
+    }
     tryIo(this.args.token, () => {
-      const handle = context.devices.disk.open(name, this.args.mode);
+      const handle = context.devices.disk.open(name, this.args.mode, recordLength);
       context.files.handles.set(fileNumber, handle);
     });
   }
@@ -46,6 +53,11 @@ export class CloseStatement extends Statement {
     const handle = context.files.handles.get(fileNumber);
     if (handle) {
       handle.owner.close(handle);
+      for (const value of handle.fields) {
+        value.field = undefined;
+        value.string = "";
+      }
+      handle.fields = [];
     }
     context.files.handles.delete(fileNumber);
   }
@@ -336,7 +348,7 @@ interface GetFileAccessorArgs {
   context: ExecutionContext;
 }
 
-function getFileAccessor({expr, fileNumber, context}: GetFileAccessorArgs): FileAccessor {
+function getFileHandle({expr, fileNumber, context}: GetFileAccessorArgs): Handle {
   const file = fileNumber ?? evaluateIntegerExpression(expr!, context.memory);
   if (file < 0 || file > 255) {
     throw new IOError(BAD_FILE_NAME_OR_NUMBER);
@@ -345,7 +357,11 @@ function getFileAccessor({expr, fileNumber, context}: GetFileAccessorArgs): File
   if (!handle) {
     throw new IOError(BAD_FILE_NAME_OR_NUMBER);
   }
-  return handle.accessor;
+  return handle;
+}
+
+function getFileAccessor(args: GetFileAccessorArgs): FileAccessor {
+  return getFileHandle(args).accessor;
 }
 
 export function getSequentialWriteAccessor(args: GetFileAccessorArgs): FileAccessor {
@@ -362,4 +378,136 @@ export function getSequentialReadAccessor(args: GetFileAccessorArgs): FileAccess
     throw new IOError(BAD_FILE_MODE);
   }
   return accessor;
+}
+
+export interface FieldDefinition {
+  widthExpr: ExprContext;
+  variable: Variable;
+}
+
+export class FieldStatement extends Statement {
+  constructor(
+    private token: Token,
+    private fileNumber: ExprContext,
+    private fields: FieldDefinition[]
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    tryIo(this.token, () => {
+      const handle = getFileHandle({expr: this.fileNumber, context});
+      const accessor = handle.accessor;
+      const buffer = accessor.getRecordBuffer();
+      let offset = 0;
+      const fields = handle.fields;
+      for (const {variable, widthExpr} of this.fields) {
+        const width = evaluateIntegerExpression(widthExpr, context.memory);
+        if (width < 0) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        if (offset + width > buffer.length) {
+          throw RuntimeError.fromToken(this.token, FIELD_OVERFLOW);
+        }
+        const value = context.memory.read(variable) ?? string("");
+        if (!isString(value)) {
+          throw RuntimeError.fromToken(this.token, TYPE_MISMATCH);
+        }
+        value.field = {buffer, offset, width, fields};
+        handle.fields.push(value);
+        context.memory.write(variable, value);
+        offset += width;
+      }
+      copyRecordBufferToStringFields(handle.fields);
+    });
+  }
+}
+
+export function updateRecordBuffer(value: StringValue) {
+  const field = value.field;
+  if (!field) {
+    return;
+  }
+  const {buffer, offset, width} = field;
+  const ascii = stringToAscii(value.string.slice(0, width));
+  buffer.splice(offset, ascii.length, ...ascii);
+  copyRecordBufferToStringFields(field.fields);
+}
+
+function copyRecordBufferToStringFields(values: StringValue[]) {
+  for (const value of values) {
+    const field = value.field;
+    if (field) {
+      const {buffer, offset, width} = field;
+      const fieldString = asciiToString(buffer.slice(offset, offset + width));
+      value.string = fieldString;
+    }
+  }
+}
+
+export class GetIoStatement extends Statement {
+  constructor(
+    private token: Token,
+    private fileNumber: ExprContext,
+    private recordNumber?: ExprContext,
+    private variable?: Variable,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    tryIo(this.token, () => {
+      const handle = getFileHandle({expr: this.fileNumber, context});
+      const accessor = handle.accessor;
+      if (accessor.openMode() === OpenMode.RANDOM) {
+        this.getRandomAccessRecord(handle, accessor, context);
+      }
+    });
+  }
+
+  private getRandomAccessRecord(handle: Handle, accessor: FileAccessor, context: ExecutionContext) {
+    const recordNumber = this.recordNumber &&
+      evaluateIntegerExpression(this.recordNumber, context.memory);
+    accessor.getRecord(recordNumber);
+    if (this.variable) {
+      if (handle.fields.length > 0) {
+        throw RuntimeError.fromToken(this.token, FIELD_STATEMENT_ACTIVE);
+      }
+      throw new Error("unimplemented");
+    }
+    copyRecordBufferToStringFields(handle.fields);
+  }
+}
+
+export class PutIoStatement extends Statement {
+  constructor(
+    private token: Token,
+    private fileNumber: ExprContext,
+    private recordNumber?: ExprContext,
+    private variable?: Variable,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    tryIo(this.token, () => {
+      const handle = getFileHandle({expr: this.fileNumber, context});
+      const accessor = handle.accessor;
+      if (accessor.openMode() === OpenMode.RANDOM) {
+        this.putRandomAccessRecord(handle, accessor, context);
+      }
+    });
+  }
+
+  private putRandomAccessRecord(handle: Handle, accessor: FileAccessor, context: ExecutionContext) {
+    const recordNumber = this.recordNumber &&
+      evaluateIntegerExpression(this.recordNumber, context.memory);
+    if (this.variable) {
+      if (handle.fields.length > 0) {
+        throw RuntimeError.fromToken(this.token, FIELD_STATEMENT_ACTIVE);
+      }
+      throw new Error("unimplemented");
+    }
+    accessor.putRecord(recordNumber);
+  }
 }

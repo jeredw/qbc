@@ -11,7 +11,19 @@ export type ErrorValue = {
 export type StringValue = {
   tag: TypeTag.STRING | TypeTag.FIXED_STRING;
   string: string;
+  // Set by the FIELD statement.  If present, this string value is notionally
+  // backed by a slice of a random access file buffer, and in-place writes (by
+  // GET, LSET, RSET, and MID$=) are copied to the buffer and all other string
+  // fields for the buffer.
+  field?: FieldReference;
 };
+
+export interface FieldReference {
+  buffer: number[];
+  offset: number;
+  width: number;
+  fields: StringValue[];
+}
 
 export type SingleValue = {
   tag: TypeTag.SINGLE;
@@ -249,4 +261,5 @@ export const
   FILE_ALREADY_OPEN = error('File already open'),
   BAD_RECORD_NUMBER = error('Bad record number'),
   FIELD_OVERFLOW = error('FIELD overflow'),
-  FILE_ALREADY_EXISTS = error('File already exists');
+  FILE_ALREADY_EXISTS = error('File already exists'),
+  FIELD_STATEMENT_ACTIVE = error('FIELD statement active');

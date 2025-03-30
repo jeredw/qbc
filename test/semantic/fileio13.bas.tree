@@ -1,0 +1,32 @@
+(program 
+  (type_statement type 
+    (untyped_id wonky) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element 
+        (fixed_string string * 20)) \n) end type) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id buf) as 
+        (type_name 
+          (untyped_id wonky))))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (field_statement field # 
+      (expr 
+        (literal 1)) , 
+      (field_assignment 
+        (expr 
+          (literal 20)) as 
+        (variable_or_function_call buf.x)))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

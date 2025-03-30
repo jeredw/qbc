@@ -1,0 +1,105 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x$) = 
+      (expr 
+        (literal "******")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call n$) = 
+      (expr 
+        (literal "abc")))) \n 
+  (statement 
+    (rset_statement rset 
+      (variable_or_function_call x$) = 
+      (expr 
+        (variable_or_function_call n$)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal ":")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x$)) ;) 
+      (print_argument 
+        (expr 
+          (literal ":"))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x$) = 
+      (expr 
+        (literal "******")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call n$) = 
+      (expr 
+        (literal "abcdefghi")))) \n 
+  (statement 
+    (rset_statement rset 
+      (variable_or_function_call x$) = 
+      (expr 
+        (variable_or_function_call n$)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal ":")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x$)) ;) 
+      (print_argument 
+        (expr 
+          (literal ":"))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x$) = 
+      (expr 
+        (literal "******")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call n$) = 
+      (expr 
+        (literal "abc")))) \n 
+  (statement 
+    (lset_statement lset 
+      (variable_or_function_call x$) = 
+      (expr 
+        (variable_or_function_call n$)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal ":")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x$)) ;) 
+      (print_argument 
+        (expr 
+          (literal ":"))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x$) = 
+      (expr 
+        (literal "******")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call n$) = 
+      (expr 
+        (literal "abcdefghi")))) \n 
+  (statement 
+    (lset_statement lset 
+      (variable_or_function_call x$) = 
+      (expr 
+        (variable_or_function_call n$)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal ":")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x$)) ;) 
+      (print_argument 
+        (expr 
+          (literal ":"))))) \n <EOF>)

@@ -22,7 +22,8 @@ import { PrintExpr } from "./statements/Print.ts";
 import { OpenMode } from "./Files.ts";
 import { EventType } from "./statements/Events.ts";
 import { EventChannelState } from "./Events.ts";
-import { KeyStatement, KeyStatementOperation } from "./statements/Keyboard.ts";
+import { KeyStatementOperation } from "./statements/Keyboard.ts";
+import { FieldDefinition } from "./statements/FileSystem.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -478,7 +479,54 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.end());
   }
 
-  override enterField_statement = (ctx: parser.Field_statementContext) => {}
+  override enterField_statement = (ctx: parser.Field_statementContext) => {
+    const token = ctx.start!;
+    const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
+    const fields: FieldDefinition[] = [];
+    for (const field of ctx.field_assignment()) {
+      const widthExpr = this.compileExpression(field.expr(), field.expr().start!, { tag: TypeTag.INTEGER });
+      const variableCtx = field.variable_or_function_call();
+      const variable = this.getVariable(variableCtx);
+      if (variable.type.tag === TypeTag.FIXED_STRING) {
+        throw ParseError.fromToken(variableCtx.start!, "Fixed-length string illegal");
+      }
+      if (variable.type.tag !== TypeTag.STRING) {
+        throw ParseError.fromToken(variableCtx.start!, "Type mismatch");
+      }
+      fields.push({widthExpr, variable});
+    }
+    this.addStatement(statements.field(token, fileNumber, fields));
+  }
+
+  override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {
+    const token = ctx.start!;
+    const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
+    let recordNumber: parser.ExprContext | undefined;
+    if (ctx._recordnum) {
+      recordNumber = this.compileExpression(ctx._recordnum, ctx._recordnum.start!, { tag: TypeTag.INTEGER });
+    }
+    let variable: Variable | undefined;
+    const variableCtx = ctx.variable_or_function_call();
+    if (variableCtx) {
+      variable = this.getVariable(variableCtx);
+    }
+    this.addStatement(statements.getIo(token, fileNumber, recordNumber, variable));
+  }
+
+  override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {
+    const token = ctx.start!;
+    const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
+    let recordNumber: parser.ExprContext | undefined;
+    if (ctx._recordnum) {
+      recordNumber = this.compileExpression(ctx._recordnum, ctx._recordnum.start!, { tag: TypeTag.INTEGER });
+    }
+    let variable: Variable | undefined;
+    const variableCtx = ctx.variable_or_function_call();
+    if (variableCtx) {
+      variable = this.getVariable(variableCtx);
+    }
+    this.addStatement(statements.putIo(token, fileNumber, recordNumber, variable));
+  }
 
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
     // These three assignments are always done:
@@ -558,7 +606,6 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}
-  override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {}
 
   override enterGosub_statement = (ctx: parser.Gosub_statementContext) => {
     this.addStatement(statements.gosub());
@@ -689,15 +736,35 @@ export class CodeGenerator extends QBasicParserListener {
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
 
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {
-    const dest = this.getVariable(ctx.variable_or_function_call());
+    const token = ctx.start!;
+    const variableCtx = ctx.variable_or_function_call();
+    const dest = this.getVariable(variableCtx);
+    const expr = ctx.expr();
     if (dest.type.tag === TypeTag.RECORD) {
-      const source = this.getVariableFromExpression(ctx.expr());
+      const source = this.getVariableFromExpression(expr);
       if (!source || source.type.tag !== TypeTag.RECORD) {
         throw ParseError.fromToken(ctx.start!, "Type mismatch");
       }
       this.addStatement(statements.lsetRecord(dest, source));
       return;
     }
+    if (!isStringType(dest.type)) {
+      throw ParseError.fromToken(variableCtx.start!, "Type mismatch");
+    }
+    const stringExpr = this.compileExpression(expr, expr.start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.lsetString(token, dest, stringExpr));
+  }
+
+  override enterRset_statement = (ctx: parser.Rset_statementContext) => {
+    const token = ctx.start!;
+    const variableCtx = ctx.variable_or_function_call();
+    const variable = this.getVariable(variableCtx);
+    if (!isStringType(variable.type)) {
+      throw ParseError.fromToken(variableCtx.start!, "Type mismatch");
+    }
+    const expr = ctx.expr();
+    const stringExpr = this.compileExpression(expr, expr.start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.rsetString(token, variable, stringExpr));
   }
 
   override enterName_statement = (ctx: parser.Name_statementContext) => {
@@ -767,7 +834,11 @@ export class CodeGenerator extends QBasicParserListener {
       ctx.open_mode()?.APPEND() ? OpenMode.APPEND :
       ctx.open_mode()?.BINARY() ? OpenMode.BINARY :
       OpenMode.RANDOM;
-    this.addStatement(statements.open({token, name, fileNumber, mode}));
+    let recordLength: parser.ExprContext | undefined;
+    if (ctx._reclen) {
+      recordLength = this.compileExpression(ctx._reclen, ctx._reclen.start!, { tag: TypeTag.INTEGER });
+    }
+    this.addStatement(statements.open({token, name, fileNumber, mode, recordLength}));
   }
 
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
@@ -839,14 +910,12 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
-  override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 
   override enterReturn_statement = (ctx: parser.Return_statementContext) => {
     this.addStatement(statements.return_(ctx.start!));
   }
 
-  override enterRset_statement = (ctx: parser.Rset_statementContext) => {}
   override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
 
   override enterSeek_statement = (ctx: parser.Seek_statementContext) => {

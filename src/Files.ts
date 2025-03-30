@@ -1,6 +1,7 @@
 import { Token } from "antlr4ng";
 import { Printer } from "./Printer.ts";
 import { IOError, RuntimeError } from "./Errors.ts";
+import { StringValue } from "./Values.ts";
 
 export enum OpenMode {
   OUTPUT,
@@ -19,10 +20,16 @@ export interface FileAccessor extends Printer {
   openMode(): OpenMode;
 
   seek(pos: number): void;
-  getBytes(numBytes: number): number[];
-  putBytes(bytes: number[]): void;
+
   readChars(numBytes: number): string;
   readLine(): string;
+
+  getRecordBuffer(): number[];
+  getRecord(recordNumber?: number): void;
+  putRecord(recordNumber?: number): void;
+
+  getBytes(numBytes: number, position?: number): number[];
+  putBytes(bytes: number[], position?: number): void;
 
   length(): number;
   eof(): boolean;
@@ -34,6 +41,9 @@ export interface Handle {
   owner: Opener;
   data: unknown;
   accessor: FileAccessor;
+  // These are part of the Handle object so that they can be cleaned up on
+  // close, but are only valid for random access files.
+  fields: StringValue[];
 }
 
 export class Files {

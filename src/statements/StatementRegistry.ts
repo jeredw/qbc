@@ -51,9 +51,12 @@ import {
   ChdirStatement,
   CloseStatement,
   EofFunction,
+  FieldDefinition,
+  FieldStatement,
   FileattrFunction,
   FilesStatement,
   FreefileFunction,
+  GetIoStatement,
   KillStatement,
   LocFunction,
   LofFunction,
@@ -61,6 +64,7 @@ import {
   NameStatement,
   OpenArgs,
   OpenStatement,
+  PutIoStatement,
   RmdirStatement,
   SeekFunction,
   SeekStatement
@@ -79,11 +83,13 @@ import {
   InstrFunction,
   LcaseFunction,
   LeftFunction,
+  LsetStringStatement,
   LtrimFunction,
   MidFunction,
   MidStatement,
   OctFunction,
   RightFunction,
+  RsetStringStatement,
   RtrimFunction,
   SpaceFunction,
   StrFunction,
@@ -254,6 +260,10 @@ export function exp(args: BuiltinStatementArgs) {
   return new ExpFunction(args);
 }
 
+export function field(token: Token, fileNumber: parser.ExprContext, fields: FieldDefinition[]) {
+  return new FieldStatement(token, fileNumber, fields);
+}
+
 export function fileattr(args: BuiltinStatementArgs) {
   return new FileattrFunction(args);
 }
@@ -272,6 +282,15 @@ export function for_(counter: Variable, end: Variable, increment: Variable | nul
 
 export function freefile(args: BuiltinStatementArgs) {
   return new FreefileFunction(args);
+}
+
+export function getIo(
+  token: Token,
+  fileNumber: parser.ExprContext,
+  recordNumber?: parser.ExprContext,
+  variable?: Variable
+) {
+  return new GetIoStatement(token, fileNumber, recordNumber, variable);
 }
 
 export function goto() {
@@ -404,6 +423,10 @@ export function lsetRecord(dest: Variable, source: Variable) {
   return new LsetRecordStatement(dest, source);
 }
 
+export function lsetString(token: Token, variable: Variable, stringExpr: parser.ExprContext) {
+  return new LsetStringStatement(token, variable, stringExpr);
+}
+
 export function mki(args: BuiltinStatementArgs) {
   return new MkiFunction(args);
 }
@@ -460,6 +483,15 @@ export function printUsing(args: PrintStatementArgs) {
   return new PrintUsingStatement(args);
 }
 
+export function putIo(
+  token: Token,
+  fileNumber: parser.ExprContext,
+  recordNumber?: parser.ExprContext,
+  variable?: Variable
+) {
+  return new PutIoStatement(token, fileNumber, recordNumber, variable);
+}
+
 export function read(token: Token, result: Variable) {
   return new ReadStatement(token, result);
 }
@@ -478,6 +510,10 @@ export function right(args: BuiltinStatementArgs) {
 
 export function rmdir(args: BuiltinStatementArgs) {
   return new RmdirStatement(args);
+}
+
+export function rsetString(token: Token, variable: Variable, stringExpr: parser.ExprContext) {
+  return new RsetStringStatement(token, variable, stringExpr);
 }
 
 export function rtrim(args: BuiltinStatementArgs) {

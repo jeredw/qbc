@@ -166,7 +166,8 @@ export class MemoryDrive implements Disk {
     const handle = {
       owner: this,
       data: fsHandle,
-      accessor: new MemoryDriveFileAccessor(fsHandle, file, mode, recordLength)
+      accessor: new MemoryDriveFileAccessor(fsHandle, file, mode, recordLength),
+      fields: [],
     };
     this.handles.set(canonPath, handle);
     return handle;
@@ -242,6 +243,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
   recordLength: number;
   position: number;
   lastAccessPosition: number;
+  recordBuffer: number[];
 
   constructor(handle: MemoryDriveFileHandle, file: DiskFile, mode: OpenMode, recordLength?: number) {
     super(65535);  // No width set by default
@@ -251,6 +253,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     this.recordLength = recordLength ?? (mode === OpenMode.RANDOM ? 128 : 1);
     this.lastAccessPosition = 0;
     this.position = this.mode === OpenMode.APPEND ? this.file.bytes.length : 0;
+    this.recordBuffer = new Array(this.recordLength).fill(0);
   }
 
   openMode(): OpenMode {
@@ -264,11 +267,53 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     this.position = pos - 1;
   }
 
-  getBytes(numBytes: number): number[] {
+  getRecordBuffer(): number[] {
+    if (this.openMode() !== OpenMode.RANDOM) {
+      throw new IOError(values.BAD_FILE_MODE);
+    }
+    return this.recordBuffer;
+  }
+
+  getRecord(recordNumber?: number) {
+    if (this.openMode() !== OpenMode.RANDOM) {
+      throw new IOError(values.BAD_FILE_MODE);
+    }
+    if (recordNumber !== undefined) {
+      this.position = (recordNumber - 1) * this.recordLength;
+    }
+    this.lastAccessPosition = this.position;
+    this.recordBuffer.fill(0);
+    if (this.position >= this.file.bytes.length) {
+      return;
+    }
+    for (let i = 0; i < this.recordBuffer.length; i++) {
+      this.recordBuffer[i] = this.file.bytes[this.position++];
+      if (this.position >= this.file.bytes.length) {
+        break;
+      }
+    }
+  }
+
+  putRecord(recordNumber?: number) {
+    if (this.openMode() !== OpenMode.RANDOM) {
+      throw new IOError(values.BAD_FILE_MODE);
+    }
+    if (recordNumber !== undefined) {
+      this.position = (recordNumber - 1) * this.recordLength;
+    }
+    this.lastAccessPosition = this.position;
+    if (this.position >= this.file.bytes.length) {
+      const padding = this.position - this.file.bytes.length;
+      this.file.bytes.push(...zeros(padding));
+    }
+    this.file.bytes.splice(this.position, this.recordBuffer.length, ...this.recordBuffer);
+  }
+
+  getBytes(numBytes: number, position?: number): number[] {
     return [];
   }
 
-  putBytes(bytes: number[]) {
+  putBytes(bytes: number[], position?: number) {
   }
 
   putChar(ch: string) {
