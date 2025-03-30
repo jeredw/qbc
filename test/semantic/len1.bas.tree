@@ -122,4 +122,28 @@
             (len_function len 
               ( 
                 (expr 
-                  (variable_or_function_call frob)) ))))))) \n <EOF>)
+                  (variable_or_function_call frob)) ))))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call test$ 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 5)))) )) = 
+      (expr 
+        (literal "hello world")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call test$ 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 5)))) ))) ))))))) \n <EOF>)

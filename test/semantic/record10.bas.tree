@@ -1,0 +1,54 @@
+(program 
+  (type_statement TYPE 
+    (untyped_id TwoString) \n 
+    (type_element 
+      (untyped_id StrFld) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 2)) \n) END TYPE) \n \n 
+  (type_statement TYPE 
+    (untyped_id ThreeString) \n 
+    (type_element 
+      (untyped_id StrFld) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 3)) \n) END TYPE) \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id RecOne) AS 
+        (type_name 
+          (untyped_id TwoString))) , 
+      (dim_variable 
+        (untyped_id RecTwo) AS 
+        (type_name 
+          (untyped_id ThreeString))))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call RecOne.StrFld) = 
+      (expr 
+        (literal "XY")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call RecTwo.StrFld) = 
+      (expr 
+        (literal "ABC")))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call RecOne.StrFld)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call RecTwo.StrFld))))) \n 
+  (statement 
+    (lset_statement LSET 
+      (variable_or_function_call RecOne) = 
+      (expr 
+        (variable_or_function_call RecTwo)))) \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call RecOne.StrFld)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call RecTwo.StrFld))))) \n <EOF>)

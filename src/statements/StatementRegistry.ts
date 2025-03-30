@@ -35,6 +35,7 @@ import {
   CvsFunction,
   CvsmbfFunction,
   LenStatement,
+  LsetRecordStatement,
   MkdFunction,
   MkdmbfFunction,
   MkiFunction,
@@ -397,6 +398,10 @@ export function loop(isWhile: boolean, expr: parser.ExprContext) {
 
 export function log(args: BuiltinStatementArgs) {
   return new LogFunction(args);
+}
+
+export function lsetRecord(dest: Variable, source: Variable) {
+  return new LsetRecordStatement(dest, source);
 }
 
 export function mki(args: BuiltinStatementArgs) {

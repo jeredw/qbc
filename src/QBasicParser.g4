@@ -502,7 +502,7 @@ exit_statement
   ;
 
 field_statement
-  : FIELD '#'? expr COMMA field_assignment (COMMA field_assignment)*
+  : FIELD '#'? filenum=expr COMMA field_assignment (COMMA field_assignment)*
   ;
 
 field_assignment
@@ -533,7 +533,7 @@ get_graphics_statement
   ;
 
 get_io_statement
-  : GET '#'? expr (COMMA expr? (COMMA variable_or_function_call)?)?
+  : GET '#'? filenum=expr (COMMA recordnum=expr? (COMMA variable_or_function_call)?)?
   ;
 
 gosub_statement
@@ -752,7 +752,7 @@ put_graphics_statement
   ;
 
 put_io_statement
-  : PUT '#'? expr (COMMA expr? (COMMA variable_or_function_call)?)?
+  : PUT '#'? filenum=expr (COMMA recordnum=expr? (COMMA variable_or_function_call)?)?
   ;
 
 read_statement

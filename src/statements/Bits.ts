@@ -10,6 +10,7 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { ControlFlow } from "../ControlFlow.ts";
 import { evaluateStringExpression } from "../Expressions.ts";
+import { Memory } from "../Memory.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -428,4 +429,138 @@ function float64BytesMbf(f64: number): number[] {
     sign | ((bytes[6] << 3) & 0x78) | ((bytes[5] >> 5) & 7),
     exponent + 129  // implicit .1xxxx mantissa in ieee -> 1.xxxx mbf
   ];
+}
+
+export class LsetRecordStatement extends Statement {
+  constructor(
+    private dest: Variable,
+    private source: Variable
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const sourceBuffer = readRecordToBytes(this.source, context.memory);
+    const destBuffer = readRecordToBytes(this.dest, context.memory);
+    const source = new Uint8Array(sourceBuffer);
+    const dest = new Uint8Array(destBuffer);
+    for (let i = 0; i < Math.min(source.length, dest.length); i++) {
+      dest[i] = source[i];
+    }
+    writeBytesToRecord(this.dest, destBuffer, context.memory);
+  }
+}
+
+function writeBytesToRecord(variable: Variable, buffer: ArrayBuffer, memory: Memory) {
+  const data = new DataView(buffer);
+  writeBytesToElement(variable, data, 0, memory);
+}
+
+function writeBytesToElement(variable: Variable, data: DataView, offset: number, memory: Memory): number {
+  const type = variable.type;
+  switch (type.tag) {
+    case TypeTag.INTEGER:
+      memory.write(variable, integer(data.getInt16(offset, true)));
+      return 2;
+    case TypeTag.LONG:
+      memory.write(variable, long(data.getInt32(offset, true)));
+      return 4;
+    case TypeTag.SINGLE:
+      memory.write(variable, single(data.getFloat32(offset, true)));
+      return 4;
+    case TypeTag.DOUBLE:
+      memory.write(variable, double(data.getFloat64(offset, true)));
+      return 8;
+    case TypeTag.FIXED_STRING:
+      memory.write(variable, string(readStringFromBuffer(data, offset, type.maxLength)));
+      return type.maxLength;
+    case TypeTag.RECORD:
+      let length = 0;
+      for (const {name} of type.elements) {
+        const element = variable.elements?.get(name);
+        if (!element) {
+          throw new Error('missing type element');
+        }
+        length += writeBytesToElement(element, data, offset + length, memory);
+      }
+      return length;
+  }
+  throw new Error('unsupported record field')
+}
+
+function readStringFromBuffer(data: DataView, offset: number, maxLength: number): string {
+  const codes: number[] = [];
+  for (let i = 0; i < maxLength; i++) {
+    codes.push(data.getUint8(offset + i));
+  }
+  return asciiToString(codes);
+}
+
+function readRecordToBytes(variable: Variable, memory: Memory): ArrayBuffer {
+  const size = getSimpleVariableSizeInBytes(variable);
+  const buffer = new ArrayBuffer(size);
+  const data = new DataView(buffer);
+  readElementToBytes(data, 0, variable, memory);
+  return buffer;
+}
+
+function readElementToBytes(data: DataView, offset: number, variable: Variable, memory: Memory): number {
+  const type = variable.type;
+  switch (type.tag) {
+    case TypeTag.INTEGER:
+      data.setInt16(offset, readNumber(variable, memory), true);
+      return 2;
+    case TypeTag.LONG:
+      data.setInt32(offset, readNumber(variable, memory), true);
+      return 4;
+    case TypeTag.SINGLE:
+      data.setFloat32(offset, readNumber(variable, memory), true);
+      return 4;
+    case TypeTag.DOUBLE:
+      data.setFloat64(offset, readNumber(variable, memory), true);
+      return 8;
+    case TypeTag.FIXED_STRING:
+      copyStringWithPadding(data, offset, readString(variable, memory), type.maxLength);
+      return type.maxLength;
+    case TypeTag.RECORD:
+      let length = 0;
+      for (const {name} of type.elements) {
+        const element = variable.elements?.get(name);
+        if (!element) {
+          throw new Error('missing type element');
+        }
+        length += readElementToBytes(data, offset + length, element, memory);
+      }
+      return length;
+  }
+  throw new Error('unsupported record field')
+}
+
+function copyStringWithPadding(data: DataView, offset: number, string: string, maxLength: number) {
+  const ascii = stringToAscii(string);
+  for (let i = 0; i < maxLength; i++) {
+    data.setUint8(offset + i, ascii[i] ?? 0);
+  }
+}
+
+function readNumber(variable: Variable, memory: Memory): number {
+  const value = memory.read(variable);
+  if (!value) {
+    return 0;
+  }
+  if (!isNumeric(value)) {
+    throw new Error('non-numeric value for numeric variable');
+  }
+  return value.number;
+}
+
+function readString(variable: Variable, memory: Memory): string {
+  const value = memory.read(variable);
+  if (!value) {
+    return "";
+  }
+  if (!isString(value)) {
+    throw new Error('non-string value for string variable');
+  }
+  return value.string;
 }

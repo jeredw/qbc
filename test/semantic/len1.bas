@@ -23,3 +23,6 @@ end type
 
 dim frob as outer
 print len(frob)
+
+test$(5) = "hello world"
+print len(test$(5))

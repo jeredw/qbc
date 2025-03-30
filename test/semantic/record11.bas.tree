@@ -1,0 +1,250 @@
+(program 
+  (type_statement type 
+    (untyped_id inner) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element 
+        (fixed_string string * 40)) \n) 
+    (type_element 
+      (untyped_id y) as 
+      (type_name_for_type_element integer) \n) end type) \n \n 
+  (type_statement type 
+    (untyped_id outer) \n 
+    (type_element 
+      (untyped_id z) as 
+      (type_name_for_type_element 
+        (untyped_id inner)) \n) 
+    (type_element 
+      (untyped_id i) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id l) as 
+      (type_name_for_type_element long) \n) 
+    (type_element 
+      (untyped_id s) as 
+      (type_name_for_type_element single) \n) 
+    (type_element 
+      (untyped_id d) as 
+      (type_name_for_type_element double) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id a) as 
+        (type_name 
+          (untyped_id outer))) , 
+      (dim_variable 
+        (untyped_id b) as 
+        (type_name 
+          (untyped_id outer))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.z.x) = 
+      (expr 
+        (literal "hello")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.z.y) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.i) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.l) = 
+      (expr 
+        (literal 245455)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.s) = 
+      (expr 
+        (literal 3.14)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.d) = 
+      (expr 
+        (literal 2.718281828)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.z.x)) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call a.z.x)) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.z.y)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.i)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.l)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.s)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.d))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.z.x)) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call b.z.x)) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.z.y)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.i)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.l)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.s)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.d))))) \n 
+  (statement 
+    (lset_statement lset 
+      (variable_or_function_call b) = 
+      (expr 
+        (variable_or_function_call a)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.z.x)) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call a.z.x)) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.z.y)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.i)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.l)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.s)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.d))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.z.x)) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call b.z.x)) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.z.y)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.i)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.l)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.s)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.d))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.i) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a.z.y) = 
+      (expr 
+        (literal 10)))) \n 
+  (statement 
+    (lset_statement lset 
+      (variable_or_function_call b.z) = 
+      (expr 
+        (variable_or_function_call a.z)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.z.x)) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call a.z.x)) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.z.y)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.i)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.l)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.s)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a.d))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.z.x)) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (len_function len 
+              ( 
+                (expr 
+                  (variable_or_function_call b.z.x)) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.z.y)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.i)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.l)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.s)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b.d))))) \n <EOF>)

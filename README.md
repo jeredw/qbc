@@ -221,7 +221,7 @@ parse those using baked in rules.
 | `LPOS`           | Function    | -       | ⛔      |
 | `LPRINT`         | Statement   | ✅      | ✅      |
 | `LPRINT USING`   | Statement   | ✅      | ✅      |
-| `LSET`           | Statement   | ✅      | ⛔      |
+| `LSET`           | Statement   | ✅      | 🚧      |
 | `LTRIM$`         | Function    | -       | ✅      |
 | `MID$`           | Function    | ✅      | ✅      |
 | `MID$`           | Statement   | ✅      | ✅      |
