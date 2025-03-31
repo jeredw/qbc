@@ -1,0 +1,44 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode binary) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x$) = 
+      (expr 
+        (literal "****")))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)) , 
+      (variable_or_function_call x$))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call y$) = 
+      (expr 
+        (literal "##")))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)) , 
+      (variable_or_function_call y$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call y$))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

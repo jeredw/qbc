@@ -1,0 +1,185 @@
+(program ' \n ' \n ' \n ' \n 
+  (type_statement TYPE 
+    (untyped_id TestRecord) \n 
+    (type_element 
+      (untyped_id NameField) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 20)) \n) 
+    (type_element 
+      (untyped_id ScoreField) AS 
+      (type_name_for_type_element SINGLE) \n) END TYPE) \n ' \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id Rec) AS 
+        (type_name 
+          (untyped_id TestRecord))))) \n ' \n ' \n ' \n ' \n ' \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "TESTDAT2.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (builtin_function 
+          (len_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call Rec)) )))))) \n ' \n 
+  (statement 
+    (restore_statement RESTORE)) \n 
+  (statement 
+    (read_statement READ 
+      (variable_or_function_call NameField$) , 
+      (variable_or_function_call ScoreField))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call I) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (do_loop_statement DO 
+      (do_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call UCASE$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call NameField$)))) ))) <> 
+          (expr 
+            (literal "END")))) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call I) = 
+            (expr 
+              (expr 
+                (variable_or_function_call I)) + 
+              (expr 
+                (literal 1))))) \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Rec.NameField) = 
+            (expr 
+              (variable_or_function_call NameField$)))) \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Rec.ScoreField) = 
+            (expr 
+              (variable_or_function_call ScoreField)))) \n 
+        (statement 
+          (put_io_statement PUT # 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (variable_or_function_call I)) , 
+            (variable_or_function_call Rec))) \n 
+        (statement 
+          (read_statement READ 
+            (variable_or_function_call NameField$) , 
+            (variable_or_function_call ScoreField))) \n 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call NameField$)) = 
+              (expr 
+                (literal "END"))) THEN 
+            (if_inline_action 
+              (statement 
+                (exit_statement EXIT DO))))) \n) LOOP)) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n ' \n 
+  (statement 
+    (data_statement DATA 
+      (data_item "John Simmons") , 
+      (data_item 100))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item "Allie Simpson") , 
+      (data_item 95))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item "Tom Tucker") , 
+      (data_item 72))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item "Walt Wagner") , 
+      (data_item 90))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item "Mel Zucker") , 
+      (data_item 92))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item "END") , 
+      (data_item 0))) \n \n ' \n ' \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id FileBuffer) AS 
+        (type_name 
+          (untyped_id TestRecord))))) \n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "TESTDAT2.DAT")) FOR 
+      (open_mode RANDOM) AS # 
+      (expr 
+        (literal 1)) LEN = 
+      (expr 
+        (builtin_function 
+          (len_function LEN 
+            ( 
+              (expr 
+                (variable_or_function_call FileBuffer)) )))))) \n ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Max) = 
+      (expr 
+        (expr 
+          (variable_or_function_call LOF 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ))) / 
+        (expr 
+          (builtin_function 
+            (len_function LEN 
+              ( 
+                (expr 
+                  (variable_or_function_call FileBuffer)) ))))))) \n ' \n 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (variable_or_function_call Max)) 
+      (block \n 
+        (statement 
+          (get_io_statement GET # 
+            (expr 
+              (literal 1)) , 
+            (expr 
+              (variable_or_function_call I)) , 
+            (variable_or_function_call FileBuffer))) \n 
+        (statement 
+          (print_statement PRINT 
+            (print_argument 
+              (expr 
+                (variable_or_function_call FileBuffer.NameField)) ,) 
+            (print_argument 
+              (expr 
+                (variable_or_function_call FileBuffer.ScoreField))))) \n) NEXT I)) \n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (end_statement END)) \n \n <EOF>)

@@ -1,6 +1,6 @@
 import { Token } from "antlr4ng";
 import { getRecordLength, Type, TypeTag } from "./Types.ts"
-import { StorageType, Address } from "./Memory.ts";
+import { StorageType, Address, Memory } from "./Memory.ts";
 
 export interface Variable {
   name: string;
@@ -58,7 +58,7 @@ export function getStorageSize(variable: Variable): number {
   return itemSize;
 }
 
-export function getSimpleVariableSizeInBytes(variable: Variable): number {
+export function getScalarVariableSizeInBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
   switch (variable.type.tag) {
     case TypeTag.SINGLE:
       return 4;
@@ -70,9 +70,16 @@ export function getSimpleVariableSizeInBytes(variable: Variable): number {
       return 4;
     case TypeTag.FIXED_STRING:
       return variable.type.maxLength;
+    case TypeTag.STRING: {
+      const value = memory.read(variable);
+      if (!value || value.tag !== TypeTag.STRING) {
+        return stringsHaveLengthPrefixed ? 2 : 0;
+      }
+      return stringsHaveLengthPrefixed ? 2 + value.string.length : value.string.length; 
+    }
     case TypeTag.RECORD:
       return Array.from(variable.elements?.values() ?? [])
-        .map((element: Variable) => getSimpleVariableSizeInBytes(element))
+        .map((element: Variable) => getScalarVariableSizeInBytes(element, memory))
         .reduce((acc: number, sum: number) => acc + sum, 0);
   }
   throw new Error("unimplemented");

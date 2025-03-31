@@ -183,7 +183,7 @@ parse those using baked in rules.
 | `FRE`            | Function    | -       | ⛔      |
 | `FREEFILE`       | Function    | -       | ✅      |
 | `FUNCTION`       | Statement   | ✅      | ✅      |
-| `GET` I/O        | Statement   | ✅      | 🚧      |
+| `GET` I/O        | Statement   | ✅      | ✅      |
 | `GET` Graphics   | Statement   | ✅      | ⛔      |
 | `GOSUB`          | Statement   | ✅      | ✅      |
 | `GOTO`           | Statement   | ✅      | ✅      |
@@ -271,7 +271,7 @@ parse those using baked in rules.
 | `PRINT`          | Statement   | ✅      | ✅      |
 | `PRINT USING`    | Statement   | ✅      | ✅      |
 | `PSET`           | Statement   | ✅      | ⛔      |
-| `PUT` I/O        | Statement   | ✅      | 🚧      |
+| `PUT` I/O        | Statement   | ✅      | ✅      |
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |
 | `RANDOM`         | Keyword     | ✅      | ✅      |
 | `RANDOMIZE`      | Statement   | -       | ⛔      |

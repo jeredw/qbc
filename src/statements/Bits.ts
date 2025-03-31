@@ -5,10 +5,9 @@ import { RuntimeError } from "../Errors.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { getSimpleVariableSizeInBytes, Variable } from "../Variables.ts";
+import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
-import { ControlFlow } from "../ControlFlow.ts";
 import { evaluateStringExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
 
@@ -301,19 +300,7 @@ export class LenStatement extends Statement {
     if (!this.variable) {
       throw new Error("missing both string expr and variable");
     }
-    if (this.variable.type.tag === TypeTag.STRING) {
-      const value = context.memory.read(this.variable);
-      if (!value) {
-        context.memory.write(this.result, long(0));
-        return;
-      }
-      if (!isString(value)) {
-        throw new Error("nonstring value in string var");
-      }
-      context.memory.write(this.result, long(value.string.length));
-      return;
-    }
-    const size = getSimpleVariableSizeInBytes(this.variable);
+    const size = getScalarVariableSizeInBytes(this.variable, context.memory);
     context.memory.write(this.result, long(size));
   }
 }
@@ -440,23 +427,23 @@ export class LsetRecordStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const sourceBuffer = readRecordToBytes(this.source, context.memory);
-    const destBuffer = readRecordToBytes(this.dest, context.memory);
+    const sourceBuffer = readVariableToBytes(this.source, context.memory);
+    const destBuffer = readVariableToBytes(this.dest, context.memory);
     const source = new Uint8Array(sourceBuffer);
     const dest = new Uint8Array(destBuffer);
     for (let i = 0; i < Math.min(source.length, dest.length); i++) {
       dest[i] = source[i];
     }
-    writeBytesToRecord(this.dest, destBuffer, context.memory);
+    writeBytesToVariable(this.dest, destBuffer, context.memory);
   }
 }
 
-function writeBytesToRecord(variable: Variable, buffer: ArrayBuffer, memory: Memory) {
+export function writeBytesToVariable(variable: Variable, buffer: ArrayBuffer, memory: Memory, stringsHaveLengthPrefixed?: boolean) {
   const data = new DataView(buffer);
-  writeBytesToElement(variable, data, 0, memory);
+  writeBytesToElement(variable, data, 0, memory, stringsHaveLengthPrefixed);
 }
 
-function writeBytesToElement(variable: Variable, data: DataView, offset: number, memory: Memory): number {
+function writeBytesToElement(variable: Variable, data: DataView, offset: number, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
   const type = variable.type;
   switch (type.tag) {
     case TypeTag.INTEGER:
@@ -471,6 +458,20 @@ function writeBytesToElement(variable: Variable, data: DataView, offset: number,
     case TypeTag.DOUBLE:
       memory.write(variable, double(data.getFloat64(offset, true)));
       return 8;
+    case TypeTag.STRING: {
+      if (stringsHaveLengthPrefixed) {
+        const result = readLengthPrefixedStringFromBuffer(data, offset);
+        memory.write(variable, string(result));
+        return 2 + result.length;
+      }
+      const value = memory.read(variable) ?? string("");
+      if (!isString(value)) {
+        throw new Error("non-string value for string variable");
+      }
+      const maxLength = value.string.length;
+      memory.write(variable, string(readStringFromBuffer(data, offset, maxLength)));
+      return maxLength;
+    }
     case TypeTag.FIXED_STRING:
       memory.write(variable, string(readStringFromBuffer(data, offset, type.maxLength)));
       return type.maxLength;
@@ -488,23 +489,32 @@ function writeBytesToElement(variable: Variable, data: DataView, offset: number,
   throw new Error('unsupported record field')
 }
 
-function readStringFromBuffer(data: DataView, offset: number, maxLength: number): string {
+function readLengthPrefixedStringFromBuffer(data: DataView, offset: number): string {
+  const length = data.getUint16(offset, true);
   const codes: number[] = [];
-  for (let i = 0; i < maxLength; i++) {
-    codes.push(data.getUint8(offset + i));
+  for (let i = 0; i < length; i++) {
+    codes.push(data.getUint8(offset + 2 + i) ?? 0);
   }
   return asciiToString(codes);
 }
 
-function readRecordToBytes(variable: Variable, memory: Memory): ArrayBuffer {
-  const size = getSimpleVariableSizeInBytes(variable);
+function readStringFromBuffer(data: DataView, offset: number, maxLength: number): string {
+  const codes: number[] = [];
+  for (let i = 0; i < maxLength; i++) {
+    codes.push(data.getUint8(offset + i) ?? 32);
+  }
+  return asciiToString(codes);
+}
+
+export function readVariableToBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): ArrayBuffer {
+  const size = getScalarVariableSizeInBytes(variable, memory, stringsHaveLengthPrefixed);
   const buffer = new ArrayBuffer(size);
   const data = new DataView(buffer);
-  readElementToBytes(data, 0, variable, memory);
+  readElementToBytes(data, 0, variable, memory, stringsHaveLengthPrefixed);
   return buffer;
 }
 
-function readElementToBytes(data: DataView, offset: number, variable: Variable, memory: Memory): number {
+function readElementToBytes(data: DataView, offset: number, variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
   const type = variable.type;
   switch (type.tag) {
     case TypeTag.INTEGER:
@@ -519,9 +529,18 @@ function readElementToBytes(data: DataView, offset: number, variable: Variable, 
     case TypeTag.DOUBLE:
       data.setFloat64(offset, readNumber(variable, memory), true);
       return 8;
+    case TypeTag.STRING: {
+      const value = readString(variable, memory);
+      if (stringsHaveLengthPrefixed) {
+        data.setInt16(offset, value.length);
+        copyString(data, offset + 2, value);
+        return 2 + value.length;
+      }
+      copyString(data, offset, value);
+      return value.length;
+    }
     case TypeTag.FIXED_STRING:
-      copyStringWithPadding(data, offset, readString(variable, memory), type.maxLength);
-      return type.maxLength;
+      return copyStringWithPadding(data, offset, readString(variable, memory), type.maxLength);
     case TypeTag.RECORD:
       let length = 0;
       for (const {name} of type.elements) {
@@ -536,11 +555,19 @@ function readElementToBytes(data: DataView, offset: number, variable: Variable, 
   throw new Error('unsupported record field')
 }
 
-function copyStringWithPadding(data: DataView, offset: number, string: string, maxLength: number) {
+function copyString(data: DataView, offset: number, string: string) {
+  const ascii = stringToAscii(string);
+  for (let i = 0; i < ascii.length; i++) {
+    data.setUint8(offset + i, ascii[i]);
+  }
+}
+
+function copyStringWithPadding(data: DataView, offset: number, string: string, maxLength: number): number {
   const ascii = stringToAscii(string);
   for (let i = 0; i < maxLength; i++) {
-    data.setUint8(offset + i, ascii[i] ?? 0);
+    data.setUint8(offset + i, ascii[i] ?? 32);
   }
+  return maxLength;
 }
 
 function readNumber(variable: Variable, memory: Memory): number {

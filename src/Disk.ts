@@ -267,6 +267,35 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     this.position = pos - 1;
   }
 
+  private readBytes(buffer: number[], position?: number) {
+    if (position !== undefined) {
+      this.seek(position);
+    }
+    this.lastAccessPosition = this.position;
+    buffer.fill(0);
+    if (this.position >= this.file.bytes.length) {
+      return;
+    }
+    for (let i = 0; i < buffer.length; i++) {
+      buffer[i] = this.file.bytes[this.position++];
+      if (this.position >= this.file.bytes.length) {
+        break;
+      }
+    }
+  }
+
+  private writeBytes(bytes: number[], position?: number) {
+    if (position !== undefined) {
+      this.seek(position);
+    }
+    this.lastAccessPosition = this.position;
+    if (this.position >= this.file.bytes.length) {
+      const padding = this.position - this.file.bytes.length;
+      this.file.bytes.push(...zeros(padding));
+    }
+    this.file.bytes.splice(this.position, bytes.length, ...bytes);
+  }
+
   getRecordBuffer(): number[] {
     if (this.openMode() !== OpenMode.RANDOM) {
       throw new IOError(values.BAD_FILE_MODE);
@@ -278,42 +307,32 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     if (this.openMode() !== OpenMode.RANDOM) {
       throw new IOError(values.BAD_FILE_MODE);
     }
-    if (recordNumber !== undefined) {
-      this.position = (recordNumber - 1) * this.recordLength;
-    }
-    this.lastAccessPosition = this.position;
-    this.recordBuffer.fill(0);
-    if (this.position >= this.file.bytes.length) {
-      return;
-    }
-    for (let i = 0; i < this.recordBuffer.length; i++) {
-      this.recordBuffer[i] = this.file.bytes[this.position++];
-      if (this.position >= this.file.bytes.length) {
-        break;
-      }
-    }
+    const position = recordNumber && (1 + (recordNumber - 1) * this.recordLength);
+    this.readBytes(this.recordBuffer, position);
   }
 
   putRecord(recordNumber?: number) {
     if (this.openMode() !== OpenMode.RANDOM) {
       throw new IOError(values.BAD_FILE_MODE);
     }
-    if (recordNumber !== undefined) {
-      this.position = (recordNumber - 1) * this.recordLength;
-    }
-    this.lastAccessPosition = this.position;
-    if (this.position >= this.file.bytes.length) {
-      const padding = this.position - this.file.bytes.length;
-      this.file.bytes.push(...zeros(padding));
-    }
-    this.file.bytes.splice(this.position, this.recordBuffer.length, ...this.recordBuffer);
+    const position = recordNumber && (1 + (recordNumber - 1) * this.recordLength);
+    this.writeBytes(this.recordBuffer, position);
   }
 
   getBytes(numBytes: number, position?: number): number[] {
-    return [];
+    if (this.openMode() !== OpenMode.BINARY) {
+      throw new IOError(values.BAD_FILE_MODE);
+    }
+    const result = new Array(numBytes);
+    this.readBytes(result, position);
+    return result;
   }
 
   putBytes(bytes: number[], position?: number) {
+    if (this.openMode() !== OpenMode.BINARY) {
+      throw new IOError(values.BAD_FILE_MODE);
+    }
+    this.writeBytes(bytes, position);
   }
 
   putChar(ch: string) {

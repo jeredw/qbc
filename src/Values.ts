@@ -138,7 +138,7 @@ export function cast(value: Value, desiredType: Type): Value {
     case TypeTag.LONG:
       return isNumeric(value) ? long(value.number) : TYPE_MISMATCH;
     case TypeTag.FIXED_STRING:
-      return isString(value) ? string(value.string.slice(0, desiredType.maxLength)) : TYPE_MISMATCH;
+      return isString(value) ? string(value.string.slice(0, desiredType.maxLength).padEnd(desiredType.maxLength)) : TYPE_MISMATCH;
     case TypeTag.RECORD:
       return isReference(value) && sameType(value.variable.type, desiredType) ? value : TYPE_MISMATCH;
     case TypeTag.ANY:
@@ -262,4 +262,6 @@ export const
   BAD_RECORD_NUMBER = error('Bad record number'),
   FIELD_OVERFLOW = error('FIELD overflow'),
   FILE_ALREADY_EXISTS = error('File already exists'),
-  FIELD_STATEMENT_ACTIVE = error('FIELD statement active');
+  FIELD_STATEMENT_ACTIVE = error('FIELD statement active'),
+  BAD_RECORD_LENGTH = error('Bad record length'),
+  VARIABLE_REQUIRED = error('Variable required');

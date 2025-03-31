@@ -1,0 +1,91 @@
+(program 
+  (type_statement type 
+    (untyped_id record) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id y) as 
+      (type_name_for_type_element 
+        (fixed_string string * 5)) \n) 
+    (type_element 
+      (untyped_id z) as 
+      (type_name_for_type_element single) \n) end type) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id data1) as 
+        (type_name 
+          (untyped_id record))) , 
+      (dim_variable 
+        (untyped_id data2) as 
+        (type_name 
+          (untyped_id record))))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)) len = 
+      (expr 
+        (builtin_function 
+          (len_function len 
+            ( 
+              (expr 
+                (variable_or_function_call data1)) )))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call data1.x) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call data1.y) = 
+      (expr 
+        (literal "hello")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call data1.z) = 
+      (expr 
+        (literal 3.14)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call data1.x)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call data1.y)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call data1.z))))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)) , 
+      (variable_or_function_call data1))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)) , 
+      (variable_or_function_call data2))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call data2.x)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call data2.y)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call data2.z))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

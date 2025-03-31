@@ -1,0 +1,30 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (field_statement field # 
+      (expr 
+        (literal 1)) , 
+      (field_assignment 
+        (expr 
+          (literal 20)) as 
+        (variable_or_function_call x$)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call z$) = 
+      (expr 
+        (literal "   ")))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call z$))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

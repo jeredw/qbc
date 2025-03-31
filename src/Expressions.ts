@@ -209,7 +209,12 @@ class ExpressionListener extends QBasicParserListener {
     this.push(parseLiteral(ctx.getText()));
   }
 
+  override enterBuiltin_function = (ctx: Builtin_functionContext) => {
+    this._callExpressionDepth++;
+  }
+
   override exitBuiltin_function = (ctx: Builtin_functionContext) => {
+    this._callExpressionDepth--;
     if (this._callExpressionDepth > 0) {
       return;
     }

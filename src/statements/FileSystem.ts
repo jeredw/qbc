@@ -3,14 +3,16 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, FIELD_OVERFLOW, FIELD_STATEMENT_ACTIVE, ILLEGAL_FUNCTION_CALL, integer, isNumeric, isString, long, string, StringValue, TYPE_MISMATCH, Value } from "../Values.ts";
+import { BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, BAD_RECORD_LENGTH, FIELD_OVERFLOW, FIELD_STATEMENT_ACTIVE, ILLEGAL_FUNCTION_CALL, integer, isNumeric, isString, long, string, StringValue, TYPE_MISMATCH, Value, VARIABLE_REQUIRED } from "../Values.ts";
 import { IOError, RuntimeError } from "../Errors.ts";
 import { FileAccessor, Handle, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { DiskEntry } from "../Disk.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
-import { Variable } from "../Variables.ts";
+import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
+import { readVariableToBytes, writeBytesToVariable } from "./Bits.ts";
+import { TypeTag } from "../Types.ts";
 
 export interface OpenArgs {
   token: Token;
@@ -445,12 +447,12 @@ function copyRecordBufferToStringFields(values: StringValue[]) {
   }
 }
 
-export class GetIoStatement extends Statement {
+abstract class GetPutStatement extends Statement {
   constructor(
-    private token: Token,
-    private fileNumber: ExprContext,
-    private recordNumber?: ExprContext,
-    private variable?: Variable,
+    protected token: Token,
+    protected fileNumber: ExprContext,
+    protected recordNumber?: ExprContext,
+    protected variable?: Variable,
   ) {
     super();
   }
@@ -460,54 +462,97 @@ export class GetIoStatement extends Statement {
       const handle = getFileHandle({expr: this.fileNumber, context});
       const accessor = handle.accessor;
       if (accessor.openMode() === OpenMode.RANDOM) {
-        this.getRandomAccessRecord(handle, accessor, context);
+        this.randomAccess(handle, accessor, context);
+        return;
       }
+      if (accessor.openMode() === OpenMode.BINARY) {
+        if (!this.variable) {
+          throw RuntimeError.fromToken(this.token, VARIABLE_REQUIRED);
+        }
+        this.binaryAccess(accessor, context);
+        return;
+      }
+      throw new IOError(BAD_FILE_MODE);
     });
   }
 
-  private getRandomAccessRecord(handle: Handle, accessor: FileAccessor, context: ExecutionContext) {
-    const recordNumber = this.recordNumber &&
+  protected getRecordNumber(context: ExecutionContext): number | undefined {
+    return this.recordNumber &&
       evaluateIntegerExpression(this.recordNumber, context.memory);
+  }
+
+  abstract randomAccess(handle: Handle, accessor: FileAccessor, context: ExecutionContext): void;
+  abstract binaryAccess(accessor: FileAccessor, context: ExecutionContext): void;
+}
+
+export class GetIoStatement extends GetPutStatement {
+  constructor(
+    token: Token,
+    fileNumber: ExprContext,
+    recordNumber?: ExprContext,
+    variable?: Variable,
+  ) {
+    super(token, fileNumber, recordNumber, variable);
+  }
+
+  override randomAccess(handle: Handle, accessor: FileAccessor, context: ExecutionContext) {
+    const recordNumber = this.getRecordNumber(context);
     accessor.getRecord(recordNumber);
     if (this.variable) {
       if (handle.fields.length > 0) {
         throw RuntimeError.fromToken(this.token, FIELD_STATEMENT_ACTIVE);
       }
-      throw new Error("unimplemented");
+      const record = accessor.getRecordBuffer();
+      const size = getScalarVariableSizeInBytes(this.variable!, context.memory, /* stringsHaveLengthPrefixed */ true);
+      if (size > record.length) {
+        throw RuntimeError.fromToken(this.token, BAD_RECORD_LENGTH);
+      }
+      writeBytesToVariable(this.variable, new Uint8Array(record).buffer, context.memory);
+      return;
     }
     copyRecordBufferToStringFields(handle.fields);
   }
+
+  override binaryAccess(accessor: FileAccessor, context: ExecutionContext) {
+    const position = this.getRecordNumber(context);
+    const size = getScalarVariableSizeInBytes(this.variable!, context.memory);
+    const bytes = accessor.getBytes(size, position);
+    writeBytesToVariable(this.variable!, new Uint8Array(bytes).buffer, context.memory);
+  }
 }
 
-export class PutIoStatement extends Statement {
+export class PutIoStatement extends GetPutStatement {
   constructor(
-    private token: Token,
-    private fileNumber: ExprContext,
-    private recordNumber?: ExprContext,
-    private variable?: Variable,
+    token: Token,
+    fileNumber: ExprContext,
+    recordNumber?: ExprContext,
+    variable?: Variable,
   ) {
-    super();
+    super(token, fileNumber, recordNumber, variable);
   }
 
-  override execute(context: ExecutionContext) {
-    tryIo(this.token, () => {
-      const handle = getFileHandle({expr: this.fileNumber, context});
-      const accessor = handle.accessor;
-      if (accessor.openMode() === OpenMode.RANDOM) {
-        this.putRandomAccessRecord(handle, accessor, context);
-      }
-    });
-  }
-
-  private putRandomAccessRecord(handle: Handle, accessor: FileAccessor, context: ExecutionContext) {
-    const recordNumber = this.recordNumber &&
-      evaluateIntegerExpression(this.recordNumber, context.memory);
+  randomAccess(handle: Handle, accessor: FileAccessor, context: ExecutionContext) {
+    const recordNumber = this.getRecordNumber(context);
     if (this.variable) {
       if (handle.fields.length > 0) {
         throw RuntimeError.fromToken(this.token, FIELD_STATEMENT_ACTIVE);
       }
-      throw new Error("unimplemented");
+      const buffer = readVariableToBytes(this.variable, context.memory, /* stringsHaveLengthPrefixed */ true);
+      const bytes = new Uint8Array(buffer);
+      const record = accessor.getRecordBuffer();
+      if (bytes.length > record.length) {
+        throw RuntimeError.fromToken(this.token, BAD_RECORD_LENGTH);
+      }
+      for (let i = 0; i < record.length; i++) {
+        record[i] = i < bytes.length ? bytes[i] : 0;
+      }
     }
     accessor.putRecord(recordNumber);
+  }
+
+  binaryAccess(accessor: FileAccessor, context: ExecutionContext) {
+    const position = this.getRecordNumber(context);
+    const bytes = new Uint8Array(readVariableToBytes(this.variable!, context.memory));
+    accessor.putBytes(Array.from(bytes), position);
   }
 }

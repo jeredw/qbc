@@ -1,0 +1,16 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode binary) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)
