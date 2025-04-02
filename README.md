@@ -299,7 +299,7 @@ parse those using baked in rules.
 | `SIN`            | Function    | -       | ✅      |
 | `SINGLE`         | Keyword     | ✅      | ✅      |
 | `SLEEP`          | Statement   | -       | ✅      |
-| `SOUND`          | Statement   | -       | ⛔      |
+| `SOUND`          | Statement   | -       | ✅      |
 | `SPACE$`         | Function    | -       | ✅      |
 | `SPC`            | Function    | ✅      | ✅      |
 | `SQR`            | Function    | -       | ✅      |

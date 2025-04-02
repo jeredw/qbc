@@ -18,7 +18,7 @@ import {
   LboundFunction,
   UboundFunction
 } from "./Arrays.ts";
-import { BeepStatement } from "./Beep.ts";
+import { BeepStatement, SoundStatement } from "./Speaker.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
@@ -538,6 +538,10 @@ export function sin(args: BuiltinStatementArgs) {
 
 export function sleep(args: BuiltinStatementArgs) {
   return new SleepStatement(args);
+}
+
+export function sound(args: BuiltinStatementArgs) {
+  return new SoundStatement(args);
 }
 
 export function sqr(args: BuiltinStatementArgs) {

@@ -82,6 +82,7 @@ export class StandardLibrary {
     _("sgn numeric -> numeric", statements.sgn),
     _("sin double -> double", statements.sin),
     _("sleep long?", statements.sleep),
+    _("sound integer long", statements.sound),
     _("space numeric -> string", statements.space),
     _("sqr double -> double", statements.sqr),
     _("stick integer -> integer", statements.stick),

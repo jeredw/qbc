@@ -1,0 +1,51 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 1))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id sound) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 400))) , 
+        (argument 
+          (expr 
+            (literal 10)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 2))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id sound) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 800))) , 
+        (argument 
+          (expr 
+            (literal 10)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 3))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id sound) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 400))) , 
+        (argument 
+          (expr 
+            (literal 10)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 4))))) \n <EOF>)

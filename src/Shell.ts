@@ -141,6 +141,7 @@ class Shell {
       // The QBasic IDE keeps key bindings around even if you start a new
       // program, but it is more convenient to reset everything on a fresh run.
       this.keyboard.reset();
+      this.speaker.reset();
       this.invocation = this.interpreter.run(text);
       this.root.classList.add('running');
       await this.invocation.restart();
@@ -183,6 +184,7 @@ class Shell {
     if (this.invocation && !this.invocation.isStopped()) {
       this.invocation.tick();
     }
+    this.speaker.tick();
     this.gamepad.update();
     requestAnimationFrame(this.frame);
   }
