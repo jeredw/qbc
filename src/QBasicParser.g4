@@ -924,7 +924,7 @@ builtin_function
   | lbound_function
   | mid_function
   | pen_function
-  | PLAY '(' expr ')'
+  | play_function
   | SCREEN '(' row=expr COMMA column=expr (COMMA colorflag=expr)? ')'
   | seek_function
   | strig_function
@@ -964,6 +964,10 @@ mid_function
 
 pen_function
   : PEN '(' expr ')'
+  ;
+
+play_function
+  : PLAY '(' expr ')'
   ;
 
 seek_function

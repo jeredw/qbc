@@ -12,10 +12,11 @@
     (while_wend_statement WHILE 
       (expr 
         (expr 
-          (builtin_function PLAY 
-            ( 
-              (expr 
-                (literal 0)) ))) > 
+          (builtin_function 
+            (play_function PLAY 
+              ( 
+                (expr 
+                  (literal 0)) )))) > 
         (expr 
           (literal 5))) 
       (block :) WEND)) \n 

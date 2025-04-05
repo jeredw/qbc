@@ -1,5 +1,6 @@
 export interface Speaker {
   beep(): Promise<void>;
+  getNoteQueueLength(): number;
   getPlayState(): PlayState;
   setPlayState(state: PlayState): void;
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void>;
@@ -28,6 +29,10 @@ export class TestSpeaker implements Speaker {
   beep(): Promise<void> {
     this.output += 'SPEAKER> beep\n';
     return Promise.resolve();
+  }
+
+  getNoteQueueLength(): number {
+    return 0;
   }
 
   getPlayState(): PlayState {
@@ -106,6 +111,10 @@ export class WebAudioSpeaker implements Speaker {
         resolve();
       }, 300)
     });
+  }
+
+  getNoteQueueLength(): number {
+    return this.queue.length;
   }
 
   getPlayState(): PlayState {
