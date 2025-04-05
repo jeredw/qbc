@@ -780,6 +780,7 @@ export class CodeGenerator extends QBasicParserListener {
       ctx.STRIG() ? EventType.JOYSTICK :
       ctx.KEY() ? EventType.KEYBOARD :
       ctx.PEN() ? EventType.PEN :
+      ctx.PLAY() ? EventType.PLAY :
       undefined;
     if (eventType === undefined) {
       throw new Error("unimplemented");
@@ -1265,6 +1266,16 @@ export class CodeGenerator extends QBasicParserListener {
         const n = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
         codeGenerator.addStatement(
           statements.pen({token: ctx.start!, params: [{expr: n}], result}));
+      }
+
+      override enterPlay_function = (ctx: parser.Play_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        // The PLAY parameter is unused, but must be present and integer typed.
+        codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
+        codeGenerator.addStatement(statements.playFunction(result));
       }
 
       override enterSeek_function = (ctx: parser.Seek_functionContext) => {

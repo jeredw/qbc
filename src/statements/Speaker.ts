@@ -5,10 +5,11 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { RuntimeError } from "../Errors.ts";
-import { ILLEGAL_FUNCTION_CALL } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, integer } from "../Values.ts";
 import { TypeTag } from "../Types.ts";
 import { Token } from "antlr4ng";
 import { PlayState } from "../Speaker.ts";
+import { Variable } from "../Variables.ts";
 
 export class BeepStatement extends Statement {
   constructor() {
@@ -44,6 +45,17 @@ export class SoundStatement extends Statement {
     }
     const promise = context.devices.speaker.tone(frequency, duration / TICKS_PER_SECOND, 0);
     return {tag: ControlFlowTag.WAIT, promise};
+  }
+}
+
+export class PlayFunction extends Statement {
+  constructor(private result: Variable) {
+    super();
+  }
+
+  execute(context: ExecutionContext) {
+    const queueLength = context.devices.speaker.getNoteQueueLength();
+    context.memory.write(this.result, integer(queueLength));
   }
 }
 

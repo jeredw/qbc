@@ -4,6 +4,8 @@ export interface Speaker {
   getPlayState(): PlayState;
   setPlayState(state: PlayState): void;
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void>;
+
+  testFinishNote?(): void;
 }
 
 export interface PlayState {
@@ -25,6 +27,7 @@ export const DEFAULT_PLAY_STATE: PlayState = {
 export class TestSpeaker implements Speaker {
   output: string = "";
   playState: PlayState = DEFAULT_PLAY_STATE;
+  queueLength: number = 0;
 
   beep(): Promise<void> {
     this.output += 'SPEAKER> beep\n';
@@ -32,7 +35,7 @@ export class TestSpeaker implements Speaker {
   }
 
   getNoteQueueLength(): number {
-    return 0;
+    return this.queueLength;
   }
 
   getPlayState(): PlayState {
@@ -44,8 +47,15 @@ export class TestSpeaker implements Speaker {
     this.output += `SPEAKER> playState = ${JSON.stringify(this.playState)}\n`;
   }
 
+  testFinishNote(): void {
+    if (this.queueLength > 0) {
+      this.queueLength--;
+    }
+  }
+
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void> {
     this.output += `SPEAKER> tone(${frequency}, ${onDuration}, ${offDuration})\n`;
+    this.queueLength++;
     return Promise.resolve();
   }
 }
@@ -114,6 +124,7 @@ export class WebAudioSpeaker implements Speaker {
   }
 
   getNoteQueueLength(): number {
+    this.syncQueue();
     return this.queue.length;
   }
 
@@ -126,10 +137,8 @@ export class WebAudioSpeaker implements Speaker {
   }
 
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void> {
+    this.syncQueue();
     const now = this.audioContext.currentTime;
-    while (this.queue[0]?.done) {
-      this.queue.shift();
-    }
     const onTime = this.queue.at(-1)?.endTime ?? now;
     const offTime = onTime + onDuration;
     const endTime = offTime + offDuration;
@@ -149,5 +158,11 @@ export class WebAudioSpeaker implements Speaker {
       return this.queue[0].promise;
     }
     return Promise.resolve();
+  }
+
+  private syncQueue() {
+    while (this.queue[0]?.done) {
+      this.queue.shift();
+    }
   }
 }

@@ -243,7 +243,7 @@ parse those using baked in rules.
 | `ON`             | Keyword     | ✅      | 🚧      |
 | `ON KEY`         | Statement   | ✅      | ✅      |
 | `ON PEN`         | Statement   | ✅      | ✅      |
-| `ON PLAY`        | Statement   | ✅      | ⛔      |
+| `ON PLAY`        | Statement   | ✅      | ✅      |
 | `ON STRIG`       | Statement   | ✅      | ✅      |
 | `ON TIMER`       | Statement   | ✅      | ✅      |
 | `ON`...`GOSUB`   | Statement   | ✅      | ✅      |
@@ -261,9 +261,9 @@ parse those using baked in rules.
 | `PEEK`           | Function    | -       | ⛔      |
 | `PEN`            | Function    | ✅      | ✅      |
 | `PEN`            | Statement   | ✅      | ✅      |
-| `PLAY`           | Function    | ✅      | ⛔      |
+| `PLAY`           | Function    | ✅      | ✅      |
 | `PLAY`           | Statement   | ✅      | 🚧      |
-| `PLAY` Events    | Statement   | ✅      | ⛔      |
+| `PLAY` Events    | Statement   | ✅      | ✅      |
 | `PMAP`           | Function    | -       | ⛔      |
 | `POKE`           | Statement   | -       | ⛔      |
 | `POS`            | Function    | -       | ⛔      |

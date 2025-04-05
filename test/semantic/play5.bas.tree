@@ -1,0 +1,71 @@
+(program 
+  (statement 
+    (on_event_gosub_statement on play 
+      ( 
+        (expr 
+          (literal 5)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id music))))) \n 
+  (statement 
+    (event_control_statement play on)) \n 
+  (statement 
+    (play_statement play 
+      (expr 
+        (literal "mb cdefg cdefg")))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 11)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ,) 
+            (print_argument 
+              (expr 
+                (builtin_function 
+                  (play_function play 
+                    ( 
+                      (expr 
+                        (literal 0)) ))))))) \n 
+        (statement 
+          (event_control_statement play step)) ' \n) next i)) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id music)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "playing more music")) ,) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (play_function play 
+              ( 
+                (expr 
+                  (literal 0)) ))))))) \n 
+  (statement 
+    (play_statement play 
+      (expr 
+        (literal "cdefg")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "now pending")) ,) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (play_function play 
+              ( 
+                (expr 
+                  (literal 0)) ))))))) \n 
+  (statement 
+    (return_statement return)) \n <EOF>)

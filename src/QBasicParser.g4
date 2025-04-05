@@ -914,7 +914,7 @@ expr
   ;
 
 // These functions use keywords or special syntax like file numbers so can't
-// just be pre-defined by the runtime.
+// just be builtins defined by the runtime.
 builtin_function
   : date_function
   | input_function

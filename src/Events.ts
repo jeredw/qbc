@@ -2,6 +2,7 @@ import { Devices } from "./Devices.ts";
 import { Joystick } from "./Joystick.ts";
 import { Keyboard } from "./Keyboard.ts";
 import { LightPen } from "./LightPen.ts";
+import { Speaker } from "./Speaker.ts";
 import { Timer } from "./Timer.ts";
 
 export interface Trap {
@@ -20,6 +21,7 @@ export class Events {
   joystick: JoystickEventMonitor;
   keyboard: KeyboardEventMonitor;
   lightPen: LightPenEventMonitor;
+  play: PlayEventMonitor;
   devices: Devices;
   asleep?: SleepArgs;
 
@@ -29,6 +31,7 @@ export class Events {
     this.joystick = new JoystickEventMonitor(devices.joystick);
     this.keyboard = new KeyboardEventMonitor(devices.keyboard);
     this.lightPen = new LightPenEventMonitor(devices.lightPen);
+    this.play = new PlayEventMonitor(devices.speaker);
   }
 
   poll(): Trap | void {
@@ -36,6 +39,7 @@ export class Events {
     this.joystick.poll();
     this.keyboard.poll();
     this.lightPen.poll();
+    this.play.poll();
     if (this.asleep) {
       if (this.asleep.duration !== 0 &&
           this.devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
@@ -48,7 +52,8 @@ export class Events {
       this.timer.trap() ||
       this.joystick.trap() ||
       this.keyboard.trap() ||
-      this.lightPen.trap()
+      this.lightPen.trap() ||
+      this.play.trap()
     );
     if (result) {
       this.wakeUp();
@@ -232,6 +237,46 @@ export class LightPenEventMonitor extends EventMonitor {
     if (!channel.isDisabled()) {
       const state = this.lightPen.getState();
       if (state.stickyPressed) {
+        channel.triggered = true;
+      }
+    }
+  }
+}
+
+export class PlayEventMonitor extends EventMonitor {
+  queueLimit: number = 0;
+  aboveLimit: boolean;
+
+  constructor(private speaker: Speaker) {
+    super(1);
+  }
+
+  override configure(queueLimit: number, targetIndex: number) {
+    this.queueLimit = queueLimit;
+    super.configure(0, targetIndex);
+  }
+
+  override setState(channelIndex: number, state: EventChannelState) {
+    if (state === EventChannelState.OFF) {
+      this.aboveLimit = false;
+      this.queueLimit = 0;
+    }
+    super.setState(channelIndex, state);
+  }
+
+  override poll() {
+    const channel = this.channels[0];
+    if (!channel.isDisabled()) {
+      const state = this.speaker.getPlayState();
+      if (!state.playInBackground) {
+        return;
+      }
+      const queueLength = this.speaker.getNoteQueueLength();
+      if (queueLength >= this.queueLimit) {
+        this.aboveLimit = true;
+      }
+      if (this.aboveLimit && queueLength < this.queueLimit) {
+        this.aboveLimit = false;
         channel.triggered = true;
       }
     }

@@ -14,6 +14,7 @@ export enum EventType {
   JOYSTICK,
   KEYBOARD,
   PEN,
+  PLAY,
 }
 
 export class EventHandlerStatement extends Statement {
@@ -48,6 +49,12 @@ export class EventHandlerStatement extends Statement {
         break;
       case EventType.PEN:
         context.events.lightPen.configure(0, this.targetIndex!);
+        break;
+      case EventType.PLAY:
+        if (param < 1 || param > 32) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        context.events.play.configure(param, this.targetIndex!);
         break;
     }
   }
@@ -108,6 +115,13 @@ export class EventControlStatement extends Statement {
           context.devices.lightPen.testPress?.();
         } else {
           context.events.lightPen.setState(param, this.state);
+        }
+        break;
+      case EventType.PLAY:
+        if (this.state === EventChannelState.TEST) {
+          context.devices.speaker.testFinishNote?.();
+        } else {
+          context.events.play.setState(0, this.state);
         }
         break;
     }
