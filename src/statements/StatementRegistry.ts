@@ -18,7 +18,7 @@ import {
   LboundFunction,
   UboundFunction
 } from "./Arrays.ts";
-import { BeepStatement, SoundStatement } from "./Speaker.ts";
+import { BeepStatement, PlayStatement, SoundStatement } from "./Speaker.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
@@ -473,6 +473,10 @@ export function open(args: OpenArgs) {
 
 export function pen(args: BuiltinStatementArgs) {
   return new PenFunction(args);
+}
+
+export function playStatement(token: Token, commandString: parser.ExprContext) {
+  return new PlayStatement(token, commandString);
 }
 
 export function print(args: PrintStatementArgs) {

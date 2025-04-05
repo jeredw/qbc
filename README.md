@@ -262,7 +262,7 @@ parse those using baked in rules.
 | `PEN`            | Function    | ✅      | ✅      |
 | `PEN`            | Statement   | ✅      | ✅      |
 | `PLAY`           | Function    | ✅      | ⛔      |
-| `PLAY`           | Statement   | ✅      | ⛔      |
+| `PLAY`           | Statement   | ✅      | 🚧      |
 | `PLAY` Events    | Statement   | ✅      | ⛔      |
 | `PMAP`           | Function    | -       | ⛔      |
 | `POKE`           | Statement   | -       | ⛔      |

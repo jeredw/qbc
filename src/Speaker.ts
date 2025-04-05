@@ -1,29 +1,57 @@
 export interface Speaker {
   beep(): Promise<void>;
-  tone(frequency: number, durationInTicks: number): Promise<void>;
+  getPlayState(): PlayState;
+  setPlayState(state: PlayState): void;
+  tone(frequency: number, onDuration: number, offDuration: number): Promise<void>;
 }
+
+export interface PlayState {
+  playInBackground: boolean;
+  octave: number;
+  noteLength: number;
+  tempo: number;
+  onFraction: number;
+}
+
+export const DEFAULT_PLAY_STATE: PlayState = {
+  playInBackground: false,
+  octave: 4,
+  noteLength: 4,
+  tempo: 120,
+  onFraction: .875,
+};
 
 export class TestSpeaker implements Speaker {
   output: string = "";
+  playState: PlayState = DEFAULT_PLAY_STATE;
 
   beep(): Promise<void> {
     this.output += 'SPEAKER> beep\n';
     return Promise.resolve();
   }
 
-  tone(frequency: number, duration: number): Promise<void> {
-    this.output += `SPEAKER> tone(${frequency}, ${duration})\n`;
+  getPlayState(): PlayState {
+    return this.playState;
+  }
+
+  setPlayState(playState: PlayState) {
+    this.playState = playState;
+    this.output += `SPEAKER> playState = ${JSON.stringify(this.playState)}\n`;
+  }
+
+  tone(frequency: number, onDuration: number, offDuration: number): Promise<void> {
+    this.output += `SPEAKER> tone(${frequency}, ${onDuration}, ${offDuration})\n`;
     return Promise.resolve();
   }
 }
 
-const TICKS_PER_SECOND = 1193180 / 65535;
-
 interface Note {
   frequency: number;
-  startTime: number;
+  onTime: number;
+  offTime: number;
   endTime: number;
   done: boolean;
+  promise: Promise<void>;
 }
 
 export class WebAudioSpeaker implements Speaker {
@@ -31,6 +59,7 @@ export class WebAudioSpeaker implements Speaker {
   oscillator: OscillatorNode;
   gainNode: GainNode;
   queue: Note[] = [];
+  playState: PlayState;
 
   constructor() {
     this.reset();
@@ -51,17 +80,6 @@ export class WebAudioSpeaker implements Speaker {
     }
   }
 
-  beep(): Promise<void> {
-    this.oscillator.frequency.value = 900;
-    this.gainNode.gain.value = 1;
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.gainNode.gain.value = 0;
-        resolve();
-      }, 300)
-    });
-  }
-
   reset() {
     if (this.oscillator) {
       // Make horrible beeping stop from last time.
@@ -76,29 +94,50 @@ export class WebAudioSpeaker implements Speaker {
     this.oscillator.connect(this.gainNode);
     this.oscillator.start();
     this.queue = [];
+    this.playState = DEFAULT_PLAY_STATE;
   }
 
-  tone(frequency: number, durationInTicks: number): Promise<void> {
+  beep(): Promise<void> {
+    this.oscillator.frequency.value = 900;
+    this.gainNode.gain.value = 1;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.gainNode.gain.value = 0;
+        resolve();
+      }, 300)
+    });
+  }
+
+  getPlayState(): PlayState {
+    return this.playState;
+  }
+
+  setPlayState(state: PlayState): void {
+    this.playState = state;
+  }
+
+  tone(frequency: number, onDuration: number, offDuration: number): Promise<void> {
     const now = this.audioContext.currentTime;
     while (this.queue[0]?.done) {
       this.queue.shift();
     }
-    const startTime = this.queue.at(-1)?.endTime ?? now;
-    const duration = durationInTicks / TICKS_PER_SECOND;
-    const endTime = startTime + duration;
-    const note = {frequency, startTime, endTime, done: false};
+    const onTime = this.queue.at(-1)?.endTime ?? now;
+    const offTime = onTime + onDuration;
+    const endTime = offTime + offDuration;
+    const promise: Promise<void> = new Promise((resolve) => {
+      const duration = 1000 * (endTime - now);
+      setTimeout(() => {
+        note.done = true;
+        resolve();
+      }, duration);
+    });
+    const note = {frequency, onTime, offTime, endTime, promise, done: false};
     this.queue.push(note);
-    setTimeout(() => { note.done = true }, 1000 * (endTime - now));
-    this.oscillator.frequency.setValueAtTime(frequency, startTime);
-    this.gainNode.gain.setValueAtTime(1, startTime);
-    this.gainNode.gain.setValueAtTime(0, startTime + duration);
-    if (this.queue.length > 2) {
-      const waitMs = 1000 * (this.queue[0].endTime - now);
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, waitMs);
-      });
+    this.oscillator.frequency.setValueAtTime(frequency, onTime);
+    this.gainNode.gain.setValueAtTime(1, onTime);
+    this.gainNode.gain.setValueAtTime(0, offTime);
+    if (!this.playState.playInBackground && this.queue.length > 2) {
+      return this.queue[0].promise;
     }
     return Promise.resolve();
   }

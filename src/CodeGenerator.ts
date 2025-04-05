@@ -843,7 +843,13 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {}
-  override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
+
+  override enterPlay_statement = (ctx: parser.Play_statementContext) => {
+    const token = ctx.start!;
+    const commandString = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.playStatement(token, commandString));
+  }
+
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
   override enterLprint_statement = (ctx: parser.Lprint_statementContext) => {
