@@ -1,4 +1,4 @@
-import { TextScreen } from "./Screen.ts";
+import { Screen } from "./Screen.ts";
 import { Speaker } from "./Speaker.ts";
 import { Printer } from "./Printer.ts";
 import { Disk } from "./Disk.ts";
@@ -8,7 +8,7 @@ import { Joystick } from "./Joystick.ts";
 import { LightPen } from "./LightPen.ts";
 
 export interface Devices {
-  textScreen: TextScreen;
+  screen: Screen;
   speaker: Speaker;
   printer: Printer;
   disk: Disk;

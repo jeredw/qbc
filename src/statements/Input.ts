@@ -57,25 +57,25 @@ abstract class BaseInputStatement extends Statement {
     let buffer: string[] = [];
     let insert = false;
     let finished: () => void;
-    const {keyboard, textScreen, speaker} = context.devices;
+    const {keyboard, screen, speaker} = context.devices;
     const isWordChar = (char: string) => /[A-Za-z0-9]/.test(char);
     const toggleInsert = () => {
       insert = !insert;
-      textScreen.showCursor(insert);
+      screen.showCursor(insert);
     };
     const move = (dx: number) => {
-      textScreen.moveCursor(dx);
+      screen.moveCursor(dx);
       position += dx;
     };
     const nextTab = () => 8 + 8 * Math.floor(position / 8);
     const prompt = () => {
       if (this.args.prompt) {
-        textScreen.print(this.args.prompt, false);
+        screen.print(this.args.prompt, false);
       }
       if (this.args.mark) {
-        textScreen.print("? ", false);
+        screen.print("? ", false);
       }
-      textScreen.showCursor(insert);
+      screen.showCursor(insert);
     };
     prompt();
     // So we can test non-interactively with deno which doesn't have rAF
@@ -91,20 +91,20 @@ abstract class BaseInputStatement extends Statement {
           if (insert) {
             toggleInsert();
           }
-          textScreen.hideCursor();
+          screen.hideCursor();
           if (!this.args.sameLine) {
-            textScreen.print('', true);
+            screen.print('', true);
           }
           const status = this.parse(context, buffer.join(''));
           if (status === ParseStatus.OK) {
             finished();
             return;
           }
-          textScreen.print('', true);
+          screen.print('', true);
           if (status === ParseStatus.OVERFLOW) {
-            textScreen.print(OVERFLOW.errorMessage, true);
+            screen.print(OVERFLOW.errorMessage, true);
           }
-          textScreen.print('Redo from start', true);
+          screen.print('Redo from start', true);
           prompt();
           buffer = [];
           position = 0;
@@ -126,9 +126,9 @@ abstract class BaseInputStatement extends Statement {
           } else {
             if (position >= buffer.length) {
               buffer.push(' ');
-              textScreen.print(' ', false);
+              screen.print(' ', false);
             } else {
-              textScreen.moveCursor(1);
+              screen.moveCursor(1);
             }
             position++;
           }
@@ -181,8 +181,8 @@ abstract class BaseInputStatement extends Statement {
         case CursorCommand.DELETE:
           if (buffer.length > 0 && position < buffer.length) {
             buffer.splice(position, 1);
-            textScreen.print(buffer.slice(position).join('') + ' ', false);
-            textScreen.moveCursor(-(buffer.length - position + 1));
+            screen.print(buffer.slice(position).join('') + ' ', false);
+            screen.moveCursor(-(buffer.length - position + 1));
           }
           break;
         case CursorCommand.DELETE_TO_END:
@@ -191,16 +191,16 @@ abstract class BaseInputStatement extends Statement {
           }
           const numToDelete = buffer.length - position;
           buffer.splice(position, numToDelete);
-          textScreen.print(' '.repeat(numToDelete), false);
-          textScreen.moveCursor(-numToDelete);
+          screen.print(' '.repeat(numToDelete), false);
+          screen.moveCursor(-numToDelete);
           break;
         case CursorCommand.DELETE_LINE:
           if (insert) {
             toggleInsert();
           }
-          textScreen.moveCursor(-position);
-          textScreen.print(' '.repeat(buffer.length), false);
-          textScreen.moveCursor(-buffer.length);
+          screen.moveCursor(-position);
+          screen.print(' '.repeat(buffer.length), false);
+          screen.moveCursor(-buffer.length);
           buffer = [];
           position = 0;
           break;
@@ -217,14 +217,14 @@ abstract class BaseInputStatement extends Statement {
             for (let i = 0; i < text.length; i++) {
               buffer.splice(position + i, 0, text[i]);
             }
-            textScreen.print(buffer.slice(position).join(''), false);
+            screen.print(buffer.slice(position).join(''), false);
             position += text.length;
-            textScreen.moveCursor(-(buffer.length - position));
+            screen.moveCursor(-(buffer.length - position));
           } else {
             for (let i = 0; i < text.length; i++) {
               buffer.splice(position++, 1, text[i]);
             }
-            textScreen.print(text, false);
+            screen.print(text, false);
           }
       }
       frame(editorFrame);

@@ -64,11 +64,11 @@ export class KeyStatement extends Statement {
   }
 
   private listMacros(context: ExecutionContext) {
-    const {textScreen, keyboard} = context.devices;
+    const {screen, keyboard} = context.devices;
     for (let i = 1; i <= 12; i++) {
       const keyBinding = keyboard.getMacro(i);
       const keyName = `F${i}`.padEnd(4, ' ');
-      textScreen.print(`${keyName}${keyBinding}`, true);
+      screen.print(`${keyName}${keyBinding}`, true);
     }
   }
 

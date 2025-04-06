@@ -38,7 +38,7 @@ abstract class BasePrintStatement extends Statement {
         context
       });
     }
-    return this.args.printer ? context.devices.printer : context.devices.textScreen;
+    return this.args.printer ? context.devices.printer : context.devices.screen;
   }
 }
 

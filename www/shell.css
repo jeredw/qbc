@@ -1,13 +1,13 @@
 :root {
   --qbc-black: #000000;
-  --qbc-blue: #0000b0;
-  --qbc-green: #00b000;
-  --qbc-cyan: #00b0b0;
-  --qbc-red: #b00000;
-  --qbc-magenta: #b000b0;
-  --qbc-brown: #b08000;
-  --qbc-light-gray: #b0b0b0;
-  --qbc-dark-gray: #b0b0b0;
+  --qbc-blue: #0000a0;
+  --qbc-green: #00a000;
+  --qbc-cyan: #00a0a0;
+  --qbc-red: #a00000;
+  --qbc-magenta: #a000a0;
+  --qbc-brown: #a08000;
+  --qbc-light-gray: #a0a0a0;
+  --qbc-dark-gray: #808080;
   --qbc-high-blue: #0000ff;
   --qbc-high-green: #00ff00;
   --qbc-high-cyan: #00ffff;
@@ -21,10 +21,73 @@
 }
 
 @font-face {
+  font-family: 'Web IBM VGA 9x16';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_9x16.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 9x16-2x';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_9x16-2x.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 9x14';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_9x14.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 9x14-2x';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_9x14-2x.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 9x8';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_9x8.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 9x8-2x';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_9x-2x.woff) format('woff');
+}
+
+@font-face {
   font-family: 'Web IBM VGA 8x16';
   font-style: normal;
   font-weight: normal;
-  src: url(web_ibm_vga_8x16.woff) format('woff');
+  src: url(WebPlus_IBM_VGA_8x16.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 8x16-2x';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_8x16-2x.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 8x14';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_8x14.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 8x14-2x';
+  font-style: normal;
+  font-weight: normal;
+  src: url(WebPlus_IBM_VGA_8x14-2x.woff) format('woff');
 }
 
 * {
@@ -33,6 +96,7 @@
 }
 
 body {
+  overscroll-behavior: none;
   background: var(--qbc-black);
   color: var(--qbc-light-gray);
   font-family: 'Web IBM VGA 8x16';
@@ -43,14 +107,14 @@ body {
   display: flex;
   background: var(--qbc-light-gray);
   gap: 8px;
-  width: 644px;
+  min-width: 644px;
   padding: 0 8px;
 }
 
 .status-line {
   color: var(--qbc-white);
   background: var(--qbc-cyan);
-  width: 644px;
+  min-width: 644px;
   padding: 0 8px;
 }
 
@@ -96,7 +160,7 @@ button:active {
 .code-box {
   background: var(--qbc-blue);
   padding: 8px 4px;
-  width: 652px;
+  min-width: 652px;
 }
 
 .code-pane::selection {
@@ -105,9 +169,8 @@ button:active {
 }
 
 .code-pane {
-  /* 80 rows by 25 columns */
-  width: 640px;
-  height: 400px;
+  min-width: 640px;
+  height: calc(100vh - 84px);
   padding: 8px 4px;
   border-color: var(--qbc-light-gray);
   border-style: solid;
@@ -171,9 +234,32 @@ button:active {
   src: url(DotMatrix-BoldItalic.woff2) format('woff');
 }
 
+.shell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.editor {
+  grid-column-start: 2;
+  grid-row-start: 1;
+}
+
+.paper-window {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  opacity: 0.1;
+}
+
+.paper-window:hover {
+  opacity: 0.9;
+}
+
 .screen {
   image-rendering: pixelated;
   -webkit-font-smoothing: none;
+  transform-origin: left top;
 }
 
 .screen:focus {

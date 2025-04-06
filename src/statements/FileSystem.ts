@@ -126,7 +126,7 @@ export class FilesStatement extends FileSystemStatement {
 
   override access(pattern: string, context: ExecutionContext) {
     const entries = context.devices.disk.listFiles(pattern);
-    const screen = context.devices.textScreen;
+    const {screen} = context.devices;
     screen.print(context.devices.disk.getCurrentDirectory(), true);
     const formattedEntries = entries.map(formatEntry);
     for (let i = 0; i < formattedEntries.length; i++) {

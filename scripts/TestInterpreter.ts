@@ -2,7 +2,7 @@ import { MemoryDrive } from "../src/Disk.ts";
 import { ParseError, RuntimeError } from "../src/Errors.ts";
 import { Interpreter } from "../src/Interpreter.ts";
 import { StringPrinter } from "../src/Printer.ts";
-import { TestTextScreen } from "../src/Screen.ts";
+import { TestScreen } from "../src/Screen.ts";
 import { TestSpeaker } from "../src/Speaker.ts";
 import { KeyboardListener, typeLines } from "../src/Keyboard.ts";
 import { TestTimer } from "../src/Timer.ts";
@@ -11,16 +11,16 @@ import { PointerListener } from "../src/LightPen.ts";
 
 async function interpret(program: string, input: string[], diskJson: string): Promise<string> {
   try {
-    const textScreen = new TestTextScreen();
+    const screen = new TestScreen();
     const speaker = new TestSpeaker();
     const printer = new StringPrinter();
     const disk = new MemoryDrive();
     const keyboard = new KeyboardListener();
     const timer = new TestTimer();
     const joystick = new TestJoystick();
-    const lightPen = new PointerListener(textScreen);
+    const lightPen = new PointerListener(screen);
     const interpreter = new Interpreter({
-      textScreen,
+      screen,
       speaker,
       printer,
       disk,
@@ -36,7 +36,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
     const invocation = interpreter.run(program + '\n');
     await invocation.restart();
     return [
-      textScreen.output,
+      screen.output,
       prefixLines("LPT1> ", printer.output),
       speaker.output,
       disk.modified ? prefixLines("FS> ", disk.saveToJson()) : '',

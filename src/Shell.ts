@@ -1,11 +1,11 @@
 import { Interpreter } from "./Interpreter.ts";
 import { MemoryDrive } from "./Disk.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
-import { CanvasTextScreen } from "./Screen.ts";
+import { CanvasScreen } from "./Screen.ts";
 import { LinePrinter } from "./Printer.ts";
 import { WebAudioSpeaker } from "./Speaker.ts";
 import { Invocation } from "./Invocation.ts";
-import { Keyboard, KeyboardListener } from "./Keyboard.ts";
+import { KeyboardListener } from "./Keyboard.ts";
 import { RealTimeTimer } from "./Timer.ts";
 import { GamepadListener } from "./Joystick.ts";
 import { PointerListener } from "./LightPen.ts";
@@ -24,7 +24,7 @@ class Shell {
   private playButton: HTMLElement;
   private muteButton: HTMLElement;
 
-  private screen: CanvasTextScreen;
+  private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;
   private printer: LinePrinter;
   private disk: MemoryDrive;
@@ -35,7 +35,7 @@ class Shell {
 
   constructor(root: HTMLElement) {
     this.root = root;
-    this.screen = new CanvasTextScreen(80, 25);
+    this.screen = new CanvasScreen(0);
     this.speaker = new WebAudioSpeaker();
     this.printer = new LinePrinter(80);
     this.disk = new MemoryDrive();
@@ -47,7 +47,7 @@ class Shell {
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
     this.interpreter = new Interpreter({
-      textScreen: this.screen,
+      screen: this.screen,
       speaker: this.speaker,
       printer: this.printer,
       disk: this.disk,
