@@ -923,7 +923,14 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.return_(ctx.start!));
   }
 
-  override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
+  override enterScreen_statement = (ctx: parser.Screen_statementContext) => {
+    const token = ctx.start!;
+    const modeExpr = this.compileExpression(ctx._screenmode!, ctx._screenmode!.start!, { tag: TypeTag.INTEGER });
+    const colorSwitchExpr = ctx._colorswitch && this.compileExpression(ctx._colorswitch!, ctx._colorswitch!.start!, { tag: TypeTag.INTEGER });
+    const activePageExpr = ctx._activepage && this.compileExpression(ctx._activepage!, ctx._activepage!.start!, { tag: TypeTag.INTEGER });
+    const visiblePageExpr = ctx._visiblepage && this.compileExpression(ctx._visiblepage!, ctx._visiblepage!.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.screenStatement(token, modeExpr, colorSwitchExpr, activePageExpr, visiblePageExpr));
+  }
 
   override enterSeek_statement = (ctx: parser.Seek_statementContext) => {
     const token = ctx.start!;

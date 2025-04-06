@@ -1,5 +1,6 @@
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
+import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
 
 interface Attributes {
   fgColor: number;
@@ -11,63 +12,6 @@ interface CharacterCell {
   attributes: Attributes;
 }
 
-interface ScreenMode {
-  mode: number;
-  width: number;
-  height: number;
-  columns: number;
-  rows: number;
-  colors: number;
-  attributes: number;
-  pages: number;
-  graphics: boolean;
-  font: string;
-  transform?: string;
-}
-
-const SCREEN_MODES = [
-  {
-    mode: 0,
-    width: 720,
-    height: 400,
-    columns: 80,
-    rows: 25,
-    colors: 64,
-    attributes: 16,
-    pages: 8,
-    graphics: false,
-    font: 'Web IBM VGA 9x16',
-    transform: 'scaleY(1.35)',
-  },
-  {
-    mode: 1,
-    width: 320,
-    height: 200,
-    columns: 40,
-    rows: 25,
-    colors: 16,
-    attributes: 4,
-    pages: 1,
-    graphics: true,
-    font: 'Web IBM VGA 9x8'
-  },
-  {
-    mode: 2,
-    width: 640,
-    height: 200,
-    columns: 80,
-    rows: 25,
-    colors: 16,
-    attributes: 2,
-    pages: 1,
-    graphics: true,
-    font: 'Web IBM VGA 9x8'
-  },
-];
-
-const CELL_WIDTH = 8;
-const CELL_HEIGHT = 16;
-const FONT_SIZE = 16;
 const DEFAULT_PALETTE = new Map([
   [0, "#000000"],
   [1, "#0000a0"],
@@ -88,6 +32,8 @@ const DEFAULT_PALETTE = new Map([
 ]);
 
 export interface Screen extends Printer, LightPenTarget {
+  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
+
   showCursor(insert: boolean): void;
   hideCursor(): void;
   moveCursor(dx: number): void;
@@ -96,6 +42,10 @@ export interface Screen extends Printer, LightPenTarget {
 export class TestScreen extends StringPrinter {
   constructor() {
     super();
+  }
+
+  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
+    this.putString(`[SCREEN ${modeNumber}, ${colorSwitch}, ${activePage}, ${visiblePage}]\n`);
   }
 
   showCursor(insert: boolean) {
@@ -139,12 +89,25 @@ export class CanvasScreen extends BasePrinter implements Screen {
   canvas: HTMLCanvasElement;
 
   constructor(modeNumber: number) {
-    const mode = SCREEN_MODES[modeNumber];
+    super(0);
+    this.configure(modeNumber, 0, 0, 0);
+  }
+
+  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
+    const mode = SCREEN_MODES.find((entry) => entry.mode === modeNumber);
     if (!mode) {
       throw new Error(`invalid screen mode ${modeNumber}`);
     }
-    super(mode.columns);
+    if (activePage < 0 || activePage > mode.pages) {
+      throw new Error(`invalid active page ${activePage}`);
+    }
+    if (visiblePage < 0 || visiblePage > mode.pages) {
+      throw new Error(`invalid visible page ${visiblePage}`);
+    }
     this.mode = mode;
+    this.width = mode.columns;
+    this.column = 1;
+    this.row = 1;
     this.scrollStartRow = 1;
     this.scrollEndRow = mode.rows;
     this.color = {fgColor: 7, bgColor: 0};
@@ -157,9 +120,15 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
     this.cellWidth = mode.width / mode.columns;
     this.cellHeight = mode.height / mode.rows;
-    this.canvas = document.createElement('canvas');
-    this.canvas.className = 'screen';
-    this.canvas.setAttribute('tabindex', '1');
+    if (!this.canvas) {
+      this.canvas = document.createElement('canvas');
+      this.canvas.className = 'screen';
+      this.canvas.setAttribute('tabindex', '1');
+    } else {
+      const ctx = this.canvas.getContext('2d')!;
+      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.canvas.style.transform = '';
+    }
     this.canvas.width = mode.width;
     this.canvas.height = mode.height;
     if (mode.transform) {

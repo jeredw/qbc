@@ -779,7 +779,7 @@ rset_statement
 
 screen_statement
   : SCREEN screenmode=expr
-    ( COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visualpage=expr
+    ( COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visiblepage=expr
     | COMMA (colorswitch=expr)? COMMA activepage=expr
     | COMMA colorswitch=expr )?
   ;

@@ -111,6 +111,7 @@ import { EventChannelState } from "../Events.ts";
 import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
 import { PenFunction } from "./LightPen.ts";
+import { ScreenStatement } from "./Screen.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -526,6 +527,16 @@ export function rsetString(token: Token, variable: Variable, stringExpr: parser.
 
 export function rtrim(args: BuiltinStatementArgs) {
   return new RtrimFunction(args);
+}
+
+export function screenStatement(
+  token: Token,
+  modeExpr: parser.ExprContext,
+  colorSwitchExpr?: parser.ExprContext,
+  activePageExpr?: parser.ExprContext,
+  visiblePageExpr?: parser.ExprContext
+) {
+  return new ScreenStatement(token, modeExpr, colorSwitchExpr, activePageExpr, visiblePageExpr);
 }
 
 export function seekFunction(token: Token, fileNumber: parser.ExprContext, result: Variable) {
