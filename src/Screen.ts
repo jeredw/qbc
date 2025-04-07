@@ -137,7 +137,7 @@ class Page {
     ctx.fillText(cell.char, x, y);
   }
 
-  getImageData(palette: Color[], left: number, top: number, width: number, height: number): ImageData {
+  getImageData(palette: Color[], left: number, top: number, width: number, height: number, xorIndex: number = 0): ImageData {
     const ctx = this.canvas.getContext('2d')!;
     const colorIndices = ctx.getImageData(left, top, width, height);
     const output = ctx.createImageData(colorIndices);
@@ -145,7 +145,7 @@ class Page {
     for (let y = 0; y < colorIndices.height; y++) {
       for (let x = 0; x < colorIndices.width; x++) {
         const paletteIndex = colorIndices.data[index];
-        const color = palette[paletteIndex];
+        const color = palette[paletteIndex ^ xorIndex];
         output.data[index] = color.red;
         output.data[index + 1] = color.green;
         output.data[index + 2] = color.blue;
@@ -275,10 +275,26 @@ export class CanvasScreen extends BasePrinter implements Screen {
       return [x, y, this.cellWidth, this.cellHeight];
     };
     const [left, top, width, height] = getCursorRegion();
-    const blinkOn = (performance.now() % 476) < 238;
-    const palette = blinkOn ? this.palette.slice().reverse() : this.palette;
-    const imageData = this.visiblePage.getImageData(palette, left, top, width, height);
+    let blinkOn: boolean;
+    let cursorColor: number;
+    if (this.mode.mode === 0) {
+      const char = this.visiblePage.getCharAt(this.row, this.column);
+      blinkOn = (performance.now() % 476) < 238;
+      cursorColor = blinkOn ? char.attributes.fgColor : char.attributes.bgColor;
+    } else {
+      blinkOn = true;
+      cursorColor = this.color.fgColor;
+    }
+    const imageData = this.visiblePage.getImageData(this.palette, left, top, width, height, cursorColor);
     ctx.putImageData(imageData, left, top);
+  }
+
+  private eraseCursor() {
+    const ctx = this.canvas.getContext('2d')!;
+    const x = (this.column - 1) * this.cellWidth;
+    const y = (this.row - 1) * this.cellHeight;
+    const imageData = this.visiblePage.getImageData(this.palette, x, y, this.cellWidth, this.cellHeight);
+    ctx.putImageData(imageData, x, y);
   }
 
   protected override newLine() {
@@ -298,10 +314,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   showCursor(insert: boolean) {
+    this.eraseCursor();
     this.cursorState = insert ? CursorState.SHOWN_INSERT : CursorState.SHOWN;
   }
   
   hideCursor() {
+    this.eraseCursor();
     this.cursorState = CursorState.HIDDEN;
   }
 
@@ -309,6 +327,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (this.activePage !== this.visiblePage) {
       return;
     }
+    this.eraseCursor();
     this.column += dx;
     while (this.column > this.width) {
       this.column -= this.width;
