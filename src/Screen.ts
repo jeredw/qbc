@@ -2,35 +2,6 @@ import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
 
-interface Attributes {
-  fgColor: number;
-  bgColor: number;
-}
-
-interface CharacterCell {
-  char: string;
-  attributes: Attributes;
-}
-
-const DEFAULT_PALETTE = new Map([
-  [0, "#000000"],
-  [1, "#0000a0"],
-  [2, "#00a000"],
-  [3, "#00a0a0"],
-  [4, "#a00000"],
-  [5, "#a000a0"],
-  [6, "#a08000"],
-  [7, "#a0a0a0"],
-  [8, "#808080"],
-  [9, "#0000ff"],
-  [10, "#00ff00"],
-  [11, "#00ffff"],
-  [12, "#ff0000"],
-  [13, "#ff00ff"],
-  [14, "#ffff00"],
-  [15, "#ffffff"],
-]);
-
 export interface Screen extends Printer, LightPenTarget {
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
 
@@ -70,6 +41,139 @@ export class TestScreen extends StringPrinter {
   }
 }
 
+interface Attributes {
+  fgColor: number;
+  bgColor: number;
+}
+
+interface CharacterCell {
+  char: string;
+  attributes: Attributes;
+}
+
+interface Color {
+  red: number;
+  green: number;
+  blue: number;
+}
+
+const DEFAULT_PALETTE: Color[] = [
+  {red: 0, green: 0, blue: 0},
+  {red: 0, green: 0, blue: 160},
+  {red: 0, green: 160, blue: 0},
+  {red: 0, green: 160, blue: 160},
+  {red: 160, green: 0, blue: 0},
+  {red: 160, green: 0, blue: 160},
+  {red: 160, green: 128, blue: 0},
+  {red: 160, green: 160, blue: 160},
+  {red: 128, green: 128, blue: 128},
+  {red: 0, green: 0, blue: 255},
+  {red: 0, green: 255, blue: 0},
+  {red: 0, green: 255, blue: 255},
+  {red: 255, green: 0, blue: 0},
+  {red: 255, green: 0, blue: 255},
+  {red: 255, green: 255, blue: 0},
+  {red: 255, green: 255, blue: 255},
+];
+
+function cssForColorIndex(index: number): string {
+  return `rgba(${index}, 0, 0, 255)`;
+}
+
+function clearCanvas(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext('2d')!
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+
+class Page {
+  dirty: boolean = true;
+  private text: CharacterCell[][];
+  private cellWidth: number;
+  private cellHeight: number;
+  private canvas: HTMLCanvasElement;
+
+  constructor(mode: ScreenMode, color: Attributes) {
+    this.dirty = true;
+    this.text = new Array(mode.rows);
+    for (let y = 0; y < mode.rows; y++) {
+      this.text[y] = new Array(mode.columns).fill({
+        char: ' ',
+        attributes: {...color}
+      });
+    }
+    this.cellWidth = mode.width / mode.columns;
+    this.cellHeight = mode.height / mode.rows;
+    this.canvas = document.createElement('canvas');
+    this.canvas.className = 'screen';
+    this.canvas.width = mode.width;
+    this.canvas.height = mode.height;
+    this.canvas.style.display = 'none';
+    document.body.appendChild(this.canvas);
+    // We'll be reading this back a ton so request cpu rendering.
+    const ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
+    ctx.font = `${this.cellHeight}px '${mode.font}'`;
+    ctx.textBaseline = 'top';
+    clearCanvas(this.canvas);
+  }
+
+  getCharAt(row: number, col: number) {
+    return this.text[row - 1][col - 1];
+  }
+
+  putCharAt(row: number, col: number, char: CharacterCell) {
+    this.text[row - 1][col - 1] = char;
+    const ctx = this.canvas.getContext('2d')!;
+    this.drawCell(ctx, row, col);
+    this.dirty = true;
+  }
+
+  private drawCell(ctx: CanvasRenderingContext2D, row: number, col: number) {
+    const x = (col - 1) * this.cellWidth;
+    const y = (row - 1) * this.cellHeight;
+    const cell = this.getCharAt(row, col);
+    ctx.fillStyle = cssForColorIndex(cell.attributes.bgColor);
+    ctx.fillRect(x, y, this.cellWidth, this.cellHeight);
+    ctx.fillStyle = cssForColorIndex(cell.attributes.fgColor);
+    ctx.fillText(cell.char, x, y);
+  }
+
+  getImageData(palette: Color[], left: number, top: number, width: number, height: number): ImageData {
+    const ctx = this.canvas.getContext('2d')!;
+    const colorIndices = ctx.getImageData(left, top, width, height);
+    const output = ctx.createImageData(colorIndices);
+    let index = 0;
+    for (let y = 0; y < colorIndices.height; y++) {
+      for (let x = 0; x < colorIndices.width; x++) {
+        const paletteIndex = colorIndices.data[index];
+        const color = palette[paletteIndex];
+        output.data[index] = color.red;
+        output.data[index + 1] = color.green;
+        output.data[index + 2] = color.blue;
+        output.data[index + 3] = 255;
+        index += 4;
+      }
+    }
+    return output;
+  }
+
+  scroll(startRow: number, endRow: number, color: Attributes) {
+    for (let row = startRow; row < endRow; row++) {
+      this.text[row - 1] = this.text[row].slice();
+    }
+    if (endRow > startRow) {
+      const ctx = this.canvas.getContext('2d')!;
+      const top = startRow * this.cellHeight;
+      const height = endRow * this.cellHeight - top;
+      const text = ctx.getImageData(0, top, ctx.canvas.width, height);
+      ctx.putImageData(text, 0, top - this.cellHeight);
+      this.text[endRow - 2].fill({char: ' ', attributes: {...color}});
+      for (let i = 0; i < this.text[endRow - 2].length; i++) {
+        this.drawCell(ctx, endRow - 1, 1 + i);
+      }
+    }
+  }
+}
+
 enum CursorState {
   HIDDEN,
   SHOWN,
@@ -81,11 +185,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private color: Attributes;
   private scrollStartRow: number;
   private scrollEndRow: number;
-  private buffer: CharacterCell[][];
-  private dirty = true;
   private cursorState: CursorState = CursorState.HIDDEN;
   private cellWidth: number;
   private cellHeight: number;
+  private pages: Page[];
+  private activePage: Page;
+  private visiblePage: Page;
+  private palette: Color[];
   canvas: HTMLCanvasElement;
 
   constructor(modeNumber: number) {
@@ -98,35 +204,40 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (!mode) {
       throw new Error(`invalid screen mode ${modeNumber}`);
     }
-    if (activePage < 0 || activePage > mode.pages) {
+    if (activePage < 0 || activePage >= mode.pages) {
       throw new Error(`invalid active page ${activePage}`);
     }
-    if (visiblePage < 0 || visiblePage > mode.pages) {
+    if (visiblePage < 0 || visiblePage >= mode.pages) {
       throw new Error(`invalid visible page ${visiblePage}`);
     }
+    if (this.mode && this.mode.mode === modeNumber) {
+      this.activePage = this.pages[activePage];
+      this.visiblePage = this.pages[visiblePage];
+      this.visiblePage.dirty = true;
+      clearCanvas(this.canvas);
+      return;
+    }
     this.mode = mode;
+    this.palette = DEFAULT_PALETTE;
     this.width = mode.columns;
     this.column = 1;
     this.row = 1;
     this.scrollStartRow = 1;
     this.scrollEndRow = mode.rows;
     this.color = {fgColor: 7, bgColor: 0};
-    this.buffer = new Array(mode.rows);
-    for (let y = 0; y < mode.rows; y++) {
-      this.buffer[y] = new Array(mode.columns).fill({
-        char: ' ',
-        attributes: {...this.color}
-      });
-    }
     this.cellWidth = mode.width / mode.columns;
     this.cellHeight = mode.height / mode.rows;
+    this.pages = [];
+    for (let i = 0; i < mode.pages; i++) {
+      this.pages[i] = new Page(mode, this.color);
+    }
+    this.activePage = this.pages[activePage];
+    this.visiblePage = this.pages[visiblePage];
     if (!this.canvas) {
       this.canvas = document.createElement('canvas');
       this.canvas.className = 'screen';
       this.canvas.setAttribute('tabindex', '1');
     } else {
-      const ctx = this.canvas.getContext('2d')!;
-      ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.canvas.style.transform = '';
     }
     this.canvas.width = mode.width;
@@ -134,24 +245,18 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (mode.transform) {
       this.canvas.style.transform = mode.transform;
     }
+    clearCanvas(this.canvas);
   }
 
   render() {
     const ctx = this.canvas.getContext('2d')!;
+    if (this.visiblePage.dirty) {
+      const imageData = this.visiblePage.getImageData(
+          this.palette, 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.putImageData(imageData, 0, 0);
+      this.visiblePage.dirty = false;
+    }
     this.drawCursor(ctx);
-    
-    if (!this.dirty) {
-      return
-    }
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    ctx.font = `${this.cellHeight}px '${this.mode.font}'`;
-    ctx.textBaseline = 'top';
-    for (let row = 1; row <= this.mode.rows; row++) {
-      for (let col = 1; col <= this.mode.columns; col++) {
-        this.drawCell(ctx, row, col);
-      }
-    }
-    this.dirty = false;
   }
 
   private drawCursor(ctx: CanvasRenderingContext2D) {
@@ -160,79 +265,50 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
     const x = (this.column - 1) * this.cellWidth;
     const y = (this.row - 1) * this.cellHeight;
-    const cell = this.at(this.row, this.column);
-    const blinkOn = (performance.now() % 476) < 238;
-    if (blinkOn) {
-      ctx.fillStyle = this.cssForColor(cell.attributes.fgColor);
-      if (this.cursorState === CursorState.SHOWN_INSERT) {
-        ctx.fillRect(x, y + this.cellHeight / 2, this.cellWidth - 1, this.cellHeight / 2);
-      } else {
-        ctx.fillRect(x, y + this.cellHeight - 2, this.cellWidth - 1, 1);
+    const getCursorRegion = () => {
+      if (this.mode.mode === 0 && this.cursorState !== CursorState.SHOWN_INSERT) {
+        return [x, y + this.cellHeight - 2, this.cellWidth - 1, 1];
       }
-    } else {
-      ctx.clearRect(x, y, this.cellWidth, this.cellHeight);
-      this.drawCell(ctx, this.row, this.column);
-    }
-  }
-
-  private drawCell(ctx: CanvasRenderingContext2D, row: number, col: number) {
-    const x = (col - 1) * this.cellWidth;
-    const y = (row - 1) * this.cellHeight;
-    const cell = this.at(row, col);
-    ctx.fillStyle = this.cssForColor(cell.attributes.bgColor);
-    ctx.fillRect(x, y, this.cellWidth, this.cellHeight);
-    ctx.fillStyle = this.cssForColor(cell.attributes.fgColor);
-    ctx.fillText(cell.char, x, y);
-  }
-
-  private cssForColor(index: number): string {
-    return DEFAULT_PALETTE.get(index) ?? '#fff';
-  }
-
-  at(row: number, col: number) {
-    return this.buffer[row - 1][col - 1];
-  }
-
-  putAt(row: number, col: number, char: CharacterCell) {
-    this.buffer[row - 1][col - 1] = char;
+      if (this.cursorState === CursorState.SHOWN_INSERT) {
+        return [x, y + this.cellHeight / 2, this.cellWidth - 1, this.cellHeight / 2];
+      }
+      return [x, y, this.cellWidth, this.cellHeight];
+    };
+    const [left, top, width, height] = getCursorRegion();
+    const blinkOn = (performance.now() % 476) < 238;
+    const palette = blinkOn ? this.palette.slice().reverse() : this.palette;
+    const imageData = this.visiblePage.getImageData(palette, left, top, width, height);
+    ctx.putImageData(imageData, left, top);
   }
 
   protected override newLine() {
     this.column = 1;
     this.row++;
     if (this.row == this.scrollEndRow) {
-      for (let row = this.scrollStartRow; row < this.scrollEndRow; row++) {
-        this.buffer[row - 1] = this.buffer[row].slice();
-      }
-      if (this.scrollEndRow > this.scrollStartRow) {
-        this.buffer[this.scrollEndRow - 2].fill({
-          char: ' ', attributes: {...this.color}
-        });
-      }
+      this.activePage.scroll(this.scrollStartRow, this.scrollEndRow, this.color);
       this.row = this.scrollEndRow - 1;
       this.column = 1;
-      this.dirty = true;
     }
   }
 
   override putChar(char: string) {
-    this.putAt(this.row, this.column, {
+    this.activePage.putCharAt(this.row, this.column, {
       char, attributes: {...this.color}
     });
-    this.dirty = true;
   }
 
   showCursor(insert: boolean) {
     this.cursorState = insert ? CursorState.SHOWN_INSERT : CursorState.SHOWN;
-    this.dirty = true;
   }
   
   hideCursor() {
     this.cursorState = CursorState.HIDDEN;
-    this.dirty = true;
   }
 
   moveCursor(dx: number) {
+    if (this.activePage !== this.visiblePage) {
+      return;
+    }
     this.column += dx;
     while (this.column > this.width) {
       this.column -= this.width;
@@ -242,21 +318,26 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.column += this.width;
       this.row--;
     }
-    this.dirty = true;
   }
 
-  triggerPen(x: number, y: number): LightPenTrigger | void {
+  triggerPen(x: number, y: number): LightPenTrigger | undefined {
     if (x < 0 || y < 0 || x > this.canvas.width || y > this.canvas.height) {
       return;
     }
     const [row, column] = [
       1 + Math.floor(y / this.cellHeight),
-      1 + Math.floor(x / this.cellWidth),
+      1 + Math.floor(x / this.cellWidth)
     ];
-    const cell = this.at(row, column);
-    if (cell.char === ' ' || (cell.attributes.fgColor === 0 && cell.attributes.bgColor === 0)) {
-      return;
+    const [left, top] = [(column - 1) * this.cellWidth, (row - 1) * this.cellHeight];
+    const imageData = this.visiblePage.getImageData(
+      this.palette, left, top, this.cellWidth, this.cellHeight);
+    let dark = true;
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      if (imageData.data[i] > 0 || imageData.data[i + 1] > 0 || imageData.data[i + 2] > 0) {
+        dark = false;
+        break;
+      }
     }
-    return { row, column, x: (column - 1) * this.cellWidth, y: (row - 1) * this.cellHeight };
+    return !dark ? { row, column, x: left, y: top } : undefined;
   }
 }
