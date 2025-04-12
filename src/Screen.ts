@@ -1,9 +1,13 @@
+import { Color, DEFAULT_PALETTE, egaIndexToColor, vgaIndexToColor } from './Colors.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
 
 export interface Screen extends Printer, LightPenTarget {
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
+  getModeNumber(): number;
+
+  setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
 
   showCursor(insert: boolean): void;
   hideCursor(): void;
@@ -11,12 +15,27 @@ export interface Screen extends Printer, LightPenTarget {
 }
 
 export class TestScreen extends StringPrinter {
+  modeNumber: number;
+
   constructor() {
     super();
   }
 
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
+    this.modeNumber = modeNumber;
     this.putString(`[SCREEN ${modeNumber}, ${colorSwitch}, ${activePage}, ${visiblePage}]\n`);
+  }
+
+  getModeNumber(): number {
+    return this.modeNumber;
+  }
+
+  setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
+    this.putString(`[COLOR ${fgColor}, ${bgColor}, ${borderColor}]\n`);
+  }
+
+  setPaletteEntry(attribute: number, color: number) {
+    this.putString(`[PALETTE ${attribute}, ${color}]\n`);
   }
 
   showCursor(insert: boolean) {
@@ -50,31 +69,6 @@ interface CharacterCell {
   char: string;
   attributes: Attributes;
 }
-
-interface Color {
-  red: number;
-  green: number;
-  blue: number;
-}
-
-const DEFAULT_PALETTE: Color[] = [
-  {red: 0, green: 0, blue: 0},
-  {red: 0, green: 0, blue: 160},
-  {red: 0, green: 160, blue: 0},
-  {red: 0, green: 160, blue: 160},
-  {red: 160, green: 0, blue: 0},
-  {red: 160, green: 0, blue: 160},
-  {red: 160, green: 128, blue: 0},
-  {red: 160, green: 160, blue: 160},
-  {red: 128, green: 128, blue: 128},
-  {red: 0, green: 0, blue: 255},
-  {red: 0, green: 255, blue: 0},
-  {red: 0, green: 255, blue: 255},
-  {red: 255, green: 0, blue: 0},
-  {red: 255, green: 0, blue: 255},
-  {red: 255, green: 255, blue: 0},
-  {red: 255, green: 255, blue: 255},
-];
 
 function cssForColorIndex(index: number): string {
   return `rgba(${index}, 0, 0, 255)`;
@@ -218,7 +212,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       return;
     }
     this.mode = mode;
-    this.palette = DEFAULT_PALETTE;
+    this.palette = [...DEFAULT_PALETTE];
     this.width = mode.columns;
     this.column = 1;
     this.row = 1;
@@ -248,9 +242,65 @@ export class CanvasScreen extends BasePrinter implements Screen {
     clearCanvas(this.canvas);
   }
 
+  getModeNumber(): number {
+    return this.mode.mode;
+  }
+
+  setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
+    const screenMode = this.mode.mode;
+    if (screenMode === 2) {
+      throw new Error('color is not supported');
+    }
+    const borderColorOk = borderColor === undefined ||
+      screenMode === 0 && (borderColor >= 0 && borderColor <= 15);
+    if (!borderColorOk) {
+      throw new Error('invalid border color');
+    }
+    const bgColorOk = bgColor === undefined ||
+      screenMode === 0 && (bgColor >= 0 && bgColor < this.mode.attributes) ||
+      screenMode === 1 && (bgColor >= 0 && bgColor <= 255) ||
+      (screenMode >= 7 && screenMode <= 10) && (bgColor >= 0 && bgColor < this.mode.colors);
+    if (!bgColorOk) {
+      throw new Error('invalid background color');
+    }
+    const fgColorOk = fgColor === undefined ||
+      screenMode === 0 && (fgColor >= 0 && fgColor <= 31) ||
+      screenMode !== 1 && (fgColor >= 0 && fgColor < this.mode.attributes);
+    if (!fgColorOk) {
+      throw new Error('invalid foreground color');
+    }
+    if (fgColor) {
+      this.color.fgColor = fgColor;
+    }
+    if (bgColor) {
+      // In mode 0, bgcolor can only take low intensity colors.
+      this.color.bgColor = screenMode === 0 ? bgColor & 7 : bgColor;
+    }
+  }
+
+  setPaletteEntry(attribute: number, color: number) {
+    if (attribute < 0 || attribute >= this.mode.attributes) {
+      throw new Error('invalid attribute');
+    }
+    if (color < 0 || color >= this.mode.colors) {
+      throw new Error('invalid color');
+    }
+    const screenMode = this.mode.mode;
+    if (screenMode === 0 || screenMode === 9) {
+      this.palette[attribute] = egaIndexToColor(color);
+    } else if (screenMode < 10) {
+      this.palette[attribute] = DEFAULT_PALETTE[color];
+    } else if (screenMode === 10) {
+      // TODO: figure out pseudocolor mapping
+    } else {
+      this.palette[attribute] = vgaIndexToColor(color);
+    }
+  }
+
   render() {
     const ctx = this.canvas.getContext('2d')!;
     if (this.visiblePage.dirty) {
+      // TODO: replace this with a pixel shader
       const imageData = this.visiblePage.getImageData(
           this.palette, 0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.putImageData(imageData, 0, 0);

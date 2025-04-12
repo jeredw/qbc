@@ -376,6 +376,8 @@ close_statement
   : CLOSE ('#'? expr)? (COMMA '#'? expr)*
   ;
 
+// Note: COLOR parses fine with no arguments.  This form either does nothing or
+// causes a runtime error depending on the screen mode.
 color_statement
   : COLOR
     ( (arg1=expr)? COMMA (arg2=expr)? COMMA (arg3=expr)

@@ -378,7 +378,13 @@ export class CodeGenerator extends QBasicParserListener {
     }
   }
 
-  override enterColor_statement = (ctx: parser.Color_statementContext) => {}
+  override enterColor_statement = (ctx: parser.Color_statementContext) => {
+    const arg1 = ctx._arg1 && this.compileExpression(ctx._arg1, ctx._arg1.start!, { tag: TypeTag.INTEGER });
+    const arg2 = ctx._arg2 && this.compileExpression(ctx._arg2, ctx._arg2.start!, { tag: TypeTag.INTEGER });
+    const arg3 = ctx._arg3 && this.compileExpression(ctx._arg3, ctx._arg3.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.color(ctx.start!, arg1, arg2, arg3));
+  }
+
   override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
 

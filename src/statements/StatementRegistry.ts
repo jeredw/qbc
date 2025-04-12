@@ -111,7 +111,7 @@ import { EventChannelState } from "../Events.ts";
 import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
 import { PenFunction } from "./LightPen.ts";
-import { ScreenStatement } from "./Screen.ts";
+import { ColorStatement, ScreenStatement } from "./Screen.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -151,6 +151,10 @@ export function chr(args: BuiltinStatementArgs) {
 
 export function close(fileNumber: parser.ExprContext) {
   return new CloseStatement(fileNumber);
+}
+
+export function color(token: Token, arg1?: parser.ExprContext, arg2?: parser.ExprContext, arg3?: parser.ExprContext) {
+  return new ColorStatement(token, arg1, arg2, arg3);
 }
 
 export function csng(args: BuiltinStatementArgs) {

@@ -29,3 +29,54 @@ export class ScreenStatement extends Statement {
     }
   }
 }
+
+export class ColorStatement extends Statement {
+  constructor(
+    private token: Token,
+    private arg1?: ExprContext,
+    private arg2?: ExprContext,
+    private arg3?: ExprContext,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const {screen} = context.devices;
+    const mode = screen.getModeNumber();
+    const arg1 = this.arg1 && evaluateIntegerExpression(this.arg1, context.memory);
+    const arg2 = this.arg2 && evaluateIntegerExpression(this.arg2, context.memory);
+    const arg3 = this.arg3 && evaluateIntegerExpression(this.arg3, context.memory);
+    try {
+      if (mode === 2) {
+        throw new Error('color not allowed in mode 2');
+      }
+      if ((this.arg1 === undefined &&
+           this.arg2 === undefined &&
+           this.arg3 === undefined) && (mode === 0 || mode === 11)) {
+        throw new Error('color must have an argument in mode 0 and mode 11');
+      }
+      if (mode === 0) {
+        const [fgColor, bgColor, border] = [arg1, arg2, arg3];
+        screen.setColor(fgColor, bgColor, border);
+        return;
+      }
+      if (mode === 1) {
+        // If specified, arg3 has the same effect as palette and takes precedence over it.
+        const [fgColor, bgColor, palette, altPalette] = [undefined, arg1, arg2, arg3];
+        screen.setColor(fgColor, bgColor);
+        // TODO: select palette
+        return;
+      }
+      if (this.arg3 !== undefined) {
+        throw new Error('only modes 0 and 1 support color with 3 arguments');
+      }
+      const [fgColor, bgColor] = [arg1, arg2];
+      if ((bgColor !== undefined) && (mode >= 11 && mode <= 13)) {
+        throw new Error('bg color not allowed in modes 11-13');
+      }
+      screen.setColor(fgColor, bgColor);
+    } catch(e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}
