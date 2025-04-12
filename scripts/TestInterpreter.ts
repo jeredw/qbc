@@ -8,10 +8,15 @@ import { KeyboardListener, typeLines } from "../src/Keyboard.ts";
 import { TestTimer } from "../src/Timer.ts";
 import { TestJoystick } from "../src/Joystick.ts";
 import { PointerListener } from "../src/LightPen.ts";
+import { Canvas, createCanvas, registerFont } from "canvas"
 
-async function interpret(program: string, input: string[], diskJson: string): Promise<string> {
+async function interpret(program: string, input: string[], diskJson: string): Promise<[string, string | undefined]> {
   try {
-    const screen = new TestScreen();
+    const screen = new TestScreen(new class CanvasProvider {
+      createCanvas(width: number, height: number) {
+        return createCanvas(width, height) as unknown as HTMLCanvasElement;
+      }
+    });
     const speaker = new TestSpeaker();
     const printer = new StringPrinter();
     const disk = new MemoryDrive();
@@ -35,21 +40,35 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
     }
     const invocation = interpreter.run(program + '\n');
     await invocation.restart();
-    return [
-      screen.output,
+    let graphics: string | undefined;
+    if (screen.hasGraphics) {
+      const canvas = screen.graphics.renderVisiblePage() as unknown as Canvas;
+      graphics = await Deno.makeTempFile({ suffix: '.png' });
+      const buffer = canvas.toBuffer('image/png');
+      await Deno.writeFileSync(graphics, buffer);
+    }
+    const text = [
+      screen.text.output,
       prefixLines("LPT1> ", printer.output),
       speaker.output,
       disk.modified ? prefixLines("FS> ", disk.saveToJson()) : '',
     ].join('');
+    return [text, graphics];
   } catch (e: unknown) {
     if (e instanceof ParseError) {
-      return `ERROR ${e.location.line}:${e.location.column} ${e.message}`;
+      return [`ERROR ${e.location.line}:${e.location.column} ${e.message}`, undefined];
     } else if (e instanceof RuntimeError) {
-      return `RUNTIME ERROR ${e.location.line}:${e.location.column} ${e.message}`;
+      return [`RUNTIME ERROR ${e.location.line}:${e.location.column} ${e.message}`, undefined];
     } else {
       throw e;
     }
   }
+}
+
+async function previewImage(path: string) {
+  const openCommand = new Deno.Command('open', { args: [path] });
+  const child = openCommand.spawn();
+  await child.status;
 }
 
 function prefixLines(prefix: string, output: string): string {
@@ -60,6 +79,7 @@ async function runTests(tests: string[]) {
   for (const testPath of tests) {
     try {
       const goldenPath = testPath + '.output';
+      const graphicsGoldenPath = testPath + '.png';
       const program = Deno.readTextFileSync(testPath);
       let input = [];
       try {
@@ -73,7 +93,7 @@ async function runTests(tests: string[]) {
       } catch {
         // Assume no disk image.
       }
-      const output = await interpret(program, input, diskJson);
+      const [outputText, graphics] = await interpret(program, input, diskJson);
       const diffCommand = new Deno.Command('diff', {
         args: ['-du', goldenPath, '-'],
         stdin: 'piped',
@@ -82,7 +102,7 @@ async function runTests(tests: string[]) {
       });
       const child = diffCommand.spawn();
       const writer = child.stdin.getWriter();
-      await writer.write(new TextEncoder().encode(output));
+      await writer.write(new TextEncoder().encode(outputText));
       writer.releaseLock();
       try {
         await child.stdin.close();
@@ -92,19 +112,49 @@ async function runTests(tests: string[]) {
       const result = await child.output();
       const stdout = new TextDecoder().decode(result.stdout);
       const stderr = new TextDecoder().decode(result.stderr);
-      if (!stdout && !stderr) {
+      if (!stdout && !stderr && !graphics) {
         console.log(`${testPath} pass`);
         continue;
       }
       if (stderr) {
         console.log(`${testPath} missing golden`);
-        console.log(output);
+        console.log(outputText);
       } else if (stdout) {
         console.log(`${testPath} diff`);
         console.log(stdout);
       }
-      if (confirm('gild?')) {
-        Deno.writeTextFileSync(goldenPath, output);
+      if (stderr || stdout) {
+        if (confirm('gild?')) {
+          Deno.writeTextFileSync(goldenPath, outputText);
+        }
+      }
+      if (graphics) {
+        const imgdiffCommand = new Deno.Command('compare', {
+          args: ['-metric', 'MAE', graphics, graphicsGoldenPath, '/tmp/diff.png'],
+          stdin: 'piped',
+          stdout: 'piped',
+          stderr: 'piped'
+        });
+        const child = imgdiffCommand.spawn();
+        const result = await child.output();
+        const stderr = new TextDecoder().decode(result.stderr);
+        let shouldPrompt = false;
+        if (stderr && stderr.includes("unable to open image")) {
+          console.log(`${testPath} missing golden image`);
+          await previewImage(graphics);
+          shouldPrompt = true;
+        } else if (stderr && stderr !== '0 (0)') {
+          console.log(stderr);
+          await previewImage('/tmp/diff.png');
+          shouldPrompt = true;
+        }
+        if (shouldPrompt) {
+          if (confirm('image ok?')) {
+            Deno.rename(graphics, graphicsGoldenPath);
+          }
+        } else {
+          console.log(`${testPath} pass`);
+        }
       }
     } catch (err: unknown) {
       console.log(`${testPath} errors\n${err}`);
@@ -112,4 +162,8 @@ async function runTests(tests: string[]) {
   }
 }
 
+registerFont('www/WebPlus_IBM_VGA_9x16.woff', { family: 'Web IBM VGA 9x16' });
+registerFont('www/WebPlus_IBM_VGA_9x8.woff', { family: 'Web IBM VGA 9x8' });
+registerFont('www/WebPlus_IBM_VGA_8x14.woff', { family: 'Web IBM VGA 8x14' });
+registerFont('www/WebPlus_IBM_VGA_8x16.woff', { family: 'Web IBM VGA 8x16' });
 runTests(Deno.args);

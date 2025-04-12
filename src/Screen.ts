@@ -3,6 +3,22 @@ import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
 
+export interface CanvasProvider {
+  createCanvas(width: number, height: number): HTMLCanvasElement;
+}
+
+class DefaultCanvasProvider implements CanvasProvider {
+  createCanvas(width: number, height: number): HTMLCanvasElement {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'screen';
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.display = 'none';
+    document.body.appendChild(canvas);
+    return canvas;
+  }
+}
+
 export interface Screen extends Printer, LightPenTarget {
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
   getModeNumber(): number;
@@ -12,52 +28,6 @@ export interface Screen extends Printer, LightPenTarget {
   showCursor(insert: boolean): void;
   hideCursor(): void;
   moveCursor(dx: number): void;
-}
-
-export class TestScreen extends StringPrinter {
-  modeNumber: number;
-
-  constructor() {
-    super();
-  }
-
-  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
-    this.modeNumber = modeNumber;
-    this.putString(`[SCREEN ${modeNumber}, ${colorSwitch}, ${activePage}, ${visiblePage}]\n`);
-  }
-
-  getModeNumber(): number {
-    return this.modeNumber;
-  }
-
-  setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
-    this.putString(`[COLOR ${fgColor}, ${bgColor}, ${borderColor}]\n`);
-  }
-
-  setPaletteEntry(attribute: number, color: number) {
-    this.putString(`[PALETTE ${attribute}, ${color}]\n`);
-  }
-
-  showCursor(insert: boolean) {
-    this.putString(insert ? '■' : '␣');
-  }
-
-  hideCursor() {
-    this.putString('□');
-  }
-
-  moveCursor(dx: number) {
-    this.putString((dx < 0 ? '←' : '→').repeat(Math.abs(dx)));
-  }
-
-  triggerPen(x: number, y: number): LightPenTrigger | void {
-    return {
-      row: Math.floor(y / 8),
-      column: Math.floor(x / 8),
-      x: Math.floor(x / 8) * 8,
-      y: Math.floor(y / 8) * 8
-    };
-  }
 }
 
 interface Attributes {
@@ -74,19 +44,14 @@ function cssForColorIndex(index: number): string {
   return `rgba(${index}, 0, 0, 255)`;
 }
 
-function clearCanvas(canvas: HTMLCanvasElement) {
-  const ctx = canvas.getContext('2d')!
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-}
-
 class Page {
   dirty: boolean = true;
+  canvas: HTMLCanvasElement;
   private text: CharacterCell[][];
   private cellWidth: number;
   private cellHeight: number;
-  private canvas: HTMLCanvasElement;
 
-  constructor(mode: ScreenMode, color: Attributes) {
+  constructor(mode: ScreenMode, color: Attributes, canvasProvider: CanvasProvider) {
     this.dirty = true;
     this.text = new Array(mode.rows);
     for (let y = 0; y < mode.rows; y++) {
@@ -97,17 +62,12 @@ class Page {
     }
     this.cellWidth = mode.width / mode.columns;
     this.cellHeight = mode.height / mode.rows;
-    this.canvas = document.createElement('canvas');
-    this.canvas.className = 'screen';
-    this.canvas.width = mode.width;
-    this.canvas.height = mode.height;
-    this.canvas.style.display = 'none';
-    document.body.appendChild(this.canvas);
+    this.canvas = canvasProvider.createCanvas(mode.width, mode.height);
     // We'll be reading this back a ton so request cpu rendering.
     const ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
     ctx.font = `${this.cellHeight}px '${mode.font}'`;
     ctx.textBaseline = 'top';
-    clearCanvas(this.canvas);
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 
   getCharAt(row: number, col: number) {
@@ -184,13 +144,17 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private cellHeight: number;
   private pages: Page[];
   private activePage: Page;
-  private visiblePage: Page;
+  visiblePage: Page;
   private palette: Color[];
+  private canvasProvider: CanvasProvider;
+  private headless?: boolean;
   canvas: HTMLCanvasElement;
 
-  constructor(modeNumber: number) {
+  constructor(canvasProvider?: CanvasProvider) {
     super(0);
-    this.configure(modeNumber, 0, 0, 0);
+    this.canvasProvider = canvasProvider ?? new DefaultCanvasProvider();
+    this.headless = !!canvasProvider;
+    this.configure(0, 0, 0, 0);
   }
 
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
@@ -208,7 +172,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.activePage = this.pages[activePage];
       this.visiblePage = this.pages[visiblePage];
       this.visiblePage.dirty = true;
-      clearCanvas(this.canvas);
+      if (this.canvas) {
+        const ctx = this.canvas.getContext('2d')!
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      }
       return;
     }
     this.mode = mode;
@@ -223,10 +190,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.cellHeight = mode.height / mode.rows;
     this.pages = [];
     for (let i = 0; i < mode.pages; i++) {
-      this.pages[i] = new Page(mode, this.color);
+      this.pages[i] = new Page(mode, this.color, this.canvasProvider);
     }
     this.activePage = this.pages[activePage];
     this.visiblePage = this.pages[visiblePage];
+    if (this.headless) {
+      return;
+    }
     if (!this.canvas) {
       this.canvas = document.createElement('canvas');
       this.canvas.className = 'screen';
@@ -239,7 +209,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (mode.transform) {
       this.canvas.style.transform = mode.transform;
     }
-    clearCanvas(this.canvas);
+    const ctx = this.canvas.getContext('2d')!
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 
   getModeNumber(): number {
@@ -309,6 +280,15 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.drawCursor(ctx);
   }
 
+  // Used for tests to map colors to the current palette and dump canvas.
+  renderVisiblePage(): HTMLCanvasElement {
+    const ctx = this.visiblePage.canvas.getContext('2d')!;
+    const imageData = this.visiblePage.getImageData(
+        this.palette, 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.putImageData(imageData, 0, 0);
+    return this.visiblePage.canvas;
+  }
+
   private drawCursor(ctx: CanvasRenderingContext2D) {
     if (this.cursorState === CursorState.HIDDEN) {
       return;
@@ -340,6 +320,9 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   private eraseCursor() {
+    if (this.headless) {
+      return;
+    }
     const ctx = this.canvas.getContext('2d')!;
     const x = (this.column - 1) * this.cellWidth;
     const y = (this.row - 1) * this.cellHeight;
@@ -347,7 +330,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     ctx.putImageData(imageData, x, y);
   }
 
-  protected override newLine() {
+  override newLine() {
     this.column = 1;
     this.row++;
     if (this.row == this.scrollEndRow) {
@@ -408,5 +391,88 @@ export class CanvasScreen extends BasePrinter implements Screen {
       }
     }
     return !dark ? { row, column, x: left, y: top } : undefined;
+  }
+}
+
+export class TestScreen implements Screen {
+  text: StringPrinter;
+  graphics: CanvasScreen;
+  hasGraphics: boolean;
+
+  constructor(canvasProvider: CanvasProvider) {
+    this.text = new StringPrinter();
+    this.graphics = new CanvasScreen(canvasProvider);
+    this.hasGraphics = false;
+  }
+
+  renderVisiblePage(): HTMLCanvasElement {
+    return this.graphics.renderVisiblePage();
+  }
+
+  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
+    this.text.print(`[SCREEN ${modeNumber}, ${colorSwitch}, ${activePage}, ${visiblePage}]`, true);
+    this.graphics.configure(modeNumber, colorSwitch, activePage, visiblePage);
+    this.hasGraphics = true;
+  }
+
+  getModeNumber(): number {
+    return this.graphics.getModeNumber();
+  }
+
+  setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
+    this.text.print(`[COLOR ${fgColor}, ${bgColor}, ${borderColor}]`, true);
+    this.graphics.setColor(fgColor, bgColor, borderColor);
+    this.hasGraphics = true;
+  }
+
+  setPaletteEntry(attribute: number, color: number) {
+    this.text.print(`[PALETTE ${attribute}, ${color}]`, true);
+    this.graphics.setColor(attribute, color);
+    this.hasGraphics = true;
+  }
+
+  showCursor(insert: boolean) {
+    this.text.print(insert ? '■' : '␣', false);
+    this.graphics.showCursor(insert);
+  }
+
+  hideCursor() {
+    this.text.print('□', false);
+    this.graphics.hideCursor();
+  }
+
+  moveCursor(dx: number) {
+    this.text.print((dx < 0 ? '←' : '→').repeat(Math.abs(dx)), false);
+    this.graphics.moveCursor(dx);
+  }
+
+  print(text: string, newline: boolean) {
+    this.text.print(text, newline);
+    if (this.hasGraphics) {
+      this.graphics.print(text, newline);
+    }
+  }
+
+  space(numSpaces: number) {
+    this.text.space(numSpaces);
+    if (this.hasGraphics) {
+      this.graphics.space(numSpaces);
+    }
+  }
+
+  tab(targetColumn?: number) {
+    this.text.tab(targetColumn);
+    if (this.hasGraphics) {
+      this.graphics.tab(targetColumn);
+    }
+  }
+
+  triggerPen(x: number, y: number): LightPenTrigger | void {
+    return {
+      row: Math.floor(y / 8),
+      column: Math.floor(x / 8),
+      x: Math.floor(x / 8) * 8,
+      y: Math.floor(y / 8) * 8
+    };
   }
 }

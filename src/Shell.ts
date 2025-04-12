@@ -35,7 +35,7 @@ class Shell {
 
   constructor(root: HTMLElement) {
     this.root = root;
-    this.screen = new CanvasScreen(0);
+    this.screen = new CanvasScreen();
     this.speaker = new WebAudioSpeaker();
     this.printer = new LinePrinter(80);
     this.disk = new MemoryDrive();
