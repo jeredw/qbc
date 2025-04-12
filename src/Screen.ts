@@ -33,6 +33,7 @@ export interface Screen extends Printer, LightPenTarget {
 interface Attributes {
   fgColor: number;
   bgColor: number;
+  blink?: boolean;
 }
 
 interface CharacterCell {
@@ -144,7 +145,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private cellHeight: number;
   private pages: Page[];
   private activePage: Page;
-  visiblePage: Page;
+  private visiblePage: Page;
   private palette: Color[];
   private canvasProvider: CanvasProvider;
   private headless?: boolean;
@@ -240,10 +241,15 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (!fgColorOk) {
       throw new Error('invalid foreground color');
     }
-    if (fgColor) {
-      this.color.fgColor = fgColor;
+    if (fgColor !== undefined) {
+      if (screenMode === 0) {
+        this.color.fgColor = fgColor & 15;
+        if (fgColor > 15) {
+          this.color.blink = true;
+        }
+      }
     }
-    if (bgColor) {
+    if (bgColor !== undefined) {
       // In mode 0, bgcolor can only take low intensity colors.
       this.color.bgColor = screenMode === 0 ? bgColor & 7 : bgColor;
     }

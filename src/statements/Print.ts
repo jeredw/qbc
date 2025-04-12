@@ -53,6 +53,10 @@ export class PrintStatement extends BasePrintStatement {
 
   private print(context: ExecutionContext) {
     const printer = this.getPrinter(context);
+    if (this.args.exprs.length === 0) {
+      printer.print('', true);
+      return;
+    }
     for (let i = 0; i < this.args.exprs.length; i++) {
       const {token, expr, spaces, tab, separator} = this.args.exprs[i];
       const isLastArg = i == this.args.exprs.length - 1;
