@@ -1,0 +1,21 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 255)) 
+      (block \n 
+        (statement 
+          (color_statement color 
+            (expr 
+              (variable_or_function_call i)))) \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (literal "#")) ;))) \n) next i)) \n <EOF>)

@@ -247,6 +247,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
         if (fgColor > 15) {
           this.color.blink = true;
         }
+      } else {
+        this.color.fgColor = fgColor;
       }
     }
     if (bgColor !== undefined) {
