@@ -1,0 +1,32 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (for_next_statement for bg = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 15)) 
+      (block \n 
+        (statement 
+          (for_next_statement for fg = 
+            (expr 
+              (literal 0)) to 
+            (expr 
+              (literal 31)) 
+            (block \n 
+              (statement 
+                (color_statement color 
+                  (expr 
+                    (variable_or_function_call fg)) , 
+                  (expr 
+                    (variable_or_function_call bg)))) \n 
+              (statement 
+                (print_statement print 
+                  (print_argument 
+                    (expr 
+                      (literal "#")) ;))) \n) next fg)) \n 
+        (statement 
+          (print_statement print)) \n) next bg)) \n <EOF>)

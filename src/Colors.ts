@@ -265,9 +265,9 @@ export const DEFAULT_PALETTE: Color[] = [
 
 export function egaIndexToColor(index: number): Color {
   return {
-    red: 0x55 * (((index >> 2) & 1) + ((index >> 5) & 1)),
-    green: 0x55 * (((index >> 1) & 1) + ((index >> 4) & 1)),
-    blue: 0x55 * ((index & 1) + ((index >> 3) & 1))
+    red: 85 * (((index >> 1) & 2) | (index >> 5) & 1),
+    green: 85 * ((index & 2) | (index >> 4) & 1),
+    blue: 85 * (((index << 1) & 2) | (index >> 3) & 1)
   };
 }
 

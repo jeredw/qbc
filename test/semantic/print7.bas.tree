@@ -1,0 +1,13 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello"))))) \n 
+  (statement 
+    (print_statement print)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "world"))))) \n <EOF>)

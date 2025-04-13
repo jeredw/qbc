@@ -250,8 +250,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
       }
     }
     if (bgColor !== undefined) {
-      // In mode 0, bgcolor can only take low intensity colors.
-      this.color.bgColor = screenMode === 0 ? bgColor & 7 : bgColor;
+      if (screenMode === 0) {
+        // In mode 0, bgcolor can only take low intensity colors.
+        this.color.bgColor = bgColor & 7;
+      }
+      if (screenMode >= 7 && screenMode <= 10) {
+        this.setPaletteEntry(0, bgColor);
+      }
     }
   }
 
