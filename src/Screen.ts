@@ -24,6 +24,7 @@ export interface Screen extends Printer, LightPenTarget {
   getModeNumber(): number;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
+  setPaletteEntry(attribute: number, color: number): void;
 
   showCursor(insert: boolean): void;
   hideCursor(): void;
@@ -181,12 +182,17 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
     this.mode = mode;
     this.palette = [...DEFAULT_PALETTE];
+    if (modeNumber === 1) {
+      this.setPaletteEntry(1, 11);
+      this.setPaletteEntry(2, 13);
+      this.setPaletteEntry(3, 15);
+    }
     this.width = mode.columns;
     this.column = 1;
     this.row = 1;
     this.scrollStartRow = 1;
     this.scrollEndRow = mode.rows;
-    this.color = {fgColor: 7, bgColor: 0};
+    this.color = {fgColor: mode.defaultFgColor, bgColor: 0};
     this.cellWidth = mode.width / mode.columns;
     this.cellHeight = mode.height / mode.rows;
     this.pages = [];
@@ -255,6 +261,9 @@ export class CanvasScreen extends BasePrinter implements Screen {
       if (screenMode === 0) {
         // In mode 0, bgcolor can only take low intensity colors.
         this.color.bgColor = bgColor & 7;
+      }
+      if (screenMode === 1) {
+        this.setPaletteEntry(0, bgColor & 15);
       }
       if (screenMode >= 7 && screenMode <= 10) {
         this.setPaletteEntry(0, bgColor);
@@ -440,7 +449,7 @@ export class TestScreen implements Screen {
 
   setPaletteEntry(attribute: number, color: number) {
     this.text.print(`[PALETTE ${attribute}, ${color}]`, true);
-    this.graphics.setColor(attribute, color);
+    this.graphics.setPaletteEntry(attribute, color);
     this.hasGraphics = true;
   }
 

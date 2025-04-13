@@ -6,6 +6,7 @@ export interface ScreenMode {
   rows: number;
   colors: number;
   attributes: number;
+  defaultFgColor: number;
   pages: number;
   graphics: boolean;
   font: string;
@@ -21,6 +22,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 64,
     attributes: 16,
+    defaultFgColor: 7,
     pages: 8,
     graphics: false,
     font: 'Web IBM VGA 9x16',
@@ -34,6 +36,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 16,
     attributes: 4,
+    defaultFgColor: 3,
     pages: 1,
     graphics: true,
     font: 'Web IBM VGA 9x8',
@@ -47,6 +50,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 16,
     attributes: 2,
+    defaultFgColor: 15,
     pages: 1,
     graphics: true,
     font: 'Web IBM VGA 9x8',
@@ -60,6 +64,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 16,
     attributes: 16,
+    defaultFgColor: 15,
     pages: 8,
     graphics: true,
     font: 'Web IBM VGA 9x8',
@@ -73,6 +78,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 16,
     attributes: 16,
+    defaultFgColor: 15,
     pages: 4,
     graphics: true,
     font: 'Web IBM VGA 9x8',
@@ -86,6 +92,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 64,
     attributes: 16,
+    defaultFgColor: 15,
     pages: 2,
     graphics: false,
     font: 'Web IBM VGA 8x14',
@@ -99,6 +106,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 9,
     attributes: 4,
+    defaultFgColor: 3,
     pages: 2,
     graphics: false,
     font: 'Web IBM VGA 8x14',
@@ -112,6 +120,7 @@ export const SCREEN_MODES = [
     rows: 30,
     colors: 262144,
     attributes: 2,
+    defaultFgColor: 15,
     pages: 1,
     graphics: false,
     font: 'Web IBM VGA 8x16',
@@ -124,6 +133,7 @@ export const SCREEN_MODES = [
     rows: 30,
     colors: 262144,
     attributes: 16,
+    defaultFgColor: 15,
     pages: 1,
     graphics: false,
     font: 'Web IBM VGA 8x16',
@@ -136,6 +146,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 262144,
     attributes: 256,
+    defaultFgColor: 15,
     pages: 1,
     graphics: false,
     font: 'Web IBM VGA 9x8',

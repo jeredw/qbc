@@ -61,10 +61,25 @@ export class ColorStatement extends Statement {
         return;
       }
       if (mode === 1) {
-        // If specified, arg3 has the same effect as palette and takes precedence over it.
-        const [fgColor, bgColor, palette, altPalette] = [undefined, arg1, arg2, arg3];
-        screen.setColor(fgColor, bgColor);
-        // TODO: select palette
+        // If specified, arg3 has the same effect as arg2 and takes precedence over it.
+        const [bgColor, pal, pal2] = [arg1, arg2, arg3];
+        screen.setColor(undefined, bgColor);
+        const palette = pal2 ?? pal;
+        if (palette !== undefined) {
+          if (palette < 0 || palette > 255) {
+            throw new Error('bad cga palette argument');
+          }
+          // Select which set of 4 ugly colors to use.
+          if (palette % 2 === 0) {
+            screen.setPaletteEntry(1, 2);
+            screen.setPaletteEntry(2, 4);
+            screen.setPaletteEntry(3, 6);
+          } else {
+            screen.setPaletteEntry(1, 3);
+            screen.setPaletteEntry(2, 5);
+            screen.setPaletteEntry(3, 7);
+          }
+        }
         return;
       }
       if (this.arg3 !== undefined) {
