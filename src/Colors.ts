@@ -279,6 +279,16 @@ export function vgaIndexToColor(index: number): Color {
   }
 }
 
+export function monoIndexToColor(index: number): Color {
+  if (index < 3) {
+    return { red: 0, green: 0, blue: 0 };
+  }
+  if (index < 6) {
+    return { red: 85, green: 85, blue: 85 };
+  }
+  return { red: 255, green: 255, blue: 255 };
+}
+
 export function colorToGrayScale(color: Color): Color {
   const intensity = .11 * (color.blue / 255) + .59 * (color.green / 255) + .3 * (color.red / 255);
   return {

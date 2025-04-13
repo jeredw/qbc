@@ -1,4 +1,4 @@
-import { Color, DEFAULT_PALETTE, egaIndexToColor, vgaIndexToColor } from './Colors.ts';
+import { Color, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
@@ -183,9 +183,15 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.mode = mode;
     this.palette = [...DEFAULT_PALETTE];
     if (modeNumber === 1) {
-      this.setPaletteEntry(1, 11);
-      this.setPaletteEntry(2, 13);
-      this.setPaletteEntry(3, 15);
+      this.palette[1] = DEFAULT_PALETTE[11];
+      this.palette[2] = DEFAULT_PALETTE[13];
+      this.palette[3] = DEFAULT_PALETTE[15];
+    } else if (modeNumber === 2) {
+      this.palette[0] = DEFAULT_PALETTE[15];
+    } else if (modeNumber === 10) {
+      this.palette[1] = monoIndexToColor(3);
+      this.palette[2] = monoIndexToColor(6);
+      this.palette[3] = monoIndexToColor(8);
     }
     this.width = mode.columns;
     this.column = 1;
@@ -284,7 +290,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
     } else if (screenMode < 10) {
       this.palette[attribute] = DEFAULT_PALETTE[color];
     } else if (screenMode === 10) {
-      // TODO: figure out pseudocolor mapping
+      // Odd attributes can't be remapped for some reason.
+      if (attribute !== 1 && attribute !== 3) {
+        this.palette[attribute] = monoIndexToColor(color);
+      }
     } else {
       this.palette[attribute] = vgaIndexToColor(color);
     }

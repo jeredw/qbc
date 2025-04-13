@@ -50,7 +50,7 @@ export const SCREEN_MODES = [
     rows: 25,
     colors: 16,
     attributes: 2,
-    defaultFgColor: 15,
+    defaultFgColor: 1,
     pages: 1,
     graphics: true,
     font: 'Web IBM VGA 9x8',
