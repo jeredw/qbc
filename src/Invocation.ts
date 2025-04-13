@@ -20,6 +20,12 @@ interface ProgramLocation {
   reenableEvents?: () => void;
 }
 
+// Programs run on the ui thread, but setTimeout at least every N ms for events.
+// In modern browsers, this amounts to simple bang-bang 1ms on / 4ms off.
+// Each statement is its own microtask and may yield separately.
+// TODO: Investigate using web workers instead.
+const RELEASE_UI_THREAD_MS = 10;
+
 export class Invocation {
   private devices: Devices;
   private memory: Memory;
@@ -45,11 +51,19 @@ export class Invocation {
 
   async start(): Promise<void> {
     this.stopped = false;
+    let lastYield = 0;
     const nextStep = async (resolve: Function, reject: Function) => {
       try {
         await this.step();
         if (!this.isStopped()) {
-          setTimeout(() => nextStep(resolve, reject));
+          if (performance.now() - lastYield > RELEASE_UI_THREAD_MS) {
+            setTimeout(() => {
+              lastYield = performance.now();
+              nextStep(resolve, reject)
+            }, 0);
+          } else {
+            await nextStep(resolve, reject);
+          }
         } else {
           resolve();
         }
