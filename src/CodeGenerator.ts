@@ -849,7 +849,29 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
-  override enterPalette_statement = (ctx: parser.Palette_statementContext) => {}
+
+  override enterPalette_statement = (ctx: parser.Palette_statementContext) => {
+    const token = ctx.start!;
+    const attributeExpr = ctx._attribute && this.compileExpression(ctx._attribute, ctx._attribute.start!, { tag: TypeTag.INTEGER });
+    const colorExpr = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
+    let array: Variable | undefined;
+    if (ctx._array) {
+      array = getTyperContext(ctx).$result;
+    } else if (ctx._arrayexpr) {
+      const symbol = getTyperContext(ctx._arrayexpr).$symbol;
+      if (!symbol || !isVariable(symbol) || !symbol.variable.array) {
+        throw ParseError.fromToken(ctx.start!, "Expected: variable");
+      }
+      if (symbol.variable.type.tag !== TypeTag.INTEGER && symbol.variable.type.tag !== TypeTag.LONG) {
+        throw ParseError.fromToken(ctx.start!, "Type mismatch");
+      }
+      array = this.getVariable(ctx._arrayexpr);
+      if (!array) {
+        throw ParseError.fromToken(ctx.start!, "Expected: variable");
+      }
+    }
+    this.addStatement(statements.palette(token, attributeExpr, colorExpr, array));
+  }
 
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {
     const token = ctx.start!;

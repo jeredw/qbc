@@ -1,0 +1,1 @@
+palette using x%(0)

@@ -131,7 +131,7 @@ parse those using baked in rules.
 | `CLNG`           | Function    | -       | ✅      |
 | `CLOSE`          | Statement   | ✅      | ✅      |
 | `CLS`            | Statement   | -       | ⛔      |
-| `COLOR`          | Statement   | ✅      | ⛔      |
+| `COLOR`          | Statement   | ✅      | ✅      |
 | `COM`            | Statement   | ✅      | ⛔      |
 | `COMMON`         | Statement   | ✅      | ⛔      |
 | `CONST`          | Statement   | ✅      | ✅      |
@@ -255,8 +255,8 @@ parse those using baked in rules.
 | `OUT`            | Statement   | -       | ⛔      |
 | `OUTPUT`         | Keyword     | ✅      | ✅      |
 | `PAINT`          | Statement   | ✅      | ⛔      |
-| `PALETTE`        | Statement   | ✅      | ⛔      |
-| `PALETTE USING`  | Statement   | ✅      | ⛔      |
+| `PALETTE`        | Statement   | ✅      | ✅      |
+| `PALETTE USING`  | Statement   | ✅      | ✅      |
 | `PCOPY`          | Statement   | -       | ⛔      |
 | `PEEK`           | Function    | -       | ⛔      |
 | `PEN`            | Function    | ✅      | ✅      |

@@ -111,7 +111,7 @@ import { EventChannelState } from "../Events.ts";
 import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
 import { PenFunction } from "./LightPen.ts";
-import { ColorStatement, ScreenStatement } from "./Screen.ts";
+import { ColorStatement, PaletteStatement, ScreenStatement } from "./Screen.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -474,6 +474,10 @@ export function oct(args: BuiltinStatementArgs) {
 
 export function open(args: OpenArgs) {
   return new OpenStatement(args);
+}
+
+export function palette(token: Token, attributeExpr?: parser.ExprContext, colorExpr?: parser.ExprContext, array?: Variable) {
+  return new PaletteStatement(token, attributeExpr, colorExpr, array);
 }
 
 export function pen(args: BuiltinStatementArgs) {

@@ -3,8 +3,10 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
-import { ILLEGAL_FUNCTION_CALL } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, isNumeric, isReference } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
+import { Variable } from "../Variables.ts";
+import { readNumbersFromArray } from "./Arrays.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -42,7 +44,7 @@ export class ColorStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const {screen} = context.devices;
-    const mode = screen.getModeNumber();
+    const mode = screen.getMode().mode;
     const arg1 = this.arg1 && evaluateIntegerExpression(this.arg1, context.memory);
     const arg2 = this.arg2 && evaluateIntegerExpression(this.arg2, context.memory);
     const arg3 = this.arg3 && evaluateIntegerExpression(this.arg3, context.memory);
@@ -95,3 +97,38 @@ export class ColorStatement extends Statement {
     }
   }
 }
+
+export class PaletteStatement extends Statement {
+  constructor(
+    private token: Token,
+    private attributeExpr?: ExprContext,
+    private colorExpr?: ExprContext,
+    private array?: Variable,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const {screen} = context.devices;
+    const attribute = this.attributeExpr && evaluateIntegerExpression(this.attributeExpr, context.memory);
+    const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory);
+    try {
+      if (attribute !== undefined && color !== undefined) {
+        screen.setPaletteEntry(attribute, color);
+      } else if (this.array) {
+        const attributes = screen.getMode().attributes;
+        const values = readNumbersFromArray(this.array, attributes, context.memory);
+        for (let i = 0; i < values.length; i++) {
+          if (values[i] != -1) {
+            screen.setPaletteEntry(i, values[i]);
+          }
+        }
+      } else {
+        screen.resetPalette();
+      }
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}
+

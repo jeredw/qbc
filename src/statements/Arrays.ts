@@ -3,7 +3,7 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError } from "../Errors.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
-import { array, DUPLICATE_DEFINITION, integer, isArray, isError, reference, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
+import { array, DUPLICATE_DEFINITION, integer, isArray, isError, isNumeric, isReference, reference, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -180,4 +180,45 @@ function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor
     throw new Error("expecting array value");
   }
   return value.descriptor;
+}
+
+export function readNumbersFromArray(array: Variable, count: number, memory: Memory): number[] {
+  let baseIndex: number | undefined;
+  if (!array.array) {
+    const arrayRef = memory.readAddress(array.address!);
+    if (!isReference(arrayRef) || !arrayRef.variable) {
+      throw new Error('expecting array reference');
+    }
+    array = arrayRef.variable;
+    baseIndex = arrayRef.address.index;
+  }
+  const descriptor = getArrayDescriptor(array, memory);
+  if (baseIndex === undefined) {
+    baseIndex = descriptor.baseAddress!.index;
+  }
+  const size = descriptor.dimensions[descriptor.dimensions.length - 1];
+  if (size.upper === undefined || size.lower === undefined) {
+    throw new Error('missing bounds');
+  }
+  const offset = baseIndex - descriptor.baseAddress!.index;
+  if (offset + count > 1 + size.upper - size.lower) {
+    throw new Error('not enough elements in array');
+  }
+  const result: number[] = [];
+  for (let i = 0; i < count; i++) {
+    const value = memory.readAddress({
+      storageType: descriptor.storageType!,
+      frameIndex: descriptor.baseAddress!.frameIndex,
+      index: baseIndex + i 
+    });
+    if (!value) {
+      result.push(0);
+    } else {
+      if (!isNumeric(value)) {
+        throw new Error('value not a number');
+      }
+      result.push(value.number);
+    }
+  }
+  return result;
 }

@@ -21,10 +21,11 @@ class DefaultCanvasProvider implements CanvasProvider {
 
 export interface Screen extends Printer, LightPenTarget {
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
-  getModeNumber(): number;
+  getMode(): ScreenMode;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
   setPaletteEntry(attribute: number, color: number): void;
+  resetPalette(): void;
 
   showCursor(insert: boolean): void;
   hideCursor(): void;
@@ -174,6 +175,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.activePage = this.pages[activePage];
       this.visiblePage = this.pages[visiblePage];
       this.visiblePage.dirty = true;
+      this.resetPalette();
       if (this.canvas) {
         const ctx = this.canvas.getContext('2d')!
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -181,18 +183,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       return;
     }
     this.mode = mode;
-    this.palette = [...DEFAULT_PALETTE];
-    if (modeNumber === 1) {
-      this.palette[1] = DEFAULT_PALETTE[11];
-      this.palette[2] = DEFAULT_PALETTE[13];
-      this.palette[3] = DEFAULT_PALETTE[15];
-    } else if (modeNumber === 2) {
-      this.palette[0] = DEFAULT_PALETTE[15];
-    } else if (modeNumber === 10) {
-      this.palette[1] = monoIndexToColor(3);
-      this.palette[2] = monoIndexToColor(6);
-      this.palette[3] = monoIndexToColor(8);
-    }
+    this.resetPalette();
     this.width = mode.columns;
     this.column = 1;
     this.row = 1;
@@ -226,8 +217,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
 
-  getModeNumber(): number {
-    return this.mode.mode;
+  getMode(): ScreenMode {
+    return this.mode;
   }
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
@@ -296,6 +287,23 @@ export class CanvasScreen extends BasePrinter implements Screen {
       }
     } else {
       this.palette[attribute] = vgaIndexToColor(color);
+    }
+    this.visiblePage.dirty = true;
+  }
+
+  resetPalette() {
+    const screenMode = this.mode.mode;
+    this.palette = [...DEFAULT_PALETTE];
+    if (screenMode === 1) {
+      this.palette[1] = DEFAULT_PALETTE[11];
+      this.palette[2] = DEFAULT_PALETTE[13];
+      this.palette[3] = DEFAULT_PALETTE[15];
+    } else if (screenMode === 2) {
+      this.palette[0] = DEFAULT_PALETTE[15];
+    } else if (screenMode === 10) {
+      this.palette[1] = monoIndexToColor(3);
+      this.palette[2] = monoIndexToColor(6);
+      this.palette[3] = monoIndexToColor(8);
     }
   }
 
@@ -446,8 +454,8 @@ export class TestScreen implements Screen {
     this.hasGraphics = true;
   }
 
-  getModeNumber(): number {
-    return this.graphics.getModeNumber();
+  getMode(): ScreenMode {
+    return this.graphics.getMode();
   }
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
@@ -459,6 +467,12 @@ export class TestScreen implements Screen {
   setPaletteEntry(attribute: number, color: number) {
     this.text.print(`[PALETTE ${attribute}, ${color}]`, true);
     this.graphics.setPaletteEntry(attribute, color);
+    this.hasGraphics = true;
+  }
+
+  resetPalette() {
+    this.text.print(`[PALETTE]`, true);
+    this.graphics.resetPalette();
     this.hasGraphics = true;
   }
 

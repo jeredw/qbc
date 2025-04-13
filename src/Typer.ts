@@ -561,7 +561,20 @@ export class Typer extends QBasicParserListener {
   override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {}
   override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
-  override enterPalette_statement = (ctx: parser.Palette_statementContext) => {}
+
+  override enterPalette_statement = (ctx: parser.Palette_statementContext) => {
+    if (ctx._array) {
+      const array = this.lookupArray(ctx._array);
+      if (!array) {
+        throw ParseError.fromToken(ctx._array, "Array not defined");
+      }
+      if (array.type.tag !== TypeTag.INTEGER && array.type.tag !== TypeTag.LONG) {
+        throw ParseError.fromToken(ctx._array, "Type mismatch");
+      }
+      getTyperContext(ctx).$result = array;
+    }
+  }
+
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 

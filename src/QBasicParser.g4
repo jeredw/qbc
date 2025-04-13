@@ -704,7 +704,8 @@ paint_statement
 
 palette_statement
   : PALETTE attribute=expr COMMA color=expr
-  | PALETTE USING arrayname=variable_or_function_call
+  | PALETTE USING array=ID 
+  | PALETTE USING arrayexpr=variable_or_function_call
   | PALETTE
   ;
 

@@ -1,0 +1,27 @@
+(program 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 16))) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x% 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (palette_statement palette using 
+      (variable_or_function_call x% 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )))) \n <EOF>)
