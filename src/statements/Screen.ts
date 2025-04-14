@@ -154,7 +154,21 @@ export class CsrlinFunction extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const cursorLine = context.devices.screen.getRow();
-    context.memory.write(this.result, integer(cursorLine));
+    const row = context.devices.screen.getRow();
+    context.memory.write(this.result, integer(row));
+  }
+}
+
+export class PosFunction extends Statement {
+  result: Variable;
+
+  constructor({result}: BuiltinStatementArgs) {
+    super();
+    this.result = result!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const column = context.devices.screen.getColumn();
+    context.memory.write(this.result, integer(column));
   }
 }

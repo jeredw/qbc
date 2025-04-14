@@ -266,7 +266,7 @@ parse those using baked in rules.
 | `PLAY` Events    | Statement   | ✅      | ✅      |
 | `PMAP`           | Function    | -       | ⛔      |
 | `POKE`           | Statement   | -       | ⛔      |
-| `POS`            | Function    | -       | ⛔      |
+| `POS`            | Function    | -       | ✅      |
 | `PRESET`         | Statement   | ✅      | ⛔      |
 | `PRINT`          | Statement   | ✅      | ✅      |
 | `PRINT USING`    | Statement   | ✅      | ✅      |

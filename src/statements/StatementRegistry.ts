@@ -116,6 +116,7 @@ import {
   ColorStatement,
   CsrlinFunction,
   PaletteStatement,
+  PosFunction,
   ScreenStatement,
 } from "./Screen.ts";
 
@@ -504,6 +505,10 @@ export function playFunction(result: Variable) {
 
 export function playStatement(token: Token, commandString: parser.ExprContext) {
   return new PlayStatement(token, commandString);
+}
+
+export function pos(args: BuiltinStatementArgs) {
+  return new PosFunction(args);
 }
 
 export function print(args: PrintStatementArgs) {
