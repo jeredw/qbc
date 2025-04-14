@@ -27,6 +27,8 @@ export interface Screen extends Printer, LightPenTarget {
   setPaletteEntry(attribute: number, color: number): void;
   resetPalette(): void;
 
+  clear(): void;
+
   showCursor(insert: boolean): void;
   hideCursor(): void;
   moveCursor(dx: number): void;
@@ -53,16 +55,10 @@ class Page {
   private text: CharacterCell[][];
   private cellWidth: number;
   private cellHeight: number;
+  private mode: ScreenMode;
 
   constructor(mode: ScreenMode, color: Attributes, canvasProvider: CanvasProvider) {
-    this.dirty = true;
-    this.text = new Array(mode.rows);
-    for (let y = 0; y < mode.rows; y++) {
-      this.text[y] = new Array(mode.columns).fill({
-        char: ' ',
-        attributes: {...color}
-      });
-    }
+    this.mode = mode;
     this.cellWidth = mode.width / mode.columns;
     this.cellHeight = mode.height / mode.rows;
     this.canvas = canvasProvider.createCanvas(mode.width, mode.height);
@@ -70,7 +66,21 @@ class Page {
     const ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
     ctx.font = `${this.cellHeight}px '${mode.font}'`;
     ctx.textBaseline = 'top';
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.clear(color);
+  }
+
+  clear(color: Attributes) {
+    this.text = new Array(this.mode.rows);
+    for (let y = 0; y < this.mode.rows; y++) {
+      this.text[y] = new Array(this.mode.columns).fill({
+        char: ' ',
+        attributes: {...color}
+      });
+    }
+    const ctx = this.canvas.getContext('2d')!;
+    ctx.fillStyle = cssForColorIndex(color.bgColor);
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.dirty = true;
   }
 
   getCharAt(row: number, col: number) {
@@ -307,6 +317,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
   }
 
+  clear() {
+    this.activePage.clear(this.color);
+    this.column = 1;
+    this.row = 1;
+  }
+
   render() {
     const ctx = this.canvas.getContext('2d')!;
     if (this.visiblePage.dirty) {
@@ -474,6 +490,11 @@ export class TestScreen implements Screen {
     this.text.print(`[PALETTE]`, true);
     this.graphics.resetPalette();
     this.hasGraphics = true;
+  }
+
+  clear() {
+    this.text.print(`[CLS]`, true);
+    this.graphics.clear();
   }
 
   showCursor(insert: boolean) {

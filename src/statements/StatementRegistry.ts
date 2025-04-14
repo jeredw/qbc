@@ -101,7 +101,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { BuiltinStatementArgs } from "../Builtins.ts";
+import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -111,7 +111,12 @@ import { EventChannelState } from "../Events.ts";
 import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
 import { PenFunction } from "./LightPen.ts";
-import { ColorStatement, PaletteStatement, ScreenStatement } from "./Screen.ts";
+import {
+  ClsStatement,
+  ColorStatement,
+  PaletteStatement,
+  ScreenStatement,
+} from "./Screen.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -167,6 +172,10 @@ export function cint(args: BuiltinStatementArgs) {
 
 export function clng(args: BuiltinStatementArgs) {
   return new ClngFunction(args);
+}
+
+export function cls(args: BuiltinStatementArgs) {
+  return new ClsStatement(args);
 }
 
 export function cos(args: BuiltinStatementArgs) {

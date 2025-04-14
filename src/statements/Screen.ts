@@ -7,6 +7,8 @@ import { ILLEGAL_FUNCTION_CALL, isNumeric, isReference } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
 import { readNumbersFromArray } from "./Arrays.ts";
+import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
+import { ControlFlow } from "../ControlFlow.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -132,3 +134,13 @@ export class PaletteStatement extends Statement {
   }
 }
 
+export class ClsStatement extends Statement {
+  constructor(private args: BuiltinStatementArgs) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    // TODO: viewports
+    context.devices.screen.clear();
+  }
+}

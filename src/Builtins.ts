@@ -43,6 +43,7 @@ export class StandardLibrary {
     _("chr numeric -> string", statements.chr),
     _("cint numeric -> integer", statements.cint),
     _("clng numeric -> long", statements.clng),
+    _("cls integer?", statements.cls),
     _("cos double -> double", statements.cos),
     _("csng numeric -> single", statements.csng),
     _("cvd string -> double", statements.cvd),
