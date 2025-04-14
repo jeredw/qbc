@@ -28,6 +28,8 @@ export interface Screen extends Printer, LightPenTarget {
   resetPalette(): void;
 
   clear(): void;
+  getRow(): number;
+  getColumn(): number;
 
   showCursor(insert: boolean): void;
   hideCursor(): void;
@@ -323,6 +325,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.row = 1;
   }
 
+  getRow(): number {
+    return this.row;
+  }
+
+  getColumn(): number {
+    return this.column;
+  }
+
   render() {
     const ctx = this.canvas.getContext('2d')!;
     if (this.visiblePage.dirty) {
@@ -495,6 +505,14 @@ export class TestScreen implements Screen {
   clear() {
     this.text.print(`[CLS]`, true);
     this.graphics.clear();
+  }
+
+  getRow(): number {
+    return this.graphics.getRow();
+  }
+
+  getColumn(): number {
+    return this.graphics.getColumn();
   }
 
   showCursor(insert: boolean) {

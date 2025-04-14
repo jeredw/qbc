@@ -114,6 +114,7 @@ import { PenFunction } from "./LightPen.ts";
 import {
   ClsStatement,
   ColorStatement,
+  CsrlinFunction,
   PaletteStatement,
   ScreenStatement,
 } from "./Screen.ts";
@@ -180,6 +181,10 @@ export function cls(args: BuiltinStatementArgs) {
 
 export function cos(args: BuiltinStatementArgs) {
   return new CosFunction(args);
+}
+
+export function csrlin(args: BuiltinStatementArgs) {
+  return new CsrlinFunction(args);
 }
 
 export function cvi(args: BuiltinStatementArgs) {

@@ -137,7 +137,7 @@ parse those using baked in rules.
 | `CONST`          | Statement   | ✅      | ✅      |
 | `COS`            | Function    | -       | ✅      |
 | `CSNG`           | Function    | -       | ✅      |
-| `CSRLIN`         | Function    | -       | ⛔      |
+| `CSRLIN`         | Function    | -       | ✅      |
 | `CVD`            | Function    | -       | ✅      |
 | `CVDMBF`         | Function    | -       | ✅      |
 | `CVI`            | Function    | -       | ✅      |

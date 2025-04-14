@@ -3,7 +3,7 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
-import { ILLEGAL_FUNCTION_CALL, isNumeric, isReference } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, integer, isNumeric, isReference } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
 import { readNumbersFromArray } from "./Arrays.ts";
@@ -142,5 +142,19 @@ export class ClsStatement extends Statement {
   override execute(context: ExecutionContext) {
     // TODO: viewports
     context.devices.screen.clear();
+  }
+}
+
+export class CsrlinFunction extends Statement {
+  result: Variable;
+
+  constructor({result}: BuiltinStatementArgs) {
+    super();
+    this.result = result!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const cursorLine = context.devices.screen.getRow();
+    context.memory.write(this.result, integer(cursorLine));
   }
 }

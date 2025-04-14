@@ -46,6 +46,7 @@ export class StandardLibrary {
     _("cls integer?", statements.cls),
     _("cos double -> double", statements.cos),
     _("csng numeric -> single", statements.csng),
+    _("csrlin -> integer", statements.csrlin),
     _("cvd string -> double", statements.cvd),
     _("cvdmbf string -> double", statements.cvdmbf),
     _("cvi string -> integer", statements.cvi),
