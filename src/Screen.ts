@@ -365,7 +365,11 @@ export class CanvasScreen extends BasePrinter implements Screen {
     const getCursorRegion = () => {
       const start = clamp(this.cursorStartScanline, 0, this.cellHeight - 1);
       const end = clamp(this.cursorEndScanline, 0, this.cellHeight - 1);
-      return [x, y + start, this.cellWidth, (end - start) + 1];
+      if (end < start) {
+        // In some bioses this creates split cursors but we just show a full height cursor in this case.
+        return [x, y, this.cellWidth - 1, this.cellHeight - 1];
+      }
+      return [x, y + start, this.cellWidth - 1, (end - start) + 1];
     };
     const [left, top, width, height] = getCursorRegion();
     let blinkOn: boolean;
@@ -455,7 +459,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.cursorStartScanline = this.mode.mode === 0 ?
         (insert ? this.cellHeight / 2 : this.cellHeight - 2) :
         (insert ? this.cellHeight / 2 : 0);
-      this.cursorEndScanline = this.cellHeight - 1;
+      this.cursorEndScanline = this.mode.mode === 0 && !insert ?
+        this.cellHeight - 2 : this.cellHeight - 1;
       return;
     }
     if (startScanline < 0 || startScanline > 31) {

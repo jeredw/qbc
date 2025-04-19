@@ -1,0 +1,17 @@
+(program 
+  (statement 
+    (locate_statement locate , , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (locate_statement locate , , , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (locate_statement locate , , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (locate_statement locate)) \n <EOF>)

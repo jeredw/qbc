@@ -7,8 +7,7 @@ import { ILLEGAL_FUNCTION_CALL, integer, isNumeric, isReference } from "../Value
 import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
 import { readNumbersFromArray } from "./Arrays.ts";
-import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
-import { ControlFlow } from "../ControlFlow.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 
 export class ScreenStatement extends Statement {
   constructor(

@@ -212,7 +212,7 @@ parse those using baked in rules.
 | `LINE INPUT`     | Statement   | ✅      | ✅      |
 | `LIST`           | Keyword     | ✅      | ⛔      |
 | `LOC`            | Function    | -       | ✅      |
-| `LOCATE`         | Statement   | ✅      | ⛔      |
+| `LOCATE`         | Statement   | ✅      | ✅      |
 | `LOCK`           | Statement   | ✅      | ⛔      |
 | `LOF`            | Function    | -       | ✅      |
 | `LOG`            | Function    | -       | ✅      |
