@@ -61,7 +61,8 @@ abstract class BaseInputStatement extends Statement {
     const isWordChar = (char: string) => /[A-Za-z0-9]/.test(char);
     const toggleInsert = () => {
       insert = !insert;
-      screen.showCursor(insert);
+      screen.configureCursor(0, 0, insert);
+      screen.showCursor();
     };
     const move = (dx: number) => {
       screen.moveCursor(dx);
@@ -75,7 +76,8 @@ abstract class BaseInputStatement extends Statement {
       if (this.args.mark) {
         screen.print("? ", false);
       }
-      screen.showCursor(insert);
+      screen.configureCursor(0, 0, insert);
+      screen.showCursor();
     };
     prompt();
     // So we can test non-interactively with deno which doesn't have rAF

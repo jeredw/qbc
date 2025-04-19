@@ -31,9 +31,11 @@ export interface Screen extends Printer, LightPenTarget {
   getRow(): number;
   getColumn(): number;
 
-  showCursor(insert: boolean): void;
+  showCursor(): void;
   hideCursor(): void;
   moveCursor(dx: number): void;
+  locateCursor(row?: number, column?: number): void;
+  configureCursor(startScanline: number, endScanline: number, insert?: boolean): void;
 }
 
 interface Attributes {
@@ -143,18 +145,14 @@ class Page {
   }
 }
 
-enum CursorState {
-  HIDDEN,
-  SHOWN,
-  SHOWN_INSERT,
-}
-
 export class CanvasScreen extends BasePrinter implements Screen {
   private mode: ScreenMode;
   private color: Attributes;
   private scrollStartRow: number;
   private scrollEndRow: number;
-  private cursorState: CursorState = CursorState.HIDDEN;
+  private cursorShown: boolean = false;
+  private cursorStartScanline: number = 0;
+  private cursorEndScanline: number = 31;
   private cellWidth: number;
   private cellHeight: number;
   private pages: Page[];
@@ -195,6 +193,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
       return;
     }
     this.mode = mode;
+    if (mode.mode === 0) {
+      this.cursorStartScanline = 15;
+      this.cursorEndScanline = 16;
+    }
     this.resetPalette();
     this.width = mode.columns;
     this.column = 1;
@@ -355,19 +357,15 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   private drawCursor(ctx: CanvasRenderingContext2D) {
-    if (this.cursorState === CursorState.HIDDEN) {
+    if (!this.cursorShown) {
       return;
     }
     const x = (this.column - 1) * this.cellWidth;
     const y = (this.row - 1) * this.cellHeight;
     const getCursorRegion = () => {
-      if (this.mode.mode === 0 && this.cursorState !== CursorState.SHOWN_INSERT) {
-        return [x, y + this.cellHeight - 2, this.cellWidth - 1, 1];
-      }
-      if (this.cursorState === CursorState.SHOWN_INSERT) {
-        return [x, y + this.cellHeight / 2, this.cellWidth - 1, this.cellHeight / 2];
-      }
-      return [x, y, this.cellWidth, this.cellHeight];
+      const start = clamp(this.cursorStartScanline, 0, this.cellHeight - 1);
+      const end = clamp(this.cursorEndScanline, 0, this.cellHeight - 1);
+      return [x, y + start, this.cellWidth, (end - start) + 1];
     };
     const [left, top, width, height] = getCursorRegion();
     let blinkOn: boolean;
@@ -411,14 +409,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
     });
   }
 
-  showCursor(insert: boolean) {
+  showCursor() {
     this.eraseCursor();
-    this.cursorState = insert ? CursorState.SHOWN_INSERT : CursorState.SHOWN;
+    this.cursorShown = true;
   }
   
   hideCursor() {
     this.eraseCursor();
-    this.cursorState = CursorState.HIDDEN;
+    this.cursorShown = false;
   }
 
   moveCursor(dx: number) {
@@ -435,6 +433,39 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.column += this.width;
       this.row--;
     }
+  }
+
+  locateCursor(row?: number, column?: number) {
+    if (row !== undefined) {
+      if (row < this.scrollStartRow || row > this.scrollEndRow) {
+        throw new Error('invalid row');
+      }
+      this.row = row;
+    }
+    if (column !== undefined) {
+      if (column < 1 || column > this.width) {
+        throw new Error('invalid column');
+      }
+      this.column = column;
+    }
+  }
+
+  configureCursor(startScanline: number, endScanline: number, insert?: boolean) {
+    if (insert !== undefined) {
+      this.cursorStartScanline = this.mode.mode === 0 ?
+        (insert ? this.cellHeight / 2 : this.cellHeight - 2) :
+        (insert ? this.cellHeight / 2 : 0);
+      this.cursorEndScanline = this.cellHeight - 1;
+      return;
+    }
+    if (startScanline < 0 || startScanline > 31) {
+      throw new Error('invalid start scanline');
+    }
+    if (endScanline < 0 || endScanline > 31) {
+      throw new Error('invalid end scanline');
+    }
+    this.cursorStartScanline = startScanline;
+    this.cursorEndScanline = endScanline;
   }
 
   triggerPen(x: number, y: number): LightPenTrigger | undefined {
@@ -515,9 +546,8 @@ export class TestScreen implements Screen {
     return this.graphics.getColumn();
   }
 
-  showCursor(insert: boolean) {
-    this.text.print(insert ? '■' : '␣', false);
-    this.graphics.showCursor(insert);
+  showCursor() {
+    this.graphics.showCursor();
   }
 
   hideCursor() {
@@ -528,6 +558,20 @@ export class TestScreen implements Screen {
   moveCursor(dx: number) {
     this.text.print((dx < 0 ? '←' : '→').repeat(Math.abs(dx)), false);
     this.graphics.moveCursor(dx);
+  }
+
+  locateCursor(row?: number, column?: number) {
+    this.text.print(`[LOCATE ${row}, ${column}]`, true);
+    this.graphics.locateCursor(row, column);
+  }
+
+  configureCursor(startScanline: number, endScanline: number, insert?: boolean) {
+    if (insert !== undefined) {
+      this.text.print(insert ? '■' : '␣', false);
+    } else {
+      this.text.print(`[LOCATE ,,, ${startScanline}, ${endScanline}]`, true);
+    }
+    this.graphics.configureCursor(startScanline, endScanline);
   }
 
   print(text: string, newline: boolean) {
@@ -559,4 +603,14 @@ export class TestScreen implements Screen {
       y: Math.floor(y / 8) * 8
     };
   }
+}
+
+function clamp(x: number, min: number, max: number): number {
+  if (x < min) {
+    return min;
+  }
+  if (x > max) {
+    return max;
+  }
+  return x;
 }

@@ -738,7 +738,17 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterLine_statement = (ctx: parser.Line_statementContext) => {}
-  override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
+
+  override enterLocate_statement = (ctx: parser.Locate_statementContext) => {
+    const token = ctx.start!;
+    const row = ctx._row && this.compileExpression(ctx._row, ctx._row.start!, { tag: TypeTag.INTEGER });
+    const column = ctx._column && this.compileExpression(ctx._column, ctx._column.start!, { tag: TypeTag.INTEGER });
+    const cursor = ctx._cursor && this.compileExpression(ctx._cursor, ctx._cursor.start!, { tag: TypeTag.INTEGER });
+    const start = ctx._start && this.compileExpression(ctx._start, ctx._start.start!, { tag: TypeTag.INTEGER });
+    const stop = ctx._stop && this.compileExpression(ctx._stop, ctx._stop.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.locate(token, row, column, cursor, start, stop));
+  }
+
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
 
   override enterLset_statement = (ctx: parser.Lset_statementContext) => {

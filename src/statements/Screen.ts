@@ -172,3 +172,40 @@ export class PosFunction extends Statement {
     context.memory.write(this.result, integer(column));
   }
 }
+
+export class LocateStatement extends Statement {
+  constructor(
+    private token: Token,
+    private rowExpr?: ExprContext,
+    private columnExpr?: ExprContext,
+    private cursorExpr?: ExprContext,
+    private startExpr?: ExprContext,
+    private stopExpr?: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const {screen} = context.devices;
+    const row = this.rowExpr && evaluateIntegerExpression(this.rowExpr, context.memory);
+    const column = this.columnExpr && evaluateIntegerExpression(this.columnExpr, context.memory);
+    const cursor = this.cursorExpr && evaluateIntegerExpression(this.cursorExpr, context.memory);
+    const start = this.startExpr && evaluateIntegerExpression(this.startExpr, context.memory);
+    const stop = this.stopExpr && evaluateIntegerExpression(this.stopExpr, context.memory);
+    try {
+      if (row !== undefined || column !== undefined) {
+        screen.locateCursor(row, column);
+      }
+      if (cursor === 0) {
+        screen.hideCursor();
+      } else if (cursor !== undefined && cursor !== 0) {
+        screen.showCursor();
+      }
+      if (start !== undefined && stop !== undefined) {
+        screen.configureCursor(start, stop);
+      }
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}

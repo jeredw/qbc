@@ -115,6 +115,7 @@ import {
   ClsStatement,
   ColorStatement,
   CsrlinFunction,
+  LocateStatement,
   PaletteStatement,
   PosFunction,
   ScreenStatement,
@@ -395,6 +396,17 @@ export function lineInput(args: InputStatementArgs) {
 
 export function loc(args: BuiltinStatementArgs) {
   return new LocFunction(args);
+}
+
+export function locate(
+  token: Token,
+  row?: parser.ExprContext,
+  column?: parser.ExprContext,
+  cursor?: parser.ExprContext,
+  start?: parser.ExprContext,
+  stop?: parser.ExprContext
+) {
+  return new LocateStatement(token, row, column, cursor, start, stop);
 }
 
 export function lof(args: BuiltinStatementArgs) {
