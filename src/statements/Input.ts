@@ -270,6 +270,9 @@ export class InputStatement extends BaseInputStatement {
     };
     const stringItem = (): Value => {
       skipWhitespace();
+      if (pos === line.length) {
+        return string("");
+      }
       if (pos >= line.length) {
         throw new Error();
       }
