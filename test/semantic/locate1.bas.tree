@@ -1,0 +1,33 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello")) ;))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "world"))))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "!!"))))) \n <EOF>)

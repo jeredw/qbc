@@ -1,0 +1,53 @@
+(program 
+  (statement 
+    (input_statement input "" ; 
+      (variable_or_function_call b$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 34)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 34)))) )))))) \n 
+  (statement 
+    (input_statement input "" ; 
+      (variable_or_function_call x%) , 
+      (variable_or_function_call a$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x%)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 34)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a$)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 34)))) )))))) \n <EOF>)
