@@ -244,3 +244,63 @@ export class PresetStatement extends Statement {
     context.devices.screen.resetPixel(x, y, color, this.step);
   }
 }
+
+export class ViewStatement extends Statement {
+  constructor(
+    private token: Token,
+    private screen: boolean,
+    private x1?: ExprContext,
+    private y1?: ExprContext,
+    private x2?: ExprContext,
+    private y2?: ExprContext,
+    private color?: ExprContext,
+    private border?: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const x1 = this.x1 && evaluateIntegerExpression(this.x1, context.memory);
+    const y1 = this.y1 && evaluateIntegerExpression(this.y1, context.memory);
+    const x2 = this.x2 && evaluateIntegerExpression(this.x2, context.memory);
+    const y2 = this.y2 && evaluateIntegerExpression(this.y2, context.memory);
+    if (x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) {
+      context.devices.screen.resetView();
+      return;
+    }
+    if (x1 === x2 || y1 === y2) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const color = this.color && evaluateIntegerExpression(this.color, context.memory);
+    const border = this.border && evaluateIntegerExpression(this.border, context.memory);
+    context.devices.screen.setView({x: x1, y: y1}, {x: x2, y: y2}, this.screen, color, border);
+  }
+}
+
+export class WindowStatement extends Statement {
+  constructor(
+    private token: Token,
+    private screen: boolean,
+    private x1?: ExprContext,
+    private y1?: ExprContext,
+    private x2?: ExprContext,
+    private y2?: ExprContext,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const x1 = this.x1 && evaluateIntegerExpression(this.x1, context.memory);
+    const y1 = this.y1 && evaluateIntegerExpression(this.y1, context.memory);
+    const x2 = this.x2 && evaluateIntegerExpression(this.x2, context.memory);
+    const y2 = this.y2 && evaluateIntegerExpression(this.y2, context.memory);
+    if (x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) {
+      context.devices.screen.resetWindow();
+      return;
+    }
+    if (x1 === x2 || y1 === y2) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    context.devices.screen.setWindow({x: x1, y: y1}, {x: x2, y: y2}, this.screen);
+  }
+}

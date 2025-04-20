@@ -1,0 +1,87 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (view_statement view screen 
+      ( 
+        (expr 
+          (literal 50)) , 
+        (expr 
+          (literal 50)) ) - 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 150)) ) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (window_statement window 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1000))) , 
+        (expr - 
+          (expr 
+            (literal 1000))) ) - 
+      ( 
+        (expr 
+          (literal 1000)) , 
+        (expr 
+          (literal 1000)) ))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 100))) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 200))) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 300))) , 
+        (expr - 
+          (expr 
+            (literal 300))) ))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (literal 4)))) \n <EOF>)

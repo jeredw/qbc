@@ -1,0 +1,49 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (preset_statement preset step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (preset_statement preset step 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 3)))) \n <EOF>)

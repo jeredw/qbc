@@ -121,6 +121,8 @@ import {
   PresetStatement,
   PsetStatement,
   ScreenStatement,
+  ViewStatement,
+  WindowStatement,
 } from "./Screen.ts";
 
 export function abs(args: BuiltinStatementArgs) {
@@ -678,8 +680,32 @@ export function val(args: BuiltinStatementArgs) {
   return new ValFunction(args);
 }
 
+export function view_(
+  token: Token,
+  screen: boolean,
+  x1?: parser.ExprContext,
+  y1?: parser.ExprContext,
+  x2?: parser.ExprContext,
+  y2?: parser.ExprContext,
+  color?: parser.ExprContext,
+  border?: parser.ExprContext,
+) {
+  return new ViewStatement(token, screen, x1, y1, x2, y2, color, border);
+}
+
 export function while_(expr: parser.ExprContext) {
   return new DoTest(true, expr);
+}
+
+export function window_(
+  token: Token,
+  screen: boolean,
+  x1?: parser.ExprContext,
+  y1?: parser.ExprContext,
+  x2?: parser.ExprContext,
+  y2?: parser.ExprContext,
+) {
+  return new WindowStatement(token, screen, x1, y1, x2, y2);
 }
 
 export function write(args: PrintStatementArgs) {

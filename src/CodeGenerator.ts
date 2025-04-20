@@ -1088,7 +1088,19 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterUnlock_statement = (ctx: parser.Unlock_statementContext) => {}
-  override enterView_statement = (ctx: parser.View_statementContext) => {}
+
+  override enterView_statement = (ctx: parser.View_statementContext) => {
+    const token = ctx.start!;
+    const screen = !!ctx.SCREEN();
+    const x1 = ctx._x1 && this.compileExpression(ctx._x1, ctx._x1.start!, { tag: TypeTag.INTEGER });
+    const y1 = ctx._y1 && this.compileExpression(ctx._y1, ctx._y1.start!, { tag: TypeTag.INTEGER });
+    const x2 = ctx._x2 && this.compileExpression(ctx._x2, ctx._x2.start!, { tag: TypeTag.INTEGER });
+    const y2 = ctx._y2 && this.compileExpression(ctx._y2, ctx._y2.start!, { tag: TypeTag.INTEGER });
+    const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
+    const border = ctx._border && this.compileExpression(ctx._border, ctx._border.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.view_(token, screen, x1, y1, x2, y2, color, border));
+  }
+
   override enterView_print_statement = (ctx: parser.View_print_statementContext) => {}
 
   override enterWhile_wend_statement = (ctx: parser.While_wend_statementContext) => {
@@ -1109,7 +1121,16 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterWidth_statement = (ctx: parser.Width_statementContext) => {}
-  override enterWindow_statement = (ctx: parser.Window_statementContext) => {}
+
+  override enterWindow_statement = (ctx: parser.Window_statementContext) => {
+    const token = ctx.start!;
+    const screen = !!ctx.SCREEN();
+    const x1 = ctx._x1 && this.compileExpression(ctx._x1, ctx._x1.start!, { tag: TypeTag.INTEGER });
+    const y1 = ctx._y1 && this.compileExpression(ctx._y1, ctx._y1.start!, { tag: TypeTag.INTEGER });
+    const x2 = ctx._x2 && this.compileExpression(ctx._x2, ctx._x2.start!, { tag: TypeTag.INTEGER });
+    const y2 = ctx._y2 && this.compileExpression(ctx._y2, ctx._y2.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.window_(token, screen, x1, y1, x2, y2));
+  }
 
   override enterWrite_statement = (ctx: parser.Write_statementContext) => {
     const fileNumber = ctx.file_number() && this.compileExpression(

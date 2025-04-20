@@ -1,5 +1,5 @@
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
-import { Plotter } from './Drawing.ts';
+import { Plotter, Point } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
@@ -29,6 +29,10 @@ export interface Screen extends Printer, LightPenTarget {
   setPaletteEntry(attribute: number, color: number): void;
   resetPalette(): void;
 
+  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void;
+  resetView(): void;
+  setWindow(p1: Point, p2: Point, screen: boolean): void;
+  resetWindow(): void;
   clear(): void;
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
   resetPixel(x: number, y: number, color?: number, step?: boolean): void;
@@ -73,6 +77,26 @@ class Page {
     ctx.font = `${this.cellHeight}px '${mode.font}'`;
     ctx.textBaseline = 'top';
     this.clear(color);
+  }
+
+  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
+    this.plotter.setClip(p1, p2);
+    if (screen) {
+      this.plotter.setView({x: 0, y: 0}, {x: this.mode.width - 1, y: this.mode.height - 1});
+    } else {
+      this.plotter.setView(p1, p2);
+    }
+    const ctx = this.canvas.getContext('2d')!;
+    this.plotter.drawViewBox(ctx, p1, p2, color, border);
+    this.dirty = true;
+  }
+
+  setWindow(p1: Point, p2: Point, screen: boolean) {
+    this.plotter.setWindow(p1, p2, screen);
+  }
+
+  resetWindow() {
+    this.plotter.resetWindow();
   }
 
   clear(color: Attributes) {
@@ -334,6 +358,22 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
   }
 
+  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void {
+    this.activePage.setView(p1, p2, screen, color, border);
+  }
+
+  resetView(): void {
+    this.activePage.setView({x: 0, y: 0}, {x: this.mode.width - 1, y: this.mode.height - 1}, true);
+  }
+
+  setWindow(p1: Point, p2: Point, screen: boolean) {
+    this.activePage.setWindow(p1, p2, screen);
+  }
+
+  resetWindow() {
+    this.activePage.resetWindow();
+  }
+
   clear() {
     this.activePage.clear(this.color);
     this.column = 1;
@@ -560,6 +600,26 @@ export class TestScreen implements Screen {
     this.text.print(`[PALETTE]`, true);
     this.graphics.resetPalette();
     this.hasGraphics = true;
+  }
+
+  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void {
+    this.text.print(`[VIEW ${p1.x}, ${p1.y}, ${p2.x}, ${p2.y}, ${screen}, ${color}, ${border}]`, true);
+    this.graphics.setView(p1, p2, screen, color, border);
+  }
+
+  resetView(): void {
+    this.text.print(`[VIEW]`, true);
+    this.graphics.resetView();
+  }
+
+  setWindow(p1: Point, p2: Point, screen: boolean) {
+    this.text.print(`[WINDOW ${p1.x}, ${p1.y}, ${p2.x}, ${p2.y}, ${screen}]`, true);
+    this.graphics.setWindow(p1, p2, screen);
+  }
+
+  resetWindow() {
+    this.text.print(`[WINDOW]`, true);
+    this.graphics.resetWindow();
   }
 
   clear() {

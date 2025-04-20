@@ -1,0 +1,122 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (view_statement view 
+      ( 
+        (expr 
+          (literal 50)) , 
+        (expr 
+          (literal 50)) ) - 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 150)) ) , 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (window_statement window 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1000))) , 
+        (expr - 
+          (expr 
+            (literal 1000))) ) - 
+      ( 
+        (expr 
+          (literal 1000)) , 
+        (expr 
+          (literal 1000)) ))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 40))) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 40)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 40)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr - 
+          (expr 
+            (literal 40))) ) , 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 1000)) , 
+        (expr 
+          (literal 1000)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1000))) , 
+        (expr 
+          (literal 1000)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 1000)) , 
+        (expr - 
+          (expr 
+            (literal 1000))) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1000))) , 
+        (expr - 
+          (expr 
+            (literal 1000))) ) , 
+      (expr 
+        (literal 15)))) \n <EOF>)
