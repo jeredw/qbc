@@ -336,13 +336,13 @@ parse those using baked in rules.
 | `VARPTR`         | Function    | -       | ⛔      |
 | `VARPTR$`        | Function    | -       | ⛔      |
 | `VARSEG`         | Function    | -       | ⛔      |
-| `VIEW`           | Statement   | ✅      | ⛔      |
+| `VIEW`           | Statement   | ✅      | ✅      |
 | `VIEW PRINT`     | Statement   | ✅      | ⛔      |
 | `WAIT`           | Statement   | -       | ⛔      |
 | `WEND`           | Keyword     | ✅      | ✅      |
 | `WHILE`...`WEND` | Statement   | ✅      | ✅      |
 | `WIDTH`          | Statement   | ✅      | ⛔      |
-| `WINDOW`         | Statement   | ✅      | ⛔      |
+| `WINDOW`         | Statement   | ✅      | ✅      |
 | `WRITE`          | Statement   | ✅      | ✅      |
 | `XOR`            | Operator    | ✅      | ✅      |
 
