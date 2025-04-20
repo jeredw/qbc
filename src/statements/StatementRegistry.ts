@@ -118,6 +118,7 @@ import {
   LocateStatement,
   PaletteStatement,
   PosFunction,
+  PresetStatement,
   PsetStatement,
   ScreenStatement,
 } from "./Screen.ts";
@@ -539,6 +540,15 @@ export function pset(
   color?: parser.ExprContext
 ) {
   return new PsetStatement(step, x, y, color);
+}
+
+export function preset(
+  step: boolean,
+  x: parser.ExprContext,
+  y: parser.ExprContext,
+  color?: parser.ExprContext
+) {
+  return new PresetStatement(step, x, y, color);
 }
 
 export function putIo(

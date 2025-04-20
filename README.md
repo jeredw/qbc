@@ -267,7 +267,7 @@ parse those using baked in rules.
 | `PMAP`           | Function    | -       | ⛔      |
 | `POKE`           | Statement   | -       | ⛔      |
 | `POS`            | Function    | -       | ✅      |
-| `PRESET`         | Statement   | ✅      | ⛔      |
+| `PRESET`         | Statement   | ✅      | ✅      |
 | `PRINT`          | Statement   | ✅      | ✅      |
 | `PRINT USING`    | Statement   | ✅      | ✅      |
 | `PSET`           | Statement   | ✅      | ⛔      |

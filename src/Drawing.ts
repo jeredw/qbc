@@ -1,6 +1,7 @@
+import { Canvas } from "canvas";
 import { cssForColorIndex } from "./Colors.ts";
 
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }

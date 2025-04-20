@@ -31,6 +31,7 @@ export interface Screen extends Printer, LightPenTarget {
 
   clear(): void;
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
+  resetPixel(x: number, y: number, color?: number, step?: boolean): void;
 
   showCursor(): void;
   hideCursor(): void;
@@ -343,6 +344,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.activePage.setPixel(x, y, color ?? this.color.fgColor, step);
   }
 
+  resetPixel(x: number, y: number, color?: number, step?: boolean) {
+    this.activePage.setPixel(x, y, color ?? this.color.bgColor, step);
+  }
+
   render() {
     const ctx = this.canvas.getContext('2d')!;
     if (this.visiblePage.dirty) {
@@ -565,6 +570,11 @@ export class TestScreen implements Screen {
   setPixel(x: number, y: number, color?: number, step?: boolean) {
     this.text.print(`[PSET ${x}, ${y}, ${color}, ${step}]`, true);
     this.graphics.setPixel(x, y, color, step);
+  }
+
+  resetPixel(x: number, y: number, color?: number, step?: boolean) {
+    this.text.print(`[PRESET ${x}, ${y}, ${color}, ${step}]`, true);
+    this.graphics.resetPixel(x, y, color, step);
   }
 
   showCursor() {

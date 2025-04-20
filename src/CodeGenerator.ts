@@ -889,8 +889,6 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.playStatement(token, commandString));
   }
 
-  override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
-
   override enterLprint_statement = (ctx: parser.Lprint_statementContext) => {
     this.addPrintStatement({ctx, printer: true});
   }
@@ -959,6 +957,14 @@ export class CodeGenerator extends QBasicParserListener {
     const y = this.compileExpression(ctx._y!, ctx._y!.start!, { tag: TypeTag.INTEGER });
     const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
     this.addStatement(statements.pset(step, x, y, color));
+  }
+
+  override enterPreset_statement = (ctx: parser.Preset_statementContext) => {
+    const step = !!ctx.STEP();
+    const x = this.compileExpression(ctx._x!, ctx._x!.start!, { tag: TypeTag.INTEGER });
+    const y = this.compileExpression(ctx._y!, ctx._y!.start!, { tag: TypeTag.INTEGER });
+    const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.preset(step, x, y, color));
   }
 
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
