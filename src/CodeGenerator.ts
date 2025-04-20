@@ -953,7 +953,14 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.printUsing({token, format, exprs, fileNumber, printer}));
   }
 
-  override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
+  override enterPset_statement = (ctx: parser.Pset_statementContext) => {
+    const step = !!ctx.STEP();
+    const x = this.compileExpression(ctx._x!, ctx._x!.start!, { tag: TypeTag.INTEGER });
+    const y = this.compileExpression(ctx._y!, ctx._y!.start!, { tag: TypeTag.INTEGER });
+    const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.pset(step, x, y, color));
+  }
+
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 

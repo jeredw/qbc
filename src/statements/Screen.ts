@@ -208,3 +208,21 @@ export class LocateStatement extends Statement {
     }
   }
 }
+
+export class PsetStatement extends Statement {
+  constructor(
+    private step: boolean,
+    private xExpr: ExprContext,
+    private yExpr: ExprContext,
+    private colorExpr?: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const x = evaluateIntegerExpression(this.xExpr, context.memory);
+    const y = evaluateIntegerExpression(this.yExpr, context.memory);
+    const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory);
+    context.devices.screen.setPixel(x, y, color, this.step);
+  }
+}

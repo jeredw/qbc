@@ -297,3 +297,7 @@ export function colorToGrayScale(color: Color): Color {
     blue: Math.floor(255 * intensity)
   };
 }
+
+export function cssForColorIndex(index: number): string {
+  return `rgba(${index}, 0, 0, 255)`;
+}

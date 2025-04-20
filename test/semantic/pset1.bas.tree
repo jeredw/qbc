@@ -1,0 +1,175 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 10))) , 
+        (expr - 
+          (expr 
+            (literal 10))) ) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 10))) , 
+        (expr - 
+          (expr 
+            (literal 10))) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (pset_statement pset step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 10))) , 
+        (expr - 
+          (expr 
+            (literal 10))) ) , 
+      (expr 
+        (literal 3)))) \n \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1))) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 11)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 319)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 199)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 319)) , 
+        (expr 
+          (literal 199)) ) , 
+      (expr 
+        (literal 15)))) \n \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 320)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 11)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 320)) , 
+        (expr 
+          (literal 200)) ) , 
+      (expr 
+        (literal 11)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1))) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 11)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1))) , 
+        (expr 
+          (literal 200)) ) , 
+      (expr 
+        (literal 11)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr - 
+          (expr 
+            (literal 1))) ) , 
+      (expr 
+        (literal 11)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 201)) ) , 
+      (expr 
+        (literal 11)))) \n \n 
+  (statement 
+    (for_next_statement for i% = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 40)) 
+      (block \n 
+        (statement 
+          (pset_statement pset 
+            ( 
+              (expr 
+                (expr 
+                  (variable_or_function_call i%)) + 
+                (expr 
+                  (literal 20))) , 
+              (expr 
+                (expr 
+                  (literal 100)) - 
+                (expr 
+                  (variable_or_function_call i%))) ) , 
+            (expr 
+              (literal 15)))) \n) next i%)) \n <EOF>)

@@ -142,6 +142,7 @@ class Shell {
       // program, but it is more convenient to reset everything on a fresh run.
       this.keyboard.reset();
       this.speaker.reset();
+      this.screen.reset();
       this.invocation = this.interpreter.run(text);
       this.root.classList.add('running');
       await this.invocation.restart();

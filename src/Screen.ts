@@ -1,4 +1,5 @@
-import { Color, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
+import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
+import { Plotter } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
@@ -20,6 +21,7 @@ class DefaultCanvasProvider implements CanvasProvider {
 }
 
 export interface Screen extends Printer, LightPenTarget {
+  reset(): void;
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
   getMode(): ScreenMode;
 
@@ -28,14 +30,15 @@ export interface Screen extends Printer, LightPenTarget {
   resetPalette(): void;
 
   clear(): void;
-  getRow(): number;
-  getColumn(): number;
+  setPixel(x: number, y: number, color?: number, step?: boolean): void;
 
   showCursor(): void;
   hideCursor(): void;
   moveCursor(dx: number): void;
   locateCursor(row?: number, column?: number): void;
   configureCursor(startScanline: number, endScanline: number, insert?: boolean): void;
+  getRow(): number;
+  getColumn(): number;
 }
 
 interface Attributes {
@@ -49,10 +52,6 @@ interface CharacterCell {
   attributes: Attributes;
 }
 
-function cssForColorIndex(index: number): string {
-  return `rgba(${index}, 0, 0, 255)`;
-}
-
 class Page {
   dirty: boolean = true;
   canvas: HTMLCanvasElement;
@@ -60,11 +59,13 @@ class Page {
   private cellWidth: number;
   private cellHeight: number;
   private mode: ScreenMode;
+  private plotter: Plotter;
 
   constructor(mode: ScreenMode, color: Attributes, canvasProvider: CanvasProvider) {
     this.mode = mode;
     this.cellWidth = mode.width / mode.columns;
     this.cellHeight = mode.height / mode.rows;
+    this.plotter = new Plotter(mode.width, mode.height);
     this.canvas = canvasProvider.createCanvas(mode.width, mode.height);
     // We'll be reading this back a ton so request cpu rendering.
     const ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
@@ -95,6 +96,12 @@ class Page {
     this.text[row - 1][col - 1] = char;
     const ctx = this.canvas.getContext('2d')!;
     this.drawCell(ctx, row, col);
+    this.dirty = true;
+  }
+
+  setPixel(x: number, y: number, color: number, step?: boolean) {
+    const ctx = this.canvas.getContext('2d')!;
+    this.plotter.setPixel(ctx, x, y, color, step);
     this.dirty = true;
   }
 
@@ -167,6 +174,11 @@ export class CanvasScreen extends BasePrinter implements Screen {
     super(0);
     this.canvasProvider = canvasProvider ?? new DefaultCanvasProvider();
     this.headless = !!canvasProvider;
+    this.configure(0, 0, 0, 0);
+  }
+
+  reset() {
+    this.configure(1, 0, 0, 0);
     this.configure(0, 0, 0, 0);
   }
 
@@ -327,12 +339,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.row = 1;
   }
 
-  getRow(): number {
-    return this.row;
-  }
-
-  getColumn(): number {
-    return this.column;
+  setPixel(x: number, y: number, color?: number, step?: boolean) {
+    this.activePage.setPixel(x, y, color ?? this.color.fgColor, step);
   }
 
   render() {
@@ -473,6 +481,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.cursorEndScanline = endScanline;
   }
 
+  getRow(): number {
+    return this.row;
+  }
+
+  getColumn(): number {
+    return this.column;
+  }
+
   triggerPen(x: number, y: number): LightPenTrigger | undefined {
     if (x < 0 || y < 0 || x > this.canvas.width || y > this.canvas.height) {
       return;
@@ -510,6 +526,9 @@ export class TestScreen implements Screen {
     return this.graphics.renderVisiblePage();
   }
 
+  reset() {
+  }
+
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
     this.text.print(`[SCREEN ${modeNumber}, ${colorSwitch}, ${activePage}, ${visiblePage}]`, true);
     this.graphics.configure(modeNumber, colorSwitch, activePage, visiblePage);
@@ -543,12 +562,9 @@ export class TestScreen implements Screen {
     this.graphics.clear();
   }
 
-  getRow(): number {
-    return this.graphics.getRow();
-  }
-
-  getColumn(): number {
-    return this.graphics.getColumn();
+  setPixel(x: number, y: number, color?: number, step?: boolean) {
+    this.text.print(`[PSET ${x}, ${y}, ${color}, ${step}]`, true);
+    this.graphics.setPixel(x, y, color, step);
   }
 
   showCursor() {
@@ -577,6 +593,14 @@ export class TestScreen implements Screen {
       this.text.print(`[LOCATE ,,, ${startScanline}, ${endScanline}]`, true);
     }
     this.graphics.configureCursor(startScanline, endScanline);
+  }
+
+  getRow(): number {
+    return this.graphics.getRow();
+  }
+
+  getColumn(): number {
+    return this.graphics.getColumn();
   }
 
   print(text: string, newline: boolean) {
