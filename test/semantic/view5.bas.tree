@@ -1,0 +1,37 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (view_statement view 
+      ( 
+        (expr 
+          (literal 50)) , 
+        (expr 
+          (literal 50)) ) - 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 150)) ))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (view_statement view)) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 15)))) \n <EOF>)
