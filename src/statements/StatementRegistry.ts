@@ -536,21 +536,23 @@ export function printUsing(args: PrintStatementArgs) {
 }
 
 export function pset(
+  token: Token,
   step: boolean,
   x: parser.ExprContext,
   y: parser.ExprContext,
   color?: parser.ExprContext
 ) {
-  return new PsetStatement(step, x, y, color);
+  return new PsetStatement(token, step, x, y, color);
 }
 
 export function preset(
+  token: Token,
   step: boolean,
   x: parser.ExprContext,
   y: parser.ExprContext,
   color?: parser.ExprContext
 ) {
-  return new PresetStatement(step, x, y, color);
+  return new PresetStatement(token, step, x, y, color);
 }
 
 export function putIo(

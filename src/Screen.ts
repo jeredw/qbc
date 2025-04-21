@@ -359,6 +359,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    if (p1.x === p2.x || p1.y === p2.y) {
+      throw new Error('invalid view');
+    }
     this.activePage.setView(p1, p2, screen, color, border);
   }
 
@@ -367,6 +373,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   setWindow(p1: Point, p2: Point, screen: boolean) {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    if (p1.x === p2.x || p1.y === p2.y) {
+      throw new Error('invalid window');
+    }
     this.activePage.setWindow(p1, p2, screen);
   }
 
@@ -381,10 +393,16 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   setPixel(x: number, y: number, color?: number, step?: boolean) {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
     this.activePage.setPixel(x, y, color ?? this.color.fgColor, step);
   }
 
   resetPixel(x: number, y: number, color?: number, step?: boolean) {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
     this.activePage.setPixel(x, y, color ?? this.color.bgColor, step);
   }
 

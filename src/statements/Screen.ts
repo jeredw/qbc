@@ -211,6 +211,7 @@ export class LocateStatement extends Statement {
 
 export class PsetStatement extends Statement {
   constructor(
+    private token: Token,
     private step: boolean,
     private xExpr: ExprContext,
     private yExpr: ExprContext,
@@ -223,12 +224,17 @@ export class PsetStatement extends Statement {
     const x = evaluateIntegerExpression(this.xExpr, context.memory);
     const y = evaluateIntegerExpression(this.yExpr, context.memory);
     const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory);
-    context.devices.screen.setPixel(x, y, color, this.step);
+    try {
+      context.devices.screen.setPixel(x, y, color, this.step);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
   }
 }
 
 export class PresetStatement extends Statement {
   constructor(
+    private token: Token,
     private step: boolean,
     private xExpr: ExprContext,
     private yExpr: ExprContext,
@@ -241,7 +247,11 @@ export class PresetStatement extends Statement {
     const x = evaluateIntegerExpression(this.xExpr, context.memory);
     const y = evaluateIntegerExpression(this.yExpr, context.memory);
     const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory);
-    context.devices.screen.resetPixel(x, y, color, this.step);
+    try {
+      context.devices.screen.resetPixel(x, y, color, this.step);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
   }
 }
 
@@ -268,12 +278,13 @@ export class ViewStatement extends Statement {
       context.devices.screen.resetView();
       return;
     }
-    if (x1 === x2 || y1 === y2) {
-      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
-    }
     const color = this.color && evaluateIntegerExpression(this.color, context.memory);
     const border = this.border && evaluateIntegerExpression(this.border, context.memory);
-    context.devices.screen.setView({x: x1, y: y1}, {x: x2, y: y2}, this.screen, color, border);
+    try {
+      context.devices.screen.setView({x: x1, y: y1}, {x: x2, y: y2}, this.screen, color, border);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
   }
 }
 
@@ -298,9 +309,10 @@ export class WindowStatement extends Statement {
       context.devices.screen.resetWindow();
       return;
     }
-    if (x1 === x2 || y1 === y2) {
+    try {
+      context.devices.screen.setWindow({x: x1, y: y1}, {x: x2, y: y2}, this.screen);
+    } catch (e: unknown) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    context.devices.screen.setWindow({x: x1, y: y1}, {x: x2, y: y2}, this.screen);
   }
 }

@@ -8,7 +8,6 @@ export interface ScreenMode {
   attributes: number;
   defaultFgColor: number;
   pages: number;
-  graphics: boolean;
   font: string;
   transform?: string;
 }
@@ -24,7 +23,6 @@ export const SCREEN_MODES = [
     attributes: 16,
     defaultFgColor: 7,
     pages: 8,
-    graphics: false,
     font: 'Web IBM VGA 9x16',
     transform: 'scaleY(1.35)',
   },
@@ -38,7 +36,6 @@ export const SCREEN_MODES = [
     attributes: 4,
     defaultFgColor: 3,
     pages: 1,
-    graphics: true,
     font: 'Web IBM VGA 9x8',
     transform: 'scale(2, 2.5)',
   },
@@ -52,7 +49,6 @@ export const SCREEN_MODES = [
     attributes: 2,
     defaultFgColor: 1,
     pages: 1,
-    graphics: true,
     font: 'Web IBM VGA 9x8',
     transform: 'scale(1, 2.5)',
   },
@@ -66,7 +62,6 @@ export const SCREEN_MODES = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 8,
-    graphics: true,
     font: 'Web IBM VGA 9x8',
     transform: 'scale(2, 2.5)',
   },
@@ -80,7 +75,6 @@ export const SCREEN_MODES = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 4,
-    graphics: true,
     font: 'Web IBM VGA 9x8',
     transform: 'scale(1, 2.5)',
   },
@@ -94,7 +88,6 @@ export const SCREEN_MODES = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 2,
-    graphics: false,
     font: 'Web IBM VGA 8x14',
     transform: 'scaleY(1.35)',
   },
@@ -108,7 +101,6 @@ export const SCREEN_MODES = [
     attributes: 4,
     defaultFgColor: 3,
     pages: 2,
-    graphics: false,
     font: 'Web IBM VGA 8x14',
     transform: 'scaleY(1.35)',
   },
@@ -122,7 +114,6 @@ export const SCREEN_MODES = [
     attributes: 2,
     defaultFgColor: 15,
     pages: 1,
-    graphics: false,
     font: 'Web IBM VGA 8x16',
   },
   {
@@ -135,7 +126,6 @@ export const SCREEN_MODES = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 1,
-    graphics: false,
     font: 'Web IBM VGA 8x16',
   },
   {
@@ -148,7 +138,6 @@ export const SCREEN_MODES = [
     attributes: 256,
     defaultFgColor: 15,
     pages: 1,
-    graphics: false,
     font: 'Web IBM VGA 9x8',
     transform: 'scale(2, 2.5)',
   },
