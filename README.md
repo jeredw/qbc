@@ -341,7 +341,7 @@ parse those using baked in rules.
 | `WAIT`           | Statement   | -       | ⛔      |
 | `WEND`           | Keyword     | ✅      | ✅      |
 | `WHILE`...`WEND` | Statement   | ✅      | ✅      |
-| `WIDTH`          | Statement   | ✅      | ⛔      |
+| `WIDTH`          | Statement   | ✅      | 🚧      |
 | `WINDOW`         | Statement   | ✅      | ✅      |
 | `WRITE`          | Statement   | ✅      | ✅      |
 | `XOR`            | Operator    | ✅      | ✅      |
