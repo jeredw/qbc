@@ -12,7 +12,6 @@ import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { readVariableToBytes, writeBytesToVariable } from "./Bits.ts";
-import { TypeTag } from "../Types.ts";
 
 export interface OpenArgs {
   token: Token;
@@ -554,5 +553,26 @@ export class PutIoStatement extends GetPutStatement {
     const position = this.getRecordNumber(context);
     const bytes = new Uint8Array(readVariableToBytes(this.variable!, context.memory));
     accessor.putBytes(Array.from(bytes), position);
+  }
+}
+
+export class WidthFileStatement extends Statement {
+  constructor(
+    private token: Token,
+    private fileNumber: ExprContext,
+    private width: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const columns = evaluateIntegerExpression(this.width, context.memory);
+    if (columns < 1 || columns > 255) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    tryIo(this.token, () => {
+      const accessor = getFileAccessor({expr: this.fileNumber, context});
+      accessor.setWidth(columns);
+    });
   }
 }

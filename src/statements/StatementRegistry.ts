@@ -67,7 +67,8 @@ import {
   PutIoStatement,
   RmdirStatement,
   SeekFunction,
-  SeekStatement
+  SeekStatement,
+  WidthFileStatement
 } from "./FileSystem.ts";
 import {
   PrintStatement,
@@ -698,6 +699,10 @@ export function view_(
 
 export function while_(expr: parser.ExprContext) {
   return new DoTest(true, expr);
+}
+
+export function widthFile(token: Token, fileNumber: parser.ExprContext, width: parser.ExprContext) {
+  return new WidthFileStatement(token, fileNumber, width);
 }
 
 export function widthLprint(token: Token, width: parser.ExprContext) {

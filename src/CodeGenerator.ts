@@ -1128,6 +1128,14 @@ export class CodeGenerator extends QBasicParserListener {
       this.addStatement(statements.widthLprint(ctx.start!, width));
       return;
     }
+    const fileNumberExpr = ctx.file_number();
+    if (fileNumberExpr) {
+      const expr = fileNumberExpr.expr();
+      const fileNumber = this.compileExpression(expr, expr.start!, { tag: TypeTag.INTEGER });
+      const width = this.compileExpression(ctx._width!, ctx._width!.start!, { tag: TypeTag.INTEGER });
+      this.addStatement(statements.widthFile(ctx.start!, fileNumber, width));
+      return;
+    }
   }
 
   override enterWindow_statement = (ctx: parser.Window_statementContext) => {

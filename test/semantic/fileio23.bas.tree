@@ -1,0 +1,27 @@
+(program 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (width_statement width 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (expr 
+        (literal 10)))) \n 
+  (statement 
+    (print_statement print 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal "hello world this is a test hooray width"))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)
