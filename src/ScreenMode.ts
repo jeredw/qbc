@@ -1,144 +1,129 @@
+type Dimension = [number, number];
+
+export interface ScreenGeometry {
+  dots: Dimension;
+  text: Dimension;
+  characterBox: Dimension;
+  font: string;
+}
+
 export interface ScreenMode {
   mode: number;
-  width: number;
-  height: number;
-  columns: number;
-  rows: number;
+  geometry: ScreenGeometry[];
   colors: number;
   attributes: number;
   defaultFgColor: number;
   pages: number;
-  font: string;
-  transform?: string;
 }
 
-export const SCREEN_MODES = [
+export const SCREEN_MODES: ScreenMode[] = [
   {
     mode: 0,
-    width: 720,
-    height: 400,
-    columns: 80,
-    rows: 25,
+    geometry: [
+      {dots: [720, 400], text: [80, 25], characterBox: [9, 16], font: 'Web IBM VGA 9x16'},
+      {dots: [720, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [720, 400], text: [80, 50], characterBox: [9, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [360, 400], text: [40, 25], characterBox: [9, 16], font: 'Web IBM VGA 9x16'},
+      {dots: [360, 350], text: [40, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [360, 400], text: [40, 50], characterBox: [9, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 64,
     attributes: 16,
     defaultFgColor: 7,
     pages: 8,
-    font: 'Web IBM VGA 9x16',
-    transform: 'scaleY(1.35)',
   },
   {
     mode: 1,
-    width: 320,
-    height: 200,
-    columns: 40,
-    rows: 25,
+    geometry: [
+      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 16,
     attributes: 4,
     defaultFgColor: 3,
     pages: 1,
-    font: 'Web IBM VGA 9x8',
-    transform: 'scale(2, 2.5)',
   },
   {
     mode: 2,
-    width: 640,
-    height: 200,
-    columns: 80,
-    rows: 25,
+    geometry: [
+      {dots: [640, 200], text: [80, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 16,
     attributes: 2,
     defaultFgColor: 1,
     pages: 1,
-    font: 'Web IBM VGA 9x8',
-    transform: 'scale(1, 2.5)',
   },
   {
     mode: 7,
-    width: 320,
-    height: 200,
-    columns: 40,
-    rows: 25,
+    geometry: [
+      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 16,
     attributes: 16,
     defaultFgColor: 15,
     pages: 8,
-    font: 'Web IBM VGA 9x8',
-    transform: 'scale(2, 2.5)',
   },
   {
     mode: 8,
-    width: 640,
-    height: 200,
-    columns: 80,
-    rows: 25,
+    geometry: [
+      {dots: [640, 200], text: [80, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 16,
     attributes: 16,
     defaultFgColor: 15,
     pages: 4,
-    font: 'Web IBM VGA 9x8',
-    transform: 'scale(1, 2.5)',
   },
   {
     mode: 9,
-    width: 640,
-    height: 350,
-    columns: 80,
-    rows: 25,
+    geometry: [
+      {dots: [640, 350], text: [80, 25], characterBox: [8, 14], font: 'Web IBM VGA 8x14'},
+      {dots: [640, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 64,
     attributes: 16,
     defaultFgColor: 15,
     pages: 2,
-    font: 'Web IBM VGA 8x14',
-    transform: 'scaleY(1.35)',
   },
   {
     mode: 10,
-    width: 640,
-    height: 350,
-    columns: 80,
-    rows: 25,
+    geometry: [
+      {dots: [640, 350], text: [80, 25], characterBox: [8, 14], font: 'Web IBM VGA 8x14'},
+      {dots: [640, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 9,
     attributes: 4,
     defaultFgColor: 3,
     pages: 2,
-    font: 'Web IBM VGA 8x14',
-    transform: 'scaleY(1.35)',
   },
   {
     mode: 11,
-    width: 640,
-    height: 480,
-    columns: 80,
-    rows: 30,
+    geometry: [
+      {dots: [640, 480], text: [80, 30], characterBox: [8, 16], font: 'Web IBM VGA 8x16'},
+      {dots: [640, 480], text: [80, 60], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 262144,
     attributes: 2,
     defaultFgColor: 15,
     pages: 1,
-    font: 'Web IBM VGA 8x16',
   },
   {
     mode: 12,
-    width: 640,
-    height: 480,
-    columns: 80,
-    rows: 30,
+    geometry: [
+      {dots: [640, 480], text: [80, 30], characterBox: [8, 16], font: 'Web IBM VGA 8x16'},
+      {dots: [640, 480], text: [80, 60], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 262144,
     attributes: 16,
     defaultFgColor: 15,
     pages: 1,
-    font: 'Web IBM VGA 8x16',
   },
   {
     mode: 13,
-    width: 320,
-    height: 200,
-    columns: 40,
-    rows: 25,
+    geometry: [
+      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+    ],
     colors: 262144,
     attributes: 256,
     defaultFgColor: 15,
     pages: 1,
-    font: 'Web IBM VGA 9x8',
-    transform: 'scale(2, 2.5)',
   },
 ];

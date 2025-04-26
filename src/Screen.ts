@@ -2,27 +2,35 @@ import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToC
 import { Plotter, Point } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
-import { SCREEN_MODES, ScreenMode } from './ScreenMode.ts';
+import { SCREEN_MODES, ScreenGeometry, ScreenMode } from './ScreenMode.ts';
 
 export interface CanvasProvider {
   createCanvas(width: number, height: number): HTMLCanvasElement;
+  cleanup?(): void;
 }
 
 class DefaultCanvasProvider implements CanvasProvider {
   createCanvas(width: number, height: number): HTMLCanvasElement {
     const canvas = document.createElement('canvas');
-    canvas.className = 'screen';
+    canvas.className = 'screen screen-page';
     canvas.width = width;
     canvas.height = height;
     canvas.style.display = 'none';
     document.body.appendChild(canvas);
     return canvas;
   }
+
+  cleanup() {
+    for (const canvas of document.querySelectorAll('.screen-page')) {
+      canvas.remove();
+    }
+  }
 }
 
 export interface Screen extends Printer, LightPenTarget {
   reset(): void;
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
+  setTextGeometry(width: number, height?: number): void;
   getMode(): ScreenMode;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
@@ -64,17 +72,19 @@ class Page {
   private cellWidth: number;
   private cellHeight: number;
   private mode: ScreenMode;
+  private geometry: ScreenGeometry;
   private plotter: Plotter;
 
-  constructor(mode: ScreenMode, color: Attributes, canvasProvider: CanvasProvider) {
+  constructor(mode: ScreenMode, geometry: ScreenGeometry, color: Attributes, canvasProvider: CanvasProvider) {
     this.mode = mode;
-    this.cellWidth = mode.width / mode.columns;
-    this.cellHeight = mode.height / mode.rows;
-    this.plotter = new Plotter(mode.width, mode.height);
-    this.canvas = canvasProvider.createCanvas(mode.width, mode.height);
+    this.geometry = geometry;
+    const [width, height] = geometry.dots;
+    [this.cellWidth, this.cellHeight] = geometry.characterBox;
+    this.plotter = new Plotter(width, height);
+    this.canvas = canvasProvider.createCanvas(width, height);
     // We'll be reading this back a ton so request cpu rendering.
     const ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
-    ctx.font = `${this.cellHeight}px '${mode.font}'`;
+    ctx.font = `${this.cellHeight}px '${geometry.font}'`;
     ctx.textBaseline = 'top';
     this.clear(color);
   }
@@ -82,7 +92,7 @@ class Page {
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
     this.plotter.setClip(p1, p2);
     if (screen) {
-      this.plotter.setView({x: 0, y: 0}, {x: this.mode.width - 1, y: this.mode.height - 1});
+      this.plotter.setView({x: 0, y: 0}, {x: this.geometry.dots[0] - 1, y: this.geometry.dots[1] - 1});
     } else {
       this.plotter.setView(p1, p2);
     }
@@ -100,9 +110,10 @@ class Page {
   }
 
   clear(color: Attributes) {
-    this.text = new Array(this.mode.rows);
-    for (let y = 0; y < this.mode.rows; y++) {
-      this.text[y] = new Array(this.mode.columns).fill({
+    const [columns, rows] = this.geometry.text;
+    this.text = new Array(rows);
+    for (let y = 0; y < rows; y++) {
+      this.text[y] = new Array(columns).fill({
         char: ' ',
         attributes: {...color}
       });
@@ -179,6 +190,7 @@ class Page {
 
 export class CanvasScreen extends BasePrinter implements Screen {
   private mode: ScreenMode;
+  private geometry: ScreenGeometry;
   private color: Attributes;
   private scrollStartRow: number;
   private scrollEndRow: number;
@@ -212,13 +224,31 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (!mode) {
       throw new Error(`invalid screen mode ${modeNumber}`);
     }
+    const geometry = mode.geometry[0];
+    this.setScreenMode(mode, geometry, colorSwitch, activePage, visiblePage);
+  }
+
+  setTextGeometry(width: number, height?: number) {
+    const [_, currentHeight] = this.geometry.text;
+    const desiredHeight = height ?? currentHeight;
+    const geometry = this.mode.geometry.find((entry) => (
+      entry.text[0] === width && entry.text[1] === desiredHeight
+    ));
+    if (!geometry) {
+      throw new Error(`unsupported text geometry ${width}x${height}`);
+    }
+    this.setScreenMode(this.mode, geometry, 0, 0, 0);
+  }
+
+  private setScreenMode(mode: ScreenMode, geometry: ScreenGeometry, colorSwitch: number, activePage: number, visiblePage: number) {
     if (activePage < 0 || activePage >= mode.pages) {
       throw new Error(`invalid active page ${activePage}`);
     }
     if (visiblePage < 0 || visiblePage >= mode.pages) {
       throw new Error(`invalid visible page ${visiblePage}`);
     }
-    if (this.mode && this.mode.mode === modeNumber) {
+    if (this.mode === mode && geometry == this.geometry) {
+      // Same mode and geometry means we want to switch pages.
       this.activePage = this.pages[activePage];
       this.visiblePage = this.pages[visiblePage];
       this.visiblePage.dirty = true;
@@ -235,17 +265,18 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.cursorEndScanline = 16;
     }
     this.resetPalette();
-    this.width = mode.columns;
+    this.geometry = geometry;
+    this.width = geometry.text[0];
     this.column = 1;
     this.row = 1;
     this.scrollStartRow = 1;
-    this.scrollEndRow = mode.rows;
+    this.scrollEndRow = geometry.text[1];
     this.color = {fgColor: mode.defaultFgColor, bgColor: 0};
-    this.cellWidth = mode.width / mode.columns;
-    this.cellHeight = mode.height / mode.rows;
+    [this.cellWidth, this.cellHeight] = geometry.characterBox;
+    this.canvasProvider.cleanup?.();
     this.pages = [];
     for (let i = 0; i < mode.pages; i++) {
-      this.pages[i] = new Page(mode, this.color, this.canvasProvider);
+      this.pages[i] = new Page(mode, geometry, this.color, this.canvasProvider);
     }
     this.activePage = this.pages[activePage];
     this.visiblePage = this.pages[visiblePage];
@@ -259,11 +290,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
     } else {
       this.canvas.style.transform = '';
     }
-    this.canvas.width = mode.width;
-    this.canvas.height = mode.height;
-    if (mode.transform) {
-      this.canvas.style.transform = mode.transform;
-    }
+    this.canvas.width = geometry.dots[0];
+    this.canvas.height = geometry.dots[1];
+    const [scaleX, scaleY] = [640 / this.canvas.width, 480 / this.canvas.height];
+    this.canvas.style.transform = `scale(${scaleX}, ${scaleY})`;
     const ctx = this.canvas.getContext('2d')!
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   }
@@ -350,7 +380,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.palette[2] = DEFAULT_PALETTE[13];
       this.palette[3] = DEFAULT_PALETTE[15];
     } else if (screenMode === 2) {
-      this.palette[0] = DEFAULT_PALETTE[15];
+      this.palette[1] = DEFAULT_PALETTE[15];
     } else if (screenMode === 10) {
       this.palette[1] = monoIndexToColor(3);
       this.palette[2] = monoIndexToColor(6);
@@ -369,7 +399,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   resetView(): void {
-    this.activePage.setView({x: 0, y: 0}, {x: this.mode.width - 1, y: this.mode.height - 1}, true);
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    this.activePage.setView({x: 0, y: 0}, {x: this.geometry.dots[0] - 1, y: this.geometry.dots[1] - 1}, true);
   }
 
   setWindow(p1: Point, p2: Point, screen: boolean) {
@@ -590,6 +623,12 @@ export class TestScreen implements Screen {
   }
 
   reset() {
+  }
+
+  setTextGeometry(width: number, height?: number): void {
+    this.text.print(`[WIDTH ${width}, ${height}]`, true);
+    this.graphics.setTextGeometry(width, height);
+    this.hasGraphics = true;
   }
 
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {

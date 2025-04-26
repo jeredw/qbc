@@ -61,10 +61,10 @@ export class Plotter {
   windowToView: WindowToViewTransform;
   clip: Region;
 
-  constructor(screenWidth: number, screenHeight: number) {
-    this.cursor = {x: Math.floor(screenWidth / 2), y: Math.floor(screenHeight / 2)};
-    this.clip = Region.fromSize(screenWidth, screenHeight);
-    this.windowToView = new WindowToViewTransform(screenWidth, screenHeight);
+  constructor(width: number, height: number) {
+    this.cursor = {x: Math.floor(width / 2), y: Math.floor(height / 2)};
+    this.clip = Region.fromSize(width, height);
+    this.windowToView = new WindowToViewTransform(width, height);
   }
 
   setPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: number, step?: boolean) {
@@ -180,8 +180,8 @@ class WindowToViewTransform {
   dx: number;
   dy: number;
 
-  constructor(screenWidth: number, screenHeight: number) {
-    this.view = Region.fromSize(screenWidth, screenHeight);
+  constructor(width: number, height: number) {
+    this.view = Region.fromSize(width, height);
     this.update();
   }
 

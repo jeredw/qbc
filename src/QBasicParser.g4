@@ -870,7 +870,7 @@ while_wend_statement
 width_statement
   : WIDTH columns=expr
   | WIDTH COMMA lines=expr
-  | WIDTH expr COMMA expr  // Could be WIDTH device$, width or WIDTH columns, lines
+  | WIDTH arg1=expr COMMA arg2=expr  // Could be WIDTH device$, width or WIDTH columns, lines
   | WIDTH file_number COMMA width=expr
   | WIDTH LPRINT width=expr
   ;
