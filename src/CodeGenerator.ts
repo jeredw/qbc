@@ -1136,6 +1136,31 @@ export class CodeGenerator extends QBasicParserListener {
       this.addStatement(statements.widthFile(ctx.start!, fileNumber, width));
       return;
     }
+    if (ctx._columns) {
+      const columns = this.compileExpression(ctx._columns!, ctx._columns!.start!, { tag: TypeTag.INTEGER });
+      this.addStatement(statements.widthScreen(ctx.start!, columns, /* lines= */ undefined));
+      return;
+    }
+    if (ctx._lines) {
+      const lines = this.compileExpression(ctx._lines!, ctx._lines!.start!, { tag: TypeTag.INTEGER });
+      this.addStatement(statements.widthScreen(ctx.start!, /* columns= */ undefined, lines));
+      return;
+    }
+    if (!ctx._arg1 || !ctx._arg2) {
+      throw new Error("expecting width arg1, arg2")
+    }
+    let device: parser.ExprContext | undefined;
+    let columns: parser.ExprContext | undefined;
+    try {
+      columns = this.compileExpression(ctx._arg1!, ctx._arg1!.start!, { tag: TypeTag.INTEGER });
+    } catch (e: unknown) {
+      device = this.compileExpression(ctx._arg1!, ctx._arg1!.start!, { tag: TypeTag.STRING });
+    }
+    if (device || !columns) {
+      throw new Error("unimplemented");
+    }
+    const lines = this.compileExpression(ctx._arg2!, ctx._arg2!.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.widthScreen(ctx.start!, columns, lines));
   }
 
   override enterWindow_statement = (ctx: parser.Window_statementContext) => {

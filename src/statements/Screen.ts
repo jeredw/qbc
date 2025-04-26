@@ -316,3 +316,23 @@ export class WindowStatement extends Statement {
     }
   }
 }
+
+export class WidthScreenStatement extends Statement {
+  constructor(
+    private token: Token,
+    private columns?: ExprContext,
+    private lines?: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const columns = this.columns && evaluateIntegerExpression(this.columns, context.memory);
+    const lines = this.lines && evaluateIntegerExpression(this.lines, context.memory);
+    try {
+      context.devices.screen.setTextGeometry(columns, lines);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}

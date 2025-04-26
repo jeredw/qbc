@@ -124,6 +124,7 @@ import {
   PsetStatement,
   ScreenStatement,
   ViewStatement,
+  WidthScreenStatement,
   WindowStatement,
 } from "./Screen.ts";
 
@@ -707,6 +708,10 @@ export function widthFile(token: Token, fileNumber: parser.ExprContext, width: p
 
 export function widthLprint(token: Token, width: parser.ExprContext) {
   return new WidthLprintStatement(token, width);
+}
+
+export function widthScreen(token: Token, columns?: parser.ExprContext, lines?: parser.ExprContext) {
+  return new WidthScreenStatement(token, columns, lines);
 }
 
 export function window_(
