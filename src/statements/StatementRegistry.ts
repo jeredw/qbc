@@ -73,6 +73,7 @@ import {
   PrintStatement,
   PrintStatementArgs,
   PrintUsingStatement,
+  WidthLprintStatement,
   WriteStatement
 } from "./Print.ts";
 import { ReturnStatement } from "./Return.ts";
@@ -697,6 +698,10 @@ export function view_(
 
 export function while_(expr: parser.ExprContext) {
   return new DoTest(true, expr);
+}
+
+export function widthLprint(token: Token, width: parser.ExprContext) {
+  return new WidthLprintStatement(token, width);
 }
 
 export function window_(

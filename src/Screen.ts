@@ -30,7 +30,7 @@ class DefaultCanvasProvider implements CanvasProvider {
 export interface Screen extends Printer, LightPenTarget {
   reset(): void;
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
-  setTextGeometry(width: number, height?: number): void;
+  setTextGeometry(width?: number, height?: number): void;
   getMode(): ScreenMode;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
@@ -228,11 +228,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.setScreenMode(mode, geometry, colorSwitch, activePage, visiblePage);
   }
 
-  setTextGeometry(width: number, height?: number) {
-    const [_, currentHeight] = this.geometry.text;
+  setTextGeometry(width?: number, height?: number) {
+    const [currentWidth, currentHeight] = this.geometry.text;
+    const desiredWidth = width ?? currentWidth;
     const desiredHeight = height ?? currentHeight;
     const geometry = this.mode.geometry.find((entry) => (
-      entry.text[0] === width && entry.text[1] === desiredHeight
+      entry.text[0] === desiredWidth && entry.text[1] === desiredHeight
     ));
     if (!geometry) {
       throw new Error(`unsupported text geometry ${width}x${height}`);
@@ -625,10 +626,18 @@ export class TestScreen implements Screen {
   reset() {
   }
 
-  setTextGeometry(width: number, height?: number): void {
+  setTextGeometry(width?: number, height?: number) {
     this.text.print(`[WIDTH ${width}, ${height}]`, true);
     this.graphics.setTextGeometry(width, height);
+    if (width !== undefined) {
+      this.text.setWidth(width);
+    }
     this.hasGraphics = true;
+  }
+
+  setWidth(columns: number) {
+    this.text.print(`[WIDTH ${columns}]`, true);
+    this.text.setWidth(columns);
   }
 
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {

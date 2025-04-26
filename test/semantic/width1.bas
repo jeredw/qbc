@@ -1,0 +1,2 @@
+width lprint 100
+lprint "I am the very model of a modern Major-Gineral, I've information animal vegetable and mineral. I know the kings of England, and I quote the fights historical, from Marathon to Waterloo, in order categorical"

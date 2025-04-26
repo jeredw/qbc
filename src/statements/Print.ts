@@ -591,3 +591,17 @@ export class WriteStatement extends BasePrintStatement {
     }
   }
 }
+
+export class WidthLprintStatement extends Statement {
+  constructor(private token: Token, private width: ExprContext) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const columns = evaluateIntegerExpression(this.width, context.memory);
+    if (columns < 1 || columns > 255) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    context.devices.printer.setWidth(columns);
+  }
+}

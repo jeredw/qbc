@@ -1122,7 +1122,13 @@ export class CodeGenerator extends QBasicParserListener {
     this.addLabelForNextStatement(labels.$exitLabel);
   }
 
-  override enterWidth_statement = (ctx: parser.Width_statementContext) => {}
+  override enterWidth_statement = (ctx: parser.Width_statementContext) => {
+    if (ctx.LPRINT()) {
+      const width = this.compileExpression(ctx._width!, ctx._width!.start!, { tag: TypeTag.INTEGER });
+      this.addStatement(statements.widthLprint(ctx.start!, width));
+      return;
+    }
+  }
 
   override enterWindow_statement = (ctx: parser.Window_statementContext) => {
     const token = ctx.start!;
