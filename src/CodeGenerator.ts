@@ -1103,7 +1103,12 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.view_(token, screen, x1, y1, x2, y2, color, border));
   }
 
-  override enterView_print_statement = (ctx: parser.View_print_statementContext) => {}
+  override enterView_print_statement = (ctx: parser.View_print_statementContext) => {
+    const token = ctx.start!;
+    const topRow = ctx._toprow && this.compileExpression(ctx._toprow, ctx._toprow!.start!, { tag: TypeTag.INTEGER });
+    const bottomRow = ctx._bottomrow && this.compileExpression(ctx._bottomrow, ctx._bottomrow!.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.viewPrint(token, topRow, bottomRow));
+  }
 
   override enterWhile_wend_statement = (ctx: parser.While_wend_statementContext) => {
     const labels = getCodeGeneratorContext(ctx);

@@ -37,6 +37,8 @@ export interface Screen extends Printer, LightPenTarget {
   setPaletteEntry(attribute: number, color: number): void;
   resetPalette(): void;
 
+  setViewPrint(topRow: number, bottomRow: number): void;
+  resetViewPrint(): void;
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void;
   resetView(): void;
   setWindow(p1: Point, p2: Point, screen: boolean): void;
@@ -171,7 +173,7 @@ class Page {
   }
 
   scroll(startRow: number, endRow: number, color: Attributes) {
-    for (let row = startRow; row < endRow; row++) {
+    for (let row = startRow; row < endRow && row < this.text.length; row++) {
       this.text[row - 1] = this.text[row].slice();
     }
     if (endRow > startRow) {
@@ -193,6 +195,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private geometry: ScreenGeometry;
   private color: Attributes;
   private scrollStartRow: number;
+  // Text scrolls up when a newline would first enter this row, e.g. for a 25
+  // line screen we would scroll up when entering notional line 26.
   private scrollEndRow: number;
   private cursorShown: boolean = false;
   private cursorStartScanline: number = 0;
@@ -270,8 +274,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.width = geometry.text[0];
     this.column = 1;
     this.row = 1;
-    this.scrollStartRow = 1;
-    this.scrollEndRow = geometry.text[1];
+    this.resetViewPrint();
     this.color = {fgColor: mode.defaultFgColor, bgColor: 0};
     [this.cellWidth, this.cellHeight] = geometry.characterBox;
     this.canvasProvider.cleanup?.();
@@ -387,6 +390,30 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.palette[2] = monoIndexToColor(6);
       this.palette[3] = monoIndexToColor(8);
     }
+  }
+
+  setViewPrint(topRow: number, bottomRow: number) {
+    const [_, rows] = this.geometry.text;
+    if (topRow < 1 || topRow > rows) {
+      throw new Error(`invalid top row: ${topRow}`);
+    }
+    if (bottomRow < 1 || bottomRow > rows) {
+      throw new Error(`invalid bottom row: ${bottomRow}`);
+    }
+    if (topRow > bottomRow) {
+      throw new Error('top row must be above bottom row');
+    }
+    this.scrollStartRow = topRow;
+    this.scrollEndRow = bottomRow + 1;
+    this.row = topRow;
+    this.column = 1;
+  }
+
+  resetViewPrint() {
+    this.scrollStartRow = 1;
+    this.scrollEndRow = this.geometry.text[1];
+    this.row = 1;
+    this.column = 1;
   }
 
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void {
@@ -666,6 +693,17 @@ export class TestScreen implements Screen {
     this.text.print(`[PALETTE]`, true);
     this.graphics.resetPalette();
     this.hasGraphics = true;
+  }
+
+  setViewPrint(topRow: number, bottomRow: number) {
+    this.text.print(`[VIEW PRINT ${topRow}, ${bottomRow}]`, true);
+    this.graphics.setViewPrint(topRow, bottomRow);
+    this.hasGraphics = true;
+  }
+
+  resetViewPrint() {
+    this.text.print(`[VIEW PRINT]`, true);
+    this.graphics.resetViewPrint();
   }
 
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void {

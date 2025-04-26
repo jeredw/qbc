@@ -288,6 +288,30 @@ export class ViewStatement extends Statement {
   }
 }
 
+export class ViewPrintStatement extends Statement {
+  constructor(
+    private token: Token,
+    private topRow?: ExprContext,
+    private bottomRow?: ExprContext,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    if (!this.topRow || !this.bottomRow) {
+      context.devices.screen.resetViewPrint();
+      return;
+    }
+    const topRow = evaluateIntegerExpression(this.topRow, context.memory);
+    const bottomRow = evaluateIntegerExpression(this.bottomRow, context.memory);
+    try {
+      context.devices.screen.setViewPrint(topRow, bottomRow);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}
+
 export class WindowStatement extends Statement {
   constructor(
     private token: Token,

@@ -123,6 +123,7 @@ import {
   PresetStatement,
   PsetStatement,
   ScreenStatement,
+  ViewPrintStatement,
   ViewStatement,
   WidthScreenStatement,
   WindowStatement,
@@ -696,6 +697,14 @@ export function view_(
   border?: parser.ExprContext,
 ) {
   return new ViewStatement(token, screen, x1, y1, x2, y2, color, border);
+}
+
+export function viewPrint(
+  token: Token,
+  topRow?: parser.ExprContext,
+  bottomRow?: parser.ExprContext,
+) {
+  return new ViewPrintStatement(token, topRow, bottomRow);
 }
 
 export function while_(expr: parser.ExprContext) {

@@ -1,0 +1,22 @@
+(program 
+  (statement 
+    (width_statement width 
+      (expr 
+        (literal 80)) , 
+      (expr 
+        (literal 50)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 50)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ,) 
+            (print_argument 
+              (expr 
+                (literal "hello"))))) \n) next i)) \n <EOF>)

@@ -1,0 +1,25 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (view_print_statement view print 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 25)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 30)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ,) 
+            (print_argument 
+              (expr 
+                (literal "hello"))))) \n) next i)) \n <EOF>)

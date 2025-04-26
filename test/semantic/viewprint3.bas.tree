@@ -1,0 +1,12 @@
+(program 
+  (statement 
+    (view_print_statement view print 
+      (expr 
+        (literal 10)) to 
+      (expr 
+        (literal 10)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello")) ;))) \n <EOF>)

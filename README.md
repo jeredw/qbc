@@ -337,7 +337,7 @@ parse those using baked in rules.
 | `VARPTR$`        | Function    | -       | ⛔      |
 | `VARSEG`         | Function    | -       | ⛔      |
 | `VIEW`           | Statement   | ✅      | ✅      |
-| `VIEW PRINT`     | Statement   | ✅      | ⛔      |
+| `VIEW PRINT`     | Statement   | ✅      | ✅      |
 | `WAIT`           | Statement   | -       | ⛔      |
 | `WEND`           | Keyword     | ✅      | ✅      |
 | `WHILE`...`WEND` | Statement   | ✅      | ✅      |
