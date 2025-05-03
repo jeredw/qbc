@@ -1,5 +1,5 @@
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
-import { LineArgs, Plotter, Point } from './Drawing.ts';
+import { CircleArgs, LineArgs, Plotter, Point } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenGeometry, ScreenMode } from './ScreenMode.ts';
@@ -47,6 +47,7 @@ export interface Screen extends Printer, LightPenTarget {
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
   resetPixel(x: number, y: number, color?: number, step?: boolean): void;
   line(args: LineArgs, color?: number): void;
+  circle(args: CircleArgs, color?: number): void;
 
   showCursor(): void;
   hideCursor(): void;
@@ -144,9 +145,16 @@ class Page {
     this.dirty = true;
   }
 
-  line(args: LineArgs, color: number): void {
+  line(args: LineArgs, color: number) {
     const ctx = this.canvas.getContext('2d')!;
     this.plotter.line(ctx, args, color);
+    this.dirty = true;
+  }
+
+  circle(args: CircleArgs, color: number) {
+    const ctx = this.canvas.getContext('2d')!;
+    const aspect = args.aspect ?? 4 * (this.geometry.dots[1] / this.geometry.dots[0]) / 3;
+    this.plotter.circle(ctx, args, color, aspect);
     this.dirty = true;
   }
 
@@ -423,7 +431,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.column = 1;
   }
 
-  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void {
+  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
@@ -433,7 +441,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.activePage.setView(p1, p2, screen, color, border);
   }
 
-  resetView(): void {
+  resetView() {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
@@ -474,11 +482,18 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.activePage.setPixel(x, y, color ?? this.color.bgColor, step);
   }
 
-  line(args: LineArgs, color?: number): void {
+  line(args: LineArgs, color?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
     this.activePage.line(args, color ?? this.color.fgColor);
+  }
+
+  circle(args: CircleArgs, color?: number) {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    this.activePage.circle(args, color ?? this.color.fgColor);
   }
 
   render() {
@@ -720,12 +735,12 @@ export class TestScreen implements Screen {
     this.graphics.resetViewPrint();
   }
 
-  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void {
+  setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
     this.text.print(`[VIEW ${p1.x}, ${p1.y}, ${p2.x}, ${p2.y}, ${screen}, ${color}, ${border}]`, true);
     this.graphics.setView(p1, p2, screen, color, border);
   }
 
-  resetView(): void {
+  resetView() {
     this.text.print(`[VIEW]`, true);
     this.graphics.resetView();
   }
@@ -755,9 +770,14 @@ export class TestScreen implements Screen {
     this.graphics.resetPixel(x, y, color, step);
   }
 
-  line(args: LineArgs, color?: number): void {
+  line(args: LineArgs, color?: number) {
     this.text.print(`[LINE ${args.step1}, ${args.x1}, ${args.y1}, ${args.step2}, ${args.x2}, ${args.y2}, ${args.outline}, ${args.fill}, ${args.dash}, ${color}]`, true);
     this.graphics.line(args, color);
+  }
+
+  circle(args: CircleArgs, color?: number) {
+    this.text.print(`[CIRCLE ${args.step}, ${args.x}, ${args.y}, ${args.radius}, ${args.start}, ${args.end}, ${args.aspect}, ${color}]`, true);
+    this.graphics.circle(args, color);
   }
 
   showCursor() {

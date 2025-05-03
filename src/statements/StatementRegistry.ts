@@ -114,6 +114,8 @@ import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
 import { PenFunction } from "./LightPen.ts";
 import {
+  CircleStatement,
+  CircleStatementArgs,
   ClsStatement,
   ColorStatement,
   CsrlinFunction,
@@ -165,6 +167,10 @@ export function chdir(args: BuiltinStatementArgs) {
 
 export function chr(args: BuiltinStatementArgs) {
   return new ChrFunction(args);
+}
+
+export function circle(args: CircleStatementArgs) {
+  return new CircleStatement(args);
 }
 
 export function close(fileNumber: parser.ExprContext) {

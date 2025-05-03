@@ -368,7 +368,20 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {}
-  override enterCircle_statement = (ctx: parser.Circle_statementContext) => {}
+
+  override enterCircle_statement = (ctx: parser.Circle_statementContext) => {
+    const token = ctx.start!;
+    const step = !!ctx.STEP();
+    const x = this.compileExpression(ctx._x!, ctx._x!.start!, { tag: TypeTag.INTEGER });
+    const y = this.compileExpression(ctx._y!, ctx._y!.start!, { tag: TypeTag.INTEGER });
+    const radius = this.compileExpression(ctx._radius!, ctx._radius!.start!, { tag: TypeTag.INTEGER });
+    const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
+    const start = ctx._start && this.compileExpression(ctx._start, ctx._start.start!, { tag: TypeTag.SINGLE });
+    const end = ctx._end && this.compileExpression(ctx._end, ctx._end.start!, { tag: TypeTag.SINGLE });
+    const aspect = ctx._aspect && this.compileExpression(ctx._aspect, ctx._aspect.start!, { tag: TypeTag.SINGLE });
+    this.addStatement(statements.circle({token, step, x, y, radius, color, start, end, aspect}));
+  }
+
   override enterClear_statement = (ctx: parser.Clear_statementContext) => {}
 
   override enterClose_statement = (ctx: parser.Close_statementContext) => {

@@ -1,0 +1,75 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (expr 
+            (literal 160)) - 
+          (expr 
+            (literal 20))) , 
+        (expr 
+          (expr 
+            (literal 100)) - 
+          (expr 
+            (literal 20))) ) - 
+      ( 
+        (expr 
+          (expr 
+            (literal 160)) + 
+          (expr 
+            (literal 20))) , 
+        (expr 
+          (expr 
+            (literal 100)) + 
+          (expr 
+            (literal 20))) ) , 
+      (expr 
+        (literal 2)) , 
+      (box_style b))) \n 
+  (statement 
+    (circle_statement circle 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (literal 20)) , , , , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (circle_statement circle 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 4)) , 
+      (expr - 
+        (expr 
+          (literal 3.4))) , 
+      (expr - 
+        (expr 
+          (literal 1))))) \n 
+  (statement 
+    (circle_statement circle 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 3.4)))) \n <EOF>)

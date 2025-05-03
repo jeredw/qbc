@@ -17,6 +17,16 @@ export interface LineArgs {
   dash?: number;
 }
 
+export interface CircleArgs {
+  step: boolean;
+  x: number;
+  y: number;
+  radius: number;
+  start?: number;
+  end?: number;
+  aspect?: number;
+}
+
 class Range {
   constructor(public start: number, public end: number) {
   }
@@ -104,13 +114,21 @@ export class Plotter {
       if (args.dash === undefined) {
         this.strokeRectangle(ctx, p1v, p2v, color);
       } else {
-        this.dashRectangle(ctx, p1v, p2v, color, args.dash);
+        this.dashRectangle(ctx, p1v, p2v, color);
       }
     } else if (args.fill) {
       this.fillRectangle(ctx, p1v, p2v, color);
     } else {
-      this.drawLine(ctx, p1v, p2v, color, args.dash);
+      this.drawLine(ctx, p1v, p2v, color);
     }
+  }
+
+  circle(ctx: CanvasRenderingContext2D, args: CircleArgs, color: number, aspect: number) {
+    const center = args.step ?
+      {x: args.x + this.cursor.x, y: args.y + this.cursor.y} :
+      {x: args.x, y: args.y};
+    this.cursor = {...center};
+    this.drawCircle(ctx, center, args.radius, color, aspect, args.start, args.end);
   }
 
   setWindow(p1: Point, p2: Point, screen: boolean) {
@@ -189,7 +207,7 @@ export class Plotter {
     ctx.fillRect(r.x.start, r.y.start, r.x.length(), r.y.length());
   }
 
-  private dashRectangle(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number, dash: number) {
+  private dashRectangle(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number) {
     const r = Region.fromPoints(p1, p2).intersect(this.clip);
     for (let x = r.x.start; x <= r.x.end; x++) {
       this.dashPlot(ctx, x, r.y.end, color);
@@ -205,7 +223,7 @@ export class Plotter {
     }
   }
 
-  private drawLine(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number, dash?: number) {
+  private drawLine(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number) {
     // QBasic seems to use a subtly broken Bresenham-style line rasterizer that
     // makes extreme slopes rasterize unevenly.  For example, you'd expect a line
     // from (0, 0)-(100, 1) to jog down by 1px in y after 50px in x, but actually
@@ -265,6 +283,104 @@ export class Plotter {
           error += BUG * (2 * dx);
         }
       }
+    }
+  }
+
+  // TODO: Figure out how to make this pixel accurate.
+  private drawCircle(
+    ctx: CanvasRenderingContext2D,
+    center: Point,
+    radius: number,
+    color: number,
+    aspect: number,
+    start?: number,
+    end?: number,
+  ) {
+    const [rx, ry] = [radius, radius * aspect];
+    start = start ?? 0;
+    end = end ?? 2 * Math.PI;
+    const drawLineToStart = start !== undefined && start < 0;
+    const drawLineToEnd = end !== undefined && end < 0;
+    let minToStart = 10;
+    let minToEnd = 10;
+    let startPoint: Point | undefined;
+    let endPoint: Point | undefined;
+    start = Math.abs(start);
+    end = Math.abs(end);
+
+    const pointToAngle = (x: number, y: number) => {
+      const [cx, cy] = [x - center.x, center.y - y];
+      const angle = Math.atan2(cy, cx);
+      return angle >= 0 ? angle : 2 * Math.PI + angle;
+    };
+    const isPointOnArc = (angle: number): boolean => {
+      if (start <= end) {
+        return angle >= start && angle <= end;
+      }
+      return !(angle >= end && angle <= start);
+    };
+    const angleDifference = (a: number, b: number) => (
+      Math.abs(Math.atan2(Math.sin(b - a), Math.cos(b - a)))
+    );
+    const plot = (x: number, y: number) => {
+      x = Math.floor(x);
+      y = Math.floor(y);
+      const angle = pointToAngle(x, y);
+      if (isPointOnArc(angle)) {
+        this.fillPixel(ctx, {x, y}, color);
+      }
+      if (drawLineToStart) {
+        const toStart = angleDifference(angle, start);
+        if (toStart < minToStart) {
+          startPoint = {x, y};
+          minToStart = toStart;
+        }
+      }
+      if (drawLineToEnd) {
+        const toEnd = angleDifference(angle, end);
+        if (toEnd < minToEnd) {
+          endPoint = {x, y};
+          minToEnd = toEnd;
+        }
+      }
+    };
+
+    // https://zingl.github.io/bresenham.html
+    let [x0, y0, x1, y1] = [center.x - rx, center.y - ry, center.x + rx, center.y + ry];
+    let a = Math.abs(x1 - x0);
+    let b = Math.abs(y1 - y0);
+    let b1 = b % 2;
+    let dx = 4 * (1 - a) * b * b;
+    let dy = 4 * (b1 + 1) * a * a;
+    let err = dx + dy + b1 * a * a;
+
+    if (x0 > x1) { x0 = x1; x1 += a; } // if called with swapped points
+    if (y0 > y1) y0 = y1;              // .. exchange them
+    y0 += (b + 1) / 2; y1 = y0 - b1;   // starting pixel
+    a *= 8 * a; b1 = 8 * b *b;
+
+    do {
+      plot(x1, y0);
+      plot(x0, y0);
+      plot(x0, y1);
+      plot(x1, y1);
+      const e2 = 2 * err;
+      if (e2 <= dy) { y0++; y1--; err += dy += a; }  // y step
+      if (e2 >= dx || 2 * err > dy) { x0++; x1--; err += dx += b1; } // x step
+    } while (x0 <= x1);
+
+    while (y0 - y1 < b) {  // too early stop of flat ellipses a=1
+      plot(x0 - 1, y0);    // -> finish tip of ellipse
+      plot(x1 + 1, y0++);
+      plot(x0 - 1, y1);
+      plot(x1 + 1, y1--);
+    }
+
+    if (startPoint) {
+      this.drawLine(ctx, center, startPoint, color);
+    }
+    if (endPoint) {
+      this.drawLine(ctx, center, endPoint, color);
     }
   }
 }

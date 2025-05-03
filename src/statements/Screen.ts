@@ -10,6 +10,7 @@ import { readNumbersFromArray } from "./Arrays.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { LineArgs } from "../Drawing.ts";
 import { ControlFlow } from "../ControlFlow.ts";
+import { TypeTag } from "../Types.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -174,6 +175,42 @@ export class PosFunction extends Statement {
   }
 }
 
+export interface CircleStatementArgs {
+  token: Token;
+  step: boolean;
+  x: ExprContext;
+  y: ExprContext;
+  radius: ExprContext;
+  color?: ExprContext;
+  start?: ExprContext;
+  end?: ExprContext;
+  aspect?: ExprContext;
+}
+
+export class CircleStatement extends Statement {
+  constructor(
+    private args: CircleStatementArgs
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const step = this.args.step;
+    const x = evaluateIntegerExpression(this.args.x, context.memory);
+    const y = evaluateIntegerExpression(this.args.y, context.memory);
+    const radius = evaluateIntegerExpression(this.args.radius, context.memory);
+    const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
+    const start = this.args.start && evaluateIntegerExpression(this.args.start, context.memory, { tag: TypeTag.SINGLE });
+    const end = this.args.end && evaluateIntegerExpression(this.args.end, context.memory, { tag: TypeTag.SINGLE });
+    const aspect = this.args.aspect && evaluateIntegerExpression(this.args.aspect, context.memory, { tag: TypeTag.SINGLE });
+    try {
+      context.devices.screen.circle({step, x, y, radius, start, end, aspect}, color);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}
+
 export interface LineStatementArgs {
   token: Token;
   x1: ExprContext;
@@ -204,7 +241,7 @@ export class LineStatement extends Statement {
     const dash = this.args.dash && evaluateIntegerExpression(this.args.dash, context.memory);
     const {step1, step2, outline, fill} = this.args;
     try {
-      context.devices.screen.line({x1, y1, step1, x2, y2, step2, outline, fill, dash}, color)
+      context.devices.screen.line({x1, y1, step1, x2, y2, step2, outline, fill, dash}, color);
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
