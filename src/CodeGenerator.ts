@@ -758,8 +758,8 @@ export class CodeGenerator extends QBasicParserListener {
     if (boxStyle && !outline && !fill) {
       throw ParseError.fromToken(ctx.box_style()!.start!, "Expected: BF or B or , or end-of-statement");
     }
-    const x1 = this.compileExpression(ctx._x1!, ctx._x1!.start!, { tag: TypeTag.INTEGER });
-    const y1 = this.compileExpression(ctx._y1!, ctx._y1!.start!, { tag: TypeTag.INTEGER });
+    const x1 = ctx._x1 && this.compileExpression(ctx._x1!, ctx._x1!.start!, { tag: TypeTag.INTEGER });
+    const y1 = ctx._y1 && this.compileExpression(ctx._y1!, ctx._y1!.start!, { tag: TypeTag.INTEGER });
     const step1 = !!ctx._step1;
     const x2 = this.compileExpression(ctx._x2!, ctx._x2!.start!, { tag: TypeTag.INTEGER });
     const y2 = this.compileExpression(ctx._y2!, ctx._y2!.start!, { tag: TypeTag.INTEGER });

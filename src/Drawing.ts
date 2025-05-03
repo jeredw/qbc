@@ -6,8 +6,8 @@ export interface Point {
 }
 
 export interface LineArgs {
-  x1: number;
-  y1: number;
+  x1?: number;
+  y1?: number;
   step1: boolean;
   x2: number;
   y2: number;
@@ -99,9 +99,10 @@ export class Plotter {
   }
 
   line(ctx: CanvasRenderingContext2D, args: LineArgs, color: number) {
+    const [x1, y1] = [args.x1 ?? this.cursor.x, args.y1 ?? this.cursor.y];
     const p1 = args.step1 ?
-      {x: args.x1 + this.cursor.x, y: args.y1 + this.cursor.y} :
-      {x: args.x1, y: args.y1};
+      {x: x1 + this.cursor.x, y: y1 + this.cursor.y} :
+      {x: x1, y: y1};
     this.cursor = {...p1};
     const p2 = args.step2 ?
       {x: args.x2 + this.cursor.x, y: args.y2 + this.cursor.y} :

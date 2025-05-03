@@ -213,8 +213,8 @@ export class CircleStatement extends Statement {
 
 export interface LineStatementArgs {
   token: Token;
-  x1: ExprContext;
-  y1: ExprContext;
+  x1?: ExprContext;
+  y1?: ExprContext;
   step1: boolean;
   x2: ExprContext;
   y2: ExprContext;
@@ -233,8 +233,8 @@ export class LineStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const x1 = evaluateIntegerExpression(this.args.x1, context.memory);
-    const y1 = evaluateIntegerExpression(this.args.y1, context.memory);
+    const x1 = this.args.x1 && evaluateIntegerExpression(this.args.x1, context.memory);
+    const y1 = this.args.y1 && evaluateIntegerExpression(this.args.y1, context.memory);
     const x2 = evaluateIntegerExpression(this.args.x2, context.memory);
     const y2 = evaluateIntegerExpression(this.args.y2, context.memory);
     const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
