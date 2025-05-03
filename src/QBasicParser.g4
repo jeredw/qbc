@@ -590,8 +590,8 @@ key_statement
   ;
 
 line_statement
-  : LINE (STEP? '(' x1=expr COMMA y1=expr ')')? '-'
-         STEP? '(' x2=expr COMMA y2=expr ')'
+  : LINE (step1=STEP? '(' x1=expr COMMA y1=expr ')')? '-'
+          step2=STEP? '(' x2=expr COMMA y2=expr ')'
     ( COMMA (color=expr)? COMMA (box=box_style)? COMMA style=expr
     | COMMA (color=expr)? COMMA box=box_style
 // The IDE will erase a trailing comma after color.

@@ -1,0 +1,71 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (for_next_statement for y = 
+      (expr - 
+        (expr 
+          (literal 50))) to 
+      (expr 
+        (literal 50)) step 
+      (expr 
+        (literal 2)) 
+      (block \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (literal 160)) , 
+              (expr 
+                (literal 100)) ) - step 
+            ( 
+              (expr 
+                (literal 100)) , 
+              (expr 
+                (variable_or_function_call y)) ))) \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (literal 160)) , 
+              (expr 
+                (literal 100)) ) - step 
+            ( 
+              (expr - 
+                (expr 
+                  (literal 100))) , 
+              (expr 
+                (variable_or_function_call y)) ))) \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (literal 160)) , 
+              (expr 
+                (literal 100)) ) - step 
+            ( 
+              (expr 
+                (expr 
+                  (literal 2)) * 
+                (expr 
+                  (variable_or_function_call y))) , 
+              (expr - 
+                (expr 
+                  (literal 50))) ))) \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (literal 160)) , 
+              (expr 
+                (literal 100)) ) - step 
+            ( 
+              (expr 
+                (expr 
+                  (literal 2)) * 
+                (expr 
+                  (variable_or_function_call y))) , 
+              (expr 
+                (literal 50)) ))) \n) next y)) \n <EOF>)

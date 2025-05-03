@@ -1,5 +1,5 @@
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
-import { Plotter, Point } from './Drawing.ts';
+import { LineArgs, Plotter, Point } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenGeometry, ScreenMode } from './ScreenMode.ts';
@@ -46,6 +46,7 @@ export interface Screen extends Printer, LightPenTarget {
   clear(): void;
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
   resetPixel(x: number, y: number, color?: number, step?: boolean): void;
+  line(args: LineArgs, color?: number): void;
 
   showCursor(): void;
   hideCursor(): void;
@@ -140,6 +141,12 @@ class Page {
   setPixel(x: number, y: number, color: number, step?: boolean) {
     const ctx = this.canvas.getContext('2d')!;
     this.plotter.setPixel(ctx, x, y, color, step);
+    this.dirty = true;
+  }
+
+  line(args: LineArgs, color: number): void {
+    const ctx = this.canvas.getContext('2d')!;
+    this.plotter.line(ctx, args, color);
     this.dirty = true;
   }
 
@@ -467,6 +474,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.activePage.setPixel(x, y, color ?? this.color.bgColor, step);
   }
 
+  line(args: LineArgs, color?: number): void {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    this.activePage.line(args, color ?? this.color.fgColor);
+  }
+
   render() {
     const ctx = this.canvas.getContext('2d')!;
     if (this.visiblePage.dirty) {
@@ -739,6 +753,11 @@ export class TestScreen implements Screen {
   resetPixel(x: number, y: number, color?: number, step?: boolean) {
     this.text.print(`[PRESET ${x}, ${y}, ${color}, ${step}]`, true);
     this.graphics.resetPixel(x, y, color, step);
+  }
+
+  line(args: LineArgs, color?: number): void {
+    this.text.print(`[LINE ${args.step1}, ${args.x1}, ${args.y1}, ${args.step2}, ${args.x2}, ${args.y2}, ${args.outline}, ${args.fill}, ${args.dash}, ${color}]`, true);
+    this.graphics.line(args, color);
   }
 
   showCursor() {

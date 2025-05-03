@@ -5,6 +5,18 @@ export interface Point {
   y: number;
 }
 
+export interface LineArgs {
+  x1: number;
+  y1: number;
+  step1: boolean;
+  x2: number;
+  y2: number;
+  step2: boolean;
+  outline: boolean;
+  fill: boolean; 
+  dash?: number;
+}
+
 class Range {
   constructor(public start: number, public end: number) {
   }
@@ -60,18 +72,45 @@ export class Plotter {
   cursor: Point;
   windowToView: WindowToViewTransform;
   clip: Region;
+  pattern: number;
 
   constructor(width: number, height: number) {
     this.cursor = {x: Math.floor(width / 2), y: Math.floor(height / 2)};
     this.clip = Region.fromSize(width, height);
     this.windowToView = new WindowToViewTransform(width, height);
+    this.pattern = 0xffff;
   }
 
   setPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: number, step?: boolean) {
     const pw = step ? {x: x + this.cursor.x, y: y + this.cursor.y} : {x, y};
     const pv = this.windowToView.transform(pw);
     this.fillPixel(ctx, pv, color);
-    this.cursor = pw;
+    this.cursor = {...pw};
+  }
+
+  line(ctx: CanvasRenderingContext2D, args: LineArgs, color: number) {
+    const p1 = args.step1 ?
+      {x: args.x1 + this.cursor.x, y: args.y1 + this.cursor.y} :
+      {x: args.x1, y: args.y1};
+    this.cursor = {...p1};
+    const p2 = args.step2 ?
+      {x: args.x2 + this.cursor.x, y: args.y2 + this.cursor.y} :
+      {x: args.x2, y: args.y2};
+    this.cursor = {...p2};
+    const p1v = this.windowToView.transform(p1);
+    const p2v = this.windowToView.transform(p2);
+    this.pattern = args.dash !== undefined ? args.dash & 0xffff : 0xffff;
+    if (args.outline) {
+      if (args.dash === undefined) {
+        this.strokeRectangle(ctx, p1v, p2v, color);
+      } else {
+        this.dashRectangle(ctx, p1v, p2v, color, args.dash);
+      }
+    } else if (args.fill) {
+      this.fillRectangle(ctx, p1v, p2v, color);
+    } else {
+      this.drawLine(ctx, p1v, p2v, color, args.dash);
+    }
   }
 
   setWindow(p1: Point, p2: Point, screen: boolean) {
@@ -113,6 +152,13 @@ export class Plotter {
     }
   }
 
+  private dashPlot(ctx: CanvasRenderingContext2D, x: number, y: number, color: number) {
+    if (this.pattern & 0x8000) {
+      this.fillPixel(ctx, { x, y }, color);
+    }
+    this.pattern = (this.pattern << 1) | ((this.pattern >> 15) & 1);
+  }
+
   private strokeRectangle(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number) {
     const rUnclipped = Region.fromPoints(p1, p2);
     const r = rUnclipped.intersect(this.clip);
@@ -143,31 +189,82 @@ export class Plotter {
     ctx.fillRect(r.x.start, r.y.start, r.x.length(), r.y.length());
   }
 
-  private dashRectangle(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number, pattern: number) {
+  private dashRectangle(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number, dash: number) {
     const r = Region.fromPoints(p1, p2).intersect(this.clip);
     for (let x = r.x.start; x <= r.x.end; x++) {
-      if (pattern & 1) {
-        this.fillPixel(ctx, {x, y: r.y.end}, color);
-      }
-      pattern = ((pattern << 15) & 0x8000) | (pattern >> 1);
+      this.dashPlot(ctx, x, r.y.end, color);
     }
     for (let x = r.x.start; x <= r.x.end; x++) {
-      if (pattern & 1) {
-        this.fillPixel(ctx, {x, y: r.y.start}, color);
-      }
-      pattern = ((pattern << 15) & 0x8000) | (pattern >> 1);
+      this.dashPlot(ctx, x, r.y.start, color);
     }
     for (let y = r.y.start; y <= r.y.end; y++) {
-      if (pattern & 1) {
-        this.fillPixel(ctx, {x: r.x.end, y}, color);
-      }
-      pattern = ((pattern << 15) & 0x8000) | (pattern >> 1);
+      this.dashPlot(ctx, r.x.end, y, color);
     }
     for (let y = r.y.start; y <= r.y.end; y++) {
-      if (pattern & 1) {
-        this.fillPixel(ctx, {x: r.x.start, y}, color);
+      this.dashPlot(ctx, r.x.start, y, color);
+    }
+  }
+
+  private drawLine(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color: number, dash?: number) {
+    // QBasic seems to use a subtly broken Bresenham-style line rasterizer that
+    // makes extreme slopes rasterize unevenly.  For example, you'd expect a line
+    // from (0, 0)-(100, 1) to jog down by 1px in y after 50px in x, but actually
+    // it jogs down after 25px in x.  This behavior is consistent with doubled
+    // Bresenham error terms (the factor BUG here).  Using dash style, it's also
+    // possible to verify its loop always steps x from left to right.
+    const BUG = 2;
+    const dx = Math.abs(p2.x - p1.x);
+    const dy = Math.abs(p2.y - p1.y);
+    if (dx > dy) {
+      if (p1.x > p2.x) {
+        [p1, p2] = [p2, p1];
       }
-      pattern = ((pattern << 15) & 0x8000) | (pattern >> 1);
+      if (p2.y > p1.y) {
+        let error = BUG * 2 * dy - dx;
+        for (let x = p1.x, y = p1.y; x <= p2.x; x++) {
+          this.dashPlot(ctx, x, y, color);
+          if (error > 0) {
+            y++;
+            error -= BUG * (2 * dx);
+          }
+          error += BUG * (2 * dy);
+        }
+      } else {
+        let error = BUG * 2 * dy - dx;
+        for (let x = p1.x, y = p1.y; x <= p2.x; x++) {
+          this.dashPlot(ctx, x, y, color);
+          if (error > 0) {
+            y--;
+            error -= BUG * (2 * dx);
+          }
+          error += BUG * (2 * dy);
+        }
+      }
+    } else {
+      if (p1.x > p2.x) {
+        [p1, p2] = [p2, p1];
+      }
+      if (p2.y > p1.y) {
+        let error = BUG * 2 * dx - dy;
+        for (let y = p1.y, x = p1.x; y <= p2.y; y++) {
+          this.dashPlot(ctx, x, y, color);
+          if (error > 0) {
+            x++;
+            error -= BUG * (2 * dy);
+          }
+          error += BUG * (2 * dx);
+        }
+      } else {
+        let error = BUG * 2 * dx - dy;
+        for (let y = p1.y, x = p1.x; y >= p2.y; y--) {
+          this.dashPlot(ctx, x, y, color);
+          if (error > 0) {
+            x++;
+            error -= BUG * (2 * dy);
+          }
+          error += BUG * (2 * dx);
+        }
+      }
     }
   }
 }

@@ -1,0 +1,106 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 110)) , 
+        (expr 
+          (literal 50)) ) - 
+      ( 
+        (expr 
+          (literal 210)) , 
+        (expr 
+          (literal 150)) ) , 
+      (expr 
+        (literal 2)) , 
+      (box_style b))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr - 
+        (expr 
+          (literal 50))) to 
+      (expr 
+        (literal 50)) 
+      (block \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (literal 160)) , 
+              (expr 
+                (expr 
+                  (literal 100)) + 
+                (expr 
+                  (variable_or_function_call i))) ) - step 
+            ( 
+              (expr 
+                (variable_or_function_call i)) , 
+              (expr 
+                (literal 0)) ) , 
+            (expr 
+              (literal 3)) , , 
+            (expr 
+              (literal &hff00)))) \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (literal 160)) , 
+              (expr 
+                (expr 
+                  (literal 100)) + 
+                (expr 
+                  (variable_or_function_call i))) ) - step 
+            ( 
+              (expr - 
+                (expr 
+                  (variable_or_function_call i))) , 
+              (expr 
+                (literal 0)) ) , 
+            (expr 
+              (literal 5)) , , 
+            (expr 
+              (literal &hff00)))) \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (expr 
+                  (literal 160)) + 
+                (expr 
+                  (variable_or_function_call i))) , 
+              (expr 
+                (literal 100)) ) - step 
+            ( 
+              (expr 
+                (literal 0)) , 
+              (expr - 
+                (expr 
+                  (variable_or_function_call i))) ) , 
+            (expr 
+              (literal 6)) , , 
+            (expr 
+              (literal &hff00)))) \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (expr 
+                  (literal 160)) + 
+                (expr 
+                  (variable_or_function_call i))) , 
+              (expr 
+                (literal 100)) ) - step 
+            ( 
+              (expr 
+                (literal 0)) , 
+              (expr 
+                (variable_or_function_call i)) ) , 
+            (expr 
+              (literal 1)) , , 
+            (expr 
+              (literal &hff00)))) \n) next i)) \n <EOF>)

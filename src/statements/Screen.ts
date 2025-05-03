@@ -8,6 +8,8 @@ import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
 import { readNumbersFromArray } from "./Arrays.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
+import { LineArgs } from "../Drawing.ts";
+import { ControlFlow } from "../ControlFlow.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -169,6 +171,43 @@ export class PosFunction extends Statement {
   override execute(context: ExecutionContext) {
     const column = context.devices.screen.getColumn();
     context.memory.write(this.result, integer(column));
+  }
+}
+
+export interface LineStatementArgs {
+  token: Token;
+  x1: ExprContext;
+  y1: ExprContext;
+  step1: boolean;
+  x2: ExprContext;
+  y2: ExprContext;
+  step2: boolean;
+  color?: ExprContext;
+  outline: boolean;
+  fill: boolean; 
+  dash?: ExprContext;
+}
+
+export class LineStatement extends Statement {
+  constructor(
+    private args: LineStatementArgs
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const x1 = evaluateIntegerExpression(this.args.x1, context.memory);
+    const y1 = evaluateIntegerExpression(this.args.y1, context.memory);
+    const x2 = evaluateIntegerExpression(this.args.x2, context.memory);
+    const y2 = evaluateIntegerExpression(this.args.y2, context.memory);
+    const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
+    const dash = this.args.dash && evaluateIntegerExpression(this.args.dash, context.memory);
+    const {step1, step2, outline, fill} = this.args;
+    try {
+      context.devices.screen.line({x1, y1, step1, x2, y2, step2, outline, fill, dash}, color)
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
+    }
   }
 }
 

@@ -1,0 +1,59 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) - step 
+      ( 
+        (expr 
+          (literal 99)) , 
+        (expr 
+          (literal 2)) ))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 99)) ) - step 
+      ( 
+        (expr 
+          (literal 13)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 1)) ) - step 
+      ( 
+        (expr 
+          (literal 49)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 1)) ) - step 
+      ( 
+        (expr 
+          (literal 37)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 2)))) \n <EOF>)

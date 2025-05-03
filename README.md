@@ -208,7 +208,7 @@ parse those using baked in rules.
 | `LEFT$`          | Function    | -       | ✅      |
 | `LEN`            | Function    | ✅      | ✅      |
 | `LET`            | Statement   | ✅      | ✅      |
-| `LINE` Graphics  | Statement   | ✅      | ⛔      |
+| `LINE` Graphics  | Statement   | ✅      | ✅      |
 | `LINE INPUT`     | Statement   | ✅      | ✅      |
 | `LIST`           | Keyword     | ✅      | ⛔      |
 | `LOC`            | Function    | -       | ✅      |

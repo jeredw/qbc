@@ -737,7 +737,24 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.key({token, operation, keyNumber, stringExpr}))
   }
 
-  override enterLine_statement = (ctx: parser.Line_statementContext) => {}
+  override enterLine_statement = (ctx: parser.Line_statementContext) => {
+    const token = ctx.start!;
+    const boxStyle = ctx.box_style()?.getText();
+    const outline = !!(boxStyle && boxStyle.toLowerCase() === 'b');
+    const fill = !!(boxStyle && boxStyle.toLowerCase() === 'bf');
+    if (boxStyle && !outline && !fill) {
+      throw ParseError.fromToken(ctx.box_style()!.start!, "Expected: BF or B or , or end-of-statement");
+    }
+    const x1 = this.compileExpression(ctx._x1!, ctx._x1!.start!, { tag: TypeTag.INTEGER });
+    const y1 = this.compileExpression(ctx._y1!, ctx._y1!.start!, { tag: TypeTag.INTEGER });
+    const step1 = !!ctx._step1;
+    const x2 = this.compileExpression(ctx._x2!, ctx._x2!.start!, { tag: TypeTag.INTEGER });
+    const y2 = this.compileExpression(ctx._y2!, ctx._y2!.start!, { tag: TypeTag.INTEGER });
+    const step2 = !!ctx._step2;
+    const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
+    const dash = ctx._style && this.compileExpression(ctx._style, ctx._style.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.line({token, x1, y1, step1, x2, y2, step2, color, outline, fill, dash}));
+  }
 
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {
     const token = ctx.start!;

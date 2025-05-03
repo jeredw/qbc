@@ -103,7 +103,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -117,6 +117,8 @@ import {
   ClsStatement,
   ColorStatement,
   CsrlinFunction,
+  LineStatement,
+  LineStatementArgs,
   LocateStatement,
   PaletteStatement,
   PosFunction,
@@ -449,6 +451,10 @@ export function let_(variable: Variable, expr: parser.ExprContext) {
 
 export function len(variable: Variable | undefined, stringExpr: parser.ExprContext | undefined, result: Variable) {
   return new LenStatement(variable, stringExpr, result);
+}
+
+export function line(args: LineStatementArgs) {
+  return new LineStatement(args);
 }
 
 export function loop(isWhile: boolean, expr: parser.ExprContext) {
