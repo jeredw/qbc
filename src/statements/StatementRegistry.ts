@@ -103,7 +103,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { BuiltinStatementArgs } from "../Builtins.ts";
+import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -123,6 +123,7 @@ import {
   LineStatementArgs,
   LocateStatement,
   PaletteStatement,
+  PmapFunction,
   PosFunction,
   PresetStatement,
   PsetStatement,
@@ -537,6 +538,10 @@ export function playFunction(result: Variable) {
 
 export function playStatement(token: Token, commandString: parser.ExprContext) {
   return new PlayStatement(token, commandString);
+}
+
+export function pmap(args: BuiltinStatementArgs) {
+  return new PmapFunction(args);
 }
 
 export function pos(args: BuiltinStatementArgs) {

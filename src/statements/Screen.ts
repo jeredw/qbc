@@ -3,13 +3,11 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
-import { ILLEGAL_FUNCTION_CALL, integer, isNumeric, isReference } from "../Values.ts";
+import { double, ILLEGAL_FUNCTION_CALL, integer } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
 import { readNumbersFromArray } from "./Arrays.ts";
-import { BuiltinStatementArgs } from "../Builtins.ts";
-import { LineArgs } from "../Drawing.ts";
-import { ControlFlow } from "../ControlFlow.ts";
+import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { TypeTag } from "../Types.ts";
 
 export class ScreenStatement extends Statement {
@@ -434,5 +432,52 @@ export class WidthScreenStatement extends Statement {
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
+  }
+}
+
+export class PmapFunction extends Statement {
+  token: Token;
+  params: BuiltinParam[];
+  coordinate: ExprContext;
+  n: ExprContext;
+  result: Variable;
+
+  constructor({token, params, result}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    if (params.length != 2) {
+      throw new Error("expecting two arguments");
+    }
+    if (!params[0].expr || !params[1].expr) {
+      throw new Error("expecting expr arguments");
+    }
+    this.coordinate = params[0].expr;
+    this.n = params[1].expr;
+    if (!result) {
+      throw new Error("expecting result");
+    }
+    this.result = result;
+  }
+
+  override execute(context: ExecutionContext) {
+    const coordinate = evaluateIntegerExpression(this.coordinate, context.memory, { tag: TypeTag.DOUBLE });
+    const value = this.transform(coordinate, context);
+    context.memory.write(this.result, double(value));
+  }
+
+  private transform(coordinate: number, context: ExecutionContext): number {
+    const {screen} = context.devices;
+    const n = evaluateIntegerExpression(this.n, context.memory);
+    try {
+      switch (n) {
+        case 0: return screen.windowToView({x: coordinate, y: 0}).x;
+        case 1: return screen.windowToView({x: 0, y: coordinate}).y;
+        case 2: return screen.viewToWindow({x: coordinate, y: 0}).x;
+        case 3: return screen.viewToWindow({x: 0, y: coordinate}).y;
+      }
+    } catch (e: unknown) {
+      // Fallthrough.
+    }
+    throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
   }
 }

@@ -80,20 +80,36 @@ class Region {
 
 export class Plotter {
   cursor: Point;
-  windowToView: WindowToViewTransform;
+  coordinates: ViewTransform;
   clip: Region;
   pattern: number;
 
   constructor(width: number, height: number) {
     this.cursor = {x: Math.floor(width / 2), y: Math.floor(height / 2)};
     this.clip = Region.fromSize(width, height);
-    this.windowToView = new WindowToViewTransform(width, height);
+    this.coordinates = new ViewTransform(width, height);
     this.pattern = 0xffff;
+  }
+
+  screenToWindow(p: Point): Point {
+    return this.coordinates.screenToWindow(p);
+  }
+
+  viewToWindow(p: Point): Point {
+    return this.coordinates.viewToWindow(p);
+  }
+
+  windowToScreen(p: Point): Point {
+    return this.coordinates.windowToScreen(p);
+  }
+
+  windowToView(p: Point): Point {
+    return this.coordinates.windowToView(p);
   }
 
   setPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: number, step?: boolean) {
     const pw = step ? {x: x + this.cursor.x, y: y + this.cursor.y} : {x, y};
-    const pv = this.windowToView.transform(pw);
+    const pv = this.windowToScreen(pw);
     this.fillPixel(ctx, pv, color);
     this.cursor = {...pw};
   }
@@ -108,8 +124,8 @@ export class Plotter {
       {x: args.x2 + this.cursor.x, y: args.y2 + this.cursor.y} :
       {x: args.x2, y: args.y2};
     this.cursor = {...p2};
-    const p1v = this.windowToView.transform(p1);
-    const p2v = this.windowToView.transform(p2);
+    const p1v = this.windowToScreen(p1);
+    const p2v = this.windowToScreen(p2);
     this.pattern = args.dash !== undefined ? args.dash & 0xffff : 0xffff;
     if (args.outline) {
       if (args.dash === undefined) {
@@ -133,11 +149,11 @@ export class Plotter {
   }
 
   setWindow(p1: Point, p2: Point, screen: boolean) {
-    this.windowToView.setWindow(p1, p2, screen);
+    this.coordinates.setWindow(p1, p2, screen);
   }
 
   resetWindow() {
-    this.windowToView.resetWindow();
+    this.coordinates.resetWindow();
   }
 
   setClip(p1: Point, p2: Point) {
@@ -145,7 +161,7 @@ export class Plotter {
   }
 
   setView(p1: Point, p2: Point) {
-    this.windowToView.setView(p1, p2);
+    this.coordinates.setView(p1, p2);
   }
 
   drawViewBox(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color?: number, border?: number) {
@@ -386,7 +402,7 @@ export class Plotter {
   }
 }
 
-class WindowToViewTransform {
+class ViewTransform {
   window?: Region;
   view: Region;
   x0: number;
@@ -424,11 +440,32 @@ class WindowToViewTransform {
     this.update();
   }
 
-  transform(p: Point): Point {
+  windowToScreen(p: Point): Point {
     return {
       x: Math.floor(this.x0 + p.x * this.dx),
-      y: Math.floor(this.y0 + p.y * this.dy),
+      y: Math.floor(this.y0 + p.y * this.dy)
     };
+  }
+
+  windowToView(p: Point): Point {
+    return {
+      x: Math.floor(this.x0 + p.x * this.dx) - this.view.x.start,
+      y: Math.floor(this.y0 + p.y * this.dy) - this.view.y.start
+    };
+  }
+
+  screenToWindow(p: Point): Point {
+    return {
+      x: Math.floor((p.x - this.x0) / this.dx),
+      y: Math.floor((p.y - this.y0) / this.dy)
+    }
+  }
+
+  viewToWindow(p: Point): Point {
+    return {
+      x: Math.floor(((p.x + this.view.x.start) - this.x0) / this.dx),
+      y: Math.floor(((p.y + this.view.y.start) - this.y0) / this.dy)
+    }
   }
 }
 

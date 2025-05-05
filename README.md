@@ -264,7 +264,7 @@ parse those using baked in rules.
 | `PLAY`           | Function    | ✅      | ✅      |
 | `PLAY`           | Statement   | ✅      | 🚧      |
 | `PLAY` Events    | Statement   | ✅      | ✅      |
-| `PMAP`           | Function    | -       | ⛔      |
+| `PMAP`           | Function    | -       | ✅      |
 | `POKE`           | Statement   | -       | ⛔      |
 | `POS`            | Function    | -       | ✅      |
 | `PRESET`         | Statement   | ✅      | ✅      |

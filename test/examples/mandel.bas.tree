@@ -1,0 +1,457 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) ' \n \n 
+  (declare_statement DECLARE SUB 
+    (untyped_id ScreenTest) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter EM%) , 
+        (declare_parameter CR%) , 
+        (declare_parameter VL%) , 
+        (declare_parameter VR%) , 
+        (declare_parameter VT%) , 
+        (declare_parameter VB%)) )) \n \n ' \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment MAXLOOP = 
+        (const_expr 
+          (expr 
+            (literal 30)))) , 
+      (const_assignment MAXSIZE = 
+        (const_expr 
+          (expr 
+            (literal 1000000)))))) \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment FALSE = 
+        (const_expr 
+          (expr 
+            (literal 0)))) , 
+      (const_assignment TRUE = 
+        (const_expr 
+          (expr NOT 
+            (expr 
+              (variable_or_function_call FALSE))))))) ' \n ' \n 
+  (statement 
+    (const_statement CONST 
+      (const_assignment WLeft = 
+        (const_expr 
+          (expr - 
+            (expr 
+              (literal 1000))))) , 
+      (const_assignment WRight = 
+        (const_expr 
+          (expr 
+            (literal 250)))) , 
+      (const_assignment WTop = 
+        (const_expr 
+          (expr 
+            (literal 625)))) , 
+      (const_assignment WBottom = 
+        (const_expr 
+          (expr - 
+            (expr 
+              (literal 625))))))) \n \n ' \n ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id ScreenTest) 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call EgaMode))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call ColorRange))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VLeft))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VRight))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VTop))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call VBottom)))))) \n \n ' \n 
+  (statement 
+    (view_statement VIEW 
+      ( 
+        (expr 
+          (variable_or_function_call VLeft)) , 
+        (expr 
+          (variable_or_function_call VTop)) ) - 
+      ( 
+        (expr 
+          (variable_or_function_call VRight)) , 
+        (expr 
+          (variable_or_function_call VBottom)) ) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (variable_or_function_call ColorRange)))) \n 
+  (statement 
+    (window_statement WINDOW 
+      ( 
+        (expr 
+          (variable_or_function_call WLeft)) , 
+        (expr 
+          (variable_or_function_call WTop)) ) - 
+      ( 
+        (expr 
+          (variable_or_function_call WRight)) , 
+        (expr 
+          (variable_or_function_call WBottom)) ))) \n \n 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 24)) , 
+      (expr 
+        (literal 10)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Press any key to quit.")) ;))) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call XLength) = 
+      (expr 
+        (expr 
+          (variable_or_function_call VRight)) - 
+        (expr 
+          (variable_or_function_call VLeft))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call YLength) = 
+      (expr 
+        (expr 
+          (variable_or_function_call VBottom)) - 
+        (expr 
+          (variable_or_function_call VTop))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call ColorWidth) = 
+      (expr 
+        (expr 
+          (variable_or_function_call MAXLOOP)) \ 
+        (expr 
+          (variable_or_function_call ColorRange))))) \n \n ' \n ' \n 
+  (statement 
+    (for_next_statement FOR Y = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (variable_or_function_call YLength)) 
+      (block ' \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call LogicY) = 
+            (expr 
+              (variable_or_function_call PMAP 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call Y))) , 
+                    (argument 
+                      (expr 
+                        (literal 3)))) ))))) ' \n 
+        (statement 
+          (pset_statement PSET 
+            ( 
+              (expr 
+                (variable_or_function_call WLeft)) , 
+              (expr 
+                (variable_or_function_call LogicY)) ))) ' \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call OldColor) = 
+            (expr 
+              (literal 0)))) ' \n \n 
+        (statement 
+          (for_next_statement FOR X = 
+            (expr 
+              (literal 0)) TO 
+            (expr 
+              (variable_or_function_call XLength)) 
+            (block ' \n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call LogicX) = 
+                  (expr 
+                    (variable_or_function_call PMAP 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call X))) , 
+                          (argument 
+                            (expr 
+                              (literal 2)))) ))))) ' \n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call MandelX&) = 
+                  (expr 
+                    (variable_or_function_call LogicX)))) \n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call MandelY&) = 
+                  (expr 
+                    (variable_or_function_call LogicY)))) \n \n ' \n 
+              (statement 
+                (for_next_statement FOR I = 
+                  (expr 
+                    (literal 1)) TO 
+                  (expr 
+                    (variable_or_function_call MAXLOOP)) 
+                  (block \n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call RealNum&) = 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call MandelX&)) * 
+                          (expr 
+                            (variable_or_function_call MandelX&))))) \n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call ImagNum&) = 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call MandelY&)) * 
+                          (expr 
+                            (variable_or_function_call MandelY&))))) \n 
+                    (statement 
+                      (if_inline_statement IF 
+                        (expr 
+                          (expr 
+                            ( 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call RealNum&)) + 
+                                (expr 
+                                  (variable_or_function_call ImagNum&))) )) >= 
+                          (expr 
+                            (variable_or_function_call MAXSIZE))) THEN 
+                        (if_inline_action 
+                          (statement 
+                            (exit_statement EXIT FOR))))) \n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call MandelY&) = 
+                        (expr 
+                          (expr 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call MandelX&)) * 
+                                  (expr 
+                                    (variable_or_function_call MandelY&))) )) \ 
+                            (expr 
+                              (literal 250))) + 
+                          (expr 
+                            (variable_or_function_call LogicY))))) \n 
+                    (statement 
+                      (assignment_statement 
+                        (variable_or_function_call MandelX&) = 
+                        (expr 
+                          (expr 
+                            (expr 
+                              ( 
+                                (expr 
+                                  (expr 
+                                    (variable_or_function_call RealNum&)) - 
+                                  (expr 
+                                    (variable_or_function_call ImagNum&))) )) \ 
+                            (expr 
+                              (literal 500))) + 
+                          (expr 
+                            (variable_or_function_call LogicX))))) \n) NEXT I)) \n \n ' \n 
+              (statement 
+                (assignment_statement 
+                  (variable_or_function_call PColor) = 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call I)) \ 
+                    (expr 
+                      (variable_or_function_call ColorWidth))))) \n \n ' \n ' \n 
+              (if_block_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call PColor)) <> 
+                  (expr 
+                    (variable_or_function_call OldColor))) THEN \n 
+                (then_block 
+                  (statement 
+                    (line_statement LINE - 
+                      ( 
+                        (expr 
+                          (variable_or_function_call LogicX)) , 
+                        (expr 
+                          (variable_or_function_call LogicY)) ) , 
+                      (expr 
+                        ( 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call ColorRange)) - 
+                            (expr 
+                              (variable_or_function_call OldColor))) )))) \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call OldColor) = 
+                      (expr 
+                        (variable_or_function_call PColor)))) \n) 
+                (end_if_statement END IF)) \n \n 
+              (statement 
+                (if_inline_statement IF 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call INKEY$)) <> 
+                    (expr 
+                      (literal ""))) THEN 
+                  (if_inline_action 
+                    (statement 
+                      (end_statement END))))) \n) NEXT X)) \n \n ' \n 
+        (statement 
+          (line_statement LINE - 
+            ( 
+              (expr 
+                (variable_or_function_call LogicX)) , 
+              (expr 
+                (variable_or_function_call LogicY)) ) , 
+            (expr 
+              ( 
+                (expr 
+                  (expr 
+                    (variable_or_function_call ColorRange)) - 
+                  (expr 
+                    (variable_or_function_call OldColor))) )))) \n \n) NEXT Y)) \n 
+  (statement 
+    (do_loop_statement DO 
+      (block \n) LOOP 
+      (loop_condition WHILE 
+        (expr 
+          (expr 
+            (variable_or_function_call INKEY$)) = 
+          (expr 
+            (literal "")))))) \n \n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) ' \n 
+  (statement 
+    (width_statement WIDTH 
+      (expr 
+        (literal 80)))) ' \n 
+  (statement 
+    (end_statement END)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id BadScreen)) :) ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call EgaMode) = 
+      (expr 
+        (variable_or_function_call FALSE)))) ' \n 
+  (statement 
+    (resume_statement RESUME NEXT)) \n \n ' \n ' \n ' \n ' \n ' \n 
+  (sub_statement SUB 
+    (untyped_id ScreenTest) 
+    ( 
+      (parameter_list 
+        (parameter EM) , 
+        (parameter CR) , 
+        (parameter VL) , 
+        (parameter VR) , 
+        (parameter VT) , 
+        (parameter VB)) ) STATIC 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call EM) = 
+          (expr 
+            (variable_or_function_call TRUE)))) \n 
+      (statement 
+        (on_error_statement ON ERROR GOTO 
+          (target 
+            (text_label 
+              (untyped_id BadScreen))))) \n 
+      (statement 
+        (screen_statement SCREEN 
+          (expr 
+            (literal 8)) , 
+          (expr 
+            (literal 1)))) \n 
+      (statement 
+        (on_error_statement ON ERROR GOTO 
+          (target 
+            (line_number 0)))) \n \n 
+      (if_block_statement IF 
+        (expr 
+          (variable_or_function_call EM)) THEN ' 
+        (then_block \n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VL) = 
+              (expr 
+                (literal 110)))) : 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VR) = 
+              (expr 
+                (literal 529)))) \n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VT) = 
+              (expr 
+                (literal 5)))) : 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call VB) = 
+              (expr 
+                (literal 179)))) \n 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call CR) = 
+              (expr 
+                (literal 15)))) ' \n \n) 
+        (else_block_statement ELSE 
+          (else_block ' \n 
+            (statement 
+              (screen_statement SCREEN 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VL) = 
+                (expr 
+                  (literal 55)))) : 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VR) = 
+                (expr 
+                  (literal 264)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VT) = 
+                (expr 
+                  (literal 5)))) : 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call VB) = 
+                (expr 
+                  (literal 179)))) \n 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call CR) = 
+                (expr 
+                  (literal 3)))) ' \n)) 
+        (end_if_statement END IF)) \n \n) 
+    (end_sub_statement END SUB)) \n <EOF>)

@@ -43,6 +43,8 @@ export interface Screen extends Printer, LightPenTarget {
   resetView(): void;
   setWindow(p1: Point, p2: Point, screen: boolean): void;
   resetWindow(): void;
+  viewToWindow(p: Point): Point;
+  windowToView(p: Point): Point;
   clear(): void;
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
   resetPixel(x: number, y: number, color?: number, step?: boolean): void;
@@ -111,6 +113,14 @@ class Page {
 
   resetWindow() {
     this.plotter.resetWindow();
+  }
+
+  viewToWindow(p: Point): Point {
+    return this.plotter.viewToWindow(p);
+  }
+
+  windowToView(p: Point): Point {
+    return this.plotter.windowToView(p);
   }
 
   clear(color: Attributes) {
@@ -462,6 +472,20 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.activePage.resetWindow();
   }
 
+  viewToWindow(p: Point): Point {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.viewToWindow(p);
+  }
+
+  windowToView(p: Point): Point {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.windowToView(p);
+  }
+
   clear() {
     this.activePage.clear(this.color);
     this.column = 1;
@@ -753,6 +777,16 @@ export class TestScreen implements Screen {
   resetWindow() {
     this.text.print(`[WINDOW]`, true);
     this.graphics.resetWindow();
+  }
+
+  windowToView(p: Point): Point {
+    this.text.print(`[PMAP ${p.x}, ${p.y}]`, true);
+    return this.graphics.windowToView(p);
+  }
+
+  viewToWindow(p: Point): Point {
+    this.text.print(`[PMAP ${p.x}, ${p.y}]`, true);
+    return this.graphics.viewToWindow(p);
   }
 
   clear() {

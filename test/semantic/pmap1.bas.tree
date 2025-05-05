@@ -1,0 +1,129 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (window_statement window 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1000))) , 
+        (expr - 
+          (expr 
+            (literal 500))) ) - 
+      ( 
+        (expr 
+          (literal 1000)) , 
+        (expr 
+          (literal 500)) ))) \n 
+  (statement 
+    (view_statement view 
+      ( 
+        (expr 
+          (literal 50)) , 
+        (expr 
+          (literal 20)) ) - 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 120)) ))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 1000)))) , 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1000))) , 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 500)))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 500))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0))) , 
+                (argument 
+                  (expr 
+                    (literal 2)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 50))) , 
+                (argument 
+                  (expr 
+                    (literal 2)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0))) , 
+                (argument 
+                  (expr 
+                    (literal 3)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 100))) , 
+                (argument 
+                  (expr 
+                    (literal 3)))) )))))) \n <EOF>)

@@ -1,0 +1,18 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call pmap 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0))) , 
+                (argument 
+                  (expr 
+                    (literal 42)))) )))))) \n <EOF>)
