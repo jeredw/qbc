@@ -265,12 +265,13 @@ parse those using baked in rules.
 | `PLAY`           | Statement   | ✅      | 🚧      |
 | `PLAY` Events    | Statement   | ✅      | ✅      |
 | `PMAP`           | Function    | -       | ✅      |
+| `POINT`          | Function    | ⛔      | ⛔      |
 | `POKE`           | Statement   | -       | ⛔      |
 | `POS`            | Function    | -       | ✅      |
 | `PRESET`         | Statement   | ✅      | ✅      |
 | `PRINT`          | Statement   | ✅      | ✅      |
 | `PRINT USING`    | Statement   | ✅      | ✅      |
-| `PSET`           | Statement   | ✅      | ⛔      |
+| `PSET`           | Statement   | ✅      | ✅      |
 | `PUT` I/O        | Statement   | ✅      | ✅      |
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |
 | `RANDOM`         | Keyword     | ✅      | ✅      |
@@ -289,7 +290,7 @@ parse those using baked in rules.
 | `RTRIM$`         | Function    | -       | ✅      |
 | `RUN`            | Statement   | ⛔      | ⛔      |
 | `SCREEN`         | Function    | ✅      | ⛔      |
-| `SCREEN`         | Statement   | ✅      | ⛔      |
+| `SCREEN`         | Statement   | ✅      | 🚧      |
 | `SEEK`           | Function    | ✅      | ✅      |
 | `SEEK`           | Statement   | ✅      | ✅      |
 | `SELECT CASE`    | Statement   | ✅      | ✅      |
