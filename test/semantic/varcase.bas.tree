@@ -1,0 +1,14 @@
+(program 
+  (statement 
+    (deftype_statement defint 
+      (letter_range a - z))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call i) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call I))))) \n <EOF>)

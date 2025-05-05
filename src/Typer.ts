@@ -856,7 +856,7 @@ export class Typer extends QBasicParserListener {
 
 function firstCharOfId(name: string) {
   const lower = name.toLowerCase();
-  return lower.startsWith('fn') ? name.slice(2, 1) : name.slice(0, 1);
+  return lower.startsWith('fn') ? lower.slice(2, 1) : lower.slice(0, 1);
 }
 
 function getUntypedId(ctx: parser.Untyped_idContext | parser.Untyped_fnidContext, {allowPeriods}: {allowPeriods: boolean}): string {
