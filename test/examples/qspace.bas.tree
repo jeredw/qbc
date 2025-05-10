@@ -4840,15 +4840,13 @@
                             (assignment_statement 
                               (variable_or_function_call C) = 
                               (expr 
-                                (variable_or_function_call POINT 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call X))) , 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call Y)))) ))))) ' \n 
+                                (builtin_function 
+                                  (point_function POINT 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call X)) , 
+                                      (expr 
+                                        (variable_or_function_call Y)) )))))) ' \n 
                           (statement 
                             (pset_statement PSET 
                               ( 
@@ -4951,15 +4949,13 @@
                               (assignment_statement 
                                 (variable_or_function_call C) = 
                                 (expr 
-                                  (variable_or_function_call POINT 
-                                    ( 
-                                      (argument_list 
-                                        (argument 
-                                          (expr 
-                                            (variable_or_function_call X))) , 
-                                        (argument 
-                                          (expr 
-                                            (variable_or_function_call Y)))) ))))) ' \n 
+                                  (builtin_function 
+                                    (point_function POINT 
+                                      ( 
+                                        (expr 
+                                          (variable_or_function_call X)) , 
+                                        (expr 
+                                          (variable_or_function_call Y)) )))))) ' \n 
                             (statement 
                               (pset_statement PSET 
                                 ( 

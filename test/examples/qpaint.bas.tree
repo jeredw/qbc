@@ -1715,47 +1715,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -1847,47 +1841,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -1979,47 +1967,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -2111,47 +2093,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -2768,47 +2744,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -2910,47 +2880,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -3052,47 +3016,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -3194,47 +3152,41 @@
         (assignment_statement LET 
           (variable_or_function_call under1) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under2) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
                     (expr 
-                      (expr 
-                        (variable_or_function_call xpos)) + 
-                      (expr 
-                        (literal 1)))) , 
-                  (argument 
+                      (variable_or_function_call xpos)) + 
                     (expr 
-                      (variable_or_function_call ypos)))) ))))) \n 
+                      (literal 1))) , 
+                  (expr 
+                    (variable_or_function_call ypos)) )))))) \n 
       (statement 
         (assignment_statement LET 
           (variable_or_function_call under3) = 
           (expr 
-            (variable_or_function_call POINT 
-              ( 
-                (argument_list 
-                  (argument 
+            (builtin_function 
+              (point_function POINT 
+                ( 
+                  (expr 
+                    (variable_or_function_call xpos)) , 
+                  (expr 
                     (expr 
-                      (variable_or_function_call xpos))) , 
-                  (argument 
+                      (variable_or_function_call ypos)) + 
                     (expr 
-                      (expr 
-                        (variable_or_function_call ypos)) + 
-                      (expr 
-                        (literal 1))))) ))))) \n 
+                      (literal 1))) )))))) \n 
       (statement 
         (pset_statement PSET 
           ( 
