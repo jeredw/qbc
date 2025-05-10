@@ -1093,13 +1093,15 @@
       (if_block_statement IF 
         (expr 
           (expr 
-            (builtin_function 
-              (point_function POINT 
-                ( 
-                  (expr 
-                    (variable_or_function_call T.xc)) , 
-                  (expr 
-                    (variable_or_function_call T.yc)) )))) = 
+            (variable_or_function_call POINT 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call T.xc))) , 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call T.yc)))) ))) = 
           (expr 
             (variable_or_function_call Border))) THEN \n 
         (then_block 
@@ -1294,21 +1296,23 @@
                   (if_inline_statement IF 
                     (expr 
                       (expr 
-                        (builtin_function 
-                          (point_function POINT 
-                            ( 
-                              (expr 
-                                (variable_or_function_call T.xc)) , 
-                              (expr 
-                                (variable_or_function_call PMAP 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call YU))) , 
-                                      (argument 
-                                        (expr 
-                                          (literal 3)))) ))) )))) = 
+                        (variable_or_function_call POINT 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call T.xc))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PMAP 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call YU))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 3)))) ))))) ))) = 
                       (expr 
                         (variable_or_function_call Border))) THEN 
                     (if_inline_action 
@@ -1327,21 +1331,23 @@
                   (if_inline_statement IF 
                     (expr 
                       (expr 
-                        (builtin_function 
-                          (point_function POINT 
-                            ( 
-                              (expr 
-                                (variable_or_function_call T.xc)) , 
-                              (expr 
-                                (variable_or_function_call PMAP 
-                                  ( 
-                                    (argument_list 
-                                      (argument 
-                                        (expr 
-                                          (variable_or_function_call YD))) , 
-                                      (argument 
-                                        (expr 
-                                          (literal 3)))) ))) )))) = 
+                        (variable_or_function_call POINT 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call T.xc))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call PMAP 
+                                    ( 
+                                      (argument_list 
+                                        (argument 
+                                          (expr 
+                                            (variable_or_function_call YD))) , 
+                                        (argument 
+                                          (expr 
+                                            (literal 3)))) ))))) ))) = 
                       (expr 
                         (variable_or_function_call Border))) THEN 
                     (if_inline_action 

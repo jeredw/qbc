@@ -934,7 +934,6 @@ builtin_function
   | lbound_function
   | mid_function
   | pen_function
-  | point_function
   | play_function
   | screen_function
   | seek_function
@@ -975,11 +974,6 @@ mid_function
 
 pen_function
   : PEN '(' expr ')'
-  ;
-
-point_function
-  : POINT '(' x=expr COMMA y=expr ')'
-  | POINT '(' n=expr ')'
   ;
 
 play_function

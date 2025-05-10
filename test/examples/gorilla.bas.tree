@@ -6409,19 +6409,21 @@
                         (assignment_statement 
                           (variable_or_function_call pointval) = 
                           (expr 
-                            (builtin_function 
-                              (point_function POINT 
-                                ( 
-                                  (expr 
+                            (variable_or_function_call POINT 
+                              ( 
+                                (argument_list 
+                                  (argument 
                                     (expr 
-                                      (variable_or_function_call x#)) + 
+                                      (expr 
+                                        (variable_or_function_call x#)) + 
+                                      (expr 
+                                        (variable_or_function_call LookX)))) , 
+                                  (argument 
                                     (expr 
-                                      (variable_or_function_call LookX))) , 
-                                  (expr 
-                                    (expr 
-                                      (variable_or_function_call y#)) + 
-                                    (expr 
-                                      (variable_or_function_call LookY))) )))))) \n 
+                                      (expr 
+                                        (variable_or_function_call y#)) + 
+                                      (expr 
+                                        (variable_or_function_call LookY))))) ))))) \n 
                       (if_block_statement IF 
                         (expr 
                           (expr 

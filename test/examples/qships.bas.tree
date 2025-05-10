@@ -6380,38 +6380,42 @@
                               (if_block_statement IF 
                                 (expr 
                                   (expr 
-                                    (builtin_function 
-                                      (point_function POINT 
-                                        ( 
-                                          (expr 
+                                    (variable_or_function_call POINT 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
                                             (expr 
-                                              (variable_or_function_call x)) + 
+                                              (expr 
+                                                (variable_or_function_call x)) + 
+                                              (expr 
+                                                (variable_or_function_call lookX)))) , 
+                                          (argument 
                                             (expr 
-                                              (variable_or_function_call lookX))) , 
-                                          (expr 
-                                            (expr 
-                                              (variable_or_function_call y)) + 
-                                            (expr 
-                                              (variable_or_function_call lookY))) )))) <> 
+                                              (expr 
+                                                (variable_or_function_call y)) + 
+                                              (expr 
+                                                (variable_or_function_call lookY))))) ))) <> 
                                   (expr 
                                     (variable_or_function_call BACKGROUNDCOLOR))) THEN \n 
                                 (then_block 
                                   (if_block_statement IF 
                                     (expr 
                                       (expr 
-                                        (builtin_function 
-                                          (point_function POINT 
-                                            ( 
-                                              (expr 
+                                        (variable_or_function_call POINT 
+                                          ( 
+                                            (argument_list 
+                                              (argument 
                                                 (expr 
-                                                  (variable_or_function_call x)) + 
+                                                  (expr 
+                                                    (variable_or_function_call x)) + 
+                                                  (expr 
+                                                    (variable_or_function_call lookX)))) , 
+                                              (argument 
                                                 (expr 
-                                                  (variable_or_function_call lookX))) , 
-                                              (expr 
-                                                (expr 
-                                                  (variable_or_function_call y)) + 
-                                                (expr 
-                                                  (variable_or_function_call lookY))) )))) = 
+                                                  (expr 
+                                                    (variable_or_function_call y)) + 
+                                                  (expr 
+                                                    (variable_or_function_call lookY))))) ))) = 
                                       (expr 
                                         (variable_or_function_call OBJECTCOLOR))) THEN \n 
                                     (then_block 
@@ -6433,19 +6437,21 @@
                                     (elseif_block_statement ELSEIF 
                                       (expr 
                                         (expr 
-                                          (builtin_function 
-                                            (point_function POINT 
-                                              ( 
-                                                (expr 
+                                          (variable_or_function_call POINT 
+                                            ( 
+                                              (argument_list 
+                                                (argument 
                                                   (expr 
-                                                    (variable_or_function_call x)) + 
+                                                    (expr 
+                                                      (variable_or_function_call x)) + 
+                                                    (expr 
+                                                      (variable_or_function_call lookX)))) , 
+                                                (argument 
                                                   (expr 
-                                                    (variable_or_function_call lookX))) , 
-                                                (expr 
-                                                  (expr 
-                                                    (variable_or_function_call y)) + 
-                                                  (expr 
-                                                    (variable_or_function_call lookY))) )))) = 
+                                                    (expr 
+                                                      (variable_or_function_call y)) + 
+                                                    (expr 
+                                                      (variable_or_function_call lookY))))) ))) = 
                                         (expr 
                                           (variable_or_function_call ISLANDCOLOR))) THEN 
                                       (else_block \n 
@@ -6468,19 +6474,21 @@
                                     (elseif_block_statement ELSEIF 
                                       (expr 
                                         (expr 
-                                          (builtin_function 
-                                            (point_function POINT 
-                                              ( 
-                                                (expr 
+                                          (variable_or_function_call POINT 
+                                            ( 
+                                              (argument_list 
+                                                (argument 
                                                   (expr 
-                                                    (variable_or_function_call x)) + 
+                                                    (expr 
+                                                      (variable_or_function_call x)) + 
+                                                    (expr 
+                                                      (variable_or_function_call lookX)))) , 
+                                                (argument 
                                                   (expr 
-                                                    (variable_or_function_call lookX))) , 
-                                                (expr 
-                                                  (expr 
-                                                    (variable_or_function_call y)) + 
-                                                  (expr 
-                                                    (variable_or_function_call lookY))) )))) = 
+                                                    (expr 
+                                                      (variable_or_function_call y)) + 
+                                                    (expr 
+                                                      (variable_or_function_call lookY))))) ))) = 
                                         (expr 
                                           (variable_or_function_call WATERCOLOR))) THEN 
                                       (else_block \n 

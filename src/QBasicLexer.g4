@@ -128,7 +128,6 @@ PAINT : [Pp][Aa][Ii][Nn][Tt] ;
 PALETTE : [Pp][Aa][Ll][Ee][Tt][Tt][Ee] ;
 PEN : [Pp][Ee][Nn] ;
 PLAY : [Pp][Ll][Aa][Yy] ;
-POINT : [Pp][Oo][Ii][Nn][Tt] ;
 PRESET : [Pp][Rr][Ee][Ss][Ee][Tt] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 PSET : [Pp][Ss][Ee][Tt] ;
