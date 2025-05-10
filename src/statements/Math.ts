@@ -8,7 +8,7 @@ import { Statement } from "./Statement.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Variable } from "../Variables.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
-import { float64Bytes } from "./Bits.ts";
+import { float32Bytes, float64Bytes } from "./Bits.ts";
 
 export class AbsFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -173,9 +173,11 @@ export class RandomizeStatement extends Statement {
   override execute(context: ExecutionContext) {
     const seed = this.getSeed(context);
     const bytes = float64Bytes(seed);
-    const exponent = ((bytes[7] << 16) + (bytes[6] << 8) + bytes[5]) & 0xffffff;
-    const mantissa = ((bytes[4] << 16) + (bytes[3] << 8) + bytes[2]) & 0xffffff;
-    const seedBits = exponent ^ mantissa;
+    // https://nullprogram.com/blog/2020/11/17/
+    const exponent = (bytes[7] << 16) | (bytes[6] << 8);
+    const mantissa = (bytes[5] << 16) | (bytes[4] << 8);
+    const bug = context.random.state & 0xff;
+    const seedBits = (exponent ^ mantissa) | bug;
     context.random.setSeed(seedBits);
   }
 
@@ -196,14 +198,26 @@ export class RandomizeStatement extends Statement {
 
 export class RndFunction extends Statement {
   result: Variable;
+  n?: ExprContext;
 
-  constructor({result}: BuiltinStatementArgs) {
+  constructor({result, params}: BuiltinStatementArgs) {
     super();
     this.result = result!;
+    if (params.length > 0 && params[0].expr) {
+      this.n = params[0].expr;
+    }
   }
 
   override execute(context: ExecutionContext) {
-    const value = context.random.getRandom();
+    const n = (this.n && evaluateIntegerExpression(this.n, context.memory)) ?? 1;
+    if (n < 0) {
+      // https://nullprogram.com/blog/2020/11/17/
+      const bytes = float32Bytes(n);
+      const seed = (bytes[2] << 16) | (bytes[1] << 8) | bytes[0] | bytes[3];
+      context.random.setSeed(seed);
+    }
+    const advance = n != 0;
+    const value = context.random.getRandom(advance);
     context.memory.write(this.result, single(value));
   }
 }

@@ -356,7 +356,7 @@ function mbfBytesToFloat64(bytes: number[]): number {
   ])
 }
 
-function float32Bytes(f32: number): Uint8Array {
+export function float32Bytes(f32: number): Uint8Array {
   const buffer = new ArrayBuffer(4);
   const littleEndian = true;
   new DataView(buffer).setFloat32(0, f32, littleEndian);

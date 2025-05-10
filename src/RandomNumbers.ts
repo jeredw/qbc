@@ -5,12 +5,14 @@ export class RandomNumbers {
     this.state = 0;
   }
 
-  setSeed(value: number) {
-    this.state = value;
+  setSeed(seed: number) {
+    this.state = seed;
   }
 
-  getRandom(): number {
-    this.state = (this.state * 0xfd43fd + 0xc39ec3) & 0xffffff;
+  getRandom(advance: boolean): number {
+    if (advance) {
+      this.state = (this.state * 0xfd43fd + 0xc39ec3) & 0xffffff;
+    }
     return this.state / 0x1000000;
   }
 }

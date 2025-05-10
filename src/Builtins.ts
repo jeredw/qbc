@@ -83,7 +83,7 @@ export class StandardLibrary {
     _("right string integer -> string", statements.right),
     _("rmdir string", statements.rmdir),
     _("rtrim string -> string", statements.rtrim),
-    _("rnd -> single", statements.rnd),
+    _("rnd single? -> single", statements.rnd),
     _("sgn numeric -> numeric", statements.sgn),
     _("sin double -> double", statements.sin),
     _("sleep long?", statements.sleep),
