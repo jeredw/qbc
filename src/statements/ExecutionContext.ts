@@ -3,6 +3,7 @@ import { Memory } from "../Memory.ts";
 import { ProgramData } from "../ProgramData.ts";
 import { Files } from "../Files.ts";
 import { Events } from "../Events.ts";
+import { RandomNumbers } from "../RandomNumbers.ts";
 
 export interface ExecutionContext {
   devices: Devices;
@@ -10,4 +11,5 @@ export interface ExecutionContext {
   data: ProgramData;
   files: Files;
   events: Events;
+  random: RandomNumbers;
 }

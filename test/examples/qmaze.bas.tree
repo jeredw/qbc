@@ -682,16 +682,13 @@
         (untyped_id BadMode) AS 
         (type_name INTEGER)))) ' \n \n ' \n \n 
   (statement 
-    (call_statement 
-      (untyped_id RANDOMIZE) 
-      (argument_list 
-        (argument 
-          (expr 
-            (expr 
-              (builtin_function 
-                (timer_function TIMER))) MOD 
-            (expr 
-              (literal 32768))))))) ' \n \n ' \n 
+    (randomize_statement RANDOMIZE 
+      (expr 
+        (expr 
+          (builtin_function 
+            (timer_function TIMER))) MOD 
+        (expr 
+          (literal 32768))))) ' \n \n ' \n 
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 

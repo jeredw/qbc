@@ -5214,15 +5214,12 @@
                   (expr 
                     (variable_or_function_call ScreenWidth))) ))))) \n 
       (statement 
-        (call_statement 
-          (untyped_id RANDOMIZE) 
-          (argument_list 
-            (argument 
+        (randomize_statement RANDOMIZE 
+          (expr 
+            ( 
               (expr 
-                ( 
-                  (expr 
-                    (builtin_function 
-                      (timer_function TIMER))) )))))) \n 
+                (builtin_function 
+                  (timer_function TIMER))) )))) \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call Counter) = 

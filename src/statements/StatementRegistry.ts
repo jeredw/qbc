@@ -9,7 +9,9 @@ import {
   SinFunction,
   SgnFunction,
   SqrFunction,
-  TanFunction
+  TanFunction,
+  RandomizeStatement,
+  RndFunction
  } from "./Math.ts";
 import {
   DimBoundsExprs,
@@ -585,6 +587,10 @@ export function putIo(
   return new PutIoStatement(token, fileNumber, recordNumber, variable);
 }
 
+export function randomize({seed, variable} : {seed?: parser.ExprContext, variable?: Variable}) {
+  return new RandomizeStatement(seed, variable);
+}
+
 export function read(token: Token, result: Variable) {
   return new ReadStatement(token, result);
 }
@@ -603,6 +609,10 @@ export function right(args: BuiltinStatementArgs) {
 
 export function rmdir(args: BuiltinStatementArgs) {
   return new RmdirStatement(args);
+}
+
+export function rnd(args: BuiltinStatementArgs) {
+  return new RndFunction(args);
 }
 
 export function rsetString(token: Token, variable: Variable, stringExpr: parser.ExprContext) {

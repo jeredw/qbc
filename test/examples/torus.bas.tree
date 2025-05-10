@@ -4529,13 +4529,10 @@
                     (literal .05)))) \n)) 
           (end_select_statement END SELECT))) \n \n ' \n 
       (statement 
-        (call_statement 
-          (untyped_id RANDOMIZE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (builtin_function 
-                  (timer_function TIMER))))))) \n \n) 
+        (randomize_statement RANDOMIZE 
+          (expr 
+            (builtin_function 
+              (timer_function TIMER))))) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id TorusDraw) 

@@ -210,13 +210,10 @@
               (expr 
                 (literal 10))) ))))) \n \n 
   (statement 
-    (call_statement 
-      (untyped_id RANDOMIZE) 
-      (argument_list 
-        (argument 
-          (expr 
-            (builtin_function 
-              (timer_function TIMER))))))) \n 
+    (randomize_statement RANDOMIZE 
+      (expr 
+        (builtin_function 
+          (timer_function TIMER))))) \n 
   (statement 
     (gosub_statement GOSUB 
       (target 

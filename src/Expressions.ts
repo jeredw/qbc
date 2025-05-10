@@ -81,7 +81,8 @@ export function evaluateExpression({
   resultType?: Type,
   memory: Memory,
 }): values.Value {
-  const expressionListener = new ExpressionListener(false, memory);
+  const forceDouble = resultType && resultType.tag == TypeTag.DOUBLE;
+  const expressionListener = new ExpressionListener(false, memory, forceDouble);
   ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
   const result = expressionListener.getResult();
   return resultType ? values.cast(result, resultType) : result;
@@ -93,13 +94,15 @@ class ExpressionListener extends QBasicParserListener {
   private _callExpressionDepth: number;
   private _typeCheck: boolean;
   private _memory?: Memory;
+  private _forceDouble: boolean;
 
-  constructor(constantExpression: boolean, memory?: Memory) {
+  constructor(constantExpression: boolean, memory?: Memory, double?: boolean) {
     super();
     this._constantExpression = constantExpression;
     this._callExpressionDepth = 0;
     this._typeCheck = !memory && !constantExpression;
     this._memory = memory;
+    this._forceDouble = !!double;
   }
 
   getResult() {
@@ -206,7 +209,7 @@ class ExpressionListener extends QBasicParserListener {
     if (this._callExpressionDepth > 0) {
       return;
     }
-    this.push(parseLiteral(ctx.getText()));
+    this.push(parseLiteral(ctx.getText(), this._forceDouble));
   }
 
   override enterBuiltin_function = (ctx: Builtin_functionContext) => {
@@ -391,7 +394,7 @@ class ExpressionListener extends QBasicParserListener {
   }
 }
 
-export function parseLiteral(fullText: string): values.Value {
+export function parseLiteral(fullText: string, forceDouble?: boolean): values.Value {
   const [text, sigil] = splitSigil(fullText);
   if (text.startsWith('"') && text.endsWith('"')) {
     return values.string(text.substring(1, text.length - 1));
@@ -405,7 +408,7 @@ export function parseLiteral(fullText: string): values.Value {
   if (/^[0-9]+$/.test(text)) {
     return parseIntegerConstant(text, sigil);
   }
-  return parseFloatConstant(text, sigil);
+  return parseFloatConstant(text, sigil, forceDouble);
 }
 
 export function parseNumberFromString(fullText: string): values.Value | undefined {

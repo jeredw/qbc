@@ -148,6 +148,7 @@ statement
   | pset_statement
   | put_graphics_statement
   | put_io_statement
+  | randomize_statement
   | read_statement
   | restore_statement
   | resume_statement
@@ -756,6 +757,12 @@ put_graphics_statement
 
 put_io_statement
   : PUT '#'? filenum=expr (COMMA recordnum=expr? (COMMA variable_or_function_call)?)?
+  ;
+
+// RANDOMIZE could be a builtin, but it is easiest to compile the zero argument
+// version as two statements INPUT tmp% : RANDOMIZE tmp%.
+randomize_statement
+  : RANDOMIZE expr?
   ;
 
 read_statement

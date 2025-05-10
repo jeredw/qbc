@@ -8,6 +8,7 @@ import { RETURN_WITHOUT_GOSUB } from "./Values.ts";
 import { ProgramData } from "./ProgramData.ts";
 import { Files } from "./Files.ts";
 import { Events } from "./Events.ts";
+import { RandomNumbers } from "./RandomNumbers.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program) {
   return new Invocation(devices, memory, program);
@@ -33,6 +34,7 @@ export class Invocation {
   private program: Program;
   private files: Files;
   private events: Events;
+  private random: RandomNumbers;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
 
@@ -42,6 +44,7 @@ export class Invocation {
     this.data = new ProgramData(program.data);
     this.files = new Files();
     this.events = new Events(devices);
+    this.random = new RandomNumbers();
     this.program = program;
   }
 
@@ -131,6 +134,7 @@ export class Invocation {
         data: this.data,
         files: this.files,
         events: this.events,
+        random: this.random,
       });
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {

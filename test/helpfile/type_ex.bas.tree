@@ -188,13 +188,10 @@
             (untyped_id Card)))) ) STATIC 
     (block \r\n \r\n 
       (statement 
-        (call_statement 
-          (untyped_id RANDOMIZE) 
-          (argument_list 
-            (argument 
-              (expr 
-                (builtin_function 
-                  (timer_function TIMER))))))) \r\n ' \r\n 
+        (randomize_statement RANDOMIZE 
+          (expr 
+            (builtin_function 
+              (timer_function TIMER))))) \r\n ' \r\n 
       (statement 
         (for_next_statement FOR I% = 
           (expr 

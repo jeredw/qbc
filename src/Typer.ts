@@ -562,6 +562,12 @@ export class Typer extends QBasicParserListener {
   override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
 
+  override enterRandomize_statement = (ctx: parser.Randomize_statementContext) => {
+    if (!ctx.expr()) {
+      getTyperContext(ctx).$result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+    }
+  }
+
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {
     if (ctx._array) {
       const array = this.lookupArray(ctx._array);

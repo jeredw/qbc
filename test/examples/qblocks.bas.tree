@@ -589,13 +589,10 @@
     (else_block_statement ELSE 
       (else_block \n 
         (statement 
-          (call_statement 
-            (untyped_id RANDOMIZE) 
-            (argument_list 
-              (argument 
-                (expr 
-                  (builtin_function 
-                    (timer_function TIMER))))))) ' \n 
+          (randomize_statement RANDOMIZE 
+            (expr 
+              (builtin_function 
+                (timer_function TIMER))))) ' \n 
         (statement 
           (call_statement 
             (untyped_id DisplayIntro))) ' \n \n 

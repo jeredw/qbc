@@ -1,9 +1,6 @@
 (program 
   (statement 
-    (call_statement 
-      (untyped_id RANDOMIZE) 
-      (argument_list 
-        (argument 
-          (expr 
-            (builtin_function 
-              (timer_function TIMER))))))) \n <EOF>)
+    (randomize_statement RANDOMIZE 
+      (expr 
+        (builtin_function 
+          (timer_function TIMER))))) \n <EOF>)

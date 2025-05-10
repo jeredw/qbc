@@ -133,6 +133,7 @@ PRESET : [Pp][Rr][Ee][Ss][Ee][Tt] ;
 PSET : [Pp][Ss][Ee][Tt] ;
 PUT : [Pp][Uu][Tt] ;
 RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
+RANDOMIZE : [Rr][Aa][Nn][Dd][Oo][Mm][Ii][Zz][Ee] ;
 READ : [Rr][Ee][Aa][Dd] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
 REM : [Rr][Ee][Mm] -> type(NL), pushMode(COMMENT_MODE) ;

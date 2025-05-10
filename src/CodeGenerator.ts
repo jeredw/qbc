@@ -1000,6 +1000,25 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
+
+  override enterRandomize_statement = (ctx: parser.Randomize_statementContext) => {
+    const seedExpr = ctx.expr();
+    if (seedExpr) {
+      const seed = this.compileExpression(seedExpr, seedExpr.start!, { tag: TypeTag.DOUBLE });
+      this.addStatement(statements.randomize({seed}));
+      return;
+    }
+    const variable = getTyperContext(ctx).$result;
+    this.addStatement(statements.input({
+      token: ctx.start!,
+      sameLine: false,
+      mark: true,
+      prompt: "Random-number seed (-32768 to 32768)",
+      variables: [variable]
+    }));
+    this.addStatement(statements.randomize({variable}));
+  }
+
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 
   override enterReturn_statement = (ctx: parser.Return_statementContext) => {

@@ -4,6 +4,11 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
+import { ExprContext } from "../../build/QBasicParser.ts";
+import { Variable } from "../Variables.ts";
+import { evaluateIntegerExpression } from "../Expressions.ts";
+import { float64Bytes } from "./Bits.ts";
 
 export class AbsFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -157,5 +162,48 @@ export class IntFunction extends BuiltinFunction1 {
       throw new Error("expecting number");
     }
     return numericTypeOf(input)(Math.floor(input.number));
+  }
+}
+
+export class RandomizeStatement extends Statement {
+  constructor(private seed?: ExprContext, private variable?: Variable) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const seed = this.getSeed(context);
+    const bytes = float64Bytes(seed);
+    const exponent = ((bytes[7] << 16) + (bytes[6] << 8) + bytes[5]) & 0xffffff;
+    const mantissa = ((bytes[4] << 16) + (bytes[3] << 8) + bytes[2]) & 0xffffff;
+    const seedBits = exponent ^ mantissa;
+    context.random.setSeed(seedBits);
+  }
+
+  private getSeed(context: ExecutionContext): number {
+    if (this.seed) {
+      return evaluateIntegerExpression(this.seed, context.memory, { tag: TypeTag.DOUBLE });
+    }
+    if (!this.variable) {
+      throw new Error("expecting either seed or variable");
+    }
+    const value = context.memory.read(this.variable);
+    if (!isNumeric(value)) {
+      throw new Error("expecting numeric value for seed");
+    }
+    return value.number;
+  }
+}
+
+export class RndFunction extends Statement {
+  result: Variable;
+
+  constructor({result}: BuiltinStatementArgs) {
+    super();
+    this.result = result!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const value = context.random.getRandom();
+    context.memory.write(this.result, single(value));
   }
 }

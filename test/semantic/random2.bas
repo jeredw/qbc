@@ -1,0 +1,2 @@
+randomize
+print rnd

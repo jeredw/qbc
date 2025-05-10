@@ -363,7 +363,7 @@ function float32Bytes(f32: number): Uint8Array {
   return new Uint8Array(buffer);
 }
 
-function float64Bytes(f64: number): Uint8Array {
+export function float64Bytes(f64: number): Uint8Array {
   const buffer = new ArrayBuffer(8);
   const littleEndian = true;
   new DataView(buffer).setFloat64(0, f64, littleEndian);

@@ -275,7 +275,7 @@ parse those using baked in rules.
 | `PUT` I/O        | Statement   | ✅      | ✅      |
 | `PUT` Graphics   | Statement   | ✅      | ⛔      |
 | `RANDOM`         | Keyword     | ✅      | ✅      |
-| `RANDOMIZE`      | Statement   | -       | ⛔      |
+| `RANDOMIZE`      | Statement   | -       | ✅      |
 | `READ`           | Statement   | ✅      | ✅      |
 | `REDIM`          | Statement   | ✅      | ⛔      |
 | `REM`            | Statement   | ✅      | ✅      |
@@ -285,7 +285,7 @@ parse those using baked in rules.
 | `RETURN`         | Statement   | ✅      | ✅      |
 | `RIGHT$`         | Function    | -       | ✅      |
 | `RMDIR`          | Statement   | -       | ✅      |
-| `RND`            | Function    | -       | ⛔      |
+| `RND`            | Function    | -       | ✅      |
 | `RSET`           | Statement   | ✅      | ✅      |
 | `RTRIM$`         | Function    | -       | ✅      |
 | `RUN`            | Statement   | ⛔      | ⛔      |
