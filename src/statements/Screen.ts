@@ -435,6 +435,61 @@ export class WidthScreenStatement extends Statement {
   }
 }
 
+export class PointFunction extends Statement {
+  token: Token;
+  params: BuiltinParam[];
+  arg1: ExprContext;
+  y?: ExprContext;
+  result: Variable;
+
+  constructor({token, params, result}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    if (!params[0].expr) {
+      throw new Error('expecting one argument');
+    }
+    this.arg1 = params[0].expr;
+    this.y = params[1].expr;
+    if (!result) {
+      throw new Error("expecting result");
+    }
+    this.result = result;
+  }
+
+  override execute(context: ExecutionContext) {
+    const arg1 = evaluateIntegerExpression(this.arg1, context.memory, { tag: TypeTag.INTEGER });
+    const y = this.y && evaluateIntegerExpression(this.y, context.memory, { tag: TypeTag.INTEGER });
+    if (y === undefined) {
+      const value = this.getCursor(arg1, context);
+      context.memory.write(this.result, double(value));
+      return;
+    }
+    try {
+      const x = arg1;
+      const value = context.devices.screen.getPixel(x, y);
+      context.memory.write(this.result, integer(value));
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+
+  private getCursor(n: number, context: ExecutionContext): number {
+    const {screen} = context.devices;
+    const cursor = screen.getGraphicsCursor();
+    try {
+      switch (n) {
+        case 0: return screen.windowToView({x: cursor.x, y: 0}).x;
+        case 1: return screen.windowToView({x: 0, y: cursor.y}).y;
+        case 2: return cursor.x;
+        case 3: return cursor.y
+      }
+    } catch (e: unknown) {
+      // Fallthrough.
+    }
+    throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+  }
+}
+
 export class PmapFunction extends Statement {
   token: Token;
   params: BuiltinParam[];

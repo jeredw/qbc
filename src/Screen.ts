@@ -45,7 +45,9 @@ export interface Screen extends Printer, LightPenTarget {
   resetWindow(): void;
   viewToWindow(p: Point): Point;
   windowToView(p: Point): Point;
+  getGraphicsCursor(): Point;
   clear(): void;
+  getPixel(x: number, y: number): number;
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
   resetPixel(x: number, y: number, color?: number, step?: boolean): void;
   line(args: LineArgs, color?: number): void;
@@ -123,6 +125,10 @@ class Page {
     return this.plotter.windowToView(p);
   }
 
+  getGraphicsCursor(): Point {
+    return {...this.plotter.cursor};
+  }
+
   clear(color: Attributes) {
     const [columns, rows] = this.geometry.text;
     this.text = new Array(rows);
@@ -147,6 +153,11 @@ class Page {
     const ctx = this.canvas.getContext('2d')!;
     this.drawCell(ctx, row, col);
     this.dirty = true;
+  }
+
+  getPixel(x: number, y: number): number {
+    const ctx = this.canvas.getContext('2d')!;
+    return this.plotter.getPixel(ctx, x, y);
   }
 
   setPixel(x: number, y: number, color: number, step?: boolean) {
@@ -486,10 +497,24 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return this.activePage.windowToView(p);
   }
 
+  getGraphicsCursor(): Point {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.getGraphicsCursor();
+  }
+
   clear() {
     this.activePage.clear(this.color);
     this.column = 1;
     this.row = 1;
+  }
+
+  getPixel(x: number, y: number): number {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.getPixel(x, y);
   }
 
   setPixel(x: number, y: number, color?: number, step?: boolean) {
@@ -789,9 +814,19 @@ export class TestScreen implements Screen {
     return this.graphics.viewToWindow(p);
   }
 
+  getGraphicsCursor(): Point {
+    this.text.print(`[POINT]`, true);
+    return this.graphics.getGraphicsCursor();
+  }
+
   clear() {
     this.text.print(`[CLS]`, true);
     this.graphics.clear();
+  }
+
+  getPixel(x: number, y: number): number {
+    this.text.print(`[POINT ${x}, ${y}]`, true);
+    return this.graphics.getPixel(x, y);
   }
 
   setPixel(x: number, y: number, color?: number, step?: boolean) {

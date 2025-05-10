@@ -107,6 +107,15 @@ export class Plotter {
     return this.coordinates.windowToView(p);
   }
 
+  getPixel(ctx: CanvasRenderingContext2D, x: number, y: number): number {
+    const pv = this.windowToScreen({x, y});
+    if (this.clip.contains(pv)) {
+      const imageData = ctx.getImageData(pv.x, pv.y, 1, 1);
+      return imageData.data[0];
+    }
+    return -1;
+  }
+
   setPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: number, step?: boolean) {
     const pw = step ? {x: x + this.cursor.x, y: y + this.cursor.y} : {x, y};
     const pv = this.windowToScreen(pw);
@@ -149,11 +158,15 @@ export class Plotter {
   }
 
   setWindow(p1: Point, p2: Point, screen: boolean) {
+    const oldCursor = this.windowToScreen(this.cursor);
     this.coordinates.setWindow(p1, p2, screen);
+    this.cursor = this.screenToWindow(oldCursor);
   }
 
   resetWindow() {
+    const oldCursor = this.windowToScreen(this.cursor);
     this.coordinates.resetWindow();
+    this.cursor = this.screenToWindow(oldCursor);
   }
 
   setClip(p1: Point, p2: Point) {
@@ -162,6 +175,7 @@ export class Plotter {
 
   setView(p1: Point, p2: Point) {
     this.coordinates.setView(p1, p2);
+    this.cursor = this.viewToWindow(this.coordinates.getViewCenter());
   }
 
   drawViewBox(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color?: number, border?: number) {
@@ -425,6 +439,13 @@ class ViewTransform {
     }
   }
 
+  getViewCenter(): Point {
+    return {
+      x: (this.view.x.end - this.view.x.start) / 2,
+      y: (this.view.y.end - this.view.y.start) / 2
+    }
+  }
+
   resetWindow() {
     this.window = undefined;
     this.update();
@@ -442,29 +463,29 @@ class ViewTransform {
 
   windowToScreen(p: Point): Point {
     return {
-      x: Math.floor(this.x0 + p.x * this.dx),
-      y: Math.floor(this.y0 + p.y * this.dy)
+      x: Math.round(this.x0 + p.x * this.dx),
+      y: Math.round(this.y0 + p.y * this.dy)
     };
   }
 
   windowToView(p: Point): Point {
     return {
-      x: Math.floor(this.x0 + p.x * this.dx) - this.view.x.start,
-      y: Math.floor(this.y0 + p.y * this.dy) - this.view.y.start
+      x: Math.round(this.x0 + p.x * this.dx) - this.view.x.start,
+      y: Math.round(this.y0 + p.y * this.dy) - this.view.y.start
     };
   }
 
   screenToWindow(p: Point): Point {
     return {
-      x: Math.floor((p.x - this.x0) / this.dx),
-      y: Math.floor((p.y - this.y0) / this.dy)
+      x: Math.round((p.x - this.x0) / this.dx),
+      y: Math.round((p.y - this.y0) / this.dy)
     }
   }
 
   viewToWindow(p: Point): Point {
     return {
-      x: Math.floor(((p.x + this.view.x.start) - this.x0) / this.dx),
-      y: Math.floor(((p.y + this.view.y.start) - this.y0) / this.dy)
+      x: Math.round(((p.x + this.view.x.start) - this.x0) / this.dx),
+      y: Math.round(((p.y + this.view.y.start) - this.y0) / this.dy)
     }
   }
 }

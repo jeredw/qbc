@@ -1,0 +1,15 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call point 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) )))))) \n <EOF>)

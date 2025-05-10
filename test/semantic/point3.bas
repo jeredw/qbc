@@ -1,0 +1,1 @@
+print point(0, 0)

@@ -126,6 +126,7 @@ import {
   LocateStatement,
   PaletteStatement,
   PmapFunction,
+  PointFunction,
   PosFunction,
   PresetStatement,
   PsetStatement,
@@ -544,6 +545,10 @@ export function playStatement(token: Token, commandString: parser.ExprContext) {
 
 export function pmap(args: BuiltinStatementArgs) {
   return new PmapFunction(args);
+}
+
+export function point(args: BuiltinStatementArgs) {
+  return new PointFunction(args);
 }
 
 export function pos(args: BuiltinStatementArgs) {
