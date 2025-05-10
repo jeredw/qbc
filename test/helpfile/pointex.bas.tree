@@ -1,0 +1,144 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range X) , 
+      (letter_range Y))) \n 
+  (statement 
+    (input_statement INPUT "Enter angle of tilt in degrees 
+      (0 to 90): " , 
+      (variable_or_function_call Ang))) \n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)))) ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Ang) = 
+      (expr 
+        (expr 
+          ( 
+            (expr 
+              (expr 
+                (literal 3.1415926#)) / 
+              (expr 
+                (literal 180))) )) * 
+        (expr 
+          (variable_or_function_call Ang))))) ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Cs) = 
+      (expr 
+        (variable_or_function_call COS 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call Ang)))) ))))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Sn) = 
+      (expr 
+        (variable_or_function_call SIN 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call Ang)))) ))))) \n 
+  (statement 
+    (circle_statement CIRCLE 
+      ( 
+        (expr 
+          (literal 45)) , 
+        (expr 
+          (literal 70)) ) , 
+      (expr 
+        (literal 50)) , 
+      (expr 
+        (literal 2)) , , , 
+      (expr 
+        (literal 2)))) ' \n 
+  (statement 
+    (paint_statement PAINT 
+      ( 
+        (expr 
+          (literal 45)) , 
+        (expr 
+          (literal 70)) ) , 
+      (expr 
+        (literal 2)))) ' \n \n 
+  (statement 
+    (for_next_statement FOR Y = 
+      (expr 
+        (literal 20)) TO 
+      (expr 
+        (literal 120)) 
+      (block \n 
+        (statement 
+          (for_next_statement FOR X = 
+            (expr 
+              (literal 20)) TO 
+            (expr 
+              (literal 70)) 
+            (block \n ' \n 
+              (if_block_statement IF 
+                (expr 
+                  (expr 
+                    (variable_or_function_call POINT 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call X))) , 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call Y)))) ))) <> 
+                  (expr 
+                    (literal 0))) THEN \n 
+                (then_block ' \n ' \n 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Xnew) = 
+                      (expr 
+                        (expr 
+                          ( 
+                            (expr 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call X)) * 
+                                (expr 
+                                  (variable_or_function_call Cs))) - 
+                              (expr 
+                                (expr 
+                                  (variable_or_function_call Y)) * 
+                                (expr 
+                                  (variable_or_function_call Sn)))) )) + 
+                        (expr 
+                          (literal 200))))) : 
+                  (statement 
+                    (assignment_statement 
+                      (variable_or_function_call Ynew) = 
+                      (expr 
+                        ( 
+                          (expr 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call X)) * 
+                              (expr 
+                                (variable_or_function_call Sn))) + 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call Y)) * 
+                              (expr 
+                                (variable_or_function_call Cs)))) )))) \n 
+                  (statement 
+                    (pset_statement PSET 
+                      ( 
+                        (expr 
+                          (variable_or_function_call Xnew)) , 
+                        (expr 
+                          (variable_or_function_call Ynew)) ) , 
+                      (expr 
+                        (literal 2)))) \n) 
+                (end_if_statement END IF)) \n) NEXT)) \n) NEXT)) \n 
+  (statement 
+    (end_statement END)) \n <EOF>)
