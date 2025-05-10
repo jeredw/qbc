@@ -1,0 +1,50 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call rnd 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 1))))) ))) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call rnd 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 1))))) ))) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call rnd 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 1))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call rnd 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call rnd 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n <EOF>)

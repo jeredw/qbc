@@ -1,0 +1,18 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo) = 
+      (expr 
+        (variable_or_function_call rnd)))) \n 
+  (statement 
+    (randomize_statement randomize 
+      (expr 
+        (literal 2.2)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call rnd)) * 
+          (expr 
+            (literal &h1000000)))))) \n <EOF>)
