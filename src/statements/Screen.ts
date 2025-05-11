@@ -306,6 +306,38 @@ export class PsetStatement extends Statement {
   }
 }
 
+export interface PaintStatementArgs {
+  token: Token;
+  step: boolean;
+  x: ExprContext;
+  y: ExprContext;
+  color?: ExprContext;
+  borderColor?: ExprContext;
+  tile?: ExprContext;
+  background?: ExprContext;
+}
+
+export class PaintStatement extends Statement {
+  constructor(
+    private args: PaintStatementArgs
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const step = this.args.step;
+    const x = evaluateIntegerExpression(this.args.x, context.memory);
+    const y = evaluateIntegerExpression(this.args.y, context.memory);
+    const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
+    const borderColor = this.args.borderColor && evaluateIntegerExpression(this.args.borderColor, context.memory);
+    try {
+      context.devices.screen.paint({step, x, y, borderColor}, color);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}
+
 export class PresetStatement extends Statement {
   constructor(
     private token: Token,

@@ -888,7 +888,25 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.open({token, name, fileNumber, mode, recordLength}));
   }
 
-  override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
+  override enterPaint_statement = (ctx: parser.Paint_statementContext) => {
+    const token = ctx.start!;
+    const step = !!ctx.STEP();
+    const x = this.compileExpression(ctx._x!, ctx._x!.start!, { tag: TypeTag.INTEGER });
+    const y = this.compileExpression(ctx._y!, ctx._y!.start!, { tag: TypeTag.INTEGER });
+    let color: parser.ExprContext | undefined;
+    let tile: parser.ExprContext | undefined;
+    try {
+      color = ctx._colortile && this.compileExpression(ctx._colortile, ctx._colortile.start!, { tag: TypeTag.INTEGER });
+    } catch (e: unknown) {
+      tile = ctx._colortile && this.compileExpression(ctx._colortile, ctx._colortile.start!, { tag: TypeTag.STRING });
+    }
+    if (color && tile) {
+      throw new Error("unimplemented");
+    }
+    const borderColor = ctx._bordercolor && this.compileExpression(ctx._bordercolor, ctx._bordercolor.start!, { tag: TypeTag.INTEGER });
+    const background = ctx._background && this.compileExpression(ctx._background, ctx._background.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.paint({token, step, x, y, color, tile, borderColor, background}));
+  }
 
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {
     const token = ctx.start!;

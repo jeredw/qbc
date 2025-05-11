@@ -124,6 +124,8 @@ import {
   LineStatement,
   LineStatementArgs,
   LocateStatement,
+  PaintStatement,
+  PaintStatementArgs,
   PaletteStatement,
   PmapFunction,
   PointFunction,
@@ -525,6 +527,10 @@ export function oct(args: BuiltinStatementArgs) {
 
 export function open(args: OpenArgs) {
   return new OpenStatement(args);
+}
+
+export function paint(args: PaintStatementArgs) {
+  return new PaintStatement(args);
 }
 
 export function palette(token: Token, attributeExpr?: parser.ExprContext, colorExpr?: parser.ExprContext, array?: Variable) {

@@ -1,0 +1,75 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 10)) ))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr - 
+          (expr 
+            (literal 10))) ))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 30)) ))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 30))) , 
+        (expr 
+          (literal 0)) ))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr - 
+          (expr 
+            (literal 30))) ))) \n 
+  (statement 
+    (paint_statement paint step 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ) , 
+      (expr 
+        (literal 6)) , 
+      (expr 
+        (literal 15)))) \n <EOF>)

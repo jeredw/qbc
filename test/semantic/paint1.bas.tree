@@ -1,0 +1,25 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 50)) , 
+        (expr 
+          (literal 50)) ) - 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 150)) ) , , 
+      (box_style b))) \n 
+  (statement 
+    (paint_statement paint 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ))) \n <EOF>)

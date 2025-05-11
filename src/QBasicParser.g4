@@ -698,9 +698,9 @@ open_lock
 // that parses just fine.
 paint_statement
   : PAINT STEP? '(' x=expr COMMA y=expr ')'
-    ( COMMA (color_tile=expr)? COMMA (bordercolor=expr)? COMMA background=expr
-    | COMMA (color_tile=expr)? COMMA bordercolor=expr
-    | COMMA color_tile=expr )?
+    ( COMMA (colortile=expr)? COMMA (bordercolor=expr)? COMMA background=expr
+    | COMMA (colortile=expr)? COMMA bordercolor=expr
+    | COMMA colortile=expr )?
   ;
 
 palette_statement

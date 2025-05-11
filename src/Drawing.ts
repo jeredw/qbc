@@ -1,3 +1,4 @@
+import { Canvas } from "canvas";
 import { cssForColorIndex } from "./Colors.ts";
 
 export interface Point {
@@ -25,6 +26,15 @@ export interface CircleArgs {
   start?: number;
   end?: number;
   aspect?: number;
+}
+
+export interface PaintArgs {
+  step: boolean;
+  x: number;
+  y: number;
+  tile?: number[];
+  borderColor?: number;
+  background?: number[];
 }
 
 class Range {
@@ -155,6 +165,18 @@ export class Plotter {
       {x: args.x, y: args.y};
     this.cursor = {...center};
     this.drawCircle(ctx, center, args.radius, color, aspect, args.start, args.end);
+  }
+
+  paint(ctx: CanvasRenderingContext2D, args: PaintArgs, color: number) {
+    const pw = args.step ?
+      {x: args.x + this.cursor.x, y: args.y + this.cursor.y} :
+      {x: args.x, y: args.y};
+    this.cursor = {...pw};
+    if (args.tile) {
+      // TODO
+    } else {
+      this.floodFill(ctx, pw, color, args.borderColor ?? color);
+    }
   }
 
   setWindow(p1: Point, p2: Point, screen: boolean) {
@@ -413,6 +435,40 @@ export class Plotter {
     if (endPoint) {
       this.drawLine(ctx, center, endPoint, color);
     }
+  }
+
+  private floodFill(ctx: CanvasRenderingContext2D, start: Point, color: number, border: number) {
+    const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const width = ctx.canvas.width;
+    const queue: Point[] = [start];
+    const putColor = (p: Point) => {
+      imageData.data[4 * (p.y * width + p.x)] = color;
+    };
+    const getColor = (p: Point) => imageData.data[4 * (p.y * width + p.x)];
+    const hash = (p: Point) => `${p.x},${p.y}`;
+    const queued: Set<String> = new Set([hash(start)]);
+    const enqueue = (p: Point) => {
+      if (!queued.has(hash(p))) {
+        queued.add(hash(p));
+        queue.push(p);
+      }
+    };
+    while (true) {
+      const p = queue.shift();
+      if (p === undefined) {
+        break;
+      }
+      if (this.clip.contains(p)) {
+        if (getColor(p) !== border) {
+          putColor(p);
+          enqueue({x: p.x - 1, y: p.y});
+          enqueue({x: p.x + 1, y: p.y});
+          enqueue({x: p.x, y: p.y - 1});
+          enqueue({x: p.x, y: p.y + 1});
+        }
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
   }
 }
 
