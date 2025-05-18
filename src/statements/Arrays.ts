@@ -3,10 +3,11 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError } from "../Errors.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
-import { array, DUPLICATE_DEFINITION, integer, isArray, isError, isNumeric, isReference, reference, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
-import { ArrayBounds, ArrayDescriptor, Variable } from "../Variables.ts";
+import { array, double, DUPLICATE_DEFINITION, integer, isArray, isError, isNumeric, isReference, long, reference, single, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
+import { ArrayBounds, ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
+import { TypeTag } from "../Types.ts";
 
 export interface DimBoundsExprs {
   lower?: ExprContext;
@@ -182,7 +183,20 @@ function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor
   return value.descriptor;
 }
 
-export function readNumbersFromArray(array: Variable, count: number, memory: Memory): number[] {
+function getArrayLength(descriptor: ArrayDescriptor): number {
+  return descriptor.dimensions.map((range) => {
+    if (range.upper === undefined || range.lower === undefined) {
+      throw new Error('expecting bounds to be defined');
+    }
+    return 1 + range.upper - range.lower;
+  }).reduce((acc, current) => acc * current, 1);
+}
+
+function getDescriptorAndBaseIndex(array: Variable, memory: Memory): {
+  array: Variable,
+  baseIndex: number,
+  descriptor: ArrayDescriptor
+} {
   let baseIndex: number | undefined;
   if (!array.array) {
     const arrayRef = memory.readAddress(array.address!);
@@ -196,12 +210,14 @@ export function readNumbersFromArray(array: Variable, count: number, memory: Mem
   if (baseIndex === undefined) {
     baseIndex = descriptor.baseAddress!.index;
   }
-  const size = descriptor.dimensions[descriptor.dimensions.length - 1];
-  if (size.upper === undefined || size.lower === undefined) {
-    throw new Error('missing bounds');
-  }
-  const offset = baseIndex - descriptor.baseAddress!.index;
-  if (offset + count > 1 + size.upper - size.lower) {
+  return {array, baseIndex, descriptor};
+}
+
+export function readNumbersFromArray(array: Variable, count: number, memory: Memory): number[] {
+  const {descriptor, baseIndex} = getDescriptorAndBaseIndex(array, memory);
+  const start = baseIndex - descriptor.baseAddress!.index;
+  const length = getArrayLength(descriptor);
+  if (start + count > length) {
     throw new Error('not enough elements in array');
   }
   const result: number[] = [];
@@ -211,14 +227,106 @@ export function readNumbersFromArray(array: Variable, count: number, memory: Mem
       frameIndex: descriptor.baseAddress!.frameIndex,
       index: baseIndex + i 
     });
-    if (!value) {
-      result.push(0);
-    } else {
-      if (!isNumeric(value)) {
-        throw new Error('value not a number');
-      }
-      result.push(value.number);
+    result.push(unwrapNumber(value));
+  }
+  return result;
+}
+
+export function readBytesFromArray(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
+  const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
+  const start = baseIndex - descriptor.baseAddress!.index;
+  const numItems = getArrayLength(descriptor) - start;
+  const bytesPerItem = getScalarVariableSizeInBytes(array, memory);
+  const result = new ArrayBuffer(numItems * bytesPerItem);
+  const data = new DataView(result);
+  const littleEndian = true;
+  let offset = 0;
+  for (let i = 0; i < numItems; i++) {
+    const value = memory.readAddress({
+      storageType: descriptor.storageType!,
+      frameIndex: descriptor.baseAddress!.frameIndex,
+      index: baseIndex + i
+    });
+    const item = unwrapNumber(value);
+    switch (array.type.tag) {
+      case TypeTag.INTEGER:
+        data.setUint16(offset, item, littleEndian);
+        offset += 2;
+        break;
+      case TypeTag.LONG:
+        data.setUint32(offset, item, littleEndian);
+        offset += 4;
+        break;
+      case TypeTag.SINGLE:
+        data.setFloat32(offset, item, littleEndian);
+        offset += 4;
+        break;
+      case TypeTag.DOUBLE:
+        data.setFloat64(offset, item, littleEndian);
+        offset += 8;
+        break;
+      default:
+        throw new Error('unsupported type');
     }
   }
   return result;
+}
+
+export function writeBytesToArray(arrayOrRef: Variable, buffer: ArrayBuffer, memory: Memory) {
+  const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
+  const start = baseIndex - descriptor.baseAddress!.index;
+  const numItems = getArrayLength(descriptor) - start;
+  const bytesPerItem = getScalarVariableSizeInBytes(array, memory);
+  if (buffer.byteLength % bytesPerItem != 0) {
+    const padded = new ArrayBuffer(bytesPerItem * Math.ceil(buffer.byteLength / bytesPerItem));
+    new Uint8Array(padded).set(new Uint8Array(buffer));
+    buffer = padded;
+  }
+  if (buffer.byteLength > numItems * bytesPerItem) {
+    throw new Error('not enough room in array');
+  }
+  const data = new DataView(buffer);
+  const littleEndian = true;
+  let offset = 0;
+  let index = 0;
+  while (offset < buffer.byteLength) {
+    let value: Value;
+    switch (array.type.tag) {
+      case TypeTag.INTEGER:
+        value = integer(data.getInt16(offset, littleEndian));
+        offset += 2;
+        break;
+      case TypeTag.LONG:
+        value = long(data.getInt32(offset, littleEndian));
+        offset += 4;
+        break;
+      case TypeTag.SINGLE:
+        // Do not fround, use the bits we got.
+        value = {tag: TypeTag.SINGLE, number: data.getFloat32(offset, littleEndian)};
+        offset += 4;
+        break;
+      case TypeTag.DOUBLE:
+        value = double(data.getFloat64(offset, littleEndian));
+        offset += 8;
+        break;
+      default:
+        throw new Error('unsupported type');
+    }
+    memory.writeAddress({
+      storageType: descriptor.storageType!,
+      frameIndex: descriptor.baseAddress!.frameIndex,
+      index: baseIndex + index
+    }, value);
+    index++;
+  }
+}
+
+function unwrapNumber(value?: Value): number {
+  if (!value) {
+    return 0;
+  }
+  if (!isNumeric(value)) {
+    throw new Error('value not a number');
+  }
+  return value.number;
 }

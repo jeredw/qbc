@@ -184,7 +184,7 @@ parse those using baked in rules.
 | `FREEFILE`       | Function    | -       | ✅      |
 | `FUNCTION`       | Statement   | ✅      | ✅      |
 | `GET` I/O        | Statement   | ✅      | ✅      |
-| `GET` Graphics   | Statement   | ✅      | ⛔      |
+| `GET` Graphics   | Statement   | ✅      | ✅      |
 | `GOSUB`          | Statement   | ✅      | ✅      |
 | `GOTO`           | Statement   | ✅      | ✅      |
 | `HEX$`           | Function    | -       | ✅      |
@@ -254,7 +254,7 @@ parse those using baked in rules.
 | `OR`             | Operator    | ✅      | ✅      |
 | `OUT`            | Statement   | -       | ⛔      |
 | `OUTPUT`         | Keyword     | ✅      | ✅      |
-| `PAINT`          | Statement   | ✅      | ⛔      |
+| `PAINT`          | Statement   | ✅      | 🚧      |
 | `PALETTE`        | Statement   | ✅      | ✅      |
 | `PALETTE USING`  | Statement   | ✅      | ✅      |
 | `PCOPY`          | Statement   | -       | ⛔      |
@@ -273,7 +273,7 @@ parse those using baked in rules.
 | `PRINT USING`    | Statement   | ✅      | ✅      |
 | `PSET`           | Statement   | ✅      | ✅      |
 | `PUT` I/O        | Statement   | ✅      | ✅      |
-| `PUT` Graphics   | Statement   | ✅      | ⛔      |
+| `PUT` Graphics   | Statement   | ✅      | ✅      |
 | `RANDOM`         | Keyword     | ✅      | ✅      |
 | `RANDOMIZE`      | Statement   | -       | ✅      |
 | `READ`           | Statement   | ✅      | ✅      |

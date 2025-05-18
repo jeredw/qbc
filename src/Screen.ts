@@ -1,5 +1,5 @@
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
-import { CircleArgs, LineArgs, PaintArgs, Plotter, Point } from './Drawing.ts';
+import { CircleArgs, GetBitmapArgs, LineArgs, PaintArgs, Plotter, Point, PutBitmapArgs } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenGeometry, ScreenMode } from './ScreenMode.ts';
@@ -53,6 +53,8 @@ export interface Screen extends Printer, LightPenTarget {
   line(args: LineArgs, color?: number): void;
   circle(args: CircleArgs, color?: number): void;
   paint(args: PaintArgs, color?: number): void;
+  getBitmap(args: GetBitmapArgs): ArrayBuffer;
+  putBitmap(args: PutBitmapArgs): void;
 
   showCursor(): void;
   hideCursor(): void;
@@ -183,6 +185,19 @@ class Page {
   paint(args: PaintArgs, color: number) {
     const ctx = this.canvas.getContext('2d')!;
     this.plotter.paint(ctx, args, color);
+    this.dirty = true;
+  }
+
+  getBitmap(args: GetBitmapArgs): ArrayBuffer {
+    const ctx = this.canvas.getContext('2d')!;
+    const {bppPerPlane, planes} = this.mode;
+    return this.plotter.getBitmap(ctx, args, bppPerPlane, planes);
+  }
+
+  putBitmap(args: PutBitmapArgs) {
+    const ctx = this.canvas.getContext('2d')!;
+    const {bppPerPlane, planes} = this.mode;
+    this.plotter.putBitmap(ctx, args, bppPerPlane, planes);
     this.dirty = true;
   }
 
@@ -426,7 +441,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.palette[1] = DEFAULT_PALETTE[11];
       this.palette[2] = DEFAULT_PALETTE[13];
       this.palette[3] = DEFAULT_PALETTE[15];
-    } else if (screenMode === 2) {
+    } else if (screenMode === 2 || screenMode === 11) {
       this.palette[1] = DEFAULT_PALETTE[15];
     } else if (screenMode === 10) {
       this.palette[1] = monoIndexToColor(3);
@@ -528,35 +543,59 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.setPixel(x, y, color ?? this.color.fgColor, step);
+    this.activePage.setPixel(x, y, this.checkColorArg(color, this.color.fgColor), step);
   }
 
   resetPixel(x: number, y: number, color?: number, step?: boolean) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.setPixel(x, y, color ?? this.color.bgColor, step);
+    this.activePage.setPixel(x, y, this.checkColorArg(color, this.color.bgColor), step);
   }
 
   line(args: LineArgs, color?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.line(args, color ?? this.color.fgColor);
+    this.activePage.line(args, this.checkColorArg(color, this.color.fgColor));
   }
 
   circle(args: CircleArgs, color?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.circle(args, color ?? this.color.fgColor);
+    this.activePage.circle(args, this.checkColorArg(color, this.color.fgColor));
   }
 
   paint(args: PaintArgs, color?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.paint(args, color ?? this.color.fgColor);
+    this.activePage.paint(args, this.checkColorArg(color, this.color.fgColor));
+  }
+
+  private checkColorArg(color: number | undefined, defaultColor: number): number {
+    if (color === undefined) {
+      return defaultColor;
+    }
+    if (color < 0 || color >= this.mode.attributes) {
+      return this.mode.attributes - 1;
+    }
+    return color;
+  }
+
+  getBitmap(args: GetBitmapArgs): ArrayBuffer {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.getBitmap(args);
+  };
+
+  putBitmap(args: PutBitmapArgs) {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    this.activePage.putBitmap(args);
   }
 
   render() {
@@ -866,6 +905,16 @@ export class TestScreen implements Screen {
   paint(args: PaintArgs, color?: number) {
     this.text.print(`[PAINT ${args.step}, ${args.x}, ${args.y}, ${args.tile}, ${args.borderColor}, ${args.background}, ${color}]`, true);
     this.graphics.paint(args, color);
+  }
+
+  getBitmap(args: GetBitmapArgs): ArrayBuffer {
+    this.text.print(`[GET ${args.step1}, ${args.x1}, ${args.y1}, ${args.step2}, ${args.x2}, ${args.y2}]`, true);
+    return this.graphics.getBitmap(args);
+  }
+
+  putBitmap(args: PutBitmapArgs) {
+    this.text.print(`[PUT ${args.step}, ${args.x1}, ${args.y1}, ${args.operation}]`, true);
+    this.graphics.putBitmap(args);
   }
 
   showCursor() {

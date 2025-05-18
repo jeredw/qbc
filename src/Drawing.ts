@@ -1,4 +1,3 @@
-import { Canvas } from "canvas";
 import { cssForColorIndex } from "./Colors.ts";
 
 export interface Point {
@@ -7,12 +6,12 @@ export interface Point {
 }
 
 export interface LineArgs {
+  step1: boolean;
   x1?: number;
   y1?: number;
-  step1: boolean;
+  step2: boolean;
   x2: number;
   y2: number;
-  step2: boolean;
   outline: boolean;
   fill: boolean; 
   dash?: number;
@@ -35,6 +34,31 @@ export interface PaintArgs {
   tile?: number[];
   borderColor?: number;
   background?: number[];
+}
+
+export interface GetBitmapArgs {
+  step1: boolean;
+  x1: number;
+  y1: number;
+  step2: boolean;
+  x2: number;
+  y2: number;
+}
+
+export interface PutBitmapArgs {
+  step: boolean;
+  x1: number;
+  y1: number;
+  operation: BlitOperation;
+  buffer: ArrayBuffer;
+}
+
+export enum BlitOperation {
+  PSET,
+  PRESET,
+  AND,
+  OR,
+  XOR
 }
 
 class Range {
@@ -75,6 +99,30 @@ class Region {
     return new Region(new Range(0, width - 1), new Range(0, height - 1));
   }
 
+  get left() {
+    return this.x.start;
+  }
+
+  get right() {
+    return this.x.end;
+  }
+
+  get top() {
+    return this.y.start;
+  }
+
+  get bottom() {
+    return this.y.end;
+  }
+
+  get width() {
+    return this.x.length();
+  }
+
+  get height() {
+    return this.y.length();
+  }
+
   isEmpty() {
     return this.x.isEmpty() || this.y.isEmpty();
   }
@@ -85,6 +133,42 @@ class Region {
 
   intersect(r: Region): Region {
     return new Region(this.x.intersect(r.x), this.y.intersect(r.y));
+  }
+}
+
+class BitStream {
+  private bitOffset: number = 7;
+
+  constructor(private data: DataView, private byteOffset: number = 0) {
+  }
+
+  read(): boolean {
+    const result = !!(this.data.getUint8(this.byteOffset) & (1 << this.bitOffset));
+    this.nextBit();
+    return result;
+  }
+
+  write(bit: boolean) {
+    if (bit) {
+      const current = this.data.getUint8(this.byteOffset);
+      this.data.setUint8(this.byteOffset, current | (1 << this.bitOffset));
+    }
+    this.nextBit();
+  }
+
+  finishByte() {
+    if (this.bitOffset != 7) {
+      this.byteOffset++;
+      this.bitOffset = 7;
+    }
+  }
+
+  private nextBit() {
+    if (this.bitOffset === 0) {
+      this.byteOffset++;
+      this.bitOffset = 8;
+    }
+    this.bitOffset--;
   }
 }
 
@@ -131,6 +215,108 @@ export class Plotter {
     const pv = this.windowToScreen(pw);
     this.fillPixel(ctx, pv, color);
     this.cursor = {...pw};
+  }
+
+  getBitmap(ctx: CanvasRenderingContext2D, args: GetBitmapArgs, bppPerPlane: number, planes: number): ArrayBuffer {
+    const [x1, y1] = [args.x1 ?? this.cursor.x, args.y1 ?? this.cursor.y];
+    const p1 = args.step1 ?
+      {x: x1 + this.cursor.x, y: y1 + this.cursor.y} :
+      {x: x1, y: y1};
+    this.cursor = {...p1};
+    const p2 = args.step2 ?
+      {x: args.x2 + this.cursor.x, y: args.y2 + this.cursor.y} :
+      {x: args.x2, y: args.y2};
+    this.cursor = {...p2};
+    const p1v = this.windowToScreen(p1);
+    const p2v = this.windowToScreen(p2);
+    const r = Region.fromPoints(p1, p2);
+    const attributes = ctx.getImageData(r.left, r.top, r.width, r.height);
+    const sizeInBytes = 4 + Math.ceil(r.width * bppPerPlane / 8) * planes * r.height;
+    const buffer = new ArrayBuffer(sizeInBytes);
+    const data = new DataView(buffer);
+    const littleEndian = true;
+    data.setInt16(0, r.width, littleEndian);
+    data.setInt16(2, r.height, littleEndian);
+    const bitStream = new BitStream(data, 4);
+    let offset = 0;
+    for (let y = r.top; y <= r.bottom; y++) {
+      const rowStart = offset;
+      for (let plane = 0; plane < planes; plane++) {
+        offset = rowStart;
+        for (let x = r.left; x <= r.right; x++) {
+          const color = attributes.data[offset] >> plane;
+          offset += 4;
+          for (let bit = bppPerPlane - 1; bit >= 0; bit--) {
+            bitStream.write(!!(color & (1 << bit)));
+          }
+        }
+        bitStream.finishByte();
+      }
+    }
+    return buffer;
+  }
+
+  putBitmap(ctx: CanvasRenderingContext2D, args: PutBitmapArgs, bppPerPlane: number, planes: number) {
+    const [x1, y1] = [args.x1 ?? this.cursor.x, args.y1 ?? this.cursor.y];
+    const p1 = args.step ?
+      {x: x1 + this.cursor.x, y: y1 + this.cursor.y} :
+      {x: x1, y: y1};
+    this.cursor = {...p1};
+    const p1v = this.windowToScreen(p1);
+    const data = new DataView(args.buffer);
+    const littleEndian = true;
+    // getInt16() throws if the buffer is empty.
+    const width = data.getInt16(0, littleEndian);
+    const height = data.getInt16(2, littleEndian);
+    const sizeInBytes = 4 + Math.ceil(width * bppPerPlane / 8) * planes * height;
+    if (args.buffer.byteLength < sizeInBytes) {
+      throw new Error('bitmap is not large enough')
+    }
+    const overwrite = (
+      args.operation === BlitOperation.PSET ||
+      args.operation === BlitOperation.PRESET
+    );
+    const attributes = overwrite ?
+      ctx.createImageData(width, height) :
+      ctx.getImageData(p1v.x, p1v.y, width, height);
+    const bitStream = new BitStream(data, 4);
+    let offset = 0;
+    for (let y = 0; y < height; y++) {
+      const rowStart = offset;
+      for (let plane = 0; plane < planes; plane++) {
+        offset = rowStart;
+        for (let x = 0; x < width; x++) {
+          let channel = 0;
+          for (let b = bppPerPlane - 1; b >= 0; b--) {
+            channel = (channel << 1) | (bitStream.read() ? 1 : 0);
+          }
+          const mask = ((1 << bppPerPlane) - 1) << plane;
+          switch (args.operation) {
+            case BlitOperation.PSET:
+              attributes.data[offset] |= channel << plane;
+              break;
+            case BlitOperation.PRESET:
+              attributes.data[offset] |= ((~channel) << plane) & mask;
+              break;
+            case BlitOperation.AND:
+              attributes.data[offset] &= 0xff ^ (mask & ~(channel << plane));
+              break;
+            case BlitOperation.OR:
+              attributes.data[offset] |= channel << plane;
+              break;
+            case BlitOperation.XOR:
+              attributes.data[offset] ^= channel << plane;
+              break;
+          }
+          attributes.data[offset + 1] = 0;
+          attributes.data[offset + 2] = 0;
+          attributes.data[offset + 3] = 255;
+          offset += 4;
+        }
+        bitStream.finishByte();
+      }
+    }
+    ctx.putImageData(attributes, p1v.x, p1v.y);
   }
 
   line(ctx: CanvasRenderingContext2D, args: LineArgs, color: number) {

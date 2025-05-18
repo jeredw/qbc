@@ -7,7 +7,7 @@ import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
 import { parseLiteral, typeCheckExpression } from "./Expressions.ts";
 import { reference, isError, getDefaultValue, isString as isStringValue } from "./Values.ts";
-import { sameType, splitSigil, Type, TypeTag, isString as isStringType } from "./Types.ts";
+import { sameType, splitSigil, Type, TypeTag, isString as isStringType, isNumericType } from "./Types.ts";
 import { isBuiltin, isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
@@ -624,8 +624,6 @@ export class CodeGenerator extends QBasicParserListener {
     this.addLabelForNextStatement(labels.$exitLabel);
   }
 
-  override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}
-
   override enterGosub_statement = (ctx: parser.Gosub_statementContext) => {
     this.addStatement(statements.gosub());
   }
@@ -1017,7 +1015,66 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.preset(token, step, x, y, color));
   }
 
-  override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
+  override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {
+    const token = ctx.start!;
+    const step1 = !!ctx._step1;
+    const x1 = this.compileExpression(ctx._x1!, ctx._x1!.start!, { tag: TypeTag.INTEGER });
+    const y1 = this.compileExpression(ctx._y1!, ctx._y1!.start!, { tag: TypeTag.INTEGER });
+    const step2 = !!ctx._step2;
+    const x2 = this.compileExpression(ctx._x2!, ctx._x2!.start!, { tag: TypeTag.INTEGER });
+    const y2 = this.compileExpression(ctx._y2!, ctx._y2!.start!, { tag: TypeTag.INTEGER });
+    let array: Variable;
+    if (ctx._array) {
+      array = getTyperContext(ctx).$result;
+    } else if (ctx._arrayexpr) {
+      const symbol = getTyperContext(ctx._arrayexpr).$symbol;
+      if (!symbol || !isVariable(symbol) || !symbol.variable.array) {
+        throw ParseError.fromToken(ctx.start!, "Expected: variable");
+      }
+      if (!isNumericType(symbol.variable.type)) {
+        throw ParseError.fromToken(ctx.start!, "Type mismatch");
+      }
+      array = this.getVariable(ctx._arrayexpr);
+      if (!array) {
+        throw ParseError.fromToken(ctx.start!, "Expected: variable");
+      }
+    } else {
+      throw new Error("Missing array");
+    }
+    this.addStatement(statements.getGraphics({token, step1, x1, y1, step2, x2, y2, array}));
+  }
+
+  override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {
+    const token = ctx.start!;
+    const step = !!ctx.STEP();
+    const x1 = this.compileExpression(ctx._x1!, ctx._x1!.start!, { tag: TypeTag.INTEGER });
+    const y1 = this.compileExpression(ctx._y1!, ctx._y1!.start!, { tag: TypeTag.INTEGER });
+    let array: Variable;
+    if (ctx._array) {
+      array = getTyperContext(ctx).$result;
+    } else if (ctx._arrayexpr) {
+      const symbol = getTyperContext(ctx._arrayexpr).$symbol;
+      if (!symbol || !isVariable(symbol) || !symbol.variable.array) {
+        throw ParseError.fromToken(ctx.start!, "Expected: variable");
+      }
+      if (!isNumericType(symbol.variable.type)) {
+        throw ParseError.fromToken(ctx.start!, "Type mismatch");
+      }
+      array = this.getVariable(ctx._arrayexpr);
+      if (!array) {
+        throw ParseError.fromToken(ctx.start!, "Expected: variable");
+      }
+    } else {
+      throw new Error("Missing array");
+    }
+    const operation = {
+      preset: !!ctx.PRESET(),
+      and: !!ctx.AND(),
+      or: !!ctx.OR(),
+      xor: !!ctx.XOR()
+    };
+    this.addStatement(statements.putGraphics({token, step, x1, y1, array, ...operation}));
+  }
 
   override enterRandomize_statement = (ctx: parser.Randomize_statementContext) => {
     const seedExpr = ctx.expr();

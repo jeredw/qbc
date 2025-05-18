@@ -14,6 +14,8 @@ export interface ScreenMode {
   attributes: number;
   defaultFgColor: number;
   pages: number;
+  bppPerPlane: number;
+  planes: number;
 }
 
 export const SCREEN_MODES: ScreenMode[] = [
@@ -31,6 +33,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 16,
     defaultFgColor: 7,
     pages: 8,
+    bppPerPlane: 0,
+    planes: 0,
   },
   {
     mode: 1,
@@ -41,6 +45,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 4,
     defaultFgColor: 3,
     pages: 1,
+    bppPerPlane: 2,
+    planes: 1,
   },
   {
     mode: 2,
@@ -51,6 +57,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 2,
     defaultFgColor: 1,
     pages: 1,
+    bppPerPlane: 1,
+    planes: 1,
   },
   {
     mode: 7,
@@ -61,6 +69,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 8,
+    bppPerPlane: 1,
+    planes: 4,
   },
   {
     mode: 8,
@@ -71,6 +81,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 4,
+    bppPerPlane: 1,
+    planes: 4,
   },
   {
     mode: 9,
@@ -82,6 +94,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 2,
+    bppPerPlane: 1,
+    planes: 4,
   },
   {
     mode: 10,
@@ -93,6 +107,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 4,
     defaultFgColor: 3,
     pages: 2,
+    bppPerPlane: 1,
+    planes: 2,
   },
   {
     mode: 11,
@@ -102,8 +118,10 @@ export const SCREEN_MODES: ScreenMode[] = [
     ],
     colors: 262144,
     attributes: 2,
-    defaultFgColor: 15,
+    defaultFgColor: 1,
     pages: 1,
+    bppPerPlane: 1,
+    planes: 1,
   },
   {
     mode: 12,
@@ -115,6 +133,8 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 16,
     defaultFgColor: 15,
     pages: 1,
+    bppPerPlane: 1,
+    planes: 4,
   },
   {
     mode: 13,
@@ -125,5 +145,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     attributes: 256,
     defaultFgColor: 15,
     pages: 1,
+    bppPerPlane: 8,
+    planes: 1,
   },
 ];

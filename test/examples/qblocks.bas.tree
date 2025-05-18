@@ -1629,8 +1629,7 @@
                 (expr 
                   (variable_or_function_call WELLY))) - 
               (expr 
-                (literal 1))) ) , 
-          (variable_or_function_call Temp))) \n 
+                (literal 1))) ) , Temp)) \n 
       (statement 
         (play_statement PLAY 
           (expr 
@@ -1654,8 +1653,7 @@
                       (expr 
                         (variable_or_function_call YSIZE))) + 
                     (expr 
-                      (variable_or_function_call WELLY))) ) , 
-                (variable_or_function_call Temp) , PRESET)) \n 
+                      (variable_or_function_call WELLY))) ) , Temp , PRESET)) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call DelayTime!) = 
@@ -1687,8 +1685,7 @@
                       (expr 
                         (variable_or_function_call YSIZE))) + 
                     (expr 
-                      (variable_or_function_call WELLY))) ) , 
-                (variable_or_function_call Temp) , PSET)) \n 
+                      (variable_or_function_call WELLY))) ) , Temp , PSET)) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call DelayTime!) = 
@@ -1731,8 +1728,7 @@
                 (expr 
                   (variable_or_function_call YSIZE))) + 
               (expr 
-                (variable_or_function_call WELLY))) ) , 
-          (variable_or_function_call Temp))) \n 
+                (variable_or_function_call WELLY))) ) , Temp)) \n 
       (statement 
         (put_graphics_statement PUT 
           ( 
@@ -1753,8 +1749,7 @@
                 (expr 
                   (variable_or_function_call YSIZE))) + 
               (expr 
-                (variable_or_function_call WELLY))) ) , 
-          (variable_or_function_call Temp) , PSET)) \n ' \n 
+                (variable_or_function_call WELLY))) ) , Temp , PSET)) \n ' \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4035,8 +4030,7 @@
             (expr 
               (literal 31)) , 
             (expr 
-              (literal 19)) ) , 
-          (variable_or_function_call Temp2))) ' \n \n ' \n 
+              (literal 19)) ) , Temp2)) ' \n \n ' \n 
       (statement 
         (for_next_statement FOR H = 
           (expr 
@@ -4061,8 +4055,7 @@
                         (expr 
                           (variable_or_function_call H)) , 
                         (expr 
-                          (variable_or_function_call V)) ) , 
-                      (variable_or_function_call Temp2) , PSET)) \n) NEXT V)) \n) NEXT H)) \n \n) 
+                          (variable_or_function_call V)) ) , Temp2 , PSET)) \n) NEXT V)) \n) NEXT H)) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id DrawPlayingField) 
@@ -5957,8 +5950,7 @@
                     (expr 
                       (variable_or_function_call WELLHEIGHT)) * 
                     (expr 
-                      (variable_or_function_call YSIZE)))) ) , 
-              (variable_or_function_call Temp))) \n \n 
+                      (variable_or_function_call YSIZE)))) ) , Temp)) \n \n 
           (statement 
             (assignment_statement 
               (variable_or_function_call PrevScore) = 
@@ -5981,8 +5973,7 @@
                 (expr 
                   (variable_or_function_call WELLX)) , 
                 (expr 
-                  (variable_or_function_call WELLY)) ) , 
-              (variable_or_function_call Temp))) ' \n \n 
+                  (variable_or_function_call WELLY)) ) , Temp)) ' \n \n 
           (statement 
             (call_statement 
               (untyped_id RedrawControls))) ' \n) 

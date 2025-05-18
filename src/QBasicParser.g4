@@ -530,9 +530,9 @@ for_next_statement
   ;
 
 get_graphics_statement
-  : GET STEP? '(' x1=expr COMMA y1=expr ')' '-'
-        STEP? '(' x2=expr COMMA y2=expr ')'
-    COMMA arrayname=variable_or_function_call
+  : GET step1=STEP? '(' x1=expr COMMA y1=expr ')' '-'
+        step2=STEP? '(' x2=expr COMMA y2=expr ')'
+    COMMA ( array=ID | arrayexpr=variable_or_function_call )
   ;
 
 get_io_statement
@@ -705,8 +705,7 @@ paint_statement
 
 palette_statement
   : PALETTE attribute=expr COMMA color=expr
-  | PALETTE USING array=ID 
-  | PALETTE USING arrayexpr=variable_or_function_call
+  | PALETTE USING ( array=ID | arrayexpr=variable_or_function_call )
   | PALETTE
   ;
 
@@ -751,7 +750,7 @@ pset_statement
 
 put_graphics_statement
   : PUT STEP? '(' x1=expr COMMA y1=expr ')'
-    COMMA arrayname=variable_or_function_call
+    COMMA ( array=ID | arrayexpr=variable_or_function_call )
     (COMMA (AND | OR | PSET | PRESET | XOR))?
   ;
 

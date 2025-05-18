@@ -129,8 +129,7 @@
         (expr 
           (variable_or_function_call WRight)) , 
         (expr 
-          (variable_or_function_call WBottom)) ) , 
-      (variable_or_function_call Array))) \r\n 
+          (variable_or_function_call WBottom)) ) , Array)) \r\n 
   (statement 
     (call_statement 
       (untyped_id CLS))) \r\n \r\n ' \r\n 
@@ -301,8 +300,7 @@
                     (expr 
                       (variable_or_function_call X)) , 
                     (expr 
-                      (variable_or_function_call Y)) ) , 
-                  (variable_or_function_call Array) , PSET)) \r\n) NEXT X)) \r\n \r\n ' \r\n 
+                      (variable_or_function_call Y)) ) , Array , PSET)) \r\n) NEXT X)) \r\n \r\n ' \r\n 
         (statement 
           (assignment_statement 
             (variable_or_function_call StepSize) = 

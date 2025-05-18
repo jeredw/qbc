@@ -1949,8 +1949,7 @@
                           (expr 
                             (variable_or_function_call xc#)) , 
                           (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call LBan&) , PSET))) 
+                            (variable_or_function_call yc#)) ) , LBan& , PSET))) 
                   (if_inline_else_statement ELSE 
                     (if_inline_action 
                       (statement 
@@ -1959,8 +1958,7 @@
                             (expr 
                               (variable_or_function_call xc#)) , 
                             (expr 
-                              (variable_or_function_call yc#)) ) , 
-                          (variable_or_function_call LBan&) , XOR)))))) \n)) 
+                              (variable_or_function_call yc#)) ) , LBan& , XOR)))))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -1978,8 +1976,7 @@
                           (expr 
                             (variable_or_function_call xc#)) , 
                           (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call UBan&) , PSET))) 
+                            (variable_or_function_call yc#)) ) , UBan& , PSET))) 
                   (if_inline_else_statement ELSE 
                     (if_inline_action 
                       (statement 
@@ -1988,8 +1985,7 @@
                             (expr 
                               (variable_or_function_call xc#)) , 
                             (expr 
-                              (variable_or_function_call yc#)) ) , 
-                          (variable_or_function_call UBan&) , XOR)))))) \n)) 
+                              (variable_or_function_call yc#)) ) , UBan& , XOR)))))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -2007,8 +2003,7 @@
                           (expr 
                             (variable_or_function_call xc#)) , 
                           (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call DBan&) , PSET))) 
+                            (variable_or_function_call yc#)) ) , DBan& , PSET))) 
                   (if_inline_else_statement ELSE 
                     (if_inline_action 
                       (statement 
@@ -2017,8 +2012,7 @@
                             (expr 
                               (variable_or_function_call xc#)) , 
                             (expr 
-                              (variable_or_function_call yc#)) ) , 
-                          (variable_or_function_call DBan&) , XOR)))))) \n)) 
+                              (variable_or_function_call yc#)) ) , DBan& , XOR)))))) \n)) 
           (case_block 
             (case_statement CASE 
               (case_expr 
@@ -2036,8 +2030,7 @@
                           (expr 
                             (variable_or_function_call xc#)) , 
                           (expr 
-                            (variable_or_function_call yc#)) ) , 
-                        (variable_or_function_call RBan&) , PSET))) 
+                            (variable_or_function_call yc#)) ) , RBan& , PSET))) 
                   (if_inline_else_statement ELSE 
                     (if_inline_action 
                       (statement 
@@ -2046,8 +2039,7 @@
                             (expr 
                               (variable_or_function_call xc#)) , 
                             (expr 
-                              (variable_or_function_call yc#)) ) , 
-                          (variable_or_function_call RBan&) , XOR)))))) \n)) 
+                              (variable_or_function_call yc#)) ) , RBan& , XOR)))))) \n)) 
           (end_select_statement END SELECT))) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
@@ -2748,8 +2740,7 @@
                                   (argument_list 
                                     (argument 
                                       (expr 
-                                        (literal 28)))) )))) ) , 
-                        (variable_or_function_call GorR&))) \n)) 
+                                        (literal 28)))) )))) ) , GorR&)) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -2903,8 +2894,7 @@
                                   (argument_list 
                                     (argument 
                                       (expr 
-                                        (literal 28)))) )))) ) , 
-                        (variable_or_function_call GorL&))) \n)) 
+                                        (literal 28)))) )))) ) , GorL&)) \n)) 
                 (case_block 
                   (case_statement CASE 
                     (case_expr 
@@ -3058,8 +3048,7 @@
                                   (argument_list 
                                     (argument 
                                       (expr 
-                                        (literal 28)))) )))) ) , 
-                        (variable_or_function_call GorD&))) \n)) 
+                                        (literal 28)))) )))) ) , GorD&)) \n)) 
                 (end_select_statement END SELECT))) \n) NEXT i)) \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n 
   (function_statement FUNCTION ExplodeGorilla 
@@ -4181,8 +4170,7 @@
                   (expr 
                     (literal 13))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorD&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorD& , PSET)) \n 
           (statement 
             (put_graphics_statement PUT 
               ( 
@@ -4192,8 +4180,7 @@
                   (expr 
                     (literal 47))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorD&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorD& , PSET)) \n 
           (statement 
             (call_statement 
               (untyped_id Rest) 
@@ -4210,8 +4197,7 @@
                   (expr 
                     (literal 13))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorL&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorL& , PSET)) \n 
           (statement 
             (put_graphics_statement PUT 
               ( 
@@ -4221,8 +4207,7 @@
                   (expr 
                     (literal 47))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorR&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorR& , PSET)) \n 
           (statement 
             (play_statement PLAY 
               (expr 
@@ -4243,8 +4228,7 @@
                   (expr 
                     (literal 13))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorR&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorR& , PSET)) \n 
           (statement 
             (put_graphics_statement PUT 
               ( 
@@ -4254,8 +4238,7 @@
                   (expr 
                     (literal 47))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorL&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorL& , PSET)) \n 
           (statement 
             (play_statement PLAY 
               (expr 
@@ -4276,8 +4259,7 @@
                   (expr 
                     (literal 13))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorL&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorL& , PSET)) \n 
           (statement 
             (put_graphics_statement PUT 
               ( 
@@ -4287,8 +4269,7 @@
                   (expr 
                     (literal 47))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorR&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorR& , PSET)) \n 
           (statement 
             (play_statement PLAY 
               (expr 
@@ -4309,8 +4290,7 @@
                   (expr 
                     (literal 13))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorR&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorR& , PSET)) \n 
           (statement 
             (put_graphics_statement PUT 
               ( 
@@ -4320,8 +4300,7 @@
                   (expr 
                     (literal 47))) , 
                 (expr 
-                  (variable_or_function_call y)) ) , 
-              (variable_or_function_call GorL&) , PSET)) \n 
+                  (variable_or_function_call y)) ) , GorL& , PSET)) \n 
           (statement 
             (play_statement PLAY 
               (expr 
@@ -4349,8 +4328,7 @@
                         (expr 
                           (literal 13))) , 
                       (expr 
-                        (variable_or_function_call y)) ) , 
-                    (variable_or_function_call GorL&) , PSET)) \n 
+                        (variable_or_function_call y)) ) , GorL& , PSET)) \n 
                 (statement 
                   (put_graphics_statement PUT 
                     ( 
@@ -4360,8 +4338,7 @@
                         (expr 
                           (literal 47))) , 
                       (expr 
-                        (variable_or_function_call y)) ) , 
-                    (variable_or_function_call GorR&) , PSET)) \n 
+                        (variable_or_function_call y)) ) , GorR& , PSET)) \n 
                 (statement 
                   (play_statement PLAY 
                     (expr 
@@ -4382,8 +4359,7 @@
                         (expr 
                           (literal 13))) , 
                       (expr 
-                        (variable_or_function_call y)) ) , 
-                    (variable_or_function_call GorR&) , PSET)) \n 
+                        (variable_or_function_call y)) ) , GorR& , PSET)) \n 
                 (statement 
                   (put_graphics_statement PUT 
                     ( 
@@ -4393,8 +4369,7 @@
                         (expr 
                           (literal 47))) , 
                       (expr 
-                        (variable_or_function_call y)) ) , 
-                    (variable_or_function_call GorL&) , PSET)) \n 
+                        (variable_or_function_call y)) ) , GorL& , PSET)) \n 
                 (statement 
                   (play_statement PLAY 
                     (expr 
@@ -5587,8 +5562,7 @@
                         (argument_list 
                           (argument 
                             (expr 
-                              (variable_or_function_call i)))) ))) ) , 
-                (variable_or_function_call GorD&) , PSET)) \n) NEXT i)) \n \n) 
+                              (variable_or_function_call i)))) ))) ) , GorD& , PSET)) \n) NEXT i)) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id PlayGame) 
@@ -6038,8 +6012,7 @@
                 (expr 
                   (variable_or_function_call StartX)) , 
                 (expr 
-                  (variable_or_function_call StartY)) ) , 
-              (variable_or_function_call GorL&) , PSET)) \n) 
+                  (variable_or_function_call StartY)) ) , GorL& , PSET)) \n) 
         (else_block_statement ELSE 
           (else_block \n 
             (statement 
@@ -6048,8 +6021,7 @@
                   (expr 
                     (variable_or_function_call StartX)) , 
                   (expr 
-                    (variable_or_function_call StartY)) ) , 
-                (variable_or_function_call GorR&) , PSET)) \n)) 
+                    (variable_or_function_call StartY)) ) , GorR& , PSET)) \n)) 
         (end_if_statement END IF)) \n \n ' \n 
       (statement 
         (play_statement PLAY 
@@ -6068,8 +6040,7 @@
             (expr 
               (variable_or_function_call StartX)) , 
             (expr 
-              (variable_or_function_call StartY)) ) , 
-          (variable_or_function_call GorD&) , PSET)) \n \n 
+              (variable_or_function_call StartY)) ) , GorD& , PSET)) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call adjust) = 
@@ -7138,8 +7109,7 @@
                         (argument_list 
                           (argument 
                             (expr 
-                              (variable_or_function_call Player)))) ))) ) , 
-                (variable_or_function_call GorL&) , PSET)) \n 
+                              (variable_or_function_call Player)))) ))) ) , GorL& , PSET)) \n 
             (statement 
               (play_statement PLAY 
                 (expr 
@@ -7167,8 +7137,7 @@
                         (argument_list 
                           (argument 
                             (expr 
-                              (variable_or_function_call Player)))) ))) ) , 
-                (variable_or_function_call GorR&) , PSET)) \n 
+                              (variable_or_function_call Player)))) ))) ) , GorR& , PSET)) \n 
             (statement 
               (play_statement PLAY 
                 (expr 

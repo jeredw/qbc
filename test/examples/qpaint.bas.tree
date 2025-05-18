@@ -4479,8 +4479,7 @@
             (expr 
               (literal 200)) , 
             (expr 
-              (literal 80)) ) , 
-          (variable_or_function_call temp))) \n 
+              (literal 80)) ) , temp)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4517,8 +4516,7 @@
             (expr 
               (literal 97)) , 
             (expr 
-              (literal 62)) ) , 
-          (variable_or_function_call temp) , PSET)) \n 
+              (literal 62)) ) , temp , PSET)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4685,8 +4683,7 @@
             (expr 
               (literal 309)) , 
             (expr 
-              (literal 118)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 118)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -4737,8 +4734,7 @@
                   (expr 
                     (literal 175)) , 
                   (expr 
-                    (variable_or_function_call x)) ) , 
-                (variable_or_function_call txt) , PSET)) \n 
+                    (variable_or_function_call x)) ) , txt , PSET)) \n 
             (statement 
               (assignment_statement LET 
                 (variable_or_function_call x) = 
@@ -5453,8 +5449,7 @@
             (expr 
               (literal 309)) , 
             (expr 
-              (literal 168)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 168)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -5505,8 +5500,7 @@
                   (expr 
                     (literal 175)) , 
                   (expr 
-                    (variable_or_function_call x)) ) , 
-                (variable_or_function_call txt) , PSET)) \n 
+                    (variable_or_function_call x)) ) , txt , PSET)) \n 
             (statement 
               (assignment_statement LET 
                 (variable_or_function_call x) = 
@@ -5966,8 +5960,7 @@
                             (expr 
                               (variable_or_function_call line2x)) , 
                             (expr 
-                              (variable_or_function_call line2y)) ) , 
-                          (variable_or_function_call image))) \n 
+                              (variable_or_function_call line2y)) ) , image)) \n 
                       (statement 
                         (line_statement LINE 
                           ( 
@@ -5989,8 +5982,7 @@
                             (expr 
                               (literal 171)) , 
                             (expr 
-                              (literal 101)) ) , 
-                          (variable_or_function_call image))) \n 
+                              (literal 101)) ) , image)) \n 
                       (statement 
                         (pset_statement PSET 
                           ( 
@@ -6304,8 +6296,7 @@
                 (expr 
                   (literal 307)) , 
                 (expr 
-                  (literal 184)) ) , 
-              (variable_or_function_call txt))) \n 
+                  (literal 184)) ) , txt)) \n 
           (statement 
             (assignment_statement LET 
               (variable_or_function_call y) = 
@@ -6346,8 +6337,7 @@
                         (expr 
                           (literal 173)) + 
                         (expr 
-                          (variable_or_function_call y))) ) , 
-                    (variable_or_function_call txt) , PSET)) \n 
+                          (variable_or_function_call y))) ) , txt , PSET)) \n 
                 (statement 
                   (call_statement 
                     (untyped_id WAIT) 
@@ -6414,8 +6404,7 @@
                       (expr 
                         (variable_or_function_call x)) , 
                       (expr 
-                        (literal 184)) ) , 
-                    (variable_or_function_call txt) , PSET)) \n 
+                        (literal 184)) ) , txt , PSET)) \n 
                 (statement 
                   (call_statement 
                     (untyped_id WAIT) 
@@ -6482,8 +6471,7 @@
                 (expr 
                   (literal 307)) , 
                 (expr 
-                  (literal 184)) ) , 
-              (variable_or_function_call txt))) \n 
+                  (literal 184)) ) , txt)) \n 
           (statement 
             (assignment_statement LET 
               (variable_or_function_call y) = 
@@ -6524,8 +6512,7 @@
                         (expr 
                           (literal 173)) + 
                         (expr 
-                          (variable_or_function_call y))) ) , 
-                    (variable_or_function_call txt) , PSET)) \n 
+                          (variable_or_function_call y))) ) , txt , PSET)) \n 
                 (statement 
                   (call_statement 
                     (untyped_id WAIT) 
@@ -6592,8 +6579,7 @@
                       (expr 
                         (variable_or_function_call x)) , 
                       (expr 
-                        (literal 184)) ) , 
-                    (variable_or_function_call txt) , PSET)) \n 
+                        (literal 184)) ) , txt , PSET)) \n 
                 (statement 
                   (call_statement 
                     (untyped_id WAIT) 
@@ -8784,8 +8770,7 @@
                           (expr 
                             (literal 176)) , 
                           (expr 
-                            (literal 184)) ) , 
-                        (variable_or_function_call cleartxt))) \n)) 
+                            (literal 184)) ) , cleartxt)) \n)) 
                 (end_if_statement END IF)) \n) 
             (end_if_statement END IF)) \n) 
         (else_block_statement ELSE 
@@ -8981,8 +8966,7 @@
             (expr 
               (literal 309)) , 
             (expr 
-              (literal 126)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 126)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -9033,8 +9017,7 @@
                   (expr 
                     (literal 175)) , 
                   (expr 
-                    (variable_or_function_call x)) ) , 
-                (variable_or_function_call txt) , PSET)) \n 
+                    (variable_or_function_call x)) ) , txt , PSET)) \n 
             (statement 
               (assignment_statement LET 
                 (variable_or_function_call x) = 
@@ -9548,8 +9531,7 @@
             (expr 
               (literal 309)) , 
             (expr 
-              (literal 160)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 160)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -9600,8 +9582,7 @@
                   (expr 
                     (literal 175)) , 
                   (expr 
-                    (variable_or_function_call x)) ) , 
-                (variable_or_function_call txt) , PSET)) \n 
+                    (variable_or_function_call x)) ) , txt , PSET)) \n 
             (statement 
               (assignment_statement LET 
                 (variable_or_function_call x) = 
@@ -9998,8 +9979,7 @@
             (expr 
               (literal 294)) , 
             (expr 
-              (literal 126)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 126)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -10021,8 +10001,7 @@
             (expr 
               (literal 181)) , 
             (expr 
-              (literal 122)) ) , 
-          (variable_or_function_call txt))) \n \n 
+              (literal 122)) ) , txt)) \n \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -10393,8 +10372,7 @@
             (expr 
               (literal 171)) , 
             (expr 
-              (literal 2)) ) , 
-          (variable_or_function_call savefile) , PSET)) \n 
+              (literal 2)) ) , savefile , PSET)) \n 
       (statement 
         (goto_statement GOTO 
           (target 
@@ -10867,8 +10845,7 @@
             (expr 
               (literal 176)) , 
             (expr 
-              (literal 184)) ) , 
-          (variable_or_function_call cleartxt))) \n \n) 
+              (literal 184)) ) , cleartxt)) \n \n) 
     (end_sub_statement END SUB)) \n \n 
   (sub_statement SUB 
     (untyped_id savecheck) 
@@ -10900,8 +10877,7 @@
             (expr 
               (literal 220)) , 
             (expr 
-              (literal 90)) ) , 
-          (variable_or_function_call temp2))) \n 
+              (literal 90)) ) , temp2)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11008,8 +10984,7 @@
             (expr 
               (literal 200)) , 
             (expr 
-              (literal 80)) ) , 
-          (variable_or_function_call temp))) \n 
+              (literal 80)) ) , temp)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11046,8 +11021,7 @@
             (expr 
               (literal 97)) , 
             (expr 
-              (literal 62)) ) , 
-          (variable_or_function_call temp) , PSET)) \n 
+              (literal 62)) ) , temp , PSET)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11150,8 +11124,7 @@
             (expr 
               (literal 314)) , 
             (expr 
-              (literal 89)) ) , 
-          (variable_or_function_call savefile))) \n 
+              (literal 89)) ) , savefile)) \n 
       (statement 
         (pset_statement PSET 
           ( 
@@ -11284,8 +11257,7 @@
             (expr 
               (literal 309)) , 
             (expr 
-              (literal 152)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 152)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11336,8 +11308,7 @@
                   (expr 
                     (literal 175)) , 
                   (expr 
-                    (variable_or_function_call x)) ) , 
-                (variable_or_function_call txt) , PSET)) \n 
+                    (variable_or_function_call x)) ) , txt , PSET)) \n 
             (statement 
               (assignment_statement LET 
                 (variable_or_function_call x) = 
@@ -11504,8 +11475,7 @@
             (expr 
               (literal 291)) , 
             (expr 
-              (literal 136)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 136)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11527,8 +11497,7 @@
             (expr 
               (literal 186)) , 
             (expr 
-              (literal 126)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 126)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11566,8 +11535,7 @@
             (expr 
               (literal 271)) , 
             (expr 
-              (literal 152)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 152)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -11589,8 +11557,7 @@
             (expr 
               (literal 213)) , 
             (expr 
-              (literal 142)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 142)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -12932,8 +12899,7 @@
             (expr 
               (literal 110)) , 
             (expr 
-              (literal 7)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 7)) ) , txt)) \n 
       (statement 
         (print_statement PRINT 
           (print_argument 
@@ -12951,8 +12917,7 @@
             (expr 
               (literal 120)) , 
             (expr 
-              (literal 15)) ) , 
-          (variable_or_function_call cleartxt))) \n \n 
+              (literal 15)) ) , cleartxt)) \n \n 
       (statement 
         (call_statement 
           (untyped_id CLS))) \n 
@@ -13092,8 +13057,7 @@
             (expr 
               (literal 10)) , 
             (expr 
-              (literal 185)) ) , 
-          (variable_or_function_call txt))) \n \n 
+              (literal 185)) ) , txt)) \n \n 
       (statement 
         (locate_statement LOCATE 
           (expr 
@@ -13220,8 +13184,7 @@
             (expr 
               (literal 176)) , 
             (expr 
-              (literal 184)) ) , 
-          (variable_or_function_call cleartxt))) \n \n 
+              (literal 184)) ) , cleartxt)) \n \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call yd) = 
@@ -13425,8 +13388,7 @@
             (expr 
               (literal 158)) , 
             (expr 
-              (literal 145)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 145)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -13448,8 +13410,7 @@
             (expr 
               (literal 138)) , 
             (expr 
-              (literal 7)) ) , 
-          (variable_or_function_call txt))) \n \n 
+              (literal 7)) ) , txt)) \n \n 
       (statement 
         (for_next_statement FOR x = 
           (expr 
@@ -13555,8 +13516,7 @@
             (expr 
               (literal 126)) , 
             (expr 
-              (literal 167)) ) , 
-          (variable_or_function_call txt))) \n 
+              (literal 167)) ) , txt)) \n 
       (statement 
         (line_statement LINE 
           ( 
@@ -13578,6 +13538,5 @@
             (expr 
               (literal 9)) , 
             (expr 
-              (literal 153)) ) , 
-          (variable_or_function_call txt))) \n \n) 
+              (literal 153)) ) , txt)) \n \n) 
     (end_sub_statement END SUB)) \n <EOF>)

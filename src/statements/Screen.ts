@@ -6,9 +6,10 @@ import { evaluateIntegerExpression } from "../Expressions.ts";
 import { double, ILLEGAL_FUNCTION_CALL, integer } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
-import { readNumbersFromArray } from "./Arrays.ts";
+import { readBytesFromArray, readNumbersFromArray, writeBytesToArray } from "./Arrays.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { TypeTag } from "../Types.ts";
+import { BlitOperation } from "../Drawing.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -211,12 +212,12 @@ export class CircleStatement extends Statement {
 
 export interface LineStatementArgs {
   token: Token;
+  step1: boolean;
   x1?: ExprContext;
   y1?: ExprContext;
-  step1: boolean;
+  step2: boolean;
   x2: ExprContext;
   y2: ExprContext;
-  step2: boolean;
   color?: ExprContext;
   outline: boolean;
   fill: boolean; 
@@ -239,7 +240,7 @@ export class LineStatement extends Statement {
     const dash = this.args.dash && evaluateIntegerExpression(this.args.dash, context.memory);
     const {step1, step2, outline, fill} = this.args;
     try {
-      context.devices.screen.line({x1, y1, step1, x2, y2, step2, outline, fill, dash}, color);
+      context.devices.screen.line({step1, x1, y1, step2, x2, y2, outline, fill, dash}, color);
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
@@ -566,5 +567,74 @@ export class PmapFunction extends Statement {
       // Fallthrough.
     }
     throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+  }
+}
+
+export interface GetGraphicsStatementArgs {
+  token: Token;
+  step1: boolean;
+  x1: ExprContext;
+  y1: ExprContext;
+  step2: boolean;
+  x2: ExprContext;
+  y2: ExprContext;
+  array: Variable;
+}
+
+export class GetGraphicsStatement extends Statement {
+  constructor(private args: GetGraphicsStatementArgs) {
+    super()
+  }
+
+  override execute(context: ExecutionContext) {
+    try {
+      const step1 = this.args.step1;
+      const x1 = evaluateIntegerExpression(this.args.x1, context.memory);
+      const y1 = evaluateIntegerExpression(this.args.y1, context.memory);
+      const step2 = this.args.step2;
+      const x2 = evaluateIntegerExpression(this.args.x2, context.memory);
+      const y2 = evaluateIntegerExpression(this.args.y2, context.memory);
+      const buffer = context.devices.screen.getBitmap({x1, y1, step1, x2, y2, step2});
+      writeBytesToArray(this.args.array, buffer, context.memory);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}
+
+export interface PutGraphicsStatementArgs {
+  token: Token;
+  step: boolean;
+  x1: ExprContext;
+  y1: ExprContext;
+  array: Variable;
+  preset?: boolean;
+  and?: boolean;
+  or?: boolean;
+  xor?: boolean;
+}
+
+export class PutGraphicsStatement extends Statement {
+  constructor(private args: PutGraphicsStatementArgs) {
+    super()
+  }
+
+  override execute(context: ExecutionContext) {
+    try {
+      const step = this.args.step;
+      const x1 = evaluateIntegerExpression(this.args.x1, context.memory);
+      const y1 = evaluateIntegerExpression(this.args.y1, context.memory);
+      const buffer = readBytesFromArray(this.args.array, context.memory);
+      const operation = (
+        this.args.preset ? BlitOperation.PRESET :
+        this.args.and ? BlitOperation.AND :
+        this.args.or ? BlitOperation.OR :
+        this.args.xor ? BlitOperation.XOR :
+        BlitOperation.PSET
+      );
+      context.devices.screen.putBitmap({x1, y1, step, operation, buffer});
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
+    }
   }
 }

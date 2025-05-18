@@ -105,7 +105,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -121,6 +121,8 @@ import {
   ClsStatement,
   ColorStatement,
   CsrlinFunction,
+  GetGraphicsStatement,
+  GetGraphicsStatementArgs,
   LineStatement,
   LineStatementArgs,
   LocateStatement,
@@ -132,6 +134,8 @@ import {
   PosFunction,
   PresetStatement,
   PsetStatement,
+  PutGraphicsStatement,
+  PutGraphicsStatementArgs,
   ScreenStatement,
   ViewPrintStatement,
   ViewStatement,
@@ -334,6 +338,10 @@ export function getIo(
   variable?: Variable
 ) {
   return new GetIoStatement(token, fileNumber, recordNumber, variable);
+}
+
+export function getGraphics(args: GetGraphicsStatementArgs) {
+  return new GetGraphicsStatement(args);
 }
 
 export function goto() {
@@ -596,6 +604,10 @@ export function putIo(
   variable?: Variable
 ) {
   return new PutIoStatement(token, fileNumber, recordNumber, variable);
+}
+
+export function putGraphics(args: PutGraphicsStatementArgs) {
+  return new PutGraphicsStatement(args);
 }
 
 export function randomize({seed, variable} : {seed?: parser.ExprContext, variable?: Variable}) {

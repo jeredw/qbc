@@ -549,7 +549,6 @@ export class Typer extends QBasicParserListener {
     }
   }
 
-  override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {}
   override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {}
 
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
@@ -581,11 +580,30 @@ export class Typer extends QBasicParserListener {
     }
   }
 
+  override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {
+    if (ctx._array) {
+      const array = this.lookupArray(ctx._array);
+      if (!array) {
+        throw ParseError.fromToken(ctx._array, "Array not defined");
+      }
+      getTyperContext(ctx).$result = array;
+    }
+  }
+
+  override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {
+    if (ctx._array) {
+      const array = this.lookupArray(ctx._array);
+      if (!array) {
+        throw ParseError.fromToken(ctx._array, "Array not defined");
+      }
+      getTyperContext(ctx).$result = array;
+    }
+  }
+
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
 
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
-  override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {}
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
   override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
 

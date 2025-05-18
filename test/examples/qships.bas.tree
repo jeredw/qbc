@@ -2253,8 +2253,7 @@
                   (expr 
                     (variable_or_function_call xpos)) , 
                   (expr 
-                    (variable_or_function_call ypos)) ) , 
-                (variable_or_function_call TreePic2) , PSET)) \n 
+                    (variable_or_function_call ypos)) ) , TreePic2 , PSET)) \n 
             (statement 
               (put_graphics_statement PUT 
                 ( 
@@ -2267,8 +2266,7 @@
                     (expr 
                       (variable_or_function_call ypos)) + 
                     (expr 
-                      (variable_or_function_call TREEWIDTH))) ) , 
-                (variable_or_function_call TreePic1) , PSET)) \n) NEXT Counter)) \n \n) 
+                      (variable_or_function_call TREEWIDTH))) ) , TreePic1 , PSET)) \n) NEXT Counter)) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id DrawWaves) 
@@ -4833,8 +4831,7 @@
                                 (argument_list 
                                   (argument 
                                     (expr 
-                                      (variable_or_function_call PlayerNum)))) ))) ) , 
-                        (variable_or_function_call ShipPic) , XOR)) \n 
+                                      (variable_or_function_call PlayerNum)))) ))) ) , ShipPic , XOR)) \n 
                     (if_block_statement IF 
                       (expr 
                         (expr 
@@ -4940,8 +4937,7 @@
                           (expr 
                             (variable_or_function_call xpos)) , 
                           (expr 
-                            (variable_or_function_call ypos)) ) , 
-                        (variable_or_function_call ShipPic) , PSET)) ' \n 
+                            (variable_or_function_call ypos)) ) , ShipPic , PSET)) ' \n 
                     (statement 
                       (assignment_statement 
                         (variable_or_function_call ShipX 
@@ -5144,8 +5140,7 @@
                         (argument_list 
                           (argument 
                             (expr 
-                              (variable_or_function_call Counter)))) ))) ) , 
-                (variable_or_function_call ShipPic) , PSET)) \n 
+                              (variable_or_function_call Counter)))) ))) ) , ShipPic , PSET)) \n 
             (statement 
               (for_next_statement FOR FixTerrain = 
                 (expr 
@@ -6324,8 +6319,7 @@
                             (expr 
                               (variable_or_function_call Oldx)) , 
                             (expr 
-                              (variable_or_function_call Oldy)) ) , 
-                          (variable_or_function_call Shot&) , XOR)) ' \n) 
+                              (variable_or_function_call Oldy)) ) , Shot& , XOR)) ' \n) 
                     (end_if_statement END IF)) ' \n ' \n \n ' \n ' \n ' \n 
                   (if_block_statement IF 
                     (expr 
@@ -6523,8 +6517,7 @@
                             (expr 
                               (variable_or_function_call x)) , 
                             (expr 
-                              (variable_or_function_call y)) ) , 
-                          (variable_or_function_call Shot&) , PSET)) \n 
+                              (variable_or_function_call y)) ) , Shot& , PSET)) \n 
                       (statement 
                         (assignment_statement 
                           (variable_or_function_call Oldx) = 
@@ -7184,8 +7177,7 @@
                   (expr 
                     (variable_or_function_call xcol)) , 
                   (expr 
-                    (variable_or_function_call ycol)) ) , 
-                (variable_or_function_call ShipPic) , XOR)) \n 
+                    (variable_or_function_call ycol)) ) , ShipPic , XOR)) \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call ycol) = 
@@ -7233,8 +7225,7 @@
                       (expr 
                         (variable_or_function_call xcol)) , 
                       (expr 
-                        (variable_or_function_call ycol)) ) , 
-                    (variable_or_function_call ShipPic) , PSET)) \n 
+                        (variable_or_function_call ycol)) ) , ShipPic , PSET)) \n 
                 (statement 
                   (for_next_statement FOR j = 
                     (expr 
