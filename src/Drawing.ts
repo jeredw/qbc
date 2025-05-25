@@ -534,15 +534,6 @@ export class Plotter {
     start?: number,
     end?: number,
   ) {
-    // TODO: Figure out how to make this pixel accurate.
-    // When aspect = 1.0, QBasic's ellipses are normal Bresenham midpoint
-    // ellipses, otherwise they can have jagged boundaries.  When aspect > 1.0,
-    // the top/bottom edge stair steps, and when aspect < 1.0 the left/right
-    // edge stair steps.  This is especially noticeable in 320x200 modes where
-    // the default aspect is .83.  From this, we can conclude
-    // 1) the rasterizer operates in two regions
-    // 2) it can step x and y independently
-    // 3) aspect somehow affects the error term...
     start = start ?? 0;
     end = end ?? 2 * Math.PI;
     const drawLineToStart = start !== undefined && start < 0;
@@ -554,6 +545,8 @@ export class Plotter {
     start = Math.abs(start);
     end = Math.abs(end);
 
+    // TODO: Match QBasic's arc drawing.  This does not always seem to end the
+    // circle at the same pixel as QBasic does.
     const pointToAngle = (x: number, y: number) => {
       const [cx, cy] = [x - center.x, center.y - y];
       const angle = Math.atan2(cy, cx);
@@ -611,6 +604,15 @@ export class Plotter {
       return;
     }
 
+    // TODO: Figure out how to make this pixel accurate.
+    // When aspect = 1.0, QBasic's ellipses are normal Bresenham midpoint
+    // ellipses, otherwise they can have jagged boundaries.  When aspect > 1.0,
+    // the top/bottom edge stair steps, and when aspect < 1.0 the left/right
+    // edge stair steps.  This is especially noticeable in 320x200 modes where
+    // the default aspect is .83.  From this, we can conclude
+    // 1) the rasterizer operates in two regions
+    // 2) it can step x and y independently
+    // 3) aspect somehow affects the error term...
     const [rxSquared, rySquared] = [rx * rx, ry * ry];
     let [x, y] = [0, ry];
 
