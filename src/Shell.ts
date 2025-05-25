@@ -136,6 +136,11 @@ class Shell {
   async run() {
     this.clearErrors();
     const text = this.codePane.innerText;
+    if (text.toLowerCase().includes('lprint')) {
+      this.printer.show();
+    } else {
+      this.printer.hide();
+    }
     try {
       this.screen.canvas.focus();
       // The QBasic IDE keeps key bindings around even if you start a new

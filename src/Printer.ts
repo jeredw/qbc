@@ -151,6 +151,7 @@ export class LinePrinter extends BasePrinter {
     this.audio.loop = true;
     this.audio.muted = true;
     this.paper.appendChild(this.audio);
+    this.hide();
   }
 
   enableAudio() {
@@ -160,6 +161,14 @@ export class LinePrinter extends BasePrinter {
 
   disableAudio() {
     this.audio.pause();
+  }
+
+  hide() {
+    this.paper.style.display = 'none';
+  }
+
+  show() {
+    this.paper.style.display = '';
   }
 
   render(timestamp: number) {
