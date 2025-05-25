@@ -1,0 +1,152 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 7)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable bitmap% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 217))) ))))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 15)) 
+      (block \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (expr 
+                  (literal 5)) + 
+                (expr 
+                  (variable_or_function_call i))) , 
+              (expr 
+                (expr 
+                  (literal 5)) + 
+                (expr 
+                  (variable_or_function_call i))) ) - 
+            ( 
+              (expr 
+                (literal 20)) , 
+              (expr 
+                (literal 20)) ) , 
+            (expr 
+              (expr - 
+                (expr 
+                  (literal 1))) + 
+              (expr 
+                (variable_or_function_call i))) , 
+            (box_style bf))) \n) next i)) \n 
+  (statement 
+    (get_graphics_statement get 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 26)) , 
+        (expr 
+          (literal 26)) ) , bitmap%)) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 30)) , 
+        (expr 
+          (literal 0)) ) , bitmap%)) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 60)) , 
+        (expr 
+          (literal 0)) ) , bitmap% , preset)) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 90)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 20)) ) , 
+      (expr 
+        (literal 3)) , 
+      (box_style bf))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 105)) , 
+        (expr 
+          (literal 20)) ) , 
+      (expr 
+        (literal 7)) , 
+      (box_style bf))) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 90)) , 
+        (expr 
+          (literal 0)) ) , bitmap% , and)) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 120)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 130)) , 
+        (expr 
+          (literal 20)) ) , 
+      (expr 
+        (literal 1)) , 
+      (box_style bf))) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 120)) , 
+        (expr 
+          (literal 0)) ) , bitmap% , or)) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 20)) ) , 
+      (expr 
+        (literal 8)) , 
+      (box_style bf))) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 0)) ) , bitmap% , xor)) \n <EOF>)
