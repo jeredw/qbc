@@ -525,7 +525,6 @@ export class Plotter {
     }
   }
 
-  // TODO: Figure out how to make this pixel accurate.
   private drawCircle(
     ctx: CanvasRenderingContext2D,
     center: Point,
@@ -535,7 +534,15 @@ export class Plotter {
     start?: number,
     end?: number,
   ) {
-    const [rx, ry] = [radius, radius * aspect];
+    // TODO: Figure out how to make this pixel accurate.
+    // When aspect = 1.0, QBasic's ellipses are normal Bresenham midpoint
+    // ellipses, otherwise they can have jagged boundaries.  When aspect > 1.0,
+    // the top/bottom edge stair steps, and when aspect < 1.0 the left/right
+    // edge stair steps.  This is especially noticeable in 320x200 modes where
+    // the default aspect is .83.  From this, we can conclude
+    // 1) the rasterizer operates in two regions
+    // 2) it can step x and y independently
+    // 3) aspect somehow affects the error term...
     start = start ?? 0;
     end = end ?? 2 * Math.PI;
     const drawLineToStart = start !== undefined && start < 0;
@@ -583,36 +590,64 @@ export class Plotter {
         }
       }
     };
+    const plotQuadrants = (x: number, y: number) => {
+      plot(Math.round(center.x + x), Math.round(center.y + y));
+      plot(Math.round(center.x - x), Math.round(center.y + y));
+      plot(Math.round(center.x + x), Math.round(center.y - y));
+      plot(Math.round(center.x - x), Math.round(center.y - y));
+    };
 
-    // https://zingl.github.io/bresenham.html
-    let [x0, y0, x1, y1] = [center.x - rx, center.y - ry, center.x + rx, center.y + ry];
-    let a = Math.abs(x1 - x0);
-    let b = Math.abs(y1 - y0);
-    let b1 = b % 2;
-    let dx = 4 * (1 - a) * b * b;
-    let dy = 4 * (b1 + 1) * a * a;
-    let err = dx + dy + b1 * a * a;
+    if (aspect < 0) {
+      // Passing e.g. aspect=-100.1 has the same effect as .9
+      aspect = 1 + (aspect % 1);
+    }
+    const [rx, ry] = aspect > 1 ?
+      [Math.round(radius / aspect), radius] :
+      [radius, Math.round(radius * aspect)];
+    if (ry === 0) {
+      // For extreme ellipses when aspect is near 0, draw a horizontal line.
+      // The algorithm will draw vertical lines for large aspects...
+      this.drawLine(ctx, {x: center.x - rx, y: center.y}, {x: center.x + rx, y: center.y}, color);
+      return;
+    }
 
-    if (x0 > x1) { x0 = x1; x1 += a; } // if called with swapped points
-    if (y0 > y1) y0 = y1;              // .. exchange them
-    y0 += (b + 1) / 2; y1 = y0 - b1;   // starting pixel
-    a *= 8 * a; b1 = 8 * b *b;
+    const [rxSquared, rySquared] = [rx * rx, ry * ry];
+    let [x, y] = [0, ry];
 
-    do {
-      plot(x1, y0);
-      plot(x0, y0);
-      plot(x0, y1);
-      plot(x1, y1);
-      const e2 = 2 * err;
-      if (e2 <= dy) { y0++; y1--; err += dy += a; }  // y step
-      if (e2 >= dx || 2 * err > dy) { x0++; x1--; err += dx += b1; } // x step
-    } while (x0 <= x1);
-
-    while (y0 - y1 < b) {  // too early stop of flat ellipses a=1
-      plot(x0 - 1, y0);    // -> finish tip of ellipse
-      plot(x1 + 1, y0++);
-      plot(x0 - 1, y1);
-      plot(x1 + 1, y1--);
+    // Region 1 - top and bottom of circle, '^' and '_'
+    let error = Math.round(rySquared - rxSquared * ry + 0.25 * rxSquared);
+    let dx = 2 * rySquared * x;
+    let dy = 2 * rxSquared * y;
+    while (dx < dy) {
+      plotQuadrants(x, y);
+      if (error < 0) {
+        x++;
+        dx += 2 * rySquared;
+        error += rySquared + dx;
+      } else {
+        x++;
+        y--;
+        dx += 2 * rySquared;
+        dy -= 2 * rxSquared;
+        error += rySquared + dx - dy;
+      }
+    }
+  
+    // Region 2 - left and right of circle, '(' and ')'
+    error = Math.round(rySquared * (x + 0.5) * (x + 0.5) + rxSquared * (y - 1) * (y - 1) - rxSquared * rySquared);
+    while (y >= 0) {
+      plotQuadrants(x, y);
+      if (error > 0) {
+        y--;
+        dy -= 2 * rxSquared;
+        error += rxSquared - dy;
+      } else {
+        y--;
+        x++;
+        dx += 2 * rySquared;
+        dy -= 2 * rxSquared;
+        error += rxSquared + dx - dy;
+      }
     }
 
     if (startPoint) {
