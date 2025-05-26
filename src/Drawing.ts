@@ -358,10 +358,11 @@ export class Plotter {
       {x: args.x + this.cursor.x, y: args.y + this.cursor.y} :
       {x: args.x, y: args.y};
     this.cursor = {...pw};
+    const pv = this.windowToView(pw);
     if (args.tile) {
       // TODO
     } else {
-      this.floodFill(ctx, pw, color, args.borderColor ?? color);
+      this.floodFill(ctx, pv, color, args.borderColor ?? color);
     }
   }
 
@@ -662,12 +663,7 @@ export class Plotter {
 
   private floodFill(ctx: CanvasRenderingContext2D, start: Point, color: number, border: number) {
     const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-    const width = ctx.canvas.width;
     const queue: Point[] = [start];
-    const putColor = (p: Point) => {
-      imageData.data[4 * (p.y * width + p.x)] = color;
-    };
-    const getColor = (p: Point) => imageData.data[4 * (p.y * width + p.x)];
     const hash = (p: Point) => `${p.x},${p.y}`;
     const queued: Set<String> = new Set([hash(start)]);
     const enqueue = (p: Point) => {
@@ -682,8 +678,9 @@ export class Plotter {
         break;
       }
       if (this.clip.contains(p)) {
-        if (getColor(p) !== border) {
-          putColor(p);
+        const offset = 4 * (imageData.width * p.y + p.x);
+        if (imageData.data[offset] !== border) {
+          imageData.data[offset] = color;
           enqueue({x: p.x - 1, y: p.y});
           enqueue({x: p.x + 1, y: p.y});
           enqueue({x: p.x, y: p.y - 1});

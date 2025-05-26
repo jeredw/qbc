@@ -680,11 +680,11 @@ export class DrawStatement extends Statement {
           const p2 = screen.screenToWindow(target);
           screen.line({
             step1: false,
-            x1: cursor.x,
-            y1: cursor.y,
+            x1: p1.x,
+            y1: p1.y,
             step2: false,
-            x2: target.x,
-            y2: target.y,
+            x2: p2.x,
+            y2: p2.y,
             outline: false,
             fill: false
           });
@@ -706,8 +706,6 @@ export class DrawStatement extends Statement {
           const radians = -angle * Math.PI / 180;
           matrix[0][0] = Math.cos(radians); matrix[0][1] = -Math.sin(radians);
           matrix[1][0] = Math.sin(radians) / aspectScale; matrix[1][1] = Math.cos(radians) / aspectScale;
-          //matrix[1][0] /= aspectScale;
-          //matrix[1][1] /= aspectScale;
         } else if (command.setAngle) {
           const angle = this.readNumber(command.setAngle, context);
           if (angle < 0 || angle > 3) {
@@ -721,9 +719,10 @@ export class DrawStatement extends Statement {
             matrix[1][0] *= 1/aspectScale; matrix[1][1] *= aspectScale;
           }
         } else if (command.paint) {
-          const borderColor = this.readNumber(command.paint.borderColor, context);
           const paintColor = this.readNumber(command.paint.paintColor, context);
-          screen.paint({step: true, x: 0, y: 0, borderColor}, paintColor);
+          const borderColor = this.readNumber(command.paint.borderColor, context);
+          const p = screen.screenToWindow(cursor);
+          screen.paint({step: false, x: p.x, y: p.y, borderColor}, paintColor);
         } else if (command.setColor) {
           screen.setColor(this.readNumber(command.setColor, context));
         } else if (command.execute) {
