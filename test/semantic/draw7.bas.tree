@@ -1,0 +1,19 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "c1r10d10")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "l10u10")))))) \n <EOF>)

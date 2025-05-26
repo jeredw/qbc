@@ -663,6 +663,7 @@ export class DrawStatement extends Statement {
     const commandString = evaluateStringExpression(this.commandStringExpr, context.memory);
     try {
       const program = parseDrawCommandString(commandString);
+      let outOfRange = false;
       let scale = 4;
       let matrix = [[1, 0], [0, 1]];
       let cursor = screen.windowToScreen(screen.getGraphicsCursor());
@@ -675,9 +676,20 @@ export class DrawStatement extends Statement {
           x: cursor.x + matrix[0][0] * dx + matrix[0][1] * dy,
           y: cursor.y + matrix[1][0] * dx + matrix[1][1] * dy
         } : {x, y};
+        const deltasTooBig = Math.abs(x) >= 10000 || Math.abs(y) >= 10000;
+        if (!move.relative && deltasTooBig) {
+          // Error on an absolute move with deltas that are too big.
+          throw new Error('move out of range');
+        }
+        if (deltasTooBig) {
+          outOfRange = true;
+        }
         if (!move.noPlot) {
           const p1 = screen.screenToWindow(cursor);
-          const p2 = screen.screenToWindow(target);
+          const p2 = screen.screenToWindow({
+            x: wrap16Bit(Math.round(target.x)),
+            y: wrap16Bit(Math.round(target.y))
+          });
           screen.line({
             step1: false,
             x1: p1.x,
@@ -694,6 +706,10 @@ export class DrawStatement extends Statement {
         }
       };
       for (const command of program.commands) {
+        if (outOfRange) {
+          // Error on any command after an out of range relative move.
+          throw new Error('position out of range');
+        }
         if (command.move) {
           move(command.move);
         } else if (command.setScale) {
@@ -724,7 +740,11 @@ export class DrawStatement extends Statement {
           const p = screen.screenToWindow(cursor);
           screen.paint({step: false, x: p.x, y: p.y, borderColor}, paintColor);
         } else if (command.setColor) {
-          screen.setColor(this.readNumber(command.setColor, context));
+          // The color command affects the line color with no validation.
+          // Since COLOR controls the background in mode 1 and validates, we
+          // need a special accessor just to set the foreground color for
+          // drawing.
+          screen.setFgColor(this.readNumber(command.setColor, context));
         } else if (command.execute) {
           throw new Error('unimplemented');
         }
@@ -916,4 +936,8 @@ function parseDrawCommandString(commandString: string): DrawProgram {
     }
   }
   return program;
+}
+
+function wrap16Bit(x: number) {
+  return x & 0x8000 ? (x & 0x7fff) - 0x8000 : x & 0x7fff;
 }
