@@ -13,6 +13,7 @@ import { BlitOperation } from "../Drawing.ts";
 import { ControlFlow } from "../ControlFlow.ts";
 import { Address } from "../Memory.ts";
 import { stringToAscii } from "../AsciiChart.ts";
+import { roundToNearestEven } from "../Math.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -654,32 +655,42 @@ export class DrawStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const {screen} = context.devices;
-    if (screen.getMode().mode === 0) {
+    const modeInfo = screen.getMode();
+    if (modeInfo.mode === 0) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
+    const aspectScale = (modeInfo.geometry[0].dots[0] / modeInfo.geometry[0].dots[1]) / (4 / 3);
     const commandString = evaluateStringExpression(this.commandStringExpr, context.memory);
     try {
       const program = parseDrawCommandString(commandString);
       let scale = 4;
-      let m = [[1, 0], [0, 1]];
+      let matrix = [[1, 0], [0, 1]];
+      let cursor = screen.windowToScreen(screen.getGraphicsCursor());
       const move = (move: MoveCommand) => {
-        const cursor = screen.getGraphicsCursor();
-        const p = screen.windowToScreen(cursor);
         const x = move.direction[0] * this.readNumber(move.amountX, context);
         const y = move.direction[1] * this.readNumber(move.amountY, context);
         const dx = scale * x / 4;
         const dy = scale * y / 4;
         const target = move.relative ? {
-          x: p.x + Math.round(m[0][0] * dx + m[0][1] * dy),
-          y: p.y + Math.round(m[1][0] * dx + m[1][1] * dy)
+          x: cursor.x + matrix[0][0] * dx + matrix[0][1] * dy,
+          y: cursor.y + matrix[1][0] * dx + matrix[1][1] * dy
         } : {x, y};
-        if (move.noPlot) {
-          screen.setGraphicsCursor(screen.screenToWindow(target));
-        } else {
-          screen.line({step1: false, step2: false, x2: target.x, y2: target.y, outline: false, fill: false});
+        if (!move.noPlot) {
+          const p1 = screen.screenToWindow(cursor);
+          const p2 = screen.screenToWindow(target);
+          screen.line({
+            step1: false,
+            x1: cursor.x,
+            y1: cursor.y,
+            step2: false,
+            x2: target.x,
+            y2: target.y,
+            outline: false,
+            fill: false
+          });
         }
-        if (move.comeBack) {
-          screen.setGraphicsCursor(cursor);
+        if (!move.comeBack) {
+          cursor = {...target};
         }
       };
       for (const command of program.commands) {
@@ -693,20 +704,21 @@ export class DrawStatement extends Statement {
             throw new Error('invalid angle');
           }
           const radians = -angle * Math.PI / 180;
-          m[0][0] = Math.cos(radians); m[0][1] = -Math.sin(radians);
-          m[1][0] = Math.sin(radians); m[1][1] = Math.cos(radians);
+          matrix[0][0] = Math.cos(radians); matrix[0][1] = -Math.sin(radians);
+          matrix[1][0] = Math.sin(radians) / aspectScale; matrix[1][1] = Math.cos(radians) / aspectScale;
+          //matrix[1][0] /= aspectScale;
+          //matrix[1][1] /= aspectScale;
         } else if (command.setAngle) {
           const angle = this.readNumber(command.setAngle, context);
           if (angle < 0 || angle > 3) {
             throw new Error('invalid angle');
           }
           const radians = -(90 * angle) * Math.PI / 180;
-          m[0][0] = Math.cos(radians); m[0][1] = -Math.sin(radians);
-          m[1][0] = Math.sin(radians); m[1][1] = Math.cos(radians);
+          matrix[0][0] = Math.cos(radians); matrix[0][1] = -Math.sin(radians);
+          matrix[1][0] = Math.sin(radians); matrix[1][1] = Math.cos(radians);
           if (angle === 1 || angle === 3) {
-            // TODO: match weird rounding
-            m[0][1] *= 4/3;
-            m[1][1] *= 4/3;
+            matrix[0][0] *= 1/aspectScale; matrix[0][1] *= aspectScale;
+            matrix[1][0] *= 1/aspectScale; matrix[1][1] *= aspectScale;
           }
         } else if (command.paint) {
           const borderColor = this.readNumber(command.paint.borderColor, context);
@@ -718,6 +730,7 @@ export class DrawStatement extends Statement {
           throw new Error('unimplemented');
         }
       }
+      screen.setGraphicsCursor(screen.screenToWindow(cursor));
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }

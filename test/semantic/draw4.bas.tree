@@ -1,0 +1,69 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "bm160,100")))))) \n 
+  (statement 
+    (for_next_statement for i% = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 90)) step 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (call_statement 
+            (untyped_id draw) 
+            (argument_list 
+              (argument 
+                (expr 
+                  (expr 
+                    (expr 
+                      (literal "ta")) + 
+                    (expr 
+                      (variable_or_function_call str$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (variable_or_function_call int 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (variable_or_function_call i%)))) ))))) )))) + 
+                  (expr 
+                    (literal "r100 bm160,100"))))))) \n) next i%)) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 110)) ) - 
+      ( 
+        (expr 
+          (literal 260)) , 
+        (expr 
+          (literal 110)) ))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 100)) ) - step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr - 
+          (expr 
+            (literal 100))) ))) \n <EOF>)

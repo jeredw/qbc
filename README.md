@@ -158,7 +158,7 @@ parse those using baked in rules.
 | `DIM`            | Statement   | ✅      | ✅      |
 | `DO`...`LOOP`    | Statement   | ✅      | ✅      |
 | `DOUBLE`         | Keyword     | ✅      | ✅      |
-| `DRAW`           | Statement   | -       | ⛔      |
+| `DRAW`           | Statement   | -       | 🚧      |
 | `$DYNAMIC`       | Metacommand | ✅      | ✅      |
 | `ELSE`           | Keyword     | ✅      | ✅      |
 | `ELSEIF`         | Keyword     | ✅      | ✅      |

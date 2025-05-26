@@ -1,0 +1,84 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "")))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 100)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call s$) = 
+            (expr 
+              (expr 
+                (variable_or_function_call s$)) + 
+              (expr 
+                (literal "r1d1"))))) \n) next i)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "bm160,100")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (expr 
+              (expr 
+                (literal "a0")) + 
+              (expr 
+                (variable_or_function_call s$))) + 
+            (expr 
+              (literal "bm160,100"))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (expr 
+              (expr 
+                (literal "a1")) + 
+              (expr 
+                (variable_or_function_call s$))) + 
+            (expr 
+              (literal "bm160,100"))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (expr 
+              (expr 
+                (literal "a2")) + 
+              (expr 
+                (variable_or_function_call s$))) + 
+            (expr 
+              (literal "bm160,100"))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (expr 
+              (expr 
+                (literal "a3")) + 
+              (expr 
+                (variable_or_function_call s$))) + 
+            (expr 
+              (literal "bm160,100"))))))) \n <EOF>)
