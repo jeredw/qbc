@@ -45,7 +45,10 @@ export interface Screen extends Printer, LightPenTarget {
   resetWindow(): void;
   viewToWindow(p: Point): Point;
   windowToView(p: Point): Point;
+  screenToWindow(p: Point): Point;
+  windowToScreen(p: Point): Point;
   getGraphicsCursor(): Point;
+  setGraphicsCursor(p: Point): void;
   clear(): void;
   getPixel(x: number, y: number): number;
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
@@ -128,8 +131,20 @@ class Page {
     return this.plotter.windowToView(p);
   }
 
+  screenToWindow(p: Point): Point {
+    return this.plotter.screenToWindow(p);
+  }
+
+  windowToScreen(p: Point): Point {
+    return this.plotter.windowToScreen(p);
+  }
+
   getGraphicsCursor(): Point {
     return {...this.plotter.cursor};
+  }
+
+  setGraphicsCursor(p: Point) {
+    this.plotter.cursor = {...p};
   }
 
   clear(color: Attributes) {
@@ -519,11 +534,32 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return this.activePage.windowToView(p);
   }
 
+  screenToWindow(p: Point): Point {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.screenToWindow(p);
+  }
+
+  windowToScreen(p: Point): Point {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.windowToScreen(p);
+  }
+
   getGraphicsCursor(): Point {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
     return this.activePage.getGraphicsCursor();
+  }
+
+  setGraphicsCursor(p: Point) {
+    if (this.mode.mode === 0) {
+      throw new Error('unsupported screen mode');
+    }
+    return this.activePage.setGraphicsCursor(p);
   }
 
   clear() {
@@ -867,9 +903,24 @@ export class TestScreen implements Screen {
     return this.graphics.viewToWindow(p);
   }
 
+  windowToScreen(p: Point): Point {
+    this.text.print(`[windowToScreen ${p.x}, ${p.y}]`, true);
+    return this.graphics.windowToScreen(p);
+  }
+
+  screenToWindow(p: Point): Point {
+    this.text.print(`[screenToWindow ${p.x}, ${p.y}]`, true);
+    return this.graphics.screenToWindow(p);
+  }
+
   getGraphicsCursor(): Point {
     this.text.print(`[POINT]`, true);
     return this.graphics.getGraphicsCursor();
+  }
+
+  setGraphicsCursor(p: Point) {
+    this.text.print(`[setGraphicsCursor ${p.x}, ${p.y}]`, true);
+    this.graphics.setGraphicsCursor(p);
   }
 
   clear() {

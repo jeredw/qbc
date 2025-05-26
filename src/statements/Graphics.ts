@@ -2,7 +2,7 @@ import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { double, ILLEGAL_FUNCTION_CALL, integer } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
@@ -10,6 +10,9 @@ import { readBytesFromArray, readNumbersFromArray, writeBytesToArray } from "./A
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
+import { ControlFlow } from "../ControlFlow.ts";
+import { Address } from "../Memory.ts";
+import { stringToAscii } from "../AsciiChart.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -637,4 +640,268 @@ export class PutGraphicsStatement extends Statement {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
   }
+}
+
+export class DrawStatement extends Statement {
+  token: Token;
+  commandStringExpr: ExprContext;
+
+  constructor(private args: BuiltinStatementArgs) {
+    super();
+    this.token = args.token;
+    this.commandStringExpr = this.args.params[0].expr!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const {screen} = context.devices;
+    if (screen.getMode().mode === 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const commandString = evaluateStringExpression(this.commandStringExpr, context.memory);
+    try {
+      const program = parseDrawCommandString(commandString);
+      let scale = 4;
+      let m = [[1, 0], [0, 1]];
+      const move = (move: MoveCommand) => {
+        const cursor = screen.getGraphicsCursor();
+        const p = screen.windowToScreen(cursor);
+        const x = move.direction[0] * this.readNumber(move.amountX, context);
+        const y = move.direction[1] * this.readNumber(move.amountY, context);
+        const dx = scale * x / 4;
+        const dy = scale * y / 4;
+        const target = move.relative ? {
+          x: p.x + Math.round(m[0][0] * dx + m[0][1] * dy),
+          y: p.y + Math.round(m[1][0] * dx + m[1][1] * dy)
+        } : {x, y};
+        if (move.noPlot) {
+          screen.setGraphicsCursor(screen.screenToWindow(target));
+        } else {
+          screen.line({step1: false, step2: false, x2: target.x, y2: target.y, outline: false, fill: false});
+        }
+        if (move.comeBack) {
+          screen.setGraphicsCursor(cursor);
+        }
+      };
+      for (const command of program.commands) {
+        if (command.move) {
+          move(command.move);
+        } else if (command.setScale) {
+          scale = this.readNumber(command.setScale, context);
+        } else if (command.turnAngle) {
+          const angle = this.readNumber(command.turnAngle, context);
+          if (angle < -360 || angle > 360) {
+            throw new Error('invalid angle');
+          }
+          const radians = -angle * Math.PI / 180;
+          m[0][0] = Math.cos(radians); m[0][1] = -Math.sin(radians);
+          m[1][0] = Math.sin(radians); m[1][1] = Math.cos(radians);
+        } else if (command.setAngle) {
+          const angle = this.readNumber(command.setAngle, context);
+          if (angle < 0 || angle > 3) {
+            throw new Error('invalid angle');
+          }
+          const radians = -(90 * angle) * Math.PI / 180;
+          m[0][0] = Math.cos(radians); m[0][1] = -Math.sin(radians);
+          m[1][0] = Math.sin(radians); m[1][1] = Math.cos(radians);
+          if (angle === 1 || angle === 3) {
+            // TODO: match weird rounding
+            m[0][1] *= 4/3;
+            m[1][1] *= 4/3;
+          }
+        } else if (command.paint) {
+          const borderColor = this.readNumber(command.paint.borderColor, context);
+          const paintColor = this.readNumber(command.paint.paintColor, context);
+          screen.paint({step: true, x: 0, y: 0, borderColor}, paintColor);
+        } else if (command.setColor) {
+          screen.setColor(this.readNumber(command.setColor, context));
+        } else if (command.execute) {
+          throw new Error('unimplemented');
+        }
+      }
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+
+  private readNumber(value: DrawValue | undefined, _context: ExecutionContext): number {
+    if (!value) {
+      return 0;
+    }
+    if (value.pointer) {
+      throw new Error('unimplemented')
+    }
+    return value.literal ?? 0;
+  }
+}
+
+interface DrawValue {
+  literal?: number;
+  pointer?: number;
+  hasSign?: boolean;
+}
+
+interface PaintCommand {
+  paintColor?: DrawValue;
+  borderColor?: DrawValue;
+}
+
+interface MoveCommand {
+  noPlot?: boolean;
+  comeBack?: boolean;
+  relative?: boolean;
+  amountX?: DrawValue;
+  amountY?: DrawValue;
+  direction: number[];
+}
+
+interface DrawCommand {
+  move?: MoveCommand;
+  setAngle?: DrawValue;
+  turnAngle?: DrawValue;
+  setColor?: DrawValue;
+  setScale?: DrawValue;
+  paint?: PaintCommand;
+  execute?: DrawValue;
+}
+
+interface DrawProgram {
+  commands: DrawCommand[];
+}
+
+function parseDrawCommandString(commandString: string): DrawProgram {
+  const s = commandString.replaceAll(/\s/g, '').toLowerCase();
+  let pos = 0;
+  const atEnd = () => {
+    return pos >= s.length;
+  };
+  const peek = (): string => {
+    if (atEnd()) {
+      throw new Error('peek past end of string');
+    }
+    return s.charAt(pos);
+  };
+  const advance = (n = 1): string => {
+    if (pos + n > s.length) {
+      throw new Error("past end of command string");
+    }
+    const token = s.slice(pos, pos + n);
+    pos += n;
+    return token;
+  };
+  const pointerValue = (): DrawValue => {
+    const address = advance(4);
+    const bytes = stringToAscii(address);
+    return {pointer: bytes[0] + (bytes[1] << 8) + (bytes[2] << 16) + (bytes[3] << 24)};
+  };
+  const value = (): DrawValue => {
+    if (peek() === '=') {
+      advance();
+      return pointerValue();
+    }
+    let hasSign: boolean | undefined;
+    let sign = 1;
+    if (peek() === '-' || peek() === '+') {
+      hasSign = true;
+      sign = peek() === '-' ? -1 : 1;
+      advance();
+    }
+    let literal = 0;
+    for (let i = 0; i < 6; i++) {
+      if (atEnd() || (peek() < '0' || peek() > '9')) {
+        if (i === 0) {
+          throw new Error('expecting literal');
+        }
+        literal *= sign;
+        return {literal, hasSign};
+      }
+      const digit: number = +advance();
+      literal = 10 * literal + digit;
+    }
+    throw new Error('literal too long');
+  };
+  let noPlot = false;
+  let comeBack = false;
+  const command = (char: string): DrawCommand => {
+    const diagonal = (amount: DrawValue, direction: number[]) => (
+      {move: {noPlot, comeBack, relative: true, amountX: amount, amountY: amount, direction}}
+    );
+    const horizontal = (amount: DrawValue, direction: number[]) => (
+      {move: {noPlot, comeBack, relative: true, amountX: amount, direction}}
+    );
+    const vertical = (amount: DrawValue, direction: number[]) => (
+      {move: {noPlot, comeBack, relative: true, amountY: amount, direction}}
+    );
+    switch (char) {
+      case 'u':
+        return vertical(value(), [0, -1]);
+      case 'd':
+        return vertical(value(), [0, 1]);
+      case 'l':
+        return horizontal(value(), [-1, 0]);
+      case 'r':
+        return horizontal(value(), [1, 0]);
+      case 'e':
+        return diagonal(value(), [1, -1]);
+      case 'f':
+        return diagonal(value(), [1, 1]);
+      case 'g':
+        return diagonal(value(), [-1, 1]);
+      case 'h':
+        return diagonal(value(), [-1, -1]);
+      case 'm': {
+        const amountX = value();
+        const relative = amountX.hasSign;
+        if (advance() !== ',') {
+          throw new Error('expecting comma');
+        }
+        const amountY = value();
+        const direction = [1, 1];
+        return {move: {noPlot, comeBack, relative, amountX, amountY, direction}};
+      }
+      case 'a':
+        return {setAngle: value()};
+      case 't':
+        if (advance() !== 'a') {
+          throw new Error('expecting a for ta');
+        }
+        return {turnAngle: value()};
+      case 'c':
+        return {setColor: value()};
+      case 'p': {
+        const paintColor = value();
+        if (advance() !== ',') {
+          throw new Error('expecting comma');
+        }
+        const borderColor = value();
+        return {paint: {paintColor, borderColor}};
+      }
+      case 'x':
+        return {execute: pointerValue()};
+      default:
+        break;
+    }
+    throw new Error('unrecognized command');
+  };
+  const program: DrawProgram = {commands: []};
+  while (!atEnd()) {
+    const char = advance();
+    switch (char) {
+      // Any number of b or n may precede any command and apply to the next movement command.
+      case 'b':
+        noPlot = true;
+        break;
+      case 'n':
+        comeBack = true;
+        break;
+      default:
+        const current = command(char);
+        program.commands.push(current);
+        if (current.move) {
+          noPlot = false;
+          comeBack = false;
+        }
+        break;
+    }
+  }
+  return program;
 }

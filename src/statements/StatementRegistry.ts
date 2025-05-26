@@ -20,7 +20,7 @@ import {
   LboundFunction,
   UboundFunction
 } from "./Arrays.ts";
-import { BeepStatement, PlayFunction, PlayStatement, SoundStatement } from "./Speaker.ts";
+import { BeepStatement, PlayFunction, PlayStatement, SoundStatement } from "./Sound.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
@@ -121,6 +121,7 @@ import {
   ClsStatement,
   ColorStatement,
   CsrlinFunction,
+  DrawStatement,
   GetGraphicsStatement,
   GetGraphicsStatementArgs,
   LineStatement,
@@ -141,7 +142,7 @@ import {
   ViewStatement,
   WidthScreenStatement,
   WindowStatement,
-} from "./Screen.ts";
+} from "./Graphics.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -253,6 +254,10 @@ export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {
   return new DoTest(isWhile, expr);
+}
+
+export function draw(args: BuiltinStatementArgs) {
+  return new DrawStatement(args);
 }
 
 export function elseIf(expr: parser.ExprContext) {

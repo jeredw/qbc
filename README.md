@@ -289,6 +289,7 @@ parse those using baked in rules.
 | `RSET`           | Statement   | ✅      | ✅      |
 | `RTRIM$`         | Function    | -       | ✅      |
 | `RUN`            | Statement   | ⛔      | ⛔      |
+| `SADD`           | Function    | -       | ⛔      |
 | `SCREEN`         | Function    | ✅      | ⛔      |
 | `SCREEN`         | Statement   | ✅      | 🚧      |
 | `SEEK`           | Function    | ✅      | ✅      |
