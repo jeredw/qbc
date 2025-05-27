@@ -1,0 +1,12 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 42)))))) \n <EOF>)

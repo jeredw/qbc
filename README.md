@@ -130,7 +130,7 @@ parse those using baked in rules.
 | `CLEAR`          | Statement   | ✅      | ⛔      |
 | `CLNG`           | Function    | -       | ✅      |
 | `CLOSE`          | Statement   | ✅      | ✅      |
-| `CLS`            | Statement   | -       | 🚧      |
+| `CLS`            | Statement   | -       | ✅      |
 | `COLOR`          | Statement   | ✅      | ✅      |
 | `COM`            | Statement   | ✅      | ⛔      |
 | `COMMON`         | Statement   | ✅      | ⛔      |

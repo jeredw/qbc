@@ -137,13 +137,24 @@ export class PaletteStatement extends Statement {
 }
 
 export class ClsStatement extends Statement {
+  token: Token;
+  optionsExpr?: ExprContext;
+
   constructor(private args: BuiltinStatementArgs) {
     super();
+    this.token = this.args.token;
+    this.optionsExpr = this.args.params[0].expr;
   }
 
   override execute(context: ExecutionContext) {
-    // TODO: viewports
-    context.devices.screen.clear();
+    let options = this.optionsExpr && evaluateIntegerExpression(this.optionsExpr, context.memory);
+    if (options === -1) {
+      options = undefined;
+    }
+    if (options !== undefined && (options < 0 || options > 2)) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    context.devices.screen.clear(options);
   }
 }
 

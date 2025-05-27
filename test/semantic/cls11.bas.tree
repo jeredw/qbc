@@ -1,0 +1,40 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (view_print_statement view print 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "orange"))))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 10))) , 
+        (expr - 
+          (expr 
+            (literal 220))) ) - step 
+      ( 
+        (expr 
+          (literal 20)) , 
+        (expr 
+          (literal 20)) ) , 
+      (expr 
+        (literal 15)) , 
+      (box_style b))) \n ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 2)))))) \n <EOF>)

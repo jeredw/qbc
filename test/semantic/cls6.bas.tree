@@ -1,0 +1,34 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "Hello"))))) \n 
+  (statement 
+    (view_print_statement view print 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "Orange"))))) \n ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 1)))))) \n <EOF>)

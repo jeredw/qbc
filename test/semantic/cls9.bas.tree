@@ -1,0 +1,50 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (view_statement view 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ) - 
+      ( 
+        (expr 
+          (literal 200)) , 
+        (expr 
+          (literal 200)) ) , 
+      (expr 
+        (literal 8)) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello"))))) \n 
+  (statement 
+    (view_print_statement view print 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "orange"))))) \n ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 1)))))) \n <EOF>)

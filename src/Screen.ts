@@ -52,7 +52,7 @@ export interface Screen extends Printer, LightPenTarget {
   windowToScreen(p: Point): Point;
   getGraphicsCursor(): Point;
   setGraphicsCursor(p: Point): void;
-  clear(): void;
+  clear(options?: number): void;
   getPixel(x: number, y: number): number;
   setPixel(x: number, y: number, color?: number, step?: boolean): void;
   resetPixel(x: number, y: number, color?: number, step?: boolean): void;
@@ -90,6 +90,7 @@ interface CharacterCell {
 class Page {
   dirty: boolean = true;
   canvas: HTMLCanvasElement;
+  viewSet: boolean;
   private text: CharacterCell[][];
   private cellWidth: number;
   private cellHeight: number;
@@ -108,15 +109,19 @@ class Page {
     const ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
     ctx.font = `${this.cellHeight}px '${geometry.font}'`;
     ctx.textBaseline = 'top';
-    this.clear(color);
+    this.initText(color);
+    this.clearGraphics(color);
+    this.viewSet = false;
   }
 
   reset() {
     const [width, height] = this.geometry.dots;
     this.plotter.reset(width, height);
+    this.viewSet = false;
   }
 
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
+    this.viewSet = true;
     this.plotter.setClip(p1, p2);
     if (screen) {
       this.plotter.setView({x: 0, y: 0}, {x: this.geometry.dots[0] - 1, y: this.geometry.dots[1] - 1});
@@ -160,7 +165,7 @@ class Page {
     this.plotter.cursor = {...p};
   }
 
-  clear(color: Attributes) {
+  private initText(color: Attributes) {
     const [columns, rows] = this.geometry.text;
     this.text = new Array(rows);
     for (let y = 0; y < rows; y++) {
@@ -169,9 +174,29 @@ class Page {
         attributes: {...color}
       });
     }
+  }
+
+  clearText(color: Attributes, startRow?: number, endRow?: number) {
     const ctx = this.canvas.getContext('2d')!;
+    const [_, rows] = this.geometry.text;
+    startRow = startRow ?? 1;
+    endRow = endRow ?? rows;
+    for (let y = startRow - 1; y < endRow - 1; y++) {
+      this.text[y].fill({
+        char: ' ',
+        attributes: {...color}
+      });
+    }
     ctx.fillStyle = cssForColorIndex(color.bgColor);
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const y = this.cellHeight * (startRow - 1);
+    const height = this.cellHeight * (1 + endRow - startRow);
+    ctx.fillRect(0, y, ctx.canvas.width, height);
+    this.dirty = true;
+  }
+
+  clearGraphics(color: Attributes) {
+    const ctx = this.canvas.getContext('2d')!;
+    this.plotter.clearView(ctx, color.bgColor);
     this.dirty = true;
   }
 
@@ -600,8 +625,35 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return this.activePage.setGraphicsCursor(p);
   }
 
-  clear() {
-    this.activePage.clear(this.color);
+  clear(options?: number) {
+    switch (options) {
+      case 0:
+        this.activePage.clearText(this.color);
+        if (this.mode.mode !== 0) {
+          this.activePage.clearGraphics(this.color);
+        }
+        break;
+      case 1:
+        if (this.mode.mode !== 0) {
+          this.activePage.clearGraphics(this.color);
+        }
+        break;
+      case 2:
+        this.activePage.clearText(this.color, this.scrollStartRow, this.scrollEndRow - 1);
+        break;
+      default:
+        if (this.mode.mode === 0) {
+          this.activePage.clearText(this.color, this.scrollStartRow, this.scrollEndRow - 1);
+          // TODO: Redraw the status line, instead of just clearing it.
+          const [_, rows] = this.geometry.text;
+          this.activePage.clearText(this.color, rows, rows);
+        } else if (this.activePage.viewSet) {
+          this.activePage.clearGraphics(this.color);
+        } else {
+          this.activePage.clearText(this.color);
+        }
+        break;
+    }
     this.column = 1;
     this.row = 1;
   }
@@ -777,8 +829,11 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   locateCursor(row?: number, column?: number) {
+    const [_, rows] = this.geometry.text;
     if (row !== undefined) {
-      if (row < this.scrollStartRow || row > this.scrollEndRow) {
+      // LOCATE can jump to the last line on the screen even if it's outside the
+      // current view print region.
+      if (row !== rows && (row < this.scrollStartRow || row > this.scrollEndRow)) {
         throw new Error('invalid row');
       }
       this.row = row;
@@ -977,9 +1032,9 @@ export class TestScreen implements Screen {
     this.graphics.setGraphicsCursor(p);
   }
 
-  clear() {
-    this.text.print(`[CLS]`, true);
-    this.graphics.clear();
+  clear(options?: number) {
+    this.text.print(`[CLS ${options}]`, true);
+    this.graphics.clear(options);
   }
 
   getPixel(x: number, y: number): number {

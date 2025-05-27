@@ -394,6 +394,12 @@ export class Plotter {
     this.cursor = this.viewToWindow(this.coordinates.getViewCenter());
   }
 
+  clearView(ctx: CanvasRenderingContext2D, color: number) {
+    const r = this.coordinates.view;
+    ctx.fillStyle = cssForColorIndex(color);
+    ctx.fillRect(r.x.start, r.y.start, r.x.length(), r.y.length());
+  }
+
   drawViewBox(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color?: number, border?: number) {
     if (color !== undefined) {
       const r = Region.fromPoints(p1, p2);
