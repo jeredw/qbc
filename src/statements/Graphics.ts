@@ -659,8 +659,14 @@ export class DrawStatement extends Statement {
     if (modeInfo.mode === 0) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    const aspectScale = (modeInfo.geometry[0].dots[0] / modeInfo.geometry[0].dots[1]) / (4 / 3);
     const commandString = evaluateStringExpression(this.commandStringExpr, context.memory);
+    this.draw(commandString, context);
+  }
+
+  private draw(commandString: string, context: ExecutionContext) {
+    const {screen} = context.devices;
+    const modeInfo = screen.getMode();
+    const aspectScale = (modeInfo.geometry[0].dots[0] / modeInfo.geometry[0].dots[1]) / (4 / 3);
     try {
       const program = parseDrawCommandString(commandString);
       let outOfRange = false;
@@ -746,6 +752,10 @@ export class DrawStatement extends Statement {
           // drawing.
           screen.setFgColor(this.readNumber(command.setColor, context));
         } else if (command.execute) {
+          // s$ = "r1 d1 x": s$ = s$ + varptr$(s$): draw s$
+          // draws a diagonal squiggle and then fails with "Out of stack space".
+          // So draw evaluation is lazy, and we only parse new commands when we
+          // get to an X command.
           throw new Error('unimplemented');
         }
       }
