@@ -38,6 +38,8 @@ export interface Screen extends Printer, LightPenTarget {
   setPaletteEntry(attribute: number, color: number): void;
   resetPalette(): void;
 
+  setDrawState(state: DrawState): void;
+  getDrawState(): DrawState;
   setViewPrint(topRow: number, bottomRow: number): void;
   resetViewPrint(): void;
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number): void;
@@ -67,6 +69,11 @@ export interface Screen extends Printer, LightPenTarget {
   configureCursor(startScanline: number, endScanline: number, insert?: boolean): void;
   getRow(): number;
   getColumn(): number;
+}
+
+export interface DrawState {
+  matrix: number[][];
+  scale: number;
 }
 
 interface Attributes {
@@ -283,16 +290,25 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private palette: Color[];
   private canvasProvider: CanvasProvider;
   private headless?: boolean;
+  private drawState: DrawState;
   canvas: HTMLCanvasElement;
 
   constructor(canvasProvider?: CanvasProvider) {
     super(0);
     this.canvasProvider = canvasProvider ?? new DefaultCanvasProvider();
     this.headless = !!canvasProvider;
+    this.drawState = {
+      matrix: [[1, 0], [0, 1]],
+      scale: 4,
+    };
     this.configure(0, 0, 0, 0);
   }
 
   reset() {
+    this.drawState = {
+      matrix: [[1, 0], [0, 1]],
+      scale: 4,
+    };
     this.configure(1, 0, 0, 0);
     this.configure(0, 0, 0, 0);
   }
@@ -468,6 +484,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.palette[2] = monoIndexToColor(6);
       this.palette[3] = monoIndexToColor(8);
     }
+  }
+
+  setDrawState(state: DrawState): void {
+    this.drawState = {...state};
+  }
+
+  getDrawState(): DrawState {
+    return this.drawState;
   }
 
   setViewPrint(topRow: number, bottomRow: number) {
@@ -871,6 +895,16 @@ export class TestScreen implements Screen {
     this.text.print(`[PALETTE]`, true);
     this.graphics.resetPalette();
     this.hasGraphics = true;
+  }
+
+  setDrawState(state: DrawState) {
+    this.hasGraphics = true;
+    return this.graphics.setDrawState(state);
+  }
+
+  getDrawState(): DrawState {
+    this.hasGraphics = true;
+    return this.graphics.getDrawState();
   }
 
   setViewPrint(topRow: number, bottomRow: number) {

@@ -3,7 +3,7 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
-import { double, ILLEGAL_FUNCTION_CALL, integer } from "../Values.ts";
+import { double, ILLEGAL_FUNCTION_CALL, integer, isNumeric, isString, OUT_OF_STACK_SPACE } from "../Values.ts";
 import { RuntimeError } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
 import { readBytesFromArray, readNumbersFromArray, writeBytesToArray } from "./Arrays.ts";
@@ -663,24 +663,26 @@ export class DrawStatement extends Statement {
     this.draw(commandString, context);
   }
 
-  private draw(commandString: string, context: ExecutionContext) {
+  private draw(commandString: string, context: ExecutionContext, depth = 0) {
+    if (depth > 200) {
+      throw RuntimeError.fromToken(this.token, OUT_OF_STACK_SPACE);
+    }
     const {screen} = context.devices;
     const modeInfo = screen.getMode();
     const aspectScale = (modeInfo.geometry[0].dots[0] / modeInfo.geometry[0].dots[1]) / (4 / 3);
     try {
       const program = parseDrawCommandString(commandString);
       let outOfRange = false;
-      let scale = 4;
-      let matrix = [[1, 0], [0, 1]];
+      const state = screen.getDrawState();
       let cursor = screen.windowToScreen(screen.getGraphicsCursor());
       const move = (move: MoveCommand) => {
         const x = move.direction[0] * this.readNumber(move.amountX, context);
         const y = move.direction[1] * this.readNumber(move.amountY, context);
-        const dx = scale * x / 4;
-        const dy = scale * y / 4;
+        const dx = state.scale * x / 4;
+        const dy = state.scale * y / 4;
         const target = move.relative ? {
-          x: cursor.x + matrix[0][0] * dx + matrix[0][1] * dy,
-          y: cursor.y + matrix[1][0] * dx + matrix[1][1] * dy
+          x: cursor.x + state.matrix[0][0] * dx + state.matrix[0][1] * dy,
+          y: cursor.y + state.matrix[1][0] * dx + state.matrix[1][1] * dy
         } : {x, y};
         const deltasTooBig = Math.abs(x) >= 10000 || Math.abs(y) >= 10000;
         if (!move.relative && deltasTooBig) {
@@ -719,26 +721,32 @@ export class DrawStatement extends Statement {
         if (command.move) {
           move(command.move);
         } else if (command.setScale) {
-          scale = this.readNumber(command.setScale, context);
+          state.scale = this.readNumber(command.setScale, context);
         } else if (command.turnAngle) {
           const angle = this.readNumber(command.turnAngle, context);
           if (angle < -360 || angle > 360) {
             throw new Error('invalid angle');
           }
           const radians = -angle * Math.PI / 180;
-          matrix[0][0] = Math.cos(radians); matrix[0][1] = -Math.sin(radians);
-          matrix[1][0] = Math.sin(radians) / aspectScale; matrix[1][1] = Math.cos(radians) / aspectScale;
+          state.matrix[0][0] = Math.cos(radians);
+          state.matrix[0][1] = -Math.sin(radians);
+          state.matrix[1][0] = Math.sin(radians) / aspectScale;
+          state.matrix[1][1] = Math.cos(radians) / aspectScale;
         } else if (command.setAngle) {
           const angle = this.readNumber(command.setAngle, context);
           if (angle < 0 || angle > 3) {
             throw new Error('invalid angle');
           }
           const radians = -(90 * angle) * Math.PI / 180;
-          matrix[0][0] = Math.cos(radians); matrix[0][1] = -Math.sin(radians);
-          matrix[1][0] = Math.sin(radians); matrix[1][1] = Math.cos(radians);
+          state.matrix[0][0] = Math.cos(radians);
+          state.matrix[0][1] = -Math.sin(radians);
+          state.matrix[1][0] = Math.sin(radians);
+          state.matrix[1][1] = Math.cos(radians);
           if (angle === 1 || angle === 3) {
-            matrix[0][0] *= 1/aspectScale; matrix[0][1] *= aspectScale;
-            matrix[1][0] *= 1/aspectScale; matrix[1][1] *= aspectScale;
+            state.matrix[0][0] *= 1/aspectScale;
+            state.matrix[0][1] *= aspectScale;
+            state.matrix[1][0] *= 1/aspectScale;
+            state.matrix[1][1] *= aspectScale;
           }
         } else if (command.paint) {
           const paintColor = this.readNumber(command.paint.paintColor, context);
@@ -756,21 +764,44 @@ export class DrawStatement extends Statement {
           // draws a diagonal squiggle and then fails with "Out of stack space".
           // So draw evaluation is lazy, and we only parse new commands when we
           // get to an X command.
-          throw new Error('unimplemented');
+          if (!command.execute.pointer) {
+            throw new Error('expecting string pointer');
+          }
+          const address = context.memory.readPointer(command.execute.pointer);
+          const xString = context.memory.readAddress(address);
+          if (!xString) {
+            continue;
+          }
+          if (!isString(xString)) {
+            throw new Error('expecting command string');
+          }
+          this.draw(xString.string, context, depth + 1);
         }
       }
+      screen.setDrawState(state);
       screen.setGraphicsCursor(screen.screenToWindow(cursor));
     } catch (e: unknown) {
+      if (e instanceof RuntimeError) {
+        throw e;
+      }
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
   }
 
-  private readNumber(value: DrawValue | undefined, _context: ExecutionContext): number {
+  private readNumber(value: DrawValue | undefined, context: ExecutionContext): number {
     if (!value) {
       return 0;
     }
     if (value.pointer) {
-      throw new Error('unimplemented')
+      const address = context.memory.readPointer(value.pointer);
+      const target = context.memory.readAddress(address);
+      if (!target) {
+        return 0;
+      }
+      if (!isNumeric(target)) {
+        throw new Error('invalid value');
+      }
+      return target.number;
     }
     return value.literal ?? 0;
   }

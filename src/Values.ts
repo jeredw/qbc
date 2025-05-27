@@ -264,4 +264,5 @@ export const
   FILE_ALREADY_EXISTS = error('File already exists'),
   FIELD_STATEMENT_ACTIVE = error('FIELD statement active'),
   BAD_RECORD_LENGTH = error('Bad record length'),
-  VARIABLE_REQUIRED = error('Variable required');
+  VARIABLE_REQUIRED = error('Variable required'),
+  OUT_OF_STACK_SPACE = error('Out of stack space');
