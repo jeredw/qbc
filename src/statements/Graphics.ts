@@ -10,10 +10,7 @@ import { readBytesFromArray, readNumbersFromArray, writeBytesToArray } from "./A
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
-import { ControlFlow } from "../ControlFlow.ts";
-import { Address } from "../Memory.ts";
 import { stringToAscii } from "../AsciiChart.ts";
-import { roundToNearestEven } from "../Math.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -199,9 +196,9 @@ export class CircleStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const step = this.args.step;
-    const x = evaluateIntegerExpression(this.args.x, context.memory);
-    const y = evaluateIntegerExpression(this.args.y, context.memory);
-    const radius = evaluateIntegerExpression(this.args.radius, context.memory);
+    const x = evaluateIntegerExpression(this.args.x, context.memory, { tag: TypeTag.SINGLE });
+    const y = evaluateIntegerExpression(this.args.y, context.memory, { tag: TypeTag.SINGLE });
+    const radius = evaluateIntegerExpression(this.args.radius, context.memory, { tag: TypeTag.SINGLE });
     const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
     const start = this.args.start && evaluateIntegerExpression(this.args.start, context.memory, { tag: TypeTag.SINGLE });
     const end = this.args.end && evaluateIntegerExpression(this.args.end, context.memory, { tag: TypeTag.SINGLE });
@@ -236,10 +233,10 @@ export class LineStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const x1 = this.args.x1 && evaluateIntegerExpression(this.args.x1, context.memory);
-    const y1 = this.args.y1 && evaluateIntegerExpression(this.args.y1, context.memory);
-    const x2 = evaluateIntegerExpression(this.args.x2, context.memory);
-    const y2 = evaluateIntegerExpression(this.args.y2, context.memory);
+    const x1 = this.args.x1 && evaluateIntegerExpression(this.args.x1, context.memory, { tag: TypeTag.SINGLE });
+    const y1 = this.args.y1 && evaluateIntegerExpression(this.args.y1, context.memory, { tag: TypeTag.SINGLE });
+    const x2 = evaluateIntegerExpression(this.args.x2, context.memory, { tag: TypeTag.SINGLE });
+    const y2 = evaluateIntegerExpression(this.args.y2, context.memory, { tag: TypeTag.SINGLE });
     const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
     const dash = this.args.dash && evaluateIntegerExpression(this.args.dash, context.memory);
     const {step1, step2, outline, fill} = this.args;
@@ -300,8 +297,8 @@ export class PsetStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const x = evaluateIntegerExpression(this.xExpr, context.memory);
-    const y = evaluateIntegerExpression(this.yExpr, context.memory);
+    const x = evaluateIntegerExpression(this.xExpr, context.memory, { tag: TypeTag.SINGLE });
+    const y = evaluateIntegerExpression(this.yExpr, context.memory, { tag: TypeTag.SINGLE });
     const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory);
     try {
       context.devices.screen.setPixel(x, y, color, this.step);
@@ -331,8 +328,8 @@ export class PaintStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const step = this.args.step;
-    const x = evaluateIntegerExpression(this.args.x, context.memory);
-    const y = evaluateIntegerExpression(this.args.y, context.memory);
+    const x = evaluateIntegerExpression(this.args.x, context.memory, { tag: TypeTag.SINGLE });
+    const y = evaluateIntegerExpression(this.args.y, context.memory, { tag: TypeTag.SINGLE });
     const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
     const borderColor = this.args.borderColor && evaluateIntegerExpression(this.args.borderColor, context.memory);
     try {
@@ -355,8 +352,8 @@ export class PresetStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const x = evaluateIntegerExpression(this.xExpr, context.memory);
-    const y = evaluateIntegerExpression(this.yExpr, context.memory);
+    const x = evaluateIntegerExpression(this.xExpr, context.memory, { tag: TypeTag.SINGLE });
+    const y = evaluateIntegerExpression(this.yExpr, context.memory, { tag: TypeTag.SINGLE });
     const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory);
     try {
       context.devices.screen.resetPixel(x, y, color, this.step);
@@ -381,10 +378,10 @@ export class ViewStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const x1 = this.x1 && evaluateIntegerExpression(this.x1, context.memory);
-    const y1 = this.y1 && evaluateIntegerExpression(this.y1, context.memory);
-    const x2 = this.x2 && evaluateIntegerExpression(this.x2, context.memory);
-    const y2 = this.y2 && evaluateIntegerExpression(this.y2, context.memory);
+    const x1 = this.x1 && evaluateIntegerExpression(this.x1, context.memory, { tag: TypeTag.SINGLE });
+    const y1 = this.y1 && evaluateIntegerExpression(this.y1, context.memory, { tag: TypeTag.SINGLE });
+    const x2 = this.x2 && evaluateIntegerExpression(this.x2, context.memory, { tag: TypeTag.SINGLE });
+    const y2 = this.y2 && evaluateIntegerExpression(this.y2, context.memory, { tag: TypeTag.SINGLE });
     if (x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) {
       context.devices.screen.resetView();
       return;
@@ -436,10 +433,10 @@ export class WindowStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const x1 = this.x1 && evaluateIntegerExpression(this.x1, context.memory);
-    const y1 = this.y1 && evaluateIntegerExpression(this.y1, context.memory);
-    const x2 = this.x2 && evaluateIntegerExpression(this.x2, context.memory);
-    const y2 = this.y2 && evaluateIntegerExpression(this.y2, context.memory);
+    const x1 = this.x1 && evaluateIntegerExpression(this.x1, context.memory, { tag: TypeTag.SINGLE });
+    const y1 = this.y1 && evaluateIntegerExpression(this.y1, context.memory, { tag: TypeTag.SINGLE });
+    const x2 = this.x2 && evaluateIntegerExpression(this.x2, context.memory, { tag: TypeTag.SINGLE });
+    const y2 = this.y2 && evaluateIntegerExpression(this.y2, context.memory, { tag: TypeTag.SINGLE });
     if (x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) {
       context.devices.screen.resetWindow();
       return;
@@ -593,11 +590,11 @@ export class GetGraphicsStatement extends Statement {
   override execute(context: ExecutionContext) {
     try {
       const step1 = this.args.step1;
-      const x1 = evaluateIntegerExpression(this.args.x1, context.memory);
-      const y1 = evaluateIntegerExpression(this.args.y1, context.memory);
+      const x1 = evaluateIntegerExpression(this.args.x1, context.memory, { tag: TypeTag.SINGLE });
+      const y1 = evaluateIntegerExpression(this.args.y1, context.memory, { tag: TypeTag.SINGLE });
       const step2 = this.args.step2;
-      const x2 = evaluateIntegerExpression(this.args.x2, context.memory);
-      const y2 = evaluateIntegerExpression(this.args.y2, context.memory);
+      const x2 = evaluateIntegerExpression(this.args.x2, context.memory, { tag: TypeTag.SINGLE });
+      const y2 = evaluateIntegerExpression(this.args.y2, context.memory, { tag: TypeTag.SINGLE });
       const buffer = context.devices.screen.getBitmap({x1, y1, step1, x2, y2, step2});
       writeBytesToArray(this.args.array, buffer, context.memory);
     } catch (e: unknown) {
@@ -626,8 +623,8 @@ export class PutGraphicsStatement extends Statement {
   override execute(context: ExecutionContext) {
     try {
       const step = this.args.step;
-      const x1 = evaluateIntegerExpression(this.args.x1, context.memory);
-      const y1 = evaluateIntegerExpression(this.args.y1, context.memory);
+      const x1 = evaluateIntegerExpression(this.args.x1, context.memory, { tag: TypeTag.SINGLE });
+      const y1 = evaluateIntegerExpression(this.args.y1, context.memory, { tag: TypeTag.SINGLE });
       const buffer = readBytesFromArray(this.args.array, context.memory);
       const operation = (
         this.args.preset ? BlitOperation.PRESET :
