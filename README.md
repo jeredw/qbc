@@ -108,7 +108,7 @@ parse those using baked in rules.
 | `ABSOLUTE`       | Keyword     | ✅      | ⛔      |
 | `ACCESS`         | Keyword     | ✅      | ⛔      |
 | `AND`            | Operator    | ✅      | ✅      |
-| `ANY`            | Keyword     | ✅      | 🚧      |
+| `ANY`            | Keyword     | ✅      | ✅      |
 | `APPEND`         | Keyword     | ✅      | ✅      |
 | `AS`             | Keyword     | ✅      | ✅      |
 | `ASC`            | Function    | -       | ✅      |
