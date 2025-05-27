@@ -258,32 +258,32 @@
         (const_expr 
           (expr 
             (literal 100)))))) ' \n \n ' \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter Text$) , 
         (declare_parameter Row)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DestroyStarbase) 
     ( 
       (declare_parameter_list 
         (declare_parameter Z)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayIntro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayGameTitle) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayChanges) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id EraseMissileTrail) 
     ( 
       (declare_parameter_list 
         (declare_parameter MNum)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Explode) 
     ( 
       (declare_parameter_list 
@@ -291,30 +291,30 @@
         (declare_parameter X) , 
         (declare_parameter Y) , 
         (declare_parameter WMissiles)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GameOver) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id HorizontalScroll) 
     ( 
       (declare_parameter_list 
         (declare_parameter M$) , 
         (declare_parameter Row)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitScreen) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitFirebases) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Keys) 
     ( 
       (declare_parameter_list 
         (declare_parameter TurnKeysOn)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id KeyPause) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id LaunchMissile) 
     ( 
       (declare_parameter_list 
@@ -323,25 +323,25 @@
         (declare_parameter YStart) , 
         (declare_parameter XFinish) , 
         (declare_parameter YFinish)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id NewMissile) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id NewStarbase) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id NewInterceptor) 
     ( 
       (declare_parameter_list 
         (declare_parameter X) , 
         (declare_parameter Y)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id StopMissile) 
     ( 
       (declare_parameter_list 
         (declare_parameter Chosen) , 
         (declare_parameter WMissiles)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateMissiles) 
     ( 
       (declare_parameter_list 
@@ -350,16 +350,16 @@
         (declare_parameter WMissiles) , 
         (declare_parameter NumOfTimes) , 
         (declare_parameter WColor)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateExplosions) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateTarget) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateScore) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id WaveComplete) 
     ( )) \n \n ' \n 
   (type_statement TYPE 

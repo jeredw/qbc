@@ -2,16 +2,16 @@
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GetConfig) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SetPalette) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TorusDefine) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TorusCalc) 
     ( 
       (declare_parameter_list 
@@ -20,7 +20,7 @@
           (array_declaration 
             ( )) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TorusColor) 
     ( 
       (declare_parameter_list 
@@ -29,13 +29,13 @@
           (array_declaration 
             ( )) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TorusSort) 
     ( 
       (declare_parameter_list 
         (declare_parameter Low) , 
         (declare_parameter High)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TorusDraw) 
     ( 
       (declare_parameter_list 
@@ -47,50 +47,50 @@
         (declare_parameter Index 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TileDraw) 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id T) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TorusRotate) 
     ( 
       (declare_parameter_list 
         (declare_parameter First)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Delay) 
     ( 
       (declare_parameter_list 
         (declare_parameter Seconds!)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CountTiles) 
     ( 
       (declare_parameter_list 
         (declare_parameter T1) , 
         (declare_parameter T2)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Message) 
     ( 
       (declare_parameter_list 
         (declare_parameter Text$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SetConfig) 
     ( 
       (declare_parameter_list 
         (declare_parameter mode)) )) \n 
-  (declare_statement DECLARE FUNCTION Inside 
+  (declare_function_statement DECLARE FUNCTION Inside 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id T) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE FUNCTION DegToRad! 
+  (declare_function_statement DECLARE FUNCTION DegToRad! 
     ( 
       (declare_parameter_list 
         (declare_parameter Degrees)) )) \n 
-  (declare_statement DECLARE FUNCTION Rotated 
+  (declare_function_statement DECLARE FUNCTION Rotated 
     ( 
       (declare_parameter_list 
         (declare_parameter Lower) , 

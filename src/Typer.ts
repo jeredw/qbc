@@ -83,36 +83,6 @@ export class Typer extends QBasicParserListener {
     this._program.staticSize = this._chunk.symbols.staticSize();
   }
 
-  override enterFunction_statement = (ctx: parser.Function_statementContext) => {
-    const token = ctx.ID().symbol;
-    const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
-    const parameters = this.parseParameterList(ctx.parameter_list());
-    const procedure: Procedure = {
-      name,
-      parameters,
-      result: {
-        name,
-        type: sigil ? typeOfSigil(sigil) : this.getDefaultType(name),
-        token,
-        storageType: StorageType.AUTOMATIC
-      },
-      programChunkIndex: this._program.chunks.length,
-      token,
-    };
-    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
-    this._chunk.symbols.defineProcedure(procedure);
-    getTyperContext(ctx).$procedure = procedure;
-    const symbols = new SymbolTable({
-      parent: this._chunk.symbols,
-      builtins: this._builtins,
-      name,
-    });
-    this._chunk = this.makeProgramChunk(symbols, procedure);
-    this._program.chunks.push(this._chunk);
-    procedure.result!.address = this._chunk.symbols.allocate(StorageType.AUTOMATIC, 1);
-    this.installParameters(parameters);
-  }
-
   override enterDef_fn_statement = (ctx: parser.Def_fn_statementContext) => {
     const token = ctx._name!;
     const rawName = ctx._name!.text!.toLowerCase();
@@ -146,26 +116,103 @@ export class Typer extends QBasicParserListener {
     this.installParameters(parameters);
   }
 
+  private checkDeclaration(token: Token, declaration: Procedure, parameters: Variable[], returnType?: Type) {
+    if (!!returnType !== !!declaration.result) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    if (returnType && declaration.result && !sameType(declaration.result.type, returnType)) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    if (parameters.length != declaration.parameters.length) {
+      throw ParseError.fromToken(token, "Argument-count mismatch");
+    }
+    for (let i = 0; i < parameters.length; i++) {
+      const declaredParam = declaration.parameters[i];
+      const param = parameters[i];
+      if (!sameType(declaredParam.type, param.type)) {
+        throw ParseError.fromToken(declaredParam.token, "Parameter type mismatch");
+      }
+    }
+  }
+
+  override enterDeclare_function_statement = (ctx: parser.Declare_function_statementContext) => {
+    const token = ctx.ID().symbol;
+    const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
+    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const parameters = this.parseDeclareParameterList(ctx.declare_parameter_list());
+    const declaration = this._chunk.symbols.lookupProcedure(name);
+    if (declaration) {
+      this.checkDeclaration(token, declaration, parameters, type);
+      return;
+    }
+    this.installProcedure({name, type, token, parameters});
+  }
+
+  override enterFunction_statement = (ctx: parser.Function_statementContext) => {
+    const token = ctx.ID().symbol;
+    const [name, sigil] = splitSigil(ctx.ID().getText().toLowerCase());
+    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
+    const parameters = this.parseParameterList(ctx.parameter_list());
+    const declaration = this._chunk.symbols.lookupProcedure(name);
+    if (declaration) {
+      this.checkDeclaration(ctx.start!, declaration, parameters, type);
+      declaration.parameters = parameters;
+    }
+    const procedure = declaration ?? this.installProcedure({name, parameters, type, token});
+    getTyperContext(ctx).$procedure = procedure;
+    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
+    this._chunk = this._program.chunks[procedure.programChunkIndex];
+    procedure.result!.address = this._chunk.symbols.allocate(StorageType.AUTOMATIC, 1);
+    this.installParameters(parameters);
+  }
+
+  override enterDeclare_sub_statement = (ctx: parser.Declare_sub_statementContext) => {
+    const token = ctx.untyped_id().start!
+    const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
+    const parameters = this.parseDeclareParameterList(ctx.declare_parameter_list());
+    const declaration = this._chunk.symbols.lookupProcedure(name);
+    if (declaration) {
+      this.checkDeclaration(ctx.start!, declaration, parameters);
+      return;
+    }
+    this.installProcedure({name, token, parameters});
+  }
+
   override enterSub_statement = (ctx: parser.Sub_statementContext) => {
+    const token = ctx.untyped_id().start!
     const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
     const parameters = this.parseParameterList(ctx.parameter_list());
-    const procedure = {
+    const declaration = this._chunk.symbols.lookupProcedure(name);
+    if (declaration) {
+      this.checkDeclaration(ctx.start!, declaration, parameters);
+      declaration.parameters = parameters;
+    }
+    const procedure = declaration ?? this.installProcedure({name, parameters, token});
+    getTyperContext(ctx).$procedure = procedure;
+    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
+    this._chunk = this._program.chunks[procedure.programChunkIndex];
+    this.installParameters(parameters);
+  }
+
+  private installProcedure({name, parameters, type, token}: {name: string, parameters: Variable[], type?: Type, token: Token}): Procedure {
+    const procedure: Procedure = {
       name,
       parameters,
       programChunkIndex: this._program.chunks.length,
-      token: ctx.untyped_id().start!
+      token,
     };
-    this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
+    if (type) {
+      procedure.result = {name, type, token, storageType: StorageType.AUTOMATIC};
+    }
     this._chunk.symbols.defineProcedure(procedure);
-    getTyperContext(ctx).$procedure = procedure;
     const symbols = new SymbolTable({
       parent: this._chunk.symbols,
       builtins: this._builtins,
       name,
     });
-    this._chunk = this.makeProgramChunk(symbols, procedure);
-    this._program.chunks.push(this._chunk);
-    this.installParameters(parameters);
+    const chunk = this.makeProgramChunk(symbols, procedure);
+    this._program.chunks.push(chunk);
+    return procedure;
   }
 
   private installParameters(parameters: Variable[]) {
@@ -639,10 +686,6 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$procedure = procedure;
   }
 
-  override enterDeclare_statement = (ctx: parser.Declare_statementContext) => {
-    // TODO: Check for mismatched declarations.
-  }
-
   override enterDeftype_statement = (ctx: parser.Deftype_statementContext) => {
     const keyword = ctx.children[0].getText();
     const type = typeOfDefType(keyword);
@@ -820,6 +863,10 @@ export class Typer extends QBasicParserListener {
     return result;
   }
 
+  private parseDeclareParameterList(ctx: parser.Declare_parameter_listContext | null): Variable[] {
+    return ctx?.declare_parameter().map((param) => this.parseParameter(param)) ?? [];
+  }
+
   private parseParameterList(ctx: parser.Parameter_listContext | null): Variable[] {
     return ctx?.parameter().map((param) => this.parseParameter(param)) ?? [];
   }
@@ -828,18 +875,24 @@ export class Typer extends QBasicParserListener {
     return ctx?.def_fn_parameter().map((param) => this.parseParameter(param)) ?? [];
   }
 
-  private parseParameter(ctx: parser.ParameterContext | parser.Def_fn_parameterContext): Variable {
+  private parseParameter(ctx: parser.ParameterContext | parser.Def_fn_parameterContext | parser.Declare_parameterContext): Variable {
     const nameCtx = ctx.untyped_id();
     const rawName = nameCtx ? getUntypedId(nameCtx, {allowPeriods: true}) : ctx.ID()!.getText();
     const [name, sigil] = splitSigil(rawName);
-    const asTypeCtx = ctx instanceof parser.ParameterContext ?
-      ctx.type_name_for_parameter() :
-      ctx.type_name_for_def_fn_parameter();
+    const asTypeCtx = (
+      ctx instanceof parser.ParameterContext ? ctx.type_name_for_parameter() :
+      ctx instanceof parser.Declare_parameterContext ? ctx.type_name_for_declare_parameter() :
+      ctx.type_name_for_def_fn_parameter()
+    );
     const type: Type = sigil ? typeOfSigil(sigil) :
       asTypeCtx ? this.getType(asTypeCtx) :
       this.getDefaultType(name);
-    const arrayDimensions = (ctx instanceof parser.ParameterContext && ctx.array_declaration()) ?
-      {array: {dimensions: [{lower: undefined, upper: undefined}]}} : {};
+    const arrayDimensions = (
+      (ctx instanceof parser.ParameterContext ||
+       ctx instanceof parser.Declare_parameterContext) && ctx.array_declaration() ?
+      {array: {dimensions: [{lower: undefined, upper: undefined}]}} :
+      {}
+    );
     return {
       type,
       name,

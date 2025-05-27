@@ -232,13 +232,13 @@
         (const_expr 
           (expr 
             (literal 0)))))) ' \n \n ' \n ' \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id BustOut) 
     ( 
       (declare_parameter_list 
         (declare_parameter x%) , 
         (declare_parameter y%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CancelDirection) 
     ( 
       (declare_parameter_list 
@@ -246,13 +246,13 @@
           (untyped_id move) AS 
           (type_name_for_declare_parameter ANY)) , 
         (declare_parameter direction%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter text$) , 
         (declare_parameter row%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ChangeWall) 
     ( 
       (declare_parameter_list 
@@ -260,83 +260,83 @@
         (declare_parameter y%) , 
         (declare_parameter direction%) , 
         (declare_parameter RepCh%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ClosePath) 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id move) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CompleteMaze) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ConvertDirToXY) 
     ( 
       (declare_parameter_list 
         (declare_parameter direction%) , 
         (declare_parameter xmove%) , 
         (declare_parameter ymove%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayChanges) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayGameTitle) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayIntro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayWinner) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawMonster) 
     ( 
       (declare_parameter_list 
         (declare_parameter x%) , 
         (declare_parameter y%) , 
         (declare_parameter WhatColor%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawPlayer) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player%) , 
         (declare_parameter WhatColor%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GenerateMaze) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GenerateMove) 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id move) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GetGameOptions) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitVariables) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Keys) 
     ( 
       (declare_parameter_list 
         (declare_parameter onoff%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id MonsterControl) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlayGame) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PopMove) 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id move) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintBlock) 
     ( 
       (declare_parameter_list 
@@ -346,40 +346,40 @@
         (declare_parameter x%) , 
         (declare_parameter y%) , 
         (declare_parameter WhatColor%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintMaze) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ProcessPlayerInput) 
     ( 
       (declare_parameter_list 
         (declare_parameter i%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdatePosition) 
     ( 
       (declare_parameter_list 
         (declare_parameter Dir%) , 
         (declare_parameter Plr%)) )) \n 
-  (declare_statement DECLARE FUNCTION CheckForClosedArea% 
+  (declare_function_statement DECLARE FUNCTION CheckForClosedArea% 
     ( 
       (declare_parameter_list 
         (declare_parameter 
           (untyped_id move) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE FUNCTION CreatePath% 
+  (declare_function_statement DECLARE FUNCTION CreatePath% 
     ( )) \n 
-  (declare_statement DECLARE FUNCTION GetMonsterDirection% 
+  (declare_function_statement DECLARE FUNCTION GetMonsterDirection% 
     ( 
       (declare_parameter_list 
         (declare_parameter x%) , 
         (declare_parameter y%) , 
         (declare_parameter direction%)) )) \n 
-  (declare_statement DECLARE FUNCTION NumberOfWalls% 
+  (declare_function_statement DECLARE FUNCTION NumberOfWalls% 
     ( 
       (declare_parameter_list 
         (declare_parameter x%) , 
         (declare_parameter y%)) )) \n 
-  (declare_statement DECLARE FUNCTION ValidBustDir% 
+  (declare_function_statement DECLARE FUNCTION ValidBustDir% 
     ( 
       (declare_parameter_list 
         (declare_parameter x%) , 

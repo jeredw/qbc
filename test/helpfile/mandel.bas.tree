@@ -2,10 +2,10 @@
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) ' \r\n \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShiftPalette) 
     ( )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id WindowVals) 
     ( 
       (declare_parameter_list 
@@ -13,7 +13,7 @@
         (declare_parameter WR%) , 
         (declare_parameter WT%) , 
         (declare_parameter WB%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ScreenTest) 
     ( 
       (declare_parameter_list 

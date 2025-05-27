@@ -160,39 +160,39 @@
         (const_expr 
           (expr 
             (literal 3)))))) ' \n \n ' \n 
-  (declare_statement DECLARE FUNCTION MoveShip 
+  (declare_function_statement DECLARE FUNCTION MoveShip 
     ( 
       (declare_parameter_list 
         (declare_parameter PlayerNum) , 
         (declare_parameter SeaLevel 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE FUNCTION SinkShip 
+  (declare_function_statement DECLARE FUNCTION SinkShip 
     ( 
       (declare_parameter_list 
         (declare_parameter x) , 
         (declare_parameter y)) )) \n 
-  (declare_statement DECLARE FUNCTION PlotShot 
+  (declare_function_statement DECLARE FUNCTION PlotShot 
     ( 
       (declare_parameter_list 
         (declare_parameter startX) , 
         (declare_parameter startY) , 
         (declare_parameter angle#) , 
         (declare_parameter velocity)) )) \n 
-  (declare_statement DECLARE FUNCTION GetPlayerCommand 
+  (declare_function_statement DECLARE FUNCTION GetPlayerCommand 
     ( 
       (declare_parameter_list 
         (declare_parameter PlayerNum) , 
         (declare_parameter SeaLevel 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter text$) , 
         (declare_parameter row)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ClearArea) 
     ( 
       (declare_parameter_list 
@@ -200,26 +200,26 @@
         (declare_parameter startCol) , 
         (declare_parameter endRow) , 
         (declare_parameter endCol)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CyclePalette) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayChanges) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayGameTitle) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayIntro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawIsland) 
     ( 
       (declare_parameter_list 
         (declare_parameter SeaLevel 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawWaves) 
     ( 
       (declare_parameter_list 
@@ -229,68 +229,68 @@
         (declare_parameter SeaLevel 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawWind) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GetGameOptions) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GetShotParams) 
     ( 
       (declare_parameter_list 
         (declare_parameter PlayerNum) , 
         (declare_parameter NewAngle#) , 
         (declare_parameter NewVelocity)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitializeVariables) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id MakeBattleField) 
     ( 
       (declare_parameter_list 
         (declare_parameter SeaLevel 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlaceShips) 
     ( 
       (declare_parameter_list 
         (declare_parameter SeaLevel 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlayGame) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlotAngle) 
     ( 
       (declare_parameter_list 
         (declare_parameter col) , 
         (declare_parameter angle#) , 
         (declare_parameter PlayerNum)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlotBattleField) 
     ( 
       (declare_parameter_list 
         (declare_parameter SeaLevel 
           (array_declaration 
             ( )))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlotVelocity) 
     ( 
       (declare_parameter_list 
         (declare_parameter col) , 
         (declare_parameter velocity) , 
         (declare_parameter PlayerNum)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CannonHit) 
     ( 
       (declare_parameter_list 
         (declare_parameter x) , 
         (declare_parameter y) , 
         (declare_parameter theColor)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateScores) 
     ( 
       (declare_parameter_list 

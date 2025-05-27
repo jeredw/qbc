@@ -1,0 +1,21 @@
+(program 
+  (declare_function_statement declare function foo) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter x)) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call x))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 42)))))) \n <EOF>)

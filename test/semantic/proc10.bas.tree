@@ -1,0 +1,42 @@
+(program 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Z))) \n 
+  (declare_function_statement DECLARE FUNCTION Menu% 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter CurrChoiceX%) , 
+        (declare_parameter MaxChoice%) , 
+        (declare_parameter choice$ 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter ItemRow% 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter ItemCol% 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter help$ 
+          (array_declaration 
+            ( ))) , 
+        (declare_parameter BarMode%)) )) \n \n 
+  (function_statement FUNCTION Menu 
+    ( 
+      (parameter_list 
+        (parameter CurrChoiceX) , 
+        (parameter MaxChoice) , 
+        (parameter choice$ 
+          (array_declaration 
+            ( ))) , 
+        (parameter ItemRow 
+          (array_declaration 
+            ( ))) , 
+        (parameter ItemCol 
+          (array_declaration 
+            ( ))) , 
+        (parameter help$ 
+          (array_declaration 
+            ( ))) , 
+        (parameter BarMode)) ) 
+    (block \n) 
+    (end_function_statement END FUNCTION)) \n <EOF>)

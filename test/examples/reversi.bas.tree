@@ -3,7 +3,7 @@
     (deftype_statement DEFINT 
       (letter_range A - Z))) \n 
   (option_statement OPTION BASE 1) \n \n 
-  (declare_statement DECLARE FUNCTION CheckPath% 
+  (declare_function_statement DECLARE FUNCTION CheckPath% 
     ( 
       (declare_parameter_list 
         (declare_parameter i) , 
@@ -13,54 +13,54 @@
         (declare_parameter JBound) , 
         (declare_parameter JStep) , 
         (declare_parameter Opponent)) )) \n 
-  (declare_statement DECLARE FUNCTION ValidMove% 
+  (declare_function_statement DECLARE FUNCTION ValidMove% 
     ( 
       (declare_parameter_list 
         (declare_parameter Opponent)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ComputerMove) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayHelp) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayMsg) 
     ( 
       (declare_parameter_list 
         (declare_parameter a$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawCursor) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter col)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawGamePiece) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter col) , 
         (declare_parameter PieceColor)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GameOver) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitGame) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TakeBlocks) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter col) , 
         (declare_parameter player)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateScore) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UserMove) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawGameBoard) 
     ( )) \n \n 
   (statement 

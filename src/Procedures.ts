@@ -7,4 +7,5 @@ export interface Procedure {
   result?: Variable;
   programChunkIndex: number;
   token: Token;
+  hasBody?: boolean;
 }

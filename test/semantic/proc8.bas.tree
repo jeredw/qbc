@@ -1,0 +1,62 @@
+(program 
+  (type_statement TYPE 
+    (untyped_id StockItem) \n 
+    (type_element 
+      (untyped_id PartNumber) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 6)) \n) 
+    (type_element 
+      (untyped_id Description) AS 
+      (type_name_for_type_element 
+        (fixed_string STRING * 20)) \n) 
+    (type_element 
+      (untyped_id UnitPrice) AS 
+      (type_name_for_type_element SINGLE) \n) 
+    (type_element 
+      (untyped_id Quantity) AS 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n \n 
+  (type_statement TYPE 
+    (untyped_id Bogus) \n 
+    (type_element 
+      (untyped_id Thing) AS 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n \n 
+  (declare_sub_statement DECLARE SUB 
+    (untyped_id AddRecord) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_declare_parameter 
+            (untyped_id StockItem)))) )) \n \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id StockRecord) AS 
+        (type_name 
+          (untyped_id StockItem))) , 
+      (dim_variable 
+        (untyped_id Bogus) AS 
+        (type_name 
+          (untyped_id Bogus))))) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id AddRecord) 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call Bogus)))))) \n \n 
+  (sub_statement SUB 
+    (untyped_id AddRecord) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id RecordVar) AS 
+          (type_name_for_parameter 
+            (untyped_id StockItem)))) ) STATIC 
+    (block \n 
+      (statement 
+        (print_statement PRINT 
+          (print_argument 
+            (expr 
+              (literal "ok"))))) \n) 
+    (end_sub_statement END SUB)) \n <EOF>)

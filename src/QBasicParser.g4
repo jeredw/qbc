@@ -35,7 +35,8 @@ program
   // within the procedure body and not the program toplevel so are matched
   // within those statements.
 	: (( label? statement?
-     | label? declare_statement
+     | label? declare_function_statement
+     | label? declare_sub_statement
      | label? def_fn_statement
      | function_statement
      | label? if_block_statement
@@ -43,7 +44,8 @@ program
      | sub_statement
      | label? type_statement)
       (COLON ( statement?
-             | declare_statement
+             | declare_function_statement
+             | declare_sub_statement
              | def_fn_statement
              | option_statement
              | type_statement))* NL)*
@@ -172,8 +174,12 @@ statement
   | write_statement
   ;
 
-declare_statement
-  : DECLARE (SUB untyped_id | FUNCTION ID) ('(' declare_parameter_list? ')')?
+declare_function_statement
+  : DECLARE FUNCTION ID ('(' declare_parameter_list? ')')?
+  ;
+
+declare_sub_statement
+  : DECLARE SUB untyped_id ('(' declare_parameter_list? ')')?
   ;
 
 declare_parameter_list

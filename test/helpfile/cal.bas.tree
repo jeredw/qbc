@@ -11,24 +11,24 @@
       (untyped_id MName) AS 
       (type_name_for_type_element 
         (fixed_string STRING * 9)) ' \r\n) END TYPE) \r\n \r\n ' \r\n 
-  (declare_statement DECLARE FUNCTION IsLeapYear% 
+  (declare_function_statement DECLARE FUNCTION IsLeapYear% 
     ( 
       (declare_parameter_list 
         (declare_parameter N%)) )) \r\n 
-  (declare_statement DECLARE FUNCTION GetInput% 
+  (declare_function_statement DECLARE FUNCTION GetInput% 
     ( 
       (declare_parameter_list 
         (declare_parameter Prompt$) , 
         (declare_parameter Row%) , 
         (declare_parameter LowVal%) , 
         (declare_parameter HighVal%)) )) \r\n \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintCalendar) 
     ( 
       (declare_parameter_list 
         (declare_parameter Year%) , 
         (declare_parameter Month%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ComputeMonth) 
     ( 
       (declare_parameter_list 

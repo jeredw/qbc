@@ -2,59 +2,59 @@
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \n \n ' \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id TransactionSummary) 
     ( 
       (declare_parameter_list 
         (declare_parameter item%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id LCenter) 
     ( 
       (declare_parameter_list 
         (declare_parameter text$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ScrollUp) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ScrollDown) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Initialize) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Intro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SparklePause) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter row%) , 
         (declare_parameter text$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id FancyCls) 
     ( 
       (declare_parameter_list 
         (declare_parameter dots%) , 
         (declare_parameter Background%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id LoadState) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SaveState) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id MenuSystem) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id MakeBackup) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id RestoreBackup) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Box) 
     ( 
       (declare_parameter_list 
@@ -62,35 +62,35 @@
         (declare_parameter Col1%) , 
         (declare_parameter Row2%) , 
         (declare_parameter Col2%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id NetWorthReport) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id EditAccounts) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintHelpLine) 
     ( 
       (declare_parameter_list 
         (declare_parameter help$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id EditTrans) 
     ( 
       (declare_parameter_list 
         (declare_parameter item%)) )) \n 
-  (declare_statement DECLARE FUNCTION Cvdt$ 
+  (declare_function_statement DECLARE FUNCTION Cvdt$ 
     ( 
       (declare_parameter_list 
         (declare_parameter X#)) )) \n 
-  (declare_statement DECLARE FUNCTION Cvst$ 
+  (declare_function_statement DECLARE FUNCTION Cvst$ 
     ( 
       (declare_parameter_list 
         (declare_parameter X!)) )) \n 
-  (declare_statement DECLARE FUNCTION Cvit$ 
+  (declare_function_statement DECLARE FUNCTION Cvit$ 
     ( 
       (declare_parameter_list 
         (declare_parameter X%)) )) \n 
-  (declare_statement DECLARE FUNCTION Menu% 
+  (declare_function_statement DECLARE FUNCTION Menu% 
     ( 
       (declare_parameter_list 
         (declare_parameter CurrChoiceX%) , 
@@ -108,7 +108,7 @@
           (array_declaration 
             ( ))) , 
         (declare_parameter BarMode%)) )) \n 
-  (declare_statement DECLARE FUNCTION GetString$ 
+  (declare_function_statement DECLARE FUNCTION GetString$ 
     ( 
       (declare_parameter_list 
         (declare_parameter row%) , 
@@ -117,7 +117,7 @@
         (declare_parameter end$) , 
         (declare_parameter Vis%) , 
         (declare_parameter Max%)) )) \n 
-  (declare_statement DECLARE FUNCTION Trim$ 
+  (declare_function_statement DECLARE FUNCTION Trim$ 
     ( 
       (declare_parameter_list 
         (declare_parameter X$)) )) \n \n ' \n 

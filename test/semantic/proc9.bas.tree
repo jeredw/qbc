@@ -1,0 +1,55 @@
+(program 
+  (declare_sub_statement DECLARE SUB 
+    (untyped_id PlaceGorillas) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id BCoor) 
+          (array_declaration 
+            ( )) AS 
+          (type_name_for_declare_parameter ANY))) )) \n 
+  (type_statement TYPE 
+    (untyped_id XYPoint) \n 
+    (type_element 
+      (untyped_id XCoor) AS 
+      (type_name_for_type_element INTEGER) \n) 
+    (type_element 
+      (untyped_id YCoor) AS 
+      (type_name_for_type_element INTEGER) \n) END TYPE) \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable 
+        (untyped_id BCoor) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 0)) TO 
+              (expr 
+                (literal 30))) )) AS 
+        (type_name 
+          (untyped_id XYPoint))))) \n \n 
+  (statement 
+    (call_statement CALL 
+      (untyped_id PlaceGorillas) 
+      ( 
+        (argument_list 
+          (argument BCoor 
+            ( ))) ))) \n \n 
+  (sub_statement SUB 
+    (untyped_id PlaceGorillas) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id BCoor) 
+          (array_declaration 
+            ( )) AS 
+          (type_name_for_parameter 
+            (untyped_id XYPoint)))) ) 
+    (block \n 
+      (statement 
+        (print_statement PRINT 
+          (print_argument 
+            (expr 
+              (literal "ok"))))) \n) 
+    (end_sub_statement END SUB)) \n <EOF>)

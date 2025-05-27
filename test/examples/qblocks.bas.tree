@@ -294,60 +294,60 @@
     (type_element 
       (untyped_id Rotation) AS 
       (type_name_for_type_element INTEGER) ' \n) END TYPE) \n \n ' \n 
-  (declare_statement DECLARE FUNCTION CheckFit 
+  (declare_function_statement DECLARE FUNCTION CheckFit 
     ( )) \n 
-  (declare_statement DECLARE FUNCTION GameOver 
+  (declare_function_statement DECLARE FUNCTION GameOver 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id AddBlockToWell) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CheckForFullRows) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter M$) , 
         (declare_parameter Row)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DeleteChunk) 
     ( 
       (declare_parameter_list 
         (declare_parameter Highest%) , 
         (declare_parameter Lowest%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayIntro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayGameTitle) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DisplayChanges) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawBlock) 
     ( 
       (declare_parameter_list 
         (declare_parameter X) , 
         (declare_parameter Y) , 
         (declare_parameter FillColor)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitScreen) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id MakeInfoBox) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id NewBlock) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PerformGame) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id RedrawControls) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Show) 
     ( 
       (declare_parameter_list 
@@ -355,10 +355,10 @@
           (untyped_id b) AS 
           (type_name_for_declare_parameter 
             (untyped_id BlockType)))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateScoring) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PutBlock) 
     ( 
       (declare_parameter_list 
@@ -366,15 +366,15 @@
           (untyped_id b) AS 
           (type_name_for_declare_parameter 
             (untyped_id BlockType)))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawAllShapes) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawPattern) 
     ( 
       (declare_parameter_list 
         (declare_parameter Patttern)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawPlayingField) 
     ( )) \n \n ' \n ' \n ' \n 
   (statement 

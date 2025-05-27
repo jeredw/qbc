@@ -147,7 +147,7 @@ parse those using baked in rules.
 | `DATA`           | Statement   | ✅      | ✅      |
 | `DATE$`          | Function    | ✅      | ✅      |
 | `DATE$`          | Statement   | ✅      | ✅      |
-| `DECLARE`        | Statement   | ✅      | ⛔      |
+| `DECLARE`        | Statement   | ✅      | ✅      |
 | `DEF FN`         | Statement   | ✅      | ✅      |
 | `DEF SEG`        | Statement   | ✅      | ✅      |
 | `DEFDBL`         | Statement   | ✅      | ✅      |

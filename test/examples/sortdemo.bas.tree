@@ -2,21 +2,21 @@
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) ' \n \n ' \n 
-  (declare_statement DECLARE FUNCTION RandInt% 
+  (declare_function_statement DECLARE FUNCTION RandInt% 
     ( 
       (declare_parameter_list 
         (declare_parameter Lower) , 
         (declare_parameter Upper)) )) \n \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id BoxInit) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id BubbleSort) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CheckScreen) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawFrame) 
     ( 
       (declare_parameter_list 
@@ -24,60 +24,60 @@
         (declare_parameter BottomSide) , 
         (declare_parameter LeftSide) , 
         (declare_parameter RightSide)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ElapsedTime) 
     ( 
       (declare_parameter_list 
         (declare_parameter CurrentRow)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ExchangeSort) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id HeapSort) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Initialize) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InsertionSort) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PercolateDown) 
     ( 
       (declare_parameter_list 
         (declare_parameter MaxLevel)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PercolateUp) 
     ( 
       (declare_parameter_list 
         (declare_parameter MaxLevel)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintOneBar) 
     ( 
       (declare_parameter_list 
         (declare_parameter Row)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id QuickSort) 
     ( 
       (declare_parameter_list 
         (declare_parameter Low) , 
         (declare_parameter High)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Reinitialize) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShellSort) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SortMenu) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SwapBars) 
     ( 
       (declare_parameter_list 
         (declare_parameter Row1) , 
         (declare_parameter Row2)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ToggleSound) 
     ( 
       (declare_parameter_list 

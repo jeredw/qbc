@@ -20,7 +20,7 @@
         (const_expr 
           (expr 
             (literal "TWH")))))) \r\n \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ScanDir) 
     ( 
       (declare_parameter_list 
@@ -28,11 +28,11 @@
         (declare_parameter Level) , 
         (declare_parameter FileSpec$) , 
         (declare_parameter Row)) )) \r\n \r\n 
-  (declare_statement DECLARE FUNCTION MakeFileName$ 
+  (declare_function_statement DECLARE FUNCTION MakeFileName$ 
     ( 
       (declare_parameter_list 
         (declare_parameter Num)) )) \r\n 
-  (declare_statement DECLARE FUNCTION GetEntry$ 
+  (declare_function_statement DECLARE FUNCTION GetEntry$ 
     ( 
       (declare_parameter_list 
         (declare_parameter FileNum) , 

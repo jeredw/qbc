@@ -1,24 +1,24 @@
 (program 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Bounce) 
     ( 
       (declare_parameter_list 
         (declare_parameter Hi%) , 
         (declare_parameter Low%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Fall) 
     ( 
       (declare_parameter_list 
         (declare_parameter Hi%) , 
         (declare_parameter Low%) , 
         (declare_parameter Del%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Siren) 
     ( 
       (declare_parameter_list 
         (declare_parameter Hi%) , 
         (declare_parameter Range%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Klaxon) 
     ( 
       (declare_parameter_list 

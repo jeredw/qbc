@@ -1,0 +1,30 @@
+(program 
+  (declare_sub_statement declare sub 
+    (untyped_id foo) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter 
+          (untyped_id x) as 
+          (type_name_for_declare_parameter string))) )) \n \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call foo 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "nope")))) )))))) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter x$)) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call x))))) \n) 
+    (end_sub_statement end sub)) \n <EOF>)

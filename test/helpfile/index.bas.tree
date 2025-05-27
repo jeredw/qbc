@@ -38,11 +38,11 @@
       (untyped_id PartNumber) AS 
       (type_name_for_type_element 
         (fixed_string STRING * 6)) \r\n) END TYPE) \r\n \r\n ' \r\n 
-  (declare_statement DECLARE FUNCTION Filter$ 
+  (declare_function_statement DECLARE FUNCTION Filter$ 
     ( 
       (declare_parameter_list 
         (declare_parameter Prompt$)) )) \r\n 
-  (declare_statement DECLARE FUNCTION FindRecord% 
+  (declare_function_statement DECLARE FUNCTION FindRecord% 
     ( 
       (declare_parameter_list 
         (declare_parameter PartNumber$) , 
@@ -50,7 +50,7 @@
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
             (untyped_id StockItem)))) )) \r\n \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id AddRecord) 
     ( 
       (declare_parameter_list 
@@ -58,7 +58,7 @@
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
             (untyped_id StockItem)))) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InputRecord) 
     ( 
       (declare_parameter_list 
@@ -66,7 +66,7 @@
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
             (untyped_id StockItem)))) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintRecord) 
     ( 
       (declare_parameter_list 
@@ -74,10 +74,10 @@
           (untyped_id RecordVar) AS 
           (type_name_for_declare_parameter 
             (untyped_id StockItem)))) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SortIndex) 
     ( )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShowPartNumbers) 
     ( )) \r\n \r\n ' \r\n ' \r\n 
   (statement 

@@ -1,0 +1,29 @@
+(program 
+  (declare_function_statement declare function square 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter x)) )) \n \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call square 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 4)))) )))))) \n \n 
+  (function_statement function square 
+    ( 
+      (parameter_list 
+        (parameter x)) ) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call square) = 
+          (expr 
+            (expr 
+              (variable_or_function_call x)) * 
+            (expr 
+              (variable_or_function_call x))))) \n) 
+    (end_function_statement end function)) \n <EOF>)

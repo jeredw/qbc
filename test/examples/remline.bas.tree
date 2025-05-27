@@ -2,35 +2,35 @@
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \n \n ' \n 
-  (declare_statement DECLARE FUNCTION GetToken$ 
+  (declare_function_statement DECLARE FUNCTION GetToken$ 
     ( 
       (declare_parameter_list 
         (declare_parameter Search$) , 
         (declare_parameter Delim$)) )) \n 
-  (declare_statement DECLARE FUNCTION StrSpn% 
+  (declare_function_statement DECLARE FUNCTION StrSpn% 
     ( 
       (declare_parameter_list 
         (declare_parameter InString$) , 
         (declare_parameter Separator$)) )) \n 
-  (declare_statement DECLARE FUNCTION StrBrk% 
+  (declare_function_statement DECLARE FUNCTION StrBrk% 
     ( 
       (declare_parameter_list 
         (declare_parameter InString$) , 
         (declare_parameter Separator$)) )) \n 
-  (declare_statement DECLARE FUNCTION IsDigit% 
+  (declare_function_statement DECLARE FUNCTION IsDigit% 
     ( 
       (declare_parameter_list 
         (declare_parameter Char$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GetFileNames) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id BuildTable) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GenOutFile) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitKeyTable) 
     ( )) \n \n ' \n 
   (statement 

@@ -50,12 +50,12 @@
     (type_element 
       (untyped_id sister) AS 
       (type_name_for_type_element INTEGER) ' \n) END TYPE) ' \n \n ' \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SpacePause) 
     ( 
       (declare_parameter_list 
         (declare_parameter text$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintScore) 
     ( 
       (declare_parameter_list 
@@ -64,10 +64,10 @@
         (declare_parameter score2%) , 
         (declare_parameter lives1%) , 
         (declare_parameter lives2%)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Intro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GetInputs) 
     ( 
       (declare_parameter_list 
@@ -75,39 +75,39 @@
         (declare_parameter speed) , 
         (declare_parameter diff$) , 
         (declare_parameter monitor$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawScreen) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlayNibbles) 
     ( 
       (declare_parameter_list 
         (declare_parameter NumPlayers) , 
         (declare_parameter speed) , 
         (declare_parameter diff$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Set) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter col) , 
         (declare_parameter acolor)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 
         (declare_parameter text$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DoIntro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Initialize) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SparklePause) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Level) 
     ( 
       (declare_parameter_list 
@@ -118,10 +118,10 @@
             ( )) AS 
           (type_name_for_declare_parameter 
             (untyped_id snaketype)))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitColors) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id EraseSnake) 
     ( 
       (declare_parameter_list 
@@ -136,9 +136,9 @@
             ( )) AS 
           (type_name_for_declare_parameter ANY)) , 
         (declare_parameter snakeNum%)) )) \n 
-  (declare_statement DECLARE FUNCTION StillWantsToPlay 
+  (declare_function_statement DECLARE FUNCTION StillWantsToPlay 
     ( )) \n 
-  (declare_statement DECLARE FUNCTION PointIsThere 
+  (declare_function_statement DECLARE FUNCTION PointIsThere 
     ( 
       (declare_parameter_list 
         (declare_parameter row) , 

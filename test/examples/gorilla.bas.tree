@@ -2,50 +2,50 @@
   (statement 
     (deftype_statement DEFINT 
       (letter_range A - Z))) \n \n ' \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DoSun) 
     ( 
       (declare_parameter_list 
         (declare_parameter Mouth)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SetScreen) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id EndGame) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Center) 
     ( 
       (declare_parameter_list 
         (declare_parameter Row) , 
         (declare_parameter Text$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Intro) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SparklePause) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GetInputs) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player1$) , 
         (declare_parameter Player2$) , 
         (declare_parameter NumGames)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlayGame) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player1$) , 
         (declare_parameter Player2$) , 
         (declare_parameter NumGames)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DoExplosion) 
     ( 
       (declare_parameter_list 
         (declare_parameter x#) , 
         (declare_parameter y#)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id MakeCityScape) 
     ( 
       (declare_parameter_list 
@@ -54,7 +54,7 @@
           (array_declaration 
             ( )) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PlaceGorillas) 
     ( 
       (declare_parameter_list 
@@ -63,7 +63,7 @@
           (array_declaration 
             ( )) AS 
           (type_name_for_declare_parameter ANY))) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id UpdateScores) 
     ( 
       (declare_parameter_list 
@@ -72,33 +72,33 @@
             ( ))) , 
         (declare_parameter PlayerNum) , 
         (declare_parameter Results)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawGorilla) 
     ( 
       (declare_parameter_list 
         (declare_parameter x) , 
         (declare_parameter y) , 
         (declare_parameter arms)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id GorillaIntro) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player1$) , 
         (declare_parameter Player2$)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Rest) 
     ( 
       (declare_parameter_list 
         (declare_parameter t#)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id VictoryDance) 
     ( 
       (declare_parameter_list 
         (declare_parameter Player)) )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ClearGorillas) 
     ( )) \n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawBan) 
     ( 
       (declare_parameter_list 
@@ -106,32 +106,32 @@
         (declare_parameter yc#) , 
         (declare_parameter r) , 
         (declare_parameter bc)) )) \n 
-  (declare_statement DECLARE FUNCTION Scl 
+  (declare_function_statement DECLARE FUNCTION Scl 
     ( 
       (declare_parameter_list 
         (declare_parameter n!)) )) \n 
-  (declare_statement DECLARE FUNCTION GetNum# 
+  (declare_function_statement DECLARE FUNCTION GetNum# 
     ( 
       (declare_parameter_list 
         (declare_parameter Row) , 
         (declare_parameter Col)) )) \n 
-  (declare_statement DECLARE FUNCTION DoShot 
+  (declare_function_statement DECLARE FUNCTION DoShot 
     ( 
       (declare_parameter_list 
         (declare_parameter PlayerNum) , 
         (declare_parameter x) , 
         (declare_parameter y)) )) \n 
-  (declare_statement DECLARE FUNCTION ExplodeGorilla 
+  (declare_function_statement DECLARE FUNCTION ExplodeGorilla 
     ( 
       (declare_parameter_list 
         (declare_parameter x#) , 
         (declare_parameter y#)) )) \n 
-  (declare_statement DECLARE FUNCTION Getn# 
+  (declare_function_statement DECLARE FUNCTION Getn# 
     ( 
       (declare_parameter_list 
         (declare_parameter Row) , 
         (declare_parameter Col)) )) \n 
-  (declare_statement DECLARE FUNCTION PlotShot 
+  (declare_function_statement DECLARE FUNCTION PlotShot 
     ( 
       (declare_parameter_list 
         (declare_parameter StartX) , 
@@ -139,7 +139,7 @@
         (declare_parameter Angle#) , 
         (declare_parameter Velocity) , 
         (declare_parameter PlayerNum)) )) \n 
-  (declare_statement DECLARE FUNCTION CalcDelay! 
+  (declare_function_statement DECLARE FUNCTION CalcDelay! 
     ( )) \n \n ' \n ' 
   (statement 
     (dynamic_metacommand $DYNAMIC)) \n \n ' \n 

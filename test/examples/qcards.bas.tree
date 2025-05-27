@@ -1,12 +1,12 @@
 (program 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DirectionKey) 
     ( 
       (declare_parameter_list 
         (declare_parameter Choice$) , 
         (declare_parameter TopCard%) , 
         (declare_parameter LastCard%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id Alarm) 
     ( )) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n \r\n ' \r\n \r\n ' \r\n \r\n 
   (statement 
@@ -317,25 +317,25 @@
       (untyped_id Zip) AS 
       (type_name_for_type_element 
         (fixed_string STRING * 5)) ' \r\n) END TYPE) \r\n \r\n ' \r\n \r\n ' \r\n \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id AsciiKey) 
     ( 
       (declare_parameter_list 
         (declare_parameter Choice$) , 
         (declare_parameter TopCard%) , 
         (declare_parameter LastCard%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id CleanUp) 
     ( 
       (declare_parameter_list 
         (declare_parameter LastCard%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ClearHelp) 
     ( )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id DrawCards) 
     ( )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id EditCard) 
     ( 
       (declare_parameter_list 
@@ -343,12 +343,12 @@
           (untyped_id Card) AS 
           (type_name_for_declare_parameter 
             (untyped_id Person)))) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id InitIndex) 
     ( 
       (declare_parameter_list 
         (declare_parameter LastCard%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id PrintLabel) 
     ( 
       (declare_parameter_list 
@@ -356,16 +356,16 @@
           (untyped_id Card) AS 
           (type_name_for_declare_parameter 
             (untyped_id Person)))) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id SortIndex) 
     ( 
       (declare_parameter_list 
         (declare_parameter SortField%) , 
         (declare_parameter LastCard%)) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShowViewHelp) 
     ( )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShowTopCard) 
     ( 
       (declare_parameter_list 
@@ -373,37 +373,37 @@
           (untyped_id WorkCard) AS 
           (type_name_for_declare_parameter 
             (untyped_id Person)))) )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShowEditHelp) 
     ( )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShowCmdLine) 
     ( )) \r\n 
-  (declare_statement DECLARE SUB 
+  (declare_sub_statement DECLARE SUB 
     (untyped_id ShowCards) 
     ( 
       (declare_parameter_list 
         (declare_parameter TopCard%) , 
         (declare_parameter LastCard%)) )) \r\n \r\n ' \r\n 
-  (declare_statement DECLARE FUNCTION EditString$ 
+  (declare_function_statement DECLARE FUNCTION EditString$ 
     ( 
       (declare_parameter_list 
         (declare_parameter InString$) , 
         (declare_parameter Length%) , 
         (declare_parameter NextField%)) )) \r\n 
-  (declare_statement DECLARE FUNCTION FindCard% 
+  (declare_function_statement DECLARE FUNCTION FindCard% 
     ( 
       (declare_parameter_list 
         (declare_parameter TopCard%) , 
         (declare_parameter LastCard%)) )) \r\n 
-  (declare_statement DECLARE FUNCTION Prompt$ 
+  (declare_function_statement DECLARE FUNCTION Prompt$ 
     ( 
       (declare_parameter_list 
         (declare_parameter Msg$) , 
         (declare_parameter Row%) , 
         (declare_parameter Column%) , 
         (declare_parameter Length%)) )) \r\n 
-  (declare_statement DECLARE FUNCTION SelectField% 
+  (declare_function_statement DECLARE FUNCTION SelectField% 
     ( )) \r\n \r\n ' \r\n \r\n ' \r\n 
   (statement 
     (dim_statement REDIM SHARED 

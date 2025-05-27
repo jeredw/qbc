@@ -10,7 +10,7 @@
           (expr NOT 
             (expr 
               (variable_or_function_call FALSE))))))) \r\n \r\n 
-  (declare_statement DECLARE FUNCTION GetFileName$ 
+  (declare_function_statement DECLARE FUNCTION GetFileName$ 
     ( )) \r\n \r\n ' \r\n ' \r\n 
   (statement 
     (on_error_statement ON ERROR GOTO 
