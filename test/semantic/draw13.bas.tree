@@ -1,0 +1,23 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (expr 
+          (literal "x")) + 
+        (expr 
+          (builtin_function 
+            (varptr_string_function varptr$ 
+              ( 
+                (variable_or_function_call s$) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (variable_or_function_call s$)))))) \n <EOF>)

@@ -1,0 +1,27 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call stuff$) = 
+      (expr 
+        (literal "cdcd")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call moo$) = 
+      (expr 
+        (expr 
+          (literal "gfedcx")) + 
+        (expr 
+          (builtin_function 
+            (varptr_string_function varptr$ 
+              ( 
+                (variable_or_function_call stuff$) ))))))) \n 
+  (statement 
+    (play_statement play 
+      (expr 
+        (expr 
+          (literal "cdefgx")) + 
+        (expr 
+          (builtin_function 
+            (varptr_string_function varptr$ 
+              ( 
+                (variable_or_function_call moo$) ))))))) \n <EOF>)

@@ -1,0 +1,51 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call color%) = 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (expr 
+          (expr 
+            (literal "c=")) + 
+          (expr 
+            (builtin_function 
+              (varptr_string_function varptr$ 
+                ( 
+                  (variable_or_function_call color%) ))))) + 
+        (expr 
+          (literal "l10d10r10"))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call angle%) = 
+      (expr 
+        (literal 20)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (expr 
+              (expr 
+                (expr 
+                  (literal "ta=")) + 
+                (expr 
+                  (builtin_function 
+                    (varptr_string_function varptr$ 
+                      ( 
+                        (variable_or_function_call angle%) ))))) + 
+              (expr 
+                (literal "x"))) + 
+            (expr 
+              (builtin_function 
+                (varptr_string_function varptr$ 
+                  ( 
+                    (variable_or_function_call s$) ))))))))) \n <EOF>)

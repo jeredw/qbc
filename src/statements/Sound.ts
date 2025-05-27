@@ -5,11 +5,12 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { RuntimeError } from "../Errors.ts";
-import { ILLEGAL_FUNCTION_CALL, integer } from "../Values.ts";
+import { ILLEGAL_FUNCTION_CALL, integer, isString, OUT_OF_STACK_SPACE } from "../Values.ts";
 import { TypeTag } from "../Types.ts";
 import { Token } from "antlr4ng";
 import { PlayState } from "../Speaker.ts";
 import { Variable } from "../Variables.ts";
+import { stringToAscii } from "../AsciiChart.ts";
 
 export class BeepStatement extends Statement {
   constructor() {
@@ -67,23 +68,38 @@ export class PlayStatement extends Statement {
     super();
   }
 
-  execute(context: ExecutionContext): ControlFlow | void {
+  execute(context: ExecutionContext): ControlFlow {
     const {speaker} = context.devices;
     const commandString = evaluateStringExpression(this.commandString, context.memory);
     const state = speaker.getPlayState();
     let song: Song;
     try {
-      song = parsePlayCommandString(commandString, state)
+      song = parsePlayCommandString(commandString, state);
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
     speaker.setPlayState(state);
-    const play = async () => {
+    const play = async (song: Song, depth = 0) => {
+      if (depth > 200) {
+        throw RuntimeError.fromToken(this.token, OUT_OF_STACK_SPACE);
+      }
       for (const note of song.notes) {
-        await speaker.tone(note.pitch.frequency, note.onDuration, note.offDuration);
+        if (note.pointer) {
+          const address = context.memory.readPointer(note.pointer);
+          const xString = context.memory.readAddress(address);
+          if (!xString) {
+            continue;
+          }
+          if (!isString(xString)) {
+            throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+          }
+          await play(parsePlayCommandString(xString.string, state), depth + 1);
+        } else {
+          await speaker.tone(note.pitch.frequency, note.onDuration, note.offDuration);
+        }
       }
     };
-    return {tag: ControlFlowTag.WAIT, promise: play()};
+    return {tag: ControlFlowTag.WAIT, promise: play(song)};
   }
 }
 
@@ -218,11 +234,12 @@ interface Command {
   pitch: Pitch;
   onDuration: number;
   offDuration: number;
+  pointer?: number;
 }
 
 function parsePlayCommandString(commands: string, state: PlayState): Song {
   const stripped = commands.replaceAll(/\s/g, '').toLowerCase();
-  const tokens = stripped.match(/(o\d+|<|>|[a-g][-#+]?\d*|n\d+|m[lnsfb]|l\d+|p\d+|t\d+|\.|x\d+|.)/g) || [];
+  const tokens = stripped.match(/(o\d+|<|>|[a-g][-#+]?\d*|n\d+|m[lnsfb]|l\d+|p\d+|t\d+|\.|x....|.)/g) || [];
   const song: Song = {notes: []};
   const quarterNotesToSeconds = (quarterNotes: number) => {
     // quarter notes / (quarter notes / second)
@@ -337,7 +354,17 @@ function parsePlayCommandString(commands: string, state: PlayState): Song {
         lastNote.offDuration *= 1.5;
         break;
       }
-      case 'x':
+      case 'x': {
+        const address = command.slice(1, 5);
+        const bytes = stringToAscii(address);
+        song.notes.push({
+          pitch: PITCH[0],
+          onDuration: 0,
+          offDuration: 0,
+          pointer: bytes[0] + (bytes[1] << 8) + (bytes[2] << 16) + (bytes[3] << 24)
+        });
+        break;
+      }
       default:
         throw new Error(`unrecognized command ${command}`);
     }
