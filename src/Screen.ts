@@ -111,6 +111,11 @@ class Page {
     this.clear(color);
   }
 
+  reset() {
+    const [width, height] = this.geometry.dots;
+    this.plotter.reset(width, height);
+  }
+
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
     this.plotter.setClip(p1, p2);
     if (screen) {
@@ -351,6 +356,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
       if (this.canvas) {
         const ctx = this.canvas.getContext('2d')!
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      }
+      for (const page of this.pages) {
+        // Reset plotter state.
+        page.reset();
       }
       return;
     }

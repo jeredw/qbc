@@ -179,6 +179,10 @@ export class Plotter {
   pattern: number;
 
   constructor(width: number, height: number) {
+    this.reset(width, height);
+  }
+
+  reset(width: number, height: number) {
     this.cursor = {x: Math.floor(width / 2), y: Math.floor(height / 2)};
     this.clip = Region.fromSize(width, height);
     this.coordinates = new ViewTransform(width, height);
