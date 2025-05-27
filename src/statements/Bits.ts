@@ -2,14 +2,16 @@ import { double, ILLEGAL_FUNCTION_CALL, integer, isError, isNumeric, isString, l
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError } from "../Errors.ts";
-import { asciiToString, stringToAscii } from "../AsciiChart.ts";
+import { asciiToString, charToAscii, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
-import { evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
+import { ControlFlow } from "../ControlFlow.ts";
+import { Token } from "antlr4ng";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -302,6 +304,67 @@ export class LenStatement extends Statement {
     }
     const size = getScalarVariableSizeInBytes(this.variable, context.memory);
     context.memory.write(this.result, long(size));
+  }
+}
+
+export class DefSegStatement extends Statement {
+  constructor(
+    private token: Token,
+    private segmentExpr?: ExprContext,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const segment = this.segmentExpr && evaluateIntegerExpression(this.segmentExpr, context.memory);
+    context.memory.setSegment(segment ?? 0);
+  }
+}
+
+export class VarSegFunction extends Statement {
+  constructor(
+    private token: Token,
+    private result: Variable,
+    private variable: Variable
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const [address, _] = context.memory.dereference(this.variable);
+    const index = context.memory.writePointer(address);
+    context.memory.write(this.result, integer(index));
+  }
+}
+
+export class VarPtrStringFunction extends Statement {
+  constructor(
+    private token: Token,
+    private result: Variable,
+    private variable: Variable
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const [address, _] = context.memory.dereference(this.variable);
+    const index = context.memory.writePointer(address);
+    const pointerBytes = [index & 0xff, (index >> 8) & 0xff, 0, 0];
+    context.memory.write(this.result, string(asciiToString(pointerBytes)));
+  }
+}
+
+export class VarPtrFunction extends Statement {
+  constructor(
+    private token: Token,
+    private result: Variable,
+    private variable: Variable
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    context.memory.write(this.result, integer(0));
   }
 }
 

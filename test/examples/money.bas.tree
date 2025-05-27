@@ -5417,31 +5417,27 @@
         (assignment_statement 
           (variable_or_function_call P) = 
           (expr 
-            (variable_or_function_call VARPTR 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ScrollUpAsm 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 1)))) ))))) ))))) \n 
+            (builtin_function 
+              (varptr_function VARPTR 
+                ( 
+                  (variable_or_function_call ScrollUpAsm 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) )))))) \n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (variable_or_function_call VARSEG 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ScrollUpAsm 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 1)))) ))))) ))))) \n 
+            (builtin_function 
+              (varseg_function VARSEG 
+                ( 
+                  (variable_or_function_call ScrollUpAsm 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) )))))) \n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -5471,31 +5467,27 @@
         (assignment_statement 
           (variable_or_function_call P) = 
           (expr 
-            (variable_or_function_call VARPTR 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ScrollDownAsm 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 1)))) ))))) ))))) \n 
+            (builtin_function 
+              (varptr_function VARPTR 
+                ( 
+                  (variable_or_function_call ScrollDownAsm 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) )))))) \n 
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (variable_or_function_call VARSEG 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ScrollDownAsm 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 1)))) ))))) ))))) \n 
+            (builtin_function 
+              (varseg_function VARSEG 
+                ( 
+                  (variable_or_function_call ScrollDownAsm 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) )))))) \n 
       (statement 
         (for_next_statement FOR I = 
           (expr 
@@ -9315,32 +9307,28 @@
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (variable_or_function_call VARSEG 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ScrollDownAsm 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 1)))) ))))) ))))) \n 
+            (builtin_function 
+              (varseg_function VARSEG 
+                ( 
+                  (variable_or_function_call ScrollDownAsm 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) )))))) \n 
       (statement 
         (call_absolute_statement CALL Absolute 
           ( 
             (expr 
-              (variable_or_function_call VARPTR 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call ScrollDownAsm 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 1)))) ))))) ))) ))) \n 
+              (builtin_function 
+                (varptr_function VARPTR 
+                  ( 
+                    (variable_or_function_call ScrollDownAsm 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1)))) )) )))) ))) \n 
       (statement 
         (def_seg_statement DEF SEG)) \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n 
@@ -9350,32 +9338,28 @@
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (variable_or_function_call VARSEG 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call ScrollUpAsm 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 1)))) ))))) ))))) \n 
+            (builtin_function 
+              (varseg_function VARSEG 
+                ( 
+                  (variable_or_function_call ScrollUpAsm 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) )))))) \n 
       (statement 
         (call_absolute_statement CALL Absolute 
           ( 
             (expr 
-              (variable_or_function_call VARPTR 
-                ( 
-                  (argument_list 
-                    (argument 
-                      (expr 
-                        (variable_or_function_call ScrollUpAsm 
-                          ( 
-                            (argument_list 
-                              (argument 
-                                (expr 
-                                  (literal 1)))) ))))) ))) ))) \n 
+              (builtin_function 
+                (varptr_function VARPTR 
+                  ( 
+                    (variable_or_function_call ScrollUpAsm 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1)))) )) )))) ))) \n 
       (statement 
         (def_seg_statement DEF SEG)) \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n 

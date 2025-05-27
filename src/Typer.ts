@@ -795,6 +795,21 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$result = array;
   }
 
+  override enterVarptr_function = (ctx: parser.Varptr_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
+  override enterVarptr_string_function = (ctx: parser.Varptr_string_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.STRING}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
+  override enterVarseg_function = (ctx: parser.Varseg_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
   private lookupArray(token: Token): Variable {
     const [name, sigil] = splitSigil(token.text!);
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);

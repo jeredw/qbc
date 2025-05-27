@@ -33,9 +33,7 @@
               (expr 
                 (literal "X")) + 
               (expr 
-                (variable_or_function_call VARPTR$ 
-                  ( 
-                    (argument_list 
-                      (argument 
-                        (expr 
-                          (variable_or_function_call scale$)))) )))))) \n) NEXT i%)) \n <EOF>)
+                (builtin_function 
+                  (varptr_string_function VARPTR$ 
+                    ( 
+                      (variable_or_function_call scale$) ))))))) \n) NEXT i%)) \n <EOF>)

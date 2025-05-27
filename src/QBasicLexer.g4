@@ -171,6 +171,9 @@ WHILE : [Ww][Hh][Ii][Ll][Ee] ;
 WIDTH : [Ww][Ii][Dd][Tt][Hh] ;
 WINDOW : [Ww][Ii][Nn][Dd][Oo][Ww] ;
 WRITE : [Ww][Rr][Ii][Tt][Ee] ;
+VARPTR : [Vv][Aa][Rr][Pp][Tt][Rr] ;
+VARPTR_STRING : [Vv][Aa][Rr][Pp][Tt][Rr] '$' ;
+VARSEG : [Vv][Aa][Rr][Ss][Ee][Gg] ;
 XOR : [Xx][Oo][Rr] ;
 
 // Note that IDs with type sigils can have the same name as keywords, so we

@@ -51,6 +51,8 @@ export class Memory {
   static: Frame;
   stack: Frame[] = [];
   dynamic: Frame[] = [];
+  segment: number = 0;
+  pointers: Address[] = [];
 
   constructor(size: number) {
     this.static = new Frame(size);
@@ -144,6 +146,26 @@ export class Memory {
   write(variable: Variable, value: Value) {
     const [address, _] = this.dereference(variable);
     this.writeAddress(address, value);
+  }
+
+  setSegment(segment: number) {
+    this.segment = segment;
+  }
+
+  readPointer(index: number): Address {
+    const entryIndex = index - 1;
+    if (entryIndex < 0 || entryIndex >= this.pointers.length) {
+      throw new Error("invalid pointer");
+    }
+    return this.pointers[entryIndex];
+  }
+
+  writePointer(address: Address): number {
+    if (this.pointers.length > 65535) {
+      throw new Error("out of pointer space");
+    }
+    this.pointers.push(address);
+    return this.pointers.length;
   }
 
   private getStackFrame(frameIndexFromAddress: number | undefined): Frame {

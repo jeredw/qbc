@@ -36,6 +36,7 @@ import {
   CvlFunction,
   CvsFunction,
   CvsmbfFunction,
+  DefSegStatement,
   LenStatement,
   LsetRecordStatement,
   MkdFunction,
@@ -43,7 +44,10 @@ import {
   MkiFunction,
   MklFunction,
   MksFunction,
-  MksmbfFunction
+  MksmbfFunction,
+  VarPtrFunction,
+  VarPtrStringFunction,
+  VarSegFunction
 } from "./Bits.ts";
 import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement } from "./End.ts";
@@ -246,6 +250,10 @@ export function dateFunction(result: Variable) {
 
 export function dateStatement(token: Token, expr: parser.ExprContext) {
   return new DateStatement(token, expr);
+}
+
+export function defSeg(token: Token, segmentExpr?: parser.ExprContext) {
+  return new DefSegStatement(token, segmentExpr);
 }
 
 export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable) {
@@ -739,6 +747,18 @@ export function ucase(args: BuiltinStatementArgs) {
 
 export function val(args: BuiltinStatementArgs) {
   return new ValFunction(args);
+}
+
+export function varseg(token: Token, result: Variable, variable: Variable) {
+  return new VarSegFunction(token, result, variable);
+}
+
+export function varptrString(token: Token, result: Variable, variable: Variable) {
+  return new VarPtrStringFunction(token, result, variable);
+}
+
+export function varptr(token: Token, result: Variable, variable: Variable) {
+  return new VarPtrFunction(token, result, variable);
 }
 
 export function view_(

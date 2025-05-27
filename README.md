@@ -149,7 +149,7 @@ parse those using baked in rules.
 | `DATE$`          | Statement   | ✅      | ✅      |
 | `DECLARE`        | Statement   | ✅      | ⛔      |
 | `DEF FN`         | Statement   | ✅      | ✅      |
-| `DEF SEG`        | Statement   | ✅      | ⛔      |
+| `DEF SEG`        | Statement   | ✅      | ✅      |
 | `DEFDBL`         | Statement   | ✅      | ✅      |
 | `DEFINT`         | Statement   | ✅      | ✅      |
 | `DEFLNG`         | Statement   | ✅      | ✅      |
@@ -335,9 +335,9 @@ parse those using baked in rules.
 | `UNTIL`          | Keyword     | ✅      | ✅      |
 | `USING`          | Keyword     | ✅      | ✅      |
 | `VAL`            | Function    | -       | 🚧      |
-| `VARPTR`         | Function    | -       | ⛔      |
-| `VARPTR$`        | Function    | -       | ⛔      |
-| `VARSEG`         | Function    | -       | ⛔      |
+| `VARPTR`         | Function    | -       | ✅      |
+| `VARPTR$`        | Function    | -       | ✅      |
+| `VARSEG`         | Function    | -       | ✅      |
 | `VIEW`           | Statement   | ✅      | ✅      |
 | `VIEW PRINT`     | Statement   | ✅      | ✅      |
 | `WAIT`           | Statement   | -       | ⛔      |
@@ -404,8 +404,12 @@ computer, and some are truly DOS specific.  How should all this behave?
 - `BSAVE` and `BLOAD`: block copies in memory.
 - `FRE`: report and control dynamic memory allocation.
 
-Among other things, this means the exact representation of data is
-exposed to the program.
+We will abuse segments to index a global array of up to 64k pointers.
+`VARSEG` or `VARPTR$` makes a new pointer to its argument's value counting up
+from segment `&H0001` (segment `&H0000` is reserved for memory-mapped I/O).
+`DEF SEG` will select which pointer we want.  Then `PEEK` and `POKE` update the
+bits of the selected variable.  This should be enough of a real memory model for
+`BSAVE` and `BLOAD` as well as `DRAW` and `PLAY` `X` commands.
 
 # References
 

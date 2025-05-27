@@ -1,0 +1,44 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x%) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call segx%) = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call x%) )))))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call ptrx%) = 
+      (expr 
+        (builtin_function 
+          (varptr_function varptr 
+            ( 
+              (variable_or_function_call x%) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call segx%)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call ptrx%))))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (variable_or_function_call segx%)))) \n 
+  (statement 
+    (def_seg_statement def seg)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (varptr_string_function varptr$ 
+              ( 
+                (variable_or_function_call x%) ))))))) \n <EOF>)

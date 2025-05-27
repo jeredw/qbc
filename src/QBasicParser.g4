@@ -940,6 +940,9 @@ builtin_function
   | time_function
   | timer_function
   | ubound_function
+  | varptr_function
+  | varptr_string_function
+  | varseg_function
   ;
 
 date_function
@@ -1003,12 +1006,25 @@ ubound_function
   : UBOUND '(' array=ID (COMMA which=expr)? ')'
   ;
 
+varptr_function
+  : VARPTR '(' variable_or_function_call ')'
+  ;
+
+varptr_string_function
+  : VARPTR_STRING '(' variable_or_function_call ')'
+  ;
+
+varseg_function
+  : VARSEG '(' variable_or_function_call ')'
+  ;
+
 // Identifiers can contain '.', and '.' is also how to look up type elements.
 // *** This grammar always matches the longest possible token name as an
 // identifier, and expects later passes to decide whether 'x.y.z' is a variable
 // or an element 'z' in a variable 'x.y'. However, we need to explicitly model
 // one level of element lookup to parse 'array(x).y' - since user-defined types
 // cannot contain arrays, only one '.' must be matched.
+// *** Most rules referencing variable_or_function_call only match a variable.
 // 
 // Note the IDE reformats "x   . y" as "x.y".
 variable_or_function_call

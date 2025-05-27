@@ -7959,17 +7959,15 @@
                     (statement 
                       (def_seg_statement DEF SEG = 
                         (expr 
-                          (variable_or_function_call VARSEG 
-                            ( 
-                              (argument_list 
-                                (argument 
-                                  (expr 
-                                    (variable_or_function_call image 
-                                      ( 
-                                        (argument_list 
-                                          (argument 
-                                            (expr 
-                                              (literal 0)))) ))))) ))))) \n 
+                          (builtin_function 
+                            (varseg_function VARSEG 
+                              ( 
+                                (variable_or_function_call image 
+                                  ( 
+                                    (argument_list 
+                                      (argument 
+                                        (expr 
+                                          (literal 0)))) )) )))))) \n 
                     (statement 
                       (call_statement 
                         (untyped_id BSAVE) 
@@ -10343,17 +10341,15 @@
       (statement 
         (def_seg_statement DEF SEG = 
           (expr 
-            (variable_or_function_call VARSEG 
-              ( 
-                (argument_list 
-                  (argument 
-                    (expr 
-                      (variable_or_function_call savefile 
-                        ( 
-                          (argument_list 
-                            (argument 
-                              (expr 
-                                (literal 0)))) ))))) ))))) \n 
+            (builtin_function 
+              (varseg_function VARSEG 
+                ( 
+                  (variable_or_function_call savefile 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 0)))) )) )))))) \n 
       (statement 
         (call_statement 
           (untyped_id BLOAD) 
@@ -12656,17 +12652,15 @@
             (statement 
               (def_seg_statement DEF SEG = 
                 (expr 
-                  (variable_or_function_call VARSEG 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (variable_or_function_call savefile 
-                              ( 
-                                (argument_list 
-                                  (argument 
-                                    (expr 
-                                      (literal 0)))) ))))) ))))) \n 
+                  (builtin_function 
+                    (varseg_function VARSEG 
+                      ( 
+                        (variable_or_function_call savefile 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 0)))) )) )))))) \n 
             (statement 
               (call_statement 
                 (untyped_id BSAVE) 

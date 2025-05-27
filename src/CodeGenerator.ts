@@ -399,7 +399,12 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
-  override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {}
+
+  override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {
+    const segment = ctx.expr() ?? undefined;
+    const segmentExpr = segment && this.compileExpression(segment, segment.start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.defSeg(ctx.start!, segmentExpr));
+  }
 
   override enterData_statement = (ctx: parser.Data_statementContext) => {
     for (const item of ctx.data_item()) {
@@ -1572,6 +1577,33 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing array variable");
         }
         codeGenerator.addStatement(statements.ubound(ctx.start!, array, result, ctx._which));
+      }
+
+      override enterVarseg_function = (ctx: parser.Varseg_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const variable = codeGenerator.getVariable(ctx.variable_or_function_call());
+        codeGenerator.addStatement(statements.varseg(ctx.start!, result, variable));
+      }
+
+      override enterVarptr_string_function = (ctx: parser.Varptr_string_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const variable = codeGenerator.getVariable(ctx.variable_or_function_call());
+        codeGenerator.addStatement(statements.varptrString(ctx.start!, result, variable));
+      }
+
+      override enterVarptr_function = (ctx: parser.Varptr_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const variable = codeGenerator.getVariable(ctx.variable_or_function_call());
+        codeGenerator.addStatement(statements.varptr(ctx.start!, result, variable));
       }
     }, expr);
     if (resultType && token) {

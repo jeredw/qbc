@@ -10,17 +10,15 @@
   (statement 
     (def_seg_statement DEF SEG = 
       (expr 
-        (variable_or_function_call VARSEG 
-          ( 
-            (argument_list 
-              (argument 
-                (expr 
-                  (variable_or_function_call a% 
-                    ( 
-                      (argument_list 
-                        (argument 
-                          (expr 
-                            (literal 0)))) ))))) ))))) \n 
+        (builtin_function 
+          (varseg_function VARSEG 
+            ( 
+              (variable_or_function_call a% 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )) )))))) \n 
   (statement 
     (for_next_statement FOR i% = 
       (expr 
@@ -38,17 +36,15 @@
               (argument 
                 (expr 
                   (expr 
-                    (variable_or_function_call VARPTR 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (variable_or_function_call a% 
-                                ( 
-                                  (argument_list 
-                                    (argument 
-                                      (expr 
-                                        (literal 0)))) ))))) ))) + 
+                    (builtin_function 
+                      (varptr_function VARPTR 
+                        ( 
+                          (variable_or_function_call a% 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 0)))) )) )))) + 
                   (expr 
                     (variable_or_function_call i%)))) , 
               (argument 
@@ -63,16 +59,14 @@
     (call_absolute_statement CALL ABSOLUTE 
       ( 
         (expr 
-          (variable_or_function_call VARPTR 
-            ( 
-              (argument_list 
-                (argument 
-                  (expr 
-                    (variable_or_function_call a% 
-                      ( 
-                        (argument_list 
-                          (argument 
-                            (expr 
-                              (literal 0)))) ))))) ))) ))) \n 
+          (builtin_function 
+            (varptr_function VARPTR 
+              ( 
+                (variable_or_function_call a% 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 0)))) )) )))) ))) \n 
   (statement 
     (def_seg_statement DEF SEG)) \n <EOF>)
