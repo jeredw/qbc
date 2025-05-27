@@ -631,11 +631,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
         this.activePage.clearText(this.color);
         if (this.mode.mode !== 0) {
           this.activePage.clearGraphics(this.color);
+          return;
         }
         break;
       case 1:
         if (this.mode.mode !== 0) {
           this.activePage.clearGraphics(this.color);
+          return;
         }
         break;
       case 2:
@@ -649,13 +651,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
           this.activePage.clearText(this.color, rows, rows);
         } else if (this.activePage.viewSet) {
           this.activePage.clearGraphics(this.color);
+          return;
         } else {
           this.activePage.clearText(this.color);
         }
         break;
     }
+    this.row = this.scrollStartRow;
     this.column = 1;
-    this.row = 1;
   }
 
   getPixel(x: number, y: number): number {
