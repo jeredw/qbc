@@ -233,7 +233,7 @@ export class Plotter {
     this.cursor = {...p2};
     const p1v = this.windowToScreen(p1);
     const p2v = this.windowToScreen(p2);
-    const r = Region.fromPoints(p1, p2);
+    const r = Region.fromPoints(p1v, p2v);
     const attributes = ctx.getImageData(r.left, r.top, r.width, r.height);
     const sizeInBytes = 4 + Math.ceil(r.width * bppPerPlane / 8) * planes * r.height;
     const buffer = new ArrayBuffer(sizeInBytes);
@@ -354,7 +354,10 @@ export class Plotter {
       {x: args.x + this.cursor.x, y: args.y + this.cursor.y} :
       {x: args.x, y: args.y};
     this.cursor = {...center};
-    this.drawCircle(ctx, center, args.radius, color, aspect, args.start, args.end);
+    const centerScreen = this.windowToScreen(center);
+    const right = {x: center.x + args.radius, y: center.y};
+    const radiusScreen = Math.abs(this.windowToScreen(right).x - centerScreen.x);
+    this.drawCircle(ctx, centerScreen, radiusScreen, color, aspect, args.start, args.end);
   }
 
   paint(ctx: CanvasRenderingContext2D, args: PaintArgs, color: number) {
@@ -362,7 +365,7 @@ export class Plotter {
       {x: args.x + this.cursor.x, y: args.y + this.cursor.y} :
       {x: args.x, y: args.y};
     this.cursor = {...pw};
-    const pv = this.windowToView(pw);
+    const pv = this.windowToScreen(pw);
     if (args.tile) {
       // TODO
     } else {
