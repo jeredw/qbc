@@ -4,7 +4,7 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError } from "../Errors.ts";
 import { cast, isError, OUT_OF_DATA, string, SYNTAX_ERROR, Value, valueOfNumericType } from "../Values.ts";
-import { TypeTag } from "../Types.ts";
+import { isString, TypeTag } from "../Types.ts";
 import { parseNumberFromString } from "../Expressions.ts";
 
 export class RestoreStatement extends Statement {
@@ -31,7 +31,7 @@ export class ReadStatement extends Statement {
       throw RuntimeError.fromToken(this.token, OUT_OF_DATA);
     }
     let value: Value;
-    if (this.result.type.tag == TypeTag.STRING) {
+    if (isString(this.result.type)) {
       value = dataItem.text ?
         string(dataItem.quoted ? dataItem.text.slice(1, -1) : dataItem.text) :
         string('');

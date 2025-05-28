@@ -199,11 +199,12 @@ export class SymbolTable {
 
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, sigil, numDimensions, token, storageType, isAsType, arrayBaseIndex}: {
+  lookupOrDefineVariable({name, type, sigil, numDimensions, checkArrayDimensions, token, storageType, isAsType, arrayBaseIndex}: {
       name: string,
       type: Type,
       sigil?: string,
       numDimensions: number,
+      checkArrayDimensions: boolean,
       token: Token,
       storageType: StorageType,
       isAsType: boolean,
@@ -260,7 +261,9 @@ export class SymbolTable {
             if (!variable.array) {
               throw new Error("missing array dimensions");
             }
-            if (variable.array.dimensions.length != numDimensions && !variable.isParameter) {
+            if (checkArrayDimensions &&
+                variable.array.dimensions.length != numDimensions &&
+                !variable.isParameter) {
               throw ParseError.fromToken(token, "Wrong number of dimensions");
             }
             return {tag: SymbolTag.VARIABLE, variable};
