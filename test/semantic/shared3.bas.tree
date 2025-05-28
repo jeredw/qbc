@@ -1,0 +1,26 @@
+(program 
+  (statement 
+    (dim_statement dim 
+      (dim_variable global%))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (shared_statement shared 
+          (shared_variable 
+            (untyped_id global) as 
+            (type_name integer)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call global%) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call global%))))) \n <EOF>)

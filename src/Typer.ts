@@ -480,7 +480,10 @@ export class Typer extends QBasicParserListener {
           isAsType: true,
           arrayBaseIndex: this._arrayBaseIndex,
         });
-        this.shareVariable(symbol, token);
+        if (!isVariable(symbol)) {
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
+        this.shareVariable(symbol.variable, token);
       } else {
         const [name, sigil] = splitSigil(share.ID()?.getText()!);
         const asType = this._chunk.symbols.getAsType(name);
@@ -505,16 +508,15 @@ export class Typer extends QBasicParserListener {
           isAsType: false,
           arrayBaseIndex: this._arrayBaseIndex,
         });
-        this.shareVariable(symbol, token);
+        if (!isVariable(symbol)) {
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
+        this.shareVariable(symbol.variable, token);
       }
     }
   }
 
-  private shareVariable(symbol: QBasicSymbol, token: Token) {
-    if (!isVariable(symbol)) {
-      throw ParseError.fromToken(token, "Duplicate definition");
-    }
-    const variable = symbol.variable;
+  private shareVariable(variable: Variable, token: Token) {
     if (!variable.sharedWith) {
       variable.sharedWith = new Set();
     }
@@ -522,6 +524,10 @@ export class Typer extends QBasicParserListener {
       throw ParseError.fromToken(token, "Duplicate definition");
     }
     variable.sharedWith.add(this._chunk.procedure!.name);
+    // Sharing a record variable also shares its elements.
+    for (const element of variable.elements?.values() ?? []) {
+      this.shareVariable(element, token);
+    }
   }
 
   override enterStatic_statement = (ctx: parser.Static_statementContext) => {
