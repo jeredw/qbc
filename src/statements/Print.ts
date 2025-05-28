@@ -183,8 +183,11 @@ export class PrintUsingStatement extends BasePrintStatement {
           const number = value.tag === TypeTag.SINGLE ? 
             parseFloat(value.number.toPrecision(7)) : value.number;
           const formatted = formatUsingNumberTemplate(number, template);
-          printer.print(formatted, newLine && !isLiteral());
-          printLiterals(newLine);
+          const printTrailingLiteral = isLiteral() && templateIndex !== 0;
+          printer.print(formatted, newLine && !printTrailingLiteral);
+          if (printTrailingLiteral) {
+            printLiterals(newLine);
+          }
         } else if (isString(value)) {
           printLiterals(false);
           const template = templates[templateIndex];
@@ -193,8 +196,11 @@ export class PrintUsingStatement extends BasePrintStatement {
             throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
           }
           const formatted = formatUsingStringTemplate(value.string, template);
-          printer.print(formatted, newLine && !isLiteral());
-          printLiterals(newLine);
+          const printTrailingLiteral = isLiteral() && templateIndex !== 0;
+          printer.print(formatted, newLine && !printTrailingLiteral);
+          if (printTrailingLiteral) {
+            printLiterals(newLine);
+          }
         } else if (isError(value)) {
           throw RuntimeError.fromToken(token, value);
         } else {

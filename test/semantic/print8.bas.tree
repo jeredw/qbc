@@ -1,0 +1,21 @@
+(program 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "Final Total: $$######.##")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Balance))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "Final Total: $$######.##")) ; 
+      (print_argument 
+        (expr 
+          (literal 0)) ;) 
+      (print_argument 
+        (expr 
+          (literal 1)) ;) 
+      (print_argument 
+        (expr 
+          (literal 2))))) \n <EOF>)
