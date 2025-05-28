@@ -260,7 +260,7 @@ export class SymbolTable {
             if (!variable.array) {
               throw new Error("missing array dimensions");
             }
-            if (variable.array.dimensions.length != numDimensions) {
+            if (variable.array.dimensions.length != numDimensions && !variable.isParameter) {
               throw ParseError.fromToken(token, "Wrong number of dimensions");
             }
             return {tag: SymbolTag.VARIABLE, variable};

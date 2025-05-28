@@ -272,7 +272,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("indexing non array variable");
     }
     const args = argumentListCtx?.argument() ?? [];
-    if (variable.array.dimensions.length != args.length) {
+    if (variable.array.dimensions.length != args.length && !variable.isParameter) {
       throw ParseError.fromToken(token, "Wrong number of dimensions");
     }
     const indexExprs: parser.ExprContext[] = [];

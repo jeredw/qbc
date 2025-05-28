@@ -74,6 +74,10 @@ export class IndexArrayStatement extends Statement {
     const descriptor = getArrayDescriptor(this.array, context.memory);
     let offset = this.array.recordOffset?.offset || 0;
     let stride = descriptor.itemSize!;
+    // Array shape isn't checked at compile time for parameters.
+    if (descriptor.dimensions.length !== this.indexExprs.length) {
+      throw RuntimeError.fromToken(this.indexExprs[0].start!, SUBSCRIPT_OUT_OF_RANGE);
+    }
     for (let i = 0; i < this.indexExprs.length; i++) {
       const expr = this.indexExprs[i];
       const index = evaluateIntegerExpression(expr, context.memory);

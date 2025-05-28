@@ -1,0 +1,36 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter a 
+          (array_declaration 
+            ( )))) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call a 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 1)))) )))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument x 
+          ( ))))) \n <EOF>)

@@ -1,0 +1,37 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter a 
+          (array_declaration 
+            ( )))) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call a 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 1))) , 
+                    (argument 
+                      (expr 
+                        (literal 2)))) )))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument x 
+          ( ))))) \n <EOF>)
