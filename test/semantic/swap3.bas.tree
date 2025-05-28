@@ -1,0 +1,152 @@
+(program 
+  (type_statement type 
+    (untyped_id card) \n 
+    (type_element 
+      (untyped_id suit) as 
+      (type_name_for_type_element 
+        (fixed_string string * 9)) \n) 
+    (type_element 
+      (untyped_id value) as 
+      (type_name_for_type_element integer) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id hand) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) )) as 
+        (type_name 
+          (untyped_id card))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call hand 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . value) = 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call hand 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . suit) = 
+      (expr 
+        (literal "clubs")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call hand 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 2)))) ) . value) = 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call hand 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 2)))) ) . suit) = 
+      (expr 
+        (literal "diamonds")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . value)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . suit)) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ) . value)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ) . suit))))) \n 
+  (statement 
+    (swap_statement swap 
+      (variable_or_function_call hand 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )) , 
+      (variable_or_function_call hand 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 2)))) )))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "<->"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . value)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . suit)) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ) . value)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call hand 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ) . suit))))) \n <EOF>)

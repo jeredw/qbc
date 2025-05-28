@@ -26,6 +26,34 @@ export class LetStatement extends Statement {
   }
 }
 
+export class SwapStatement extends Statement {
+  constructor(private a: Variable, private b: Variable) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    swap(this.a, this.b, context.memory);
+  }
+}
+
+function swap(a: Variable, b: Variable, memory: Memory) {
+  if (a.type.tag === TypeTag.RECORD) {
+    if (!sameType(a.type, b.type)) {
+      throw new Error("invalid record swap");
+    }
+    for (const name of a.elements!.keys()) {
+      const aElement = a.elements!.get(name)!;
+      const bElement = b.elements!.get(name)!;
+      swap(aElement, bElement, memory);
+    }
+    return;
+  }
+  const aValue = memory.read(a);
+  const bValue = memory.read(b);
+  memory.write(a, bValue);
+  memory.write(b, aValue);
+}
+
 function assign(variable: Variable, value: Value, memory: Memory) {
   if (variable.type.tag == TypeTag.RECORD) {
     if (!isReference(value) || !sameType(variable.type, value.variable.type)) {

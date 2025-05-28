@@ -52,7 +52,7 @@ import {
 import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
-import { LetStatement } from "./Let.ts";
+import { LetStatement, SwapStatement } from "./Let.ts";
 import {
   ChdirStatement,
   CloseStatement,
@@ -116,7 +116,6 @@ import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, 
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
 import { EventChannelState } from "../Events.ts";
-import { SwapStatement } from "./Swap.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
 import { PenFunction } from "./LightPen.ts";
 import {

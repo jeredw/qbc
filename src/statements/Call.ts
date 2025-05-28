@@ -39,8 +39,13 @@ export class CallStatement extends Statement {
           writes.push([variable.address!, value]);
         }
         // Pass static array descriptor
+        // XXX: How does this work with recursive calls?  This seems sketchy.
         if (isReference(value) && value.variable.array) {
           variable.array = value.variable.array;
+          // Also need to set descriptor for record elements.
+          for (const element of variable.elements?.values() ?? []) {
+            element.array = value.variable.array;
+          }
         }
       }
     }
