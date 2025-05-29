@@ -1,0 +1,41 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (shared_statement shared 
+          (shared_variable howsit 
+            (array_declaration_no_dimensions 
+              ( ))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call howsit 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 20)))) )) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable howsit 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) ))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call howsit 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 20)))) )))))) \n <EOF>)

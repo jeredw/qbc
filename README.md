@@ -296,7 +296,7 @@ parse those using baked in rules.
 | `SEEK`           | Statement   | ✅      | ✅      |
 | `SELECT CASE`    | Statement   | ✅      | ✅      |
 | `SGN`            | Function    | -       | ✅      |
-| `SHARED`         | Statement   | ✅      | 🚧      |
+| `SHARED`         | Statement   | ✅      | ✅      |
 | `SHELL`          | Statement   | -       | ⛔      |
 | `SIN`            | Function    | -       | ✅      |
 | `SINGLE`         | Keyword     | ✅      | ✅      |

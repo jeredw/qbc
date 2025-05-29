@@ -197,14 +197,51 @@ export class SymbolTable {
     }
   }
 
+  lookupVariable({name, sigil, array, type} : {name: string, sigil: string, array: boolean, type: Type}): Variable | undefined {
+    const mySlot = this._symbols.get(name);
+    const parentSlot = this._parent?._symbols.get(name);
+    const slot = mySlot ?? parentSlot;
+    const isDefaultType = !sigil;
+    if (!slot) {
+      return;
+    }
+    if (!array && slot.scalarVariables) {
+      const asType = slot.scalarAsType ?? slot.arrayAsType;
+      if (asType && isDefaultType) {
+        type = asType;
+      }
+      if (!asType || sameType(asType, type)) {
+        const variable = slot.scalarVariables.get(type.tag);
+        if (variable && this.isVisible(variable, slot, mySlot)) {
+          return variable;
+        }
+      }
+    }
+    if (array && slot.arrayVariables) {
+      const asType = slot.arrayAsType ?? slot.scalarAsType;
+      if (asType && isDefaultType) {
+        type = asType;
+      }
+      if (!asType || sameType(asType, type)) {
+        const variable = slot.arrayVariables.get(type.tag);
+        if (variable && this.isVisible(variable, slot, mySlot)) {
+          if (!variable.array) {
+            throw new Error("missing array dimensions");
+          }
+          return variable;
+        }
+      }
+    }
+  }
+
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, sigil, numDimensions, checkArrayDimensions, token, storageType, isAsType, arrayBaseIndex}: {
+  lookupOrDefineVariable({name, type, sigil, numDimensions, sharedDeclaration, token, storageType, isAsType, arrayBaseIndex}: {
       name: string,
       type: Type,
       sigil?: string,
       numDimensions: number,
-      checkArrayDimensions: boolean,
+      sharedDeclaration?: boolean,
       token: Token,
       storageType: StorageType,
       isAsType: boolean,
@@ -261,9 +298,8 @@ export class SymbolTable {
             if (!variable.array) {
               throw new Error("missing array dimensions");
             }
-            if (checkArrayDimensions &&
-                variable.array.dimensions.length != numDimensions &&
-                !variable.isParameter) {
+            if (!sharedDeclaration && !variable.isParameter &&
+                variable.array.dimensions.length != numDimensions) {
               throw ParseError.fromToken(token, "Wrong number of dimensions");
             }
             return {tag: SymbolTag.VARIABLE, variable};
@@ -278,7 +314,7 @@ export class SymbolTable {
         })
       },
     } : {};
-    const variable = { name, type, sigil, token, storageType, isAsType, ...array };
+    const variable = { name, type, sigil, token, storageType, isAsType, sharedDeclaration, ...array };
     this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };
   }
@@ -357,22 +393,7 @@ export class SymbolTable {
         variable.array.itemSize = getItemSize(variable);
       }
       if (!element) {
-        if (!variable.array.dynamic) {
-          // Parameters are passed by reference so only consume one stack slot.
-          const size = variable.isParameter ? 1 : getStorageSize(variable);
-          if (size > 65535) {
-            throw ParseError.fromToken(variable.token, "Subscript out of range");
-          }
-          // If the array is static, values follow the first address which is
-          // always reserved for a descriptor.
-          variable.address = this.allocate(variable.storageType, size);
-          variable.array.baseAddress = {...variable.address};
-          variable.array.baseAddress.index += 1;
-          variable.array.storageType = StorageType.STATIC;
-        } else {
-          variable.address = this.allocate(variable.storageType, 1);
-          variable.array.storageType = StorageType.DYNAMIC;
-        }
+        this.allocateArray(variable);
       }
     }
     if (variable.type.tag == TypeTag.RECORD) {
@@ -461,6 +482,28 @@ export class SymbolTable {
       return this._parent.staticSize();
     }
     return this._staticIndex;
+  }
+
+  allocateArray(variable: Variable) {
+    if (!variable.array) {
+      throw new Error('expecting array variable')
+    }
+    if (!variable.array.dynamic) {
+      // Parameters are passed by reference so only consume one stack slot.
+      const size = variable.isParameter ? 1 : getStorageSize(variable);
+      if (size > 65535) {
+        throw ParseError.fromToken(variable.token, "Subscript out of range");
+      }
+      // If the array is static, values follow the first address which is
+      // always reserved for a descriptor.
+      variable.address = this.allocate(variable.storageType, size);
+      variable.array.baseAddress = {...variable.address};
+      variable.array.baseAddress.index += 1;
+      variable.array.storageType = StorageType.STATIC;
+    } else {
+      variable.address = this.allocate(variable.storageType, 1);
+      variable.array.storageType = StorageType.DYNAMIC;
+    }
   }
 
   allocate(storageType: StorageType, size: number): Address {

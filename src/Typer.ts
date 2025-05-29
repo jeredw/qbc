@@ -256,7 +256,6 @@ export class Typer extends QBasicParserListener {
       type,
       sigil,
       numDimensions: args.length,
-      checkArrayDimensions: true,
       token: ctx._name!,
       storageType: this._storageType,
       isAsType: false,
@@ -378,7 +377,10 @@ export class Typer extends QBasicParserListener {
         const asType = this.getType(dim.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
-        variable = {
+        const existingVariable = this._chunk.symbols.lookupVariable({
+          name, sigil: '', array: dimensions.length > 0, type: asType
+        });
+        variable = existingVariable && existingVariable.sharedDeclaration ? existingVariable : {
           name,
           type: asType,
           isAsType: true,
@@ -387,7 +389,6 @@ export class Typer extends QBasicParserListener {
           shared: !!ctx.SHARED(),
           ...arrayDescriptor,
         };
-        this._chunk.symbols.defineVariable(variable);
       } else {
         const [name, sigil] = splitSigil(dim.ID()?.getText()!);
         const asType = this._chunk.symbols.getAsType(name);
@@ -402,7 +403,10 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
         }
-        variable = {
+        const existingVariable = this._chunk.symbols.lookupVariable({
+          name, sigil, type, array: dimensions.length > 0,
+        });
+        variable = existingVariable && existingVariable.sharedDeclaration ? existingVariable : {
           name,
           type,
           sigil,
@@ -411,6 +415,28 @@ export class Typer extends QBasicParserListener {
           shared: !!ctx.SHARED(),
           ...arrayDescriptor,
         };
+      }
+      if (variable.sharedDeclaration) {
+        // A variable first encountered as a SHARED declaration and later a DIM
+        // would normally be a duplicate definition.  QBasic rearranges programs
+        // so this can't happen, but we'll allow it and upgrade the SHARED
+        // symbol to a real one.
+        if (!!dim.AS() && !variable.isAsType) {
+          throw ParseError.fromToken(variable.token, "AS clause required");
+        }
+        if (!dim.AS() && variable.isAsType) {
+          throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
+        }
+        variable.sharedDeclaration = false;
+        if (variable.array && arrayDescriptor.array) {
+          // SHARED doesn't have real array dimensions, so we need to reallocate
+          // array variables...
+          variable.array.dynamic = arrayDescriptor.array.dynamic;
+          variable.array.dimensions = arrayDescriptor.array.dimensions;
+          variable.array.inStaticProcedure = arrayDescriptor.array.inStaticProcedure;
+          this._chunk.symbols.allocateArray(variable);
+        }
+      } else {
         this._chunk.symbols.defineVariable(variable);
       }
       if (dimensions.length > 0 && dynamic) {
@@ -461,8 +487,9 @@ export class Typer extends QBasicParserListener {
     if (!this._chunk.procedure || this._chunk.procedure.name.startsWith('fn')) {
       throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB/FUNCTION");
     }
-    // TODO: This doesn't work right for procedures that occur before global
-    // definitions.
+    // Lookup or install a placeholder symbol in the global symbol table.
+    // DIM has special case handling to upgrade placeholder symbols later in
+    // case there is a SHARED followed by DIM.
     const globalSymbols = this._program.chunks[0].symbols;
     for (const share of ctx.shared_variable()) {
       if (!!share.AS()) {
@@ -475,7 +502,7 @@ export class Typer extends QBasicParserListener {
           type: asType,
           token,
           numDimensions: share.array_declaration_no_dimensions() ? 1 : 0,
-          checkArrayDimensions: false,
+          sharedDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: true,
           arrayBaseIndex: this._arrayBaseIndex,
@@ -503,7 +530,7 @@ export class Typer extends QBasicParserListener {
           token,
           sigil,
           numDimensions: share.array_declaration_no_dimensions() ? 1 : 0,
-          checkArrayDimensions: false,
+          sharedDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: false,
           arrayBaseIndex: this._arrayBaseIndex,
@@ -593,7 +620,6 @@ export class Typer extends QBasicParserListener {
       type,
       sigil,
       numDimensions: 0,
-      checkArrayDimensions: true,
       token: ctx.ID(0)!.symbol,
       storageType: this._storageType,
       isAsType: false,

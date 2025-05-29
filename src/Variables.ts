@@ -9,8 +9,13 @@ export interface Variable {
   sigil?: string;
   isAsType?: boolean;
   isParameter?: boolean;
+  // True for DIM SHARED variables visible to all procedures.
   shared?: boolean;
+  // Names of procedures with SHARED declarations for this variable.
   sharedWith?: Set<string>;
+  // If true, this variable has only been encountered in a SHARED declaration.
+  // If an actual DIM occurs later, it may replace this symbol.
+  sharedDeclaration?: boolean;
   static?: boolean;
   token: Token;
   elements?: Map<string, Variable>;
