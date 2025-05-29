@@ -50,7 +50,8 @@ export class DimStatement extends Statement {
     if (numElements > 65535) {
       throw RuntimeError.fromToken(this.token, SUBSCRIPT_OUT_OF_RANGE);
     }
-    const baseAddress = context.memory.allocate(numElements);
+    const itemSize = this.result.array.itemSize ?? 1;
+    const baseAddress = context.memory.allocate(numElements * itemSize);
     const descriptor = array(this.result, {
       storageType: StorageType.DYNAMIC,
       itemSize: this.result.array.itemSize,
@@ -176,9 +177,6 @@ function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor
   }
   if (!variable.array.dynamic) {
     return variable.array;
-  }
-  if (!variable.address) {
-    throw new Error("variable not allocated");
   }
   const [_, value] = memory.dereference(variable);
   if (!isArray(value)) {

@@ -355,16 +355,10 @@ export class CodeGenerator extends QBasicParserListener {
     if (procedure.result && result) {
       stackVariables.push({variable: procedure.result, value: reference(result)});
     }
-    const locals = this._program.chunks[procedure.programChunkIndex].symbols.variables();
-    for (const variable of locals) {
-      if (!variable.isParameter && variable.storageType == StorageType.AUTOMATIC) {
-        stackVariables.push({variable, value: getDefaultValue(variable)});
-      }
-    }
-    if (stackVariables.length != this.program.chunks[procedure.programChunkIndex].stackSize) {
-      throw new Error("stack size mismatch");
-    }
-    this.addStatement(statements.call(procedure.programChunkIndex, stackVariables));
+    // The stack also includes storage for locals.  They will be initialized to
+    // empty values in the new stack frame and read as the default value.
+    const stackSize = this.program.chunks[procedure.programChunkIndex].stackSize;
+    this.addStatement(statements.call(procedure.programChunkIndex, stackVariables, stackSize));
   }
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {}

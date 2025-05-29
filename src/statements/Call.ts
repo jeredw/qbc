@@ -17,7 +17,8 @@ export interface StackVariable {
 export class CallStatement extends Statement {
   constructor(
     private chunkIndex: number,
-    private stackVariables: StackVariable[]
+    private stackVariables: StackVariable[],
+    private stackSize: number,
   ) {
     super();
   }
@@ -50,7 +51,7 @@ export class CallStatement extends Statement {
       }
     }
     // Now create the new stack frame and initialize parameters.
-    context.memory.pushStack(this.stackVariables.length);
+    context.memory.pushStack(this.stackSize);
     for (const [address, value] of writes) {
       context.memory.writeAddress(address, value);
     }

@@ -380,7 +380,7 @@ export class Typer extends QBasicParserListener {
         const existingVariable = this._chunk.symbols.lookupVariable({
           name, sigil: '', array: dimensions.length > 0, type: asType
         });
-        variable = existingVariable && existingVariable.sharedDeclaration ? existingVariable : {
+        variable = (existingVariable && existingVariable.sharedDeclaration) ? existingVariable : {
           name,
           type: asType,
           isAsType: true,
@@ -406,7 +406,7 @@ export class Typer extends QBasicParserListener {
         const existingVariable = this._chunk.symbols.lookupVariable({
           name, sigil, type, array: dimensions.length > 0,
         });
-        variable = existingVariable && existingVariable.sharedDeclaration ? existingVariable : {
+        variable = (existingVariable && existingVariable.sharedDeclaration) ? existingVariable : {
           name,
           type,
           sigil,

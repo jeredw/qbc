@@ -163,8 +163,8 @@ export function beep(_args: BuiltinStatementArgs) {
   return new BeepStatement();
 }
 
-export function call(chunkIndex: number, stackVariables: StackVariable[]) {
-  return new CallStatement(chunkIndex, stackVariables);
+export function call(chunkIndex: number, stackVariables: StackVariable[], stackSize: number) {
+  return new CallStatement(chunkIndex, stackVariables, stackSize);
 }
 
 export function case_(test: Variable, condition: parser.Case_exprContext) {

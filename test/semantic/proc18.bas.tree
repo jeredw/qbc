@@ -1,0 +1,143 @@
+(program 
+  (type_statement type 
+    (untyped_id test) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element 
+        (fixed_string string * 10)) \n) 
+    (type_element 
+      (untyped_id y) as 
+      (type_name_for_type_element integer) \n) end type) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id t) 
+          (array_declaration 
+            ( )) as 
+          (type_name_for_parameter 
+            (untyped_id test)))) ) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable 
+            (untyped_id tmp) 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 10))) )) as 
+            (type_name 
+              (untyped_id test))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call tmp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) )) = 
+          (expr 
+            (variable_or_function_call t 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 5)))) ))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call tmp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) ) . x) = 
+          (expr 
+            (literal "hello")))) : 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call tmp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) ) . y) = 
+          (expr 
+            (literal 42)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call t 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) ) . x) = 
+          (expr 
+            (literal "yes")))) : 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call tmp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) ) . y) = 
+          (expr 
+            (literal 2)))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id s) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) )) as 
+        (type_name 
+          (untyped_id test))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 5)))) ) . x) = 
+      (expr 
+        (literal "hello")))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 5)))) ) . y) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument s 
+          ( ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call s 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) ) . x)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call s 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 5)))) ) . y))))) \n <EOF>)

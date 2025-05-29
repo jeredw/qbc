@@ -95,7 +95,8 @@ export class Memory {
     if (depth == MAX_DEPTH) {
       throw new Error("probable reference cycle");
     }
-    if (variable.recordOffset) {
+    // IndexArray handles element offsets into record arrays.
+    if (variable.recordOffset && !variable.array) {
       address = {...address};
       address.index += variable.recordOffset.offset;
       value = this.readAddress(address);
