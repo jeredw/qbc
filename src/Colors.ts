@@ -273,9 +273,9 @@ export function egaIndexToColor(index: number): Color {
 
 export function vgaIndexToColor(index: number): Color {
   return {
-    red: Math.floor(255 * ((index & 0xff) / 63)),
-    green: Math.floor(255 * (((index >> 8) & 0xff) / 63)),
-    blue: Math.floor(255 * (((index >> 16) & 0xff) / 63))
+    red: Math.floor(255 * ((index & 0x3f) / 63)),
+    green: Math.floor(255 * (((index >> 8) & 0x3f) / 63)),
+    blue: Math.floor(255 * (((index >> 16) & 0x3f) / 63))
   }
 }
 

@@ -485,10 +485,11 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (attribute < 0 || attribute >= this.mode.attributes) {
       throw new Error('invalid attribute');
     }
-    if (color < 0 || color >= this.mode.colors) {
+    const screenMode = this.mode.mode;
+    const isVgaMode = screenMode >= 11;
+    if (color < 0 || (color >= this.mode.colors && !isVgaMode)) {
       throw new Error('invalid color');
     }
-    const screenMode = this.mode.mode;
     if (screenMode === 0 || screenMode === 9) {
       this.palette[attribute] = egaIndexToColor(color);
     } else if (screenMode < 10) {
@@ -499,6 +500,11 @@ export class CanvasScreen extends BasePrinter implements Screen {
         this.palette[attribute] = monoIndexToColor(color);
       }
     } else {
+      // VGA only supports 6 bits per channel but colors are packed as 00rrrrrr
+      // 00gggggg 00bbbbbb.
+      if (color & 0xffc0c0c0) {
+        throw new Error('invalid color');
+      }
       this.palette[attribute] = vgaIndexToColor(color);
     }
     this.visiblePage.dirty = true;

@@ -115,7 +115,7 @@ export class PaletteStatement extends Statement {
   override execute(context: ExecutionContext) {
     const {screen} = context.devices;
     const attribute = this.attributeExpr && evaluateIntegerExpression(this.attributeExpr, context.memory);
-    const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory);
+    const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory, { tag: TypeTag.LONG });
     try {
       if (attribute !== undefined && color !== undefined) {
         screen.setPaletteEntry(attribute, color);
