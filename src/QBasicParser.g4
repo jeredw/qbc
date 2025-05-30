@@ -842,6 +842,9 @@ shared_statement
   ;
 
 // *** STATIC is illegal outside a sub, function, or def fn.
+// Note: The IDE rewrites STATIC foo(10) as STATIC foo().  This parses fine, but
+// is not useful because the resulting array has zero dimensions.  If foo() is
+// REDIMd it becomes dynamic.  Static arrays really don't work.
 static_statement
   : STATIC scope_variable (COMMA scope_variable)*
   ;

@@ -562,6 +562,12 @@ export class Typer extends QBasicParserListener {
       throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB, FUNCTION or DEF FN");
     }
     for (const scope of ctx.scope_variable()) {
+      let arrayDescriptor = {};
+      if (scope.array_declaration()) {
+        arrayDescriptor = {
+          array: {dimensions: [{lower: 0, upper: -1}]}
+        };
+      }
       if (!!scope.AS()) {
         const asType = this.getType(scope.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
@@ -572,6 +578,7 @@ export class Typer extends QBasicParserListener {
           isAsType: true,
           token: scope.untyped_id()!.start!,
           storageType: StorageType.STATIC,
+          ...arrayDescriptor,
         });
       } else {
         const [name, sigil] = splitSigil(scope.ID()?.getText()!);
@@ -591,6 +598,7 @@ export class Typer extends QBasicParserListener {
           type,
           token: scope.ID()!.symbol,
           storageType: StorageType.STATIC,
+          ...arrayDescriptor,
         });
       }
     }

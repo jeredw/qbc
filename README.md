@@ -305,7 +305,7 @@ parse those using baked in rules.
 | `SPACE$`         | Function    | -       | ✅      |
 | `SPC`            | Function    | ✅      | ✅      |
 | `SQR`            | Function    | -       | ✅      |
-| `STATIC`         | Statement   | ✅      | 🚧      |
+| `STATIC`         | Statement   | ✅      | ✅      |
 | `$STATIC`        | Metacommand | ✅      | ✅      |
 | `STEP`           | Keyword     | ✅      | ✅      |
 | `STICK`          | Function    | -       | ✅      |

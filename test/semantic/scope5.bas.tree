@@ -1,0 +1,36 @@
+(program 
+  (sub_statement sub 
+    (untyped_id test) 
+    (block \n 
+      (statement 
+        (static_statement static 
+          (scope_variable foo 
+            (array_declaration 
+              ( ))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call foo 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )) = 
+          (expr 
+            (expr 
+              (variable_or_function_call foo 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) ))) + 
+            (expr 
+              (literal 1))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id test))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n <EOF>)

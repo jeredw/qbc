@@ -207,7 +207,8 @@ export class CodeGenerator extends QBasicParserListener {
   private getLvalue(token: Token, symbol: QBasicSymbol): Variable {
     if (isProcedure(symbol) && symbol.procedure.name == this._chunk.procedure?.name) {
       if (!symbol.procedure.result) {
-        throw new Error("missing fn result");
+        // e.g. SUB foo : foo = 42 : END SUB
+        throw ParseError.fromToken(token, "Duplicate definition");
       }
       return symbol.procedure.result;
     }
