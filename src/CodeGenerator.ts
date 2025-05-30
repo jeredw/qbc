@@ -13,7 +13,6 @@ import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
 import { BranchIndexStatement } from "./statements/Branch.ts";
-import { StorageType } from "./Memory.ts";
 import { StackVariable } from "./statements/Call.ts";
 import { Builtin, BuiltinParam } from "./Builtins.ts";
 import { DimBoundsExprs } from "./statements/Arrays.ts";
