@@ -813,7 +813,10 @@
                   (expr 
                     (literal 15000)))) ' \n \n 
               (statement 
-                (erase_statement ERASE Starbase , Incoming , Explosion)) ' \n \n 
+                (erase_statement ERASE 
+                  (erase_argument Starbase) , 
+                  (erase_argument Incoming) , 
+                  (erase_argument Explosion))) ' \n \n 
               (statement 
                 (for_next_statement FOR i = 
                   (expr 

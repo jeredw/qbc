@@ -4706,7 +4706,8 @@
                 (expr 
                   (literal "")))) \n 
             (statement 
-              (erase_statement ERASE WellBlocks)) ' \n 
+              (erase_statement ERASE 
+                (erase_argument WellBlocks))) ' \n 
             (statement 
               (assignment_statement 
                 (variable_or_function_call Score) = 

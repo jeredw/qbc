@@ -130,7 +130,9 @@
           (expr 
             (literal "Y")))))) \r\n \r\n 
   (statement 
-    (end_statement END)) \r\n REM \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
+    (end_statement END)) \r\n REM 
+  (statement 
+    (static_metacommand  $STATIC)) \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n ' \r\n 
   (function_statement FUNCTION DrawGraph$ 
     ( 
       (parameter_list 

@@ -1,0 +1,46 @@
+(program 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call x 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call i)))) )) = 
+            (expr 
+              (literal 42)))) \n) next i)) \n 
+  (statement 
+    (erase_statement erase 
+      (erase_argument x))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call x 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) ))) ;))) \n) next i)) \n <EOF>)

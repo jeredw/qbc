@@ -448,7 +448,15 @@ export class CodeGenerator extends QBasicParserListener {
         const upper = this.compileExpression(range._upper!, range._upper!.start!, {tag: TypeTag.INTEGER});
         bounds.push({lower, upper});
       }
-      this.addStatement(statements.dim(this._arrayBaseIndex, dim.start!, bounds, result));
+      const redim = !!ctx.REDIM();
+      this.addStatement(statements.dim(this._arrayBaseIndex, dim.start!, bounds, result, redim));
+    }
+  }
+
+  override enterErase_statement = (ctx: parser.Erase_statementContext) => {
+    for (const arg of ctx.erase_argument()) {
+      const array = getTyperContext(arg).$result;
+      this.addStatement(statements.erase(array));
     }
   }
 

@@ -1,0 +1,19 @@
+(program ' 
+  (statement 
+    (static_metacommand  $STATIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) ))))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 50))) ))))) \n <EOF>)

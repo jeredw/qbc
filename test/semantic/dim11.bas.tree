@@ -1,0 +1,31 @@
+(program ' 
+  (statement 
+    (dynamic_metacommand  $DYNAMIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
+  (statement 
+    (erase_statement erase 
+      (erase_argument x))) \n ' 
+  (statement 
+    (static_metacommand  $STATIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( x ))))))) \n <EOF>)

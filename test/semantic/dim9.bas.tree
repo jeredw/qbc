@@ -1,0 +1,24 @@
+(program ' 
+  (statement 
+    (dynamic_metacommand  $DYNAMIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id a) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) )) as 
+        (type_name integer)))) \n 
+  (statement 
+    (erase_statement erase 
+      (erase_argument a))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 50))) ))))) \n <EOF>)

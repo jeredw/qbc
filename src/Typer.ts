@@ -422,13 +422,24 @@ export class Typer extends QBasicParserListener {
           ...arrayDescriptor,
         };
       }
-      if (existingVariable && redim) {
+      let treatAsDynamic = false;
+      if (existingVariable && (redim || (existingVariable.array?.dynamic && variable.array))) {
         // Redim on an existing array doesn't need to install new symbols.
+        // It is also valid to dim a dynamic array multiple times to reallocate it,
+        // but the array must be explicitly erased in between.
+        // redim is always treated as dynamic, even in $STATIC context.
+        treatAsDynamic = true;
         if (!existingVariable.array) {
           throw new Error("redim of non-array");
         }
-        if (!variable.array || !variable.array.dynamic) {
-          throw new Error("redim with non dynamic array");
+        if (!variable.array) {
+          throw new Error("redim with non-array");
+        }
+        if (!redim && !dim.AS() && existingVariable.isAsType) {
+          throw ParseError.fromToken(variable.token, "AS clause required");
+        }
+        if (!redim && dim.AS() && !existingVariable.isAsType) {
+          throw ParseError.fromToken(variable.token, "AS clause required on first declaration");
         }
         if (!existingVariable.array.dynamic) {
           throw ParseError.fromToken(variable.token, "Array already dimensioned");
@@ -461,9 +472,22 @@ export class Typer extends QBasicParserListener {
       } else {
         this._chunk.symbols.defineVariable(variable);
       }
-      if (dimensions.length > 0 && dynamic) {
+      if (dimensions.length > 0 && (dynamic || treatAsDynamic)) {
         getTyperContext(dim).$result = variable;
       }
+    }
+  }
+
+  override enterErase_statement = (ctx: parser.Erase_statementContext) => {
+    for (const arg of ctx.erase_argument()) {
+      if (!arg._array) {
+        throw new Error("missing array");
+      }
+      const array = this.lookupArray(arg._array);
+      if (!array) {
+        throw ParseError.fromToken(arg._array, "Array not defined");
+      }
+      getTyperContext(arg).$result = array;
     }
   }
 

@@ -349,7 +349,9 @@
               (expr 
                 (literal 1)) )))))) \r\n 
   (statement 
-    (end_statement END)) \r\n REM \r\n REM 
+    (end_statement END)) \r\n REM 
+  (statement 
+    (static_metacommand  $STATIC)) \r\n REM 
   (statement 
     (dynamic_metacommand  $DYNAMIC)) \r\n 
   (function_statement FUNCTION GetArraySize 

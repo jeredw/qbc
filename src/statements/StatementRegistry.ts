@@ -16,6 +16,7 @@ import {
 import {
   DimBoundsExprs,
   DimStatement,
+  EraseStatement,
   IndexArrayStatement,
   LboundFunction,
   UboundFunction
@@ -255,8 +256,12 @@ export function defSeg(token: Token, segmentExpr?: parser.ExprContext) {
   return new DefSegStatement(token, segmentExpr);
 }
 
-export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable) {
-  return new DimStatement(arrayBaseIndex, token, bounds, result);
+export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable, redim: boolean) {
+  return new DimStatement(arrayBaseIndex, token, bounds, result, redim);
+}
+
+export function erase(array: Variable) {
+  return new EraseStatement(array);
 }
 
 export function do_(isWhile: boolean, expr: parser.ExprContext) {

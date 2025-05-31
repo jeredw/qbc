@@ -345,7 +345,11 @@ call_absolute_argument_list
 // Erase needs to be parsed specially because if it were an implicit builtin
 // call, its array arguments would be bound to default scalar variables.
 erase_statement
-  : ERASE ID (COMMA ID)*
+  : ERASE erase_argument (COMMA erase_argument)*
+  ;
+
+erase_argument
+  : array=ID
   ;
 
 error_statement

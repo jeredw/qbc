@@ -1,14 +1,26 @@
-(program ' \n ' \n ' \n ' \n rem \n 
+(program ' 
+  (statement 
+    (static_metacommand  $STATIC)) \n ' 
+  (statement 
+    (static_metacommand  $STATICfoo)) \n ' 
+  (statement 
+    (static_metacommand  $STATIC foo bar)) \n ' \n rem 
+  (statement 
+    (static_metacommand   $STATIC)) \n 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
-          (literal "hi"))))) ' \n 
+          (literal "hi"))))) ' 
+  (statement 
+    (static_metacommand  $STATIC)) \n 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
-          (literal "hi"))))) : rem \n ' 
+          (literal "hi"))))) : rem 
+  (statement 
+    (static_metacommand  $STATIC)) \n ' 
   (statement 
     (dynamic_metacommand  $DYNAMIC)) \n ' 
   (statement 

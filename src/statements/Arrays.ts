@@ -3,7 +3,7 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError } from "../Errors.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
-import { array, double, DUPLICATE_DEFINITION, integer, isArray, isError, isNumeric, isReference, long, reference, single, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
+import { array, double, DUPLICATE_DEFINITION, getDefaultValue, integer, isArray, isError, isNumeric, isReference, long, reference, single, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -19,7 +19,8 @@ export class DimStatement extends Statement {
     private arrayBaseIndex: number,
     private token: Token,
     private bounds: DimBoundsExprs[],
-    private result: Variable
+    private result: Variable,
+    private redim: boolean
   ) {
     super();
   }
@@ -33,6 +34,13 @@ export class DimStatement extends Statement {
     }
     if (this.result.array.inStaticProcedure) {
       throw RuntimeError.fromToken(this.token, DUPLICATE_DEFINITION);
+    }
+    const oldDescriptor = getArrayDescriptor(this.result, context.memory);
+    if (oldDescriptor.baseAddress) {
+      if (!this.redim) {
+        throw RuntimeError.fromToken(this.token, DUPLICATE_DEFINITION);
+      }
+      context.memory.deallocate(oldDescriptor.baseAddress);
     }
     const dimensions: ArrayBounds[] = [];
     let numElements = 1;
@@ -55,14 +63,37 @@ export class DimStatement extends Statement {
     const descriptor = array(this.result, {
       storageType: StorageType.DYNAMIC,
       itemSize: this.result.array.itemSize,
+      dynamic: true,
       baseAddress,
       dimensions
     });
-    const oldDescriptor = getArrayDescriptor(this.result, context.memory);
-    if (oldDescriptor.baseAddress) {
-      context.memory.deallocate(oldDescriptor.baseAddress);
-    }
     context.memory.write(this.result, descriptor);
+  }
+}
+
+export class EraseStatement extends Statement {
+  constructor(private array: Variable) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const descriptor = getArrayDescriptor(this.array, context.memory);
+    if (!descriptor.baseAddress) {
+      return;
+    }
+    if (descriptor.dynamic) {
+      context.memory.deallocate(descriptor.baseAddress);
+      context.memory.write(this.array, array(this.array, {dimensions: []}))
+      return;
+    }
+    const length = getArrayLength(descriptor);
+    for (let i = 0; i < length; i++) {
+      context.memory.writeAddress({
+        storageType: descriptor.storageType!,
+        frameIndex: descriptor.baseAddress!.frameIndex,
+        index: descriptor.baseAddress!.index + i
+      }, getDefaultValue(this.array));
+    }
   }
 }
 
@@ -203,7 +234,7 @@ function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor
   }
   const [_, value] = memory.dereference(variable);
   if (!value) {
-    return {dimensions: []};
+    return {dimensions: [], dynamic: true};
   }
   if (!isArray(value)) {
     throw new Error("expecting array value");

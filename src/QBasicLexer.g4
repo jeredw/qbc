@@ -217,7 +217,7 @@ mode COMMENT_MODE;
 // to terminate the current statement, slurping all the comment text for the
 // metacommand, then using the final NL to terminate the metacommand statement.
 COMMENT_META_DYNAMIC : [ \t]* '$' [Dd][Yy][Nn][Aa][Mm][Ii][Cc] ~[\r\n]* ;
-COMMENT_META_STATIC : [ \t]* '$' [Dd][Yy][Nn][Aa][Mm][Ii][Cc] ~[\r\n]* ;
+COMMENT_META_STATIC : [ \t]* '$' [Ss][Tt][Aa][Tt][Ii][Cc] ~[\r\n]* ;
 COMMENT_META_INCLUDE : [ \t]* '$' [Ii][Nn][Cc][Ll][Uu][Dd][Ee] ~[\r\n]* ;
 COMMENT_TEXT : ~[\r\n]+ -> skip ;
 // Pass through this NL to terminate a possible metacommand.
