@@ -175,7 +175,26 @@ function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor
   if (!variable.array) {
     throw new Error("not an array");
   }
-  if (!variable.array.dynamic) {
+  if (variable.isParameter) {
+    // Array reference parameters may refer to different arrays in different
+    // stack frames, so the parameter symbol doesn't contain the descriptor.
+    // Instead we need to look at the reference on the stack.
+    if (variable.recordOffset?.record) {
+      // For record array elements, use the record array instead.
+      variable = variable.recordOffset.record;
+    }
+    if (!variable.address) {
+      throw new Error("missing address for array ref param");
+    }
+    const arrayRef = memory.readAddress(variable.address);
+    if (!isReference(arrayRef) || !arrayRef.variable.array) {
+      throw new Error("expecting array reference");
+    }
+    if (!arrayRef.variable.array.dynamic) {
+      return arrayRef.variable.array;
+    }
+    // Fall through to dereference dynamic array descriptor.
+  } else if (!variable.array.dynamic) {
     return variable.array;
   }
   const [_, value] = memory.dereference(variable);

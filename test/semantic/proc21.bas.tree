@@ -1,0 +1,105 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id p) 
+          (array_declaration 
+            ( )) as 
+          (type_name_for_parameter integer))) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call p 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )))))) \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable 
+            (untyped_id d) 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 1))) )) as 
+            (type_name integer)))) \n 
+      (if_block_statement if 
+        (expr 
+          (expr 
+            (variable_or_function_call p 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 0)))) ))) > 
+          (expr 
+            (literal 0))) then \n 
+        (then_block 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call d 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )) = 
+              (expr 
+                (expr 
+                  (variable_or_function_call p 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 0)))) ))) - 
+                (expr 
+                  (literal 1))))) \n 
+          (statement 
+            (call_statement 
+              (untyped_id foo) 
+              (argument_list 
+                (argument d 
+                  ( ))))) \n) 
+        (end_if_statement end if)) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call p 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id s) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1))) )) as 
+        (type_name integer)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) )) = 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument s 
+          ( ))))) \n <EOF>)
