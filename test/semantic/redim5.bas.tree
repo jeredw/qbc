@@ -1,0 +1,31 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable x 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 20))) ))))) \n 
+      (statement 
+        (dim_statement redim 
+          (dim_variable x 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 40))) ))))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (builtin_function 
+                (ubound_function ubound 
+                  ( x ))))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)

@@ -58,6 +58,10 @@ export class DimStatement extends Statement {
       baseAddress,
       dimensions
     });
+    const oldDescriptor = getArrayDescriptor(this.result, context.memory);
+    if (oldDescriptor.baseAddress) {
+      context.memory.deallocate(oldDescriptor.baseAddress);
+    }
     context.memory.write(this.result, descriptor);
   }
 }
@@ -198,6 +202,9 @@ function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor
     return variable.array;
   }
   const [_, value] = memory.dereference(variable);
+  if (!value) {
+    return {dimensions: []};
+  }
   if (!isArray(value)) {
     throw new Error("expecting array value");
   }

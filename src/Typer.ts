@@ -358,12 +358,17 @@ export class Typer extends QBasicParserListener {
       throw ParseError.fromToken(ctx.SHARED()!.symbol, "Illegal in procedure or DEF FN");
     }
     for (const dim of ctx.dim_variable()) {
+      const redim = !!ctx.REDIM();
       const dimensions = this.getArrayBounds(dim.dim_array_bounds());
+      if (redim && !dimensions.length) {
+        throw ParseError.fromToken(dim.start!, "Expected: (");
+      }
       const nonConstantBounds = dimensions.some((bound) => bound.lower === undefined || bound.upper === undefined);
       if (dimensions.length > 0) {
         this._optionBaseAllowed = false;
       }
       const dynamic = nonConstantBounds ||
+        redim ||
         !this._useStaticArrays ||
         (!!this._chunk.procedure && this._storageType != StorageType.STATIC);
       // Dynamic arrays in static procedures parse but throw a runtime error.
@@ -372,15 +377,16 @@ export class Typer extends QBasicParserListener {
       const arrayDescriptor = {...dimensions.length ? {
         array: {dynamic, dimensions, inStaticProcedure}
       } : {}};
+      let existingVariable: Variable | undefined;
       let variable: Variable;
       if (!!dim.AS()) {
         const asType = this.getType(dim.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
-        const existingVariable = this._chunk.symbols.lookupVariable({
+        existingVariable = this._chunk.symbols.lookupVariable({
           name, sigil: '', array: dimensions.length > 0, type: asType
         });
-        variable = (existingVariable && existingVariable.sharedDeclaration) ? existingVariable : {
+        variable = {
           name,
           type: asType,
           isAsType: true,
@@ -403,10 +409,10 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
         }
-        const existingVariable = this._chunk.symbols.lookupVariable({
+        existingVariable = this._chunk.symbols.lookupVariable({
           name, sigil, type, array: dimensions.length > 0,
         });
-        variable = (existingVariable && existingVariable.sharedDeclaration) ? existingVariable : {
+        variable = {
           name,
           type,
           sigil,
@@ -416,26 +422,39 @@ export class Typer extends QBasicParserListener {
           ...arrayDescriptor,
         };
       }
-      if (variable.sharedDeclaration) {
+      if (existingVariable && redim) {
+        // Redim on an existing array doesn't need to install new symbols.
+        if (!existingVariable.array) {
+          throw new Error("redim of non-array");
+        }
+        if (!variable.array || !variable.array.dynamic) {
+          throw new Error("redim with non dynamic array");
+        }
+        if (!existingVariable.array.dynamic) {
+          throw ParseError.fromToken(variable.token, "Array already dimensioned");
+        }
+        variable = existingVariable;
+      } else if (existingVariable && existingVariable.sharedDeclaration) {
         // A variable first encountered as a SHARED declaration and later a DIM
         // would normally be a duplicate definition.  QBasic rearranges programs
         // so this can't happen, but we'll allow it and upgrade the SHARED
         // symbol to a real one.
-        if (!!dim.AS() && !variable.isAsType) {
-          throw ParseError.fromToken(variable.token, "AS clause required");
+        if (!!dim.AS() && !existingVariable.isAsType) {
+          throw ParseError.fromToken(existingVariable.token, "AS clause required");
         }
-        if (!dim.AS() && variable.isAsType) {
+        if (!dim.AS() && existingVariable.isAsType) {
           throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
         }
-        variable.sharedDeclaration = false;
-        if (variable.array && arrayDescriptor.array) {
+        existingVariable.sharedDeclaration = false;
+        if (existingVariable.array && arrayDescriptor.array) {
           // SHARED doesn't have real array dimensions, so we need to reallocate
           // array variables...
-          variable.array.dynamic = arrayDescriptor.array.dynamic;
-          variable.array.dimensions = arrayDescriptor.array.dimensions;
-          variable.array.inStaticProcedure = arrayDescriptor.array.inStaticProcedure;
-          this._chunk.symbols.allocateArray(variable);
+          existingVariable.array.dynamic = arrayDescriptor.array.dynamic;
+          existingVariable.array.dimensions = arrayDescriptor.array.dimensions;
+          existingVariable.array.inStaticProcedure = arrayDescriptor.array.inStaticProcedure;
+          this._chunk.symbols.allocateArray(existingVariable);
         }
+        variable = existingVariable;
       } else {
         this._chunk.symbols.defineVariable(variable);
       }
@@ -564,6 +583,8 @@ export class Typer extends QBasicParserListener {
     for (const scope of ctx.scope_variable()) {
       let arrayDescriptor = {};
       if (scope.array_declaration()) {
+        // Trying to define a STATIC array() creates a bogus empty array that
+        // cannot be indexed at runtime.
         arrayDescriptor = {
           array: {dimensions: [{lower: 0, upper: -1}]}
         };

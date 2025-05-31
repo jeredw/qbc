@@ -465,6 +465,8 @@ letter_range: first=(ID | FNID) ('-' second=(ID | FNID))? ;
 // *** SHARED is illegal in procedures or def fns.
 dim_statement
   : DIM SHARED? dim_variable (COMMA dim_variable)*
+// *** REDIM requires array arguments, but it is simpler to implement as a
+// special case of DIM than as a separate statement.
   | REDIM SHARED? dim_variable (COMMA dim_variable)*
   ;
 

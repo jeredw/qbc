@@ -1,0 +1,88 @@
+(program 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call max%) = 
+      (expr 
+        (literal 5)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call max%))) ))))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (variable_or_function_call max%)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call x 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call i)))) )) = 
+            (expr 
+              (variable_or_function_call i)))) \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call x 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) ))) ;))) \n) next i)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( x ))))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call max%) = 
+      (expr 
+        (expr 
+          (variable_or_function_call max%)) + 
+        (expr 
+          (literal 1))))) \n 
+  (statement 
+    (dim_statement redim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call max%))) ))))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (variable_or_function_call max%)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call x 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) ))) ;))) \n) next i)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( x ))))))) \n <EOF>)

@@ -277,7 +277,7 @@ parse those using baked in rules.
 | `RANDOM`         | Keyword     | ✅      | ✅      |
 | `RANDOMIZE`      | Statement   | -       | ✅      |
 | `READ`           | Statement   | ✅      | ✅      |
-| `REDIM`          | Statement   | ✅      | ⛔      |
+| `REDIM`          | Statement   | ✅      | ✅      |
 | `REM`            | Statement   | ✅      | ✅      |
 | `RESET`          | Statement   | -       | ⛔      |
 | `RESTORE`        | Statement   | ✅      | ✅      |
