@@ -433,6 +433,9 @@ export class Typer extends QBasicParserListener {
         if (!existingVariable.array.dynamic) {
           throw ParseError.fromToken(variable.token, "Array already dimensioned");
         }
+        if (existingVariable.array.dimensions.length != variable.array.dimensions.length) {
+          throw ParseError.fromToken(variable.token, "Wrong number of dimensions");
+        }
         variable = existingVariable;
       } else if (existingVariable && existingVariable.sharedDeclaration) {
         // A variable first encountered as a SHARED declaration and later a DIM
