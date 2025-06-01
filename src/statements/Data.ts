@@ -2,9 +2,9 @@ import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { RuntimeError } from "../Errors.ts";
-import { cast, isError, OUT_OF_DATA, string, SYNTAX_ERROR, Value, valueOfNumericType } from "../Values.ts";
-import { isString, TypeTag } from "../Types.ts";
+import { RuntimeError, OUT_OF_DATA, SYNTAX_ERROR } from "../Errors.ts";
+import { cast, isError, string, Value, valueOfNumericType } from "../Values.ts";
+import { isString } from "../Types.ts";
 import { parseNumberFromString } from "../Expressions.ts";
 
 export class RestoreStatement extends Statement {

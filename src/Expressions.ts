@@ -11,7 +11,7 @@ import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTreeWalker } from "antlr4ng";
 import * as values from "./Values.ts";
 import { splitSigil, Type, TypeTag } from "./Types.ts";
-import { ParseError, RuntimeError } from "./Errors.ts";
+import { ParseError, RuntimeError, TYPE_MISMATCH, ILLEGAL_FUNCTION_CALL, DIVISION_BY_ZERO, ILLEGAL_NUMBER, OVERFLOW } from "./Errors.ts";
 import { isConstant, isVariable } from "./SymbolTable.ts";
 import { Memory } from "./Memory.ts";
 import { Variable } from "./Variables.ts";
@@ -26,7 +26,7 @@ export function evaluateStringExpression(expr: ExprContext, memory: Memory): str
     throw RuntimeError.fromToken(expr.start!, value);
   }
   if (!values.isString(value)) {
-    throw RuntimeError.fromToken(expr.start!, values.TYPE_MISMATCH);
+    throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
   }
   return value.string;
 }
@@ -41,7 +41,7 @@ export function evaluateIntegerExpression(expr: ExprContext, memory: Memory, res
     throw RuntimeError.fromToken(expr.start!, value);
   }
   if (!values.isNumeric(value)) {
-    throw RuntimeError.fromToken(expr.start!, values.TYPE_MISMATCH);
+    throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
   }
   return value.number;
 }
@@ -140,7 +140,7 @@ class ExpressionListener extends QBasicParserListener {
     } else if (values.isError(b)) {
       this.push(b);
     } else {
-      this.push(values.TYPE_MISMATCH);
+      this.push(TYPE_MISMATCH);
     }
   }
 
@@ -164,7 +164,7 @@ class ExpressionListener extends QBasicParserListener {
     }
     const a = this.pop();
     if (!values.isNumeric(a)) {
-      this.push(values.TYPE_MISMATCH);
+      this.push(TYPE_MISMATCH);
       return;
     }
     // Note that k%=-32768:print -k% will overflow.
@@ -183,7 +183,7 @@ class ExpressionListener extends QBasicParserListener {
     }
     const a = this.pop();
     if (!values.isNumeric(a)) {
-      this.push(values.TYPE_MISMATCH);
+      this.push(TYPE_MISMATCH);
       return;
     }
     if (a.tag == TypeTag.INTEGER) {
@@ -297,7 +297,7 @@ class ExpressionListener extends QBasicParserListener {
         return withIntegerCast(a, b, (a: values.NumericValue, b: values.NumericValue) => this.integerRemainder(a, b));
       case '^':
         if (a.number == 0 && b.number < 0 && !this._typeCheck) {
-          return values.ILLEGAL_FUNCTION_CALL;
+          return ILLEGAL_FUNCTION_CALL;
         }
         return resultType(this.check(Math.pow(a.number, b.number)));
       case '=':
@@ -354,7 +354,7 @@ class ExpressionListener extends QBasicParserListener {
       case 'xor':
       case 'eqv':
       case 'imp':
-        return values.TYPE_MISMATCH;
+        return TYPE_MISMATCH;
       default:
         throw new Error(`Unknown operator ${op}`);
     }
@@ -362,7 +362,7 @@ class ExpressionListener extends QBasicParserListener {
 
   private floatDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
     if (b.number == 0 && !this._typeCheck) {
-      return values.DIVISION_BY_ZERO;
+      return DIVISION_BY_ZERO;
     }
     const result = this.check(a.number / b.number);
     if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
@@ -373,14 +373,14 @@ class ExpressionListener extends QBasicParserListener {
 
   private integerDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
     if (b.number == 0 && !this._typeCheck) {
-      return values.DIVISION_BY_ZERO;
+      return DIVISION_BY_ZERO;
     }
     return values.numericTypeOf(a)(Math.floor(this.check(a.number / b.number)));
   }
 
   private integerRemainder(a: values.NumericValue, b: values.NumericValue): values.Value {
     if (b.number == 0 && !this._typeCheck) {
-      return values.DIVISION_BY_ZERO;
+      return DIVISION_BY_ZERO;
     }
     return values.numericTypeOf(a)(this.check(a.number % b.number));
   }
@@ -461,7 +461,7 @@ function isNumericLiteral(text: string): boolean {
 function parseFloatConstant(text: string, sigil: string, forceDouble: boolean = false): values.Value {
   const n = parseFloat(text.toLowerCase().replace('d', 'e'));
   if (!isFinite(n)) {
-    return values.OVERFLOW;
+    return OVERFLOW;
   }
   if (forceDouble) {
     return values.double(n);
@@ -486,9 +486,9 @@ function parseIntegerConstant(text: string, sigil: string): values.Value {
     case '!':
       return values.single(n);
     case '%':
-      return n > 0x7fff ? values.ILLEGAL_NUMBER : values.integer(n);
+      return n > 0x7fff ? ILLEGAL_NUMBER : values.integer(n);
     case '&':
-      return n > 0x7fffffff ? values.ILLEGAL_NUMBER : values.long(n);
+      return n > 0x7fffffff ? ILLEGAL_NUMBER : values.long(n);
     default:
       return (n > 0x7fffffff) ? values.double(n) :
              (n > 0x7fff) ? values.long(n) :
@@ -499,12 +499,12 @@ function parseIntegerConstant(text: string, sigil: string): values.Value {
 function parseAmpConstant(text: string, base: number, sigil: string): values.Value {
   const n = parseInt(text.substring(2), base);
   if (n > 0xffffffff) {
-    return values.OVERFLOW;
+    return OVERFLOW;
   }
   const signedInteger = n > 0x7fff ? n - 0x10000 : n;
   const signedLong = n > 0x7fffffff ? n - 0x100000000 : n;
   if (sigil == '%') {
-    return n > 0xffff ? values.OVERFLOW : values.integer(signedInteger);
+    return n > 0xffff ? OVERFLOW : values.integer(signedInteger);
   }
   if (sigil == '&') {
     return values.long(signedLong);

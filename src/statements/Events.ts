@@ -1,11 +1,10 @@
 import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { RuntimeError } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 import { EventChannelState } from "../Events.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
-import { ILLEGAL_FUNCTION_CALL } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 

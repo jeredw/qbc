@@ -1,9 +1,9 @@
 import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
-import { RuntimeError } from "../Errors.ts";
+import { RuntimeError, DUPLICATE_DEFINITION, SUBSCRIPT_OUT_OF_RANGE } from "../Errors.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
-import { array, double, DUPLICATE_DEFINITION, getDefaultValue, integer, isArray, isError, isNumeric, isReference, long, reference, single, SUBSCRIPT_OUT_OF_RANGE, Value } from "../Values.ts";
+import { array, double, getDefaultValue, integer, isArray, isError, isNumeric, isReference, long, reference, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";

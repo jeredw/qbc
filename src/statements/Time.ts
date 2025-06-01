@@ -1,11 +1,11 @@
 import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
-import { ILLEGAL_FUNCTION_CALL, single, string } from "../Values.ts";
+import { single, string } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { evaluateStringExpression } from "../Expressions.ts";
-import { RuntimeError } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 
 export class DateFunction extends Statement {
   constructor(private result: Variable) {

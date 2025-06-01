@@ -1,8 +1,7 @@
 import { asciiToString, charToAscii } from "./AsciiChart.ts";
-import { IOError } from "./Errors.ts";
+import { BAD_FILE_MODE, BAD_RECORD_NUMBER, FIELD_OVERFLOW, FILE_ALREADY_EXISTS, FILE_ALREADY_OPEN, FILE_NOT_FOUND, INPUT_PAST_END_OF_FILE, IOError, PATH_FILE_ACCESS_ERROR, PATH_NOT_FOUND } from "./Errors.ts";
 import { FileAccessor, Handle, isSequentialWriteMode, Opener, OpenMode } from "./Files.ts";
 import { BasePrinter } from "./Printer.ts";
-import * as values from "./Values.ts";
 
 export interface Disk extends Opener {
   getCurrentDirectory(): string;
@@ -58,9 +57,9 @@ export class MemoryDrive implements Disk {
     const existingEntry = parent.entries.get(name);
     if (existingEntry) {
       if (existingEntry.isDirectory) {
-        throw new IOError(values.PATH_FILE_ACCESS_ERROR);
+        throw new IOError(PATH_FILE_ACCESS_ERROR);
       }
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
     const entry = directory(name);
     parent.entries.set(name, entry);
@@ -72,10 +71,10 @@ export class MemoryDrive implements Disk {
     const [parent, name] = this.getParentDirectoryAndFileName(path);
     const entry = parent.entries.get(name);
     if (!entry || !entry.isDirectory) {
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
     if (entry.entries.size > 0) {
-      throw new IOError(values.PATH_FILE_ACCESS_ERROR);
+      throw new IOError(PATH_FILE_ACCESS_ERROR);
     }
     parent.entries.delete(name);
     this.flush(parent);
@@ -107,7 +106,7 @@ export class MemoryDrive implements Disk {
       .filter((entry: [string, DiskEntry]) =>
         !entry[1].isDirectory && matchPattern(entry[0], name));
     if (matches.length === 0) {
-      throw new IOError(values.FILE_NOT_FOUND);
+      throw new IOError(FILE_NOT_FOUND);
     }
     for (const [name, entry] of matches) {
       parent.entries.delete(name);
@@ -119,15 +118,15 @@ export class MemoryDrive implements Disk {
     const [sourceParent, sourceName] = this.getParentDirectoryAndFileName(oldPath);
     const entry = sourceParent.entries.get(sourceName);
     if (!entry) {
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
 
     const [targetParent, targetName] = this.getParentDirectoryAndFileName(newPath);
     if (!targetParent.isDirectory || !targetName) {
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
     if (targetParent.entries.get(targetName)) {
-      throw new IOError(values.FILE_ALREADY_EXISTS);
+      throw new IOError(FILE_ALREADY_EXISTS);
     }
     sourceParent.entries.delete(sourceName);
     targetParent.entries.set(targetName, entry);
@@ -141,23 +140,23 @@ export class MemoryDrive implements Disk {
     const [parentDir, name] = splitPath(target);
     const parent = this.lookupOrThrow(parentDir);
     if (!parent.isDirectory || !name) {
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
     const canonPath = target.names.join('\\');
     if (this.handles.has(canonPath)) {
-      throw new IOError(values.FILE_ALREADY_OPEN);
+      throw new IOError(FILE_ALREADY_OPEN);
     }
     let file = parent.entries.get(name);
     if (!file || mode === OpenMode.OUTPUT) {
       if (mode === OpenMode.INPUT) {
-        throw new IOError(values.FILE_NOT_FOUND);
+        throw new IOError(FILE_NOT_FOUND);
       }
       file = {isDirectory: false, name, bytes: []};
       parent.entries.set(name, file);
       this.flush(file);
     }
     if (file.isDirectory) {
-      throw new IOError(values.PATH_FILE_ACCESS_ERROR);
+      throw new IOError(PATH_FILE_ACCESS_ERROR);
     }
     const fsHandle: MemoryDriveFileHandle = {
       canonPath,
@@ -207,23 +206,23 @@ export class MemoryDrive implements Disk {
     const [parentDir, name] = splitPath(target);
     const parent = this.lookupOrThrow(parentDir);
     if (!parent.isDirectory || (!allowEmptyName && !name)) {
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
     return [parent, name];
   }
 
   private lookupOrThrow(path: Path): DiskEntry {
     if (path.names.length === 0 || path.names[0] !== '') {
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
     let entry: DiskEntry = this.rootDirectory;
     for (const name of path.names.slice(1)) {
       if (!entry.isDirectory) {
-        throw new IOError(values.PATH_NOT_FOUND);
+        throw new IOError(PATH_NOT_FOUND);
       }
       const next = entry.entries.get(name);
       if (!next) {
-        throw new IOError(values.PATH_NOT_FOUND);
+        throw new IOError(PATH_NOT_FOUND);
       }
       entry = next;
     }
@@ -262,7 +261,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
 
   seek(pos: number) {
     if (pos <= 0) {
-      throw new IOError(values.BAD_RECORD_NUMBER);
+      throw new IOError(BAD_RECORD_NUMBER);
     }
     this.position = pos - 1;
   }
@@ -298,14 +297,14 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
 
   getRecordBuffer(): number[] {
     if (this.openMode() !== OpenMode.RANDOM) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     return this.recordBuffer;
   }
 
   getRecord(recordNumber?: number) {
     if (this.openMode() !== OpenMode.RANDOM) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     const position = recordNumber && (1 + (recordNumber - 1) * this.recordLength);
     this.readBytes(this.recordBuffer, position);
@@ -313,7 +312,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
 
   putRecord(recordNumber?: number) {
     if (this.openMode() !== OpenMode.RANDOM) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     const position = recordNumber && (1 + (recordNumber - 1) * this.recordLength);
     this.writeBytes(this.recordBuffer, position);
@@ -321,7 +320,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
 
   getBytes(numBytes: number, position?: number): number[] {
     if (this.openMode() !== OpenMode.BINARY) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     const result = new Array(numBytes);
     this.readBytes(result, position);
@@ -330,7 +329,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
 
   putBytes(bytes: number[], position?: number) {
     if (this.openMode() !== OpenMode.BINARY) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     this.writeBytes(bytes, position);
   }
@@ -340,7 +339,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
       return;
     }
     if (!isSequentialWriteMode(this.openMode())) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     const value = charToAscii.get(ch);
     if (value === undefined) {
@@ -358,13 +357,13 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
 
   readChars(numBytes: number): string {
     if (this.mode === OpenMode.OUTPUT || this.mode === OpenMode.APPEND) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     if (this.mode === OpenMode.RANDOM) {
       return asciiToString(zeros(numBytes));
     }
     if (this.position + numBytes > this.file.bytes.length) {
-      throw new IOError(values.INPUT_PAST_END_OF_FILE);
+      throw new IOError(INPUT_PAST_END_OF_FILE);
     }
     const start = this.position;
     this.lastAccessPosition = this.position + numBytes - 1;
@@ -374,13 +373,13 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
 
   readLine(): string {
     if (this.mode === OpenMode.RANDOM) {
-      throw new IOError(values.FIELD_OVERFLOW);
+      throw new IOError(FIELD_OVERFLOW);
     }
     if (this.mode !== OpenMode.INPUT) {
-      throw new IOError(values.BAD_FILE_MODE);
+      throw new IOError(BAD_FILE_MODE);
     }
     if (this.eof()) {
-      throw new IOError(values.INPUT_PAST_END_OF_FILE);
+      throw new IOError(INPUT_PAST_END_OF_FILE);
     }
     const start = this.position;
     let end = this.position;
@@ -441,7 +440,7 @@ function parsePath(path: string, base: Path): Path {
   const drive = base.drive;
   if (/^[A-Za-z]:/.test(path)) {
     if (drive != path[0]) {
-      throw new IOError(values.PATH_NOT_FOUND);
+      throw new IOError(PATH_NOT_FOUND);
     }
     path = path.slice(2);
   }
@@ -469,7 +468,7 @@ function parsePath(path: string, base: Path): Path {
 
 function splitPath(path: Path): [Path, string] {
   if (path.names.length === 0) {
-    throw new IOError(values.PATH_NOT_FOUND);
+    throw new IOError(PATH_NOT_FOUND);
   }
   if (path.names.length === 1) {
     return [path, path.names[0]];

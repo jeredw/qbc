@@ -1,7 +1,7 @@
-import { cast, double, numericTypeOf, ILLEGAL_FUNCTION_CALL, isNumeric, single, Value } from "../Values.ts";
+import { cast, double, numericTypeOf, isNumeric, single, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { RuntimeError } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";

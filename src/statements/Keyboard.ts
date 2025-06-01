@@ -2,13 +2,13 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 import { Statement } from "./Statement.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { ILLEGAL_FUNCTION_CALL, string } from "../Values.ts";
+import { string } from "../Values.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { isModifier } from "../ScanCodeChart.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Token } from "antlr4ng";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
-import { RuntimeError } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 
 export class InkeyFunction extends Statement {
   result: Variable;

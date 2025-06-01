@@ -2,6 +2,7 @@ import { Token } from 'antlr4ng';
 import { sameType, Type, TypeTag } from './Types.ts'
 import type { ArrayDescriptor, Variable } from './Variables.ts'
 import { Address } from './Memory.ts';
+import { OVERFLOW, TYPE_MISMATCH } from './Errors.ts';
 
 export type ErrorValue = {
   tag: TypeTag.ERROR;
@@ -253,29 +254,3 @@ export function array(array: Variable, descriptor: ArrayDescriptor): Value {
 export const
   TRUE = -1,
   FALSE = 0;
-
-export const 
-  OVERFLOW = error('Overflow'),
-  ILLEGAL_NUMBER = error('Illegal number'),
-  TYPE_MISMATCH = error('Type mismatch'),
-  DIVISION_BY_ZERO = error('Division by zero'),
-  ILLEGAL_FUNCTION_CALL = error('Illegal function call'),
-  RETURN_WITHOUT_GOSUB = error('RETURN without GOSUB'),
-  SUBSCRIPT_OUT_OF_RANGE = error('Subscript out of range'),
-  DUPLICATE_DEFINITION = error('Duplicate definition'),
-  OUT_OF_DATA = error('Out of DATA'),
-  SYNTAX_ERROR = error('Syntax error'),
-  BAD_FILE_NAME_OR_NUMBER = error('Bad file name or number'),
-  BAD_FILE_MODE = error('Bad file mode'),
-  INPUT_PAST_END_OF_FILE = error('Input past end of file'),
-  PATH_NOT_FOUND = error('Path not found'),
-  PATH_FILE_ACCESS_ERROR = error('Path/File access error'),
-  FILE_NOT_FOUND = error('File not found'),
-  FILE_ALREADY_OPEN = error('File already open'),
-  BAD_RECORD_NUMBER = error('Bad record number'),
-  FIELD_OVERFLOW = error('FIELD overflow'),
-  FILE_ALREADY_EXISTS = error('File already exists'),
-  FIELD_STATEMENT_ACTIVE = error('FIELD statement active'),
-  BAD_RECORD_LENGTH = error('Bad record length'),
-  VARIABLE_REQUIRED = error('Variable required'),
-  OUT_OF_STACK_SPACE = error('Out of stack space');

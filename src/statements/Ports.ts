@@ -1,6 +1,6 @@
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { RuntimeError } from "../Errors.ts";
-import { integer, isNumeric, OVERFLOW, Value } from "../Values.ts";
+import { RuntimeError, OVERFLOW } from "../Errors.ts";
+import { integer, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 

@@ -1,6 +1,6 @@
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { RuntimeError } from "../Errors.ts";
-import { boolean, ILLEGAL_FUNCTION_CALL, integer, isNumeric, TYPE_MISMATCH, Value } from "../Values.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH } from "../Errors.ts";
+import { boolean, integer, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 

@@ -1,7 +1,7 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { CursorCommand } from "../Keyboard.ts";
-import { cast, getDefaultValue, ILLEGAL_FUNCTION_CALL, isError, isNumeric, OVERFLOW, string, Value } from "../Values.ts";
+import { cast, getDefaultValue, isError, isNumeric, string, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { isString, Type } from "../Types.ts";
@@ -10,7 +10,7 @@ import { evaluateIntegerExpression, parseNumberFromString } from "../Expressions
 import { Token } from "antlr4ng";
 import { getSequentialReadAccessor } from "./FileSystem.ts";
 import { tryIo } from "../Files.ts";
-import { RuntimeError } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW } from "../Errors.ts";
 
 export interface InputStatementArgs {
   token: Token;

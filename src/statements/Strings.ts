@@ -1,4 +1,4 @@
-import { ILLEGAL_FUNCTION_CALL, StringValue, TYPE_MISMATCH, Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
+import { Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToChar, asciiToString, charToAscii, stringToAscii } from "../AsciiChart.ts";
@@ -8,7 +8,7 @@ import { Variable } from "../Variables.ts";
 import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression, parseNumberFromStringPrefix } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { RuntimeError } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
 import { updateRecordBuffer } from "./FileSystem.ts";
 
