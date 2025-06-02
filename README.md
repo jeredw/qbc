@@ -170,9 +170,9 @@ parse those using baked in rules.
 | `ERASE`          | Statement   | ✅      | ✅      |
 | `ERDEV`          | Function    | -       | ⛔      |
 | `ERDEV$`         | Function    | -       | ⛔      |
-| `ERL`            | Function    | -       | ⛔      |
-| `ERR`            | Function    | -       | ⛔      |
-| `ERROR`          | Statement   | ✅      | ⛔      |
+| `ERL`            | Function    | -       | ✅      |
+| `ERR`            | Function    | -       | ✅      |
+| `ERROR`          | Statement   | ✅      | ✅      |
 | `EXIT`           | Statement   | ✅      | ✅      |
 | `EXP`            | Function    | -       | ✅      |
 | `FIELD`          | Statement   | ✅      | ✅      |

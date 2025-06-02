@@ -11,7 +11,9 @@ export interface ErrorHandling {
   token?: Token;
   // The most recent error.
   error?: ErrorValue;
-  // The most recent line number with an error.
+  // The most recent line number.
+  lineNumber?: number;
+  // The most recent line number before the most recent error.
   errorLine?: number;
   // The chunk with an error.
   chunkIndex?: number;
@@ -114,34 +116,81 @@ export class IOError extends Error {
   }
 }
 
+// Builtin error messages that can be returned by ERROR.
+const ERROR_MESSAGES = (() => {
+  const chart = `
+1       NEXT without FOR             38      Array not defined
+2       Syntax error                 39      CASE ELSE expected
+3       RETURN without GOSUB         40      Variable required
+4       Out of DATA                  50      FIELD overflow
+5       Illegal function call        51      Internal error
+6       Overflow                     52      Bad file name or number
+7       Out of memory                53      File not found
+8       Label not defined            54      Bad file mode
+9       Subscript out of range       55      File already open
+10      Duplicate definition         56      FIELD statement active
+11      Division by zero             57      Device I/O error
+12      Illegal in direct mode       58      File already exists
+13      Type mismatch                59      Bad record length
+14      Out of string space          61      Disk full
+16      String formula too complex   62      Input past end of file
+17      Cannot continue              63      Bad record number
+18      Function not defined         64      Bad file name
+19      No RESUME                    67      Too many files
+20      RESUME without error         68      Device unavailable
+24      Device timeout               69      Communication-buffer overflow
+25      Device fault                 70      Permission denied
+26      FOR without NEXT             71      Disk not ready
+27      Out of paper                 72      Disk-media error
+29      WHILE without WEND           73      Advanced feature unavailable
+30      WEND without WHILE           74      Rename across disks
+33      Duplicate label              75      Path/File access error
+35      Subprogram not defined       76      Path not found
+37      Argument-count mismatch
+`;
+  const errors = {};
+  for (const line of chart.split('\n')) {
+    const entries = line.match(/(\d+)\s+([^\d]+)/g) ?? [];
+    for (const entry of entries) {
+      const [_, code, message] = entry.trim().match(/(\d+)\s+(.*)/)!;
+      errors[+code] = message;
+    }
+  }
+  return errors;
+})();
+
+export function getErrorForCode(code: number): ErrorValue {
+  return error(code, ERROR_MESSAGES[code] ?? "Unprintable error");
+}
+
 // Trappable runtime errors.
 export const
-  SYNTAX_ERROR = error(2, 'Syntax error'),
-  RETURN_WITHOUT_GOSUB = error(3, 'RETURN without GOSUB'),
-  OUT_OF_DATA = error(4, 'Out of DATA'),
-  ILLEGAL_FUNCTION_CALL = error(5, 'Illegal function call'),
-  OVERFLOW = error(6, 'Overflow'),
-  SUBSCRIPT_OUT_OF_RANGE = error(9, 'Subscript out of range'),
-  DUPLICATE_DEFINITION = error(10, 'Duplicate definition'),
-  DIVISION_BY_ZERO = error(11, 'Division by zero'),
-  TYPE_MISMATCH = error(13, 'Type mismatch'),
-  NO_RESUME = error(19, 'No RESUME'),
-  RESUME_WITHOUT_ERROR = error(20, 'RESUME without error'),
-  VARIABLE_REQUIRED = error(40, 'Variable required'),
-  FIELD_OVERFLOW = error(50, 'FIELD overflow'),
-  BAD_FILE_NAME_OR_NUMBER = error(52, 'Bad file name or number'),
-  FILE_NOT_FOUND = error(53, 'File not found'),
-  BAD_FILE_MODE = error(54, 'Bad file mode'),
-  FILE_ALREADY_OPEN = error(55, 'File already open'),
-  FIELD_STATEMENT_ACTIVE = error(56, 'FIELD statement active'),
-  FILE_ALREADY_EXISTS = error(58, 'File already exists'),
-  BAD_RECORD_LENGTH = error(59, 'Bad record length'),
-  INPUT_PAST_END_OF_FILE = error(62, 'Input past end of file'),
-  BAD_RECORD_NUMBER = error(63, 'Bad record number'),
-  PATH_FILE_ACCESS_ERROR = error(75, 'Path/File access error'),
-  PATH_NOT_FOUND = error(76, 'Path not found');
+  SYNTAX_ERROR = getErrorForCode(2),
+  RETURN_WITHOUT_GOSUB = getErrorForCode(3),
+  OUT_OF_DATA = getErrorForCode(4),
+  ILLEGAL_FUNCTION_CALL = getErrorForCode(5),
+  OVERFLOW = getErrorForCode(6),
+  SUBSCRIPT_OUT_OF_RANGE = getErrorForCode(9),
+  DUPLICATE_DEFINITION = getErrorForCode(10),
+  DIVISION_BY_ZERO = getErrorForCode(11),
+  TYPE_MISMATCH = getErrorForCode(13),
+  NO_RESUME = getErrorForCode(19),
+  RESUME_WITHOUT_ERROR = getErrorForCode(20),
+  VARIABLE_REQUIRED = getErrorForCode(40),
+  FIELD_OVERFLOW = getErrorForCode(50),
+  BAD_FILE_NAME_OR_NUMBER = getErrorForCode(52),
+  FILE_NOT_FOUND = getErrorForCode(53),
+  BAD_FILE_MODE = getErrorForCode(54),
+  FILE_ALREADY_OPEN = getErrorForCode(55),
+  FIELD_STATEMENT_ACTIVE = getErrorForCode(56),
+  FILE_ALREADY_EXISTS = getErrorForCode(58),
+  BAD_RECORD_LENGTH = getErrorForCode(59),
+  INPUT_PAST_END_OF_FILE = getErrorForCode(62),
+  BAD_RECORD_NUMBER = getErrorForCode(63),
+  PATH_FILE_ACCESS_ERROR = getErrorForCode(75),
+  PATH_NOT_FOUND = getErrorForCode(76);
 
 // Untrappable or parser errors.
 export const
-  ILLEGAL_NUMBER = error(-1, 'Illegal number'),
-  OUT_OF_STACK_SPACE = error(-1, 'Out of stack space');
+  ILLEGAL_NUMBER = error(-1, "Illegal number"),
+  OUT_OF_STACK_SPACE = error(-1, "Out of stack space");

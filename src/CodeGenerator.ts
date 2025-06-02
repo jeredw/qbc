@@ -61,6 +61,7 @@ export class CodeGenerator extends QBasicParserListener {
 
   override exitProgram = (_ctx: parser.ProgramContext) => {
     this._program.chunks.forEach((chunk) => this.assignTargets(chunk));
+    this._program.chunks.forEach((chunk) => this.assignLineNumbers(chunk));
   }
 
   private assignTargets(chunk: ProgramChunk) {
@@ -98,6 +99,20 @@ export class CodeGenerator extends QBasicParserListener {
         statement.targets.push(targetIndex);
       }
     };
+  }
+
+  private assignLineNumbers(chunk: ProgramChunk) {
+    for (const [label, statementIndex] of chunk.labelToIndex) {
+      if (statementIndex < chunk.statements.length && label.match(/^\d+$/)) {
+        const lineNumber = +label;
+        if (lineNumber < 0 || lineNumber > 65529) {
+          // ERL only returns line numbers in this range...
+          continue;
+        }
+        const statement = chunk.statements[statementIndex];
+        statement.lineNumber = lineNumber;
+      }
+    }
   }
 
   override enterLabel = (ctx: parser.LabelContext) => {
@@ -372,7 +387,10 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.call(procedure.programChunkIndex, stackVariables, stackSize));
   }
 
-  override enterError_statement = (ctx: parser.Error_statementContext) => {}
+  override enterError_statement = (ctx: parser.Error_statementContext) => {
+    const errorCode = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
+    this.addStatement(statements.error(ctx.start!, errorCode));
+  }
 
   override enterCircle_statement = (ctx: parser.Circle_statementContext) => {
     const token = ctx.start!;

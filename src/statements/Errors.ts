@@ -2,7 +2,12 @@ import { Token } from "antlr4ng";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
-import { RuntimeError } from "../Errors.ts";
+import { getErrorForCode, ILLEGAL_FUNCTION_CALL, RuntimeError } from "../Errors.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
+import { Variable } from "../Variables.ts";
+import { integer, long } from "../Values.ts";
+import { ExprContext } from "../../build/QBasicParser.ts";
+import { evaluateIntegerExpression } from "../Expressions.ts";
 
 export class ErrorHandlerStatement extends Statement {
   constructor(private token: Token) {
@@ -29,5 +34,50 @@ export class ResumeStatement extends Statement {
 
   override execute(context: ExecutionContext): ControlFlow {
     return {tag: ControlFlowTag.RESUME, targetIndex: this.targetIndex, next: this.next};
+  }
+}
+
+export class ErlFunction extends Statement {
+  private result: Variable;
+
+  constructor(args: BuiltinStatementArgs) {
+    super();
+    this.result = args.result!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const errorLine = context.errorHandling.errorLine ?? 0;
+    context.memory.write(this.result, long(errorLine));
+  }
+}
+
+export class ErrFunction extends Statement {
+  private result: Variable;
+
+  constructor(args: BuiltinStatementArgs) {
+    super();
+    this.result = args.result!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const errorCode = context.errorHandling.active ? context.errorHandling.error?.errorCode : undefined;
+    context.memory.write(this.result, integer(errorCode ?? 0));
+  }
+}
+
+export class ErrorStatement extends Statement {
+  constructor (
+    private token: Token,
+    private errorCodeExpr: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const errorCode = evaluateIntegerExpression(this.errorCodeExpr, context.memory);
+    if (errorCode < 0 || errorCode > 255) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    throw RuntimeError.fromToken(this.token, getErrorForCode(errorCode));
   }
 }

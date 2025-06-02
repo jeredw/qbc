@@ -118,8 +118,12 @@ export class Invocation {
       return;
     }
     const statement = chunk.statements[statementIndex];
-    // TODO: check for program statement boundaries
     if (!this.errorHandling.active) {
+      if (statement.lineNumber !== undefined) {
+        // Keep track of the most recent line number executed for ERL.
+        this.errorHandling.lineNumber = statement.lineNumber;
+      }
+      // TODO: check for program statement boundaries
       const eventTrap = this.events.poll();
       if (eventTrap) {
         this.stack.push({
@@ -222,6 +226,7 @@ export class Invocation {
         if (!this.errorHandling.active && this.errorHandling.targetIndex !== undefined) {
           this.errorHandling.active = true;
           this.errorHandling.error = e.error;
+          this.errorHandling.errorLine = this.errorHandling.lineNumber;
           const top = this.stack[this.stack.length - 1];
           this.errorHandling.chunkIndex = top.chunkIndex;
           this.errorHandling.statementIndex = top.statementIndex;

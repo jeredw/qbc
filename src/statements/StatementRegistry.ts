@@ -110,7 +110,7 @@ import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { BuiltinStatementArgs } from "../Builtins.ts";
+import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -147,7 +147,7 @@ import {
   WidthScreenStatement,
   WindowStatement,
 } from "./Graphics.ts";
-import { ErrorHandlerStatement, ResumeStatement } from "./Errors.ts";
+import { ErlFunction, ErrFunction, ErrorHandlerStatement, ErrorStatement, ResumeStatement } from "./Errors.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -295,6 +295,18 @@ export function eof(args: BuiltinStatementArgs) {
 
 export function errorHandler(token: Token) {
   return new ErrorHandlerStatement(token);
+}
+
+export function erl(args: BuiltinStatementArgs) {
+  return new ErlFunction(args);
+}
+
+export function err(args: BuiltinStatementArgs) {
+  return new ErrFunction(args);
+}
+
+export function error(token: Token, errorCodeExpr: parser.ExprContext) {
+  return new ErrorStatement(token, errorCodeExpr);
 }
 
 export function eventControl(token: Token, eventType: EventType, param: parser.ExprContext | undefined, state: EventChannelState) {
