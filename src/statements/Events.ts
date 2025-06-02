@@ -32,26 +32,46 @@ export class EventHandlerStatement extends Statement {
         if (param <= 0) {
           throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
         }
+        if (this.targetIndex === undefined) {
+          context.events.timer.setState(0, EventChannelState.OFF);
+          return;
+        }
         context.events.timer.configure(param, this.targetIndex!);
         break;
       case EventType.JOYSTICK:
         if (!(param === 0 || param === 2 || param === 4 || param === 6)) {
           throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
         }
-        context.events.joystick.configure(Math.floor(param / 2), this.targetIndex!);
+        const buttonIndex = Math.floor(param / 2);
+        if (this.targetIndex === undefined) {
+          context.events.joystick.setState(buttonIndex, EventChannelState.OFF);
+          return;
+        }
+        context.events.joystick.configure(buttonIndex, this.targetIndex!);
         break;
       case EventType.KEYBOARD:
         if (!isValidKey(param)) {
           throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
         }
+        if (this.targetIndex === undefined) {
+          context.events.keyboard.setState(param, EventChannelState.OFF);
+          return;
+        }
         context.events.keyboard.configure(param, this.targetIndex!);
         break;
       case EventType.PEN:
+        if (this.targetIndex === undefined) {
+          context.events.lightPen.setState(param, EventChannelState.OFF);
+          return;
+        }
         context.events.lightPen.configure(0, this.targetIndex!);
         break;
       case EventType.PLAY:
         if (param < 1 || param > 32) {
           throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        if (this.targetIndex === undefined) {
+          context.events.play.setState(param, EventChannelState.OFF);
         }
         context.events.play.configure(param, this.targetIndex!);
         break;

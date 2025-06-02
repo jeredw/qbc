@@ -1,0 +1,40 @@
+(program 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id handler))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 1)) / 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id handler)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "
+            (not) handling it"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 1)) / 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (resume_statement resume next)) \n <EOF>)

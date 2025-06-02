@@ -662,8 +662,10 @@ name_statement
   : NAME oldpath=expr AS newpath=expr
   ;
 
+// The help file claims "ON ERROR RESUME NEXT" will resume the next statement
+// after an error, but that doesn't parse.
 on_error_statement
-  : ON ERROR (GOTO target | RESUME NEXT)
+  : ON ERROR GOTO target
   ;
 
 on_event_gosub_statement

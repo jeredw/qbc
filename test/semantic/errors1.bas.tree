@@ -1,0 +1,54 @@
+(program 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id handler))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 1)) / 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 1)) / 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id handler)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "handler"))))) \n 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id elsewhere))))) \n 
+  (statement 
+    (resume_statement resume next)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id elsewhere)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "elsewhere"))))) \n 
+  (statement 
+    (resume_statement resume next)) \n <EOF>)

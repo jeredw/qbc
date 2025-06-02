@@ -1,0 +1,7 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (resume_statement resume next)) \n) 
+    (end_sub_statement end sub)) \n <EOF>)

@@ -1,0 +1,44 @@
+(program 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id handler))))) \n 
+  (statement 
+    (gosub_statement gosub 
+      (target 
+        (text_label 
+          (untyped_id errorprone))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "back"))))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id errorprone)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 1)) / 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id handler)) :) 
+  (statement 
+    (resume_statement resume 
+      (target 
+        (text_label 
+          (untyped_id recover))))) \n 
+  (label 
+    (text_label 
+      (untyped_id recover)) :) 
+  (statement 
+    (return_statement return)) \n <EOF>)

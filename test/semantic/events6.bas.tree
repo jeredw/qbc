@@ -1,0 +1,39 @@
+(program 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (on_event_gosub_statement on timer 
+          ( 
+            (expr 
+              (literal 5)) ) gosub 
+          (target 
+            (text_label 
+              (untyped_id sayhi))))) \n 
+      (statement 
+        (event_control_statement timer on)) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) 
+      (block : 
+        (statement 
+          (event_control_statement timer step)) :) next i)) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id sayhi)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) \n 
+  (statement 
+    (return_statement return)) \n <EOF>)

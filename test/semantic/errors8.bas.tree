@@ -1,0 +1,47 @@
+(program 
+  (statement 
+    (on_event_gosub_statement on timer 
+      ( 
+        (expr 
+          (literal 1)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id tick))))) \n 
+  (statement 
+    (event_control_statement timer on)) \n 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id handler))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 1)) / 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id tick)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "tick"))))) : 
+  (statement 
+    (return_statement return)) \n 
+  (label 
+    (text_label 
+      (untyped_id handler)) :) \n 
+  (statement 
+    (event_control_statement timer step)) \n 
+  (statement 
+    (event_control_statement timer step)) \n 
+  (statement 
+    (event_control_statement timer step)) \n 
+  (statement 
+    (resume_statement resume next)) \n <EOF>)

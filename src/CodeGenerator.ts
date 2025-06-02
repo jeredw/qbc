@@ -6,7 +6,7 @@ import { Program, ProgramChunk } from "./Programs.ts";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
 import { parseLiteral, typeCheckExpression } from "./Expressions.ts";
-import { reference, isError, getDefaultValue, isString as isStringValue } from "./Values.ts";
+import { reference, isError, isString as isStringValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag, isString as isStringType, isNumericType } from "./Types.ts";
 import { isBuiltin, isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
@@ -19,10 +19,11 @@ import { DimBoundsExprs } from "./statements/Arrays.ts";
 import { RestoreStatement } from "./statements/Data.ts";
 import { PrintExpr } from "./statements/Print.ts";
 import { OpenMode } from "./Files.ts";
-import { EventType } from "./statements/Events.ts";
+import { EventHandlerStatement, EventType } from "./statements/Events.ts";
 import { EventChannelState } from "./Events.ts";
 import { KeyStatementOperation } from "./statements/Keyboard.ts";
 import { FieldDefinition } from "./statements/FileSystem.ts";
+import { ErrorHandlerStatement, ResumeStatement } from "./statements/Errors.ts";
 
 export interface CodeGeneratorContext {
   // Generated label for this statement.
@@ -73,7 +74,17 @@ export class CodeGenerator extends QBasicParserListener {
         (statement as RestoreStatement).dataIndex = dataIndex;
         continue;
       }
-      const targetIndex = chunk.labelToIndex.get(targetRef.label);
+      let targetChunk = chunk;
+      if (statement instanceof ErrorHandlerStatement ||
+          statement instanceof EventHandlerStatement ||
+          statement instanceof ResumeStatement) {
+        if (targetRef.label === '0') {
+          // Just leave target undefined for ON ERROR GOTO 0.
+          continue;
+        }
+        targetChunk = this._program.chunks[0];
+      }
+      const targetIndex = targetChunk.labelToIndex.get(targetRef.label);
       if (targetIndex === undefined) {
         throw ParseError.fromToken(targetRef.token, "Label not defined");
       }
@@ -824,7 +835,9 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.name(ctx.start!, oldPathExpr, newPathExpr));
   }
 
-  override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
+  override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {
+    this.addStatement(statements.errorHandler(ctx.start!));
+  }
 
   private getEventType(ctx: parser.On_event_gosub_statementContext | parser.Event_control_statementContext): EventType {
     const eventType = ctx.TIMER() ? EventType.TIMER :
@@ -1101,7 +1114,12 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.randomize({variable}));
   }
 
-  override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
+  override enterResume_statement = (ctx: parser.Resume_statementContext) => {
+    if (this._chunk.procedure) {
+      throw ParseError.fromToken(ctx.start!, "Illegal in procedure or DEF FN");
+    }
+    this.addStatement(statements.resume({token: ctx.start!, next: !!ctx.NEXT()}));
+  }
 
   override enterReturn_statement = (ctx: parser.Return_statementContext) => {
     this.addStatement(statements.return_(ctx.start!));

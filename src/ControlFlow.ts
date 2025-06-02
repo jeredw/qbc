@@ -3,6 +3,7 @@ export enum ControlFlowTag {
   GOSUB,
   CALL,
   RETURN,
+  RESUME,
   HALT,
   WAIT,
 }
@@ -25,6 +26,12 @@ export interface Return {
   where: ControlFlowTag;
 }
 
+export interface Resume {
+  tag: ControlFlowTag.RESUME;
+  targetIndex?: number;
+  next?: boolean;
+}
+
 export interface Halt {
   tag: ControlFlowTag.HALT;
 }
@@ -39,5 +46,6 @@ export type ControlFlow =
   | Gosub
   | Call
   | Return
+  | Resume
   | Halt
   | Wait;

@@ -147,6 +147,7 @@ import {
   WidthScreenStatement,
   WindowStatement,
 } from "./Graphics.ts";
+import { ErrorHandlerStatement, ResumeStatement } from "./Errors.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -290,6 +291,10 @@ export function endSub() {
 
 export function eof(args: BuiltinStatementArgs) {
   return new EofFunction(args);
+}
+
+export function errorHandler(token: Token) {
+  return new ErrorHandlerStatement(token);
 }
 
 export function eventControl(token: Token, eventType: EventType, param: parser.ExprContext | undefined, state: EventChannelState) {
@@ -637,6 +642,10 @@ export function read(token: Token, result: Variable) {
 
 export function restore() {
   return new RestoreStatement();
+}
+
+export function resume({token, next}: {token: Token, next: boolean}) {
+  return new ResumeStatement(token, next);
 }
 
 export function return_(start: Token) {

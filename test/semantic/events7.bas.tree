@@ -1,0 +1,39 @@
+(program 
+  (statement 
+    (on_event_gosub_statement on timer 
+      ( 
+        (expr 
+          (literal 1)) ) gosub 
+      (target 
+        (text_label 
+          (untyped_id sayhi))))) \n 
+  (statement 
+    (event_control_statement timer on)) \n 
+  (statement 
+    (on_event_gosub_statement on timer 
+      ( 
+        (expr 
+          (literal 1)) ) gosub 
+      (target 
+        (line_number 0)))) \n 
+  (statement 
+    (event_control_statement timer step)) \n 
+  (statement 
+    (event_control_statement timer step)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id sayhi)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n 
+  (statement 
+    (return_statement return)) \n <EOF>)

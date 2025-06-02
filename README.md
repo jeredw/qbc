@@ -239,7 +239,7 @@ parse those using baked in rules.
 | `OCT$`           | Function    | -       | ✅      |
 | `OFF`            | Keyword     | ✅      | 🚧      |
 | `ON COM`         | Statement   | ✅      | ⛔      |
-| `ON ERROR`       | Statement   | ✅      | ⛔      |
+| `ON ERROR`       | Statement   | ✅      | ✅      |
 | `ON`             | Keyword     | ✅      | 🚧      |
 | `ON KEY`         | Statement   | ✅      | ✅      |
 | `ON PEN`         | Statement   | ✅      | ✅      |
@@ -281,7 +281,7 @@ parse those using baked in rules.
 | `REM`            | Statement   | ✅      | ✅      |
 | `RESET`          | Statement   | -       | ⛔      |
 | `RESTORE`        | Statement   | ✅      | ✅      |
-| `RESUME`         | Statement   | ✅      | ⛔      |
+| `RESUME`         | Statement   | ✅      | ✅      |
 | `RETURN`         | Statement   | ✅      | ✅      |
 | `RIGHT$`         | Function    | -       | ✅      |
 | `RMDIR`          | Statement   | -       | ✅      |

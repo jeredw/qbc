@@ -6,6 +6,7 @@ import { OVERFLOW, TYPE_MISMATCH } from './Errors.ts';
 
 export type ErrorValue = {
   tag: TypeTag.ERROR;
+  errorCode: number;
   errorMessage: string
 }
 
@@ -188,8 +189,8 @@ export function getDefaultValue(variable: Variable): Value {
   }
 }
 
-export function error(errorMessage: string = ""): ErrorValue {
-  return {tag: TypeTag.ERROR, errorMessage};
+export function error(errorCode: number, errorMessage: string = ""): ErrorValue {
+  return {tag: TypeTag.ERROR, errorCode, errorMessage};
 }
 
 export function string(string: string = ""): Value {

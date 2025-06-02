@@ -2,12 +2,13 @@ import { Devices } from "./Devices.ts";
 import { Program } from "./Programs.ts";
 import { Memory } from "./Memory.ts";
 import { ControlFlowTag } from "./ControlFlow.ts";
-import { RuntimeError, RETURN_WITHOUT_GOSUB } from "./Errors.ts";
+import { RuntimeError, RETURN_WITHOUT_GOSUB, ErrorHandling, RESUME_WITHOUT_ERROR, NO_RESUME } from "./Errors.ts";
 import { ReturnStatement } from "./statements/Return.ts";
 import { ProgramData } from "./ProgramData.ts";
 import { Files } from "./Files.ts";
 import { Events } from "./Events.ts";
 import { RandomNumbers } from "./RandomNumbers.ts";
+import { ResumeStatement } from "./statements/Errors.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program) {
   return new Invocation(devices, memory, program);
@@ -16,6 +17,7 @@ export function invoke(devices: Devices, memory: Memory, program: Program) {
 interface ProgramLocation {
   chunkIndex: number;
   statementIndex: number;
+  lineNumber?: number;
   pusher?: ControlFlowTag;
   reenableEvents?: () => void;
 }
@@ -33,6 +35,7 @@ export class Invocation {
   private program: Program;
   private files: Files;
   private events: Events;
+  private errorHandling: ErrorHandling;
   private random: RandomNumbers;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
@@ -44,6 +47,7 @@ export class Invocation {
     this.files = new Files();
     this.events = new Events(devices);
     this.random = new RandomNumbers();
+    this.errorHandling = {};
     this.program = program;
   }
 
@@ -106,25 +110,30 @@ export class Invocation {
       throw new Error(`invalid chunk ${chunkIndex}`);
     }
     if (statementIndex >= chunk.statements.length) {
+      if (this.errorHandling.active) {
+        throw RuntimeError.fromToken(this.errorHandling.token!, NO_RESUME);
+      }
       this.exitChunk();
       this.step();
       return;
     }
     const statement = chunk.statements[statementIndex];
     // TODO: check for program statement boundaries
-    const eventTrap = this.events.poll();
-    if (eventTrap) {
-      this.stack.push({
-        chunkIndex: 0,
-        statementIndex: eventTrap.targetIndex,
-        pusher: ControlFlowTag.GOSUB,
-        reenableEvents: eventTrap.reenableEvents
-      });
-      return;
-    }
-    // TODO: move sleep polling to rAF().
-    if (this.events.sleeping()) {
-      return;
+    if (!this.errorHandling.active) {
+      const eventTrap = this.events.poll();
+      if (eventTrap) {
+        this.stack.push({
+          chunkIndex: 0,
+          statementIndex: eventTrap.targetIndex,
+          pusher: ControlFlowTag.GOSUB,
+          reenableEvents: eventTrap.reenableEvents
+        });
+        return;
+      }
+      // TODO: move sleep polling to rAF().
+      if (this.events.sleeping()) {
+        return;
+      }
     }
     try {
       const controlFlow = statement.execute({
@@ -133,6 +142,7 @@ export class Invocation {
         data: this.data,
         files: this.files,
         events: this.events,
+        errorHandling: this.errorHandling,
         random: this.random,
       });
       this.stack[this.stack.length - 1].statementIndex++;
@@ -167,6 +177,9 @@ export class Invocation {
           if (controlFlow.where == ControlFlowTag.GOSUB) {
             if (this.stack[this.stack.length - 1].pusher != ControlFlowTag.GOSUB) {
               const returnStatement = statement as ReturnStatement;
+              // We already incremented past the RETURN statement above, but
+              // RESUME expects the index to point at the error statement.
+              this.stack[this.stack.length - 1].statementIndex--;
               throw RuntimeError.fromToken(returnStatement.start!, RETURN_WITHOUT_GOSUB);
             }
             this.stack[this.stack.length - 1].reenableEvents?.();
@@ -179,6 +192,24 @@ export class Invocation {
             this.exitChunk();
           }
           break;
+        case ControlFlowTag.RESUME:
+          if (!this.errorHandling.active) {
+            const resumeStatement = statement as ResumeStatement;
+            throw RuntimeError.fromToken(resumeStatement.token, RESUME_WITHOUT_ERROR);
+          }
+          const top = this.stack[this.stack.length - 1];
+          if (controlFlow.targetIndex !== undefined) {
+            top.chunkIndex = 0;
+            top.statementIndex = controlFlow.targetIndex;
+          } else {
+            top.chunkIndex = this.errorHandling.chunkIndex!;
+            top.statementIndex = this.errorHandling.statementIndex!;
+          }
+          if (controlFlow.next) {
+            top.statementIndex++;
+          }
+          this.errorHandling.active = false;
+          break;
         case ControlFlowTag.HALT:
           this.stack = [];
           break;
@@ -186,11 +217,20 @@ export class Invocation {
           await controlFlow.promise;
           break;
       }
-    } catch (error: unknown) {
-      if (error instanceof RuntimeError) {
-        // TODO: ON ERROR dispatch.
+    } catch (e: unknown) {
+      if (e instanceof RuntimeError) {
+        if (!this.errorHandling.active && this.errorHandling.targetIndex !== undefined) {
+          this.errorHandling.active = true;
+          this.errorHandling.error = e.error;
+          const top = this.stack[this.stack.length - 1];
+          this.errorHandling.chunkIndex = top.chunkIndex;
+          this.errorHandling.statementIndex = top.statementIndex;
+          top.chunkIndex = 0;
+          top.statementIndex = this.errorHandling.targetIndex;
+          return;
+        }
       }
-      throw error;
+      throw e;
     }
   }
 
