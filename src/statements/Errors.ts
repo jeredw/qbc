@@ -5,7 +5,7 @@ import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { getErrorForCode, ILLEGAL_FUNCTION_CALL, RuntimeError } from "../Errors.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { Variable } from "../Variables.ts";
-import { integer, long } from "../Values.ts";
+import { integer, long, string } from "../Values.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 
@@ -34,6 +34,28 @@ export class ResumeStatement extends Statement {
 
   override execute(context: ExecutionContext): ControlFlow {
     return {tag: ControlFlowTag.RESUME, targetIndex: this.targetIndex, next: this.next};
+  }
+}
+
+export class ErdevFunction extends Statement {
+  constructor(private result: Variable) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    // TODO: Model DOS error codes.
+    context.memory.write(this.result, integer(1));
+  }
+}
+
+export class ErdevStringFunction extends Statement {
+  constructor(private result: Variable) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    // TODO: Model DOS error codes.
+    context.memory.write(this.result, string("*6"));
   }
 }
 

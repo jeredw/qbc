@@ -83,6 +83,8 @@ ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
 EQV : [Ee][Qq][Vv] ;
 ERASE : [Ee][Rr][Aa][Ss][Ee] ;
+ERDEV : [Ee][Rr][Dd][Ee][Vv] ;
+ERDEV_STRING : [Ee][Rr][Dd][Ee][Vv] '$' ;
 ERROR : [Ee][Rr][Rr][Oo][Rr] ;
 EXIT : [Ee][Xx][Ii][Tt] ;
 FIELD : [Ff][Ii][Ee][Ll][Dd] ;

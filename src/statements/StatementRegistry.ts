@@ -148,7 +148,7 @@ import {
   WidthScreenStatement,
   WindowStatement,
 } from "./Graphics.ts";
-import { ErlFunction, ErrFunction, ErrorHandlerStatement, ErrorStatement, ResumeStatement } from "./Errors.ts";
+import { ErdevFunction, ErdevStringFunction, ErlFunction, ErrFunction, ErrorHandlerStatement, ErrorStatement, ResumeStatement } from "./Errors.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -296,6 +296,14 @@ export function eof(args: BuiltinStatementArgs) {
 
 export function errorHandler(token: Token) {
   return new ErrorHandlerStatement(token);
+}
+
+export function erdev(result: Variable) {
+  return new ErdevFunction(result);
+}
+
+export function erdevString(result: Variable) {
+  return new ErdevStringFunction(result);
 }
 
 export function erl(args: BuiltinStatementArgs) {

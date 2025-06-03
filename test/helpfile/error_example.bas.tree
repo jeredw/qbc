@@ -83,13 +83,15 @@
                   (literal "Using device ")) ;) 
               (print_argument 
                 (expr 
-                  (variable_or_function_call ERDEV$)) ;) 
+                  (builtin_function 
+                    (erdev_string_function ERDEV$))) ;) 
               (print_argument 
                 (expr 
                   (literal " device error code = ")) ;) 
               (print_argument 
                 (expr 
-                  (variable_or_function_call ERDEV))))) \n 
+                  (builtin_function 
+                    (erdev_function ERDEV)))))) \n 
           (statement 
             (resume_statement RESUME NEXT)) \n)) 
       (case_block 

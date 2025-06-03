@@ -1488,6 +1488,22 @@ export class CodeGenerator extends QBasicParserListener {
         codeGenerator.addStatement(statements.dateFunction(result));
       }
 
+      override enterErdev_function = (ctx: parser.Erdev_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        codeGenerator.addStatement(statements.erdev(result));
+      }
+
+      override enterErdev_string_function = (ctx: parser.Erdev_string_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        codeGenerator.addStatement(statements.erdevString(result));
+      }
+
       override enterInput_function = (ctx: parser.Input_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {

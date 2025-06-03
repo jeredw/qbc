@@ -168,8 +168,8 @@ parse those using baked in rules.
 | `EOF`            | Function    | -       | ✅      |
 | `EQV`            | Operator    | ✅      | ✅      |
 | `ERASE`          | Statement   | ✅      | ✅      |
-| `ERDEV`          | Function    | -       | ⛔      |
-| `ERDEV$`         | Function    | -       | ⛔      |
+| `ERDEV`          | Function    | -       | 🚧      |
+| `ERDEV$`         | Function    | -       | 🚧      |
 | `ERL`            | Function    | -       | ✅      |
 | `ERR`            | Function    | -       | ✅      |
 | `ERROR`          | Statement   | ✅      | ✅      |

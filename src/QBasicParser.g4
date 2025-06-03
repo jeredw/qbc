@@ -943,6 +943,8 @@ expr
 // just be builtins defined by the runtime.
 builtin_function
   : date_function
+  | erdev_function
+  | erdev_string_function
   | input_function
   | instr_function
   | IOCTL_STRING '(' '#'? filenum=expr ')'
@@ -964,6 +966,15 @@ builtin_function
 
 date_function
   : DATE_STRING
+  ;
+
+// These have the same name but different types so it's simpler to define them
+// in the grammar than to complicate builtin dispatch.
+erdev_function
+  : ERDEV
+  ;
+erdev_string_function
+  : ERDEV_STRING
   ;
 
 input_function
