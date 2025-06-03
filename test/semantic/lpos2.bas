@@ -1,0 +1,1 @@
+print lpos(10)

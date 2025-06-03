@@ -72,6 +72,7 @@ export class StandardLibrary {
     _("loc integer -> long", statements.loc),
     _("lof integer -> long", statements.lof),
     _("log double -> double", statements.log),
+    _("lpos integer -> integer", statements.lpos),
     _("ltrim string -> string", statements.ltrim),
     _("mkd numeric -> string", statements.mkd),
     _("mkdir string", statements.mkdir),

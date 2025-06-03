@@ -1,0 +1,112 @@
+(program 
+  (statement 
+    (lprint_statement lprint)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3)))) )))))) \n 
+  (statement 
+    (lprint_statement lprint 
+      (print_argument 
+        (expr 
+          (literal "hello")) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3)))) )))))) \n 
+  (statement 
+    (lprint_statement lprint)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call lpos 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3)))) )))))) \n <EOF>)

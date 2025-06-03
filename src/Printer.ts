@@ -5,6 +5,7 @@ export interface Printer {
   space(numSpaces: number): void;
   tab(targetColumn?: number): void;
   setWidth(columns: number): void;
+  getColumn(): number;
 }
 
 const TAB_STOP = 14;
@@ -20,6 +21,10 @@ export abstract class BasePrinter implements Printer {
 
   setWidth(columns: number): void {
     this.width = columns;
+  }
+
+  getColumn(): number {
+    return this.column;
   }
 
   abstract putChar(ch: string): void;

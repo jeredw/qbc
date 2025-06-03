@@ -218,7 +218,7 @@ parse those using baked in rules.
 | `LOG`            | Function    | -       | ✅      |
 | `LONG`           | Keyword     | ✅      | ✅      |
 | `LOOP`           | Keyword     | ✅      | ✅      |
-| `LPOS`           | Function    | -       | ⛔      |
+| `LPOS`           | Function    | -       | ✅      |
 | `LPRINT`         | Statement   | ✅      | ✅      |
 | `LPRINT USING`   | Statement   | ✅      | ✅      |
 | `LSET`           | Statement   | ✅      | ✅      |

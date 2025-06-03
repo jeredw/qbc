@@ -2,13 +2,15 @@ import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
-import { isError, isNumeric, isString, NumericValue } from "../Values.ts";
+import { integer, isError, isNumeric, isString, NumericValue, Value } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH } from "../Errors.ts";
 import { Printer } from "../Printer.ts";
 import { tryIo } from "../Files.ts";
 import { getSequentialWriteAccessor } from "./FileSystem.ts";
+import { BuiltinFunction1 } from "./BuiltinFunction.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 
 export interface PrintStatementArgs {
   token: Token;
@@ -609,5 +611,22 @@ export class WidthLprintStatement extends Statement {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
     context.devices.printer.setWidth(columns);
+  }
+}
+
+export class LposFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value, context: ExecutionContext): Value {
+    if (!isNumeric(input)) {
+      throw new Error("expecting number");
+    }
+    if (input.number < 0 || input.number > 3) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const column = input.number < 2 ? context.devices.printer.getColumn() : 1;
+    return integer(column);
   }
 }

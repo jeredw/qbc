@@ -78,6 +78,7 @@ import {
   WidthFileStatement
 } from "./FileSystem.ts";
 import {
+  LposFunction,
   PrintStatement,
   PrintStatementArgs,
   PrintUsingStatement,
@@ -517,6 +518,10 @@ export function loop(isWhile: boolean, expr: parser.ExprContext) {
 
 export function log(args: BuiltinStatementArgs) {
   return new LogFunction(args);
+}
+
+export function lpos(args: BuiltinStatementArgs) {
+  return new LposFunction(args);
 }
 
 export function lsetRecord(dest: Variable, source: Variable) {
