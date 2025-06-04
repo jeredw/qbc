@@ -53,14 +53,31 @@ export class CloseStatement extends Statement {
     const fileNumber = evaluateIntegerExpression(this.fileNumber, context.memory);
     const handle = context.files.handles.get(fileNumber);
     if (handle) {
-      handle.owner.close(handle);
-      for (const value of handle.fields) {
-        value.field = undefined;
-        value.string = "";
-      }
-      handle.fields = [];
+      closeFile(handle);
     }
     context.files.handles.delete(fileNumber);
+  }
+}
+
+function closeFile(handle: Handle) {
+  handle.owner.close(handle);
+  for (const value of handle.fields) {
+    value.field = undefined;
+    value.string = "";
+  }
+  handle.fields = [];
+}
+
+export class ResetStatement extends Statement {
+  constructor(private args: BuiltinStatementArgs) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    for (const handle of context.files.handles.values()) {
+      closeFile(handle);
+    }
+    context.files.handles.clear();
   }
 }
 

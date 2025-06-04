@@ -72,6 +72,7 @@ import {
   OpenArgs,
   OpenStatement,
   PutIoStatement,
+  ResetStatement,
   RmdirStatement,
   SeekFunction,
   SeekStatement,
@@ -663,6 +664,10 @@ export function randomize({seed, variable} : {seed?: parser.ExprContext, variabl
 
 export function read(token: Token, result: Variable) {
   return new ReadStatement(token, result);
+}
+
+export function reset(args: BuiltinStatementArgs) {
+  return new ResetStatement(args);
 }
 
 export function restore() {

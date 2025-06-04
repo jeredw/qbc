@@ -85,6 +85,7 @@ export class StandardLibrary {
     _("pmap double integer -> integer", statements.pmap),
     _("point integer integer? -> double", statements.point),
     _("pos integer -> integer", statements.pos),
+    _("reset", statements.reset),
     _("right string integer -> string", statements.right),
     _("rmdir string", statements.rmdir),
     _("rtrim string -> string", statements.rtrim),
