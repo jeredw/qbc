@@ -1586,6 +1586,17 @@ export class CodeGenerator extends QBasicParserListener {
         codeGenerator.addStatement(statements.playFunction(result));
       }
 
+      override enterScreen_function = (ctx: parser.Screen_functionContext) => {
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const row = codeGenerator.compileExpression(ctx._row!, ctx._row!.start!, { tag: TypeTag.INTEGER });
+        const column = codeGenerator.compileExpression(ctx._row!, ctx._column!.start!, { tag: TypeTag.INTEGER });
+        const colorFlag = ctx._colorflag && codeGenerator.compileExpression(ctx._colorflag, ctx._colorflag.start!, { tag: TypeTag.INTEGER });
+        codeGenerator.addStatement(statements.screenFunction(ctx.start!, result, row, column, colorFlag));
+      }
+
       override enterSeek_function = (ctx: parser.Seek_functionContext) => {
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {

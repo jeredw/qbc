@@ -69,6 +69,8 @@ export interface Screen extends Printer, LightPenTarget {
   configureCursor(startScanline: number, endScanline: number, insert?: boolean): void;
   getRow(): number;
   getColumn(): number;
+  getCharAt(row: number, column: number): string;
+  getColorAt(row: number, column: number): number;
   setSoftKey(key: number, name: string): void;
   showSoftKeys(): void;
   hideSoftKeys(): void;
@@ -896,6 +898,25 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return this.column;
   }
 
+  getCharAt(row: number, column: number): string {
+    this.checkOnScreen(row, column);
+    const cell = this.activePage.getCharAt(row, column);
+    return cell.char;
+  }
+
+  getColorAt(row: number, column: number): number {
+    this.checkOnScreen(row, column);
+    const cell = this.activePage.getCharAt(row, column);
+    return cell.attributes.fgColor;
+  }
+
+  private checkOnScreen(row: number, column: number) {
+    const [columns, rows] = this.geometry.text;
+    if (row < 1 || column < 1 || row > rows || column > columns) {
+      throw new Error("off screen");
+    }
+  }
+
   setSoftKey(key: number, name: string) {
     this.softKeys.keys[key - 1] = name;
     this.updateSoftKeyLine();
@@ -1182,6 +1203,14 @@ export class TestScreen implements Screen {
 
   getColumn(): number {
     return this.graphics.getColumn();
+  }
+
+  getCharAt(row: number, column: number): string {
+    return this.graphics.getCharAt(row, column);
+  }
+
+  getColorAt(row: number, column: number): number {
+    return this.graphics.getColorAt(row, column);
   }
 
   setSoftKey(key: number, name: string) {

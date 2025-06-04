@@ -1,0 +1,1 @@
+print screen(0, 0)

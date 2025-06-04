@@ -143,6 +143,7 @@ import {
   PsetStatement,
   PutGraphicsStatement,
   PutGraphicsStatementArgs,
+  ScreenFunction,
   ScreenStatement,
   ViewPrintStatement,
   ViewStatement,
@@ -700,6 +701,16 @@ export function rsetString(token: Token, variable: Variable, stringExpr: parser.
 
 export function rtrim(args: BuiltinStatementArgs) {
   return new RtrimFunction(args);
+}
+
+export function screenFunction(
+  token: Token,
+  result: Variable,
+  rowExpr: parser.ExprContext,
+  columnExpr: parser.ExprContext,
+  colorFlag?: parser.ExprContext
+) {
+  return new ScreenFunction(token, result, rowExpr, columnExpr, colorFlag);
 }
 
 export function screenStatement(

@@ -290,7 +290,7 @@ parse those using baked in rules.
 | `RTRIM$`         | Function    | -       | ✅      |
 | `RUN`            | Statement   | ⛔      | ⛔      |
 | `SADD`           | Function    | -       | ⛔      |
-| `SCREEN`         | Function    | ✅      | ⛔      |
+| `SCREEN`         | Function    | ✅      | ✅      |
 | `SCREEN`         | Statement   | ✅      | 🚧      |
 | `SEEK`           | Function    | ✅      | ✅      |
 | `SEEK`           | Statement   | ✅      | ✅      |

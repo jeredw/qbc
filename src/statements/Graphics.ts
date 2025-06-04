@@ -36,6 +36,36 @@ export class ScreenStatement extends Statement {
   }
 }
 
+export class ScreenFunction extends Statement {
+  constructor(
+    private token: Token,
+    private result: Variable,
+    private rowExpr: ExprContext,
+    private columnExpr: ExprContext,
+    private colorFlag?: ExprContext
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const row = evaluateIntegerExpression(this.rowExpr, context.memory);
+    const column = evaluateIntegerExpression(this.columnExpr, context.memory);
+    const colorFlag = this.colorFlag && evaluateIntegerExpression(this.colorFlag, context.memory);
+    let contents: number;
+    try {
+      if (colorFlag) {
+        contents = context.devices.screen.getColorAt(row, column);
+      } else {
+        const char = context.devices.screen.getCharAt(row, column);
+        contents = stringToAscii(char)[0] ?? 0;
+      }
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    context.memory.write(this.result, integer(contents));
+  }
+}
+
 export class ColorStatement extends Statement {
   constructor(
     private token: Token,

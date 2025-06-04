@@ -1,0 +1,54 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "Hello world"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (screen_function screen 
+              ( 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)) )))) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (screen_function screen 
+              ( 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (screen_function screen 
+              ( 
+                (expr 
+                  (literal 25)) , 
+                (expr 
+                  (literal 80)) )))) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (screen_function screen 
+              ( 
+                (expr 
+                  (literal 25)) , 
+                (expr 
+                  (literal 80)) , 
+                (expr 
+                  (literal 1)) ))))))) \n <EOF>)
