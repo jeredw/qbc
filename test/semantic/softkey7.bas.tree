@@ -1,0 +1,46 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal "help")))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal "edit")))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 6)) , 
+      (expr 
+        (literal "boss")))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 10)) , 
+      (expr 
+        (literal "panic!")))) \n 
+  (statement 
+    (key_statement key on)) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 30)) 
+      (block : 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ,) 
+            (print_argument 
+              (expr 
+                (literal "hello"))))) :) next i)) \n <EOF>)

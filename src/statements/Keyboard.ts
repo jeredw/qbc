@@ -55,9 +55,9 @@ export class KeyStatement extends Statement {
       case KeyStatementOperation.LIST:
         return this.listMacros(context);
       case KeyStatementOperation.ON:
-        return this.turnOnHelpLine(context);
+        return this.showSoftKeys(context);
       case KeyStatementOperation.OFF:
-        return this.turnOffHelpLine(context);
+        return this.hideSoftKeys(context);
       case KeyStatementOperation.BIND:
         return this.bindKey(context);
     }
@@ -72,12 +72,12 @@ export class KeyStatement extends Statement {
     }
   }
 
-  private turnOnHelpLine(context: ExecutionContext) {
-    // TODO
+  private showSoftKeys(context: ExecutionContext) {
+    context.devices.screen.showSoftKeys();
   }
 
-  private turnOffHelpLine(context: ExecutionContext) {
-    // TODO
+  private hideSoftKeys(context: ExecutionContext) {
+    context.devices.screen.hideSoftKeys();
   }
 
   private bindKey(context: ExecutionContext) {
@@ -86,6 +86,7 @@ export class KeyStatement extends Statement {
     if (keyNumber >= 1 && keyNumber <= 10) {
       // F1-F10
       context.devices.keyboard.setMacro(keyNumber, text);
+      context.devices.screen.setSoftKey(keyNumber, text);
       return;
     }
     if (keyNumber >= 30 && keyNumber <= 31) {

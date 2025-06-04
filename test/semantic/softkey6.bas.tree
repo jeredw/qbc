@@ -1,0 +1,51 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal "help")))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal "edit")))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 6)) , 
+      (expr 
+        (literal "boss")))) \n 
+  (statement 
+    (key_statement key 
+      (expr 
+        (literal 10)) , 
+      (expr 
+        (literal "panic!")))) \n 
+  (statement 
+    (key_statement key on)) \n 
+  (statement 
+    (view_print_statement view print 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 25)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 25)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "asfjngasngiadslfk")) ;))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n <EOF>)

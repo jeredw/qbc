@@ -200,7 +200,7 @@ parse those using baked in rules.
 | `IOCTL`          | Statement   | ✅      | ⛔      |
 | `IOCTL$`         | Function    | ✅      | ⛔      |
 | `IS`             | Keyword     | ✅      | ✅      |
-| `KEY` Assignment | Statement   | ✅      | 🚧      |
+| `KEY` Assignment | Statement   | ✅      | ✅      |
 | `KEY` Event      | Statement   | ✅      | ✅      |
 | `KILL`           | Statement   | -       | ✅      |
 | `LBOUND`         | Function    | ✅      | ✅      |
@@ -210,7 +210,7 @@ parse those using baked in rules.
 | `LET`            | Statement   | ✅      | ✅      |
 | `LINE` Graphics  | Statement   | ✅      | ✅      |
 | `LINE INPUT`     | Statement   | ✅      | ✅      |
-| `LIST`           | Keyword     | ✅      | ⛔      |
+| `LIST`           | Keyword     | ✅      | ✅      |
 | `LOC`            | Function    | -       | ✅      |
 | `LOCATE`         | Statement   | ✅      | ✅      |
 | `LOCK`           | Statement   | ✅      | ⛔      |

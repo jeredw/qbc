@@ -69,6 +69,9 @@ export interface Screen extends Printer, LightPenTarget {
   configureCursor(startScanline: number, endScanline: number, insert?: boolean): void;
   getRow(): number;
   getColumn(): number;
+  setSoftKey(key: number, name: string): void;
+  showSoftKeys(): void;
+  hideSoftKeys(): void;
 }
 
 export interface DrawState {
@@ -301,6 +304,11 @@ class Page {
   }
 }
 
+interface SoftKeys {
+  keys: string[];
+  visible: boolean;
+}
+
 export class CanvasScreen extends BasePrinter implements Screen {
   private mode: ScreenMode;
   private geometry: ScreenGeometry;
@@ -321,6 +329,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private canvasProvider: CanvasProvider;
   private headless?: boolean;
   private drawState: DrawState;
+  private softKeys: SoftKeys;
   canvas: HTMLCanvasElement;
 
   constructor(canvasProvider?: CanvasProvider) {
@@ -331,6 +340,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       matrix: [[1, 0], [0, 1]],
       scale: 4,
     };
+    this.softKeys = {keys: [], visible: false};
     this.configure(0, 0, 0, 0);
   }
 
@@ -339,6 +349,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       matrix: [[1, 0], [0, 1]],
       scale: 4,
     };
+    this.softKeys = {keys: [], visible: false};
     this.configure(1, 0, 0, 0);
     this.configure(0, 0, 0, 0);
   }
@@ -652,9 +663,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
       default:
         if (this.mode.mode === 0) {
           this.activePage.clearText(this.color, this.scrollStartRow, this.scrollEndRow - 1);
-          // TODO: Redraw the status line, instead of just clearing it.
           const [_, rows] = this.geometry.text;
-          this.activePage.clearText(this.color, rows, rows);
+          if (!this.softKeys.visible) {
+            this.activePage.clearText(this.color, rows, rows);
+          } else {
+            this.updateSoftKeyLine();
+          }
         } else if (this.activePage.viewSet) {
           this.activePage.clearGraphics(this.color);
           return;
@@ -880,6 +894,54 @@ export class CanvasScreen extends BasePrinter implements Screen {
 
   getColumn(): number {
     return this.column;
+  }
+
+  setSoftKey(key: number, name: string) {
+    this.softKeys.keys[key - 1] = name;
+    this.updateSoftKeyLine();
+  }
+
+  showSoftKeys() {
+    this.softKeys.visible = true;
+    this.updateSoftKeyLine();
+  }
+
+  hideSoftKeys() {
+    if (this.softKeys.visible) {
+      const [_, rows] = this.geometry.text;
+      this.activePage.clearText(this.color, rows, rows);
+    }
+    this.softKeys.visible = false;
+  }
+
+  private updateSoftKeyLine() {
+    if (!this.softKeys.visible) {
+      return;
+    }
+    const [columns, rows] = this.geometry.text;
+    const numKeys = columns === 80 ? 10 : 5;
+    let template = '';
+    for (let i = 0; i < numKeys; i++) {
+      template += `${i + 1}`.padEnd(8, ' ');
+    }
+    for (let i = 1; i <= columns; i++) {
+      this.activePage.putCharAt(rows, i, {char: template.charAt(i - 1), attributes: this.color});
+    }
+    const keyColor = this.mode.mode === 0 && this.color.bgColor === 0 ?
+      {fgColor: 0, bgColor: this.mode.defaultFgColor} :
+      {fgColor: this.mode.defaultFgColor, bgColor: 0};
+    for (let i = 0; i < numKeys; i++) {
+      const keyName = this.softKeys.keys[i];
+      if (!keyName) {
+        continue;
+      }
+      const startColumn = 8 * i + 2 + (i >= 9 ? 1 : 0);
+      const maxLength = i >= 9 ? 5 : 6;
+      const formattedName = keyName.slice(0, maxLength).padEnd(maxLength, ' ');
+      for (let j = 0; j < maxLength; j++) {
+        this.activePage.putCharAt(rows, startColumn + j, {char: formattedName.charAt(j), attributes: keyColor});
+      }
+    }
   }
 
   triggerPen(x: number, y: number): LightPenTrigger | undefined {
@@ -1120,6 +1182,18 @@ export class TestScreen implements Screen {
 
   getColumn(): number {
     return this.graphics.getColumn();
+  }
+
+  setSoftKey(key: number, name: string) {
+    this.graphics.setSoftKey(key, name);
+  }
+
+  showSoftKeys() {
+    this.graphics.showSoftKeys();
+  }
+
+  hideSoftKeys() {
+    this.graphics.hideSoftKeys();
   }
 
   print(text: string, newline: boolean) {
