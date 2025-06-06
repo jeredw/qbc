@@ -805,7 +805,7 @@ export class DrawStatement extends Statement {
           if (!command.execute.pointer) {
             throw new Error('expecting string pointer');
           }
-          const address = context.memory.readPointer(command.execute.pointer);
+          const {address} = context.memory.readPointer(command.execute.pointer);
           const xString = context.memory.readAddress(address);
           if (!xString) {
             continue;
@@ -831,7 +831,7 @@ export class DrawStatement extends Statement {
       return 0;
     }
     if (value.pointer) {
-      const address = context.memory.readPointer(value.pointer);
+      const {address} = context.memory.readPointer(value.pointer);
       const target = context.memory.readAddress(address);
       if (!target) {
         return 0;

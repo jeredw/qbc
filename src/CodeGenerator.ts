@@ -1425,11 +1425,7 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   private getVariable(variableCtx: parser.Variable_or_function_callContext): Variable {
-    const symbol = getTyperContext(variableCtx).$symbol;
-    if (!isVariable(symbol)) {
-      throw ParseError.fromToken(variableCtx.start!, "Expected: variable");
-    }
-    let variable = symbol.variable;
+    let variable = this.getVariableSymbol(variableCtx);
     if (variable.array) {
       const result = getTyperContext(variableCtx).$result;
       if (!result) {
@@ -1439,6 +1435,14 @@ export class CodeGenerator extends QBasicParserListener {
       variable = result;
     }
     return variable;
+  }
+
+  private getVariableSymbol(variableCtx: parser.Variable_or_function_callContext): Variable {
+    const symbol = getTyperContext(variableCtx).$symbol;
+    if (!isVariable(symbol)) {
+      throw ParseError.fromToken(variableCtx.start!, "Expected: variable");
+    }
+    return symbol.variable;
   }
 
   private compileExpression(expr: parser.ExprContext, token?: Token, resultType?: Type): parser.ExprContext {
@@ -1649,8 +1653,10 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        const variable = codeGenerator.getVariable(ctx.variable_or_function_call());
-        codeGenerator.addStatement(statements.varseg(ctx.start!, result, variable));
+        const variableCtx = ctx.variable_or_function_call();
+        const variable = codeGenerator.getVariable(variableCtx);
+        const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
+        codeGenerator.addStatement(statements.varseg(ctx.start!, result, variable, variableSymbol));
       }
 
       override enterVarptr_string_function = (ctx: parser.Varptr_string_functionContext) => {
@@ -1658,8 +1664,10 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        const variable = codeGenerator.getVariable(ctx.variable_or_function_call());
-        codeGenerator.addStatement(statements.varptrString(ctx.start!, result, variable));
+        const variableCtx = ctx.variable_or_function_call();
+        const variable = codeGenerator.getVariable(variableCtx);
+        const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
+        codeGenerator.addStatement(statements.varptrString(ctx.start!, result, variable, variableSymbol));
       }
 
       override enterVarptr_function = (ctx: parser.Varptr_functionContext) => {
@@ -1667,8 +1675,10 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        const variable = codeGenerator.getVariable(ctx.variable_or_function_call());
-        codeGenerator.addStatement(statements.varptr(ctx.start!, result, variable));
+        const variableCtx = ctx.variable_or_function_call();
+        const variable = codeGenerator.getVariable(variableCtx);
+        const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
+        codeGenerator.addStatement(statements.varptr(ctx.start!, result, variable, variableSymbol));
       }
     }, expr);
     if (resultType && token) {

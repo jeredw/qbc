@@ -1,16 +1,18 @@
 import { double, integer, isError, isNumeric, isString, long, NumericValue, single, string, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW, IOError } from "../Errors.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
+import { ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
 import { Token } from "antlr4ng";
+import { getArrayDescriptor, readBytesFromArray, writeBytesToArray } from "./Arrays.ts";
+import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -324,14 +326,21 @@ export class VarSegFunction extends Statement {
   constructor(
     private token: Token,
     private result: Variable,
-    private variable: Variable
+    private variable: Variable,
+    private variableSymbol: Variable,
   ) {
     super();
   }
 
   override execute(context: ExecutionContext) {
     const [address, _] = context.memory.dereference(this.variable);
-    const index = context.memory.writePointer(address);
+    // To address array data, QBasic programs have to say e.g. VARSEG(A(1)),
+    // because VARSEG(A()) doesn't parse and VARSEG(A) refers to the scalar A.
+    // We compile VARSEG(A(1)) as _tmp = reference A(1): VARSEG(_tmp).  The _tmp
+    // reference will store the address of A(1), but discards information about
+    // the array.  BSAVE and BLOAD need to look up the descriptor to know how
+    // big items in A are, so variableSymbol is the actual symbol A().
+    const index = context.memory.writePointer(address, this.variableSymbol);
     context.memory.write(this.result, integer(index));
   }
 }
@@ -340,14 +349,15 @@ export class VarPtrStringFunction extends Statement {
   constructor(
     private token: Token,
     private result: Variable,
-    private variable: Variable
+    private variable: Variable,
+    private variableSymbol: Variable,
   ) {
     super();
   }
 
   override execute(context: ExecutionContext) {
     const [address, _] = context.memory.dereference(this.variable);
-    const index = context.memory.writePointer(address);
+    const index = context.memory.writePointer(address, this.variableSymbol);
     const pointerBytes = [index & 0xff, (index >> 8) & 0xff, 0, 0];
     context.memory.write(this.result, string(asciiToString(pointerBytes)));
   }
@@ -357,7 +367,8 @@ export class VarPtrFunction extends Statement {
   constructor(
     private token: Token,
     private result: Variable,
-    private variable: Variable
+    private variable: Variable,
+    private variableSymbol: Variable,
   ) {
     super();
   }
@@ -652,4 +663,88 @@ function readString(variable: Variable, memory: Memory): string {
     throw new Error('non-string value for string variable');
   }
   return value.string;
+}
+
+export class BloadStatement extends Statement {
+  private token: Token;
+  private pathExpr: ExprContext;
+  private offsetExpr?: ExprContext;
+
+  constructor({token, params}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    this.pathExpr = params[0].expr!;
+    this.offsetExpr = params[1].expr;
+  }
+
+  override execute(context: ExecutionContext) {
+    const path = evaluateStringExpression(this.pathExpr, context.memory);
+    const offset = this.offsetExpr && (evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff);
+    if (offset !== 0) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    try {
+      const segment = context.memory.getSegment();
+      const {variable} = context.memory.readPointer(segment);
+      const data = readEntireFile(context, path);
+      if (data.length < 7) {
+        throw new Error('bsave header missing');
+      }
+      if (data[0] != 0xfd) {
+        throw new Error('bad signature for bsave header');
+      }
+      const length = (data[6] << 8) | data[5];
+      const buffer = new Uint8Array(data.slice(7)).buffer;
+      if (buffer.byteLength !== length) {
+        throw new Error('bad length in bsave header');
+      }
+      if (variable.array) {
+        writeBytesToArray(variable, buffer, context.memory);
+      } else {
+        writeBytesToVariable(variable, buffer, context.memory);
+      }
+    } catch (e: unknown) {
+      if (e instanceof IOError) {
+        throw RuntimeError.fromToken(this.token, e.error);
+      }
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
+}
+
+export class BsaveStatement extends Statement {
+  private token: Token;
+  private pathExpr: ExprContext;
+  private offsetExpr: ExprContext;
+  private lengthExpr: ExprContext;
+
+  constructor({token, params}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    this.pathExpr = params[0].expr!;
+    this.offsetExpr = params[1].expr!;
+    this.lengthExpr = params[2].expr!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const path = evaluateStringExpression(this.pathExpr, context.memory);
+    const length = evaluateIntegerExpression(this.lengthExpr, context.memory) & 0xffff;
+    const offset = evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff;
+    try {
+      const segment = context.memory.getSegment();
+      const {variable} = context.memory.readPointer(segment);
+      const bytes = variable.array ?
+        readBytesFromArray(variable, context.memory) :
+        readVariableToBytes(variable, context.memory);
+      const data = new Uint8Array(length);
+      data.set(new Uint8Array(bytes.slice(offset, offset + length)));
+      const file = [0xfd, 0, 0, 0, 0, length & 0xff, (length >> 8) & 0xff, ...data];
+      writeEntireFile(context, path, Array.from(file));
+    } catch (e: unknown) {
+      if (e instanceof IOError) {
+        throw RuntimeError.fromToken(this.token, e.error);
+      }
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+  }
 }

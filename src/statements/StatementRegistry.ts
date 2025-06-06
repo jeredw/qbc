@@ -27,6 +27,8 @@ import { CallStatement, StackVariable } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import {
+  BloadStatement,
+  BsaveStatement,
   CdblFunction,
   CintFunction,
   ClngFunction,
@@ -166,6 +168,14 @@ export function atn(args: BuiltinStatementArgs) {
 
 export function beep(_args: BuiltinStatementArgs) {
   return new BeepStatement();
+}
+
+export function bload(args: BuiltinStatementArgs) {
+  return new BloadStatement(args);
+}
+
+export function bsave(args: BuiltinStatementArgs) {
+  return new BsaveStatement(args);
 }
 
 export function call(chunkIndex: number, stackVariables: StackVariable[], stackSize: number) {
@@ -803,16 +813,16 @@ export function val(args: BuiltinStatementArgs) {
   return new ValFunction(args);
 }
 
-export function varseg(token: Token, result: Variable, variable: Variable) {
-  return new VarSegFunction(token, result, variable);
+export function varseg(token: Token, result: Variable, variable: Variable, variableSymbol: Variable) {
+  return new VarSegFunction(token, result, variable, variableSymbol);
 }
 
-export function varptrString(token: Token, result: Variable, variable: Variable) {
-  return new VarPtrStringFunction(token, result, variable);
+export function varptrString(token: Token, result: Variable, variable: Variable, variableSymbol: Variable) {
+  return new VarPtrStringFunction(token, result, variable, variableSymbol);
 }
 
-export function varptr(token: Token, result: Variable, variable: Variable) {
-  return new VarPtrFunction(token, result, variable);
+export function varptr(token: Token, result: Variable, variable: Variable, variableSymbol: Variable) {
+  return new VarPtrFunction(token, result, variable, variableSymbol);
 }
 
 export function view_(

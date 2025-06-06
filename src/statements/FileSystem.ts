@@ -593,3 +593,19 @@ export class WidthFileStatement extends Statement {
     });
   }
 }
+
+export function writeEntireFile(context: ExecutionContext, path: string, bytes: number[]) {
+  const handle = context.devices.disk.open(path, OpenMode.BINARY);
+  handle.accessor.putBytes(bytes);
+  context.devices.disk.close(handle);
+}
+
+export function readEntireFile(context: ExecutionContext, path: string): number[] {
+  // Open for INPUT first to test whether the file exists.
+  const testHandle = context.devices.disk.open(path, OpenMode.INPUT);
+  context.devices.disk.close(testHandle);
+  const handle = context.devices.disk.open(path, OpenMode.BINARY);
+  const bytes = handle.accessor.getBytes(handle.accessor.length());
+  context.devices.disk.close(handle);
+  return bytes;
+}

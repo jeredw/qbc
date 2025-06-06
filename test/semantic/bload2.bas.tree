@@ -1,0 +1,43 @@
+(program 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable Cube 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 675))) ))))) \n 
+  (statement 
+    (def_seg_statement DEF SEG = 
+      (expr 
+        (builtin_function 
+          (varseg_function VARSEG 
+            ( 
+              (variable_or_function_call Cube 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 1)))) )) )))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id BLOAD) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "bogus"))) , 
+        (argument 
+          (expr 
+            (builtin_function 
+              (varptr_function VARPTR 
+                ( 
+                  (variable_or_function_call Cube 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) )))))))) \n 
+  (statement 
+    (def_seg_statement DEF SEG)) \n <EOF>)

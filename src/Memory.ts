@@ -47,12 +47,17 @@ export class Frame {
   }
 }
 
+export interface Pointer {
+  address: Address;
+  variable: Variable;
+}
+
 export class Memory {
   static: Frame;
   stack: Frame[] = [];
   dynamic: Frame[] = [];
   segment: number = 0;
-  pointers: Address[] = [];
+  pointers: Pointer[] = [];
 
   constructor(size: number) {
     this.static = new Frame(size);
@@ -149,11 +154,15 @@ export class Memory {
     this.writeAddress(address, value);
   }
 
+  getSegment(): number {
+    return this.segment;
+  }
+
   setSegment(segment: number) {
     this.segment = segment;
   }
 
-  readPointer(index: number): Address {
+  readPointer(index: number): Pointer {
     const entryIndex = index - 1;
     if (entryIndex < 0 || entryIndex >= this.pointers.length) {
       throw new Error("invalid pointer");
@@ -161,11 +170,11 @@ export class Memory {
     return this.pointers[entryIndex];
   }
 
-  writePointer(address: Address): number {
+  writePointer(address: Address, variable: Variable): number {
     if (this.pointers.length > 65535) {
       throw new Error("out of pointer space");
     }
-    this.pointers.push(address);
+    this.pointers.push({address, variable});
     return this.pointers.length;
   }
 

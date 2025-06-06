@@ -1,0 +1,4 @@
+DIM Cube(1 TO 675)
+DEF SEG = VARSEG(Cube(1))
+BLOAD "bogus", VARPTR(Cube(1))
+DEF SEG

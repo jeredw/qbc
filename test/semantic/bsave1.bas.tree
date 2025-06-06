@@ -1,0 +1,94 @@
+(program 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable Cube 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 675))) ))))) \n \n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)))) \n ' \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 140)) , 
+        (expr 
+          (literal 25)) ) - 
+      ( 
+        (expr 
+          (expr 
+            (literal 140)) + 
+          (expr 
+            (literal 100))) , 
+        (expr 
+          (literal 125)) ) , 
+      (expr 
+        (literal 3)) , 
+      (box_style b))) \n ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "C2 BM140,50 M+50,-25 M+50,25 M-50,25")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "M-50,-25 M+0,50 M+50,25 M+50,-25 M+0,-50 BM190,75 M+0,50")))))) \n ' \n 
+  (statement 
+    (get_graphics_statement GET 
+      ( 
+        (expr 
+          (literal 140)) , 
+        (expr 
+          (literal 25)) ) - 
+      ( 
+        (expr 
+          (literal 240)) , 
+        (expr 
+          (literal 125)) ) , Cube)) \n ' \n ' \n 
+  (statement 
+    (def_seg_statement DEF SEG = 
+      (expr 
+        (builtin_function 
+          (varseg_function VARSEG 
+            ( 
+              (variable_or_function_call Cube 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 1)))) )) )))))) ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id BSAVE) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "magcube.grh"))) , 
+        (argument 
+          (expr 
+            (builtin_function 
+              (varptr_function VARPTR 
+                ( 
+                  (variable_or_function_call Cube 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 1)))) )) ))))) , 
+        (argument 
+          (expr 
+            (literal 2700)))))) \n 
+  (statement 
+    (def_seg_statement DEF SEG)) ' \n <EOF>)

@@ -85,7 +85,7 @@ export class PlayStatement extends Statement {
       }
       for (const note of song.notes) {
         if (note.pointer) {
-          const address = context.memory.readPointer(note.pointer);
+          const {address} = context.memory.readPointer(note.pointer);
           const xString = context.memory.readAddress(address);
           if (!xString) {
             continue;

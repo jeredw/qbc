@@ -116,8 +116,8 @@ parse those using baked in rules.
 | `BASE`           | Keyword     | ✅      | ✅      |
 | `BEEP`           | Statement   | -       | ✅      |
 | `BINARY`         | Keyword     | ✅      | ✅      |
-| `BLOAD`          | Statement   | -       | ⛔      |
-| `BSAVE`          | Statement   | -       | ⛔      |
+| `BLOAD`          | Statement   | -       | 🚧      |
+| `BSAVE`          | Statement   | -       | 🚧      |
 | `CALL`           | Statement   | ✅      | ✅      |
 | `CALL ABSOLUTE`  | Statement   | ✅      | ⛔      |
 | `CASE`           | Keyword     | ✅      | ✅      |

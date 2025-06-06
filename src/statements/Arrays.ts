@@ -206,7 +206,7 @@ export class UboundFunction extends ArrayBoundFunction {
   }
 }
 
-function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor {
+export function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDescriptor {
   if (!variable.array) {
     throw new Error("not an array");
   }
