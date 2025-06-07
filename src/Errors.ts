@@ -188,6 +188,7 @@ export const
   INPUT_PAST_END_OF_FILE = getErrorForCode(62),
   BAD_RECORD_NUMBER = getErrorForCode(63),
   BAD_FILE_NAME = getErrorForCode(64),
+  ADVANCED_FEATURE_UNAVAILABLE = getErrorForCode(73),
   PATH_FILE_ACCESS_ERROR = getErrorForCode(75),
   PATH_NOT_FOUND = getErrorForCode(76);
 

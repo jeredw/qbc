@@ -153,6 +153,7 @@ import {
   WindowStatement,
 } from "./Graphics.ts";
 import { ErdevFunction, ErdevStringFunction, ErlFunction, ErrFunction, ErrorHandlerStatement, ErrorStatement, ResumeStatement } from "./Errors.ts";
+import { CommandFunction } from "./Dos.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -224,6 +225,10 @@ export function clng(args: BuiltinStatementArgs) {
 
 export function cls(args: BuiltinStatementArgs) {
   return new ClsStatement(args);
+}
+
+export function command(args: BuiltinStatementArgs) {
+  return new CommandFunction(args);
 }
 
 export function cos(args: BuiltinStatementArgs) {
