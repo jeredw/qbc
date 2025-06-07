@@ -41,8 +41,12 @@ export abstract class BasePrinter implements Printer {
 
   protected putString(text: string) {
     for (const ch of text) {
-      this.putChar(ch);
-      this.column++;
+      if (ch === '\n' || ch === '\r') {
+        this.newLine();
+      } else {
+        this.putChar(ch);
+        this.column++;
+      }
     }
   }
 

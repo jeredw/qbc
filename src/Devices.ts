@@ -6,6 +6,7 @@ import { Keyboard } from "./Keyboard.ts";
 import { Timer } from "./Timer.ts";
 import { Joystick } from "./Joystick.ts";
 import { LightPen } from "./LightPen.ts";
+import { Modem } from "./Modem.ts";
 
 export interface Devices {
   screen: Screen;
@@ -16,4 +17,5 @@ export interface Devices {
   timer: Timer;
   joystick: Joystick;
   lightPen: LightPen;
+  modem: Modem;
 }

@@ -5,7 +5,7 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { integer, isNumeric, isString, long, string, StringValue, Value } from "../Values.ts";
 import { IOError, RuntimeError, BAD_FILE_MODE, BAD_FILE_NAME_OR_NUMBER, BAD_RECORD_LENGTH, FIELD_OVERFLOW, FIELD_STATEMENT_ACTIVE, ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH, VARIABLE_REQUIRED } from "../Errors.ts";
-import { FileAccessor, Handle, isSequentialReadMode, isSequentialWriteMode, OpenMode, tryIo } from "../Files.ts";
+import { FileAccessor, Handle, isSequentialReadMode, isSequentialWriteMode, Opener, OpenMode, tryIo } from "../Files.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { DiskEntry } from "../Disk.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
@@ -27,7 +27,7 @@ export class OpenStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const name = evaluateStringExpression(this.args.name, context.memory);
+    let name = evaluateStringExpression(this.args.name, context.memory);
     const fileNumber = evaluateIntegerExpression(this.args.fileNumber, context.memory);
     if (name.length < 1 || name.length > 255 || fileNumber < 0 || fileNumber > 255) {
       throw RuntimeError.fromToken(this.args.token, BAD_FILE_NAME_OR_NUMBER);
@@ -37,8 +37,13 @@ export class OpenStatement extends Statement {
     if (recordLength && recordLength <= 0) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
+    let device: Opener = context.devices.disk;
+    if (name.toLowerCase().startsWith('com1:')) {
+      name = name.slice(5);
+      device = context.devices.modem;
+    }
     tryIo(this.args.token, () => {
-      const handle = context.devices.disk.open(name, this.args.mode, recordLength);
+      const handle = device.open(name, this.args.mode, recordLength);
       context.files.handles.set(fileNumber, handle);
     });
   }

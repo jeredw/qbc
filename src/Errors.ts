@@ -187,6 +187,7 @@ export const
   BAD_RECORD_LENGTH = getErrorForCode(59),
   INPUT_PAST_END_OF_FILE = getErrorForCode(62),
   BAD_RECORD_NUMBER = getErrorForCode(63),
+  BAD_FILE_NAME = getErrorForCode(64),
   PATH_FILE_ACCESS_ERROR = getErrorForCode(75),
   PATH_NOT_FOUND = getErrorForCode(76);
 

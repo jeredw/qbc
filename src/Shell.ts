@@ -9,6 +9,7 @@ import { KeyboardListener } from "./Keyboard.ts";
 import { RealTimeTimer } from "./Timer.ts";
 import { GamepadListener } from "./Joystick.ts";
 import { PointerListener } from "./LightPen.ts";
+import { HttpModem } from "./Modem.ts";
 
 const TAB_STOPS = 8;
 
@@ -32,6 +33,7 @@ class Shell {
   private timer: RealTimeTimer;
   private gamepad: GamepadListener;
   private pointer: PointerListener;
+  private modem: HttpModem;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -43,6 +45,7 @@ class Shell {
     this.timer = new RealTimeTimer();
     this.gamepad = new GamepadListener();
     this.pointer = new PointerListener(this.screen);
+    this.modem = new HttpModem();
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -55,6 +58,7 @@ class Shell {
       timer: this.timer,
       joystick: this.gamepad,
       lightPen: this.pointer,
+      modem: this.modem,
     });
     this.codePane = assertHTMLElement(root.querySelector('.code-pane'));
     this.runButton = assertHTMLElement(root.querySelector('.run-button'));
@@ -148,6 +152,7 @@ class Shell {
       this.keyboard.reset();
       this.speaker.reset();
       this.screen.reset();
+      this.modem.reset();
       this.invocation = this.interpreter.run(text);
       this.root.classList.add('running');
       await this.invocation.restart();
