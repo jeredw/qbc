@@ -1,0 +1,69 @@
+General
+- Add a way to package programs as freestanding websites
+- Add an interactive help system and documentation
+- Write some articles or fun blog posts about aspects of the project
+- Improve parser error messages
+- Rewrite the antlr parser as a hand rolled recursive descent thing
+- Open up the repository and release a beta
+
+Bringup
+- Get all the example programs to run correctly
+  - GORILLA
+  - MANDEL
+  - MONEY
+  - NIBBLES
+  - QBLOCKS
+  - QBRICKS
+  - QMAZE
+  - QPAINT
+  - QSPACE
+  - QSYNTH
+  - REMLINE
+  - REVERSI
+  - SORTDEMO
+  - TORUS
+- Organize golden file tests a bit better and document expectations
+
+IDE features
+- Better debugging / single step UI
+- Improve text editing, avoiding paste as HTML... bite the bullet and embed vscode?
+- Persist filesystem to local storage
+- Load and save programs to filesystem
+- Add a filesystem browser
+- Add a way to upload/download files from browser
+
+Language features
+- Modem support
+- Consider some x86 emulation for CALL ABSOLUTE
+- Multi-module program support: CHAIN, COMMON, RUN
+- Painting patterns
+- Debugging statements TRON, TROFF, STOP
+- DOS emulation for SYSTEM, SHELL, IOCTL
+- Do something with file locking LOCK/UNLOCK and ACCESS
+- Better I/O emulation for WAIT, INP, OUTP (VGA registers? more?)
+- Match circle rasterization for squishy aspect ratios
+- Fix arithmetic precision for math functions, especially single vs double
+  precision rounding issues
+- Storage metacommands should only apply to DIM arrays
+  "The $STATIC and $DYNAMIC metacommands affect all arrays except implicitly
+  dimensioned arrays (arrays not declared in a DIM statement). Implicitly
+  dimensioned arrays are always allocated as if $STATIC had been used."
+- Support PEEK and POKE for VARSEG pointers
+- PEEK and POKE for memory mapped I/O stuff (keyboard lights?)
+- Improve hacky VARSEG pointers so they can be recycled
+- Deal with "advanced features"
+  - ALIAS: doesn't parse
+  - BYVAL: parses for DECLARE, but not for definitions...
+  - CDECL: syntax error
+  - COMMAND$: parses, unavailable
+  - EVENT: syntax error
+  - $INCLUDE: parses, unavailable
+  - Int86
+  - Int86X
+  - LOCAL: syntax error
+  - SADD: can call it... seems to work?
+  - Interrupt
+  - InterruptX
+  - SETMEM: can call it...
+  - SIGNAL: parses, unavailable
+  - UEVENT: parses, unavailable
