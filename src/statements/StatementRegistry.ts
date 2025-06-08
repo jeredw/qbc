@@ -48,6 +48,8 @@ import {
   MklFunction,
   MksFunction,
   MksmbfFunction,
+  PeekStatement,
+  PokeStatement,
   VarPtrFunction,
   VarPtrStringFunction,
   VarSegFunction
@@ -609,6 +611,10 @@ export function palette(token: Token, attributeExpr?: parser.ExprContext, colorE
   return new PaletteStatement(token, attributeExpr, colorExpr, array);
 }
 
+export function peek(args: BuiltinStatementArgs) {
+  return new PeekStatement(args);
+}
+
 export function pen(args: BuiltinStatementArgs) {
   return new PenFunction(args);
 }
@@ -627,6 +633,10 @@ export function pmap(args: BuiltinStatementArgs) {
 
 export function point(args: BuiltinStatementArgs) {
   return new PointFunction(args);
+}
+
+export function poke(args: BuiltinStatementArgs) {
+  return new PokeStatement(args);
 }
 
 export function pos(args: BuiltinStatementArgs) {

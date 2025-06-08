@@ -5,13 +5,13 @@ import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW, IOError } from "../Error
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
+import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
 import { Token } from "antlr4ng";
-import { getArrayDescriptor, readBytesFromArray, writeBytesToArray } from "./Arrays.ts";
+import { readBytesFromArray, writeBytesToArray } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
@@ -694,15 +694,11 @@ export class BloadStatement extends Statement {
         throw new Error('bad signature for bsave header');
       }
       const length = (data[6] << 8) | data[5];
-      const buffer = new Uint8Array(data.slice(7)).buffer;
-      if (buffer.byteLength !== length) {
+      const newData = new Uint8Array(data.slice(7));
+      if (newData.buffer.byteLength !== length) {
         throw new Error('bad length in bsave header');
       }
-      if (variable.array) {
-        writeBytesToArray(variable, buffer, context.memory);
-      } else {
-        writeBytesToVariable(variable, buffer, context.memory);
-      }
+      writeBytesAtPointer(context.memory, variable, newData);
     } catch (e: unknown) {
       if (e instanceof IOError) {
         throw RuntimeError.fromToken(this.token, e.error);
@@ -731,11 +727,7 @@ export class BsaveStatement extends Statement {
     const length = evaluateIntegerExpression(this.lengthExpr, context.memory) & 0xffff;
     const offset = evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff;
     try {
-      const segment = context.memory.getSegment();
-      const {variable} = context.memory.readPointer(segment);
-      const bytes = variable.array ?
-        readBytesFromArray(variable, context.memory) :
-        readVariableToBytes(variable, context.memory);
+      const [_, bytes] = readBytesAtPointer(context.memory);
       const data = new Uint8Array(length);
       data.set(new Uint8Array(bytes.slice(offset, offset + length)));
       const file = [0xfd, 0, 0, 0, 0, length & 0xff, (length >> 8) & 0xff, ...data];
@@ -746,5 +738,77 @@ export class BsaveStatement extends Statement {
       }
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
+  }
+}
+
+export class PeekStatement extends Statement {
+  private token: Token;
+  private addressExpr: ExprContext;
+  private result: Variable;
+
+  constructor({token, params, result}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    this.addressExpr = params[0].expr!;
+    this.result = result!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const address = evaluateIntegerExpression(this.addressExpr, context.memory, { tag: TypeTag.LONG });
+    if (address < -65536 || address > 65535) {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+    try {
+      const [_, data] = readBytesAtPointer(context.memory);
+      context.memory.write(this.result, integer(data[address] ?? 0));
+    } catch (e: unknown) {
+      context.memory.write(this.result, integer(0));
+    }
+  }
+}
+
+export class PokeStatement extends Statement {
+  private token: Token;
+  private addressExpr: ExprContext;
+  private valueExpr: ExprContext;
+
+  constructor({token, params, result}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    this.addressExpr = params[0].expr!;
+    this.valueExpr = params[1].expr!;
+  }
+
+  override execute(context: ExecutionContext) {
+    const address = evaluateIntegerExpression(this.addressExpr, context.memory, { tag: TypeTag.LONG });
+    if (address < -65536 || address > 65535) {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+    const byte = evaluateIntegerExpression(this.valueExpr, context.memory) & 255;
+    try {
+      const [variable, data] = readBytesAtPointer(context.memory);
+      if (address < data.length) {
+        data[address] = byte;
+        writeBytesAtPointer(context.memory, variable, data);
+      }
+    } catch (e: unknown) {
+    }
+  }
+}
+
+function readBytesAtPointer(memory: Memory): [Variable, Uint8Array] {
+  const segment = memory.getSegment();
+  const {variable} = memory.readPointer(segment);
+  const bytes = variable.array ?
+    readBytesFromArray(variable, memory) :
+    readVariableToBytes(variable, memory);
+  return [variable, new Uint8Array(bytes)];
+}
+
+function writeBytesAtPointer(memory: Memory, variable: Variable, data: Uint8Array) {
+  if (variable.array) {
+    writeBytesToArray(variable, data.buffer, memory);
+  } else {
+    writeBytesToVariable(variable, data.buffer, memory);
   }
 }

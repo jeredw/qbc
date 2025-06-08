@@ -1,0 +1,88 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a%) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call a%) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a%)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (builtin_function 
+                      (varptr_function varptr 
+                        ( 
+                          (variable_or_function_call a%) )))))) ))) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (expr 
+                      (builtin_function 
+                        (varptr_function varptr 
+                          ( 
+                            (variable_or_function_call a%) )))) + 
+                    (expr 
+                      (literal 1))))) )))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (builtin_function 
+              (varptr_function varptr 
+                ( 
+                  (variable_or_function_call a%) ))))) , 
+        (argument 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a%)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (builtin_function 
+                      (varptr_function varptr 
+                        ( 
+                          (variable_or_function_call a%) )))))) ))) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (expr 
+                      (builtin_function 
+                        (varptr_function varptr 
+                          ( 
+                            (variable_or_function_call a%) )))) + 
+                    (expr 
+                      (literal 1))))) )))))) \n 
+  (statement 
+    (def_seg_statement def seg)) \n <EOF>)

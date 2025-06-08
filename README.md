@@ -258,7 +258,7 @@ parse those using baked in rules.
 | `PALETTE`        | Statement   | ✅      | ✅      |
 | `PALETTE USING`  | Statement   | ✅      | ✅      |
 | `PCOPY`          | Statement   | -       | ⛔      |
-| `PEEK`           | Function    | -       | ⛔      |
+| `PEEK`           | Function    | -       | 🚧      |
 | `PEN`            | Function    | ✅      | ✅      |
 | `PEN`            | Statement   | ✅      | ✅      |
 | `PLAY`           | Function    | ✅      | ✅      |
@@ -266,7 +266,7 @@ parse those using baked in rules.
 | `PLAY` Events    | Statement   | ✅      | ✅      |
 | `PMAP`           | Function    | -       | ✅      |
 | `POINT`          | Function    | -       | ✅      |
-| `POKE`           | Statement   | -       | ⛔      |
+| `POKE`           | Statement   | -       | 🚧      |
 | `POS`            | Function    | -       | ✅      |
 | `PRESET`         | Statement   | ✅      | ✅      |
 | `PRINT`          | Statement   | ✅      | ✅      |

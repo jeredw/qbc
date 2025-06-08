@@ -1,0 +1,21 @@
+(program ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 24))) , 
+        (argument 
+          (expr 
+            (literal 57)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 24)))) )))))) \n <EOF>)
