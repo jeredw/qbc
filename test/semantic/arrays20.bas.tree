@@ -1,0 +1,30 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter x%)) ) static 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable a$ 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (variable_or_function_call x%))) ))))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (builtin_function 
+                (ubound_function ubound 
+                  ( a$ ))))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 10)))))) \n <EOF>)

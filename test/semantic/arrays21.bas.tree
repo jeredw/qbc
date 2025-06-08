@@ -1,0 +1,25 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (static_statement static 
+          (scope_variable 
+            (untyped_id a) 
+            (array_declaration 
+              ( )) as 
+            (type_name integer)))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call a 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 1)))) )))))) ' \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)

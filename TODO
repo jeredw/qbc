@@ -33,7 +33,6 @@ IDE features
 - Add a way to upload/download files from browser
 
 Language features
-+ Modem support
 - Consider some x86 emulation for CALL ABSOLUTE
 - Multi-module program support: CHAIN, COMMON, RUN
 - Painting patterns
@@ -49,7 +48,6 @@ Language features
   "The $STATIC and $DYNAMIC metacommands affect all arrays except implicitly
   dimensioned arrays (arrays not declared in a DIM statement). Implicitly
   dimensioned arrays are always allocated as if $STATIC had been used."
-+ Support PEEK and POKE for VARSEG pointers
 - PEEK and POKE for memory mapped I/O stuff (keyboard lights?)
 - Improve hacky VARSEG pointers so they can be recycled
 - Deal with "advanced features"
@@ -68,3 +66,13 @@ Language features
   - SETMEM: can call it...
   - SIGNAL: parses, unavailable
   - UEVENT: parses, unavailable
+- nibbles: Extra space after score
+- nibbles: Speed is messed up
+- qbricks: Ball does not erase
+- qblocks: Exits after starting with subscript error
+- qmaze: Generationg gets stuck
+- qspace: Suscript error after firing
+- qsynth: output goes silent when increasing tempo
++ qsynth: "unexpected error" dialog on startup
++ Support PEEK and POKE for VARSEG pointers
++ Modem support

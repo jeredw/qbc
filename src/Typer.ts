@@ -370,12 +370,10 @@ export class Typer extends QBasicParserListener {
       const dynamic = nonConstantBounds ||
         redim ||
         !this._useStaticArrays ||
+        // All dimensioned arrays in non-STATIC procedures are dynamic.
         (!!this._chunk.procedure && this._storageType != StorageType.STATIC);
-      // Dynamic arrays in static procedures parse but throw a runtime error.
-      const inStaticProcedure =
-        (!!this._chunk.procedure && this._storageType == StorageType.STATIC);
       const arrayDescriptor = {...dimensions.length ? {
-        array: {dynamic, dimensions, inStaticProcedure}
+        array: {dynamic, dimensions}
       } : {}};
       let existingVariable: Variable | undefined;
       let variable: Variable;
@@ -465,7 +463,6 @@ export class Typer extends QBasicParserListener {
           // array variables...
           existingVariable.array.dynamic = arrayDescriptor.array.dynamic;
           existingVariable.array.dimensions = arrayDescriptor.array.dimensions;
-          existingVariable.array.inStaticProcedure = arrayDescriptor.array.inStaticProcedure;
           this._chunk.symbols.allocateArray(existingVariable);
         }
         variable = existingVariable;
@@ -611,9 +608,10 @@ export class Typer extends QBasicParserListener {
       let arrayDescriptor = {};
       if (scope.array_declaration()) {
         // Trying to define a STATIC array() creates a bogus empty array that
-        // cannot be indexed at runtime.
+        // cannot be indexed at runtime.  It can only be dimensioned as a
+        // dynamic array.
         arrayDescriptor = {
-          array: {dimensions: [{lower: 0, upper: -1}]}
+          array: {dimensions: [{lower: 0, upper: -1}], dynamic: true}
         };
       }
       if (!!scope.AS()) {

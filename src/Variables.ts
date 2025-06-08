@@ -35,7 +35,6 @@ export interface ArrayDescriptor {
   baseAddress?: Address;
   itemSize?: number;
   dimensions: ArrayBounds[];
-  inStaticProcedure?: boolean;
 }
 
 export interface ArrayBounds {

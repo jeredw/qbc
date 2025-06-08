@@ -314,6 +314,10 @@ export class SymbolTable {
         })
       },
     } : {};
+    if (storageType === StorageType.AUTOMATIC && numDimensions > 0) {
+      // Arrays cannot be implicitly defined on the stack.
+      throw ParseError.fromToken(token, "Array not defined");
+    }
     const variable = { name, type, sigil, token, storageType, isAsType, sharedDeclaration, ...array };
     this.defineVariable(variable);
     return { tag: SymbolTag.VARIABLE, variable };

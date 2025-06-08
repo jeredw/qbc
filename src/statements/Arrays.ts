@@ -32,9 +32,6 @@ export class DimStatement extends Statement {
     if (!this.result.address) {
       throw new Error("result ref not allocated");
     }
-    if (this.result.array.inStaticProcedure) {
-      throw RuntimeError.fromToken(this.token, DUPLICATE_DEFINITION);
-    }
     const oldDescriptor = getArrayDescriptor(this.result, context.memory);
     if (oldDescriptor.baseAddress) {
       if (!this.redim) {
