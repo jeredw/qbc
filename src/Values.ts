@@ -3,6 +3,7 @@ import { sameType, Type, TypeTag } from './Types.ts'
 import type { ArrayDescriptor, Variable } from './Variables.ts'
 import { Address } from './Memory.ts';
 import { OVERFLOW, TYPE_MISMATCH } from './Errors.ts';
+import { roundToNearestEven } from "./Math.ts";
 
 export type ErrorValue = {
   tag: TypeTag.ERROR;
@@ -216,7 +217,7 @@ export function integer(number: number): Value {
     return OVERFLOW;
   }
   // TODO: QBasic rounds floats to the nearest even.
-  return {tag: TypeTag.INTEGER, number: Math.round(number)};
+  return {tag: TypeTag.INTEGER, number: roundToNearestEven(number)};
 }
 
 export function long(number: number): Value {
@@ -224,7 +225,7 @@ export function long(number: number): Value {
     return OVERFLOW;
   }
   // TODO: QBasic rounds floats to the nearest even.
-  return {tag: TypeTag.LONG, number: Math.round(number)};
+  return {tag: TypeTag.LONG, number: roundToNearestEven(number)};
 }
 
 export function boolean(test: boolean): Value {

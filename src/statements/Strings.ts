@@ -11,6 +11,7 @@ import { Statement } from "./Statement.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
 import { updateRecordBuffer } from "./FileSystem.ts";
+import { roundToNearestEven } from "../Math.ts";
 
 export class AscFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -42,7 +43,7 @@ export class ChrFunction extends BuiltinFunction1 {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
-    const code = Math.round(input.number);
+    const code = roundToNearestEven(input.number);
     if (code < 0 || code > 255) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }

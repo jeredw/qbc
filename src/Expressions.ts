@@ -15,6 +15,7 @@ import { ParseError, RuntimeError, TYPE_MISMATCH, ILLEGAL_FUNCTION_CALL, DIVISIO
 import { isConstant, isVariable } from "./SymbolTable.ts";
 import { Memory } from "./Memory.ts";
 import { Variable } from "./Variables.ts";
+import { roundToNearestEven } from "./Math.ts";
 
 export function evaluateStringExpression(expr: ExprContext, memory: Memory): string {
   const value = evaluateExpression({
@@ -516,9 +517,8 @@ function withIntegerCast(a: values.NumericValue, b: values.NumericValue, fn: (a:
   const bothOperandsAreShortIntegers =
     a.tag == TypeTag.INTEGER && b.tag == TypeTag.INTEGER;
   const integerType = bothOperandsAreShortIntegers ? values.integer : values.long;
-  // TODO: QBasic rounds floats to the nearest even.
-  const castA = integerType(Math.round(a.number));
-  const castB = integerType(Math.round(b.number));
+  const castA = integerType(roundToNearestEven(a.number));
+  const castB = integerType(roundToNearestEven(b.number));
   if (!values.isNumeric(castA)) {
     return castA;
   }

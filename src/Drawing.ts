@@ -1,4 +1,5 @@
 import { cssForColorIndex } from "./Colors.ts";
+import { roundToNearestEven } from "./Math.ts";
 
 export interface Point {
   x: number;
@@ -598,10 +599,10 @@ export class Plotter {
       }
     };
     const plotQuadrants = (x: number, y: number) => {
-      plot(Math.round(center.x + x), Math.round(center.y + y));
-      plot(Math.round(center.x - x), Math.round(center.y + y));
-      plot(Math.round(center.x + x), Math.round(center.y - y));
-      plot(Math.round(center.x - x), Math.round(center.y - y));
+      plot(roundToNearestEven(center.x + x), roundToNearestEven(center.y + y));
+      plot(roundToNearestEven(center.x - x), roundToNearestEven(center.y + y));
+      plot(roundToNearestEven(center.x + x), roundToNearestEven(center.y - y));
+      plot(roundToNearestEven(center.x - x), roundToNearestEven(center.y - y));
     };
 
     if (aspect < 0) {
@@ -609,8 +610,8 @@ export class Plotter {
       aspect = 1 + (aspect % 1);
     }
     const [rx, ry] = aspect > 1 ?
-      [Math.round(radius / aspect), radius] :
-      [radius, Math.round(radius * aspect)];
+      [roundToNearestEven(radius / aspect), radius] :
+      [radius, roundToNearestEven(radius * aspect)];
     if (ry === 0) {
       // For extreme ellipses when aspect is near 0, draw a horizontal line.
       // The algorithm will draw vertical lines for large aspects...
@@ -631,7 +632,7 @@ export class Plotter {
     let [x, y] = [0, ry];
 
     // Region 1 - top and bottom of circle, '^' and '_'
-    let error = Math.round(rySquared - rxSquared * ry + 0.25 * rxSquared);
+    let error = roundToNearestEven(rySquared - rxSquared * ry + 0.25 * rxSquared);
     let dx = 2 * rySquared * x;
     let dy = 2 * rxSquared * y;
     while (dx < dy) {
@@ -650,7 +651,7 @@ export class Plotter {
     }
   
     // Region 2 - left and right of circle, '(' and ')'
-    error = Math.round(rySquared * (x + 0.5) * (x + 0.5) + rxSquared * (y - 1) * (y - 1) - rxSquared * rySquared);
+    error = roundToNearestEven(rySquared * (x + 0.5) * (x + 0.5) + rxSquared * (y - 1) * (y - 1) - rxSquared * rySquared);
     while (y >= 0) {
       plotQuadrants(x, y);
       if (error > 0) {
@@ -752,29 +753,29 @@ class ViewTransform {
 
   windowToScreen(p: Point): Point {
     return {
-      x: Math.round(this.x0 + p.x * this.dx),
-      y: Math.round(this.y0 + p.y * this.dy)
+      x: roundToNearestEven(this.x0 + p.x * this.dx),
+      y: roundToNearestEven(this.y0 + p.y * this.dy)
     };
   }
 
   windowToView(p: Point): Point {
     return {
-      x: Math.round(this.x0 + p.x * this.dx) - this.view.x.start,
-      y: Math.round(this.y0 + p.y * this.dy) - this.view.y.start
+      x: roundToNearestEven(this.x0 + p.x * this.dx) - this.view.x.start,
+      y: roundToNearestEven(this.y0 + p.y * this.dy) - this.view.y.start
     };
   }
 
   screenToWindow(p: Point): Point {
     return {
-      x: Math.round((p.x - this.x0) / this.dx),
-      y: Math.round((p.y - this.y0) / this.dy)
+      x: roundToNearestEven((p.x - this.x0) / this.dx),
+      y: roundToNearestEven((p.y - this.y0) / this.dy)
     }
   }
 
   viewToWindow(p: Point): Point {
     return {
-      x: Math.round(((p.x + this.view.x.start) - this.x0) / this.dx),
-      y: Math.round(((p.y + this.view.y.start) - this.y0) / this.dy)
+      x: roundToNearestEven(((p.x + this.view.x.start) - this.x0) / this.dx),
+      y: roundToNearestEven(((p.y + this.view.y.start) - this.y0) / this.dy)
     }
   }
 }
