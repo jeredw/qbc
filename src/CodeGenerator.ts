@@ -863,6 +863,7 @@ export class CodeGenerator extends QBasicParserListener {
       ctx.KEY() ? EventType.KEYBOARD :
       ctx.PEN() ? EventType.PEN :
       ctx.PLAY() ? EventType.PLAY :
+      ctx.COM() ? EventType.MODEM :
       undefined;
     if (eventType === undefined) {
       throw new Error("unimplemented");

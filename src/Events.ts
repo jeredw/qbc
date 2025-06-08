@@ -2,6 +2,7 @@ import { Devices } from "./Devices.ts";
 import { Joystick } from "./Joystick.ts";
 import { Keyboard } from "./Keyboard.ts";
 import { LightPen } from "./LightPen.ts";
+import { Modem } from "./Modem.ts";
 import { Speaker } from "./Speaker.ts";
 import { Timer } from "./Timer.ts";
 
@@ -22,6 +23,7 @@ export class Events {
   keyboard: KeyboardEventMonitor;
   lightPen: LightPenEventMonitor;
   play: PlayEventMonitor;
+  modem: ModemEventMonitor;
   devices: Devices;
   asleep?: SleepArgs;
 
@@ -32,6 +34,7 @@ export class Events {
     this.keyboard = new KeyboardEventMonitor(devices.keyboard);
     this.lightPen = new LightPenEventMonitor(devices.lightPen);
     this.play = new PlayEventMonitor(devices.speaker);
+    this.modem = new ModemEventMonitor(devices.modem);
   }
 
   poll(): Trap | void {
@@ -40,6 +43,7 @@ export class Events {
     this.keyboard.poll();
     this.lightPen.poll();
     this.play.poll();
+    this.modem.poll();
     if (this.asleep) {
       if (this.asleep.duration !== 0 &&
           this.devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
@@ -53,7 +57,8 @@ export class Events {
       this.joystick.trap() ||
       this.keyboard.trap() ||
       this.lightPen.trap() ||
-      this.play.trap()
+      this.play.trap() ||
+      this.modem.trap()
     );
     if (result) {
       this.wakeUp();
@@ -277,6 +282,21 @@ export class PlayEventMonitor extends EventMonitor {
       }
       if (this.aboveLimit && queueLength < this.queueLimit) {
         this.aboveLimit = false;
+        channel.triggered = true;
+      }
+    }
+  }
+}
+
+export class ModemEventMonitor extends EventMonitor {
+  constructor(private modem: Modem) {
+    super(1);
+  }
+
+  override poll() {
+    const channel = this.channels[0];
+    if (!channel.isDisabled()) {
+      if (this.modem.checkForNewInput()) {
         channel.triggered = true;
       }
     }

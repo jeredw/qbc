@@ -14,6 +14,7 @@ export enum EventType {
   KEYBOARD,
   PEN,
   PLAY,
+  MODEM,
 }
 
 export class EventHandlerStatement extends Statement {
@@ -72,8 +73,19 @@ export class EventHandlerStatement extends Statement {
         }
         if (this.targetIndex === undefined) {
           context.events.play.setState(param, EventChannelState.OFF);
+          return;
         }
         context.events.play.configure(param, this.targetIndex!);
+        break;
+      case EventType.MODEM:
+        if (param !== 1) {
+          throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+        }
+        if (this.targetIndex === undefined) {
+          context.events.modem.setState(param, EventChannelState.OFF);
+          return;
+        }
+        context.events.modem.configure(0, this.targetIndex!);
         break;
     }
   }
@@ -141,6 +153,13 @@ export class EventControlStatement extends Statement {
           context.devices.speaker.testFinishNote?.();
         } else {
           context.events.play.setState(0, this.state);
+        }
+        break;
+      case EventType.MODEM:
+        if (this.state === EventChannelState.TEST) {
+          context.devices.modem.testGenerateInput?.();
+        } else {
+          context.events.modem.setState(0, this.state);
         }
         break;
     }

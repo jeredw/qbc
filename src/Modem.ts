@@ -5,6 +5,31 @@ import { BasePrinter } from "./Printer.ts";
 
 export interface Modem extends Opener {
   reset(): void;
+  checkForNewInput(): boolean;
+  testGenerateInput?(): void;
+}
+
+interface Fetcher {
+  fetch(url: string): Promise<Response>;
+}
+
+export class HttpFetcher implements Fetcher {
+  async fetch(url: string): Promise<Response> {
+    return fetch(url);
+  }
+}
+
+export class TestFetcher implements Fetcher {
+  constructor(private content: Map<string, string>) {
+  }
+
+  async fetch(url: string): Promise<Response> {
+    const body = this.content.get(url);
+    if (!body) {
+      return Response.error();
+    }
+    return new Response(body);
+  }
 }
 
 const SUPPORTED_BAUD_RATES = [
@@ -25,7 +50,13 @@ export class HttpModem implements Modem {
   accessor?: HttpModemAccessor;
   connected = false;
   echo = true;
-  baudRate = 9600;
+  baudRate = 300;
+  hasNewInput = false;
+
+  constructor(
+    private fetcher: Fetcher = new HttpFetcher(),
+    private respondInstantly?: boolean) {
+  }
 
   open(options: string, mode: OpenMode, recordLength?: number): Handle {
     if (this.accessor) {
@@ -51,13 +82,33 @@ export class HttpModem implements Modem {
     };
   }
 
-  getCommand() {
+  close(handle: Handle) {
+    this.reset();
+  }
+
+  reset(): void {
+    this.hasNewInput = false;
+    delete this.accessor;
+  }
+
+  checkForNewInput() {
+    const hasNewInput = this.hasNewInput;
+    this.hasNewInput = false;
+    return hasNewInput;
+  }
+
+  testGenerateInput() {
+    this.inputModemResponse("OK");
+  }
+
+  private getCommand() {
     if (!this.accessor) {
       return;
     }
     if (this.echo) {
       const lastChar = this.accessor.outputBuffer[this.accessor.outputBuffer.length - 1];
       this.accessor.inputBuffer.push(lastChar);
+      this.hasNewInput = true;
     }
     const line = consumeFirstLine(this.accessor.outputBuffer);
     if (line.length == 0) {
@@ -65,49 +116,56 @@ export class HttpModem implements Modem {
     }
     if (line.toLowerCase().startsWith('atdt')) {
       const url = line.slice(4).trim();
-      setTimeout(async () => this.fetchUrl(url), 0);
+      setTimeout(async () => this.printDataFromUrl(url), 0);
       return;
     }
-    this.accessor.inputBuffer.push(...stringToAscii("\r\n\r\nERROR\r\n"));
+    this.inputModemResponse("ERROR");
   }
 
-  async fetchUrl(url: string) {
+  private async printDataFromUrl(url: string) {
     if (!this.accessor) {
       return;
     }
-    const inputBuffer = this.accessor.inputBuffer;
-    const response = await fetch(url, );
+    this.connected = true;
+    const response = await this.fetcher.fetch(url);
     if (!response.ok) {
-      inputBuffer.push(...stringToAscii("\r\n\r\nERROR\r\n"));
+      this.inputModemResponse("ERROR");
+      this.hasNewInput = true;
       return;
     }
-    this.connected = true;
-    inputBuffer.push(...stringToAscii("\r\n\r\nCONNECT\r\n"));
+    this.inputModemResponse("CONNECT");
     const data = await response.bytes();
-    // 8N1 = 10 bits per symbol
-    const bytesPerMs = this.baudRate / 10000;
-    let i = 0;
-    let ts = performance.now();
-    while (i < data.length) {
-      const now = performance.now();
-      const numBytesReady = Math.floor((now - ts) * bytesPerMs);
-      if (numBytesReady > 0) {
-        ts = performance.now();
-        inputBuffer.push(...data.slice(i, i + numBytesReady));
-        i += numBytesReady;
+    if (this.respondInstantly) {
+      this.inputBytes(Array.from(data));
+    } else {
+      // 8N1 = 10 bits per symbol
+      const bytesPerMs = this.baudRate / 10000;
+      let i = 0;
+      let ts = performance.now();
+      while (i < data.length) {
+        const now = performance.now();
+        const numBytesReady = Math.floor((now - ts) * bytesPerMs);
+        if (numBytesReady > 0) {
+          ts = performance.now();
+          this.inputBytes(Array.from(data.slice(i, i + numBytesReady)));
+          i += numBytesReady;
+        }
+        await sleep(10);
       }
-      await sleep(10);
     }
-    inputBuffer.push(...stringToAscii("\r\n\r\nNO CARRIER\r\n"));
+    this.inputModemResponse("NO CARRIER");
     this.connected = false;
   }
 
-  close(handle_: Handle) {
-    this.reset();
+  private inputModemResponse(string: string) {
+    this.inputBytes(stringToAscii(modemResponse(string)));
   }
 
-  reset(): void {
-    delete this.accessor;
+  private inputBytes(data: number[]) {
+    if (this.accessor) {
+      this.accessor.inputBuffer.push(...data);
+      this.hasNewInput = true;
+    }
   }
 }
 
@@ -221,4 +279,8 @@ function consumeFirstLine(buffer: number[]): string {
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function modemResponse(str: string): string {
+  return `\r\n\r\n${str}\r\n`;
 }

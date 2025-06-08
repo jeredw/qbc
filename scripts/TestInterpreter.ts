@@ -9,6 +9,7 @@ import { TestTimer } from "../src/Timer.ts";
 import { TestJoystick } from "../src/Joystick.ts";
 import { PointerListener } from "../src/LightPen.ts";
 import { Canvas, createCanvas, registerFont } from "canvas"
+import { HttpModem, TestFetcher } from "../src/Modem.ts";
 
 async function interpret(program: string, input: string[], diskJson: string): Promise<[string, string | undefined]> {
   try {
@@ -24,6 +25,10 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
     const timer = new TestTimer();
     const joystick = new TestJoystick();
     const lightPen = new PointerListener(screen);
+    const modem = new HttpModem(
+      new TestFetcher(new Map([['/test', 'Here is some data']])),
+      true,  // respondInstantly
+    );
     const interpreter = new Interpreter({
       screen,
       speaker,
@@ -33,6 +38,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       timer,
       joystick,
       lightPen,
+      modem,
     });
     typeLines(input, keyboard);
     if (diskJson) {

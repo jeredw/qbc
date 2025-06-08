@@ -132,7 +132,7 @@ parse those using baked in rules.
 | `CLOSE`          | Statement   | ✅      | ✅      |
 | `CLS`            | Statement   | -       | ✅      |
 | `COLOR`          | Statement   | ✅      | ✅      |
-| `COM`            | Statement   | ✅      | ⛔      |
+| `COM`            | Statement   | ✅      | ✅      |
 | `COMMON`         | Statement   | ✅      | ⛔      |
 | `CONST`          | Statement   | ✅      | ✅      |
 | `COS`            | Function    | -       | ✅      |
@@ -237,10 +237,10 @@ parse those using baked in rules.
 | `NEXT`           | Keyword     | ✅      | ✅      |
 | `NOT`            | Operator    | ✅      | ✅      |
 | `OCT$`           | Function    | -       | ✅      |
-| `OFF`            | Keyword     | ✅      | 🚧      |
-| `ON COM`         | Statement   | ✅      | ⛔      |
+| `OFF`            | Keyword     | ✅      | ✅      |
+| `ON COM`         | Statement   | ✅      | ✅      |
 | `ON ERROR`       | Statement   | ✅      | ✅      |
-| `ON`             | Keyword     | ✅      | 🚧      |
+| `ON`             | Keyword     | ✅      | ✅      |
 | `ON KEY`         | Statement   | ✅      | ✅      |
 | `ON PEN`         | Statement   | ✅      | ✅      |
 | `ON PLAY`        | Statement   | ✅      | ✅      |
@@ -249,7 +249,7 @@ parse those using baked in rules.
 | `ON`...`GOSUB`   | Statement   | ✅      | ✅      |
 | `ON`...`GOTO`    | Statement   | ✅      | ✅      |
 | `OPEN`           | Statement   | ✅      | 🚧      |
-| `OPEN COM`       | Statement   | ✅      | ⛔      |
+| `OPEN COM`       | Statement   | ✅      | 🚧      |
 | `OPTION BASE`    | Statement   | ✅      | ✅      |
 | `OR`             | Operator    | ✅      | ✅      |
 | `OUT`            | Statement   | -       | ⛔      |
