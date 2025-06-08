@@ -429,6 +429,9 @@ export class SymbolTable {
           isParameter: variable.isParameter,
           token: variable.token,
           storageType: variable.storageType,
+          shared: variable.shared,
+          sharedWith: variable.sharedWith,
+          static: variable.static,
           array: this._record.array,
           recordOffset: {record: this._record, offset: this._elementOffset},
         };
