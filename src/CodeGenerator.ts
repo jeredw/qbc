@@ -163,7 +163,19 @@ export class CodeGenerator extends QBasicParserListener {
     this._chunk = this._program.chunks[0];
   }
 
-  override enterDef_fn_statement = this.enterProcedure;
+  override enterDef_fn_statement = (ctx: parser.Def_fn_statementContext) => {
+    const procedure = getTyperContext(ctx).$procedure;
+    if (!procedure) {
+      throw new Error("missing procedure");
+    }
+    this._chunk = this._program.chunks[procedure.programChunkIndex];
+    const exprBody = ctx.expr();
+    if (exprBody) {
+      const expr = this.compileExpression(exprBody, ctx.start!, procedure.result!.type);
+      this.addStatement(statements.let_(procedure.result!, expr));
+    }
+  }
+
   override exitDef_fn_statement = this.exitProcedure;
   override enterFunction_statement = this.enterProcedure;
   override exitFunction_statement = this.exitProcedure;
