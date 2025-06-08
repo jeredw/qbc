@@ -41,8 +41,8 @@ END TYPE
 'This type is used to represent the playing screen in memory
 'It is used to simulate graphics in text mode, and has some interesting,
 'and slightly advanced methods to increasing the speed of operation.
-'Instead of the normal 80x25 text graphics using chr$(219) "Û", we will be
-'using chr$(220)"Ü" and chr$(223) "ß" and chr$(219) "Û" to mimic an 80x50
+'Instead of the normal 80x25 text graphics using chr$(219) "█", we will be
+'using chr$(220)"▄" and chr$(223) "▀" and chr$(219) "█" to mimic an 80x50
 'pixel screen.
 'Check out sub-programs SET and POINTISTHERE to see how this is implemented
 'feel free to copy these (as well as arenaType and the DIM ARENA stmt and the
@@ -601,14 +601,14 @@ SUB Set (row, col, acolor)
         arena(row, col).acolor = acolor             'assign color to arena
         realRow = arena(row, col).realRow           'Get real row of pixel
         topFlag = arena(row, col).sister + 1 / 2    'Deduce whether pixel
-                                                    'is on topß, or bottomÜ
+                                                    'is on top▀, or bottom▄
         sisterRow = row + arena(row, col).sister    'Get arena row of sister
         sisterColor = arena(sisterRow, col).acolor  'Determine sister's color
 
         LOCATE realRow, col
 
         IF acolor = sisterColor THEN                'If both points are same
-            COLOR acolor, acolor                           'Print chr$(219) "Û"
+            COLOR acolor, acolor                           'Print chr$(219) "█"
             PRINT CHR$(219);
         ELSE
             IF topFlag THEN                         'Since you cannot have
@@ -637,9 +637,9 @@ END SUB
 SUB SpacePause (text$)
 
     COLOR colorTable(5), colorTable(6)
-    Center 11, "ÛßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßÛ"
-    Center 12, "Û " + LEFT$(text$ + SPACE$(29), 29) + " Û"
-    Center 13, "ÛÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÛ"
+    Center 11, "█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█"
+    Center 12, "█ " + LEFT$(text$ + SPACE$(29), 29) + " █"
+    Center 13, "█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█"
     WHILE INKEY$ <> "": WEND
     WHILE INKEY$ <> " ": WEND
     COLOR 15, colorTable(4)
@@ -691,11 +691,11 @@ END SUB
 FUNCTION StillWantsToPlay
 
     COLOR colorTable(5), colorTable(6)
-    Center 10, "ÛßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßÛ"
-    Center 11, "Û       G A M E   O V E R       Û"
-    Center 12, "Û                               Û"
-    Center 13, "Û      Play Again?   (Y/N)      Û"
-    Center 14, "ÛÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÛ"
+    Center 10, "█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█"
+    Center 11, "█       G A M E   O V E R       █"
+    Center 12, "█                               █"
+    Center 13, "█      Play Again?   (Y/N)      █"
+    Center 14, "█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█"
 
     WHILE INKEY$ <> "": WEND
     DO

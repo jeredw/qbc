@@ -53,7 +53,7 @@ export abstract class BasePrinter implements Printer {
   print(text: string, newline: boolean) {
     while (text.length > 0) {
       const space = this.spaceLeftOnLine();
-      if (text.length >= space) {
+      if (text.length > space) {
         this.putString(text.slice(0, space));
         text = text.slice(space);
         this.newLine();

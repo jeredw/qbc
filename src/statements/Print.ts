@@ -267,10 +267,10 @@ function parseFormatString(formatString: String): Template[] {
     }
     return [null, null];
   };
-  // number : +? ( $$ (#* ,? #*) decimal-empty?
-  //             | ** (#* ,? #*) decimal-empty?
-  //             | **$ (#* ,? #*) decimal-empty?
-  //             | #+ ,? #* decimal-empty?
+  // number : +? ( $$ (#* (,? #*)+) decimal-empty?
+  //             | ** (#* (,? #*)+) decimal-empty?
+  //             | **$ (#* (,? #*)+) decimal-empty?
+  //             | #+ (,? #*)+ decimal-empty?
   //             | decimal-nonempty )
   //          (^^^^ | ^^^^^)?
   //          (+ | -)? ;
@@ -281,13 +281,13 @@ function parseFormatString(formatString: String): Template[] {
         result.beforeDecimal = tokens[pos].length;
         pos++;
       }
-      if (tokens[pos] == ',') {
+      while (tokens[pos] == ',') {
         result.comma = true;
         pos++;
-      }
-      if (tokens[pos] && tokens[pos].startsWith('#')) {
-        result.beforeDecimal = (result.beforeDecimal || 0) + tokens[pos].length;
-        pos++;
+        if (tokens[pos] && tokens[pos].startsWith('#')) {
+          result.beforeDecimal = (result.beforeDecimal || 0) + tokens[pos].length;
+          pos++;
+        }
       }
     };
     const matchOptionalDecimal = () => {
@@ -310,7 +310,7 @@ function parseFormatString(formatString: String): Template[] {
     } else if (tokens[pos] && tokens[pos].startsWith('#')) {
       result.beforeDecimal = tokens[pos].length;
       pos++;
-      if (tokens[pos] === ',') {
+      while (tokens[pos] === ',') {
         result.comma = true;
         pos++;
         if (tokens[pos] && tokens[pos].startsWith('#')) {
