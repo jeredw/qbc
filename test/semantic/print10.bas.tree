@@ -1,0 +1,69 @@
+(program 
+  (sub_statement SUB 
+    (untyped_id PrintScore) 
+    ( 
+      (parameter_list 
+        (parameter score1) , 
+        (parameter lives1)) ) 
+    (block \n 
+      (statement 
+        (print_using_statement PRINT USING 
+          (expr 
+            (literal "SAMMY-->  Lives: #     #,###,#00")) ; 
+          (print_argument 
+            (expr 
+              (variable_or_function_call lives1)) ;) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call score1))))) \n) 
+    (end_sub_statement END SUB)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id PrintScore) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 0))) , 
+        (argument 
+          (expr 
+            (literal 5)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id PrintScore) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 9))) , 
+        (argument 
+          (expr 
+            (literal 5)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id PrintScore) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 99))) , 
+        (argument 
+          (expr 
+            (literal 5)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id PrintScore) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 999))) , 
+        (argument 
+          (expr 
+            (literal 5)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id PrintScore) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 9999))) , 
+        (argument 
+          (expr 
+            (literal 5)))))) \n <EOF>)
