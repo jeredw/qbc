@@ -652,9 +652,9 @@ export interface PutGraphicsStatementArgs {
   y1: ExprContext;
   array: Variable;
   preset?: boolean;
+  pset?: boolean;
   and?: boolean;
   or?: boolean;
-  xor?: boolean;
 }
 
 export class PutGraphicsStatement extends Statement {
@@ -670,10 +670,10 @@ export class PutGraphicsStatement extends Statement {
       const buffer = readBytesFromArray(this.args.array, context.memory);
       const operation = (
         this.args.preset ? BlitOperation.PRESET :
+        this.args.pset ? BlitOperation.PSET :
         this.args.and ? BlitOperation.AND :
         this.args.or ? BlitOperation.OR :
-        this.args.xor ? BlitOperation.XOR :
-        BlitOperation.PSET
+        BlitOperation.XOR
       );
       context.devices.screen.putBitmap({x1, y1, step, operation, buffer});
     } catch (e: unknown) {

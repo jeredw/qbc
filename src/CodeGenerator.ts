@@ -1127,7 +1127,7 @@ export class CodeGenerator extends QBasicParserListener {
       preset: !!ctx.PRESET(),
       and: !!ctx.AND(),
       or: !!ctx.OR(),
-      xor: !!ctx.XOR()
+      pset: !!ctx.PSET(),
     };
     this.addStatement(statements.putGraphics({token, step, x1, y1, array, ...operation}));
   }
