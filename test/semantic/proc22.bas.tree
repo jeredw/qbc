@@ -1,0 +1,51 @@
+(program 
+  (function_statement function f 
+    ( 
+      (parameter_list 
+        (parameter calls%)) ) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call f) = 
+          (expr 
+            (variable_or_function_call calls%)))) \n) 
+    (end_function_statement end function)) \n \n 
+  (function_statement function g 
+    (block \n 
+      (statement 
+        (static_statement static 
+          (scope_variable calls%))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call calls%) = 
+          (expr 
+            (expr 
+              (variable_or_function_call calls%)) + 
+            (expr 
+              (literal 1))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call g) = 
+          (expr 
+            (variable_or_function_call calls%)))) \n) 
+    (end_function_statement end function)) \n \n ' \n ' \n ' \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call f 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call f 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (variable_or_function_call f 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (variable_or_function_call g)))) ))))) ))))) )))))) \n <EOF>)

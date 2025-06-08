@@ -34,6 +34,8 @@ export interface CodeGeneratorContext {
   $topLabel: string;
   // End of block (end if/loop exit).
   $exitLabel: string;
+  // Set to avoid redundant function calls when compiling nested call expressions.
+  $compiled: boolean;
 }
 
 export function getCodeGeneratorContext(ctx: ParserRuleContext): CodeGeneratorContext {
@@ -290,6 +292,9 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
+    if (alreadyCompiled(ctx)) {
+      return;
+    }
     const builtin = getTyperContext(ctx).$builtin;
     if (builtin) {
       if (ctx.CALL()) {
@@ -1462,6 +1467,9 @@ export class CodeGenerator extends QBasicParserListener {
     const codeGenerator = this;
     ParseTreeWalker.DEFAULT.walk(new class extends QBasicParserListener {
       override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const symbol = getTyperContext(ctx).$symbol;
         if (!symbol) {
           throw new Error("missing symbol");
@@ -1498,6 +1506,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterDate_function = (ctx: parser.Date_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1506,6 +1517,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterErdev_function = (ctx: parser.Erdev_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1514,6 +1528,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterErdev_string_function = (ctx: parser.Erdev_string_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1522,6 +1539,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterInput_function = (ctx: parser.Input_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1533,6 +1553,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterInstr_function = (ctx: parser.Instr_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1544,6 +1567,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override exitLbound_function = (ctx: parser.Lbound_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1556,6 +1582,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterLen_function = (ctx: parser.Len_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1573,6 +1602,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterMid_function = (ctx: parser.Mid_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1584,6 +1616,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterPen_function = (ctx: parser.Pen_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1594,6 +1629,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterPlay_function = (ctx: parser.Play_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1604,6 +1642,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterScreen_function = (ctx: parser.Screen_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1615,6 +1656,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterSeek_function = (ctx: parser.Seek_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1624,6 +1668,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterStrig_function = (ctx: parser.Strig_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1634,6 +1681,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterTime_function = (ctx: parser.Time_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1642,6 +1692,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterTimer_function = (ctx: parser.Timer_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1650,6 +1703,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override exitUbound_function = (ctx: parser.Ubound_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1662,6 +1718,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterVarseg_function = (ctx: parser.Varseg_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1673,6 +1732,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterVarptr_string_function = (ctx: parser.Varptr_string_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1684,6 +1746,9 @@ export class CodeGenerator extends QBasicParserListener {
       }
 
       override enterVarptr_function = (ctx: parser.Varptr_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
         const result = getTyperContext(ctx.parent!).$result;
         if (!result) {
           throw new Error("missing result variable");
@@ -1716,4 +1781,11 @@ function findParent<T extends ParserRuleContext>(
     ctx = ctx.parent;
   }
   return null;
+}
+
+function alreadyCompiled(ctx: ParserRuleContext): boolean {
+  const codeGenContext = getCodeGeneratorContext(ctx);
+  const result = codeGenContext.$compiled;
+  codeGenContext.$compiled = true;
+  return result;
 }
