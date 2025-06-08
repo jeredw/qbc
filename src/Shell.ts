@@ -165,6 +165,7 @@ class Shell {
     } finally {
       this.codePane.focus();
       this.root.classList.remove('running');
+      this.screen.hideCursor();
     }
   }
 

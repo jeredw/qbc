@@ -209,8 +209,18 @@ export class KeyboardListener implements Keyboard {
 }
 
 function getScanCode(e: KeyboardEvent): number | undefined {
-  return keyToScanCode.get(`${e.key}_${e.location}`.toLowerCase()) ||
-    keyToScanCode.get(e.key.toLowerCase());
+  return getScanCodeForKeyName(e.key, e.location) ||
+    // The default Mac en-US keyboard layout uses option + key to compose common
+    // Unicode symbols, which won't show up in the key map.  Fall back to the
+    // legacy keyCode property to get just e.g. Q for Alt+Q instead of œ.
+    (e.altKey && e.key.length === 1 && !isPrintableAscii(e.key) ?
+     getScanCodeForKeyName(String.fromCharCode(e.keyCode), e.location) :
+     undefined);
+}
+
+function getScanCodeForKeyName(name: string, location: number): number | undefined {
+  return keyToScanCode.get(`${name}_${location}`.toLowerCase()) ||
+    keyToScanCode.get(name.toLowerCase());
 }
 
 export enum CursorCommand {
@@ -294,7 +304,9 @@ function keyToChar(e: KeyboardEvent): string | undefined {
     if (e.location === 3 && !isNumLockOn(e)) {
       return;
     }
-    return e.key;
+    if (isPrintableAscii(e.key)) {
+      return e.key;
+    }
   }
   switch (e.key) {
     case 'Enter': return '\x0d';
@@ -325,4 +337,8 @@ function defaultCustomKeys(): CustomKey[] {
 function isExtendedKey(e: KeyboardEvent, code: number): boolean {
   // This matches movement keys not on the numpad (not F11/F12).
   return code >= 71 && e.location !== 3;
+}
+
+function isPrintableAscii(keyName: string): boolean {
+  return keyName.charCodeAt(0) >= 32 && keyName.charCodeAt(0) <= 127;
 }
