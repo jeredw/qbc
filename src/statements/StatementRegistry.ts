@@ -23,7 +23,7 @@ import {
 } from "./Arrays.ts";
 import { BeepStatement, PlayFunction, PlayStatement, SoundStatement } from "./Sound.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
-import { CallStatement, StackVariable } from "./Call.ts";
+import { Binding, CallStatement } from "./Call.ts";
 import { CaseStatement } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import {
@@ -181,8 +181,8 @@ export function bsave(args: BuiltinStatementArgs) {
   return new BsaveStatement(args);
 }
 
-export function call(chunkIndex: number, stackVariables: StackVariable[], stackSize: number) {
-  return new CallStatement(chunkIndex, stackVariables, stackSize);
+export function call(chunkIndex: number, bindings: Binding[], stackSize: number) {
+  return new CallStatement(chunkIndex, bindings, stackSize);
 }
 
 export function case_(test: Variable, condition: parser.Case_exprContext) {

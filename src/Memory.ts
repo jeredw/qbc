@@ -83,9 +83,7 @@ export class Memory {
   dereference(variable: Variable): [Address, Value] {
     // If variable is an element in a record, dereference the record variable
     // first, then offset into it.
-    let address = variable.recordOffset ?
-      variable.recordOffset.record.address :
-      variable.address;
+    let address = variable.recordOffset?.record.address ?? variable.address;
     if (!address) {
       throw new Error("invalid address");
     }

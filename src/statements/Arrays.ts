@@ -218,6 +218,8 @@ export function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDes
     if (!variable.address) {
       throw new Error("missing address for array ref param");
     }
+    // Note: CallStatement guarantees we only ever create one level of array
+    // references.
     const arrayRef = memory.readAddress(variable.address);
     if (!isReference(arrayRef) || !arrayRef.variable.array) {
       throw new Error("expecting array reference");
@@ -235,6 +237,9 @@ export function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDes
   }
   if (!isArray(value)) {
     throw new Error("expecting array value");
+  }
+  if (!value.descriptor) {
+    throw new Error("missing array descriptor");
   }
   return value.descriptor;
 }

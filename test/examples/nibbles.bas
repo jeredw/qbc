@@ -217,7 +217,8 @@ SUB GetInputs (NumPlayers, speed, diff$, monitor$)
     startTime# = TIMER                          ' Calculate speed of system
     FOR i# = 1 TO 1000: NEXT i#                 ' and do some compensation
     stopTime# = TIMER
-    speed = speed * .5 / (stopTime# - startTime#)
+    'speed = speed * .5 / (stopTime# - startTime#)
+    speed = 100 * speed
 
 END SUB
 

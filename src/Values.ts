@@ -234,15 +234,6 @@ export function boolean(test: boolean): Value {
 
 export function reference(variable: Variable, address?: Address): Value {
   address = address ?? variable.address;
-  if (!address && variable.recordOffset) {
-    const record = variable.recordOffset.record;
-    if (!record.address) {
-      throw new Error('record not allocated');
-    }
-    const address = {...record.address};
-    address.index += variable.recordOffset.offset;
-    return {tag: TypeTag.REFERENCE, variable, address}
-  }
   if (!address) {
     throw new Error('cannot reference unallocated variable');
   }

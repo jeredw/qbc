@@ -1,3 +1,4 @@
+' Bug: only compile nested function calls once...
 function f(calls%)
   f = calls%
 end function

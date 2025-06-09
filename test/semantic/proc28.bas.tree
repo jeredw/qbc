@@ -1,0 +1,34 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id f2) 
+    ( 
+      (parameter_list 
+        (parameter i%)) ) 
+    (block : 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call i%))))) :) 
+    (end_sub_statement end sub)) \n 
+  (sub_statement sub 
+    (untyped_id f1) 
+    ( 
+      (parameter_list 
+        (parameter i%)) ) 
+    (block : 
+      (statement 
+        (call_statement 
+          (untyped_id f2) 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call i%)))))) :) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id f1) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 42)))))) \n <EOF>)

@@ -58,7 +58,8 @@ TYPE XYPoint
 END TYPE
 
 'Constants
-CONST SPEEDCONST = 500
+'CONST SPEEDCONST = 500
+CONST SPEEDCONST = 5000
 CONST TRUE = -1
 CONST FALSE = NOT TRUE
 CONST HITSELF = 1
@@ -153,7 +154,8 @@ InitVars:
   IF Mode = 9 THEN PALETTE 4, 0   'Check for 64K EGA
   ON ERROR GOTO 0
 
-  MachSpeed = CalcDelay
+'  MachSpeed = CalcDelay
+  MachSpeed = CalcDelay!
 
   IF Mode = 9 THEN
     ScrWidth = 640

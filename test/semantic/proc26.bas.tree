@@ -1,0 +1,63 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id record) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id y) as 
+      (type_name_for_type_element integer) \n) end type) \n \n 
+  (sub_statement sub 
+    (untyped_id bar) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id x) as 
+          (type_name_for_parameter integer)) , 
+        (parameter 
+          (untyped_id y) as 
+          (type_name_for_parameter integer))) ) 
+    (block \n ' \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x) = 
+          (expr 
+            (literal 42)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call y) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( ) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable 
+            (untyped_id r) as 
+            (type_name 
+              (untyped_id record))))) \n 
+      (statement 
+        (call_statement 
+          (untyped_id bar) 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call r.x))) , 
+            (argument 
+              (expr 
+                (variable_or_function_call r.y)))))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call r.x)) ,) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call r.y))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)

@@ -6,14 +6,14 @@ import { Program, ProgramChunk } from "./Programs.ts";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
 import { parseLiteral, typeCheckExpression } from "./Expressions.ts";
-import { reference, isError, isString as isStringValue } from "./Values.ts";
+import { isError, isString as isStringValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag, isString as isStringType, isNumericType } from "./Types.ts";
 import { isBuiltin, isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
 import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
 import { BranchIndexStatement } from "./statements/Branch.ts";
-import { StackVariable } from "./statements/Call.ts";
+import { Binding } from "./statements/Call.ts";
 import { Builtin, BuiltinParam } from "./Builtins.ts";
 import { DimBoundsExprs } from "./statements/Arrays.ts";
 import { RestoreStatement } from "./statements/Data.ts";
@@ -364,7 +364,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (args.length != procedure.parameters.length) {
       throw ParseError.fromToken(token, "Argument-count mismatch");
     }
-    const stackVariables: StackVariable[] = [];
+    const bindings: Binding[] = [];
     for (let i = 0; i < args.length; i++) {
       const parseExpr = args[i].expr();
       const parameter = procedure.parameters[i];
@@ -376,7 +376,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!sameType(result.type, parameter.type)) {
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
-        stackVariables.push({variable: parameter, value: reference(result)});
+        bindings.push({parameter, variable: result});
         continue;
       }
       const variable = this.getVariableFromExpression(parseExpr);
@@ -385,23 +385,23 @@ export class CodeGenerator extends QBasicParserListener {
         if (!sameType(variable.type, parameter.type)) {
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
-        stackVariables.push({variable: parameter, value: reference(variable)});
+        bindings.push({parameter, variable});
       } else {
         if (parameter.type.tag == TypeTag.RECORD || parameter.array) {
           // Can't pass records or arrays by value.
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
         const expr = this.compileExpression(parseExpr, args[i].start!, procedure.parameters[i].type);
-        stackVariables.push({variable: parameter, expr});
+        bindings.push({parameter, expr});
       }
     }
     if (procedure.result && result) {
-      stackVariables.push({variable: procedure.result, value: reference(result)});
+      bindings.push({parameter: procedure.result, variable: result});
     }
     // The stack also includes storage for locals.  They will be initialized to
     // empty values in the new stack frame and read as the default value.
     const stackSize = this.program.chunks[procedure.programChunkIndex].stackSize;
-    this.addStatement(statements.call(procedure.programChunkIndex, stackVariables, stackSize));
+    this.addStatement(statements.call(procedure.programChunkIndex, bindings, stackSize));
   }
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {

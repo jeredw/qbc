@@ -2,22 +2,21 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { evaluateExpression } from "../Expressions.ts";
 import { Address, StorageType } from "../Memory.ts";
-import { isReference, Value } from "../Values.ts";
+import { isReference, reference, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
-export interface StackVariable {
-  variable: Variable;
+export interface Binding {
+  parameter: Variable;
   expr?: ExprContext;
-  value?: Value;
-  record?: Variable;
+  variable?: Variable;
 }
 
 export class CallStatement extends Statement {
   constructor(
     private chunkIndex: number,
-    private stackVariables: StackVariable[],
+    private bindings: Binding[],
     private stackSize: number,
   ) {
     super();
@@ -26,18 +25,29 @@ export class CallStatement extends Statement {
   override execute(context: ExecutionContext): ControlFlow {
     const frameIndex = context.memory.getStackFrameIndex();
     const writes: [Address, Value][] = [];
-    for (const {variable, expr, value} of this.stackVariables) {
+    for (const {parameter, expr, variable} of this.bindings) {
       if (expr) {
         // Evaluate argument expression in the context of the current stack frame.
-        const value = evaluateExpression({expr, resultType: variable.type, memory: context.memory});
-        writes.push([variable.address!, value]);
-      } else if (value) {
-        if (isReference(value) && value.variable.storageType == StorageType.AUTOMATIC) {
-          // Explicitly mark that stack references refer to the current stack frame.
-          const address = {...value.address, frameIndex};
-          writes.push([variable.address!, {...value, address}]);
+        const value = evaluateExpression({expr, resultType: parameter.type, memory: context.memory});
+        writes.push([parameter.address!, value]);
+      } else if (variable) {
+        if (variable.isParameter && variable.address) {
+          // When passing a reference param from one procedure to another, reuse
+          // the original reference to avoid unnecessary chains of references to
+          // the same variable.
+          const ref = context.memory.readAddress(variable.address!);
+          if (isReference(ref)) {
+            writes.push([parameter.address!, ref]);
+          } else {
+            writes.push([parameter.address!, reference(variable, qualifyAddress(variable.address!, frameIndex))]);
+          }
+        } else if (variable.recordOffset) {
+          // Record element symbols are not allocated, so we have to make a new
+          // reference that offsets into the record.
+          const [address, _] = context.memory.dereference(variable);
+          writes.push([parameter.address!, reference(variable, qualifyAddress(address, frameIndex))]);
         } else {
-          writes.push([variable.address!, value]);
+          writes.push([parameter.address!, reference(variable, qualifyAddress(variable.address!, frameIndex))]);
         }
       }
     }
@@ -48,4 +58,12 @@ export class CallStatement extends Statement {
     }
     return {tag: ControlFlowTag.CALL, chunkIndex: this.chunkIndex};
   }
+}
+
+function qualifyAddress(address: Address, frameIndex: number): Address {
+  if (address.storageType === StorageType.AUTOMATIC &&
+      address.frameIndex === undefined) {
+    return {...address, frameIndex};
+  }
+  return address;
 }

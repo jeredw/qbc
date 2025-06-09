@@ -61,10 +61,10 @@ function assign(variable: Variable, value: Value, memory: Memory) {
     }
     for (const [name, sourceVariable] of value.variable.elements!) {
       const targetVariable = variable.elements!.get(name)!;
+      const [address, sourceValue] = memory.dereference(sourceVariable);
       if (sourceVariable.type.tag == TypeTag.RECORD) {
-        assign(targetVariable, reference(sourceVariable), memory);
+        assign(targetVariable, reference(sourceVariable, address), memory);
       } else {
-        const [_, sourceValue] = memory.dereference(sourceVariable);
         assign(targetVariable, sourceValue ?? getDefaultValue(sourceVariable), memory);
       }
     }

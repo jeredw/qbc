@@ -966,23 +966,15 @@
           (variable_or_function_call stopTime#) = 
           (expr 
             (builtin_function 
-              (timer_function TIMER))))) \n 
+              (timer_function TIMER))))) \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call speed) = 
           (expr 
             (expr 
-              (expr 
-                (variable_or_function_call speed)) * 
-              (expr 
-                (literal .5))) / 
+              (literal 100)) * 
             (expr 
-              ( 
-                (expr 
-                  (expr 
-                    (variable_or_function_call stopTime#)) - 
-                  (expr 
-                    (variable_or_function_call startTime#))) ))))) \n \n) 
+              (variable_or_function_call speed))))) \n \n) 
     (end_sub_statement END SUB)) \n \n ' \n ' \n 
   (sub_statement SUB 
     (untyped_id InitColors) 
