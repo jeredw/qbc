@@ -139,6 +139,10 @@ export class WebAudioSpeaker implements Speaker {
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void> {
     this.syncQueue();
     const now = this.audioContext.currentTime;
+    if (onDuration === 0) {
+      this.reset();
+      return Promise.resolve();
+    }
     const onTime = this.queue.at(-1)?.endTime ?? now;
     const offTime = onTime + onDuration;
     const endTime = offTime + offDuration;

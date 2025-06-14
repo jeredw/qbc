@@ -37,7 +37,7 @@ export class SoundStatement extends Statement {
 
   execute(context: ExecutionContext): ControlFlow | void {
     const frequency = evaluateIntegerExpression(this.frequency, context.memory);
-    if (frequency < 37) {
+    if (frequency < 37 && frequency !== 0) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
     const duration = evaluateIntegerExpression(this.duration, context.memory, { tag: TypeTag.LONG });
