@@ -257,7 +257,7 @@ export class SymbolTable {
     const isDefaultType = !sigil;
     if (slot) {
       if (slot.procedure) {
-        if (!slot.procedure.result || sameType(type, slot.procedure.result.type)) {
+        if (!slot.procedure.result || !sigil || sameType(type, slot.procedure.result.type)) {
           return {tag: SymbolTag.PROCEDURE, procedure: slot.procedure};
         }
         throw ParseError.fromToken(token, "Duplicate definition");

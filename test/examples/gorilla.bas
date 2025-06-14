@@ -154,8 +154,7 @@ InitVars:
   IF Mode = 9 THEN PALETTE 4, 0   'Check for 64K EGA
   ON ERROR GOTO 0
 
-'  MachSpeed = CalcDelay
-  MachSpeed = CalcDelay!
+  MachSpeed = CalcDelay
 
   IF Mode = 9 THEN
     ScrWidth = 640
