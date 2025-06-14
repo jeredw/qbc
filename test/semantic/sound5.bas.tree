@@ -1,0 +1,21 @@
+(program ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id sound) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 50))) , 
+        (argument 
+          (expr 
+            (literal 20)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id sound) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 0))) , 
+        (argument 
+          (expr 
+            (literal 20)))))) \n <EOF>)
