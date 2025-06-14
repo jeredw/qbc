@@ -495,6 +495,7 @@ export class Typer extends QBasicParserListener {
     const tryToEvaluateAsConstant = (expr: parser.ExprContext) => {
       let result: Value | undefined;
       try {
+        this.lookupConstants(expr);
         result = evaluateAsConstantExpression({
           expr,
           resultType: { tag: TypeTag.INTEGER },
@@ -812,25 +813,9 @@ export class Typer extends QBasicParserListener {
   }
 
   override enterConst_statement = (ctx: parser.Const_statementContext) => {
-    const typer = this;
     for (const assignment of ctx.const_assignment()) {
       const expr = assignment.const_expr().expr();
-      ParseTreeWalker.DEFAULT.walk(new class extends QBasicParserListener {
-        override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
-          const [name, sigil] = splitSigil(ctx._name!.text!);
-          if (ctx.argument_list() || ctx._element) {
-            throw ParseError.fromToken(ctx.start!, "Invalid constant");
-          }
-          const constant = typer._chunk.symbols.lookupConstant(name);
-          if (!constant) {
-            throw ParseError.fromToken(ctx.start!, "Invalid constant");
-          }
-          if (sigil && typeOfSigil(sigil).tag !== constant.value.tag) {
-            throw ParseError.fromToken(ctx.start!, "Duplicate definition");
-          }
-          getTyperContext(ctx).$constant = constant;
-        }
-      }, expr);
+      this.lookupConstants(expr);
       const [name, sigil] = splitSigil(assignment.ID().getText());
       const value = evaluateAsConstantExpression({
         expr: assignment.const_expr().expr(),
@@ -841,6 +826,26 @@ export class Typer extends QBasicParserListener {
       }
       this._chunk.symbols.defineConstant(name, {value, token: assignment.ID().symbol});
     }
+  }
+
+  private lookupConstants(expr: parser.ExprContext) {
+    const typer = this;
+    ParseTreeWalker.DEFAULT.walk(new class extends QBasicParserListener {
+      override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
+        const [name, sigil] = splitSigil(ctx._name!.text!);
+        if (ctx.argument_list() || ctx._element) {
+          throw ParseError.fromToken(ctx.start!, "Invalid constant");
+        }
+        const constant = typer._chunk.symbols.lookupConstant(name);
+        if (!constant) {
+          throw ParseError.fromToken(ctx.start!, "Invalid constant");
+        }
+        if (sigil && typeOfSigil(sigil).tag !== constant.value.tag) {
+          throw ParseError.fromToken(ctx.start!, "Duplicate definition");
+        }
+        getTyperContext(ctx).$constant = constant;
+      }
+    }, expr);
   }
 
   override enterInclude_metacommand = (ctx: parser.Include_metacommandContext) => {

@@ -1,0 +1,39 @@
+(program ' \n 
+  (statement 
+    (const_statement const 
+      (const_assignment wellwidth = 
+        (const_expr 
+          (expr 
+            (literal 10)))))) \n 
+  (statement 
+    (const_statement const 
+      (const_assignment wellheight = 
+        (const_expr 
+          (expr 
+            (literal 21)))))) \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable 
+        (untyped_id wellblocks) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call wellwidth))) , 
+            (dim_subscript 
+              (expr 
+                (variable_or_function_call wellheight))) )) as 
+        (type_name integer)))) \n ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id wellblocks) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) , 
+            (dim_subscript 
+              (expr 
+                (literal 10))) )) as 
+        (type_name integer)))) \n <EOF>)

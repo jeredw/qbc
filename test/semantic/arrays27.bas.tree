@@ -1,0 +1,20 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable k% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable k$ 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
+  (statement 
+    (erase_statement erase 
+      (erase_argument k))) \n <EOF>)

@@ -1,0 +1,22 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id stuff) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) , 
+            (dim_subscript 
+              (expr 
+                (literal 10))) )) as 
+        (type_name string)))) \n 
+  (statement 
+    (erase_statement erase 
+      (erase_argument stuff))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)
