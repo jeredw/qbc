@@ -1,0 +1,71 @@
+(program ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (width_statement width 
+      (expr 
+        (literal 80)) , 
+      (expr 
+        (literal 43)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 50))) , 
+                (argument 
+                  (expr 
+                    (literal 223)))) )))))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 50))) , 
+                (argument 
+                  (expr 
+                    (literal 223)))) )))))) \n ' \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call string$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 50))) , 
+                (argument 
+                  (expr 
+                    (literal 32)))) )))))) \n <EOF>)

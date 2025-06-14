@@ -1,0 +1,50 @@
+(program ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "Z Z Z"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "_ _ _"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call chr$ 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 223)))) ))) + 
+                (expr 
+                  (literal " "))) + 
+              (expr 
+                (variable_or_function_call chr$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 219)))) )))) + 
+            (expr 
+              (literal " "))) + 
+          (expr 
+            (variable_or_function_call chr$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 223)))) ))))))) \n <EOF>)

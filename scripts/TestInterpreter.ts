@@ -172,4 +172,5 @@ registerFont('www/WebPlus_IBM_VGA_9x16.woff', { family: 'Web IBM VGA 9x16' });
 registerFont('www/WebPlus_IBM_VGA_9x8.woff', { family: 'Web IBM VGA 9x8' });
 registerFont('www/WebPlus_IBM_VGA_8x14.woff', { family: 'Web IBM VGA 8x14' });
 registerFont('www/WebPlus_IBM_VGA_8x16.woff', { family: 'Web IBM VGA 8x16' });
+registerFont('www/WebPlus_IBM_EGA_8x8.woff', { family: 'Web IBM EGA 8x8' });
 runTests(Deno.args);

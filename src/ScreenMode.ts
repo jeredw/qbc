@@ -23,10 +23,10 @@ export const SCREEN_MODES: ScreenMode[] = [
     mode: 0,
     geometry: [
       {dots: [720, 400], text: [80, 25], characterBox: [9, 16], font: 'Web IBM VGA 9x16'},
-      {dots: [720, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [720, 350], text: [80, 43], characterBox: [9, 8], font: 'Web IBM VGA 9x8'},
       {dots: [720, 400], text: [80, 50], characterBox: [9, 8], font: 'Web IBM VGA 9x8'},
       {dots: [360, 400], text: [40, 25], characterBox: [9, 16], font: 'Web IBM VGA 9x16'},
-      {dots: [360, 350], text: [40, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [360, 350], text: [40, 43], characterBox: [9, 8], font: 'Web IBM VGA 9x8'},
       {dots: [360, 400], text: [40, 50], characterBox: [9, 8], font: 'Web IBM VGA 9x8'},
     ],
     colors: 64,
@@ -39,7 +39,7 @@ export const SCREEN_MODES: ScreenMode[] = [
   {
     mode: 1,
     geometry: [
-      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 16,
     attributes: 4,
@@ -51,7 +51,7 @@ export const SCREEN_MODES: ScreenMode[] = [
   {
     mode: 2,
     geometry: [
-      {dots: [640, 200], text: [80, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [640, 200], text: [80, 25], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 16,
     attributes: 2,
@@ -63,7 +63,7 @@ export const SCREEN_MODES: ScreenMode[] = [
   {
     mode: 7,
     geometry: [
-      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 16,
     attributes: 16,
@@ -75,7 +75,7 @@ export const SCREEN_MODES: ScreenMode[] = [
   {
     mode: 8,
     geometry: [
-      {dots: [640, 200], text: [80, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [640, 200], text: [80, 25], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 16,
     attributes: 16,
@@ -88,7 +88,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     mode: 9,
     geometry: [
       {dots: [640, 350], text: [80, 25], characterBox: [8, 14], font: 'Web IBM VGA 8x14'},
-      {dots: [640, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [640, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 64,
     attributes: 16,
@@ -101,7 +101,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     mode: 10,
     geometry: [
       {dots: [640, 350], text: [80, 25], characterBox: [8, 14], font: 'Web IBM VGA 8x14'},
-      {dots: [640, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [640, 350], text: [80, 43], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 9,
     attributes: 4,
@@ -114,7 +114,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     mode: 11,
     geometry: [
       {dots: [640, 480], text: [80, 30], characterBox: [8, 16], font: 'Web IBM VGA 8x16'},
-      {dots: [640, 480], text: [80, 60], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [640, 480], text: [80, 60], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 262144,
     attributes: 2,
@@ -127,7 +127,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     mode: 12,
     geometry: [
       {dots: [640, 480], text: [80, 30], characterBox: [8, 16], font: 'Web IBM VGA 8x16'},
-      {dots: [640, 480], text: [80, 60], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [640, 480], text: [80, 60], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 262144,
     attributes: 16,
@@ -139,7 +139,7 @@ export const SCREEN_MODES: ScreenMode[] = [
   {
     mode: 13,
     geometry: [
-      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM VGA 9x8'},
+      {dots: [320, 200], text: [40, 25], characterBox: [8, 8], font: 'Web IBM EGA 8x8'},
     ],
     colors: 262144,
     attributes: 256,
