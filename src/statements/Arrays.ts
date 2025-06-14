@@ -83,13 +83,13 @@ export class EraseStatement extends Statement {
       context.memory.write(this.array, array(this.array, {dimensions: []}))
       return;
     }
-    const length = getArrayLength(descriptor);
-    for (let i = 0; i < length; i++) {
+    const numValues = getArrayLength(descriptor) * (descriptor.itemSize ?? 1);
+    for (let i = 0; i < numValues; i++) {
       context.memory.writeAddress({
         storageType: descriptor.storageType!,
         frameIndex: descriptor.baseAddress!.frameIndex,
         index: descriptor.baseAddress!.index + i
-      }, getDefaultValue(this.array));
+      }, undefined);
     }
   }
 }
@@ -221,7 +221,7 @@ export function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDes
     // Note: CallStatement guarantees we only ever create one level of array
     // references.
     const arrayRef = memory.readAddress(variable.address);
-    if (!isReference(arrayRef) || !arrayRef.variable.array) {
+    if (!arrayRef || !isReference(arrayRef) || !arrayRef.variable.array) {
       throw new Error("expecting array reference");
     }
     if (!arrayRef.variable.array.dynamic) {
@@ -261,7 +261,7 @@ function getDescriptorAndBaseIndex(array: Variable, memory: Memory): {
   let baseIndex: number | undefined;
   if (!array.array) {
     const arrayRef = memory.readAddress(array.address!);
-    if (!isReference(arrayRef) || !arrayRef.variable) {
+    if (!arrayRef || !isReference(arrayRef) || !arrayRef.variable) {
       throw new Error('expecting array reference');
     }
     array = arrayRef.variable;

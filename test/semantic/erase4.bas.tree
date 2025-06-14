@@ -1,0 +1,111 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id point) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id y) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id active) as 
+      (type_name_for_type_element integer) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable 
+        (untyped_id starbase) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) to 
+              (expr 
+                (literal 4))) )) as 
+        (type_name 
+          (untyped_id point))))) \n 
+  (statement 
+    (erase_statement erase 
+      (erase_argument starbase))) \n \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call starbase 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . x)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call starbase 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . y)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call starbase 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . active))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call starbase 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . x) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call starbase 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . y) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call starbase 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . active) = 
+      (expr - 
+        (expr 
+          (literal 1))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call starbase 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . x)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call starbase 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . y)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call starbase 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) ) . active))))) \n <EOF>)

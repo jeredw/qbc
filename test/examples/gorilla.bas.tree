@@ -596,12 +596,12 @@
   (statement 
     (on_error_statement ON ERROR GOTO 
       (target 
-        (line_number 0)))) \n \n ' \n 
+        (line_number 0)))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call MachSpeed) = 
       (expr 
-        (variable_or_function_call CalcDelay!)))) \n \n 
+        (variable_or_function_call CalcDelay)))) \n \n 
   (if_block_statement IF 
     (expr 
       (expr 

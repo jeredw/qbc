@@ -14,7 +14,7 @@ export interface Address {
 }
 
 export class Frame {
-  values: Value[] = [];
+  values: (Value | undefined)[] = [];
   live: boolean = true;
 
   constructor(size: number) {
@@ -22,12 +22,12 @@ export class Frame {
     this.live = true;
   }
 
-  read(index: number): Value {
+  read(index: number): Value | undefined {
     this.check(index);
     return this.values[index];
   }
 
-  write(index: number, value: Value) {
+  write(index: number, value?: Value) {
     this.check(index);
     this.values[index] = value;
   }
@@ -80,7 +80,7 @@ export class Memory {
     return this.stack.length - 1;
   }
 
-  dereference(variable: Variable): [Address, Value] {
+  dereference(variable: Variable): [Address, Value | undefined] {
     // If variable is an element in a record, dereference the record variable
     // first, then offset into it.
     let address = variable.recordOffset?.record.address ?? variable.address;
@@ -120,7 +120,7 @@ export class Memory {
     this.getDynamicFrame(address.frameIndex).dispose();
   }
 
-  readAddress(address: Address): Value {
+  readAddress(address: Address): Value | undefined {
     switch (address.storageType) {
       case StorageType.AUTOMATIC:
         return this.getStackFrame(address.frameIndex).read(address.index);
@@ -131,7 +131,7 @@ export class Memory {
     }
   }
 
-  writeAddress(address: Address, value: Value) {
+  writeAddress(address: Address, value?: Value) {
     switch (address.storageType) {
       case StorageType.AUTOMATIC:
         return this.getStackFrame(address.frameIndex).write(address.index, value);
@@ -142,12 +142,12 @@ export class Memory {
     }
   }
 
-  read(variable: Variable): Value {
+  read(variable: Variable): Value | undefined {
     const [_, value] = this.dereference(variable);
     return value;
   }
 
-  write(variable: Variable, value: Value) {
+  write(variable: Variable, value: Value | undefined) {
     const [address, _] = this.dereference(variable);
     this.writeAddress(address, value);
   }
