@@ -533,8 +533,8 @@ export class PointFunction extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const arg1 = evaluateIntegerExpression(this.arg1, context.memory, { tag: TypeTag.INTEGER });
-    const y = this.y && evaluateIntegerExpression(this.y, context.memory, { tag: TypeTag.INTEGER });
+    const arg1 = evaluateIntegerExpression(this.arg1, context.memory, { tag: TypeTag.SINGLE });
+    const y = this.y && evaluateIntegerExpression(this.y, context.memory, { tag: TypeTag.SINGLE });
     if (y === undefined) {
       const value = this.getCursor(arg1, context);
       context.memory.write(this.result, double(value));
@@ -557,7 +557,7 @@ export class PointFunction extends Statement {
         case 0: return screen.windowToView({x: cursor.x, y: 0}).x;
         case 1: return screen.windowToView({x: 0, y: cursor.y}).y;
         case 2: return cursor.x;
-        case 3: return cursor.y
+        case 3: return cursor.y;
       }
     } catch (e: unknown) {
       // Fallthrough.

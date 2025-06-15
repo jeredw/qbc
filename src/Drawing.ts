@@ -774,8 +774,8 @@ class ViewTransform {
 
   viewToWindow(p: Point): Point {
     return {
-      x: roundToNearestEven(((p.x + this.view.x.start) - this.x0) / this.dx),
-      y: roundToNearestEven(((p.y + this.view.y.start) - this.y0) / this.dy)
+      x: ((p.x + this.view.x.start) - this.x0) / this.dx,
+      y: ((p.y + this.view.y.start) - this.y0) / this.dy
     }
   }
 }

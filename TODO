@@ -5,24 +5,41 @@ General
 - Improve parser error messages
 - Rewrite the antlr parser as a hand rolled recursive descent thing
 - Open up the repository and release a beta
+- Organize golden file tests a bit better and document expectations
 
 Bringup
-- Get all the example programs to run correctly
-  - GORILLA
-  - MANDEL
-  - MONEY
-  - NIBBLES
-  - QBLOCKS
-  - QBRICKS
-  - QMAZE
-  - QPAINT
-  - QSPACE
-  - QSYNTH
-  - REMLINE
-  - REVERSI
-  - SORTDEMO
-  - TORUS
-- Organize golden file tests a bit better and document expectations
++ GORILLA
+  + gorilla: Duplicate definition CalcDelay (needs !)
+  - gorilla: Speed is messed up (intro exits early)
++ MANDEL
+- MONEY
+- NIBBLES
+  - nibbles: Extra space after score
+  - nibbles: Speed is messed up
++ QBLOCKS
+  + qblocks: Exits after starting with subscript error
++ QBRICKS
+  + qbricks: Ball does not erase
++ QMAZE
+  + qmaze: Generating gets stuck
+- QPAINT
++ QSHIPS
+  + qships: Illegal function call drawing ships
+  + qships: Exception after drawing playfield
++ QSPACE
+  + qspace: Overflow error after firing lots of missiles
+  + qspace: Subscript error after firing
+- QSYNTH
+  + qsynth: "Unexpected error" dialog on startup
+  - qsynth: Output goes silent when increasing tempo
+  - qsynth: "Unexpected error" when saving song
+- REMLINE
++ REVERSI
++ SORTDEMO
+  + sortdemo: Illegal function call in SOUND at end
+  + sortdemo: Extra little slivers of bars at right
++ TORUS
+  + torus: Tiles are not filled in
 
 IDE features
 - Better debugging / single step UI
@@ -66,22 +83,5 @@ Language features
   - SETMEM: can call it...
   - SIGNAL: parses, unavailable
   - UEVENT: parses, unavailable
-- nibbles: Extra space after score
-- nibbles: Speed is messed up
-- gorilla: Speed is messed up (intro exits early)
-- qsynth: Output goes silent when increasing tempo
-- qsynth: "Unexpected error" when saving song
-- torus: Tiles are not filled in
-+ qships: Illegal function call drawing ships
-+ qspace: Overflow error after firing lots of missiles
-+ qspace: Subscript error after firing
-+ gorilla: Duplicate definition CalcDelay (needs !)
-+ qblocks: Exits after starting with subscript error
-+ sortdemo: Illegal function call in SOUND at end
-+ sortdemo: Extra little slivers of bars at right
-+ qmaze: Generating gets stuck
-+ qships: Exception after drawing playfield
-+ qbricks: Ball does not erase
-+ qsynth: "Unexpected error" dialog on startup
 + Support PEEK and POKE for VARSEG pointers
 + Modem support
