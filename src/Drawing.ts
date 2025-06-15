@@ -240,7 +240,7 @@ export class Plotter {
     const buffer = new ArrayBuffer(sizeInBytes);
     const data = new DataView(buffer);
     const littleEndian = true;
-    data.setInt16(0, r.width, littleEndian);
+    data.setInt16(0, r.width * bppPerPlane, littleEndian);
     data.setInt16(2, r.height, littleEndian);
     const bitStream = new BitStream(data, 4);
     let offset = 0;
@@ -271,9 +271,9 @@ export class Plotter {
     const data = new DataView(args.buffer);
     const littleEndian = true;
     // getInt16() throws if the buffer is empty.
-    const width = data.getInt16(0, littleEndian);
+    const width = data.getInt16(0, littleEndian) / bppPerPlane;
     const height = data.getInt16(2, littleEndian);
-    const sizeInBytes = 4 + Math.ceil(width * bppPerPlane / 8) * planes * height;
+    const sizeInBytes = 4 + Math.ceil(width / 8) * planes * height;
     if (args.buffer.byteLength < sizeInBytes) {
       throw new Error('bitmap is not large enough')
     }

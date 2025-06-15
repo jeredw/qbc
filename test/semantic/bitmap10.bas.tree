@@ -1,0 +1,45 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id stuff) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 51))) )) as 
+        (type_name integer)))) \n 
+  (statement 
+    (get_graphics_statement get 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 9)) , 
+        (expr 
+          (literal 9)) ) , stuff)) \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stuff 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stuff 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n <EOF>)
