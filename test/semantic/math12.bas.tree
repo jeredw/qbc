@@ -1,0 +1,19 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a%) = 
+      (expr 
+        (literal 300)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call b%) = 
+      (expr 
+        (literal 18)))) \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call a%)) ^ 
+          (expr 
+            (variable_or_function_call b%)))))) \n <EOF>)
