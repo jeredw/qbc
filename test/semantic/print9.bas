@@ -1,3 +1,4 @@
+' Test printing at all four corners of the screen without scrolling.
 screen 0
 cls
 view print

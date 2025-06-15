@@ -1,3 +1,4 @@
+' Test TAB() and SPC() formatting within PRINT.
 PRINT "0        1         2         3         4         5         6         7         8"
 PRINT "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
 PRINT "hi"; TAB(2); "ho"; TAB(200); "ok"

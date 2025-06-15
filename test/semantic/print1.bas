@@ -1,3 +1,4 @@
+' Test basic PRINT argument formatting.
 print "0        1         2         3          "
 print "1234567890123456789012345678901234556789"
 print "1234567890123", 0

@@ -282,6 +282,9 @@ function parseFormatString(formatString: String): Template[] {
         pos++;
       }
       while (tokens[pos] == ',') {
+        if (result.comma) {
+          result.beforeDecimal = (result.beforeDecimal || 0) + 1;
+        }
         result.comma = true;
         pos++;
         if (tokens[pos] && tokens[pos].startsWith('#')) {
@@ -311,6 +314,9 @@ function parseFormatString(formatString: String): Template[] {
       result.beforeDecimal = tokens[pos].length;
       pos++;
       while (tokens[pos] === ',') {
+        if (result.comma) {
+          result.beforeDecimal = (result.beforeDecimal || 0) + 1;
+        }
         result.comma = true;
         pos++;
         if (tokens[pos] && tokens[pos].startsWith('#')) {

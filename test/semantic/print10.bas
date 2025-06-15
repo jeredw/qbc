@@ -1,3 +1,4 @@
+' PRINT USING number fields can have multiple commmas.
 SUB PrintScore (score1, lives1)
   PRINT USING "SAMMY-->  Lives: #     #,###,#00"; lives1; score1
 END SUB 

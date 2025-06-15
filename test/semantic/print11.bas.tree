@@ -1,0 +1,13 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "012345678"))))) \n 
+  (statement 
+    (print_using_statement print using 
+      (expr 
+        (literal "#,###,#00")) ; 
+      (print_argument 
+        (expr 
+          (literal 100))))) \n <EOF>)

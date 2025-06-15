@@ -1,3 +1,4 @@
+' Test PRINT USING format specifiers.
 print "123456789012345678901234567890"
 print using "#^^^^"; 0
 print using "#.^^^^"; 0

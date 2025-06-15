@@ -1,3 +1,4 @@
+' Help file examples for PRINT USING format specifiers.
 A$ = "LOOK" : B$ = "OUT"
 PRINT USING "!"; A$; B$            'First characters of A$ and B$.
 PRINT USING "\  \"; A$; B$         'Two spaces between backslashes,
