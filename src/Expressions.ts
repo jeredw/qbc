@@ -296,11 +296,13 @@ class ExpressionListener extends QBasicParserListener {
         return withIntegerCast(a, b, (a: values.NumericValue, b: values.NumericValue) => this.integerDivide(a, b));
       case 'mod':
         return withIntegerCast(a, b, (a: values.NumericValue, b: values.NumericValue) => this.integerRemainder(a, b));
-      case '^':
+      case '^': {
         if (a.number == 0 && b.number < 0 && !this._typeCheck) {
           return ILLEGAL_FUNCTION_CALL;
         }
+        const resultType = values.mostPreciseFloatType(a, b);
         return resultType(this.check(Math.pow(a.number, b.number)));
+      }
       case '=':
         return values.boolean(a.number == b.number);
       case '<':

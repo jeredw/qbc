@@ -112,6 +112,13 @@ export function valueOfNumericType(tag: TypeTag): (number: number) => Value {
   throw new Error('not numeric');
 }
 
+export function mostPreciseFloatType(a: NumericValue, b: NumericValue): (number: number) => Value {
+  if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
+    return double;
+  }
+  return single;
+}
+
 export function mostPreciseType(a: NumericValue, b: NumericValue): (number: number) => Value {
   if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
     return double;
