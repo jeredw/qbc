@@ -10,14 +10,15 @@ import { RealTimeTimer } from "./Timer.ts";
 import { GamepadListener } from "./Joystick.ts";
 import { PointerListener } from "./LightPen.ts";
 import { HttpModem } from "./Modem.ts";
-import { editor, MarkerSeverity } from "monaco-editor/esm/vs/editor/editor.api";
+import "monaco-editor/esm/vs/editor/editor.all.js";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
 class Shell {
   private root: HTMLElement;
   private interpreter: Interpreter;
   private invocation: Invocation | null = null;
 
-  private codeEditor: editor.IStandaloneCodeEditor;
+  private codeEditor: monaco.editor.IStandaloneCodeEditor;
 
   private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;
@@ -86,9 +87,6 @@ class Shell {
       this.keyboard.keydown(e);
       e.preventDefault();
       return false;
-    }
-    if (!document.activeElement?.closest('.editor')) {
-      return;
     }
     switch (e.key) {
       case 'Enter':
@@ -177,13 +175,13 @@ class Shell {
   }
 
   private clearErrors() {
-    editor.setModelMarkers(this.codeEditor.getModel()!, 'errors', []);
+    monaco.editor.setModelMarkers(this.codeEditor.getModel()!, 'errors', []);
   }
 
   private markError(line: number, column: number, length: number, message: string) {
-    editor.setModelMarkers(this.codeEditor.getModel()!, 'errors', [{
+    monaco.editor.setModelMarkers(this.codeEditor.getModel()!, 'errors', [{
       message,
-      severity: MarkerSeverity.Error,
+      severity: monaco.MarkerSeverity.Error,
       startLineNumber: line,
       startColumn: column + 1,
       endLineNumber: line,
@@ -207,8 +205,8 @@ function assertHTMLElement(element: Element | null): HTMLElement {
   return element;
 }
 
-function initEditor(editorElement: HTMLElement): editor.IStandaloneCodeEditor {
-  editor.defineTheme("dos-edit", {
+function initEditor(editorElement: HTMLElement): monaco.editor.IStandaloneCodeEditor {
+  monaco.editor.defineTheme("dos-edit", {
     base: "vs-dark",
     inherit: false,
     rules: [],
@@ -217,10 +215,19 @@ function initEditor(editorElement: HTMLElement): editor.IStandaloneCodeEditor {
       "editor.foreground": "#aaaaaa",
     }
   });
-  return editor.create(editorElement, {
+  monaco.languages.register({id: "qbasic"});
+  /*monaco.languages.registerHoverProvider("qbasic", {
+    provideHover: function(model, position): monaco.languages.ProviderResult<monaco.languages.Hover> {
+      console.log(model.getWordAtPosition(position));
+      return {contents: [{value: "foo"}]};
+    }
+  });*/
+  return monaco.editor.create(editorElement, {
     theme: "dos-edit",
     fontFamily: "Web IBM VGA 8x16",
     fontSize: 16,
+    language: "qbasic",
+    fixedOverflowWidgets: true,
   });
 }
 
