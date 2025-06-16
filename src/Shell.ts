@@ -57,6 +57,7 @@ class Shell {
     });
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
     this.codeEditor = initEditor(editorElement);
+    this.listenForBreakpoints();
     document.addEventListener('keydown', (e: KeyboardEvent) => this.keydown(e));
     document.addEventListener('keyup', (e: KeyboardEvent) => this.keyup(e));
     this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
@@ -196,6 +197,78 @@ class Shell {
     }
     console.error(line, column, length, error.message);
   }
+
+  private breakpoints: Set<number> = new Set();
+
+  private listenForBreakpoints() {
+    let hoverLine: number | undefined;
+    let justCleared: number | undefined;
+    const decorations = this.codeEditor.createDecorationsCollection([]);
+    const updateModel = () => {
+      let newDecorations: monaco.editor.IModelDeltaDecoration[] = [];
+      for (const line of this.breakpoints) {
+        newDecorations.push({
+          range: new monaco.Range(line, 1, line, 1),
+          options: {
+            isWholeLine: true,
+            className: 'breakpoint-line',
+            glyphMarginClassName: 'breakpoint-icon',
+          }
+        });
+      }
+      if (hoverLine !== undefined) {
+        newDecorations.push({
+          range: new monaco.Range(hoverLine, 1, hoverLine, 1),
+          options: {
+            isWholeLine: true,
+            className: 'hover-breakpoint-line',
+            glyphMarginClassName: 'hover-breakpoint-icon',
+          }
+        });
+      }
+      decorations.set(newDecorations);
+    };
+    const unhover = () => {
+      hoverLine = undefined;
+      updateModel();
+    };
+    const marginHandler = (e: monaco.editor.IEditorMouseEvent, action: (lineNumber: number) => void) => {
+      if (e.target.type !== monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
+        unhover();
+        return;
+      }
+      const data = e.target.detail as monaco.editor.IMouseTargetMarginData;
+      if (data.isAfterLines) {
+        unhover();
+        return;
+      }
+      action(e.target.position.lineNumber);
+      updateModel();
+    };
+    const clearBreakpoint = (line: number) => {
+      if (this.breakpoints.has(line)) {
+        this.breakpoints.delete(line);
+        justCleared = line;
+      }
+    };
+    const setBreakpoint = (line: number) => {
+      if (justCleared !== line) {
+        this.breakpoints.add(line);
+      }
+      justCleared = undefined;
+    };
+    const hoverBreakpoint = (line: number) => {
+      if (this.breakpoints.has(line)) {
+        hoverLine = undefined;
+        return;
+      }
+      hoverLine = line;
+    };
+    this.codeEditor.onMouseDown((e) => marginHandler(e, clearBreakpoint));
+    this.codeEditor.onMouseUp((e) => marginHandler(e, setBreakpoint));
+    this.codeEditor.onMouseMove((e) => marginHandler(e, hoverBreakpoint));
+    this.codeEditor.onMouseLeave(() => unhover());
+  }
 }
 
 function assertHTMLElement(element: Element | null): HTMLElement {
@@ -227,7 +300,7 @@ function initEditor(editorElement: HTMLElement): monaco.editor.IStandaloneCodeEd
     fontFamily: "Web IBM VGA 8x16",
     fontSize: 16,
     language: "qbasic",
-    fixedOverflowWidgets: true,
+    glyphMargin: true,
   });
 }
 
