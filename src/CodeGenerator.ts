@@ -9,7 +9,6 @@ import { parseLiteral, typeCheckExpression } from "./Expressions.ts";
 import { isError, isString as isStringValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag, isString as isStringType, isNumericType } from "./Types.ts";
 import { isBuiltin, isProcedure, isVariable, QBasicSymbol } from "./SymbolTable.ts";
-import { getTyperContext } from "./Typer.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
 import { BranchIndexStatement } from "./statements/Branch.ts";
@@ -24,23 +23,7 @@ import { EventChannelState } from "./Events.ts";
 import { KeyStatementOperation } from "./statements/Keyboard.ts";
 import { FieldDefinition } from "./statements/FileSystem.ts";
 import { ErrorHandlerStatement, ResumeStatement } from "./statements/Errors.ts";
-
-export interface CodeGeneratorContext {
-  // Generated label for this statement.
-  $label: string;
-  // Label for the next branch of an if/select.
-  $nextBranchLabel: string;
-  // Top of block (loops).
-  $topLabel: string;
-  // End of block (end if/loop exit).
-  $exitLabel: string;
-  // Set to avoid redundant function calls when compiling nested call expressions.
-  $compiled: boolean;
-}
-
-export function getCodeGeneratorContext(ctx: ParserRuleContext): CodeGeneratorContext {
-  return ctx as unknown as CodeGeneratorContext;
-}
+import { getCodeGeneratorContext, getTyperContext } from "./ExtraParserContext.ts";
 
 export class CodeGenerator extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
@@ -1388,14 +1371,16 @@ export class CodeGenerator extends QBasicParserListener {
        throw ParseError.fromToken(ctx.start!, "EXIT DO not within DO...LOOP");
       }
       this.addStatement(statements.exitDo());
-      this.setTargetForCurrentStatement(doCtx['$exitLabel'], ctx);
+      const codeGenContext = getCodeGeneratorContext(doCtx);
+      this.setTargetForCurrentStatement(codeGenContext.$exitLabel, ctx);
     } else if (ctx.FOR()) {
       const forCtx = findParent(ctx, parser.For_next_statementContext);
       if (!forCtx) {
         throw ParseError.fromToken(ctx.start!, "EXIT FOR not within FOR...NEXT");
       }
       this.addStatement(statements.exitFor());
-      this.setTargetForCurrentStatement(forCtx['$exitLabel'], ctx);
+      const codeGenContext = getCodeGeneratorContext(forCtx);
+      this.setTargetForCurrentStatement(codeGenContext.$exitLabel, ctx);
     } else if (ctx.FUNCTION()) {
       if (!findParent(ctx, parser.Function_statementContext)) {
         throw ParseError.fromToken(ctx.start!, "EXIT FUNCTION not within FUNCTION");

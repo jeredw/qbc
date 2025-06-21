@@ -36,7 +36,7 @@ export class CallStatement extends Statement {
           // the original reference to avoid unnecessary chains of references to
           // the same variable.
           const ref = context.memory.readAddress(variable.address!);
-          if (isReference(ref)) {
+          if (ref && isReference(ref)) {
             writes.push([parameter.address!, ref]);
           } else {
             writes.push([parameter.address!, reference(variable, qualifyAddress(variable.address!, frameIndex))]);

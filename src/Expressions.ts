@@ -16,6 +16,7 @@ import { isConstant, isVariable } from "./SymbolTable.ts";
 import { Memory } from "./Memory.ts";
 import { Variable } from "./Variables.ts";
 import { roundToNearestEven } from "./Math.ts";
+import { getTyperContext } from "./ExtraParserContext.ts";
 
 export function evaluateStringExpression(expr: ExprContext, memory: Memory): string {
   const value = evaluateExpression({
@@ -222,7 +223,7 @@ class ExpressionListener extends QBasicParserListener {
     if (this._callExpressionDepth > 0) {
       return;
     }
-    const result = ctx['$result'];
+    const result = getTyperContext(ctx).$result;
     if (!result) {
       throw new Error('missing result variable');
     }
@@ -236,20 +237,20 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     const ctx = dispatchCtx.variable_or_function_call();
-    const result = ctx['$result'];
+    const result = getTyperContext(ctx).$result;
     if (result) {
       this.push(this.readVariable(result));
       return;
     }
     if (this._constantExpression) {
-      const constant = ctx['$constant'];
+      const constant = getTyperContext(ctx).$constant;
       if (!constant) {
         throw ParseError.fromToken(ctx.start!, "Invalid constant");
       }
       this.push(constant.value);
       return;
     }
-    const symbol = ctx['$symbol'];
+    const symbol = getTyperContext(ctx).$symbol;
     if (!symbol) {
       throw new Error("missing symbol");
     }

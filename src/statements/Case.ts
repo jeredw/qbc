@@ -3,7 +3,7 @@ import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { RuntimeError } from "../Errors.ts";
 import { evaluateExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
-import { isError, isNumeric, isString, Value } from "../Values.ts";
+import { getDefaultValue, isError, isNumeric, isString, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -25,7 +25,10 @@ export class CaseStatement extends Statement {
   }
 
   private match(memory: Memory): boolean {
-    const [_, test] = memory.dereference(this.test);
+    let [_, test] = memory.dereference(this.test);
+    if (!test) {
+      test = getDefaultValue(this.test);
+    }
     if (this.condition.IS()) {
       const other = this.evaluate(memory, this.condition._other!);
       const op = this.condition._op?.text;

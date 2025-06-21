@@ -15,32 +15,13 @@ import {
   isNumericType
 } from "./Types.ts";
 import { ArrayBounds, Variable } from "./Variables.ts";
-import { SymbolTable, QBasicSymbol, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
+import { SymbolTable, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
-import { Constant, isError, isNumeric, typeOfValue, Value } from "./Values.ts";
+import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
 import { typeCheckExpression, parseLiteral, evaluateAsConstantExpression } from "./Expressions.ts";
 import { StorageType } from "./Memory.ts";
-import { Builtin, StandardLibrary } from "./Builtins.ts";
-
-export interface TyperContext {
-  $symbol: QBasicSymbol;
-  $procedure: Procedure;
-  $builtin: Builtin;
-  $constant: Constant;
-  // Synthetic result variable for a function call, builtin, or array element
-  // lookup lifted from an expression.
-  $result: Variable;
-  // Saved "TO" expression value for a for loop.
-  $end: Variable;
-  // Saved "STEP" expression value for a for loop.
-  $increment: Variable;
-  // Saved test expression for select case.
-  $test: Variable;
-}
-
-export function getTyperContext(ctx: ParserRuleContext): TyperContext {
-  return ctx as unknown as TyperContext;
-}
+import { StandardLibrary } from "./Builtins.ts";
+import { getTyperContext } from "./ExtraParserContext.ts";
 
 export class Typer extends QBasicParserListener {
   private _firstCharToDefaultType: Map<string, Type> = new Map();

@@ -18,6 +18,10 @@ export interface Key {
   cursorCommand?: CursorCommand;
 }
 
+interface SoftKey {
+  softNumLock: boolean;
+}
+
 export function typeLines(lines: string[], listener: KeyboardListener) {
   for (const line of lines) {
     const keys = line.match(/⟨([^⟩]+)⟩|./g) || [];
@@ -108,7 +112,7 @@ export class KeyboardListener implements Keyboard {
   }
 
   keydown(e: KeyboardEvent) {
-    e['softNumLock'] = this.softNumLockState;
+    (e as unknown as SoftKey).softNumLock = this.softNumLockState;
     if (e.key === 'Clear') {
       // Use the "Clear" key as a software numlock for os x.
       this.softNumLockState = !this.softNumLockState;
@@ -166,7 +170,7 @@ export class KeyboardListener implements Keyboard {
   }
 
   keyup(e: KeyboardEvent) {
-    e['softNumLock'] = this.softNumLockState;
+    (e as unknown as SoftKey).softNumLock = this.softNumLockState;
     const code = getScanCode(e);
     const keyNumber = this.detectCustomKey(e, code || 0);
     if (keyNumber !== undefined) {
@@ -296,7 +300,7 @@ function decodeCursorCommand(e: KeyboardEvent): CursorCommand | undefined {
 }
 
 function isNumLockOn(e: KeyboardEvent) {
-  return e.getModifierState('NumLock') || e['softNumLock'];
+  return e.getModifierState('NumLock') || (e as unknown as SoftKey).softNumLock;
 }
 
 function keyToChar(e: KeyboardEvent): string | undefined {

@@ -264,9 +264,9 @@ class Shell {
       }
       hoverLine = line;
     };
-    this.codeEditor.onMouseDown((e) => marginHandler(e, clearBreakpoint));
-    this.codeEditor.onMouseUp((e) => marginHandler(e, setBreakpoint));
-    this.codeEditor.onMouseMove((e) => marginHandler(e, hoverBreakpoint));
+    this.codeEditor.onMouseDown((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, clearBreakpoint));
+    this.codeEditor.onMouseUp((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, setBreakpoint));
+    this.codeEditor.onMouseMove((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, hoverBreakpoint));
     this.codeEditor.onMouseLeave(() => unhover());
   }
 }

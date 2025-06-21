@@ -894,7 +894,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return this.row;
   }
 
-  getColumn(): number {
+  override getColumn(): number {
     return this.column;
   }
 

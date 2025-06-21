@@ -175,6 +175,7 @@ abstract class BaseInputStatement extends Statement {
         case CursorCommand.INSERT:
           toggleInsert();
           break;
+        // @ts-ignore
         case CursorCommand.BACKSPACE:
           if (position > 0) {
             move(-1);

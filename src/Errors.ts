@@ -117,7 +117,7 @@ export class IOError extends Error {
 }
 
 // Builtin error messages that can be returned by ERROR.
-const ERROR_MESSAGES = (() => {
+const ERROR_MESSAGES: Map<number, string> = (() => {
   const chart = `
 1       NEXT without FOR             38      Array not defined
 2       Syntax error                 39      CASE ELSE expected
@@ -148,19 +148,21 @@ const ERROR_MESSAGES = (() => {
 35      Subprogram not defined       76      Path not found
 37      Argument-count mismatch
 `;
-  const errors = {};
+  const errors = new Map<number, string>();
   for (const line of chart.split('\n')) {
     const entries = line.match(/(\d+)\s+([^\d]+)/g) ?? [];
     for (const entry of entries) {
       const [_, code, message] = entry.trim().match(/(\d+)\s+(.*)/)!;
-      errors[+code] = message;
+      if (+code && message) {
+        errors.set(+code, message);
+      }
     }
   }
   return errors;
 })();
 
 export function getErrorForCode(code: number): ErrorValue {
-  return error(code, ERROR_MESSAGES[code] ?? "Unprintable error");
+  return error(code, ERROR_MESSAGES.get(code) ?? "Unprintable error");
 }
 
 // Trappable runtime errors.

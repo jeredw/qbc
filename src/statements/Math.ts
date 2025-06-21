@@ -1,4 +1,4 @@
-import { cast, double, numericTypeOf, isNumeric, single, Value } from "../Values.ts";
+import { cast, double, numericTypeOf, isNumeric, single, Value, getDefaultValue } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
@@ -188,7 +188,7 @@ export class RandomizeStatement extends Statement {
     if (!this.variable) {
       throw new Error("expecting either seed or variable");
     }
-    const value = context.memory.read(this.variable);
+    const value = context.memory.read(this.variable) ?? getDefaultValue(this.variable);
     if (!isNumeric(value)) {
       throw new Error("expecting numeric value for seed");
     }
