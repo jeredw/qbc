@@ -157,7 +157,7 @@ export class CodeGenerator extends QBasicParserListener {
     const exprBody = ctx.expr();
     if (exprBody) {
       const expr = this.compileExpression(exprBody, ctx.start!, procedure.result!.type);
-      this.addStatement(statements.let_(procedure.result!, expr));
+      this.addStatement(statements.let_(procedure.result!, expr), ctx.start!);
     }
   }
 
@@ -170,11 +170,11 @@ export class CodeGenerator extends QBasicParserListener {
   // Emit explicit end statements for end function / end sub so that the strange
   // behavior of ignoring END SUB : statements works.
   override enterEnd_function_statement = (ctx: parser.End_function_statementContext) => {
-    this.addStatement(statements.endFunction());
+    this.addStatement(statements.endFunction(), ctx.start!);
   }
 
   override enterEnd_sub_statement = (ctx: parser.End_sub_statementContext) => {
-    this.addStatement(statements.endSub());
+    this.addStatement(statements.endSub(), ctx.start!);
   }
 
   override enterIf_block_statement = (ctx: parser.If_block_statementContext) => {
@@ -201,7 +201,7 @@ export class CodeGenerator extends QBasicParserListener {
     }
     getCodeGeneratorContext(prevBranch).$nextBranchLabel = endIfLabel;
     const test = this.compileBoolean(ctx.expr());
-    this.addStatement(statements.if_(test));
+    this.addStatement(statements.if_(test), ctx.start!);
     this.setTargetForCurrentStatement(getCodeGeneratorContext(ctx).$nextBranchLabel, ctx);
   }
 
@@ -211,7 +211,7 @@ export class CodeGenerator extends QBasicParserListener {
     this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
     this.addLabelForNextStatement(labels.$label);
     const test = this.compileBoolean(ctx.expr());
-    this.addStatement(statements.elseIf(test));
+    this.addStatement(statements.elseIf(test), ctx.start!);
     this.setTargetForCurrentStatement(labels.$nextBranchLabel, ctx);
   }
 
@@ -256,10 +256,10 @@ export class CodeGenerator extends QBasicParserListener {
       }
       this.indexArray(variable, assignee.start!, assignee.argument_list(), result);
       const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
-      this.addStatement(statements.let_(result, expr));
+      this.addStatement(statements.let_(result, expr), ctx.start!);
     } else {
       const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
-      this.addStatement(statements.let_(variable, expr));
+      this.addStatement(statements.let_(variable, expr), ctx.start!);
     }
   }
 
@@ -271,7 +271,7 @@ export class CodeGenerator extends QBasicParserListener {
       lengthExpr = this.compileExpression(ctx._length!, ctx._length!.start!, { tag: TypeTag.INTEGER });
     }
     const stringExpr = this.compileExpression(ctx._string_!, ctx._string_!.start!, { tag: TypeTag.STRING });
-    this.addStatement(statements.midStatement(ctx.start!, variable, startExpr, lengthExpr, stringExpr));
+    this.addStatement(statements.midStatement(ctx.start!, variable, startExpr, lengthExpr, stringExpr), ctx.start!);
   }
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
@@ -335,7 +335,7 @@ export class CodeGenerator extends QBasicParserListener {
       }
       params.push({expr: this.compileExpression(parseExpr, args[i].start!, builtin.arguments[i].type)});
     }
-    this.addStatement(builtin.statement({token, params, result}));
+    this.addStatement(builtin.statement({token, params, result}), token);
   }
 
   private call(procedure: Procedure, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
@@ -384,12 +384,12 @@ export class CodeGenerator extends QBasicParserListener {
     // The stack also includes storage for locals.  They will be initialized to
     // empty values in the new stack frame and read as the default value.
     const stackSize = this.program.chunks[procedure.programChunkIndex].stackSize;
-    this.addStatement(statements.call(procedure.programChunkIndex, bindings, stackSize));
+    this.addStatement(statements.call(procedure.programChunkIndex, bindings, stackSize), token);
   }
 
   override enterError_statement = (ctx: parser.Error_statementContext) => {
     const errorCode = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.error(ctx.start!, errorCode));
+    this.addStatement(statements.error(ctx.start!, errorCode), ctx.start!);
   }
 
   override enterCircle_statement = (ctx: parser.Circle_statementContext) => {
@@ -402,7 +402,7 @@ export class CodeGenerator extends QBasicParserListener {
     const start = ctx._start && this.compileExpression(ctx._start, ctx._start.start!, { tag: TypeTag.SINGLE });
     const end = ctx._end && this.compileExpression(ctx._end, ctx._end.start!, { tag: TypeTag.SINGLE });
     const aspect = ctx._aspect && this.compileExpression(ctx._aspect, ctx._aspect.start!, { tag: TypeTag.SINGLE });
-    this.addStatement(statements.circle({token, step, x, y, radius, color, start, end, aspect}));
+    this.addStatement(statements.circle({token, step, x, y, radius, color, start, end, aspect}), token);
   }
 
   override enterClear_statement = (ctx: parser.Clear_statementContext) => {}
@@ -410,7 +410,7 @@ export class CodeGenerator extends QBasicParserListener {
   override enterClose_statement = (ctx: parser.Close_statementContext) => {
     for (const expr of ctx.expr()) {
       const fileNumber = this.compileExpression(expr, expr.start!, { tag: TypeTag.INTEGER });
-      this.addStatement(statements.close(fileNumber));
+      this.addStatement(statements.close(fileNumber), ctx.start!);
     }
   }
 
@@ -418,7 +418,7 @@ export class CodeGenerator extends QBasicParserListener {
     const arg1 = ctx._arg1 && this.compileExpression(ctx._arg1, ctx._arg1.start!, { tag: TypeTag.INTEGER });
     const arg2 = ctx._arg2 && this.compileExpression(ctx._arg2, ctx._arg2.start!, { tag: TypeTag.INTEGER });
     const arg3 = ctx._arg3 && this.compileExpression(ctx._arg3, ctx._arg3.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.color(ctx.start!, arg1, arg2, arg3));
+    this.addStatement(statements.color(ctx.start!, arg1, arg2, arg3), ctx.start!);
   }
 
   override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
@@ -426,7 +426,7 @@ export class CodeGenerator extends QBasicParserListener {
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {
     const segment = ctx.expr() ?? undefined;
     const segmentExpr = segment && this.compileExpression(segment, segment.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.defSeg(ctx.start!, segmentExpr));
+    this.addStatement(statements.defSeg(ctx.start!, segmentExpr), ctx.start!);
   }
 
   override enterData_statement = (ctx: parser.Data_statementContext) => {
@@ -448,12 +448,12 @@ export class CodeGenerator extends QBasicParserListener {
   override enterRead_statement = (ctx: parser.Read_statementContext) => {
     for (const variableCtx of ctx.variable_or_function_call()) {
       const variable = this.getVariable(variableCtx);
-      this.addStatement(statements.read(variableCtx.start!, variable));
+      this.addStatement(statements.read(variableCtx.start!, variable), ctx.start!);
     }
   }
 
-  override enterRestore_statement = (_ctx: parser.Restore_statementContext) => {
-    this.addStatement(statements.restore());
+  override enterRestore_statement = (ctx: parser.Restore_statementContext) => {
+    this.addStatement(statements.restore(), ctx.start!);
   }
 
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
@@ -478,27 +478,27 @@ export class CodeGenerator extends QBasicParserListener {
         bounds.push({lower, upper});
       }
       const redim = !!ctx.REDIM();
-      this.addStatement(statements.dim(this._arrayBaseIndex, dim.start!, bounds, result, redim));
+      this.addStatement(statements.dim(this._arrayBaseIndex, dim.start!, bounds, result, redim), ctx.start!);
     }
   }
 
   override enterErase_statement = (ctx: parser.Erase_statementContext) => {
     for (const arg of ctx.erase_argument()) {
       const array = getTyperContext(arg).$result;
-      this.addStatement(statements.erase(array));
+      this.addStatement(statements.erase(array), ctx.start!);
     }
   }
 
   override enterDate_statement = (ctx: parser.Date_statementContext) => {
     const token = ctx.start!;
     const expr = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.STRING });
-    this.addStatement(statements.dateStatement(token, expr));
+    this.addStatement(statements.dateStatement(token, expr), ctx.start!);
   }
 
   override enterTime_statement = (ctx: parser.Time_statementContext) => {
     const token = ctx.start!;
     const expr = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.STRING });
-    this.addStatement(statements.timeStatement(token, expr));
+    this.addStatement(statements.timeStatement(token, expr), ctx.start!);
   }
 
   override enterDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
@@ -510,7 +510,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (condition) {
       const isWhile = !!condition.WHILE();
       const test = this.compileBoolean(condition.expr()!);
-      this.addStatement(statements.do_(isWhile, test));
+      this.addStatement(statements.do_(isWhile, test), ctx.start!);
       this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
     }
   }
@@ -518,20 +518,21 @@ export class CodeGenerator extends QBasicParserListener {
   override exitDo_loop_statement = (ctx: parser.Do_loop_statementContext) => {
     const labels = getCodeGeneratorContext(ctx);
     const condition = ctx.loop_condition();
+    const loopToken = ctx.LOOP()?.getSymbol();
     if (condition) {
       const isWhile = !!condition.WHILE();
       const test = this.compileBoolean(condition.expr()!);
-      this.addStatement(statements.loop(isWhile, test));
+      this.addStatement(statements.loop(isWhile, test), loopToken);
       this.setTargetForCurrentStatement(labels.$topLabel, ctx);
     } else {
-      this.addStatement(statements.goto());
+      this.addStatement(statements.goto(), loopToken);
       this.setTargetForCurrentStatement(labels.$topLabel, ctx);
     }
     this.addLabelForNextStatement(labels.$exitLabel);
   }
 
   override enterEnd_statement = (ctx: parser.End_statementContext) => {
-    this.addStatement(statements.end());
+    this.addStatement(statements.end(), ctx.start!);
   }
 
   override enterField_statement = (ctx: parser.Field_statementContext) => {
@@ -550,7 +551,7 @@ export class CodeGenerator extends QBasicParserListener {
       }
       fields.push({widthExpr, variable});
     }
-    this.addStatement(statements.field(token, fileNumber, fields));
+    this.addStatement(statements.field(token, fileNumber, fields), ctx.start!);
   }
 
   override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {
@@ -565,7 +566,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (variableCtx) {
       variable = this.getVariable(variableCtx);
     }
-    this.addStatement(statements.getIo(token, fileNumber, recordNumber, variable));
+    this.addStatement(statements.getIo(token, fileNumber, recordNumber, variable), ctx.start!);
   }
 
   override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {
@@ -580,7 +581,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (variableCtx) {
       variable = this.getVariable(variableCtx);
     }
-    this.addStatement(statements.putIo(token, fileNumber, recordNumber, variable));
+    this.addStatement(statements.putIo(token, fileNumber, recordNumber, variable), ctx.start!);
   }
 
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
@@ -634,7 +635,7 @@ export class CodeGenerator extends QBasicParserListener {
     const labels = getCodeGeneratorContext(ctx);
     labels.$topLabel = this.makeSyntheticLabel();
     labels.$exitLabel = this.makeSyntheticLabel();
-    this.addStatement(statements.for_(counter, endVariable, ctx.STEP() && incrementVariable));
+    this.addStatement(statements.for_(counter, endVariable, ctx.STEP() && incrementVariable), ctx.start!);
     this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
     this.addLabelForNextStatement(labels.$topLabel);
   }
@@ -655,24 +656,25 @@ export class CodeGenerator extends QBasicParserListener {
     }
 
     const labels = getCodeGeneratorContext(ctx);
-    this.addStatement(statements.next(ctx.start!, counter, endVariable, ctx.STEP() && incrementVariable));
+    const nextToken = ctx.NEXT()?.getSymbol() || ctx.NEXT_WITH_MANDATORY_ID()?.getSymbol();
+    this.addStatement(statements.next(ctx.start!, counter, endVariable, ctx.STEP() && incrementVariable), nextToken);
     this.setTargetForCurrentStatement(labels.$topLabel, ctx);
     this.addLabelForNextStatement(labels.$exitLabel);
   }
 
   override enterGosub_statement = (ctx: parser.Gosub_statementContext) => {
-    this.addStatement(statements.gosub());
+    this.addStatement(statements.gosub(), ctx.start!);
   }
 
   override enterGoto_statement = (ctx: parser.Goto_statementContext) => {
-    this.addStatement(statements.goto());
+    this.addStatement(statements.goto(), ctx.start!);
   }
 
   override enterIf_inline_statement = (ctx: parser.If_inline_statementContext) => {
     const labels = getCodeGeneratorContext(ctx);
     labels.$exitLabel = this.makeSyntheticLabel();
     const test = this.compileBoolean(ctx.expr());
-    this.addStatement(statements.if_(test));
+    this.addStatement(statements.if_(test), ctx.start!);
     const elseCtx = ctx.if_inline_else_statement();
     if (!elseCtx) {
       // if cond -> exit
@@ -722,7 +724,7 @@ export class CodeGenerator extends QBasicParserListener {
       const variable = this.getVariable(variableCtx);
       variables.push(variable);
     }
-    this.addStatement(statements.input({token, sameLine, mark, prompt, variables}));
+    this.addStatement(statements.input({token, sameLine, mark, prompt, variables}), token);
   }
 
   override enterInput_file_statement = (ctx: parser.Input_file_statementContext) => {
@@ -733,7 +735,7 @@ export class CodeGenerator extends QBasicParserListener {
       const variable = this.getVariable(variableCtx);
       variables.push(variable);
     }
-    this.addStatement(statements.inputFile({token, fileNumber, variables}));
+    this.addStatement(statements.inputFile({token, fileNumber, variables}), token);
   }
 
   override enterLine_input_statement = (ctx: parser.Line_input_statementContext) => {
@@ -753,7 +755,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw ParseError.fromToken(variable.token, "Type mismatch");
     }
     const variables: Variable[] = [variable];
-    this.addStatement(statements.lineInput({token, sameLine, mark, prompt, variables}));
+    this.addStatement(statements.lineInput({token, sameLine, mark, prompt, variables}), token);
   }
 
   override enterLine_input_file_statement = (ctx: parser.Line_input_file_statementContext) => {
@@ -764,7 +766,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw ParseError.fromToken(variable.token, "Type mismatch");
     }
     const variables: Variable[] = [variable];
-    this.addStatement(statements.lineInput({token, fileNumber, variables}));
+    this.addStatement(statements.lineInput({token, fileNumber, variables}), token);
   }
 
   override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
@@ -781,7 +783,7 @@ export class CodeGenerator extends QBasicParserListener {
       keyNumber = this.compileExpression(ctx._keynum!, ctx._keynum!.start!, { tag: TypeTag.INTEGER });
       stringExpr = this.compileExpression(ctx._bind!, ctx._bind!.start!, { tag: TypeTag.STRING });
     }
-    this.addStatement(statements.key({token, operation, keyNumber, stringExpr}))
+    this.addStatement(statements.key({token, operation, keyNumber, stringExpr}), token);
   }
 
   override enterLine_statement = (ctx: parser.Line_statementContext) => {
@@ -800,7 +802,7 @@ export class CodeGenerator extends QBasicParserListener {
     const step2 = !!ctx._step2;
     const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
     const dash = ctx._style && this.compileExpression(ctx._style, ctx._style.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.line({token, x1, y1, step1, x2, y2, step2, color, outline, fill, dash}));
+    this.addStatement(statements.line({token, x1, y1, step1, x2, y2, step2, color, outline, fill, dash}), token);
   }
 
   override enterLocate_statement = (ctx: parser.Locate_statementContext) => {
@@ -810,7 +812,7 @@ export class CodeGenerator extends QBasicParserListener {
     const cursor = ctx._cursor && this.compileExpression(ctx._cursor, ctx._cursor.start!, { tag: TypeTag.INTEGER });
     const start = ctx._start && this.compileExpression(ctx._start, ctx._start.start!, { tag: TypeTag.INTEGER });
     const stop = ctx._stop && this.compileExpression(ctx._stop, ctx._stop.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.locate(token, row, column, cursor, start, stop));
+    this.addStatement(statements.locate(token, row, column, cursor, start, stop), token);
   }
 
   override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
@@ -825,14 +827,14 @@ export class CodeGenerator extends QBasicParserListener {
       if (!source || source.type.tag !== TypeTag.RECORD) {
         throw ParseError.fromToken(ctx.start!, "Type mismatch");
       }
-      this.addStatement(statements.lsetRecord(dest, source));
+      this.addStatement(statements.lsetRecord(dest, source), token);
       return;
     }
     if (!isStringType(dest.type)) {
       throw ParseError.fromToken(variableCtx.start!, "Type mismatch");
     }
     const stringExpr = this.compileExpression(expr, expr.start!, { tag: TypeTag.STRING });
-    this.addStatement(statements.lsetString(token, dest, stringExpr));
+    this.addStatement(statements.lsetString(token, dest, stringExpr), token);
   }
 
   override enterRset_statement = (ctx: parser.Rset_statementContext) => {
@@ -844,17 +846,17 @@ export class CodeGenerator extends QBasicParserListener {
     }
     const expr = ctx.expr();
     const stringExpr = this.compileExpression(expr, expr.start!, { tag: TypeTag.STRING });
-    this.addStatement(statements.rsetString(token, variable, stringExpr));
+    this.addStatement(statements.rsetString(token, variable, stringExpr), token);
   }
 
   override enterName_statement = (ctx: parser.Name_statementContext) => {
     const oldPathExpr = this.compileExpression(ctx._oldpath!, ctx._oldpath!.start!, { tag: TypeTag.STRING });
     const newPathExpr = this.compileExpression(ctx._newpath!, ctx._newpath!.start!, { tag: TypeTag.STRING });
-    this.addStatement(statements.name(ctx.start!, oldPathExpr, newPathExpr));
+    this.addStatement(statements.name(ctx.start!, oldPathExpr, newPathExpr), ctx.start!);
   }
 
   override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {
-    this.addStatement(statements.errorHandler(ctx.start!));
+    this.addStatement(statements.errorHandler(ctx.start!), ctx.start!);
   }
 
   private getEventType(ctx: parser.On_event_gosub_statementContext | parser.Event_control_statementContext): EventType {
@@ -879,7 +881,7 @@ export class CodeGenerator extends QBasicParserListener {
       param = this.compileExpression(paramExpr, paramExpr.start!, { tag: TypeTag.INTEGER });
     }
     const eventType = this.getEventType(ctx);
-    this.addStatement(statements.eventHandler(token, eventType, param));
+    this.addStatement(statements.eventHandler(token, eventType, param), token);
   }
 
   override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {
@@ -894,17 +896,17 @@ export class CodeGenerator extends QBasicParserListener {
       ctx.STEP() ? EventChannelState.TEST :
       EventChannelState.STOPPED;
     const eventType = this.getEventType(ctx);
-    this.addStatement(statements.eventControl(token, eventType, param, state));
+    this.addStatement(statements.eventControl(token, eventType, param, state), token);
   }
 
   override enterOn_expr_gosub_statement = (ctx: parser.On_expr_gosub_statementContext) => {
     const expr = this.compileExpression(ctx.expr(), ctx.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.gosubIndex(expr));
+    this.addStatement(statements.gosubIndex(expr), ctx.start!);
   }
 
   override enterOn_expr_goto_statement = (ctx: parser.On_expr_goto_statementContext) => {
     const expr = this.compileExpression(ctx.expr(), ctx.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.gotoIndex(expr));
+    this.addStatement(statements.gotoIndex(expr), ctx.start!);
   }
 
   override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
@@ -922,7 +924,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (ctx._reclen) {
       recordLength = this.compileExpression(ctx._reclen, ctx._reclen.start!, { tag: TypeTag.INTEGER });
     }
-    this.addStatement(statements.open({token, name, fileNumber, mode, recordLength}));
+    this.addStatement(statements.open({token, name, fileNumber, mode, recordLength}), token);
   }
 
   override enterPaint_statement = (ctx: parser.Paint_statementContext) => {
@@ -942,7 +944,7 @@ export class CodeGenerator extends QBasicParserListener {
     }
     const borderColor = ctx._bordercolor && this.compileExpression(ctx._bordercolor, ctx._bordercolor.start!, { tag: TypeTag.INTEGER });
     const background = ctx._background && this.compileExpression(ctx._background, ctx._background.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.paint({token, step, x, y, color, tile, borderColor, background}));
+    this.addStatement(statements.paint({token, step, x, y, color, tile, borderColor, background}), token);
   }
 
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {
@@ -965,13 +967,13 @@ export class CodeGenerator extends QBasicParserListener {
         throw ParseError.fromToken(ctx.start!, "Expected: variable");
       }
     }
-    this.addStatement(statements.palette(token, attributeExpr, colorExpr, array));
+    this.addStatement(statements.palette(token, attributeExpr, colorExpr, array), token);
   }
 
   override enterPlay_statement = (ctx: parser.Play_statementContext) => {
     const token = ctx.start!;
     const commandString = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.STRING });
-    this.addStatement(statements.playStatement(token, commandString));
+    this.addStatement(statements.playStatement(token, commandString), token);
   }
 
   override enterLprint_statement = (ctx: parser.Lprint_statementContext) => {
@@ -1012,7 +1014,7 @@ export class CodeGenerator extends QBasicParserListener {
       exprs.push({token, expr, spaces, tab, separator});
     }
     const token = ctx.start!;
-    this.addStatement(statements.print({token, exprs, fileNumber, printer}));
+    this.addStatement(statements.print({token, exprs, fileNumber, printer}), token);
   }
 
   private addPrintUsingStatement({ctx, fileNumber, printer}: {
@@ -1033,7 +1035,7 @@ export class CodeGenerator extends QBasicParserListener {
     const token = ctx.start!;
     const format = this.compileExpression(
       ctx._format!, ctx._format!.start!, { tag: TypeTag.STRING })
-    this.addStatement(statements.printUsing({token, format, exprs, fileNumber, printer}));
+    this.addStatement(statements.printUsing({token, format, exprs, fileNumber, printer}), token);
   }
 
   override enterPset_statement = (ctx: parser.Pset_statementContext) => {
@@ -1042,7 +1044,7 @@ export class CodeGenerator extends QBasicParserListener {
     const x = this.compileExpression(ctx._x!, ctx._x!.start!, { tag: TypeTag.INTEGER });
     const y = this.compileExpression(ctx._y!, ctx._y!.start!, { tag: TypeTag.INTEGER });
     const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.pset(token, step, x, y, color));
+    this.addStatement(statements.pset(token, step, x, y, color), token);
   }
 
   override enterPreset_statement = (ctx: parser.Preset_statementContext) => {
@@ -1051,7 +1053,7 @@ export class CodeGenerator extends QBasicParserListener {
     const x = this.compileExpression(ctx._x!, ctx._x!.start!, { tag: TypeTag.INTEGER });
     const y = this.compileExpression(ctx._y!, ctx._y!.start!, { tag: TypeTag.INTEGER });
     const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.preset(token, step, x, y, color));
+    this.addStatement(statements.preset(token, step, x, y, color), token);
   }
 
   override enterGet_graphics_statement = (ctx: parser.Get_graphics_statementContext) => {
@@ -1080,7 +1082,7 @@ export class CodeGenerator extends QBasicParserListener {
     } else {
       throw new Error("Missing array");
     }
-    this.addStatement(statements.getGraphics({token, step1, x1, y1, step2, x2, y2, array}));
+    this.addStatement(statements.getGraphics({token, step1, x1, y1, step2, x2, y2, array}), token);
   }
 
   override enterPut_graphics_statement = (ctx: parser.Put_graphics_statementContext) => {
@@ -1112,14 +1114,14 @@ export class CodeGenerator extends QBasicParserListener {
       or: !!ctx.OR(),
       pset: !!ctx.PSET(),
     };
-    this.addStatement(statements.putGraphics({token, step, x1, y1, array, ...operation}));
+    this.addStatement(statements.putGraphics({token, step, x1, y1, array, ...operation}), token);
   }
 
   override enterRandomize_statement = (ctx: parser.Randomize_statementContext) => {
     const seedExpr = ctx.expr();
     if (seedExpr) {
       const seed = this.compileExpression(seedExpr, seedExpr.start!, { tag: TypeTag.DOUBLE });
-      this.addStatement(statements.randomize({seed}));
+      this.addStatement(statements.randomize({seed}), ctx.start!);
       return;
     }
     const variable = getTyperContext(ctx).$result;
@@ -1129,7 +1131,7 @@ export class CodeGenerator extends QBasicParserListener {
       mark: true,
       prompt: "Random-number seed (-32768 to 32768)",
       variables: [variable]
-    }));
+    }), ctx.start!);
     this.addStatement(statements.randomize({variable}));
   }
 
@@ -1137,11 +1139,11 @@ export class CodeGenerator extends QBasicParserListener {
     if (this._chunk.procedure) {
       throw ParseError.fromToken(ctx.start!, "Illegal in procedure or DEF FN");
     }
-    this.addStatement(statements.resume({token: ctx.start!, next: !!ctx.NEXT()}));
+    this.addStatement(statements.resume({token: ctx.start!, next: !!ctx.NEXT()}), ctx.start!);
   }
 
   override enterReturn_statement = (ctx: parser.Return_statementContext) => {
-    this.addStatement(statements.return_(ctx.start!));
+    this.addStatement(statements.return_(ctx.start!), ctx.start!);
   }
 
   override enterScreen_statement = (ctx: parser.Screen_statementContext) => {
@@ -1150,14 +1152,14 @@ export class CodeGenerator extends QBasicParserListener {
     const colorSwitchExpr = ctx._colorswitch && this.compileExpression(ctx._colorswitch!, ctx._colorswitch!.start!, { tag: TypeTag.INTEGER });
     const activePageExpr = ctx._activepage && this.compileExpression(ctx._activepage!, ctx._activepage!.start!, { tag: TypeTag.INTEGER });
     const visiblePageExpr = ctx._visiblepage && this.compileExpression(ctx._visiblepage!, ctx._visiblepage!.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.screenStatement(token, modeExpr, colorSwitchExpr, activePageExpr, visiblePageExpr));
+    this.addStatement(statements.screenStatement(token, modeExpr, colorSwitchExpr, activePageExpr, visiblePageExpr), token);
   }
 
   override enterSeek_statement = (ctx: parser.Seek_statementContext) => {
     const token = ctx.start!;
     const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
     const offset = this.compileExpression(ctx._offset!, ctx._offset!.start!, { tag: TypeTag.LONG });
-    this.addStatement(statements.seekStatement(token, fileNumber, offset));
+    this.addStatement(statements.seekStatement(token, fileNumber, offset), token);
   }
 
   override enterSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
@@ -1188,7 +1190,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("missing test");
     }
     const textExpr = this.compileExpression(ctx.expr());
-    this.addStatement(statements.let_(testVariable, textExpr));
+    this.addStatement(statements.let_(testVariable, textExpr), ctx.start!);
     const labels = getCodeGeneratorContext(ctx);
     labels.$exitLabel = this.makeSyntheticLabel();
     let nextBranchLabel = this.makeSyntheticLabel();
@@ -1226,7 +1228,7 @@ export class CodeGenerator extends QBasicParserListener {
       for (const childExpr of caseExpr.expr()) {
         this.compileExpression(childExpr, ctx.start!, testVariable.type);
       }
-      this.addStatement(statements.case_(testVariable, caseExpr));
+      this.addStatement(statements.case_(testVariable, caseExpr), ctx.start!);
       this.setTargetForCurrentStatement(blockLabel, ctx);
     }
     if (ctx.ELSE()) {
@@ -1254,7 +1256,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (!sameType(a.type, b.type)) {
       throw ParseError.fromToken(ctx.start!, "Type mismatch");
     }
-    this.addStatement(statements.swap(a, b));
+    this.addStatement(statements.swap(a, b), ctx.start!);
   }
 
   override enterUnlock_statement = (ctx: parser.Unlock_statementContext) => {}
@@ -1268,14 +1270,14 @@ export class CodeGenerator extends QBasicParserListener {
     const y2 = ctx._y2 && this.compileExpression(ctx._y2, ctx._y2.start!, { tag: TypeTag.INTEGER });
     const color = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
     const border = ctx._border && this.compileExpression(ctx._border, ctx._border.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.view_(token, screen, x1, y1, x2, y2, color, border));
+    this.addStatement(statements.view_(token, screen, x1, y1, x2, y2, color, border), token);
   }
 
   override enterView_print_statement = (ctx: parser.View_print_statementContext) => {
     const token = ctx.start!;
     const topRow = ctx._toprow && this.compileExpression(ctx._toprow, ctx._toprow!.start!, { tag: TypeTag.INTEGER });
     const bottomRow = ctx._bottomrow && this.compileExpression(ctx._bottomrow, ctx._bottomrow!.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.viewPrint(token, topRow, bottomRow));
+    this.addStatement(statements.viewPrint(token, topRow, bottomRow), token);
   }
 
   override enterWhile_wend_statement = (ctx: parser.While_wend_statementContext) => {
@@ -1284,13 +1286,14 @@ export class CodeGenerator extends QBasicParserListener {
     labels.$topLabel = this.makeSyntheticLabel();
     this.addLabelForNextStatement(labels.$topLabel);
     const test = this.compileBoolean(ctx.expr()!);
-    this.addStatement(statements.while_(test));
+    this.addStatement(statements.while_(test), ctx.start!);
     this.setTargetForCurrentStatement(labels.$exitLabel, ctx);
   }
 
   override exitWhile_wend_statement = (ctx: parser.While_wend_statementContext) => {
     const labels = getCodeGeneratorContext(ctx);
-    this.addStatement(statements.goto());
+    const wendToken = ctx.WEND().getSymbol();
+    this.addStatement(statements.goto(), wendToken);
     this.setTargetForCurrentStatement(labels.$topLabel, ctx);
     this.addLabelForNextStatement(labels.$exitLabel);
   }
@@ -1298,7 +1301,7 @@ export class CodeGenerator extends QBasicParserListener {
   override enterWidth_statement = (ctx: parser.Width_statementContext) => {
     if (ctx.LPRINT()) {
       const width = this.compileExpression(ctx._width!, ctx._width!.start!, { tag: TypeTag.INTEGER });
-      this.addStatement(statements.widthLprint(ctx.start!, width));
+      this.addStatement(statements.widthLprint(ctx.start!, width), ctx.start!);
       return;
     }
     const fileNumberExpr = ctx.file_number();
@@ -1306,17 +1309,17 @@ export class CodeGenerator extends QBasicParserListener {
       const expr = fileNumberExpr.expr();
       const fileNumber = this.compileExpression(expr, expr.start!, { tag: TypeTag.INTEGER });
       const width = this.compileExpression(ctx._width!, ctx._width!.start!, { tag: TypeTag.INTEGER });
-      this.addStatement(statements.widthFile(ctx.start!, fileNumber, width));
+      this.addStatement(statements.widthFile(ctx.start!, fileNumber, width), ctx.start!);
       return;
     }
     if (ctx._columns) {
       const columns = this.compileExpression(ctx._columns!, ctx._columns!.start!, { tag: TypeTag.INTEGER });
-      this.addStatement(statements.widthScreen(ctx.start!, columns, /* lines= */ undefined));
+      this.addStatement(statements.widthScreen(ctx.start!, columns, /* lines= */ undefined), ctx.start!);
       return;
     }
     if (ctx._lines) {
       const lines = this.compileExpression(ctx._lines!, ctx._lines!.start!, { tag: TypeTag.INTEGER });
-      this.addStatement(statements.widthScreen(ctx.start!, /* columns= */ undefined, lines));
+      this.addStatement(statements.widthScreen(ctx.start!, /* columns= */ undefined, lines), ctx.start!);
       return;
     }
     if (!ctx._arg1 || !ctx._arg2) {
@@ -1333,7 +1336,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("unimplemented");
     }
     const lines = this.compileExpression(ctx._arg2!, ctx._arg2!.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.widthScreen(ctx.start!, columns, lines));
+    this.addStatement(statements.widthScreen(ctx.start!, columns, lines), ctx.start!);
   }
 
   override enterWindow_statement = (ctx: parser.Window_statementContext) => {
@@ -1343,7 +1346,7 @@ export class CodeGenerator extends QBasicParserListener {
     const y1 = ctx._y1 && this.compileExpression(ctx._y1, ctx._y1.start!, { tag: TypeTag.INTEGER });
     const x2 = ctx._x2 && this.compileExpression(ctx._x2, ctx._x2.start!, { tag: TypeTag.INTEGER });
     const y2 = ctx._y2 && this.compileExpression(ctx._y2, ctx._y2.start!, { tag: TypeTag.INTEGER });
-    this.addStatement(statements.window_(token, screen, x1, y1, x2, y2));
+    this.addStatement(statements.window_(token, screen, x1, y1, x2, y2), token);
   }
 
   override enterWrite_statement = (ctx: parser.Write_statementContext) => {
@@ -1356,7 +1359,7 @@ export class CodeGenerator extends QBasicParserListener {
       exprs.push({token, expr});
     }
     const token = ctx.start!;
-    this.addStatement(statements.write({token, exprs, fileNumber: fileNumber ?? undefined}));
+    this.addStatement(statements.write({token, exprs, fileNumber: fileNumber ?? undefined}), token);
   }
 
   override enterExit_statement = (ctx: parser.Exit_statementContext) => {
@@ -1364,13 +1367,13 @@ export class CodeGenerator extends QBasicParserListener {
       if (!findParent(ctx, parser.Def_fn_statementContext)) {
         throw ParseError.fromToken(ctx.start!, "EXIT DEF not within DEF FN");
       }
-      this.addStatement(statements.exitDef());
+      this.addStatement(statements.exitDef(), ctx.start!);
     } else if (ctx.DO()) {
       const doCtx = findParent(ctx, parser.Do_loop_statementContext);
       if (!doCtx) {
        throw ParseError.fromToken(ctx.start!, "EXIT DO not within DO...LOOP");
       }
-      this.addStatement(statements.exitDo());
+      this.addStatement(statements.exitDo(), ctx.start!);
       const codeGenContext = getCodeGeneratorContext(doCtx);
       this.setTargetForCurrentStatement(codeGenContext.$exitLabel, ctx);
     } else if (ctx.FOR()) {
@@ -1378,25 +1381,28 @@ export class CodeGenerator extends QBasicParserListener {
       if (!forCtx) {
         throw ParseError.fromToken(ctx.start!, "EXIT FOR not within FOR...NEXT");
       }
-      this.addStatement(statements.exitFor());
+      this.addStatement(statements.exitFor(), ctx.start!);
       const codeGenContext = getCodeGeneratorContext(forCtx);
       this.setTargetForCurrentStatement(codeGenContext.$exitLabel, ctx);
     } else if (ctx.FUNCTION()) {
       if (!findParent(ctx, parser.Function_statementContext)) {
         throw ParseError.fromToken(ctx.start!, "EXIT FUNCTION not within FUNCTION");
       }
-      this.addStatement(statements.exitFunction());
+      this.addStatement(statements.exitFunction(), ctx.start!);
     } else if (ctx.SUB()) {
       if (!findParent(ctx, parser.Sub_statementContext)) {
         throw ParseError.fromToken(ctx.start!, "EXIT SUB not within SUB");
       }
-      this.addStatement(statements.exitSub());
+      this.addStatement(statements.exitSub(), ctx.start!);
     } else {
       throw new Error("invalid block type");
     }
   }
 
-  private addStatement(statement: Statement) {
+  private addStatement(statement: Statement, token?: Token) {
+    if (token) {
+      statement.startToken = token;
+    }
     this._chunk.statements.push(statement);
   }
 
@@ -1498,7 +1504,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        codeGenerator.addStatement(statements.dateFunction(result));
+        codeGenerator.addStatement(statements.dateFunction(result), ctx.start!);
       }
 
       override enterErdev_function = (ctx: parser.Erdev_functionContext) => {
@@ -1509,7 +1515,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        codeGenerator.addStatement(statements.erdev(result));
+        codeGenerator.addStatement(statements.erdev(result), ctx.start!);
       }
 
       override enterErdev_string_function = (ctx: parser.Erdev_string_functionContext) => {
@@ -1520,7 +1526,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        codeGenerator.addStatement(statements.erdevString(result));
+        codeGenerator.addStatement(statements.erdevString(result), ctx.start!);
       }
 
       override enterInput_function = (ctx: parser.Input_functionContext) => {
@@ -1534,7 +1540,7 @@ export class CodeGenerator extends QBasicParserListener {
         const n = codeGenerator.compileExpression(ctx._n!, ctx._n!.start!, { tag: TypeTag.INTEGER });
         const fileNumber = ctx._filenum &&
           codeGenerator.compileExpression(ctx._filenum, ctx._filenum.start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(statements.inputFunction(ctx.start!, n, fileNumber, result));
+        codeGenerator.addStatement(statements.inputFunction(ctx.start!, n, fileNumber, result), ctx.start!);
       }
 
       override enterInstr_function = (ctx: parser.Instr_functionContext) => {
@@ -1548,7 +1554,7 @@ export class CodeGenerator extends QBasicParserListener {
         const start = ctx._start && codeGenerator.compileExpression(ctx._start!, ctx._start!.start!, {tag: TypeTag.INTEGER })
         const haystack = codeGenerator.compileExpression(ctx._haystack!, ctx._haystack!.start!, { tag: TypeTag.STRING });
         const needle = codeGenerator.compileExpression(ctx._needle!, ctx._needle!.start!, { tag: TypeTag.STRING });
-        codeGenerator.addStatement(statements.instr(ctx.start!, start, haystack, needle, result));
+        codeGenerator.addStatement(statements.instr(ctx.start!, start, haystack, needle, result), ctx.start!);
       }
 
       override exitLbound_function = (ctx: parser.Lbound_functionContext) => {
@@ -1563,7 +1569,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!array || !array.array) {
           throw new Error("missing array variable");
         }
-        codeGenerator.addStatement(statements.lbound(ctx.start!, array, result, ctx._which));
+        codeGenerator.addStatement(statements.lbound(ctx.start!, array, result, ctx._which), ctx.start!);
       }
 
       override enterLen_function = (ctx: parser.Len_functionContext) => {
@@ -1583,7 +1589,7 @@ export class CodeGenerator extends QBasicParserListener {
             throw ParseError.fromToken(ctx.expr().start!, "Variable required");
           }
         }
-        codeGenerator.addStatement(statements.len(variable, stringExpr, result));
+        codeGenerator.addStatement(statements.len(variable, stringExpr, result), ctx.start!);
       }
 
       override enterMid_function = (ctx: parser.Mid_functionContext) => {
@@ -1597,7 +1603,7 @@ export class CodeGenerator extends QBasicParserListener {
         const string = codeGenerator.compileExpression(ctx._string_!, ctx._string_!.start!, {tag: TypeTag.STRING })
         const start = codeGenerator.compileExpression(ctx._start!, ctx._start!.start!, { tag: TypeTag.INTEGER });
         const length = ctx._length && codeGenerator.compileExpression(ctx._length, ctx._length.start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(statements.midFunction(ctx.start!, string, start, length, result));
+        codeGenerator.addStatement(statements.midFunction(ctx.start!, string, start, length, result), ctx.start!);
       }
 
       override enterPen_function = (ctx: parser.Pen_functionContext) => {
@@ -1609,8 +1615,7 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing result variable");
         }
         const n = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(
-          statements.pen({token: ctx.start!, params: [{expr: n}], result}));
+        codeGenerator.addStatement(statements.pen({token: ctx.start!, params: [{expr: n}], result}), ctx.start!);
       }
 
       override enterPlay_function = (ctx: parser.Play_functionContext) => {
@@ -1623,7 +1628,7 @@ export class CodeGenerator extends QBasicParserListener {
         }
         // The PLAY parameter is unused, but must be present and integer typed.
         codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(statements.playFunction(result));
+        codeGenerator.addStatement(statements.playFunction(result), ctx.start!);
       }
 
       override enterScreen_function = (ctx: parser.Screen_functionContext) => {
@@ -1637,7 +1642,7 @@ export class CodeGenerator extends QBasicParserListener {
         const row = codeGenerator.compileExpression(ctx._row!, ctx._row!.start!, { tag: TypeTag.INTEGER });
         const column = codeGenerator.compileExpression(ctx._row!, ctx._column!.start!, { tag: TypeTag.INTEGER });
         const colorFlag = ctx._colorflag && codeGenerator.compileExpression(ctx._colorflag, ctx._colorflag.start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(statements.screenFunction(ctx.start!, result, row, column, colorFlag));
+        codeGenerator.addStatement(statements.screenFunction(ctx.start!, result, row, column, colorFlag), ctx.start!);
       }
 
       override enterSeek_function = (ctx: parser.Seek_functionContext) => {
@@ -1649,7 +1654,7 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing result variable");
         }
         const fileNum = codeGenerator.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(statements.seekFunction(ctx.start!, fileNum, result));
+        codeGenerator.addStatement(statements.seekFunction(ctx.start!, fileNum, result), ctx.start!);
       }
 
       override enterStrig_function = (ctx: parser.Strig_functionContext) => {
@@ -1661,8 +1666,7 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing result variable");
         }
         const n = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.INTEGER });
-        codeGenerator.addStatement(
-          statements.strig({token: ctx.start!, params: [{expr: n}], result}));
+        codeGenerator.addStatement(statements.strig({token: ctx.start!, params: [{expr: n}], result}), ctx.start!);
       }
 
       override enterTime_function = (ctx: parser.Time_functionContext) => {
@@ -1673,7 +1677,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        codeGenerator.addStatement(statements.timeFunction(result));
+        codeGenerator.addStatement(statements.timeFunction(result), ctx.start!);
       }
 
       override enterTimer_function = (ctx: parser.Timer_functionContext) => {
@@ -1684,7 +1688,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!result) {
           throw new Error("missing result variable");
         }
-        codeGenerator.addStatement(statements.timer(result));
+        codeGenerator.addStatement(statements.timer(result), ctx.start!);
       }
 
       override exitUbound_function = (ctx: parser.Ubound_functionContext) => {
@@ -1699,7 +1703,7 @@ export class CodeGenerator extends QBasicParserListener {
         if (!array || !array.array) {
           throw new Error("missing array variable");
         }
-        codeGenerator.addStatement(statements.ubound(ctx.start!, array, result, ctx._which));
+        codeGenerator.addStatement(statements.ubound(ctx.start!, array, result, ctx._which), ctx.start!);
       }
 
       override enterVarseg_function = (ctx: parser.Varseg_functionContext) => {
@@ -1713,7 +1717,7 @@ export class CodeGenerator extends QBasicParserListener {
         const variableCtx = ctx.variable_or_function_call();
         const variable = codeGenerator.getVariable(variableCtx);
         const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
-        codeGenerator.addStatement(statements.varseg(ctx.start!, result, variable, variableSymbol));
+        codeGenerator.addStatement(statements.varseg(ctx.start!, result, variable, variableSymbol), ctx.start!);
       }
 
       override enterVarptr_string_function = (ctx: parser.Varptr_string_functionContext) => {
@@ -1727,7 +1731,7 @@ export class CodeGenerator extends QBasicParserListener {
         const variableCtx = ctx.variable_or_function_call();
         const variable = codeGenerator.getVariable(variableCtx);
         const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
-        codeGenerator.addStatement(statements.varptrString(ctx.start!, result, variable, variableSymbol));
+        codeGenerator.addStatement(statements.varptrString(ctx.start!, result, variable, variableSymbol), ctx.start!);
       }
 
       override enterVarptr_function = (ctx: parser.Varptr_functionContext) => {
@@ -1741,7 +1745,7 @@ export class CodeGenerator extends QBasicParserListener {
         const variableCtx = ctx.variable_or_function_call();
         const variable = codeGenerator.getVariable(variableCtx);
         const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
-        codeGenerator.addStatement(statements.varptr(ctx.start!, result, variable, variableSymbol));
+        codeGenerator.addStatement(statements.varptr(ctx.start!, result, variable, variableSymbol), ctx.start!);
       }
     }, expr);
     if (resultType && token) {

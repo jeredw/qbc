@@ -13,12 +13,30 @@ import { HttpModem } from "./Modem.ts";
 import "monaco-editor/esm/vs/editor/editor.all.js";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
+class DebugState {
+  breakpoints: Set<number> = new Set();
+  pauseLine?: number;
+}
+
+enum RunState {
+  ENDED,
+  PAUSED,
+  RUNNING
+}
+
 class Shell {
   private root: HTMLElement;
   private interpreter: Interpreter;
   private invocation: Invocation | null = null;
 
-  private codeEditor: monaco.editor.IStandaloneCodeEditor;
+  private editor: EditorProxy;
+  private debug: DebugState;
+  private running: RunState;
+  private runFromStartButton: HTMLElement;
+  private pauseButton: HTMLElement;
+  private resumeButton: HTMLElement;
+  private stepButton: HTMLElement;
+  private stepOverButton: HTMLElement;
 
   private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;
@@ -55,9 +73,19 @@ class Shell {
       lightPen: this.pointer,
       modem: this.modem,
     });
+    this.debug = new DebugState();
+    this.running = RunState.ENDED;
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
-    this.codeEditor = initEditor(editorElement);
-    this.listenForBreakpoints();
+    this.editor = new EditorProxy(editorElement, this.debug);
+    this.runFromStartButton = assertHTMLElement(root.querySelector('.run-from-start'));
+    this.runFromStartButton.addEventListener('click', () => setTimeout(() => this.runFromStart()));
+    this.pauseButton = assertHTMLElement(root.querySelector('.pause'));
+    this.pauseButton.addEventListener('click', () => setTimeout(() => this.pause()));
+    this.resumeButton = assertHTMLElement(root.querySelector('.resume'));
+    this.resumeButton.addEventListener('click', () => setTimeout(() => this.resume()));
+    this.stepButton = assertHTMLElement(root.querySelector('.step'));
+    this.stepButton.addEventListener('click', () => setTimeout(() => this.step()));
+    this.stepOverButton = assertHTMLElement(root.querySelector('.step-over'));
     document.addEventListener('keydown', (e: KeyboardEvent) => this.keydown(e));
     document.addEventListener('keyup', (e: KeyboardEvent) => this.keyup(e));
     this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
@@ -89,19 +117,7 @@ class Shell {
       e.preventDefault();
       return false;
     }
-    switch (e.key) {
-      case 'Enter':
-        if (e.altKey || e.metaKey) {
-          if (!this.invocation || this.invocation.isStopped()) {
-            setTimeout(() => this.run());
-          } else {
-            setTimeout(() => this.stop());
-          }
-          e.preventDefault();
-          return false;
-        }
-    }
-    this.clearErrors();
+    this.editor.clearErrors();
   }
 
   private keyup(e: KeyboardEvent): boolean | void {
@@ -112,9 +128,20 @@ class Shell {
     }
   }
 
-  async run() {
-    this.clearErrors();
-    const text = this.codeEditor.getValue();
+  private updateState(state: RunState) {
+    this.root.classList.toggle('running', state === RunState.RUNNING);
+    this.root.classList.toggle('paused', state === RunState.PAUSED);
+    if (state !== RunState.RUNNING) {
+      this.screen.hideCursor();
+    }
+    this.running = state;
+  }
+
+  async runFromStart() {
+    this.updateState(RunState.RUNNING);
+    this.editor.updateDecorations();
+    this.editor.clearErrors();
+    const text = this.editor.getValue();
     if (text.toLowerCase().includes('lprint')) {
       this.printer.show();
     } else {
@@ -129,7 +156,6 @@ class Shell {
       this.screen.reset();
       this.modem.reset();
       this.invocation = this.interpreter.run(text);
-      this.root.classList.add('running');
       await this.invocation.restart();
     } catch (error: unknown) {
       if (error instanceof ParseError || error instanceof RuntimeError) {
@@ -138,18 +164,50 @@ class Shell {
         throw error;
       }
     } finally {
-      this.root.classList.remove('running');
-      this.screen.hideCursor();
+      if (this.invocation?.isAtEnd()) {
+        this.updateState(RunState.ENDED);
+      }
     }
   }
 
-  step() {
-    this.invocation?.step();
+  pause() {
+    this.updateState(RunState.PAUSED);
+    this.invocation?.stop();
+    if (this.invocation?.line) {
+      this.debug.pauseLine = this.invocation.line;
+      this.editor.updateDecorations();
+      this.editor.scrollToLine(this.invocation.line);
+    }
   }
 
-  stop() {
-    this.root.classList.remove('running');
-    this.invocation?.stop();
+  async resume() {
+    if (!this.invocation) {
+      return;
+    }
+    this.updateState(RunState.RUNNING);
+    this.debug.pauseLine = undefined;
+    this.editor.updateDecorations();
+    this.editor.clearErrors();
+    this.screen.canvas.focus();
+    await this.invocation.start();
+    if (this.invocation.isAtEnd()) {
+      this.updateState(RunState.ENDED);
+    }
+  }
+
+  async step() {
+    if (this.running !== RunState.PAUSED) {
+      return;
+    }
+    await this.invocation?.stepOneLine();
+    if (this.invocation?.line) {
+      this.debug.pauseLine = this.invocation.line;
+      this.editor.scrollToLine(this.invocation.line);
+      this.editor.updateDecorations();
+    }
+    if (this.invocation?.isAtEnd()) {
+      this.updateState(RunState.ENDED);
+    }
   }
 
   playAudio() {
@@ -175,12 +233,59 @@ class Shell {
     requestAnimationFrame(this.frame);
   }
 
-  private clearErrors() {
-    monaco.editor.setModelMarkers(this.codeEditor.getModel()!, 'errors', []);
+  private showErrorMessage(error: ParseError | RuntimeError) {
+    const {line, column, length} = error.location;
+    if (length) {
+      this.editor.markError(line, column, length, error.message);
+    }
+    console.error(line, column, length, error.message);
+  }
+}
+
+class EditorProxy {
+  private editor: monaco.editor.IStandaloneCodeEditor;
+  private decorations: monaco.editor.IEditorDecorationsCollection;
+  private hoverLine?: number;
+  private justClearedBreakpoint?: number;
+
+  constructor(container: HTMLElement, private debug: DebugState) {
+    monaco.editor.defineTheme("dos-edit", {
+      base: "vs-dark",
+      inherit: false,
+      rules: [],
+      colors: {
+        "editor.background": "#0000aa",
+        "editor.foreground": "#aaaaaa",
+      }
+    });
+    monaco.languages.register({id: "qbasic"});
+    /*monaco.languages.registerHoverProvider("qbasic", {
+      provideHover: function(model, position): monaco.languages.ProviderResult<monaco.languages.Hover> {
+        console.log(model.getWordAtPosition(position));
+        return {contents: [{value: "foo"}]};
+      }
+    });*/
+    this.editor = monaco.editor.create(container, {
+      theme: "dos-edit",
+      fontFamily: "Web IBM VGA 8x16",
+      fontSize: 16,
+      language: "qbasic",
+      glyphMargin: true,
+    });
+    this.decorations = this.editor.createDecorationsCollection([]);
+    this.listenForBreakpoints();
   }
 
-  private markError(line: number, column: number, length: number, message: string) {
-    monaco.editor.setModelMarkers(this.codeEditor.getModel()!, 'errors', [{
+  getValue(): string {
+    return this.editor.getValue();
+  }
+
+  clearErrors() {
+    monaco.editor.setModelMarkers(this.editor.getModel()!, 'errors', []);
+  }
+
+  markError(line: number, column: number, length: number, message: string) {
+    monaco.editor.setModelMarkers(this.editor.getModel()!, 'errors', [{
       message,
       severity: monaco.MarkerSeverity.Error,
       startLineNumber: line,
@@ -190,47 +295,48 @@ class Shell {
     }]);
   }
 
-  private showErrorMessage(error: ParseError | RuntimeError) {
-    const {line, column, length} = error.location;
-    if (length) {
-      this.markError(line, column, length, error.message);
-    }
-    console.error(line, column, length, error.message);
+  scrollToLine(line: number) {
+    this.editor.revealLine(line);
   }
 
-  private breakpoints: Set<number> = new Set();
+  updateDecorations() {
+    let newDecorations: monaco.editor.IModelDeltaDecoration[] = [];
+    for (const line of this.debug.breakpoints) {
+      newDecorations.push({
+        range: new monaco.Range(line, 1, line, 1),
+        options: {
+          isWholeLine: true,
+          className: 'breakpoint-line',
+          glyphMarginClassName: 'breakpoint-icon',
+        }
+      });
+    }
+    if (this.hoverLine !== undefined) {
+      newDecorations.push({
+        range: new monaco.Range(this.hoverLine, 1, this.hoverLine, 1),
+        options: {
+          isWholeLine: true,
+          className: 'hover-breakpoint-line',
+          glyphMarginClassName: 'hover-breakpoint-icon',
+        }
+      });
+    }
+    if (this.debug.pauseLine !== undefined) {
+      newDecorations.push({
+        range: new monaco.Range(this.debug.pauseLine, 1, this.debug.pauseLine, 1),
+        options: {
+          isWholeLine: true,
+          className: 'pause-line',
+        }
+      });
+    }
+    this.decorations.set(newDecorations);
+  }
 
   private listenForBreakpoints() {
-    let hoverLine: number | undefined;
-    let justCleared: number | undefined;
-    const decorations = this.codeEditor.createDecorationsCollection([]);
-    const updateModel = () => {
-      let newDecorations: monaco.editor.IModelDeltaDecoration[] = [];
-      for (const line of this.breakpoints) {
-        newDecorations.push({
-          range: new monaco.Range(line, 1, line, 1),
-          options: {
-            isWholeLine: true,
-            className: 'breakpoint-line',
-            glyphMarginClassName: 'breakpoint-icon',
-          }
-        });
-      }
-      if (hoverLine !== undefined) {
-        newDecorations.push({
-          range: new monaco.Range(hoverLine, 1, hoverLine, 1),
-          options: {
-            isWholeLine: true,
-            className: 'hover-breakpoint-line',
-            glyphMarginClassName: 'hover-breakpoint-icon',
-          }
-        });
-      }
-      decorations.set(newDecorations);
-    };
     const unhover = () => {
-      hoverLine = undefined;
-      updateModel();
+      this.hoverLine = undefined;
+      this.updateDecorations();
     };
     const marginHandler = (e: monaco.editor.IEditorMouseEvent, action: (lineNumber: number) => void) => {
       if (e.target.type !== monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
@@ -243,31 +349,31 @@ class Shell {
         return;
       }
       action(e.target.position.lineNumber);
-      updateModel();
+      this.updateDecorations();
     };
     const clearBreakpoint = (line: number) => {
-      if (this.breakpoints.has(line)) {
-        this.breakpoints.delete(line);
-        justCleared = line;
+      if (this.debug.breakpoints.has(line)) {
+        this.debug.breakpoints.delete(line);
+        this.justClearedBreakpoint = line;
       }
     };
     const setBreakpoint = (line: number) => {
-      if (justCleared !== line) {
-        this.breakpoints.add(line);
+      if (this.justClearedBreakpoint !== line) {
+        this.debug.breakpoints.add(line);
       }
-      justCleared = undefined;
+      this.justClearedBreakpoint = undefined;
     };
     const hoverBreakpoint = (line: number) => {
-      if (this.breakpoints.has(line)) {
-        hoverLine = undefined;
+      if (this.debug.breakpoints.has(line)) {
+        this.hoverLine = undefined;
         return;
       }
-      hoverLine = line;
+      this.hoverLine = line;
     };
-    this.codeEditor.onMouseDown((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, clearBreakpoint));
-    this.codeEditor.onMouseUp((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, setBreakpoint));
-    this.codeEditor.onMouseMove((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, hoverBreakpoint));
-    this.codeEditor.onMouseLeave(() => unhover());
+    this.editor.onMouseDown((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, clearBreakpoint));
+    this.editor.onMouseUp((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, setBreakpoint));
+    this.editor.onMouseMove((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, hoverBreakpoint));
+    this.editor.onMouseLeave(() => unhover());
   }
 }
 
@@ -276,32 +382,6 @@ function assertHTMLElement(element: Element | null): HTMLElement {
     throw new Error("expecting element");
   }
   return element;
-}
-
-function initEditor(editorElement: HTMLElement): monaco.editor.IStandaloneCodeEditor {
-  monaco.editor.defineTheme("dos-edit", {
-    base: "vs-dark",
-    inherit: false,
-    rules: [],
-    colors: {
-      "editor.background": "#0000aa",
-      "editor.foreground": "#aaaaaa",
-    }
-  });
-  monaco.languages.register({id: "qbasic"});
-  /*monaco.languages.registerHoverProvider("qbasic", {
-    provideHover: function(model, position): monaco.languages.ProviderResult<monaco.languages.Hover> {
-      console.log(model.getWordAtPosition(position));
-      return {contents: [{value: "foo"}]};
-    }
-  });*/
-  return monaco.editor.create(editorElement, {
-    theme: "dos-edit",
-    fontFamily: "Web IBM VGA 8x16",
-    fontSize: 16,
-    language: "qbasic",
-    glyphMargin: true,
-  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

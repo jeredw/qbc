@@ -109,10 +109,40 @@ body {
   height: 100vh;
 }
 
-.editor {
+.editor-pane {
+  display: flex;
+  flex-direction: column;
   grid-column-start: 1;
   grid-row-start: 1;
   max-width: 50vw;
+}
+
+.toolbar {
+  display: flex;
+  gap: 2px;
+}
+
+.toolbar-button {
+  background: var(--qbc-light-gray);
+  border: 0;
+}
+
+.resume, .pause {
+  display: none;
+}
+.running .pause, .paused .resume {
+  display: block;
+}
+
+.step, .step-over {
+  opacity: 0.5;
+}
+.paused .step, .paused .step-over {
+  opacity: 1;
+}
+
+.editor {
+  flex: 1;
 }
 
 .breakpoint-icon {
@@ -123,6 +153,10 @@ body {
 .hover-breakpoint-icon {
   background: var(--qbc-red);
   clip-path: circle(15%);
+}
+
+.pause-line {
+  background: var(--qbc-magenta);
 }
 
 .paper-window {

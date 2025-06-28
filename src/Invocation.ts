@@ -39,6 +39,8 @@ export class Invocation {
   private random: RandomNumbers;
   private stack: ProgramLocation[]
   private stopped: boolean = true;
+  private stepFromLine?: number;
+  line: number = 0;
 
   constructor(devices: Devices, memory: Memory, program: Program) {
     this.devices = devices;
@@ -93,11 +95,27 @@ export class Invocation {
     return this.start();
   }
 
+  isAtEnd() {
+    return this.stack.length == 0;
+  }
+
   isStopped() {
-    return this.stopped || this.stack.length == 0;
+    return this.stopped ||
+      this.stack.length == 0 ||
+      (this.stepFromLine !== undefined && this.line !== this.stepFromLine);
   }
 
   tick() {
+  }
+
+  async stepOneLine() {
+    if (this.line === undefined) {
+      return;
+    }
+    this.stepFromLine = this.line;
+    await this.start();
+    this.stepFromLine = undefined;
+    this.stopped = true;
   }
 
   async step() {
@@ -118,6 +136,9 @@ export class Invocation {
       return;
     }
     const statement = chunk.statements[statementIndex];
+    if (statement.startToken) {
+      this.line = statement.startToken.line;
+    }
     if (!this.errorHandling.active) {
       if (statement.lineNumber !== undefined) {
         // Keep track of the most recent line number executed for ERL.
