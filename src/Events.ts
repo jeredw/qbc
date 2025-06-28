@@ -89,7 +89,7 @@ export enum EventChannelState {
 class EventChannel {
   state: EventChannelState = EventChannelState.OFF;
   triggered: boolean = false;
-  targetIndex: number;
+  targetIndex?: number;
 
   setState(state: EventChannelState) {
     this.state = state;
@@ -136,8 +136,11 @@ export abstract class EventMonitor {
       if (channel.triggered) {
         this.setState(channelIndex, EventChannelState.STOPPED);
         channel.triggered = false;
+        if (channel.targetIndex === undefined) {
+          return;
+        }
         return {
-          targetIndex: channel.targetIndex!,
+          targetIndex: channel.targetIndex,
           reenableEvents: () => {
             if (!channel.isDisabled()) {
               this.setState(channelIndex, EventChannelState.ON);

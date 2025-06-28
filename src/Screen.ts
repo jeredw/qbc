@@ -814,7 +814,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
   override newLine() {
     this.column = 1;
     this.row++;
-    if (this.row == this.scrollEndRow) {
+    if (this.row >= this.scrollEndRow) {
       this.activePage.scroll(this.scrollStartRow, this.scrollEndRow, this.color);
       this.row = this.scrollEndRow - 1;
       this.column = 1;
