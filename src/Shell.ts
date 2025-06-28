@@ -129,6 +129,13 @@ class Shell {
     if (state !== RunState.RUNNING) {
       this.screen.hideCursor();
     }
+    if (state === RunState.PAUSED) {
+      if (this.invocation) {
+        this.interpreter.debug.pauseLine = this.invocation.nextLine;
+        this.editor.updateDecorations();
+        this.editor.scrollToLine(this.invocation.nextLine);
+      }
+    }
     this.running = state;
   }
 
@@ -139,9 +146,6 @@ class Shell {
       this.editor.updateDecorations();
     } else if (this.invocation?.isStopped()) {
       this.updateState(RunState.PAUSED);
-      this.interpreter.debug.pauseLine = this.invocation.nextLine;
-      this.editor.updateDecorations();
-      this.editor.scrollToLine(this.invocation.nextLine);
     }
   }
 
@@ -183,9 +187,8 @@ class Shell {
   }
 
   pause() {
-    this.updateState(RunState.PAUSED);
     this.invocation?.stop();
-    this.updateStateAfterRunning();
+    this.updateState(RunState.PAUSED);
   }
 
   async step() {
