@@ -68,6 +68,7 @@ class Shell {
       lightPen: this.pointer,
       modem: this.modem,
     });
+    this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
     this.editor = new EditorProxy(editorElement, this.interpreter.debug);
@@ -150,6 +151,7 @@ class Shell {
   }
 
   async run(restart = false) {
+    this.root.classList.remove('blocked');
     this.updateState(RunState.RUNNING);
     this.interpreter.debug.pauseLine = undefined;
     this.editor.updateDecorations();
@@ -186,7 +188,14 @@ class Shell {
     }
   }
 
+  private blockDebugForIo(block: boolean) {
+    this.root.classList.toggle('blocked', block);
+  }
+
   pause() {
+    if (this.root.classList.contains('blocked')) {
+      return;
+    }
     this.invocation?.stop();
     this.updateState(RunState.PAUSED);
   }

@@ -285,7 +285,9 @@ export class Invocation {
           this.stopRequested = true;
           break;
         case ControlFlowTag.WAIT:
+          this.debug.blockForIo?.(true);
           await controlFlow.promise;
+          this.debug.blockForIo?.(false);
           break;
       }
     } catch (e: unknown) {
