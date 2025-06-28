@@ -9,9 +9,10 @@ import { Files } from "./Files.ts";
 import { Events } from "./Events.ts";
 import { RandomNumbers } from "./RandomNumbers.ts";
 import { ResumeStatement } from "./statements/Errors.ts";
+import { DebugState } from "./DebugState.ts";
 
-export function invoke(devices: Devices, memory: Memory, program: Program) {
-  return new Invocation(devices, memory, program);
+export function invoke(devices: Devices, memory: Memory, program: Program, debug: DebugState) {
+  return new Invocation(devices, memory, program, debug);
 }
 
 interface ProgramLocation {
@@ -38,13 +39,16 @@ export class Invocation {
   private errorHandling: ErrorHandling;
   private random: RandomNumbers;
   private stack: ProgramLocation[]
+  private debug: DebugState;
   private stopRequested: boolean = true;
   private stopped: boolean = true;
   private stepFromLine?: number;
   private stepWithinChunk?: number;
+  private skipBreakpoint?: number;
   nextLine: number = 1;
+  private nextChunk = 0;
 
-  constructor(devices: Devices, memory: Memory, program: Program) {
+  constructor(devices: Devices, memory: Memory, program: Program, debug: DebugState) {
     this.devices = devices;
     this.memory = memory;
     this.data = new ProgramData(program.data);
@@ -53,6 +57,7 @@ export class Invocation {
     this.random = new RandomNumbers();
     this.errorHandling = {};
     this.program = program;
+    this.debug = debug;
   }
 
   stop() {
@@ -90,6 +95,7 @@ export class Invocation {
   async restart(): Promise<void> {
     const chunks = this.program.chunks;
     this.nextLine = 1;
+    this.nextChunk = 0;
     this.stack = [];
     this.data.restore(0);
     this.files = new Files();
@@ -125,7 +131,7 @@ export class Invocation {
     if (!chunk) {
       throw new Error(`invalid chunk ${chunkIndex}`);
     }
-    if (statementIndex >= chunk.statements.length) {
+    if (statementIndex >= chunk.statements.length - 1) {
       await this.stepOneLine();
       return;
     }
@@ -154,19 +160,28 @@ export class Invocation {
     const statement = chunk.statements[statementIndex];
     if (statement.startToken) {
       this.nextLine = statement.startToken.line;
+      this.nextChunk = chunkIndex;
     }
     if (this.stepFromLine !== undefined) {
-      if (this.stepWithinChunk === undefined || this.stepWithinChunk === chunkIndex) {
+      // Step until we get to a statement on the next line.
+      if (this.stepWithinChunk === undefined || this.stepWithinChunk === this.nextChunk) {
+        // If "stepping over" function calls, must find a next line in the same chunk.
         if (this.nextLine !== this.stepFromLine) {
           this.stopRequested = true;
         }
       }
+    }
+    if (this.debug.breakpoints.has(this.nextLine) && this.skipBreakpoint !== this.nextLine) {
+      // Skip breakpoint at the next step so we can actually proceed.
+      this.skipBreakpoint = this.nextLine;
+      this.stopRequested = true;
     }
     if (this.stopRequested) {
       this.stopped = true;
       this.stopRequested = false;
       return;
     }
+    this.skipBreakpoint = undefined;
     if (!this.errorHandling.active) {
       if (statement.lineNumber !== undefined) {
         // Keep track of the most recent line number executed for ERL.

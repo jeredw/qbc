@@ -1,4 +1,5 @@
 import { Interpreter } from "./Interpreter.ts";
+import { DebugState } from "./DebugState.ts";
 import { MemoryDrive } from "./Disk.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
 import { CanvasScreen } from "./Screen.ts";
@@ -13,11 +14,6 @@ import { HttpModem } from "./Modem.ts";
 import "monaco-editor/esm/vs/editor/editor.all.js";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
-class DebugState {
-  breakpoints: Set<number> = new Set();
-  pauseLine?: number;
-}
-
 enum RunState {
   ENDED,
   PAUSED,
@@ -30,7 +26,6 @@ class Shell {
   private invocation: Invocation | null = null;
 
   private editor: EditorProxy;
-  private debug: DebugState;
   private running: RunState;
   private runFromStartButton: HTMLElement;
   private pauseButton: HTMLElement;
@@ -73,10 +68,9 @@ class Shell {
       lightPen: this.pointer,
       modem: this.modem,
     });
-    this.debug = new DebugState();
     this.running = RunState.ENDED;
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
-    this.editor = new EditorProxy(editorElement, this.debug);
+    this.editor = new EditorProxy(editorElement, this.interpreter.debug);
     this.runFromStartButton = assertHTMLElement(root.querySelector('.run-from-start'));
     this.runFromStartButton.addEventListener('click', () => setTimeout(() => this.run(true)));
     this.pauseButton = assertHTMLElement(root.querySelector('.pause'));
@@ -141,11 +135,11 @@ class Shell {
   private updateStateAfterRunning() {
     if (this.invocation?.isAtEnd()) {
       this.updateState(RunState.ENDED);
-      this.debug.pauseLine = undefined;
+      this.interpreter.debug.pauseLine = undefined;
       this.editor.updateDecorations();
     } else if (this.invocation?.isStopped()) {
       this.updateState(RunState.PAUSED);
-      this.debug.pauseLine = this.invocation.nextLine;
+      this.interpreter.debug.pauseLine = this.invocation.nextLine;
       this.editor.updateDecorations();
       this.editor.scrollToLine(this.invocation.nextLine);
     }
@@ -153,7 +147,7 @@ class Shell {
 
   async run(restart = false) {
     this.updateState(RunState.RUNNING);
-    this.debug.pauseLine = undefined;
+    this.interpreter.debug.pauseLine = undefined;
     this.editor.updateDecorations();
     this.editor.clearErrors();
     const text = this.editor.getValue();
@@ -171,6 +165,7 @@ class Shell {
         this.speaker.reset();
         this.screen.reset();
         this.modem.reset();
+        this.invocation?.stop();
         this.invocation = this.interpreter.run(text);
         await this.invocation.restart();
       } else {
@@ -197,6 +192,7 @@ class Shell {
     if (this.running !== RunState.PAUSED) {
       return;
     }
+    this.updateState(RunState.RUNNING);
     await this.invocation?.stepOneLine();
     this.updateStateAfterRunning();
   }
@@ -205,6 +201,7 @@ class Shell {
     if (this.running !== RunState.PAUSED) {
       return;
     }
+    this.updateState(RunState.RUNNING);
     await this.invocation?.stepOver();
     this.updateStateAfterRunning();
   }

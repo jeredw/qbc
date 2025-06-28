@@ -14,12 +14,13 @@ import { compile } from "./Programs.ts";
 import { Invocation, invoke } from "./Invocation.ts";
 import { Devices } from "./Devices.ts";
 import { Memory } from "./Memory.ts";
+import { DebugState } from "./DebugState.ts";
 
 export class Interpreter {
-  private devices: Devices;
+  debug: DebugState;
 
-  constructor(devices: Devices) {
-    this.devices = devices;
+  constructor(private devices: Devices) {
+    this.debug = new DebugState();
   }
 
   public run(text: string): Invocation {
@@ -37,7 +38,7 @@ export class Interpreter {
     // Parse the program first to check correct syntax.
     const tree = parser.program();
     const program = compile(tree);
-    return invoke(this.devices, new Memory(program.staticSize), program);
+    return invoke(this.devices, new Memory(program.staticSize), program, this.debug);
   }
 }
 
