@@ -55,7 +55,7 @@ import {
   VarSegFunction
 } from "./Bits.ts";
 import { ReadStatement, RestoreStatement } from "./Data.ts";
-import { EndStatement } from "./End.ts";
+import { EndStatement, NoOpStatement, StopStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement, SwapStatement } from "./Let.ts";
 import {
@@ -595,6 +595,10 @@ export function next(forToken: Token, counter: Variable, end: Variable, incremen
   return new NextStatement(forToken, counter, end, increment);
 }
 
+export function noop() {
+  return new NoOpStatement();
+}
+
 export function oct(args: BuiltinStatementArgs) {
   return new OctFunction(args);
 }
@@ -778,6 +782,10 @@ export function sqr(args: BuiltinStatementArgs) {
 
 export function stick(args: BuiltinStatementArgs) {
   return new StickFunction(args);
+}
+
+export function stop() {
+  return new StopStatement();
 }
 
 export function str(args: BuiltinStatementArgs) {

@@ -1248,7 +1248,13 @@ export class CodeGenerator extends QBasicParserListener {
     }
   }
 
-  override enterStop_statement = (ctx: parser.Stop_statementContext) => {}
+  override enterStop_statement = (ctx: parser.Stop_statementContext) => {
+    this.addStatement(statements.stop(), ctx.start!);
+    // Add an invisible no-op statement so that when single stepping, we break
+    // on the line with a "stop" before continuing.  (Note that this will make
+    // STOP take two steps when already single stepping, though.)
+    this.addStatement(statements.noop(), ctx.start!);
+  }
 
   override enterSwap_statement = (ctx: parser.Swap_statementContext) => {
     const a = this.getVariable(ctx._a!);

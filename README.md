@@ -308,7 +308,7 @@ parse those using baked in rules.
 | `$STATIC`        | Metacommand | ✅      | ✅      |
 | `STEP`           | Keyword     | ✅      | ✅      |
 | `STICK`          | Function    | -       | ✅      |
-| `STOP`           | Statement   | ✅      | ⛔      |
+| `STOP`           | Statement   | ✅      | ✅      |
 | `STR$`           | Function    | -       | 🚧      |
 | `STRIG`          | Function    | ✅      | ✅      |
 | `STRIG`          | Statement   | ✅      | ✅      |

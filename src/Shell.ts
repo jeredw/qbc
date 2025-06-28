@@ -78,14 +78,15 @@ class Shell {
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
     this.editor = new EditorProxy(editorElement, this.debug);
     this.runFromStartButton = assertHTMLElement(root.querySelector('.run-from-start'));
-    this.runFromStartButton.addEventListener('click', () => setTimeout(() => this.runFromStart()));
+    this.runFromStartButton.addEventListener('click', () => setTimeout(() => this.run(true)));
     this.pauseButton = assertHTMLElement(root.querySelector('.pause'));
     this.pauseButton.addEventListener('click', () => setTimeout(() => this.pause()));
     this.resumeButton = assertHTMLElement(root.querySelector('.resume'));
-    this.resumeButton.addEventListener('click', () => setTimeout(() => this.resume()));
+    this.resumeButton.addEventListener('click', () => setTimeout(() => this.run(false)));
     this.stepButton = assertHTMLElement(root.querySelector('.step'));
     this.stepButton.addEventListener('click', () => setTimeout(() => this.step()));
     this.stepOverButton = assertHTMLElement(root.querySelector('.step-over'));
+    this.stepOverButton.addEventListener('click', () => setTimeout(() => this.stepOver()));
     document.addEventListener('keydown', (e: KeyboardEvent) => this.keydown(e));
     document.addEventListener('keyup', (e: KeyboardEvent) => this.keyup(e));
     this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
@@ -137,8 +138,22 @@ class Shell {
     this.running = state;
   }
 
-  async runFromStart() {
+  private updateStateAfterRunning() {
+    if (this.invocation?.isAtEnd()) {
+      this.updateState(RunState.ENDED);
+      this.debug.pauseLine = undefined;
+      this.editor.updateDecorations();
+    } else if (this.invocation?.isStopped()) {
+      this.updateState(RunState.PAUSED);
+      this.debug.pauseLine = this.invocation.nextLine;
+      this.editor.updateDecorations();
+      this.editor.scrollToLine(this.invocation.nextLine);
+    }
+  }
+
+  async run(restart = false) {
     this.updateState(RunState.RUNNING);
+    this.debug.pauseLine = undefined;
     this.editor.updateDecorations();
     this.editor.clearErrors();
     const text = this.editor.getValue();
@@ -151,12 +166,16 @@ class Shell {
       this.screen.canvas.focus();
       // The QBasic IDE keeps key bindings around even if you start a new
       // program, but it is more convenient to reset everything on a fresh run.
-      this.keyboard.reset();
-      this.speaker.reset();
-      this.screen.reset();
-      this.modem.reset();
-      this.invocation = this.interpreter.run(text);
-      await this.invocation.restart();
+      if (restart) {
+        this.keyboard.reset();
+        this.speaker.reset();
+        this.screen.reset();
+        this.modem.reset();
+        this.invocation = this.interpreter.run(text);
+        await this.invocation.restart();
+      } else {
+        await this.invocation?.start();
+      }
     } catch (error: unknown) {
       if (error instanceof ParseError || error instanceof RuntimeError) {
         this.showErrorMessage(error);
@@ -164,35 +183,14 @@ class Shell {
         throw error;
       }
     } finally {
-      if (this.invocation?.isAtEnd()) {
-        this.updateState(RunState.ENDED);
-      }
+      this.updateStateAfterRunning();
     }
   }
 
   pause() {
     this.updateState(RunState.PAUSED);
     this.invocation?.stop();
-    if (this.invocation?.line) {
-      this.debug.pauseLine = this.invocation.line;
-      this.editor.updateDecorations();
-      this.editor.scrollToLine(this.invocation.line);
-    }
-  }
-
-  async resume() {
-    if (!this.invocation) {
-      return;
-    }
-    this.updateState(RunState.RUNNING);
-    this.debug.pauseLine = undefined;
-    this.editor.updateDecorations();
-    this.editor.clearErrors();
-    this.screen.canvas.focus();
-    await this.invocation.start();
-    if (this.invocation.isAtEnd()) {
-      this.updateState(RunState.ENDED);
-    }
+    this.updateStateAfterRunning();
   }
 
   async step() {
@@ -200,14 +198,15 @@ class Shell {
       return;
     }
     await this.invocation?.stepOneLine();
-    if (this.invocation?.line) {
-      this.debug.pauseLine = this.invocation.line;
-      this.editor.scrollToLine(this.invocation.line);
-      this.editor.updateDecorations();
+    this.updateStateAfterRunning();
+  }
+
+  async stepOver() {
+    if (this.running !== RunState.PAUSED) {
+      return;
     }
-    if (this.invocation?.isAtEnd()) {
-      this.updateState(RunState.ENDED);
-    }
+    await this.invocation?.stepOver();
+    this.updateStateAfterRunning();
   }
 
   playAudio() {

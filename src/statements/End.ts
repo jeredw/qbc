@@ -10,3 +10,22 @@ export class EndStatement extends Statement {
     return {tag: ControlFlowTag.HALT};
   }
 }
+
+export class StopStatement extends Statement {
+  constructor() {
+    super();
+  }
+
+  override execute(): ControlFlow {
+    return {tag: ControlFlowTag.STOP};
+  }
+}
+
+export class NoOpStatement extends Statement {
+  constructor() {
+    super();
+  }
+
+  override execute() {
+  }
+}

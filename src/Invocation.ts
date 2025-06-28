@@ -38,9 +38,11 @@ export class Invocation {
   private errorHandling: ErrorHandling;
   private random: RandomNumbers;
   private stack: ProgramLocation[]
+  private stopRequested: boolean = true;
   private stopped: boolean = true;
   private stepFromLine?: number;
-  line: number = 0;
+  private stepWithinChunk?: number;
+  nextLine: number = 1;
 
   constructor(devices: Devices, memory: Memory, program: Program) {
     this.devices = devices;
@@ -54,10 +56,11 @@ export class Invocation {
   }
 
   stop() {
-    this.stopped = true;
+    this.stopRequested = true;
   }
 
   async start(): Promise<void> {
+    this.stopRequested = false;
     this.stopped = false;
     let lastYield = 0;
     const nextStep = async (resolve: Function, reject: Function) => {
@@ -86,6 +89,7 @@ export class Invocation {
 
   async restart(): Promise<void> {
     const chunks = this.program.chunks;
+    this.nextLine = 1;
     this.stack = [];
     this.data.restore(0);
     this.files = new Files();
@@ -100,22 +104,34 @@ export class Invocation {
   }
 
   isStopped() {
-    return this.stopped ||
-      this.stack.length == 0 ||
-      (this.stepFromLine !== undefined && this.line !== this.stepFromLine);
+    return this.stopped || this.isAtEnd();
   }
 
   tick() {
   }
 
   async stepOneLine() {
-    if (this.line === undefined) {
-      return;
-    }
-    this.stepFromLine = this.line;
+    this.stepFromLine = this.nextLine;
     await this.start();
     this.stepFromLine = undefined;
-    this.stopped = true;
+  }
+
+  async stepOver() {
+    if (this.stack.length === 0) {
+      return;
+    }
+    const {chunkIndex, statementIndex} = this.stack[this.stack.length - 1]!;
+    const chunk = this.program.chunks[chunkIndex];
+    if (!chunk) {
+      throw new Error(`invalid chunk ${chunkIndex}`);
+    }
+    if (statementIndex >= chunk.statements.length) {
+      await this.stepOneLine();
+      return;
+    }
+    this.stepWithinChunk = chunkIndex;
+    await this.stepOneLine();
+    this.stepWithinChunk = undefined;
   }
 
   async step() {
@@ -137,7 +153,19 @@ export class Invocation {
     }
     const statement = chunk.statements[statementIndex];
     if (statement.startToken) {
-      this.line = statement.startToken.line;
+      this.nextLine = statement.startToken.line;
+    }
+    if (this.stepFromLine !== undefined) {
+      if (this.stepWithinChunk === undefined || this.stepWithinChunk === chunkIndex) {
+        if (this.nextLine !== this.stepFromLine) {
+          this.stopRequested = true;
+        }
+      }
+    }
+    if (this.stopRequested) {
+      this.stopped = true;
+      this.stopRequested = false;
+      return;
     }
     if (!this.errorHandling.active) {
       if (statement.lineNumber !== undefined) {
@@ -237,6 +265,9 @@ export class Invocation {
           break;
         case ControlFlowTag.HALT:
           this.stack = [];
+          break;
+        case ControlFlowTag.STOP:
+          this.stopRequested = true;
           break;
         case ControlFlowTag.WAIT:
           await controlFlow.promise;
