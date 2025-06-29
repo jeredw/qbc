@@ -1,6 +1,7 @@
 import { Token } from "antlr4ng";
 import { getRecordLength, Type, TypeTag } from "./Types.ts"
 import { StorageType, Address, Memory } from "./Memory.ts";
+import type { Value } from "./Values.ts";
 
 export interface Variable {
   name: string;
@@ -22,6 +23,8 @@ export interface Variable {
   recordOffset?: RecordOffset;
   storageType: StorageType;
   address?: Address;
+  // The most recently assigned value, if any. For use in debugging.
+  debugValue?: Value;
 }
 
 export interface RecordOffset {

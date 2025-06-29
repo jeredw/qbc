@@ -150,6 +150,7 @@ export class Memory {
   write(variable: Variable, value: Value | undefined) {
     const [address, _] = this.dereference(variable);
     this.writeAddress(address, value);
+    variable.debugValue = value;
   }
 
   getSegment(): number {

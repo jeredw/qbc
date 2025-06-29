@@ -30,7 +30,7 @@ import { Builtin, StandardLibrary } from "./Builtins.ts";
 //   x$(5) = "ok" ' ok
 //   x!(5) = 42   ' Duplicate definition
 
-export enum SymbolTag {
+export enum QBasicSymbolTag {
   PROCEDURE,
   CONSTANT,
   VARIABLE,
@@ -38,22 +38,22 @@ export enum SymbolTag {
 }
 
 export interface ProcedureSymbol {
-  tag: SymbolTag.PROCEDURE;
+  tag: QBasicSymbolTag.PROCEDURE;
   procedure: Procedure;
 }
 
 export interface ConstantSymbol {
-  tag: SymbolTag.CONSTANT;
+  tag: QBasicSymbolTag.CONSTANT;
   constant: Constant;
 }
 
 export interface VariableSymbol {
-  tag: SymbolTag.VARIABLE;
+  tag: QBasicSymbolTag.VARIABLE;
   variable: Variable;
 }
 
 export interface BuiltinSymbol {
-  tag: SymbolTag.BUILTIN;
+  tag: QBasicSymbolTag.BUILTIN;
   builtin: Builtin;
 }
 
@@ -249,7 +249,7 @@ export class SymbolTable {
     }): QBasicSymbol {
     const builtin = this.lookupBuiltin(name, sigil, token);
     if (builtin) {
-      return {tag: SymbolTag.BUILTIN, builtin};
+      return {tag: QBasicSymbolTag.BUILTIN, builtin};
     }
     const mySlot = this._symbols.get(name);
     const parentSlot = this._parent?._symbols.get(name);
@@ -258,20 +258,20 @@ export class SymbolTable {
     if (slot) {
       if (slot.procedure) {
         if (!slot.procedure.result || !sigil || sameType(type, slot.procedure.result.type)) {
-          return {tag: SymbolTag.PROCEDURE, procedure: slot.procedure};
+          return {tag: QBasicSymbolTag.PROCEDURE, procedure: slot.procedure};
         }
         throw ParseError.fromToken(token, "Duplicate definition");
       }
       if (slot.defFns) {
         const procedure = slot.defFns.get(type.tag);
         if (procedure) {
-          return {tag: SymbolTag.PROCEDURE, procedure};
+          return {tag: QBasicSymbolTag.PROCEDURE, procedure};
         }
         throw ParseError.fromToken(token, "Duplicate definition");
       }
       if (slot.constant) {
         if (isDefaultType || slot.constant.value.tag == type.tag) {
-          return {tag: SymbolTag.CONSTANT, constant: slot.constant};
+          return {tag: QBasicSymbolTag.CONSTANT, constant: slot.constant};
         }
         throw ParseError.fromToken(token, "Duplicate definition");
       }
@@ -283,7 +283,7 @@ export class SymbolTable {
         if (!asType || sameType(asType, type)) {
           const variable = slot.scalarVariables.get(type.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
-            return {tag: SymbolTag.VARIABLE, variable};
+            return {tag: QBasicSymbolTag.VARIABLE, variable};
           }
         }
       }
@@ -302,7 +302,7 @@ export class SymbolTable {
                 variable.array.dimensions.length != numDimensions) {
               throw ParseError.fromToken(token, "Wrong number of dimensions");
             }
-            return {tag: SymbolTag.VARIABLE, variable};
+            return {tag: QBasicSymbolTag.VARIABLE, variable};
           }
         }
       }
@@ -320,7 +320,7 @@ export class SymbolTable {
     }
     const variable = { name, type, sigil, token, storageType, isAsType, sharedDeclaration, ...array };
     this.defineVariable(variable);
-    return { tag: SymbolTag.VARIABLE, variable };
+    return { tag: QBasicSymbolTag.VARIABLE, variable };
   }
 
   getAsType(name: string): Type | undefined {

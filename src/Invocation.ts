@@ -1,5 +1,5 @@
 import { Devices } from "./Devices.ts";
-import { Program } from "./Programs.ts";
+import { DebugInfo, Program } from "./Programs.ts";
 import { Memory } from "./Memory.ts";
 import { ControlFlowTag } from "./ControlFlow.ts";
 import { RuntimeError, RETURN_WITHOUT_GOSUB, ErrorHandling, RESUME_WITHOUT_ERROR, NO_RESUME } from "./Errors.ts";
@@ -306,6 +306,10 @@ export class Invocation {
       }
       throw e;
     }
+  }
+
+  debugInfo(): DebugInfo {
+    return this.program.debugInfo;
   }
 
   private exitChunk() {

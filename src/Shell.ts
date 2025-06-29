@@ -13,6 +13,8 @@ import { PointerListener } from "./LightPen.ts";
 import { HttpModem } from "./Modem.ts";
 import "monaco-editor/esm/vs/editor/editor.all.js";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { QBasicSymbolTag } from "./SymbolTable.ts";
+import { debugPrintValue, debugPrintVariable } from "./Values.ts";
 
 enum RunState {
   ENDED,
@@ -20,7 +22,11 @@ enum RunState {
   RUNNING
 }
 
-class Shell {
+interface DebugProvider {
+  query(line: number, column: number): string | undefined;
+}
+
+class Shell implements DebugProvider {
   private root: HTMLElement;
   private interpreter: Interpreter;
   private invocation: Invocation | null = null;
@@ -71,7 +77,7 @@ class Shell {
     this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
-    this.editor = new EditorProxy(editorElement, this.interpreter.debug);
+    this.editor = new EditorProxy(editorElement, this.interpreter.debug, this);
     this.runFromStartButton = assertHTMLElement(root.querySelector('.run-from-start'));
     this.runFromStartButton.addEventListener('click', () => setTimeout(() => this.run(true)));
     this.pauseButton = assertHTMLElement(root.querySelector('.pause'));
@@ -230,6 +236,23 @@ class Shell {
     this.root.classList.remove('sound-enabled');
   }
 
+  query(line: number, column: number): string | undefined {
+    if (!this.invocation) {
+      return;
+    }
+    const debugInfo = this.invocation.debugInfo();
+    for (const {token, symbol} of debugInfo.refs) {
+      if (token.line === line && column >= token.column && column <= (token.column + (token.text?.length || 1))) {
+        switch (symbol.tag) {
+          case QBasicSymbolTag.VARIABLE:
+            return debugPrintVariable(symbol.variable);
+          case QBasicSymbolTag.CONSTANT:
+            return debugPrintValue(symbol.constant.value);
+        }
+      }
+    }
+  }
+
   private frame = (timestamp: number) => {
     this.screen.render();
     this.printer.render(timestamp);
@@ -256,7 +279,7 @@ class EditorProxy {
   private hoverLine?: number;
   private justClearedBreakpoint?: number;
 
-  constructor(container: HTMLElement, private debug: DebugState) {
+  constructor(container: HTMLElement, private debug: DebugState, private debugProvider: DebugProvider) {
     monaco.editor.defineTheme("dos-edit", {
       base: "vs-dark",
       inherit: false,
@@ -267,12 +290,7 @@ class EditorProxy {
       }
     });
     monaco.languages.register({id: "qbasic"});
-    /*monaco.languages.registerHoverProvider("qbasic", {
-      provideHover: function(model, position): monaco.languages.ProviderResult<monaco.languages.Hover> {
-        console.log(model.getWordAtPosition(position));
-        return {contents: [{value: "foo"}]};
-      }
-    });*/
+    monaco.languages.registerHoverProvider("qbasic", this);
     this.editor = monaco.editor.create(container, {
       theme: "dos-edit",
       fontFamily: "Web IBM VGA 8x16",
@@ -282,6 +300,13 @@ class EditorProxy {
     });
     this.decorations = this.editor.createDecorationsCollection([]);
     this.listenForBreakpoints();
+  }
+
+  provideHover = (model: monaco.editor.ITextModel, position: monaco.Position): monaco.languages.ProviderResult<monaco.languages.Hover> => {
+    const value = this.debugProvider.query(position.lineNumber, position.column);
+    if (value) {
+      return { contents: [{ value }] };
+    }
   }
 
   getValue(): string {

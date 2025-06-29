@@ -45,6 +45,7 @@ export class Typer extends QBasicParserListener {
       types: new Map(),
       staticSize: 0,
       data: [],
+      debugInfo: {refs: []},
     };
   }
 
@@ -232,17 +233,19 @@ export class Typer extends QBasicParserListener {
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const args = ctx.argument_list()?.argument() || [];
     const element = ctx._element?.text || '';
+    const token = ctx._name!;
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
       name: element ? `${name}().${element}` : name,
       type,
       sigil,
       numDimensions: args.length,
-      token: ctx._name!,
+      token,
       storageType: this._storageType,
       isAsType: false,
       arrayBaseIndex: this._arrayBaseIndex,
     });
     getTyperContext(ctx).$symbol = symbol;
+    this._program.debugInfo.refs.push({token, symbol});
     if (isBuiltin(symbol)) {
       if (!symbol.builtin.returnType) {
         throw ParseError.fromToken(ctx._name!, "Duplicate definition");
@@ -651,17 +654,19 @@ export class Typer extends QBasicParserListener {
       // Non-numeric counters cause a type mismatch on the end expression.
       throw ParseError.fromToken(ctx._end!.start!, "Type mismatch");
     }
+    const token = ctx.ID(0)!.symbol;
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
       name,
       type,
       sigil,
       numDimensions: 0,
-      token: ctx.ID(0)!.symbol,
+      token,
       storageType: this._storageType,
       isAsType: false,
       arrayBaseIndex: this._arrayBaseIndex,
     });
     getTyperContext(ctx).$symbol = symbol;
+    this._program.debugInfo.refs.push({token, symbol});
     getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);
     if (ctx._increment) {
       getTyperContext(ctx).$increment = this.makeSyntheticVariable(type, ctx._increment!.start!);

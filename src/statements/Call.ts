@@ -32,6 +32,7 @@ export class CallStatement extends Statement {
         // Evaluate argument expression in the context of the current stack frame.
         const value = evaluateExpression({expr, resultType: parameter.type, memory: context.memory});
         writes.push([parameter.address!, value]);
+        parameter.debugValue = value;
       } else if (variable) {
         if (variable.isParameter && variable.address) {
           // When passing a reference param from one procedure to another, reuse
@@ -51,6 +52,7 @@ export class CallStatement extends Statement {
         } else {
           writes.push([parameter.address!, reference(variable, qualifyAddress(variable.address!, frameIndex))]);
         }
+        parameter.debugValue = variable.debugValue;
       }
       if (initToZero) {
         paramsToZero.push(parameter);

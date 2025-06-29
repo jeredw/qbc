@@ -251,6 +251,34 @@ export function array(array: Variable, descriptor: ArrayDescriptor): Value {
   return {tag: TypeTag.ARRAY, array, descriptor};
 }
 
+export function debugPrintVariable(variable: Variable): string {
+  if (variable.type.tag === TypeTag.RECORD) {
+    let result = `[${variable.type.name}]`;
+    for (const [name, element] of variable.elements ?? []) {
+      result += `${name}: ${debugPrintVariable(element)}\n`;
+    }
+    return result;
+  }
+  return debugPrintValue(variable.debugValue ?? getDefaultValue(variable));
+}
+
+export function debugPrintValue(value: Value): string {
+  switch (value.tag) {
+    case TypeTag.STRING:
+    case TypeTag.FIXED_STRING:
+      return `"${value.string}"`;
+    case TypeTag.SINGLE:
+      return `${value.number}!`;
+    case TypeTag.DOUBLE:
+      return `${value.number}#`;
+    case TypeTag.INTEGER:
+      return `${value.number}%`;
+    case TypeTag.LONG:
+      return `${value.number}&`;
+  }
+  return "";
+}
+
 export const
   TRUE = -1,
   FALSE = 0;

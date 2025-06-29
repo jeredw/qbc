@@ -57,7 +57,7 @@ import {
 import { ReadStatement, RestoreStatement } from "./Data.ts";
 import { EndStatement, NoOpStatement, StopStatement } from "./End.ts";
 import { ForStatement, NextStatement } from "./For.ts";
-import { LetStatement, SwapStatement } from "./Let.ts";
+import { LetStatement, SwapStatement } from "./Assignment.ts";
 import {
   ChdirStatement,
   CloseStatement,

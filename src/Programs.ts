@@ -1,7 +1,7 @@
 import { ParseTree, ParseTreeWalker, Token } from "antlr4ng";
 import { Typer } from "./Typer.ts";
 import { CodeGenerator } from "./CodeGenerator.ts";
-import { SymbolTable } from "./SymbolTable.ts";
+import { QBasicSymbol, SymbolTable } from "./SymbolTable.ts";
 import { UserDefinedType, } from "./Types.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
@@ -12,12 +12,22 @@ export interface Program {
   types: Map<string, UserDefinedType>;
   staticSize: number;
   data: DataItem[];
+  debugInfo: DebugInfo;
 }
 
 export interface DataItem {
   // If text is absent, item is empty (e.g. DATA ,).
   text?: string;
   quoted?: boolean;
+}
+
+export interface SymbolRef {
+  symbol: QBasicSymbol;
+  token: Token;
+}
+
+export interface DebugInfo {
+  refs: SymbolRef[];
 }
 
 export interface TargetRef {
