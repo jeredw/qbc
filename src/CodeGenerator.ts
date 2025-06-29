@@ -379,7 +379,7 @@ export class CodeGenerator extends QBasicParserListener {
       }
     }
     if (procedure.result && result) {
-      bindings.push({parameter: procedure.result, variable: result});
+      bindings.push({parameter: procedure.result, variable: result, initToZero: true});
     }
     // The stack also includes storage for locals.  They will be initialized to
     // empty values in the new stack frame and read as the default value.

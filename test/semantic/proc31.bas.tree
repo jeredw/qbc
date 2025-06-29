@@ -1,0 +1,50 @@
+(program ' \n 
+  (function_statement function foo 
+    (block \n 
+      (statement 
+        (shared_statement shared 
+          (shared_variable k))) \n 
+      (statement 
+        (if_inline_statement if 
+          (expr 
+            (expr 
+              (variable_or_function_call k)) = 
+            (expr 
+              (literal 0))) then 
+          (if_inline_action 
+            (statement 
+              (assignment_statement 
+                (variable_or_function_call foo) = 
+                (expr 
+                  (literal 42))))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call k) = 
+          (expr 
+            (expr 
+              (variable_or_function_call k)) + 
+            (expr 
+              (literal 1))))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call k))))) \n) 
+    (end_function_statement end function)) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 2)) 
+      (block \n ' \n ' \n ' \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call z) = 
+            (expr 
+              (variable_or_function_call foo)))) \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call z))))) \n) next i)) \n <EOF>)
