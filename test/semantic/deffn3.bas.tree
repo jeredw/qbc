@@ -1,0 +1,8 @@
+(program ' \n 
+  (def_fn_statement def fnfoo 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call fnbar) = 
+          (expr 
+            (literal 42)))) \n) end def) \n <EOF>)

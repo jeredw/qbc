@@ -337,6 +337,9 @@ export class SymbolTable {
       this._parent!._symbols :
       this._symbols;
     const slot = table.get(variable.name) ?? {};
+    if (variable.name.toLowerCase().startsWith('fn')) {
+      throw ParseError.fromToken(variable.token, "Duplicate definition");
+    }
     if (slot.procedure || slot.constant) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }

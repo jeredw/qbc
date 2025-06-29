@@ -321,9 +321,6 @@ export class Typer extends QBasicParserListener {
     return variable;
   }
 
-  override enterError_statement = (ctx: parser.Error_statementContext) => {}
-  override enterEvent_control_statement = (ctx: parser.Event_control_statementContext) => {}
-
   override enterData_statement = (ctx: parser.Data_statementContext) => {
     // Allow data anywhere to match qbasic /run.  This might break restore.
     // throw ParseError.fromToken(ctx.start!, "Illegal in procedure or DEF FN");
@@ -635,9 +632,6 @@ export class Typer extends QBasicParserListener {
     }
   }
 
-  override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
-  override enterField_statement = (ctx: parser.Field_statementContext) => {}
-
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
     const [name, sigil] = splitSigil(ctx.ID(0)!.getText().toLowerCase());
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
@@ -672,18 +666,6 @@ export class Typer extends QBasicParserListener {
       getTyperContext(ctx).$increment = this.makeSyntheticVariable(type, ctx._increment!.start!);
     }
   }
-
-  override enterGet_io_statement = (ctx: parser.Get_io_statementContext) => {}
-
-  override enterIoctl_statement = (ctx: parser.Ioctl_statementContext) => {}
-  override enterKey_statement = (ctx: parser.Key_statementContext) => {}
-  override enterLocate_statement = (ctx: parser.Locate_statementContext) => {}
-  override enterLock_statement = (ctx: parser.Lock_statementContext) => {}
-  override enterLset_statement = (ctx: parser.Lset_statementContext) => {}
-  override enterOn_error_statement = (ctx: parser.On_error_statementContext) => {}
-  override enterOn_event_gosub_statement = (ctx: parser.On_event_gosub_statementContext) => {}
-  override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
-  override enterPaint_statement = (ctx: parser.Paint_statementContext) => {}
 
   override enterRandomize_statement = (ctx: parser.Randomize_statementContext) => {
     if (!ctx.expr()) {
@@ -724,30 +706,11 @@ export class Typer extends QBasicParserListener {
     }
   }
 
-  override enterPlay_statement = (ctx: parser.Play_statementContext) => {}
-  override enterPreset_statement = (ctx: parser.Preset_statementContext) => {}
-
-  override enterPset_statement = (ctx: parser.Pset_statementContext) => {}
-  override enterPut_io_statement = (ctx: parser.Put_io_statementContext) => {}
-  override enterResume_statement = (ctx: parser.Resume_statementContext) => {}
-
-  override enterRset_statement = (ctx: parser.Rset_statementContext) => {}
-  override enterScreen_statement = (ctx: parser.Screen_statementContext) => {}
-
   override exitSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
     const value = typeCheckExpression({expr: ctx.expr()});
     const type = typeOfValue(value);
     getTyperContext(ctx).$test = this.makeSyntheticVariable(type, ctx.start!);
   }
-
-  override enterStop_statement = (ctx: parser.Stop_statementContext) => {}
-  override enterUnlock_statement = (ctx: parser.Unlock_statementContext) => {}
-  override enterView_statement = (ctx: parser.View_statementContext) => {}
-  override enterView_print_statement = (ctx: parser.View_print_statementContext) => {}
-
-  override enterWidth_statement = (ctx: parser.Width_statementContext) => {}
-  override enterWindow_statement = (ctx: parser.Window_statementContext) => {}
-  override enterWrite_statement = (ctx: parser.Write_statementContext) => {}
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
     const name = getUntypedId(ctx.untyped_id(), {allowPeriods: true});
