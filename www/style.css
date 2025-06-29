@@ -145,6 +145,18 @@ body {
   flex: 1;
 }
 
+input[type="file"] {
+  display: none;
+}
+
+.file-browser {
+  height: 200px;
+}
+
+.file-picker-item {
+  cursor: pointer;
+}
+
 .breakpoint-icon {
   background: var(--qbc-high-red);
   clip-path: circle(15%);

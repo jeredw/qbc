@@ -1,6 +1,6 @@
 import { Interpreter } from "./Interpreter.ts";
 import { DebugState } from "./DebugState.ts";
-import { MemoryDrive } from "./Disk.ts";
+import { DiskEntry, DiskListener, MemoryDrive } from "./Disk.ts";
 import { ParseError, RuntimeError } from "./Errors.ts";
 import { CanvasScreen } from "./Screen.ts";
 import { LinePrinter } from "./Printer.ts";
@@ -15,6 +15,7 @@ import "monaco-editor/esm/vs/editor/editor.all.js";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { QBasicSymbolTag } from "./SymbolTable.ts";
 import { debugPrintValue, debugPrintVariable } from "./Values.ts";
+import { asciiToString, stringToAscii } from "./AsciiChart.ts";
 
 enum RunState {
   ENDED,
@@ -26,7 +27,7 @@ interface DebugProvider {
   query(line: number, column: number): string | undefined;
 }
 
-class Shell implements DebugProvider {
+class Shell implements DebugProvider, DiskListener {
   private root: HTMLElement;
   private interpreter: Interpreter;
   private invocation: Invocation | null = null;
@@ -38,6 +39,9 @@ class Shell implements DebugProvider {
   private resumeButton: HTMLElement;
   private stepButton: HTMLElement;
   private stepOverButton: HTMLElement;
+  private importButton: HTMLElement;
+  private importInput: HTMLInputElement;
+  private filePicker: HTMLElement;
 
   private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;
@@ -54,7 +58,7 @@ class Shell implements DebugProvider {
     this.screen = new CanvasScreen();
     this.speaker = new WebAudioSpeaker();
     this.printer = new LinePrinter(80);
-    this.disk = new MemoryDrive();
+    this.disk = new MemoryDrive("C", this);
     this.keyboard = new KeyboardListener();
     this.timer = new RealTimeTimer();
     this.gamepad = new GamepadListener();
@@ -88,6 +92,11 @@ class Shell implements DebugProvider {
     this.stepButton.addEventListener('click', () => setTimeout(() => this.step()));
     this.stepOverButton = assertHTMLElement(root.querySelector('.step-over'));
     this.stepOverButton.addEventListener('click', () => setTimeout(() => this.stepOver()));
+    this.importInput = root.querySelector('.import-input')!;
+    this.importInput.addEventListener('input', () => this.importFiles());
+    this.importButton = assertHTMLElement(root.querySelector('.import'));
+    this.importButton.addEventListener('click', () => this.importInput.click());
+    this.filePicker = assertHTMLElement(root.querySelector('.file-picker'));
     document.addEventListener('keydown', (e: KeyboardEvent) => this.keydown(e));
     document.addEventListener('keyup', (e: KeyboardEvent) => this.keyup(e));
     this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
@@ -128,6 +137,51 @@ class Shell implements DebugProvider {
       e.preventDefault();
       return false;
     }
+  }
+
+  private async importFiles() {
+    for (const file of this.importInput.files ?? []) {
+      const buffer = await file.arrayBuffer();
+      let bytes = Array.from(new Uint8Array(buffer));
+      if (file.name.toUpperCase().endsWith('.BAS')) {
+        try {
+          // If the program is valid UTF-8, assume that any CP437 characters have
+          // already been translated to UTF-8 and translate them back to CP437.
+          const decoder = new TextDecoder('utf-8', { fatal: true });
+          const text = decoder.decode(buffer);
+          bytes = stringToAscii(text);
+        } catch (e: unknown) {
+          // Otherwise treat the program as a CP437 string.
+        }
+      }
+      this.disk.writeFile({
+        name: file.name.toUpperCase(),
+        isDirectory: false,
+        bytes
+      });
+    }
+  }
+
+  updateDiskEntry(entry: DiskEntry) {
+    const files = this.disk.listFiles("\\");
+    this.filePicker.innerHTML = '';
+    for (const file of files) {
+      const item = document.createElement('div');
+      item.className = 'file-picker-item';
+      item.innerText = `${file.name}`;
+      item.addEventListener('click', () => this.load(file.name));
+      this.filePicker.appendChild(item);
+    }
+  }
+
+  load(fileName: string) {
+    const file = this.disk.readFile(fileName);
+    const text = asciiToString(file.bytes);
+    this.invocation?.stop();
+    this.invocation = null;
+    this.interpreter.debug.breakpoints = new Set();
+    this.updateStateAfterRunning();
+    this.editor.setValue(text);
   }
 
   private updateState(state: RunState) {
@@ -298,6 +352,7 @@ class EditorProxy {
       fontSize: 16,
       language: "qbasic",
       glyphMargin: true,
+      automaticLayout: true,
     });
     this.decorations = this.editor.createDecorationsCollection([]);
     this.listenForBreakpoints();
@@ -308,6 +363,10 @@ class EditorProxy {
     if (value) {
       return { contents: [{ value }] };
     }
+  }
+
+  setValue(text: string) {
+    this.editor.setValue(text);
   }
 
   getValue(): string {

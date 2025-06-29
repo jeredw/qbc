@@ -11,6 +11,8 @@ export interface Disk extends Opener {
   listFiles(pattern: string): DiskEntry[];
   removeFiles(pattern: string): void;
   rename(oldPath: string, newPath: string): void;
+  writeFile(file: DiskFile): void;
+  readFile(path: string): DiskFile;
 }
 
 export interface DiskFile {
@@ -25,6 +27,10 @@ export interface DiskDirectory {
   entries: Map<string, DiskEntry>;
 }
 
+export interface DiskListener {
+  updateDiskEntry(entry: DiskEntry): void;
+}
+
 export type DiskEntry =
   | DiskFile
   | DiskDirectory;
@@ -34,9 +40,9 @@ export class MemoryDrive implements Disk {
   rootDirectory = directory('');
   currentDirectory: Path;
   handles: Map<string, Handle> = new Map();
-  modified: boolean = false;
+  modified = false;
 
-  constructor(drive: string = "C") {
+  constructor(drive: string = "C", private diskListener?: DiskListener) {
     this.drive = drive;
     this.currentDirectory = {drive, names: ['']};
   }
@@ -135,6 +141,29 @@ export class MemoryDrive implements Disk {
     this.flush(targetParent);
   }
 
+  writeFile(file: DiskFile) {
+    const directory = this.lookupOrThrow(this.currentDirectory);
+    if (!directory.isDirectory) {
+      throw new Error('expecting directory');
+    }
+    directory.entries.set(file.name, file);
+    this.flush(directory);
+  }
+
+  readFile(path: string): DiskFile {
+    const target = parsePath(path, this.currentDirectory);
+    const [parentDir, name] = splitPath(target);
+    const parent = this.lookupOrThrow(parentDir);
+    if (!parent.isDirectory || !name) {
+      throw new Error('expecting directory');
+    }
+    const file = parent.entries.get(name);
+    if (!file || file.isDirectory) {
+      throw new Error('file not found');
+    }
+    return file;
+  }
+
   open(path: string, mode: OpenMode, recordLength?: number): Handle {
     const target = parsePath(path, this.currentDirectory);
     const [parentDir, name] = splitPath(target);
@@ -199,6 +228,7 @@ export class MemoryDrive implements Disk {
 
   private flush(entry: DiskEntry) {
     this.modified = true;
+    this.diskListener?.updateDiskEntry(entry);
   }
 
   private getParentDirectoryAndFileName(path: string, allowEmptyName = false): [DiskDirectory, string] {
