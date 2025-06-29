@@ -277,11 +277,9 @@ export class SymbolTable {
       }
       if (numDimensions == 0 && slot.scalarVariables) {
         const asType = slot.scalarAsType ?? slot.arrayAsType;
-        if (asType && isDefaultType) {
-          type = asType;
-        }
-        if (!asType || sameType(asType, type)) {
-          const variable = slot.scalarVariables.get(type.tag);
+        const lookupType = asType && isDefaultType ? asType : type;
+        if (!asType || sameType(asType, lookupType)) {
+          const variable = slot.scalarVariables.get(lookupType.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
             return {tag: QBasicSymbolTag.VARIABLE, variable};
           }
@@ -289,11 +287,9 @@ export class SymbolTable {
       }
       if (numDimensions > 0 && slot.arrayVariables) {
         const asType = slot.arrayAsType ?? slot.scalarAsType;
-        if (asType && isDefaultType) {
-          type = asType;
-        }
-        if (!asType || sameType(asType, type)) {
-          const variable = slot.arrayVariables.get(type.tag);
+        const lookupType = asType && isDefaultType ? asType : type;
+        if (!asType || sameType(asType, lookupType)) {
+          const variable = slot.arrayVariables.get(lookupType.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
             if (!variable.array) {
               throw new Error("missing array dimensions");

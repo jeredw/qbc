@@ -1,0 +1,25 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id i) as 
+        (type_name string)))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (for_next_statement for i = 
+          (expr 
+            (literal 1)) to 
+          (expr 
+            (literal 10)) 
+          (block \n 
+            (statement 
+              (print_statement print 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call i))))) \n) next i)) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)

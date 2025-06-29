@@ -147,7 +147,7 @@ class Shell implements DebugProvider {
   }
 
   private updateStateAfterRunning() {
-    if (this.invocation?.isAtEnd()) {
+    if (!this.invocation || this.invocation?.isAtEnd()) {
       this.updateState(RunState.ENDED);
       this.interpreter.debug.pauseLine = undefined;
       this.editor.updateDecorations();
@@ -270,6 +270,7 @@ class Shell implements DebugProvider {
       this.editor.markError(line, column, length, error.message);
     }
     console.error(line, column, length, error.message);
+    this.editor.scrollToLine(line);
   }
 }
 
