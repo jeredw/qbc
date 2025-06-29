@@ -26,7 +26,7 @@ export const DEFAULT_PLAY_STATE: PlayState = {
 
 export class TestSpeaker implements Speaker {
   output: string = "";
-  playState: PlayState = DEFAULT_PLAY_STATE;
+  playState: PlayState = {...DEFAULT_PLAY_STATE};
   queueLength: number = 0;
 
   beep(): Promise<void> {
@@ -109,7 +109,7 @@ export class WebAudioSpeaker implements Speaker {
     this.oscillator.connect(this.gainNode);
     this.oscillator.start();
     this.queue = [];
-    this.playState = DEFAULT_PLAY_STATE;
+    this.playState = {...DEFAULT_PLAY_STATE};
   }
 
   beep(): Promise<void> {
