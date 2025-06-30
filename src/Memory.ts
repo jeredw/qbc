@@ -22,6 +22,10 @@ export class Frame {
     this.live = true;
   }
 
+  reset() {
+    this.values = new Array(this.values.length);
+  }
+
   read(index: number): Value | undefined {
     this.check(index);
     return this.values[index];
@@ -62,6 +66,18 @@ export class Memory {
   constructor(size: number) {
     this.static = new Frame(size);
     this.dynamic = [];
+  }
+
+  clear() {
+    this.static.reset();
+    this.stack = [];
+    this.dynamic = [];
+  }
+
+  reset() {
+    this.clear();
+    this.segment = 0;
+    this.pointers = [];
   }
 
   pushStack(size: number) {

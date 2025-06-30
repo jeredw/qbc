@@ -127,7 +127,7 @@ parse those using baked in rules.
 | `CHR$`           | Function    | -       | ✅      |
 | `CINT`           | Function    | -       | ✅      |
 | `CIRCLE`         | Statement   | ✅      | 🚧      |
-| `CLEAR`          | Statement   | ✅      | ⛔      |
+| `CLEAR`          | Statement   | ✅      | ✅      |
 | `CLNG`           | Function    | -       | ✅      |
 | `CLOSE`          | Statement   | ✅      | ✅      |
 | `CLS`            | Statement   | -       | ✅      |

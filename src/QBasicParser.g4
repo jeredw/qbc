@@ -375,8 +375,9 @@ circle_statement
     | COMMA (color=expr)? )?
   ;    
 
-// The help file only mentions CLEAR [,,stack] but the language seems to accept
-// two optional arguments.
+// The help file only mentions CLEAR [,,stack] but the language accepts two
+// optional arguments for backwards compatibility.
+// https://stackoverflow.com/a/53722102
 clear_statement
   : CLEAR expr?
   | CLEAR expr? COMMA expr

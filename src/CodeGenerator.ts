@@ -405,7 +405,9 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.circle({token, step, x, y, radius, color, start, end, aspect}), token);
   }
 
-  override enterClear_statement = (ctx: parser.Clear_statementContext) => {}
+  override enterClear_statement = (ctx: parser.Clear_statementContext) => {
+    this.addStatement(statements.clear(), ctx.start!);
+  }
 
   override enterClose_statement = (ctx: parser.Close_statementContext) => {
     for (const expr of ctx.expr()) {

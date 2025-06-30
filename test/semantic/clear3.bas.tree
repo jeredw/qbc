@@ -1,0 +1,20 @@
+(program ' \n 
+  (statement 
+    (gosub_statement gosub 
+      (target 
+        (text_label 
+          (untyped_id foo))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id foo)) :) \n 
+  (statement 
+    (clear_statement clear)) \n ' \n 
+  (statement 
+    (return_statement return)) \n <EOF>)

@@ -156,6 +156,7 @@ import {
 } from "./Graphics.ts";
 import { ErdevFunction, ErdevStringFunction, ErlFunction, ErrFunction, ErrorHandlerStatement, ErrorStatement, ResumeStatement } from "./Errors.ts";
 import { CommandFunction } from "./Dos.ts";
+import { ClearStatement } from "./Clear.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -203,6 +204,10 @@ export function chr(args: BuiltinStatementArgs) {
 
 export function circle(args: CircleStatementArgs) {
   return new CircleStatement(args);
+}
+
+export function clear() {
+  return new ClearStatement();
 }
 
 export function close(fileNumber: parser.ExprContext) {

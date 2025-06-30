@@ -1,0 +1,10 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n ' \n 
+      (statement 
+        (clear_statement clear)) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)

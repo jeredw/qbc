@@ -2,7 +2,7 @@ import { Devices } from "./Devices.ts";
 import { DebugInfo, Program } from "./Programs.ts";
 import { Memory } from "./Memory.ts";
 import { ControlFlowTag } from "./ControlFlow.ts";
-import { RuntimeError, RETURN_WITHOUT_GOSUB, ErrorHandling, RESUME_WITHOUT_ERROR, NO_RESUME } from "./Errors.ts";
+import { RuntimeError, RETURN_WITHOUT_GOSUB, ErrorHandling, RESUME_WITHOUT_ERROR, NO_RESUME, ILLEGAL_FUNCTION_CALL } from "./Errors.ts";
 import { ReturnStatement } from "./statements/Return.ts";
 import { ProgramData } from "./ProgramData.ts";
 import { Files } from "./Files.ts";
@@ -10,6 +10,7 @@ import { Events } from "./Events.ts";
 import { RandomNumbers } from "./RandomNumbers.ts";
 import { ResumeStatement } from "./statements/Errors.ts";
 import { DebugState } from "./DebugState.ts";
+import { ClearStatement } from "./statements/Clear.ts";
 
 export function invoke(devices: Devices, memory: Memory, program: Program, debug: DebugState) {
   return new Invocation(devices, memory, program, debug);
@@ -289,6 +290,21 @@ export class Invocation {
           await controlFlow.promise;
           this.debug.blockForIo?.(false);
           break;
+        case ControlFlowTag.CLEAR: {
+          const clearStatement = statement as ClearStatement;
+          for (const frame of this.stack) {
+            if (frame.pusher === ControlFlowTag.CALL) {
+              throw RuntimeError.fromToken(statement.startToken!, ILLEGAL_FUNCTION_CALL);
+            }
+          }
+          // Overwrite the top of stack with the current location and hope for the best.
+          const top = this.stack[this.stack.length - 1];
+          this.stack[0] = {...top};
+          this.stack[0].pusher = undefined;
+          this.stack[0].reenableEvents = undefined;
+          this.stack.length = 1;
+          break;
+        }
       }
     } catch (e: unknown) {
       if (e instanceof RuntimeError) {
