@@ -945,7 +945,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("unimplemented");
     }
     const borderColor = ctx._bordercolor && this.compileExpression(ctx._bordercolor, ctx._bordercolor.start!, { tag: TypeTag.INTEGER });
-    const background = ctx._background && this.compileExpression(ctx._background, ctx._background.start!, { tag: TypeTag.INTEGER });
+    const background = ctx._background && this.compileExpression(ctx._background, ctx._background.start!, { tag: TypeTag.STRING });
     this.addStatement(statements.paint({token, step, x, y, color, tile, borderColor, background}), token);
   }
 

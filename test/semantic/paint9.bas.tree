@@ -1,0 +1,113 @@
+(program ' \n ' \n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)))) \n \n ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Tile$) = 
+      (expr 
+        (expr 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &H55)))) ))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &H55)))) )))) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &HAA)))) )))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Tile$) = 
+      (expr 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call Tile$)) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal &HAA)))) )))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &HFF)))) )))) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &HFF)))) )))))) \n \n ' \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 25)) ) - 
+      ( 
+        (expr 
+          (literal 310)) , 
+        (expr 
+          (literal 25)) ))) \n 
+  (statement 
+    (line_statement LINE - 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 175)) ))) \n 
+  (statement 
+    (line_statement LINE - 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 25)) ))) \n \n ' \n 
+  (statement 
+    (paint_statement PAINT 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 3)))) \n \n ' \n ' \n \n ' \n ' \n 
+  (statement 
+    (paint_statement PAINT 
+      ( 
+        (expr 
+          (literal 160)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (variable_or_function_call Tile$)) , , 
+      (expr 
+        (variable_or_function_call CHR$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal &HAA)))) ))))) \n <EOF>)

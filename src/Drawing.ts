@@ -144,6 +144,9 @@ class BitStream {
   }
 
   read(): boolean {
+    if (this.byteOffset >= this.data.byteLength) {
+      return false;
+    }
     const result = !!(this.data.getUint8(this.byteOffset) & (1 << this.bitOffset));
     this.nextBit();
     return result;
@@ -361,16 +364,47 @@ export class Plotter {
     this.drawCircle(ctx, centerScreen, radiusScreen, color, aspect, args.start, args.end);
   }
 
-  paint(ctx: CanvasRenderingContext2D, args: PaintArgs, color: number) {
+  paint(ctx: CanvasRenderingContext2D, args: PaintArgs, color: number, bppPerPlane: number, planes: number) {
     const pw = args.step ?
       {x: args.x + this.cursor.x, y: args.y + this.cursor.y} :
       {x: args.x, y: args.y};
     this.cursor = {...pw};
     const pv = this.windowToScreen(pw);
     if (args.tile) {
-      // TODO
+      const width = 8 / bppPerPlane;
+      const height = Math.ceil(args.tile.length / planes);
+      const attributes = ctx.createImageData(width, height);
+      const buffer = new Uint8Array(args.tile).buffer;
+      const bitStream = new BitStream(new DataView(buffer), 0);
+      let offset = 0;
+      for (let y = 0; y < height; y++) {
+        const rowStart = offset;
+        for (let plane = 0; plane < planes; plane++) {
+          offset = rowStart;
+          for (let x = 0; x < width; x++) {
+            let channel = 0;
+            for (let b = bppPerPlane - 1; b >= 0; b--) {
+              channel = (channel << 1) | (bitStream.read() ? 1 : 0);
+            }
+            const mask = ((1 << bppPerPlane) - 1) << plane;
+            attributes.data[offset] |= channel << plane;
+            attributes.data[offset + 1] = 0;
+            attributes.data[offset + 2] = 0;
+            attributes.data[offset + 3] = 255;
+            offset += 4;
+          }
+          bitStream.finishByte();
+        }
+      }
+      const lookup = (p: Point): number => {
+        const x = Math.floor(p.x) % width;
+        const y = Math.floor(p.y) % height;
+        const offset = 4 * (y * width + x);
+        return attributes.data[offset] ?? 0;
+      };
+      this.floodFill(ctx, pv, lookup, args.borderColor ?? color);
     } else {
-      this.floodFill(ctx, pv, color, args.borderColor ?? color);
+      this.floodFill(ctx, pv, () => color, args.borderColor ?? color);
     }
   }
 
@@ -675,7 +709,7 @@ export class Plotter {
     }
   }
 
-  private floodFill(ctx: CanvasRenderingContext2D, start: Point, color: number, border: number) {
+  private floodFill(ctx: CanvasRenderingContext2D, start: Point, color: (p: Point) => number, border: number) {
     const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
     const queue: Point[] = [start];
     const hash = (p: Point) => `${p.x},${p.y}`;
@@ -694,7 +728,7 @@ export class Plotter {
       if (this.clip.contains(p)) {
         const offset = 4 * (imageData.width * p.y + p.x);
         if (imageData.data[offset] !== border) {
-          imageData.data[offset] = color;
+          imageData.data[offset] = color(p);
           enqueue({x: p.x - 1, y: p.y});
           enqueue({x: p.x + 1, y: p.y});
           enqueue({x: p.x, y: p.y - 1});

@@ -1,0 +1,165 @@
+(program ' \n 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 8)))) \n 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable Row$ 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) TO 
+              (expr 
+                (literal 4))) ))))) \n \n ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Row$ 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )) = 
+      (expr 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal &HC3)))) ))) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal &H3C)))) )))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &HFF)))) )))) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &H3C)))) )))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Row$ 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 2)))) )) = 
+      (expr 
+        (variable_or_function_call Row$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))))) \n \n ' \n ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Row$ 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 3)))) )) = 
+      (expr 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal &H3C)))) ))) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal &HC3)))) )))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &HFF)))) )))) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &HC3)))) )))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Row$ 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 4)))) )) = 
+      (expr 
+        (variable_or_function_call Row$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 3)))) ))))) \n \n ' \n 
+  (statement 
+    (for_next_statement FOR I% = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 4)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Tile$) = 
+            (expr 
+              (expr 
+                (variable_or_function_call Tile$)) + 
+              (expr 
+                (variable_or_function_call Row$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call I%)))) )))))) \n) NEXT I%)) \n \n ' \n 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 50)) , 
+        (expr 
+          (literal 50)) ) - 
+      ( 
+        (expr 
+          (literal 570)) , 
+        (expr 
+          (literal 150)) ) , , 
+      (box_style B))) \n 
+  (statement 
+    (paint_statement PAINT 
+      ( 
+        (expr 
+          (literal 320)) , 
+        (expr 
+          (literal 100)) ) , 
+      (expr 
+        (variable_or_function_call Tile$)))) \n <EOF>)

@@ -374,8 +374,10 @@ export class PaintStatement extends Statement {
     const y = evaluateIntegerExpression(this.args.y, context.memory, { tag: TypeTag.SINGLE });
     const color = this.args.color && evaluateIntegerExpression(this.args.color, context.memory);
     const borderColor = this.args.borderColor && evaluateIntegerExpression(this.args.borderColor, context.memory);
+    const tile = this.args.tile && stringToAscii(evaluateStringExpression(this.args.tile, context.memory));
+    const background = this.args.background && stringToAscii(evaluateStringExpression(this.args.background, context.memory));
     try {
-      context.devices.screen.paint({step, x, y, borderColor}, color);
+      context.devices.screen.paint({step, x, y, borderColor, tile, background}, color);
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }

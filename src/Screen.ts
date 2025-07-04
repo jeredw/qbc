@@ -242,7 +242,8 @@ class Page {
 
   paint(args: PaintArgs, color: number) {
     const ctx = this.canvas.getContext('2d')!;
-    this.plotter.paint(ctx, args, color);
+    const {bppPerPlane, planes} = this.mode;
+    this.plotter.paint(ctx, args, color, bppPerPlane, planes);
     this.dirty = true;
   }
 
