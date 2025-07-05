@@ -343,6 +343,7 @@ export class CodeGenerator extends QBasicParserListener {
       // Attempting to call a function with a call statement, or a sub from an expression.
       throw ParseError.fromToken(token, "Duplicate definition");
     }
+    const isDefFn = procedure.name.toLowerCase().startsWith('fn');
     const args = argumentListCtx?.argument() ?? [];
     if (args.length != procedure.parameters.length) {
       throw ParseError.fromToken(token, "Argument-count mismatch");
@@ -362,7 +363,8 @@ export class CodeGenerator extends QBasicParserListener {
         bindings.push({parameter, variable: result});
         continue;
       }
-      const variable = this.getVariableFromExpression(parseExpr);
+      // def fn procedures pass by value.
+      const variable = !isDefFn && this.getVariableFromExpression(parseExpr);
       if (variable) {
         // Type must match exactly for pass by reference.
         if (!sameType(variable.type, parameter.type)) {

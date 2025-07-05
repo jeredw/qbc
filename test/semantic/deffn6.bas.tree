@@ -1,0 +1,52 @@
+(program ' \n 
+  (def_fn_statement def fnf 
+    ( 
+      (def_fn_parameter_list 
+        (def_fn_parameter 
+          (untyped_id x) as 
+          (type_name_for_def_fn_parameter integer)) , 
+        (def_fn_parameter 
+          (untyped_id y) as 
+          (type_name_for_def_fn_parameter string))) ) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x) = 
+          (expr 
+            (literal 0)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call y) = 
+          (expr 
+            (literal "nope")))) \n) end def) \n \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a) = 
+      (expr 
+        (literal 42)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call b$) = 
+      (expr 
+        (literal "ok")))) \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call fnf 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call a))) , 
+                (argument 
+                  (expr 
+                    (variable_or_function_call b$)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b$))))) \n <EOF>)

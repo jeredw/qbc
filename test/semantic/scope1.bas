@@ -1,3 +1,4 @@
+' Constants can be scoped to deffns.
 const k = 0
 def fnfoo
   const k = 42  ' shadows global k

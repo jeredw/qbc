@@ -1,3 +1,4 @@
+' static declarations in procedures shadow global variables.
 dim shared i as string
 function test
   static i as integer
