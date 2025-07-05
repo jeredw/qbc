@@ -1,3 +1,4 @@
+' Test side effects of for loop control using function calls.
 function ugh(x as integer)
   print x
   ugh = x

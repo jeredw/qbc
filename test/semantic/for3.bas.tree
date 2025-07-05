@@ -1,4 +1,4 @@
-(program 
+(program ' \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -35,7 +35,7 @@
                 (expr 
                   (variable_or_function_call loops)) + 
                 (expr 
-                  (literal 1))))) \n) next j) , i)) \n ' \n 
+                  (literal 1))))) \n) next j) , i)) \n 
   (statement 
     (print_statement print 
       (print_argument 

@@ -1,3 +1,4 @@
+' Test that for loop body is skipped based on bounds and step.
 pass = 0
 for i = 1 to 10 step 1
   pass = 1
