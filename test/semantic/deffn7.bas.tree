@@ -1,0 +1,8 @@
+(program ' \n 
+  (def_fn_statement def fnfoo 
+    (block \n ' \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call fnfoo))))) \n) end def) \n <EOF>)

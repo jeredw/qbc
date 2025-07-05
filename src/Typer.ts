@@ -280,6 +280,11 @@ export class Typer extends QBasicParserListener {
         // Attempting to call a sub...
         throw ParseError.fromToken(ctx._name!, "Duplicate definition");
       }
+      const canonicalName = procedure.name.toLowerCase();
+      if (canonicalName.startsWith('fn') && this._chunk.procedure?.name.toLowerCase() === canonicalName) {
+        // def fns may not recurse.
+        throw ParseError.fromToken(token, "Function not defined");
+      }
       const result = this.makeSyntheticVariable(procedure.result!.type, ctx._name!);
       getTyperContext(ctx).$result = result;
       return;
