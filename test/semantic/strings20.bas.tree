@@ -1,0 +1,65 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal "AA")) < 
+          (expr 
+            (literal "AB")))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal "FILENAME")) = 
+          (expr 
+            (expr 
+              (literal "FILE")) + 
+            (expr 
+              (literal "NAME"))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal "X&")) > 
+          (expr 
+            (literal "X#")))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal "CL ")) > 
+          (expr 
+            (literal "CL")))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal "kg")) > 
+          (expr 
+            (literal "KG")))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal "SMYTH")) < 
+          (expr 
+            (literal "SMYTHE")))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call B$) = 
+      (expr 
+        (literal "8/12/85")))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call B$)) < 
+          (expr 
+            (literal "9/12/78")))))) \n <EOF>)
