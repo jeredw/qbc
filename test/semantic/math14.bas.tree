@@ -1,0 +1,29 @@
+(program ' \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 10)) \ 
+          (expr 
+            (literal 4))) ,) 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 10)) / 
+          (expr 
+            (literal 4))) ,) 
+      (print_argument 
+        (expr 
+          (expr - 
+            (expr 
+              (literal 32768.499))) \ 
+          (expr 
+            (literal 10))) ,) 
+      (print_argument 
+        (expr 
+          (expr - 
+            (expr 
+              (literal 32768.499))) / 
+          (expr 
+            (literal 10)))))) \n <EOF>)
