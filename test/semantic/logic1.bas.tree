@@ -1,0 +1,230 @@
+(program ' \n 
+  (declare_sub_statement declare sub 
+    (untyped_id TruthTable) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter x!) , 
+        (declare_parameter y!)) )) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal " X       Y      NOT     AND     OR      ")) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "XOR     EQV     IMP"))))) \n 
+  (statement 
+    (print_statement print)) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call I) = 
+      (expr 
+        (literal 10)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call J) = 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call X) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call I)) = 
+            (expr 
+              (literal 10))) )))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Y) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call J)) = 
+            (expr 
+              (literal 15))) )))) ' \n 
+  (statement 
+    (call_statement call 
+      (untyped_id TruthTable) 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call X))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call Y)))) ))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call X) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call I)) > 
+            (expr 
+              (literal 9))) )))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Y) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call J)) > 
+            (expr 
+              (literal 15))) )))) ' \n 
+  (statement 
+    (call_statement call 
+      (untyped_id TruthTable) 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call X))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call Y)))) ))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call X) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call I)) <> 
+            (expr 
+              (literal 10))) )))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Y) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call J)) < 
+            (expr 
+              (literal 16))) )))) ' \n 
+  (statement 
+    (call_statement call 
+      (untyped_id TruthTable) 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call X))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call Y)))) ))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call X) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call I)) < 
+            (expr 
+              (literal 10))) )))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Y) = 
+      (expr 
+        ( 
+          (expr 
+            (expr 
+              (variable_or_function_call J)) < 
+            (expr 
+              (literal 15))) )))) ' \n 
+  (statement 
+    (call_statement call 
+      (untyped_id TruthTable) 
+      ( 
+        (argument_list 
+          (argument 
+            (expr 
+              (variable_or_function_call X))) , 
+          (argument 
+            (expr 
+              (variable_or_function_call Y)))) ))) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (sub_statement sub 
+    (untyped_id TruthTable) 
+    ( 
+      (parameter_list 
+        (parameter X) , 
+        (parameter Y)) ) STATIC 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call X))) 
+          (print_argument 
+            (expr 
+              (literal "    "))) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call Y))) 
+          (print_argument 
+            (expr 
+              (literal "    ")) ;) 
+          (print_argument 
+            (expr NOT 
+              (expr 
+                (variable_or_function_call X)))) 
+          (print_argument 
+            (expr 
+              (literal "   "))) 
+          (print_argument 
+            (expr 
+              (expr 
+                (variable_or_function_call X)) AND 
+              (expr 
+                (variable_or_function_call Y)))) 
+          (print_argument 
+            (expr 
+              (literal "     "))) 
+          (print_argument 
+            (expr 
+              (expr 
+                (variable_or_function_call X)) OR 
+              (expr 
+                (variable_or_function_call Y))) ;))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "    "))) 
+          (print_argument 
+            (expr 
+              (expr 
+                (variable_or_function_call X)) XOR 
+              (expr 
+                (variable_or_function_call Y)))) 
+          (print_argument 
+            (expr 
+              (literal "    "))) 
+          (print_argument 
+            (expr 
+              (expr 
+                (variable_or_function_call X)) EQV 
+              (expr 
+                (variable_or_function_call Y)))) 
+          (print_argument 
+            (expr 
+              (literal "    "))) 
+          (print_argument 
+            (expr 
+              (expr 
+                (variable_or_function_call X)) IMP 
+              (expr 
+                (variable_or_function_call Y)))))) \n 
+      (statement 
+        (print_statement print)) \n) 
+    (end_sub_statement end sub)) \n <EOF>)
