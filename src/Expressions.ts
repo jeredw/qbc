@@ -379,7 +379,8 @@ class ExpressionListener extends QBasicParserListener {
     if (b.number == 0 && !this._typeCheck) {
       return DIVISION_BY_ZERO;
     }
-    return values.numericTypeOf(a)(Math.floor(this.check(a.number / b.number)));
+    // Integer division truncates.
+    return values.numericTypeOf(a)(Math.trunc(this.check(a.number / b.number)));
   }
 
   private integerRemainder(a: values.NumericValue, b: values.NumericValue): values.Value {
