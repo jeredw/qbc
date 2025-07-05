@@ -1,0 +1,44 @@
+(program ' \n 
+  (declare_sub_statement declare sub 
+    (untyped_id bar)) \n 
+  (statement 
+    (const_statement const 
+      (const_assignment foo = 
+        (const_expr 
+          (expr 
+            (literal 42)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call foo)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call local))))) ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id bar))) \n \n 
+  (sub_statement sub 
+    (untyped_id bar) 
+    (block \n 
+      (statement 
+        (const_statement const 
+          (const_assignment foo = 
+            (const_expr 
+              (expr 
+                (literal 1)))))) \n 
+      (statement 
+        (const_statement const 
+          (const_assignment local = 
+            (const_expr 
+              (expr 
+                (literal 2)))))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call foo)) ,) 
+          (print_argument 
+            (expr 
+              (variable_or_function_call local))))) ' \n) 
+    (end_sub_statement end sub)) \n <EOF>)
