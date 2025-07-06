@@ -1,0 +1,74 @@
+(program ' \n 
+  (sub_statement SUB 
+    (untyped_id PrintOut) 
+    ( 
+      (parameter_list 
+        (parameter A 
+          (array_declaration 
+            ( 2 )))) ) STATIC 
+    (block \n 
+      (statement 
+        (for_next_statement FOR Row = 
+          (expr 
+            (builtin_function 
+              (lbound_function LBOUND 
+                ( A , 
+                  (expr 
+                    (literal 1)) )))) TO 
+          (expr 
+            (builtin_function 
+              (ubound_function UBOUND 
+                ( A , 
+                  (expr 
+                    (literal 1)) )))) 
+          (block \n 
+            (statement 
+              (for_next_statement FOR Col = 
+                (expr 
+                  (builtin_function 
+                    (lbound_function LBOUND 
+                      ( A , 
+                        (expr 
+                          (literal 2)) )))) TO 
+                (expr 
+                  (builtin_function 
+                    (ubound_function UBOUND 
+                      ( A , 
+                        (expr 
+                          (literal 2)) )))) 
+                (block \n 
+                  (statement 
+                    (print_statement PRINT 
+                      (print_argument 
+                        (expr 
+                          (variable_or_function_call A 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Row))) , 
+                                (argument 
+                                  (expr 
+                                    (variable_or_function_call Col)))) )))))) \n) NEXT Col)) \n) NEXT Row)) \n) 
+    (end_sub_statement END SUB)) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1)) to 
+              (expr 
+                (literal 2))) , 
+            (dim_subscript 
+              (expr 
+                (literal 1)) to 
+              (expr 
+                (literal 2))) ))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id PrintOut) 
+      (argument_list 
+        (argument a 
+          ( ))))) \n <EOF>)

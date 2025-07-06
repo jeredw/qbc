@@ -363,6 +363,9 @@ export class CodeGenerator extends QBasicParserListener {
         bindings.push({parameter, variable: result});
         continue;
       }
+      if (parameter.array) {
+        throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
+      }
       // def fn procedures pass by value.
       const variable = !isDefFn && this.getVariableFromExpression(parseExpr);
       if (variable) {
@@ -372,8 +375,7 @@ export class CodeGenerator extends QBasicParserListener {
         }
         bindings.push({parameter, variable});
       } else {
-        if (parameter.type.tag == TypeTag.RECORD || parameter.array) {
-          // Can't pass records or arrays by value.
+        if (parameter.type.tag == TypeTag.RECORD) {
           throw ParseError.fromToken(args[i].start!, "Parameter type mismatch");
         }
         const expr = this.compileExpression(parseExpr, args[i].start!, procedure.parameters[i].type);
