@@ -253,7 +253,11 @@ export class SymbolTable {
     }
     const mySlot = this._symbols.get(name);
     const parentSlot = this._parent?._symbols.get(name);
-    const slot = mySlot ?? parentSlot;
+    let slot = mySlot ?? parentSlot;
+    if (numDimensions > 0 && !mySlot?.arrayVariables && parentSlot?.arrayVariables) {
+      // Shared arrays can have the same name as local scalars.
+      slot = parentSlot;
+    }
     const isDefaultType = !sigil;
     if (slot) {
       if (slot.procedure) {

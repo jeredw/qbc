@@ -1,0 +1,54 @@
+(program ' \n 
+  (declare_sub_statement declare sub 
+    (untyped_id foo)) \n \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable m% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 6))) , 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call m% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (end_statement end)) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call m%) = 
+          (expr 
+            (literal 42)))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call m% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n <EOF>)
