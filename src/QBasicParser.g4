@@ -574,7 +574,7 @@ if_inline_else_statement
   ;
 
 if_inline_action
-  : statement (COLON statement?)*
+  : statement? (COLON statement?)*
   | implicit_goto_target
   ;
 

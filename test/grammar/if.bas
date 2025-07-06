@@ -20,3 +20,5 @@ end if
 50 else print "baz": print "quux"
 60 end if: print "ok"
 if foo then yow
+' Inline if accepts an empty statement
+if 1 then : print "hi"

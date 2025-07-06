@@ -137,4 +137,14 @@
       (if_inline_action 
         (statement 
           (call_statement 
-            (untyped_id yow)))))) \n <EOF>)
+            (untyped_id yow)))))) \n ' \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (literal 1)) then 
+      (if_inline_action : 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (literal "hi")))))))) \n <EOF>)
