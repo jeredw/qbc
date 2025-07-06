@@ -1,0 +1,24 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id f) 
+    ( 
+      (parameter_list 
+        (parameter x) , 
+        (parameter x)) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call x))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id f) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 1))) , 
+        (argument 
+          (expr 
+            (literal 2)))))) \n <EOF>)

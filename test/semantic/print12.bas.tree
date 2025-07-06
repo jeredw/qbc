@@ -1,0 +1,37 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call X) = 
+      (expr 
+        (literal 441.2318)))) \n \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "The number with 3 decimal places ###.###")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call X))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "The number with a dollar sign $$##.##")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call X))))) \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "The number in exponential format #.###^^^^")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call X))))) \n ' \n ' \n 
+  (statement 
+    (print_using_statement PRINT USING 
+      (expr 
+        (literal "Numbers with plus signs +###  ")) ; 
+      (print_argument 
+        (expr 
+          (variable_or_function_call X)) ;) 
+      (print_argument 
+        (expr 
+          (literal 99.9))))) \n <EOF>)

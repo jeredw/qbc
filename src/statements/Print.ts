@@ -425,9 +425,10 @@ function formatFixed(number: number, template: NumberTemplate, charsBeforeDecima
   }
   result += template.dollarSign ? '$' : '';
   charsBeforeDecimal -= result.length;
-  let float = toFloatString(number, charsBeforeDecimal + charsAfterDecimal);
-  if (float.exponent < 0) {
-    // Integer part is zero.
+  const fixed = Math.abs(number).toFixed(charsAfterDecimal);
+  let [intPart, fracPart] = fixed.split('.');
+  fracPart = fracPart ?? '0';
+  if (intPart === '0') {
     if (charsAfterDecimal > 0) {
       if (charsBeforeDecimal > 0) {
         // If there's space, output an explicit zero.  A sign field may silently
@@ -437,7 +438,7 @@ function formatFixed(number: number, template: NumberTemplate, charsBeforeDecima
       }
     } else {
       // "#"; -.5 is %-1 but "#"; -.4 is -
-      const roundedUnits = parseInt(float.digits[0]) >= 5 ? '1' :
+      const roundedUnits = parseInt(fracPart[0]) >= 5 ? '1' :
         charsBeforeDecimal > 0 ? '0' : '';
       result += roundedUnits;
       charsBeforeDecimal -= roundedUnits.length;
@@ -451,31 +452,16 @@ function formatFixed(number: number, template: NumberTemplate, charsBeforeDecima
     result += template.decimalPoint ? '.' : '';
     if (charsAfterDecimal > 0) {
       // -1 -> .x, -2 -> .0x, -3 -> .00x etc
-      const numLeadingZeros = -float.exponent - 1;
-      if (numLeadingZeros === charsAfterDecimal) {
-        result += '0'.repeat(charsAfterDecimal - 1);
-        result += parseInt(float.digits[0]) >= 5 ? '1' : '0';
-      } else if (numLeadingZeros > charsAfterDecimal) {
-        result += '0'.repeat(charsAfterDecimal);
-      } else {
-        result += '0'.repeat(numLeadingZeros);
-        charsAfterDecimal -= numLeadingZeros;
-        result += float.digits.slice(0, charsAfterDecimal);
-        const numTrailingZeros = charsAfterDecimal - float.digits.length;
-        if (numTrailingZeros > 0) {
-          result += '0'.repeat(numTrailingZeros);
-        }
+      result += fracPart;
+      charsAfterDecimal -= fracPart.length;
+      const numTrailingZeros = charsAfterDecimal - fracPart.length;
+      if (numTrailingZeros > 0) {
+        result += '0'.repeat(numTrailingZeros);
       }
     }
   } else {
     // Integer part is nonzero
-    const numDigitsBeforeDecimal = float.exponent + 1;
-    const rerounded = toFloatString(number, numDigitsBeforeDecimal + charsAfterDecimal);
-    if (rerounded.exponent === float.exponent) {
-      // So that .999 -> 1.0 remains 1.0 if rounded up
-      float = rerounded;
-    }
-    const intPart = groupDigits(float.digits.slice(0, numDigitsBeforeDecimal), template.comma ? ',' : '');
+    intPart = groupDigits(intPart, template.comma ? ',' : '');
     result += intPart;
     charsBeforeDecimal -= intPart.length;
     if (charsBeforeDecimal < 0) {
@@ -486,9 +472,8 @@ function formatFixed(number: number, template: NumberTemplate, charsBeforeDecima
     }
     result += template.decimalPoint ? '.' : '';
     if (charsAfterDecimal > 0) {
-      const fractionalPart = float.digits.slice(numDigitsBeforeDecimal, numDigitsBeforeDecimal + charsAfterDecimal);
-      result += fractionalPart;
-      const numTrailingZeros = charsAfterDecimal - fractionalPart.length;
+      result += fracPart;
+      const numTrailingZeros = charsAfterDecimal - fracPart.length;
       if (numTrailingZeros > 0) {
         result += '0'.repeat(numTrailingZeros);
       }
