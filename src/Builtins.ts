@@ -96,6 +96,7 @@ export class StandardLibrary {
     _("rtrim string -> string", statements.rtrim),
     _("rnd single? -> single", statements.rnd),
     _("sgn numeric -> numeric", statements.sgn),
+    _("shell string", statements.shell),
     _("sin double -> double", statements.sin),
     _("sleep long?", statements.sleep),
     _("sound integer long", statements.sound),

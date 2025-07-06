@@ -769,6 +769,10 @@ export function sgn(args: BuiltinStatementArgs) {
   return new SgnFunction(args);
 }
 
+export function shell(args: BuiltinStatementArgs) {
+  return new NoOpStatement();
+}
+
 export function sin(args: BuiltinStatementArgs) {
   return new SinFunction(args);
 }
