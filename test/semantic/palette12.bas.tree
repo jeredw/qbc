@@ -1,0 +1,102 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c8))) , 
+        (argument 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c9))) , 
+        (argument 
+          (expr 
+            (literal 40)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c9))) , 
+        (argument 
+          (expr 
+            (literal 30)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c9))) , 
+        (argument 
+          (expr 
+            (literal 10)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c8))) , 
+        (argument 
+          (expr 
+            (literal 1)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c9))) , 
+        (argument 
+          (expr 
+            (literal 20)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c9))) , 
+        (argument 
+          (expr 
+            (literal 20)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c9))) , 
+        (argument 
+          (expr 
+            (literal 20)))))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 10))) , 
+        (expr - 
+          (expr 
+            (literal 10))) ) - step 
+      ( 
+        (expr 
+          (literal 20)) , 
+        (expr 
+          (literal 20)) ) , 
+      (expr 
+        (literal 1)) , 
+      (box_style bf))) \n <EOF>)
