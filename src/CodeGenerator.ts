@@ -414,7 +414,13 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterClose_statement = (ctx: parser.Close_statementContext) => {
-    for (const expr of ctx.expr()) {
+    const token = ctx.start!;
+    const fileNumberExprs = ctx.expr();
+    if (!fileNumberExprs || fileNumberExprs.length === 0) {
+      this.addStatement(statements.reset({token, params: []}), token);
+      return;
+    }
+    for (const expr of fileNumberExprs) {
       const fileNumber = this.compileExpression(expr, expr.start!, { tag: TypeTag.INTEGER });
       this.addStatement(statements.close(fileNumber), ctx.start!);
     }
