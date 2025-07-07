@@ -516,7 +516,7 @@ export function writeBytesToVariable(variable: Variable, buffer: ArrayBuffer, me
   writeBytesToElement(variable, data, 0, memory, stringsHaveLengthPrefixed);
 }
 
-function writeBytesToElement(variable: Variable, data: DataView, offset: number, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
+export function writeBytesToElement(variable: Variable, data: DataView, offset: number, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
   const type = variable.type;
   switch (type.tag) {
     case TypeTag.INTEGER:
@@ -525,9 +525,12 @@ function writeBytesToElement(variable: Variable, data: DataView, offset: number,
     case TypeTag.LONG:
       memory.write(variable, long(data.getInt32(offset, true)));
       return 4;
-    case TypeTag.SINGLE:
-      memory.write(variable, single(data.getFloat32(offset, true)));
+    case TypeTag.SINGLE: {
+      // Do not fround, use the bits we got.
+      const value: Value = {tag: TypeTag.SINGLE, number: data.getFloat32(offset, true)};
+      memory.write(variable, value);
       return 4;
+    }
     case TypeTag.DOUBLE:
       memory.write(variable, double(data.getFloat64(offset, true)));
       return 8;
@@ -587,7 +590,7 @@ export function readVariableToBytes(variable: Variable, memory: Memory, stringsH
   return buffer;
 }
 
-function readElementToBytes(data: DataView, offset: number, variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
+export function readElementToBytes(data: DataView, offset: number, variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
   const type = variable.type;
   switch (type.tag) {
     case TypeTag.INTEGER:

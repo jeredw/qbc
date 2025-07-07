@@ -1,0 +1,128 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (type_statement type 
+    (untyped_id hue) \n 
+    (type_element 
+      (untyped_id red) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id green) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id blue) as 
+      (type_name_for_type_element integer) \n) end type) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id colors) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 255))) )) as 
+        (type_name 
+          (untyped_id hue))))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call colors 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )) )))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id bload) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test.pal"))) , 
+        (argument 
+          (expr 
+            (builtin_function 
+              (varptr_function varptr 
+                ( 
+                  (variable_or_function_call colors 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 0)))) )) )))))))) \n 
+  (statement 
+    (def_seg_statement def seg)) \n \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 255)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call value&) = 
+            (expr 
+              (variable_or_function_call colors 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call i)))) ) . green)))) \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call value&) = 
+            (expr 
+              (expr 
+                (expr 
+                  (literal 256)) * 
+                (expr 
+                  (variable_or_function_call value&))) + 
+              (expr 
+                (variable_or_function_call colors 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) ) . blue))))) \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call value&) = 
+            (expr 
+              (expr 
+                (expr 
+                  (literal 256)) * 
+                (expr 
+                  (variable_or_function_call value&))) + 
+              (expr 
+                (variable_or_function_call colors 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) ) . red))))) \n 
+        (statement 
+          (palette_statement palette 
+            (expr 
+              (variable_or_function_call i)) , 
+            (expr 
+              (variable_or_function_call value&)))) \n 
+        (statement 
+          (line_statement line 
+            ( 
+              (expr 
+                (variable_or_function_call i)) , 
+              (expr 
+                (literal 0)) ) - 
+            ( 
+              (expr 
+                (variable_or_function_call i)) , 
+              (expr 
+                (literal 199)) ) , 
+            (expr 
+              (variable_or_function_call i)))) \n) next i)) \n <EOF>)

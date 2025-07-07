@@ -3,11 +3,12 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError, DUPLICATE_DEFINITION, SUBSCRIPT_OUT_OF_RANGE } from "../Errors.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
-import { array, double, getDefaultValue, integer, isArray, isError, isNumeric, isReference, long, reference, Value } from "../Values.ts";
+import { array, integer, isArray, isError, isNumeric, isReference, reference, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { TypeTag } from "../Types.ts";
+import { readElementToBytes, writeBytesToElement } from "./Bits.ts";
 
 export interface DimBoundsExprs {
   lower?: ExprContext;
@@ -297,38 +298,17 @@ export function readBytesFromArray(arrayOrRef: Variable, memory: Memory): ArrayB
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   const numItems = getArrayLength(descriptor) - start;
+  const itemSize = descriptor.itemSize!;
   const bytesPerItem = getScalarVariableSizeInBytes(array, memory);
   const result = new ArrayBuffer(numItems * bytesPerItem);
   const data = new DataView(result);
-  const littleEndian = true;
   let offset = 0;
-  for (let i = 0; i < numItems; i++) {
-    const value = memory.readAddress({
-      storageType: descriptor.storageType!,
-      frameIndex: descriptor.baseAddress!.frameIndex,
-      index: baseIndex + i
-    });
-    const item = unwrapNumber(value);
-    switch (array.type.tag) {
-      case TypeTag.INTEGER:
-        data.setUint16(offset, item, littleEndian);
-        offset += 2;
-        break;
-      case TypeTag.LONG:
-        data.setUint32(offset, item, littleEndian);
-        offset += 4;
-        break;
-      case TypeTag.SINGLE:
-        data.setFloat32(offset, item, littleEndian);
-        offset += 4;
-        break;
-      case TypeTag.DOUBLE:
-        data.setFloat64(offset, item, littleEndian);
-        offset += 8;
-        break;
-      default:
-        throw new Error('unsupported type');
-    }
+  let index = 0;
+  let item = makeItemVariable(array, descriptor, baseIndex)
+  while (index < numItems * itemSize) {
+    item.address!.index = baseIndex + index;
+    offset += readElementToBytes(data, offset, item, memory);
+    index += itemSize;
   }
   return result;
 }
@@ -347,39 +327,37 @@ export function writeBytesToArray(arrayOrRef: Variable, buffer: ArrayBuffer, mem
     throw new Error('not enough room in array');
   }
   const data = new DataView(buffer);
-  const littleEndian = true;
   let offset = 0;
   let index = 0;
+  let item = makeItemVariable(array, descriptor, baseIndex)
   while (offset < buffer.byteLength) {
-    let value: Value;
-    switch (array.type.tag) {
-      case TypeTag.INTEGER:
-        value = integer(data.getInt16(offset, littleEndian));
-        offset += 2;
-        break;
-      case TypeTag.LONG:
-        value = long(data.getInt32(offset, littleEndian));
-        offset += 4;
-        break;
-      case TypeTag.SINGLE:
-        // Do not fround, use the bits we got.
-        value = {tag: TypeTag.SINGLE, number: data.getFloat32(offset, littleEndian)};
-        offset += 4;
-        break;
-      case TypeTag.DOUBLE:
-        value = double(data.getFloat64(offset, littleEndian));
-        offset += 8;
-        break;
-      default:
-        throw new Error('unsupported type');
-    }
-    memory.writeAddress({
+    item.address!.index = baseIndex + index;
+    offset += writeBytesToElement(item, data, offset, memory);
+    index += descriptor.itemSize!;
+  }
+}
+
+// Makes a synthetic variable to refer to an item of an array so that we can reuse utilities
+// to read and write variables as bytes.
+function makeItemVariable(array: Variable, descriptor: ArrayDescriptor, baseIndex: number): Variable {
+  let item: Variable = {
+    ...array, address: {
       storageType: descriptor.storageType!,
       frameIndex: descriptor.baseAddress!.frameIndex,
-      index: baseIndex + index
-    }, value);
-    index++;
+      index: baseIndex
+    }
+  };
+  if (array.elements) {
+    item.elements = new Map(array.elements);
+    for (const [name, element] of item.elements.entries()) {
+      let elementOfItem = {...element};
+      elementOfItem.recordOffset!.record = item;
+      // Add record offsets when accessing item values.
+      elementOfItem.array = undefined;
+      item.elements.set(name, elementOfItem);
+    }
   }
+  return item;
 }
 
 function unwrapNumber(value?: Value): number {
