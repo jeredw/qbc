@@ -118,7 +118,7 @@ import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
 import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
-import { InpFunction } from "./Ports.ts";
+import { InpFunction, OutStatement } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
 import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
@@ -610,6 +610,10 @@ export function oct(args: BuiltinStatementArgs) {
 
 export function open(args: OpenArgs) {
   return new OpenStatement(args);
+}
+
+export function out(args: BuiltinStatementArgs) {
+  return new OutStatement(args);
 }
 
 export function paint(args: PaintStatementArgs) {

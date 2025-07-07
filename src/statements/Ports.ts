@@ -1,8 +1,13 @@
+import { Token } from "antlr4ng";
+import { ExprContext } from "../../build/QBasicParser.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { RuntimeError, OVERFLOW } from "../Errors.ts";
+import { RuntimeError, OVERFLOW, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
+import { evaluateIntegerExpression } from "../Expressions.ts";
+import { TypeTag } from "../Types.ts";
 import { integer, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
+import { Statement } from "./Statement.ts";
 
 export class InpFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -23,5 +28,41 @@ export class InpFunction extends BuiltinFunction1 {
       return integer(code);
     }
     return integer(0);
+  }
+}
+
+export class OutStatement extends Statement {
+  private token: Token;
+  private portExpr: ExprContext;
+  private dataExpr: ExprContext;
+  private vgaPaletteIndex: number;
+  private vgaPaletteAttributes: number[];
+
+  constructor(args: BuiltinStatementArgs) {
+    super();
+    this.token = args.token;
+    this.portExpr = args.params[0].expr!;
+    this.dataExpr = args.params[1].expr!;
+    this.vgaPaletteAttributes = [];
+  }
+
+  override execute(context: ExecutionContext) {
+    const portSpec = evaluateIntegerExpression(this.portExpr, context.memory, {tag: TypeTag.LONG});
+    if (portSpec < -65536 || portSpec > 65535) {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+    const port = portSpec & 0xffff;
+    const data = evaluateIntegerExpression(this.dataExpr, context.memory);
+    if (data < 0 || data > 255) {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+    switch (port) {
+      case 0x3c8:
+        context.devices.screen.setVgaPaletteIndex(data);
+        break;
+      case 0x3c9:
+        context.devices.screen.setVgaPaletteData(data);
+        break;
+    }
   }
 }

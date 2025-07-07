@@ -37,6 +37,8 @@ export interface Screen extends Printer, LightPenTarget {
   setFgColor(color: number): void;
   setPaletteEntry(attribute: number, color: number): void;
   resetPalette(): void;
+  setVgaPaletteIndex(index: number): void;
+  setVgaPaletteData(data: number): void;
 
   setDrawState(state: DrawState): void;
   getDrawState(): DrawState;
@@ -333,6 +335,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private headless?: boolean;
   private drawState: DrawState;
   private softKeys: SoftKeys;
+  private vgaPaletteIndex: number;
+  private vgaPaletteData: number[];
   canvas: HTMLCanvasElement;
 
   constructor(canvasProvider?: CanvasProvider) {
@@ -343,6 +347,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       matrix: [[1, 0], [0, 1]],
       scale: 4,
     };
+    this.vgaPaletteData = [];
     this.softKeys = {keys: [], visible: false};
     this.configure(0, 0, 0, 0);
   }
@@ -353,6 +358,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       scale: 4,
     };
     this.softKeys = {keys: [], visible: false};
+    this.vgaPaletteData = [];
     this.configure(1, 0, 0, 0);
     this.configure(0, 0, 0, 0);
   }
@@ -537,6 +543,19 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.palette[1] = monoIndexToColor(3);
       this.palette[2] = monoIndexToColor(6);
       this.palette[3] = monoIndexToColor(8);
+    }
+  }
+
+  setVgaPaletteIndex(index: number) {
+    this.vgaPaletteIndex = index;
+  }
+
+  setVgaPaletteData(data: number) {
+    this.vgaPaletteData.push(data);
+    if (this.vgaPaletteData.length === 3) {
+      const [red, green, blue] = this.vgaPaletteData;
+      this.setPaletteEntry(this.vgaPaletteIndex, red | (green << 8) | (blue << 16));
+      this.vgaPaletteData = [];
     }
   }
 
@@ -1051,6 +1070,18 @@ export class TestScreen implements Screen {
   resetPalette() {
     this.text.print(`[PALETTE]`, true);
     this.graphics.resetPalette();
+    this.hasGraphics = true;
+  }
+
+  setVgaPaletteIndex(index: number) {
+    this.text.print(`[OUT &h3c8, ${index}]`, true);
+    this.graphics.setVgaPaletteIndex(index);
+    this.hasGraphics = true;
+  }
+
+  setVgaPaletteData(data: number) {
+    this.text.print(`[OUT &h3c9, ${data}]`, true);
+    this.graphics.setVgaPaletteData(data);
     this.hasGraphics = true;
   }
 
