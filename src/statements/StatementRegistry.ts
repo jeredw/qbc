@@ -882,6 +882,10 @@ export function viewPrint(
   return new ViewPrintStatement(token, topRow, bottomRow);
 }
 
+export function wait(args: BuiltinStatementArgs) {
+  return new NoOpStatement();
+}
+
 export function while_(expr: parser.ExprContext) {
   return new DoTest(true, expr);
 }

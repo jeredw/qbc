@@ -109,6 +109,7 @@ export class StandardLibrary {
     _("tan double -> double", statements.tan),
     _("ucase string -> string", statements.ucase),
     _("val string -> double", statements.val),
+    _("wait long integer integer?", statements.wait),
   ]);
 
   lookup(name: string): Builtin | undefined {
