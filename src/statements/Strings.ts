@@ -343,7 +343,7 @@ export class StrFunction extends BuiltinFunction1 {
       throw new Error("expecting number");
     }
     if (input.tag === TypeTag.SINGLE) {
-      return string(input.number.toFixed(6).replace(/([^0])0*$/, '$1'))
+      return string(input.number.toFixed(6).replace(/([^0])0*$/, '$1').replace(/\.$/, ''));
     }
     return string(input.number.toString());
   }
