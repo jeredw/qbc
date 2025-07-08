@@ -1,0 +1,145 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id inner) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id y) as 
+      (type_name_for_type_element integer) \n) end type) \n 
+  (type_statement type 
+    (untyped_id outer) \n 
+    (type_element 
+      (untyped_id a) as 
+      (type_name_for_type_element 
+        (untyped_id inner)) \n) 
+    (type_element 
+      (untyped_id b) as 
+      (type_name_for_type_element 
+        (untyped_id inner)) \n) end type) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id foo) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1))) )) as 
+        (type_name 
+          (untyped_id outer))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) ) . a.x) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) ) . a.y) = 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) ) . b.x) = 
+      (expr 
+        (literal 3)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) ) . b.y) = 
+      (expr 
+        (literal 4)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . a.x) = 
+      (expr 
+        (literal 5)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . a.y) = 
+      (expr 
+        (literal 6)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . b.x) = 
+      (expr 
+        (literal 7)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) ) . b.y) = 
+      (expr 
+        (literal 8)))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call foo 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )) )))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id bsave) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "foo.dat"))) , 
+        (argument 
+          (expr 
+            (builtin_function 
+              (varptr_function varptr 
+                ( 
+                  (variable_or_function_call foo 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 0)))) )) ))))) , 
+        (argument 
+          (expr 
+            (literal 16)))))) \n 
+  (statement 
+    (def_seg_statement def seg)) \n <EOF>)

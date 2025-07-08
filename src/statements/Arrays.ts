@@ -347,17 +347,21 @@ function makeItemVariable(array: Variable, descriptor: ArrayDescriptor, baseInde
       index: baseIndex
     }
   };
-  if (array.elements) {
-    item.elements = new Map(array.elements);
-    for (const [name, element] of item.elements.entries()) {
-      let elementOfItem = {...element};
-      elementOfItem.recordOffset!.record = item;
-      // Add record offsets when accessing item values.
-      elementOfItem.array = undefined;
-      item.elements.set(name, elementOfItem);
-    }
-  }
+  updateRecordOffsets(array, item);
   return item;
+}
+
+function updateRecordOffsets(variable: Variable, record: Variable) {
+  for (const [name, element] of variable.elements?.entries() ?? []) {
+    const elementCopy = {...element};
+    if (elementCopy.type.tag === TypeTag.RECORD) {
+      updateRecordOffsets(elementCopy, record);
+    } else {
+      elementCopy.recordOffset!.record = record;
+      elementCopy.array = undefined;
+    }
+    variable.elements?.set(name, elementCopy);
+  }
 }
 
 function unwrapNumber(value?: Value): number {
