@@ -765,7 +765,11 @@ export class PeekStatement extends Statement {
       const [_, data] = readBytesAtPointer(context.memory);
       context.memory.write(this.result, integer(data[address] ?? 0));
     } catch (e: unknown) {
-      context.memory.write(this.result, integer(0));
+      let data = 0;
+      if (address == 0x410) {
+        data = 38;  // donkey.bas checks the BIOS equipment byte.
+      }
+      context.memory.write(this.result, integer(data));
     }
   }
 }

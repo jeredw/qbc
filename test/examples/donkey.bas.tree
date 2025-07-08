@@ -1,0 +1,1946 @@
+(program 
+  (label 
+    (line_number 940)) REM \n 
+  (label 
+    (line_number 950)) REM \n 
+  (label 
+    (line_number 960)) REM \n 
+  (label 
+    (line_number 970)) 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable CAR% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 900))) ))))) : REM \n 
+  (label 
+    (line_number 975)) 
+  (statement 
+    (def_seg_statement DEF SEG)) : 
+  (statement 
+    (call_statement 
+      (untyped_id POKE) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 106))) , 
+        (argument 
+          (expr 
+            (literal 0)))))) \n 
+  (label 
+    (line_number 980)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call SAMPLES$) = 
+      (expr 
+        (literal "NO")))) \n 
+  (label 
+    (line_number 990)) 
+  (statement 
+    (goto_statement GOTO 
+      (target 
+        (line_number 1010)))) \n 
+  (label 
+    (line_number 1000)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call SAMPLES$) = 
+      (expr 
+        (literal "YES")))) \n 
+  (label 
+    (line_number 1010)) 
+  (statement 
+    (key_statement KEY OFF)) : 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 15)) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (width_statement WIDTH 
+      (expr 
+        (literal 40)))) : 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 5)) , 
+      (expr 
+        (literal 19)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "IBM"))))) \n 
+  (label 
+    (line_number 1020)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 7)) , 
+      (expr 
+        (literal 12)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Personal Computer"))))) \n 
+  (label 
+    (line_number 1030)) 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 10)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 10)) , 
+      (expr 
+        (literal 9)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 213)))) ))) + 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 21))) , 
+                    (argument 
+                      (expr 
+                        (literal 205)))) )))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 184)))) ))))))) \n 
+  (label 
+    (line_number 1040)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 11)) , 
+      (expr 
+        (literal 9)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 179)))) ))) + 
+            (expr 
+              (literal "       DONKEY        "))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 179)))) ))))))) \n 
+  (label 
+    (line_number 1050)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 12)) , 
+      (expr 
+        (literal 9)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 179)))) ))) + 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 21))) , 
+                    (argument 
+                      (expr 
+                        (literal 32)))) )))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 179)))) ))))))) \n 
+  (label 
+    (line_number 1060)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 13)) , 
+      (expr 
+        (literal 9)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 179)))) ))) + 
+            (expr 
+              (literal "    Version 1.1O     "))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 179)))) ))))))) \n 
+  (label 
+    (line_number 1070)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 14)) , 
+      (expr 
+        (literal 9)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 212)))) ))) + 
+            (expr 
+              (variable_or_function_call STRING$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 21))) , 
+                    (argument 
+                      (expr 
+                        (literal 205)))) )))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 190)))) ))))))) \n 
+  (label 
+    (line_number 1080)) 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 15)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 17)) , 
+      (expr 
+        (literal 4)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "
+            (C) Copyright IBM Corp 1981, 1982"))))) \n 
+  (label 
+    (line_number 1090)) 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 14)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 23)) , 
+      (expr 
+        (literal 7)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Press space bar to continue"))))) \n 
+  (label 
+    (line_number 1100)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call INKEY$)) <> 
+        (expr 
+          (literal ""))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1100))))))) \n 
+  (label 
+    (line_number 1110)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CMD$) = 
+      (expr 
+        (variable_or_function_call INKEY$)))) \n 
+  (label 
+    (line_number 1120)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call CMD$)) = 
+        (expr 
+          (literal ""))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1110))))))) \n 
+  (label 
+    (line_number 1130)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call CMD$)) = 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 27)))) )))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1298))))))) \n 
+  (label 
+    (line_number 1140)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call CMD$)) = 
+        (expr 
+          (literal " "))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1160))))))) \n 
+  (label 
+    (line_number 1150)) 
+  (statement 
+    (goto_statement GOTO 
+      (target 
+        (line_number 1110)))) \n 
+  (label 
+    (line_number 1160)) 
+  (statement 
+    (def_seg_statement DEF SEG = 
+      (expr 
+        (literal 0)))) \n 
+  (label 
+    (line_number 1170)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          ( 
+            (expr 
+              (expr 
+                (variable_or_function_call PEEK 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal &H410)))) ))) AND 
+              (expr 
+                (literal &H30))) )) <> 
+        (expr 
+          (literal &H30))) THEN 
+      (if_inline_action 
+        (statement 
+          (def_seg_statement DEF SEG)) : 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1291))))))) \n 
+  (label 
+    (line_number 1180)) 
+  (statement 
+    (width_statement WIDTH 
+      (expr 
+        (literal 80)))) : 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 3)) , 
+      (expr 
+        (literal 1)))) \n 
+  (label 
+    (line_number 1190)) 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "HOLD IT!"))))) \n 
+  (label 
+    (line_number 1200)) 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "YOU'RE NOT USING THE COLOR/GRAPHICS MONITOR ADAPTER!"))))) \n 
+  (label 
+    (line_number 1210)) 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "THIS PROGRAM USES GRAPHICS AND REQUIRES THAT ADAPTER."))))) \n 
+  (label 
+    (line_number 1220)) 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "PRESS THE SPACE BAR TO CONTINUE."))))) \n 
+  (label 
+    (line_number 1230)) 
+  (statement 
+    (def_seg_statement DEF SEG)) \n 
+  (label 
+    (line_number 1240)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call INKEY$)) <> 
+        (expr 
+          (literal ""))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1240))))))) \n 
+  (label 
+    (line_number 1250)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CMD$) = 
+      (expr 
+        (variable_or_function_call INKEY$)))) \n 
+  (label 
+    (line_number 1260)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call CMD$)) = 
+        (expr 
+          (literal ""))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1250))))))) \n 
+  (label 
+    (line_number 1270)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call CMD$)) = 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 27)))) )))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1298))))))) \n 
+  (label 
+    (line_number 1280)) 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call CMD$)) = 
+        (expr 
+          (literal " "))) THEN 
+      (if_inline_action 
+        (statement 
+          (goto_statement GOTO 
+            (target 
+              (line_number 1298))))))) \n 
+  (label 
+    (line_number 1290)) 
+  (statement 
+    (goto_statement GOTO 
+      (target 
+        (line_number 1250)))) \n 
+  (label 
+    (line_number 1291)) 
+  (statement 
+    (key_statement KEY OFF)) \n 
+  (label 
+    (line_number 1292)) 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (line_number 1295)))) \n 
+  (label 
+    (line_number 1293)) 
+  (statement 
+    (play_statement PLAY 
+      (expr 
+        (literal "p16")))) \n 
+  (label 
+    (line_number 1294)) 
+  (statement 
+    (goto_statement GOTO 
+      (target 
+        (line_number 1300)))) \n 
+  (label 
+    (line_number 1295)) 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 31)) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) \n 
+  (label 
+    (line_number 1296)) 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "THIS PROGRAM REQUIRES ADVANCED BASIC -- USE COMMAND 'BASICA'"))))) : 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 15)) , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 9000)) 
+      (block :) NEXT)) : 
+  (statement 
+    (resume_statement RESUME 
+      (target 
+        (line_number 1298)))) \n 
+  (label 
+    (line_number 1298)) 
+  (statement 
+    (on_error_statement ON ERROR GOTO 
+      (target 
+        (line_number 0)))) \n 
+  (label 
+    (line_number 1299)) 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call SAMPLES$)) = 
+        (expr 
+          (literal "YES"))) THEN 
+      (if_inline_action :) 
+      (if_inline_else_statement ELSE 
+        (if_inline_action 
+          (statement 
+            (color_statement COLOR 
+              (expr 
+                (literal 7)) , 
+              (expr 
+                (literal 0)) , 
+              (expr 
+                (literal 0)))) : 
+          (statement 
+            (call_statement 
+              (untyped_id CLS))) : 
+          (statement 
+            (end_statement END)))))) \n 
+  (label 
+    (line_number 1300)) REM \n 
+  (label 
+    (line_number 1410)) 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 0)))) \n 
+  (label 
+    (line_number 1420)) 
+  (statement 
+    (deftype_statement DEFINT 
+      (letter_range A - Y))) \n 
+  (label 
+    (line_number 1440)) 
+  (statement 
+    (screen_statement SCREEN 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 0)))) : 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 8)) , 
+      (expr 
+        (literal 1)))) \n 
+  (label 
+    (line_number 1450)) 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable Q% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 500))) ))))) \n 
+  (label 
+    (line_number 1460)) 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable D1% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 150))) ))) , 
+      (dim_variable D2% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 150))) ))) , 
+      (dim_variable C1% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 200))) ))) , 
+      (dim_variable C2% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 200))) ))))) \n 
+  (label 
+    (line_number 1470)) 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable DNK% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 300))) ))))) \n 
+  (label 
+    (line_number 1480)) 
+  (statement 
+    (gosub_statement GOSUB 
+      (target 
+        (line_number 1940)))) \n 
+  (label 
+    (line_number 1490)) 
+  (statement 
+    (gosub_statement GOSUB 
+      (target 
+        (line_number 1780)))) \n 
+  (label 
+    (line_number 1500)) 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (label 
+    (line_number 1510)) 
+  (statement 
+    (dim_statement DIM 
+      (dim_variable B% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 300))) ))))) \n 
+  (label 
+    (line_number 1520)) 
+  (statement 
+    (for_next_statement FOR I = 
+      (expr 
+        (literal 2)) TO 
+      (expr 
+        (literal 300)) 
+      (block : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call B% 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call I)))) )) = 
+            (expr 
+              (expr - 
+                (expr 
+                  (literal 16384))) + 
+              (expr 
+                (literal 192))))) :) NEXT)) \n 
+  (label 
+    (line_number 1530)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call B% 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) )) = 
+      (expr 
+        (literal 2)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call B% 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )) = 
+      (expr 
+        (literal 193)))) \n 
+  (label 
+    (line_number 1540)) REM \n 
+  (label 
+    (line_number 1550)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CX) = 
+      (expr 
+        (literal 110)))) : 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (label 
+    (line_number 1590)) 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 305)) , 
+        (expr 
+          (literal 199)) ) , , 
+      (box_style B))) \n 
+  (label 
+    (line_number 1600)) 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 6)) , 
+        (expr 
+          (literal 6)) ) - 
+      ( 
+        (expr 
+          (literal 97)) , 
+        (expr 
+          (literal 195)) ) , 
+      (expr 
+        (literal 1)) , 
+      (box_style BF))) \n 
+  (label 
+    (line_number 1610)) 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 183)) , 
+        (expr 
+          (literal 6)) ) - 
+      ( 
+        (expr 
+          (literal 305)) , 
+        (expr 
+          (literal 195)) ) , 
+      (expr 
+        (literal 1)) , 
+      (box_style BF))) \n 
+  (label 
+    (line_number 1620)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 3)) , 
+      (expr 
+        (literal 5)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Donkey"))))) \n 
+  (label 
+    (line_number 1630)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 3)) , 
+      (expr 
+        (literal 29)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Driver"))))) \n 
+  (label 
+    (line_number 1631)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 19)) , 
+      (expr 
+        (literal 25)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Press Space  ")) ;))) \n 
+  (label 
+    (line_number 1632)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 20)) , 
+      (expr 
+        (literal 25)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Bar to switch")) ;))) \n 
+  (label 
+    (line_number 1633)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 21)) , 
+      (expr 
+        (literal 25)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "lanes        ")) ;))) \n 
+  (label 
+    (line_number 1635)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 23)) , 
+      (expr 
+        (literal 25)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Press ESC    ")) ;))) \n 
+  (label 
+    (line_number 1636)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 24)) , 
+      (expr 
+        (literal 25)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "to exit      ")) ;))) \n 
+  (label 
+    (line_number 1640)) 
+  (statement 
+    (for_next_statement FOR Y = 
+      (expr 
+        (literal 4)) TO 
+      (expr 
+        (literal 199)) STEP 
+      (expr 
+        (literal 20)) 
+      (block : 
+        (statement 
+          (line_statement LINE 
+            ( 
+              (expr 
+                (literal 140)) , 
+              (expr 
+                (variable_or_function_call Y)) ) - 
+            ( 
+              (expr 
+                (literal 140)) , 
+              (expr 
+                (expr 
+                  (variable_or_function_call Y)) + 
+                (expr 
+                  (literal 10))) ))) :) NEXT)) \n 
+  (label 
+    (line_number 1650)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CY) = 
+      (expr 
+        (literal 105)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CX) = 
+      (expr 
+        (literal 105)))) \n 
+  (label 
+    (line_number 1660)) 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 199)) ))) : 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 180)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 180)) , 
+        (expr 
+          (literal 199)) ))) \n 
+  (label 
+    (line_number 1670)) 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 5)) , 
+      (expr 
+        (literal 6)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call SD))))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 5)) , 
+      (expr 
+        (literal 31)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call SM))))) \n 
+  (label 
+    (line_number 1680)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call CY) = 
+      (expr 
+        (expr 
+          (variable_or_function_call CY)) - 
+        (expr 
+          (literal 4))))) : 
+  (statement 
+    (if_inline_statement IF 
+      (expr 
+        (expr 
+          (variable_or_function_call CY)) < 
+        (expr 
+          (literal 60))) THEN 
+      (if_inline_action 
+        (implicit_goto_target 
+          (line_number 2230))))) \n 
+  (label 
+    (line_number 1690)) 
+  (statement 
+    (put_graphics_statement PUT 
+      ( 
+        (expr 
+          (variable_or_function_call CX)) , 
+        (expr 
+          (variable_or_function_call CY)) ) , CAR% , PRESET)) \n 
+  (label 
+    (line_number 1700)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call DX) = 
+      (expr 
+        (expr 
+          (literal 105)) + 
+        (expr 
+          (expr 
+            (literal 42)) * 
+          (expr 
+            (variable_or_function_call INT 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (expr 
+                        (variable_or_function_call RND)) * 
+                      (expr 
+                        (literal 2))))) ))))))) \n 
+  (label 
+    (line_number 1710)) 
+  (statement 
+    (for_next_statement FOR Y = 
+      (expr 
+        (expr 
+          ( 
+            (expr 
+              (expr 
+                (variable_or_function_call RND)) * 
+              (expr - 
+                (expr 
+                  (literal 4)))) )) * 
+        (expr 
+          (literal 8))) TO 
+      (expr 
+        (literal 124)) STEP 
+      (expr 
+        (literal 6)) 
+      (block \n 
+        (label 
+          (line_number 1720)) 
+        (statement 
+          (call_statement 
+            (untyped_id SOUND) 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 20000))) , 
+              (argument 
+                (expr 
+                  (literal 1)))))) \n 
+        (label 
+          (line_number 1730)) 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call A$) = 
+            (expr 
+              (variable_or_function_call INKEY$)))) : 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call A$)) = 
+              (expr 
+                (variable_or_function_call CHR$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 27)))) )))) THEN 
+            (if_inline_action 
+              (implicit_goto_target 
+                (line_number 1298))) 
+            (if_inline_else_statement ELSE 
+              (if_inline_action 
+                (statement 
+                  (call_statement 
+                    (untyped_id POKE) 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 106))) , 
+                      (argument 
+                        (expr 
+                          (literal 0)))))) : 
+                (statement 
+                  (if_inline_statement IF 
+                    (expr 
+                      (expr 
+                        (builtin_function 
+                          (len_function LEN 
+                            ( 
+                              (expr 
+                                (variable_or_function_call A$)) )))) > 
+                      (expr 
+                        (literal 0))) THEN 
+                    (if_inline_action 
+                      (statement 
+                        (line_statement LINE 
+                          ( 
+                            (expr 
+                              (variable_or_function_call CX)) , 
+                            (expr 
+                              (variable_or_function_call CY)) ) - 
+                          ( 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call CX)) + 
+                              (expr 
+                                (literal 28))) , 
+                            (expr 
+                              (expr 
+                                (variable_or_function_call CY)) + 
+                              (expr 
+                                (literal 44))) ) , 
+                          (expr 
+                            (literal 0)) , 
+                          (box_style BF))) : 
+                      (statement 
+                        (assignment_statement 
+                          (variable_or_function_call CX) = 
+                          (expr 
+                            (expr 
+                              (literal 252)) - 
+                            (expr 
+                              (variable_or_function_call CX))))) : 
+                      (statement 
+                        (put_graphics_statement PUT 
+                          ( 
+                            (expr 
+                              (variable_or_function_call CX)) , 
+                            (expr 
+                              (variable_or_function_call CY)) ) , CAR% , PRESET)) : 
+                      (statement 
+                        (call_statement 
+                          (untyped_id SOUND) 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 200))) , 
+                            (argument 
+                              (expr 
+                                (literal 1))))))))))))) \n 
+        (label 
+          (line_number 1740)) 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call Y)) >= 
+              (expr 
+                (literal 3))) THEN 
+            (if_inline_action 
+              (statement 
+                (put_graphics_statement PUT 
+                  ( 
+                    (expr 
+                      (variable_or_function_call DX)) , 
+                    (expr 
+                      (variable_or_function_call Y)) ) , DNK% , PSET))))) \n 
+        (label 
+          (line_number 1750)) 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (expr 
+                  (variable_or_function_call CX)) = 
+                (expr 
+                  (variable_or_function_call DX))) AND 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call Y)) + 
+                  (expr 
+                    (literal 25))) >= 
+                (expr 
+                  (variable_or_function_call CY)))) THEN 
+            (if_inline_action 
+              (implicit_goto_target 
+                (line_number 2060))))) \n 
+        (label 
+          (line_number 1760)) 
+        (statement 
+          (if_inline_statement IF 
+            (expr 
+              (expr 
+                (variable_or_function_call Y)) AND 
+              (expr 
+                (literal 3))) THEN 
+            (if_inline_action 
+              (statement 
+                (put_graphics_statement PUT 
+                  ( 
+                    (expr 
+                      (literal 140)) , 
+                    (expr 
+                      (literal 6)) ) , B%))))) \n 
+        (label 
+          (line_number 1770))) NEXT)) : 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (variable_or_function_call DX)) , 
+        (expr 
+          (literal 124)) ) - 
+      ( 
+        (expr 
+          (expr 
+            (variable_or_function_call DX)) + 
+          (expr 
+            (literal 32))) , 
+        (expr 
+          (literal 149)) ) , 
+      (expr 
+        (literal 0)) , 
+      (box_style BF))) : 
+  (statement 
+    (goto_statement GOTO 
+      (target 
+        (line_number 1670)))) \n 
+  (label 
+    (line_number 1780)) 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (label 
+    (line_number 1790)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "S8C3")))))) \n 
+  (label 
+    (line_number 1800)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "BM12,1r3m+1,3d2R1ND2u1r2d4l2u1l1")))))) \n 
+  (label 
+    (line_number 1810)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "d7R1nd2u2r3d6l3u2l1d3m-1,1l3")))))) \n 
+  (label 
+    (line_number 1820)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "m-1,-1u3l1d2l3u6r3d2nd2r1u7l1d1l2")))))) \n 
+  (label 
+    (line_number 1830)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "u4r2d1nd2R1U2")))))) \n 
+  (label 
+    (line_number 1840)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "M+1,-3")))))) \n 
+  (label 
+    (line_number 1850)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "BD10D2R3U2M-1,-1L1M-1,1")))))) \n 
+  (label 
+    (line_number 1860)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "BD3D1R1U1L1BR2R1D1L1U1")))))) \n 
+  (label 
+    (line_number 1870)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "BD2BL2D1R1U1L1BR2R1D1L1U1")))))) \n 
+  (label 
+    (line_number 1880)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "BD2BL2D1R1U1L1BR2R1D1L1U1")))))) \n 
+  (label 
+    (line_number 1890)) 
+  (statement 
+    (line_statement LINE 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 40)) , 
+        (expr 
+          (literal 60)) ) , , 
+      (box_style B))) \n 
+  (label 
+    (line_number 1900)) 
+  (statement 
+    (paint_statement PAINT 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ))) \n 
+  (label 
+    (line_number 1910)) \n 
+  (label 
+    (line_number 1920)) 
+  (statement 
+    (get_graphics_statement GET 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ) - 
+      ( 
+        (expr 
+          (literal 29)) , 
+        (expr 
+          (literal 45)) ) , CAR%)) \n 
+  (label 
+    (line_number 1930)) 
+  (statement 
+    (return_statement RETURN)) \n 
+  (label 
+    (line_number 1940)) 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) \n 
+  (label 
+    (line_number 1950)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "S08")))))) \n 
+  (label 
+    (line_number 1960)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "BM14,18")))))) \n 
+  (label 
+    (line_number 1970)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "M+2,-4R8M+1,-1U1M+1,+1M+2,-1")))))) \n 
+  (label 
+    (line_number 1980)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "M-1,1M+1,3M-1,1M-1,-2M-1,2")))))) \n 
+  (label 
+    (line_number 1990)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "D3L1U3M-1,1D2L1U2L3D2L1U2M-1,-1")))))) \n 
+  (label 
+    (line_number 2000)) 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "D3L1U5M-2,3U1")))))) \n 
+  (label 
+    (line_number 2010)) 
+  (statement 
+    (paint_statement PAINT 
+      ( 
+        (expr 
+          (literal 21)) , 
+        (expr 
+          (literal 14)) ) , 
+      (expr 
+        (literal 3)))) \n 
+  (label 
+    (line_number 2020)) 
+  (statement 
+    (preset_statement PRESET 
+      ( 
+        (expr 
+          (literal 37)) , 
+        (expr 
+          (literal 10)) ))) : 
+  (statement 
+    (preset_statement PRESET 
+      ( 
+        (expr 
+          (literal 40)) , 
+        (expr 
+          (literal 10)) ))) \n 
+  (label 
+    (line_number 2030)) 
+  (statement 
+    (preset_statement PRESET 
+      ( 
+        (expr 
+          (literal 37)) , 
+        (expr 
+          (literal 11)) ))) : 
+  (statement 
+    (preset_statement PRESET 
+      ( 
+        (expr 
+          (literal 40)) , 
+        (expr 
+          (literal 11)) ))) \n 
+  (label 
+    (line_number 2040)) 
+  (statement 
+    (get_graphics_statement GET 
+      ( 
+        (expr 
+          (literal 13)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 45)) , 
+        (expr 
+          (literal 25)) ) , DNK%)) \n 
+  (label 
+    (line_number 2050)) 
+  (statement 
+    (return_statement RETURN)) \n 
+  (label 
+    (line_number 2060)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call SD) = 
+      (expr 
+        (expr 
+          (variable_or_function_call SD)) + 
+        (expr 
+          (literal 1))))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 14)) , 
+      (expr 
+        (literal 6)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "BOOM!"))))) \n 
+  (label 
+    (line_number 2070)) 
+  (statement 
+    (get_graphics_statement GET 
+      ( 
+        (expr 
+          (variable_or_function_call DX)) , 
+        (expr 
+          (variable_or_function_call Y)) ) - 
+      ( 
+        (expr 
+          (expr 
+            (variable_or_function_call DX)) + 
+          (expr 
+            (literal 16))) , 
+        (expr 
+          (expr 
+            (variable_or_function_call Y)) + 
+          (expr 
+            (literal 25))) ) , D1%)) \n 
+  (label 
+    (line_number 2080)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call D1X) = 
+      (expr 
+        (variable_or_function_call DX)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call D1Y) = 
+      (expr 
+        (variable_or_function_call Y)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call D2X) = 
+      (expr 
+        (expr 
+          (variable_or_function_call DX)) + 
+        (expr 
+          (literal 17))))) \n 
+  (label 
+    (line_number 2090)) 
+  (statement 
+    (get_graphics_statement GET 
+      ( 
+        (expr 
+          (expr 
+            (variable_or_function_call DX)) + 
+          (expr 
+            (literal 17))) , 
+        (expr 
+          (variable_or_function_call Y)) ) - 
+      ( 
+        (expr 
+          (expr 
+            (variable_or_function_call DX)) + 
+          (expr 
+            (literal 31))) , 
+        (expr 
+          (expr 
+            (variable_or_function_call Y)) + 
+          (expr 
+            (literal 25))) ) , D2%)) \n 
+  (label 
+    (line_number 2100)) 
+  (statement 
+    (get_graphics_statement GET 
+      ( 
+        (expr 
+          (variable_or_function_call CX)) , 
+        (expr 
+          (variable_or_function_call CY)) ) - 
+      ( 
+        (expr 
+          (expr 
+            (variable_or_function_call CX)) + 
+          (expr 
+            (literal 14))) , 
+        (expr 
+          (expr 
+            (variable_or_function_call CY)) + 
+          (expr 
+            (literal 44))) ) , C1%)) \n 
+  (label 
+    (line_number 2110)) 
+  (statement 
+    (get_graphics_statement GET 
+      ( 
+        (expr 
+          (expr 
+            (variable_or_function_call CX)) + 
+          (expr 
+            (literal 15))) , 
+        (expr 
+          (variable_or_function_call CY)) ) - 
+      ( 
+        (expr 
+          (expr 
+            (variable_or_function_call CX)) + 
+          (expr 
+            (literal 28))) , 
+        (expr 
+          (expr 
+            (variable_or_function_call CY)) + 
+          (expr 
+            (literal 44))) ) , C2%)) \n 
+  (label 
+    (line_number 2120)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call C1X) = 
+      (expr 
+        (variable_or_function_call CX)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call C1Y) = 
+      (expr 
+        (variable_or_function_call CY)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call C2X) = 
+      (expr 
+        (expr 
+          (variable_or_function_call CX)) + 
+        (expr 
+          (literal 15))))) \n 
+  (label 
+    (line_number 2130)) 
+  (statement 
+    (for_next_statement FOR P = 
+      (expr 
+        (literal 6)) TO 
+      (expr 
+        (literal 0)) STEP 
+      (expr - 
+        (expr 
+          (literal 1))) 
+      (block : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Z) = 
+            (expr 
+              (expr 
+                (literal 1)) / 
+              (expr 
+                ( 
+                  (expr 
+                    (expr 
+                      (literal 2)) ^ 
+                    (expr 
+                      (variable_or_function_call P))) ))))) : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call Z1) = 
+            (expr 
+              (expr 
+                (literal 1)) - 
+              (expr 
+                (variable_or_function_call Z))))) \n 
+        (label 
+          (line_number 2140)) 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call C1X)) , 
+              (expr 
+                (variable_or_function_call C1Y)) ) , C1%)) : 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call C2X)) , 
+              (expr 
+                (variable_or_function_call C1Y)) ) , C2%)) \n 
+        (label 
+          (line_number 2150)) 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call D1X)) , 
+              (expr 
+                (variable_or_function_call D1Y)) ) , D1%)) : 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call D2X)) , 
+              (expr 
+                (variable_or_function_call D1Y)) ) , D2%)) \n 
+        (label 
+          (line_number 2160)) 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call C1X) = 
+            (expr 
+              (expr 
+                (variable_or_function_call CX)) * 
+              (expr 
+                (variable_or_function_call Z1))))) : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call D1Y) = 
+            (expr 
+              (expr 
+                (variable_or_function_call Y)) * 
+              (expr 
+                (variable_or_function_call Z1))))) : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call C2X) = 
+            (expr 
+              (expr 
+                (variable_or_function_call C2X)) + 
+              (expr 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (literal 291)) - 
+                      (expr 
+                        (variable_or_function_call C2X))) )) * 
+                (expr 
+                  (variable_or_function_call Z)))))) \n 
+        (label 
+          (line_number 2170)) 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call D1X) = 
+            (expr 
+              (expr 
+                (variable_or_function_call DX)) * 
+              (expr 
+                (variable_or_function_call Z1))))) : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call C1Y) = 
+            (expr 
+              (expr 
+                (variable_or_function_call C1Y)) + 
+              (expr 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (literal 155)) - 
+                      (expr 
+                        (variable_or_function_call C1Y))) )) * 
+                (expr 
+                  (variable_or_function_call Z)))))) : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call D2X) = 
+            (expr 
+              (expr 
+                (variable_or_function_call D2X)) + 
+              (expr 
+                (expr 
+                  ( 
+                    (expr 
+                      (expr 
+                        (literal 294)) - 
+                      (expr 
+                        (variable_or_function_call D2X))) )) * 
+                (expr 
+                  (variable_or_function_call Z)))))) \n 
+        (label 
+          (line_number 2180)) 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call C1X)) , 
+              (expr 
+                (variable_or_function_call C1Y)) ) , C1%)) : 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call C2X)) , 
+              (expr 
+                (variable_or_function_call C1Y)) ) , C2%)) \n 
+        (label 
+          (line_number 2190)) 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call D1X)) , 
+              (expr 
+                (variable_or_function_call D1Y)) ) , D1%)) : 
+        (statement 
+          (put_graphics_statement PUT 
+            ( 
+              (expr 
+                (variable_or_function_call D2X)) , 
+              (expr 
+                (variable_or_function_call D1Y)) ) , D2%)) \n 
+        (label 
+          (line_number 2200)) 
+        (statement 
+          (call_statement 
+            (untyped_id SOUND) 
+            (argument_list 
+              (argument 
+                (expr 
+                  (expr 
+                    (literal 37)) + 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call RND)) * 
+                    (expr 
+                      (literal 200))))) , 
+              (argument 
+                (expr 
+                  (literal 4)))))) :) NEXT)) \n 
+  (label 
+    (line_number 2210)) 
+  (statement 
+    (for_next_statement FOR Y = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 2000)) 
+      (block :) NEXT)) \n 
+  (label 
+    (line_number 2220)) 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) : 
+  (statement 
+    (goto_statement GOTO 
+      (target 
+        (line_number 1540)))) \n 
+  (label 
+    (line_number 2230)) 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call SM) = 
+      (expr 
+        (expr 
+          (variable_or_function_call SM)) + 
+        (expr 
+          (literal 1))))) : 
+  (statement 
+    (locate_statement LOCATE 
+      (expr 
+        (literal 7)) , 
+      (expr 
+        (literal 25)))) : 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (literal "Donkey loses!"))))) \n 
+  (label 
+    (line_number 2240)) 
+  (statement 
+    (for_next_statement FOR Y = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 1000)) 
+      (block :) NEXT)) \n 
+  (label 
+    (line_number 2250)) 
+  (statement 
+    (call_statement 
+      (untyped_id CLS))) : 
+  (statement 
+    (goto_statement GOTO 
+      (target 
+        (line_number 1540)))) \n <EOF>)

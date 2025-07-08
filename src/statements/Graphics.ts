@@ -981,6 +981,8 @@ function parseDrawCommandString(commandString: string): DrawProgram {
         return {turnAngle: value()};
       case 'c':
         return {setColor: value()};
+      case 's':
+        return {setScale: value()};
       case 'p': {
         const paintColor = value();
         if (advance() !== ',') {

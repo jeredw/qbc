@@ -1,0 +1,47 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "S08")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "BM14,18")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "M+2,-4R8M+1,-1U1M+1,+1M+2,-1")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "M-1,1M+1,3M-1,1M-1,-2M-1,2")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "D3L1U3M-1,1D2L1U2L3D2L1U2M-1,-1")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "D3L1U5M-2,3U1")))))) \n <EOF>)
