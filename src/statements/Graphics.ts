@@ -1009,6 +1009,9 @@ function parseDrawCommandString(commandString: string): DrawProgram {
       case 'n':
         comeBack = true;
         break;
+      // Commands can be separated by ';'.  This seems leftover from GW-BASIC.
+      case ';':
+        break;
       default:
         const current = command(char);
         program.commands.push(current);
