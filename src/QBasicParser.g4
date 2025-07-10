@@ -564,7 +564,9 @@ goto_statement
 // IF has a concise inline form that can occur anywhere.
 // The ELSE binds to the innermost IF.
 if_inline_statement
-  : IF expr THEN if_inline_action if_inline_else_statement?
+// The IDE strips a colon after an implicit goto target in the THEN form.
+// GW-BASIC supported IF ... THEN 10: ELSE.
+  : IF expr THEN if_inline_action COLON? if_inline_else_statement?
 // QBasic still parses this old BASICA/GW-BASIC syntax omitting THEN.
   | IF expr goto_statement if_inline_else_statement?
   ;

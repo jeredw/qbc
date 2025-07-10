@@ -147,4 +147,22 @@
           (print_statement print 
             (print_argument 
               (expr 
-                (literal "hi")))))))) \n <EOF>)
+                (literal "hi")))))))) \n ' \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (literal 1)) then 
+      (if_inline_action 
+        (implicit_goto_target 
+          (line_number 20))) : 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (if_inline_statement if 
+              (expr 
+                (literal 2)) then 
+              (if_inline_action 
+                (statement 
+                  (gosub_statement gosub 
+                    (target 
+                      (line_number 30))))))))))) \n <EOF>)

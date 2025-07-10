@@ -390,7 +390,7 @@ function bytesToFloat64(bytes: number[]): number {
   return new DataView(bytes8.buffer).getFloat64(0, littleEndian);
 }
 
-function mbfBytesToFloat32(bytes: number[]): number {
+export function mbfBytesToFloat32(bytes: number[]): number {
   const exponent = bytes[3] - 129;  // mantissa is implicitly .1xxxxx
   const sign = bytes[2] & 0x80;
   if (exponent + 127 < 1) {
@@ -405,7 +405,7 @@ function mbfBytesToFloat32(bytes: number[]): number {
   ])
 }
 
-function mbfBytesToFloat64(bytes: number[]): number {
+export function mbfBytesToFloat64(bytes: number[]): number {
   const exponent = bytes[7] - 129;  // mantissa is implicitly .1xxxxx
   const sign = bytes[6] & 0x80;
   if (exponent === -129) {

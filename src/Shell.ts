@@ -16,6 +16,7 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { QBasicSymbolTag } from "./SymbolTable.ts";
 import { debugPrintValue, debugPrintVariable } from "./Values.ts";
 import { asciiToString, stringToAscii } from "./AsciiChart.ts";
+import { decodeGwBasicBinaryFile } from "./GwBasicFormat.ts";
 
 enum RunState {
   ENDED,
@@ -145,13 +146,19 @@ class Shell implements DebugProvider, DiskListener {
       let bytes = Array.from(new Uint8Array(buffer));
       if (file.name.toUpperCase().endsWith('.BAS')) {
         try {
-          // If the program is valid UTF-8, assume that any CP437 characters have
-          // already been translated to UTF-8 and translate them back to CP437.
-          const decoder = new TextDecoder('utf-8', { fatal: true });
-          const text = decoder.decode(buffer);
-          bytes = stringToAscii(text);
+          // This will throw if the input is not a GW-BASIC binary file.
+          bytes = decodeGwBasicBinaryFile(buffer);
         } catch (e: unknown) {
-          // Otherwise treat the program as a CP437 string.
+          // Assume the program is a plaintext program.
+          try {
+            // If the program is valid UTF-8, assume that any CP437 characters have
+            // already been translated to UTF-8 and translate them back to CP437.
+            const decoder = new TextDecoder('utf-8', { fatal: true });
+            const text = decoder.decode(buffer);
+            bytes = stringToAscii(text);
+          } catch (e: unknown) {
+            // Otherwise treat the program as a CP437 string.
+          }
         }
       }
       this.disk.writeFile({

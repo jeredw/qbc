@@ -22,3 +22,5 @@ end if
 if foo then yow
 ' Inline if accepts an empty statement
 if 1 then : print "hi"
+' Inline if with implicit goto allows colon after target
+if 1 then 20 : else if 2 then gosub 30
