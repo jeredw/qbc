@@ -342,10 +342,11 @@ export class StrFunction extends BuiltinFunction1 {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
+    const sign = input.number < 0 ? "" : " ";
     if (input.tag === TypeTag.SINGLE) {
-      return string(input.number.toFixed(6).replace(/([^0])0*$/, '$1').replace(/\.$/, ''));
+      return string(sign + input.number.toFixed(6).replace(/([^0])0*$/, '$1').replace(/\.$/, ''));
     }
-    return string(input.number.toString());
+    return string(sign + input.number.toString());
   }
 }
 
