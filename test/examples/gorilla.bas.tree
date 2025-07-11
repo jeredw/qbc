@@ -909,9 +909,9 @@
       (expr 
         (literal 1)))) ' \n 
   (statement 
-    (resume_statement RESUME NEXT)) \n \n REM 
+    (resume_statement RESUME NEXT)) \n \n 
   (statement 
-    (static_metacommand  $STATIC)) \n ' \n ' \n 
+    (static_metacommand REM $STATIC)) \n ' \n ' \n 
   (function_statement FUNCTION CalcDelay! 
     (block \n \n 
       (statement 

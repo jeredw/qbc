@@ -4,9 +4,9 @@
   (statement 
     (static_metacommand  $STATICfoo)) \n ' 
   (statement 
-    (static_metacommand  $STATIC foo bar)) \n ' \n rem 
+    (static_metacommand  $STATIC foo bar)) \n ' \n 
   (statement 
-    (static_metacommand   $STATIC)) \n 
+    (static_metacommand rem  $STATIC)) \n 
   (statement 
     (print_statement print 
       (print_argument 
@@ -18,17 +18,17 @@
     (print_statement print 
       (print_argument 
         (expr 
-          (literal "hi"))))) : rem 
+          (literal "hi"))))) : 
   (statement 
-    (static_metacommand  $STATIC)) \n ' 
+    (static_metacommand rem $STATIC)) \n ' 
   (statement 
     (dynamic_metacommand  $DYNAMIC)) \n ' 
   (statement 
     (dynamic_metacommand  $DYNAMICfoo)) \n ' 
   (statement 
-    (dynamic_metacommand  $DYNAMIC foo bar)) \n ' \n rem 
+    (dynamic_metacommand  $DYNAMIC foo bar)) \n ' \n 
   (statement 
-    (dynamic_metacommand   $DYNAMIC)) \n 
+    (dynamic_metacommand rem  $DYNAMIC)) \n 
   (statement 
     (print_statement print 
       (print_argument 
@@ -40,6 +40,6 @@
     (print_statement print 
       (print_argument 
         (expr 
-          (literal "hi"))))) : rem 
+          (literal "hi"))))) : 
   (statement 
-    (dynamic_metacommand  $DYNAMIC)) \n <EOF>)
+    (dynamic_metacommand rem $DYNAMIC)) \n <EOF>)

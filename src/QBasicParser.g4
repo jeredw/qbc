@@ -152,6 +152,7 @@ statement
   | put_io_statement
   | randomize_statement
   | read_statement
+  | rem_statement
   | restore_statement
   | resume_statement
   | return_statement
@@ -310,7 +311,7 @@ type_statement
 // *** Types must have at least one element.
 // We admit empty types here so we can provide a better error message than
 // antlr's default.
-     type_element*
+     (REM | NL | type_element)*
      END TYPE
    ;
 
@@ -505,7 +506,10 @@ loop_condition
   : (WHILE expr | UNTIL expr)
   ;
 
-dynamic_metacommand : COMMENT_META_DYNAMIC ;
+dynamic_metacommand
+  : COMMENT_META_DYNAMIC
+  | REM_META_DYNAMIC
+  ;
 
 end_statement
   : END
@@ -580,7 +584,10 @@ if_inline_action
   | implicit_goto_target
   ;
 
-include_metacommand : COMMENT_META_INCLUDE ;
+include_metacommand
+  : COMMENT_META_INCLUDE
+  | REM_META_INCLUDE
+  ;
 
 // The IDE does not seem to automatically insert missing ','s for INPUT the way
 // it does for PRINT statements.
@@ -785,6 +792,11 @@ read_statement
   : READ variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
+// REM comments can only occur at statement boundaries.
+rem_statement
+  : REM
+  ;
+
 restore_statement
   : RESTORE target?
   ;
@@ -824,7 +836,7 @@ select_case_statement
 
 // No statements or labels are allowed before the first CASE.
 before_first_case
-  : (COLON | NL)*
+  : (COLON | NL)* (REM | COLON | NL)*
   ;
 
 case_block
@@ -860,7 +872,10 @@ static_statement
   : STATIC scope_variable (COMMA scope_variable)*
   ;
 
-static_metacommand : COMMENT_META_STATIC ;
+static_metacommand
+  : COMMENT_META_STATIC
+  | REM_META_STATIC
+  ;
 
 stop_statement
   : STOP

@@ -138,7 +138,12 @@ RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
 RANDOMIZE : [Rr][Aa][Nn][Dd][Oo][Mm][Ii][Zz][Ee] ;
 READ : [Rr][Ee][Aa][Dd] ;
 REDIM : [Rr][Ee][Dd][Ii][Mm] ;
-REM : [Rr][Ee][Mm] -> type(NL), pushMode(COMMENT_MODE) ;
+// Scanned separately for REM comments because we need a separator between
+// REM statements and the meta statements.
+REM_META_DYNAMIC : [Rr][Ee][Mm] [ \t]* '$' [Dd][Yy][Nn][Aa][Mm][Ii][Cc] ~[\r\n]* ;
+REM_META_STATIC : [Rr][Ee][Mm] [ \t]* '$' [Ss][Tt][Aa][Tt][Ii][Cc] ~[\r\n]* ;
+REM_META_INCLUDE : [Rr][Ee][Mm] [ \t]* '$' [Ii][Nn][Cc][Ll][Uu][Dd][Ee] ~[\r\n]* ;
+REM : [Rr][Ee][Mm] -> pushMode(COMMENT_MODE);
 RESTORE : [Rr][Ee][Ss][Tt][Oo][Rr][Ee] ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;

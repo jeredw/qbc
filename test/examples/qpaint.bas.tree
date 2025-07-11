@@ -1659,7 +1659,9 @@
       (untyped_id endscreen))) \n 
   (statement 
     (call_statement 
-      (untyped_id SYSTEM))) \n \n REM \n \n 
+      (untyped_id SYSTEM))) \n \n 
+  (statement 
+    (rem_statement REM)) \n \n 
   (label 
     (text_label 
       (untyped_id moveleft)) :) \n 
