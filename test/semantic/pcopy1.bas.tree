@@ -1,0 +1,39 @@
+(program 
+  (statement 
+    (screen_statement screen , , 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello world"))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id pcopy) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 1))) , 
+        (argument 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (screen_statement screen , , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (screen_function screen 
+              ( 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)) ))))))) \n <EOF>)

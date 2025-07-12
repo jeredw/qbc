@@ -140,6 +140,7 @@ import {
   PaintStatement,
   PaintStatementArgs,
   PaletteStatement,
+  PcopyStatement,
   PmapFunction,
   PointFunction,
   PosFunction,
@@ -622,6 +623,10 @@ export function paint(args: PaintStatementArgs) {
 
 export function palette(token: Token, attributeExpr?: parser.ExprContext, colorExpr?: parser.ExprContext, array?: Variable) {
   return new PaletteStatement(token, attributeExpr, colorExpr, array);
+}
+
+export function pcopy(args: BuiltinStatementArgs) {
+  return new PcopyStatement(args);
 }
 
 export function peek(args: BuiltinStatementArgs) {

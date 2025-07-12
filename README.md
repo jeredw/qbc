@@ -252,12 +252,12 @@ parse those using baked in rules.
 | `OPEN COM`       | Statement   | ✅      | 🚧      |
 | `OPTION BASE`    | Statement   | ✅      | ✅      |
 | `OR`             | Operator    | ✅      | ✅      |
-| `OUT`            | Statement   | -       | ⛔      |
+| `OUT`            | Statement   | -       | 🚧      |
 | `OUTPUT`         | Keyword     | ✅      | ✅      |
 | `PAINT`          | Statement   | ✅      | 🚧      |
 | `PALETTE`        | Statement   | ✅      | ✅      |
 | `PALETTE USING`  | Statement   | ✅      | ✅      |
-| `PCOPY`          | Statement   | -       | ⛔      |
+| `PCOPY`          | Statement   | -       | ✅      |
 | `PEEK`           | Function    | -       | 🚧      |
 | `PEN`            | Function    | ✅      | ✅      |
 | `PEN`            | Statement   | ✅      | ✅      |

@@ -32,6 +32,7 @@ export interface Screen extends Printer, LightPenTarget {
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
   setTextGeometry(width?: number, height?: number): void;
   getMode(): ScreenMode;
+  copyPage(sourcePage: number, destPage: number): void;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
   setFgColor(color: number): void;
@@ -98,7 +99,7 @@ class Page {
   dirty: boolean = true;
   canvas: HTMLCanvasElement;
   viewSet: boolean;
-  private text: CharacterCell[][];
+  protected text: CharacterCell[][];
   private cellWidth: number;
   private cellHeight: number;
   private mode: ScreenMode;
@@ -291,6 +292,22 @@ class Page {
     return output;
   }
 
+  copyFrom(other: Page) {
+    const otherCtx = other.canvas.getContext('2d')!;
+    const imageData = otherCtx.getImageData(0, 0, other.canvas.width, other.canvas.height);
+    const ctx = this.canvas.getContext('2d');
+    ctx?.putImageData(imageData, 0, 0);
+    this.text = [];
+    for (const otherRow of other.text) {
+      const row: CharacterCell[] = [];
+      for (const cell of otherRow) {
+        row.push({...cell});
+      }
+      this.text.push(row);
+    }
+    this.dirty = true;
+  }
+
   scroll(startRow: number, endRow: number, color: Attributes) {
     for (let row = startRow; row < endRow && row < this.text.length; row++) {
       this.text[row - 1] = this.text[row].slice();
@@ -448,6 +465,16 @@ export class CanvasScreen extends BasePrinter implements Screen {
 
   getMode(): ScreenMode {
     return this.mode;
+  }
+
+  copyPage(sourcePage: number, destPage: number) {
+    if (sourcePage < 0 || sourcePage > this.pages.length) {
+      throw new Error('source page is invalid');
+    }
+    if (destPage < 0 || destPage > this.pages.length) {
+      throw new Error('dest page is invalid');
+    }
+    this.pages[destPage].copyFrom(this.pages[sourcePage]);
   }
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
@@ -1047,6 +1074,12 @@ export class TestScreen implements Screen {
 
   getMode(): ScreenMode {
     return this.graphics.getMode();
+  }
+
+  copyPage(sourcePage: number, destPage: number) {
+    this.text.print(`[PCOPY ${sourcePage}, ${destPage}]`, true);
+    this.graphics.copyPage(sourcePage, destPage);
+    this.hasGraphics = true;
   }
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number) {

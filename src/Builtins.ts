@@ -86,6 +86,7 @@ export class StandardLibrary {
     _("mksmbf numeric -> string", statements.mksmbf),
     _("oct long -> string", statements.oct),
     _("out long integer", statements.out),
+    _("pcopy integer integer", statements.pcopy),
     _("peek long -> integer", statements.peek),
     _("pmap double integer -> integer", statements.pmap),
     _("point integer integer? -> double", statements.point),

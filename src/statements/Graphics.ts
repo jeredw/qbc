@@ -12,6 +12,7 @@ import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
 import { stringToAscii } from "../AsciiChart.ts";
 import { roundToNearestEven } from "../Math.ts";
+import { ControlFlow } from "../ControlFlow.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -568,6 +569,35 @@ export class PointFunction extends Statement {
       // Fallthrough.
     }
     throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+  }
+}
+
+export class PcopyStatement extends Statement {
+  token: Token;
+  sourcePageExpr: ExprContext;
+  destPageExpr: ExprContext;
+
+  constructor({token, params}: BuiltinStatementArgs) {
+    super();
+    this.token = token;
+    if (params.length != 2) {
+      throw new Error("expecting two arguments");
+    }
+    if (!params[0].expr || !params[1].expr) {
+      throw new Error("expecting expr arguments");
+    }
+    this.sourcePageExpr = params[0].expr;
+    this.destPageExpr  = params[1].expr;
+  }
+
+  override execute(context: ExecutionContext) {
+    const sourcePage = evaluateIntegerExpression(this.sourcePageExpr, context.memory);
+    const destPage = evaluateIntegerExpression(this.destPageExpr, context.memory);
+    try {
+      context.devices.screen.copyPage(sourcePage, destPage);
+    } catch (e: unknown) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
   }
 }
 
