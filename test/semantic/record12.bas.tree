@@ -1,0 +1,33 @@
+(program 
+  (type_statement type 
+    (untyped_id stuff) \n 
+    (type_element 
+      (untyped_id s) as 
+      (type_name_for_type_element 
+        (fixed_string string * 20)) \n) end type) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id thing) as 
+        (type_name 
+          (untyped_id stuff))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call thing.s$) = 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call thing.s$))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call thing.s) = 
+      (expr 
+        (literal "also ok")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call thing.s))))) \n <EOF>)

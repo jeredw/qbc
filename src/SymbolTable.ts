@@ -183,11 +183,9 @@ export class SymbolTable {
     if (slot) {
       if (slot.arrayVariables) {
         const asType = slot.arrayAsType ?? slot.scalarAsType;
-        if (asType && isDefaultType) {
-          type = asType;
-        }
-        if (!asType || sameType(asType, type)) {
-          const variable = slot.arrayVariables.get(type.tag);
+        const lookupType = getLookupType({type, asType, isDefaultType});
+        if (!asType || sameType(asType, lookupType)) {
+          const variable = slot.arrayVariables.get(lookupType.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
             return variable;
           }
@@ -207,11 +205,9 @@ export class SymbolTable {
     }
     if (!array && slot.scalarVariables) {
       const asType = slot.scalarAsType ?? slot.arrayAsType;
-      if (asType && isDefaultType) {
-        type = asType;
-      }
-      if (!asType || sameType(asType, type)) {
-        const variable = slot.scalarVariables.get(type.tag);
+      const lookupType = getLookupType({type, asType, isDefaultType});
+      if (!asType || sameType(asType, lookupType)) {
+        const variable = slot.scalarVariables.get(lookupType.tag);
         if (variable && this.isVisible(variable, slot, mySlot)) {
           return variable;
         }
@@ -281,7 +277,7 @@ export class SymbolTable {
       }
       if (numDimensions == 0 && slot.scalarVariables) {
         const asType = slot.scalarAsType ?? slot.arrayAsType;
-        const lookupType = asType && isDefaultType ? asType : type;
+        const lookupType = getLookupType({type, isDefaultType, asType});
         if (!asType || sameType(asType, lookupType)) {
           const variable = slot.scalarVariables.get(lookupType.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
@@ -291,7 +287,7 @@ export class SymbolTable {
       }
       if (numDimensions > 0 && slot.arrayVariables) {
         const asType = slot.arrayAsType ?? slot.scalarAsType;
-        const lookupType = asType && isDefaultType ? asType : type;
+        const lookupType = getLookupType({type, isDefaultType, asType});
         if (!asType || sameType(asType, lookupType)) {
           const variable = slot.arrayVariables.get(lookupType.tag);
           if (variable && this.isVisible(variable, slot, mySlot)) {
@@ -569,6 +565,17 @@ export class SymbolTable {
     this._staticIndex += size;
     return index;
   }
+}
+
+function getLookupType({type, isDefaultType, asType}: {type: Type, isDefaultType: boolean, asType?: Type}): Type {
+  if (asType && isDefaultType) {
+    return asType;
+  }
+  if (asType?.tag === TypeTag.FIXED_STRING && type.tag === TypeTag.STRING) {
+    // Force foo.x$ to find a fixed string in a record.
+    return asType;
+  }
+  return type;
 }
 
 function getTokens(map?: TypeToItemMap<Procedure|Variable>): Token[] {
