@@ -71,6 +71,8 @@ block
   ;
 
 // Used to define labels.
+// *** Since this grammar does not include most builtin procedures, labels
+// are ambiguous with zero-argument builtin calls (e.g. CLS : PRINT).
 label
   : (line_number | text_label COLON) ;
 

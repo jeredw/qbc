@@ -101,6 +101,12 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterLabel = (ctx: parser.LabelContext) => {
+    const builtin = getTyperContext(ctx).$builtin;
+    if (builtin) {
+      // This is a misparsed label like "cls", call builtin instead.
+      this.callBuiltin(builtin, ctx.start!, null);
+      return;
+    }
     const label = this.canonicalizeLabel(ctx);
     if (this._allLabels.has(label)) {
       throw ParseError.fromToken(ctx.start!, "Duplicate label");

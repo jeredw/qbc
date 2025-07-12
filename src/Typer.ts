@@ -65,6 +65,26 @@ export class Typer extends QBasicParserListener {
     this._program.staticSize = this._chunk.symbols.staticSize();
   }
 
+  override enterLabel = (ctx: parser.LabelContext) => {
+    // Since it does not model most builtins, the grammar will parse cls : print
+    // as a label cls followed by print.  Detect this and attach a builtin
+    // symbol to ambiguous labels.
+    const token = ctx.start!;
+    let label = ctx.getText();
+    if (label.endsWith(':')) {
+      label = label.substring(0, label.length - 1);
+    }
+    label = label.toLowerCase();
+    const builtin = this._builtins.lookup(label);
+    if (!builtin) {
+      return;
+    }
+    if (builtin.returnType || builtin.arguments.some((arg) => !arg.optional)) {
+      throw ParseError.fromToken(token, "Expected: statement");
+    }
+    getTyperContext(ctx).$builtin = builtin;
+  }
+
   override enterDef_fn_statement = (ctx: parser.Def_fn_statementContext) => {
     const token = ctx._name!;
     const rawName = ctx._name!.text!.toLowerCase();

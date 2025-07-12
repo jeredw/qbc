@@ -8,3 +8,4 @@ bar: : : goto 40
 Periods.Are.Cool: goto 2
 blanks.ok : goto 20
 50
+cls : print "hi"

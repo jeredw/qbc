@@ -156,7 +156,7 @@ class Shell implements DebugProvider, DiskListener {
   private async importArchive(buffer: ArrayBuffer) {
     const zip = await new JSZip().loadAsync(buffer);
     for (const file of Object.values(zip.files)) {
-      const path = '.\\' + file.name.replace(/\//g, '\\').replace(/\\$/, '');
+      const path = '.\\' + file.name.toUpperCase().replace(/\//g, '\\').replace(/\\$/, '');
       if (file.dir) {
         this.disk.makeDirectory(path);
       } else {
