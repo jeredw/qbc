@@ -1480,6 +1480,12 @@ export class CodeGenerator extends QBasicParserListener {
 
   private getVariableSymbol(variableCtx: parser.Variable_or_function_callContext): Variable {
     const symbol = getTyperContext(variableCtx).$symbol;
+    if (isProcedure(symbol) && symbol.procedure.name == this._chunk.procedure?.name) {
+      if (!symbol.procedure.result) {
+        throw ParseError.fromToken(variableCtx.start!, "Duplicate definition");
+      }
+      return symbol.procedure.result;
+    }
     if (!isVariable(symbol)) {
       throw ParseError.fromToken(variableCtx.start!, "Expected: variable");
     }

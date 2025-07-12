@@ -1,0 +1,12 @@
+(program ' \n 
+  (function_statement function doinput$ 
+    (block \n 
+      (statement 
+        (line_input_statement line input ; 
+          (variable_or_function_call doinput$))) \n) 
+    (end_function_statement end function)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call doinput$))))) \n <EOF>)
