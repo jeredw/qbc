@@ -249,13 +249,14 @@ export class Typer extends QBasicParserListener {
   }
 
   override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
-    const [name, sigil] = splitSigil(ctx._name!.text!);
+    const arrayName = ctx._name!.text!;
+    const element = ctx._element?.text || '';
+    const [name, sigil] = splitSigil(element ? `${arrayName}().${element}` : arrayName);
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const args = ctx.argument_list()?.argument() || [];
-    const element = ctx._element?.text || '';
     const token = ctx._name!;
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
-      name: element ? `${name}().${element}` : name,
+      name,
       type,
       sigil,
       numDimensions: args.length,

@@ -1,3 +1,4 @@
+' Bug: Look up strings as fixed strings for record fields.
 type stuff
   s as string * 20
 end type

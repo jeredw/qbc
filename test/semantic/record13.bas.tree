@@ -1,0 +1,45 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id thing) \n 
+    (type_element 
+      (untyped_id s) as 
+      (type_name_for_type_element 
+        (fixed_string string * 20)) \n) end type) \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable 
+        (untyped_id stuff) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) )) as 
+        (type_name 
+          (untyped_id thing))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call stuff 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ) . s$) = 
+          (expr 
+            (literal "hello")))) \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call stuff 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) ) . s$))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)
