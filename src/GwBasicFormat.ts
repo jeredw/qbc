@@ -260,7 +260,7 @@ export function decodeGwBasicBinaryFile(buffer: ArrayBuffer): number[] {
     output.push(...stringToAscii(`${lineNumber} `));
   };
   beginNewLine();
-  while (offset < data.byteLength) {
+  while (!endOfProgram && offset < data.byteLength) {
     const code = data.getUint8(offset++);
     if (inStringLiteral && code !== 0 && code !== 0x22) {
       // Copy character codes verbatim inside strings, except ".
@@ -278,15 +278,15 @@ export function decodeGwBasicBinaryFile(buffer: ArrayBuffer): number[] {
         beginNewLine();
         break;
       case 0xb: { // octal
-        const value = data.getInt16(offset, littleEndian);
+        const value = data.getUint16(offset, littleEndian);
         offset += 2;
         output.push(...stringToAscii(`&O${value.toString(8)}`));
         break;
       }
       case 0xc: { // hex
-        const value = data.getInt16(offset, littleEndian);
+        const value = data.getUint16(offset, littleEndian);
         offset += 2;
-        output.push(...stringToAscii(`&H${value.toString(16)}`));
+        output.push(...stringToAscii(`&H${value.toString(16).toUpperCase()}`));
         break;
       }
       case 0xd: // line pointer (runtime only)
