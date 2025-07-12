@@ -107,6 +107,7 @@ export class StandardLibrary {
     _("stick integer -> integer", statements.stick),
     _("str numeric -> string", statements.str),
     _("string integer any -> string", statements.string),
+    _("system", statements.system),
     _("tan double -> double", statements.tan),
     _("ucase string -> string", statements.ucase),
     _("val string -> double", statements.val),

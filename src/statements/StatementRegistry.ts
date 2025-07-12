@@ -826,6 +826,10 @@ export function swap(a: Variable, b: Variable) {
   return new SwapStatement(a, b);
 }
 
+export function system(args: BuiltinStatementArgs) {
+  return new EndStatement();
+}
+
 export function tan(args: BuiltinStatementArgs) {
   return new TanFunction(args);
 }
