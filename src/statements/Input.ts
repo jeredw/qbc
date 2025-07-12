@@ -300,7 +300,7 @@ export class InputStatement extends BaseInputStatement {
       while (pos < line.length && line[pos] != ',') {
         pos++;
       }
-      const value = parseNumberFromString(line.slice(start, pos).trim());
+      const value = parseNumberFromString(line.slice(start, pos).trim() || '0');
       if (value === undefined) {
         throw new Error();
       }

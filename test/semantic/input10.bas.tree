@@ -1,0 +1,13 @@
+(program ' \n 
+  (statement 
+    (input_statement input "foo" , 
+      (variable_or_function_call a) , 
+      (variable_or_function_call b))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b))))) \n <EOF>)
