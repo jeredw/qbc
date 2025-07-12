@@ -135,6 +135,14 @@ export class CodeGenerator extends QBasicParserListener {
     const label = ctx.getText();
     const stripped = label.endsWith(':') ? label.substring(0, label.length - 1) : label;
     const lowercase = stripped.toLowerCase();
+    if (/^[0-9]+/.test(lowercase)) {
+      if (/[de]/.test(lowercase)) {
+        // QBasic allows decimal labels, but not exponents.
+        throw ParseError.fromToken(ctx.start!, "Expected: label or line number");
+      }
+      // Decimal labels can end with sigils, and the sigils are part of the label name...
+      return lowercase;
+    }
     const [_, sigil] = splitSigil(lowercase);
     if (sigil) {
       throw ParseError.fromToken(ctx.start!, "Expected: label or line number");

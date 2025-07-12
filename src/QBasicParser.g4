@@ -73,13 +73,18 @@ block
 // Used to define labels.
 // *** Since this grammar does not include most builtin procedures, labels
 // are ambiguous with zero-argument builtin calls (e.g. CLS : PRINT).
+// It is not documented, but strangely, QBasic accepts decimal labels...
 label
-  : (line_number | text_label COLON) ;
+  : line_number
+  | text_label COLON
+  | decimal_label
+  ;
 
 // Used to reference labels.
 target
   : line_number
   | text_label
+  | decimal_label
   ;
 implicit_goto_target
   : line_number
@@ -89,7 +94,11 @@ implicit_goto_target
 // labels are just a relaxed case of IDs.  This grammar doesn't impose a limit.
 // *** Labels or line numbers must be globally distinct.
 line_number : DIGITS ;
-text_label : untyped_id | untyped_fnid;
+text_label : untyped_id | untyped_fnid ;
+// Surprisingly, QBasic secretly supports decimal labels.
+// *** Only fixed decimals like 3.5 are supported, not scientific notation.
+// Sigils are supported though...
+decimal_label : PROBABLY_SINGLE_PRECISION_NUMBER | DOUBLE_PRECISION_NUMBER ;
 
 // Many statements are parsed as calls to builtin procedures.  This is just the
 // set of statements that need special parsing.

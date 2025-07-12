@@ -1,0 +1,14 @@
+(program 
+  (statement 
+    (goto_statement goto 
+      (target 
+        (decimal_label 3.5#)))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (decimal_label 3.5#)) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)

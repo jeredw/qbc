@@ -9,3 +9,4 @@ Periods.Are.Cool: goto 2
 blanks.ok : goto 20
 50
 cls : print "hi"
+3.5 gosub 3.5

@@ -62,4 +62,10 @@
     (print_statement print 
       (print_argument 
         (expr 
-          (literal "hi"))))) \n <EOF>)
+          (literal "hi"))))) \n 
+  (label 
+    (decimal_label 3.5)) 
+  (statement 
+    (gosub_statement gosub 
+      (target 
+        (decimal_label 3.5)))) \n <EOF>)
