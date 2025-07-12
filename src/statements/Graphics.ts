@@ -16,7 +16,7 @@ import { roundToNearestEven } from "../Math.ts";
 export class ScreenStatement extends Statement {
   constructor(
     private token: Token,
-    private modeExpr: ExprContext,
+    private modeExpr?: ExprContext,
     private colorSwitchExpr?: ExprContext,
     private activePageExpr?: ExprContext,
     private visiblePageExpr?: ExprContext
@@ -25,7 +25,10 @@ export class ScreenStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const mode = evaluateIntegerExpression(this.modeExpr, context.memory);
+    if (!this.modeExpr && !this.colorSwitchExpr && !this.activePageExpr && !this.visiblePageExpr) {
+      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
+    }
+    const mode = this.modeExpr ? evaluateIntegerExpression(this.modeExpr, context.memory) : -1;
     const colorSwitch = this.colorSwitchExpr ? evaluateIntegerExpression(this.colorSwitchExpr, context.memory) : 0;
     const activePage = this.activePageExpr ? evaluateIntegerExpression(this.activePageExpr, context.memory) : 0;
     const visiblePage = this.visiblePageExpr ? evaluateIntegerExpression(this.visiblePageExpr, context.memory) : 0;

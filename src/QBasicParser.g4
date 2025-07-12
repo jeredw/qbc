@@ -817,11 +817,14 @@ rset_statement
   : RSET variable_or_function_call '=' expr
   ;
 
+// screenmode is documented as required but is actually optional.
+// If no arguments are specified, screen fails at runtime.
 screen_statement
-  : SCREEN screenmode=expr
-    ( COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visiblepage=expr
-    | COMMA (colorswitch=expr)? COMMA activepage=expr
-    | COMMA colorswitch=expr )?
+  : SCREEN
+    ( (screenmode=expr)? COMMA (colorswitch=expr)? COMMA (activepage=expr)? COMMA visiblepage=expr
+    | (screenmode=expr)? COMMA (colorswitch=expr)? COMMA activepage=expr
+    | (screenmode=expr)? COMMA colorswitch=expr
+    | (screenmode=expr)? )
   ;
 
 seek_statement

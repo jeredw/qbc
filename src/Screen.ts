@@ -364,7 +364,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
-    const mode = SCREEN_MODES.find((entry) => entry.mode === modeNumber);
+    const mode = modeNumber === -1 ? this.mode : SCREEN_MODES.find((entry) => entry.mode === modeNumber);
     if (!mode) {
       throw new Error(`invalid screen mode ${modeNumber}`);
     }

@@ -753,7 +753,7 @@ export function screenFunction(
 
 export function screenStatement(
   token: Token,
-  modeExpr: parser.ExprContext,
+  modeExpr?: parser.ExprContext,
   colorSwitchExpr?: parser.ExprContext,
   activePageExpr?: parser.ExprContext,
   visiblePageExpr?: parser.ExprContext
