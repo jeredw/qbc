@@ -11,7 +11,7 @@ export interface Disk extends Opener {
   listFiles(pattern: string): DiskEntry[];
   removeFiles(pattern: string): void;
   rename(oldPath: string, newPath: string): void;
-  writeFile(file: DiskFile): void;
+  writeFile(path: string, file: DiskFile): void;
   readFile(path: string): DiskFile;
 }
 
@@ -141,13 +141,19 @@ export class MemoryDrive implements Disk {
     this.flush(targetParent);
   }
 
-  writeFile(file: DiskFile) {
-    const directory = this.lookupOrThrow(this.currentDirectory);
-    if (!directory.isDirectory) {
+  writeFile(path: string, file: DiskFile) {
+    const target = parsePath(path, this.currentDirectory);
+    const [parentDir, name] = splitPath(target);
+    const parent = this.lookupOrThrow(parentDir);
+    if (!parent.isDirectory || !name) {
+      throw new IOError(PATH_NOT_FOUND);
+    }
+    if (!parent.isDirectory) {
       throw new Error('expecting directory');
     }
-    directory.entries.set(file.name, file);
-    this.flush(directory);
+    file.name = name;
+    parent.entries.set(file.name, file);
+    this.flush(parent);
   }
 
   readFile(path: string): DiskFile {

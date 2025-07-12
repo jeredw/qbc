@@ -149,12 +149,18 @@ input[type="file"] {
   display: none;
 }
 
-.file-browser {
+.file-picker {
   height: 200px;
+  overflow: scroll;
 }
 
 .file-picker-item {
   cursor: pointer;
+}
+
+.file-picker-item:hover {
+  color: var(--qbc-black);
+  background: var(--qbc-light-gray);
 }
 
 .breakpoint-icon {
@@ -174,7 +180,7 @@ input[type="file"] {
 .paper-window {
   position: fixed;
   bottom: 0;
-  left: 0;
+  right: 0;
   opacity: 0.1;
   /* Above monaco's minimap */
   z-index: 5;

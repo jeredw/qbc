@@ -17,6 +17,7 @@ import { QBasicSymbolTag } from "./SymbolTable.ts";
 import { debugPrintValue, debugPrintVariable } from "./Values.ts";
 import { asciiToString, stringToAscii } from "./AsciiChart.ts";
 import { decodeGwBasicBinaryFile } from "./GwBasicFormat.ts";
+import JSZip from "jszip";
 
 enum RunState {
   ENDED,
@@ -143,40 +144,71 @@ class Shell implements DebugProvider, DiskListener {
   private async importFiles() {
     for (const file of this.importInput.files ?? []) {
       const buffer = await file.arrayBuffer();
-      let bytes = Array.from(new Uint8Array(buffer));
-      if (file.name.toUpperCase().endsWith('.BAS')) {
-        try {
-          // This will throw if the input is not a GW-BASIC binary file.
-          bytes = decodeGwBasicBinaryFile(buffer);
-        } catch (e: unknown) {
-          // Assume the program is a plaintext program.
-          try {
-            // If the program is valid UTF-8, assume that any CP437 characters have
-            // already been translated to UTF-8 and translate them back to CP437.
-            const decoder = new TextDecoder('utf-8', { fatal: true });
-            const text = decoder.decode(buffer);
-            bytes = stringToAscii(text);
-          } catch (e: unknown) {
-            // Otherwise treat the program as a CP437 string.
-          }
-        }
+      const fileName = file.name.toUpperCase();
+      if (fileName.endsWith('.ZIP')) {
+        this.importArchive(buffer);
+        continue;
       }
-      this.disk.writeFile({
-        name: file.name.toUpperCase(),
-        isDirectory: false,
-        bytes
-      });
+      this.importFile(fileName, buffer);
     }
   }
 
+  private async importArchive(buffer: ArrayBuffer) {
+    const zip = await new JSZip().loadAsync(buffer);
+    for (const file of Object.values(zip.files)) {
+      const path = '.\\' + file.name.replace(/\//g, '\\').replace(/\\$/, '');
+      if (file.dir) {
+        this.disk.makeDirectory(path);
+      } else {
+        const buffer = await file.async("arraybuffer");
+        this.importFile(path, buffer);
+      }
+    }
+  }
+
+  private importFile(path: string, buffer: ArrayBuffer) {
+    if (path.endsWith('.EXE') || path.endsWith('.BAT')) {
+      // Lots of old program archives include qbasic.exe or game scripts, we
+      // don't want these.
+      return;
+    }
+    let bytes = Array.from(new Uint8Array(buffer));
+    if (path.endsWith('.BAS')) {
+       bytes = decodeProgram(buffer);
+    }
+    this.disk.writeFile(path, {
+      name: path,
+      isDirectory: false,
+      bytes
+    });
+  }
+
   updateDiskEntry(entry: DiskEntry) {
-    const files = this.disk.listFiles("\\");
+    this.refreshFilePicker();
+  }
+
+  private refreshFilePicker() {
+    const files = this.disk.listFiles('');
+    const isRoot = this.disk.getCurrentDirectory().endsWith(':\\');
     this.filePicker.innerHTML = '';
     for (const file of files) {
+      if (file.name === '.' || isRoot && file.name === '..') {
+        continue;
+      }
       const item = document.createElement('div');
       item.className = 'file-picker-item';
-      item.innerText = `${file.name}`;
-      item.addEventListener('click', () => this.load(file.name));
+      if (file.isDirectory) {
+        item.innerText = `[${file.name}]`;
+        item.addEventListener('click', () => {
+          this.disk.changeDirectory(file.name);
+          this.refreshFilePicker();
+        });
+      } else {
+        item.innerText = `${file.name}`;
+        item.addEventListener('click', () => {
+          this.load(file.name)
+        });
+      }
       this.filePicker.appendChild(item);
     }
   }
@@ -474,6 +506,25 @@ class EditorProxy {
     this.editor.onMouseUp((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, setBreakpoint));
     this.editor.onMouseMove((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, hoverBreakpoint));
     this.editor.onMouseLeave(() => unhover());
+  }
+}
+
+function decodeProgram(buffer: ArrayBuffer): number[] {
+  try {
+    // This will throw if the input is not a GW-BASIC binary file.
+    return decodeGwBasicBinaryFile(buffer);
+  } catch (e: unknown) {
+    // Assume the program is a plaintext program.
+    try {
+      // If the program is valid UTF-8, assume that any CP437 characters have
+      // already been translated to UTF-8 and translate them back to CP437.
+      const decoder = new TextDecoder('utf-8', { fatal: true });
+      const text = decoder.decode(buffer);
+      return stringToAscii(text);
+    } catch (e: unknown) {
+      // Otherwise treat the program as a CP437 string.
+      return Array.from(new Uint8Array(buffer));
+    }
   }
 }
 
