@@ -357,7 +357,8 @@ function updateRecordOffsets(variable: Variable, record: Variable) {
     if (elementCopy.type.tag === TypeTag.RECORD) {
       updateRecordOffsets(elementCopy, record);
     } else {
-      elementCopy.recordOffset!.record = record;
+      elementCopy.recordOffset! = {...elementCopy.recordOffset!};
+      elementCopy.recordOffset.record = record;
       elementCopy.array = undefined;
     }
     variable.elements?.set(name, elementCopy);

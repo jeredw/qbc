@@ -583,6 +583,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       const [red, green, blue] = this.vgaPaletteData;
       this.setPaletteEntry(this.vgaPaletteIndex, red | (green << 8) | (blue << 16));
       this.vgaPaletteData = [];
+      this.vgaPaletteIndex++;
     }
   }
 
