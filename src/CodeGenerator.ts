@@ -976,7 +976,7 @@ export class CodeGenerator extends QBasicParserListener {
   override enterPalette_statement = (ctx: parser.Palette_statementContext) => {
     const token = ctx.start!;
     const attributeExpr = ctx._attribute && this.compileExpression(ctx._attribute, ctx._attribute.start!, { tag: TypeTag.INTEGER });
-    const colorExpr = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.INTEGER });
+    const colorExpr = ctx._color && this.compileExpression(ctx._color, ctx._color.start!, { tag: TypeTag.LONG });
     let array: Variable | undefined;
     if (ctx._array) {
       array = getTyperContext(ctx).$result;
