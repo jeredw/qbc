@@ -79,6 +79,10 @@ export class Typer extends QBasicParserListener {
     if (!builtin) {
       return;
     }
+    if (builtin.returnType?.tag === TypeTag.STRING) {
+      // $ is part of the builtin name so a label like chr: is fine.
+      return;
+    }
     if (builtin.returnType || builtin.arguments.some((arg) => !arg.optional)) {
       throw ParseError.fromToken(token, "Expected: statement");
     }
