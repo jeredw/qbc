@@ -916,7 +916,7 @@ interface DrawProgram {
 }
 
 function parseDrawCommandString(commandString: string): DrawProgram {
-  const s = commandString.replaceAll(/\s/g, '').toLowerCase();
+  const s = commandString;
   let pos = 0;
   const atEnd = () => {
     return pos >= s.length;
@@ -926,6 +926,11 @@ function parseDrawCommandString(commandString: string): DrawProgram {
       throw new Error('peek past end of string');
     }
     return s.charAt(pos);
+  };
+  const skipWhitespace = () => {
+    while (!atEnd() && /\s/.test(s.charAt(pos))) {
+      pos++;
+    }
   };
   const advance = (n = 1): string => {
     if (pos + n > s.length) {
@@ -941,6 +946,7 @@ function parseDrawCommandString(commandString: string): DrawProgram {
     return {pointer: bytes[0] + (bytes[1] << 8) + (bytes[2] << 16) + (bytes[3] << 24)};
   };
   const value = ({defaultLiteral}: {defaultLiteral?: number}): DrawValue => {
+    skipWhitespace();
     if (atEnd() && defaultLiteral !== undefined) {
       return { literal: defaultLiteral };
     }
@@ -954,6 +960,7 @@ function parseDrawCommandString(commandString: string): DrawProgram {
       hasSign = true;
       sign = peek() === '-' ? -1 : 1;
       advance();
+      skipWhitespace();
     }
     let literal = 0;
     for (let i = 0; i < 6; i++) {
@@ -969,6 +976,7 @@ function parseDrawCommandString(commandString: string): DrawProgram {
       }
       const digit: number = +advance();
       literal = 10 * literal + digit;
+      skipWhitespace();
     }
     throw new Error('literal too long');
   };
@@ -1014,7 +1022,7 @@ function parseDrawCommandString(commandString: string): DrawProgram {
       case 'a':
         return {setAngle: value({})};
       case 't':
-        if (advance() !== 'a') {
+        if (advance().toLowerCase() !== 'a') {
           throw new Error('expecting a for ta');
         }
         return {turnAngle: value({})};
@@ -1039,7 +1047,8 @@ function parseDrawCommandString(commandString: string): DrawProgram {
   };
   const program: DrawProgram = {commands: []};
   while (!atEnd()) {
-    const char = advance();
+    skipWhitespace();
+    const char = advance().toLowerCase();
     switch (char) {
       // Any number of b or n may precede any command and apply to the next movement command.
       case 'b':

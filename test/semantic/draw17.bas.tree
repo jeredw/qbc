@@ -1,0 +1,32 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 20)) 
+      (block \n 
+        (statement 
+          (call_statement 
+            (untyped_id draw) 
+            (argument_list 
+              (argument 
+                (expr 
+                  (expr 
+                    (literal "ta=")) + 
+                  (expr 
+                    (builtin_function 
+                      (varptr_string_function varptr$ 
+                        ( 
+                          (variable_or_function_call i) ))))))))) \n 
+        (statement 
+          (call_statement 
+            (untyped_id draw) 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal "u5")))))) \n) next i)) \n <EOF>)

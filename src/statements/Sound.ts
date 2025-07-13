@@ -238,8 +238,7 @@ interface Command {
 }
 
 function parsePlayCommandString(commands: string, state: PlayState): Song {
-  const stripped = commands.replaceAll(/\s/g, '').toLowerCase();
-  const tokens = stripped.match(/(o\d+|<|>|[a-g][-#+]?\d*|n\d+|m[lnsfb]|l\d+|p\d+|t\d+|\.|x....|.)/g) || [];
+  const tokens = commands.match(/(o\d+|<|>|[a-g][-#+]?\d*|n\d+|m[lnsfb]|l\d+|p\d+|t\d+|\.|x....|.)/gi) || [];
   const song: Song = {notes: []};
   const quarterNotesToSeconds = (quarterNotes: number) => {
     // quarter notes / (quarter notes / second)
@@ -252,7 +251,11 @@ function parsePlayCommandString(commands: string, state: PlayState): Song {
     song.notes.push({pitch, onDuration, offDuration});
   };
   for (const command of tokens) {
-    switch (command[0]) {
+    switch (command[0].toLowerCase()) {
+      case ' ':
+        break;
+      case '\t':
+        break;
       case 'o': {
         const newOctave = parseInt(command.slice(1), 10);
         if (newOctave < 0 || newOctave > 6) {
@@ -278,11 +281,11 @@ function parsePlayCommandString(commands: string, state: PlayState): Song {
       case 'e':
       case 'f':
       case 'g': {
-        let noteName = command;
+        let noteName = command.toLowerCase();
         let length = state.noteLength;
         const nameAndLength = command.match(/(.)(\d+)$/);
         if (nameAndLength) {
-          noteName = nameAndLength[1];
+          noteName = nameAndLength[1].toLowerCase();
           length = parseInt(nameAndLength[2], 10);
         }
         const pitch = lookupPitchByNoteName(noteName, state.octave);
@@ -296,7 +299,7 @@ function parsePlayCommandString(commands: string, state: PlayState): Song {
         break;
       }
       case 'm': {
-        switch (command[1]) {
+        switch (command[1].toLowerCase()) {
           case 's':
             state.onFraction = 0.75;
             break;
