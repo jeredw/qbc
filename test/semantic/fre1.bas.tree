@@ -1,0 +1,22 @@
+(program 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call fre 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr - 
+                    (expr 
+                      (literal 1))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call fre 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal "world")))) )))))) \n <EOF>)

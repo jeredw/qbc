@@ -819,3 +819,13 @@ function writeBytesAtPointer(memory: Memory, variable: Variable, data: Uint8Arra
     writeBytesToVariable(variable, data.buffer, memory);
   }
 }
+
+export class FreFunction extends BuiltinFunction1 {
+  constructor(args: BuiltinStatementArgs) {
+    super(args);
+  }
+
+  override calculate(input: Value, _context: ExecutionContext): Value {
+    return long(262144);
+  }
+}

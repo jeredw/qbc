@@ -180,7 +180,7 @@ parse those using baked in rules.
 | `FILES`          | Statement   | -       | ✅      |
 | `FIX`            | Function    | -       | ✅      |
 | `FOR`...`NEXT`   | Statement   | ✅      | ✅      |
-| `FRE`            | Function    | -       | ⛔      |
+| `FRE`            | Function    | -       | 🚧      |
 | `FREEFILE`       | Function    | -       | ✅      |
 | `FUNCTION`       | Statement   | ✅      | ✅      |
 | `GET` I/O        | Statement   | ✅      | ✅      |

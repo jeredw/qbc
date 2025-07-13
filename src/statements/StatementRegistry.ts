@@ -40,6 +40,7 @@ import {
   CvsFunction,
   CvsmbfFunction,
   DefSegStatement,
+  FreFunction,
   LenStatement,
   LsetRecordStatement,
   MkdFunction,
@@ -393,6 +394,10 @@ export function fix(args: BuiltinStatementArgs) {
 
 export function for_(counter: Variable, end: Variable, increment: Variable | null) {
   return new ForStatement(counter, end, increment);
+}
+
+export function fre(args: BuiltinStatementArgs) {
+  return new FreFunction(args);
 }
 
 export function freefile(args: BuiltinStatementArgs) {
