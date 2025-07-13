@@ -154,15 +154,38 @@ class Shell implements DebugProvider, DiskListener {
   }
 
   private async importArchive(buffer: ArrayBuffer) {
-    const zip = await new JSZip().loadAsync(buffer);
+    let zip: JSZip;
+    try {
+      zip = await new JSZip().loadAsync(buffer);
+    } catch (e: unknown) {
+      alert('Bad zip file');
+      return;
+    }
+    let hasSourceFile = false;
     for (const file of Object.values(zip.files)) {
-      const path = '.\\' + file.name.toUpperCase().replace(/\//g, '\\').replace(/\\$/, '');
-      if (file.dir) {
-        this.disk.makeDirectory(path);
-      } else {
-        const buffer = await file.async("arraybuffer");
-        this.importFile(path, buffer);
+      if (file.name.toUpperCase().endsWith('.BAS')) {
+        hasSourceFile = true;
       }
+    }
+    if (!hasSourceFile && !confirm('Archive contains no .BAS files, continue?')) {
+      return;
+    }
+    const path = (name: string): string => '.\\' + name.toUpperCase().replace(/\//g, '\\').replace(/\\$/, '');
+    // Some zip files don't have explicit directory objects, so instead go through
+    // all the files and try creating any necessary directories first.
+    for (const file of Object.values(zip.files)) {
+      try {
+        const directory = path(file.name).replace(/\\[^\\]*$/, '');
+        this.disk.makeDirectory(directory);
+      } catch (e: unknown) {
+      }
+    }
+    for (const file of Object.values(zip.files)) {
+      if (file.dir) {
+        continue;
+      }
+      const buffer = await file.async("arraybuffer");
+      this.importFile(path(file.name), buffer);
     }
   }
 

@@ -323,14 +323,12 @@ export function writeBytesToArray(arrayOrRef: Variable, buffer: ArrayBuffer, mem
     new Uint8Array(padded).set(new Uint8Array(buffer));
     buffer = padded;
   }
-  if (buffer.byteLength > numItems * bytesPerItem) {
-    throw new Error('not enough room in array');
-  }
+  const bytesToWrite = Math.min(buffer.byteLength, numItems * bytesPerItem);
   const data = new DataView(buffer);
   let offset = 0;
   let index = 0;
   let item = makeItemVariable(array, descriptor, baseIndex)
-  while (offset < buffer.byteLength) {
+  while (offset < bytesToWrite) {
     item.address!.index = baseIndex + index;
     offset += writeBytesToElement(item, data, offset, memory);
     index += descriptor.itemSize!;
