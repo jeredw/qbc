@@ -1,0 +1,29 @@
+(program 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (literal &h40)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h6c)))) )))))) \n 
+  (statement 
+    (event_control_statement timer step)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h6c)))) )))))) \n 
+  (statement 
+    (event_control_statement timer step)) \n <EOF>)

@@ -61,7 +61,8 @@ export class Memory {
   stack: Frame[] = [];
   dynamic: Frame[] = [];
   segment: number = 0;
-  pointers: Pointer[] = [];
+  pointers: Map<number, Pointer> = new Map();
+  pointerSegment = 0x100;
 
   constructor(size: number) {
     this.static = new Frame(size);
@@ -77,7 +78,8 @@ export class Memory {
   reset() {
     this.clear();
     this.segment = 0;
-    this.pointers = [];
+    this.pointerSegment = 0x100;
+    this.pointers = new Map();
   }
 
   pushStack(size: number) {
@@ -178,19 +180,21 @@ export class Memory {
   }
 
   readPointer(index: number): Pointer {
-    const entryIndex = index - 1;
-    if (entryIndex < 0 || entryIndex >= this.pointers.length) {
+    const pointer = this.pointers.get(index);
+    if (pointer === undefined) {
       throw new Error("invalid pointer");
     }
-    return this.pointers[entryIndex];
+    return pointer;
   }
 
   writePointer(address: Address, variable: Variable): number {
-    if (this.pointers.length > 65535) {
+    if (this.pointers.size > 65535) {
       throw new Error("out of pointer space");
     }
-    this.pointers.push({address, variable});
-    return this.pointers.length;
+    const result = this.pointerSegment;
+    this.pointers.set(result, {address, variable});
+    this.pointerSegment++;
+    return result;
   }
 
   private getStackFrame(frameIndexFromAddress: number | undefined): Frame {

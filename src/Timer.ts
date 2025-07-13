@@ -4,6 +4,7 @@ export interface Timer {
   setTime(hours: number, minutes: number, seconds: number): void;
   time(): string;
   timer(): number;
+  rawTicks(): number;
 
   testTick?(): void;
 }
@@ -30,6 +31,10 @@ export class TestTimer {
   }
 
   timer() {
+    return this.ticks;
+  }
+
+  rawTicks() {
     return this.ticks;
   }
 
@@ -90,6 +95,15 @@ export class RealTimeTimer {
     const period = 1 / this.frequency;
     const timestamp = period * Math.floor((msSinceMidnight / 1000) / period);
     return +timestamp.toFixed(2);
+  }
+
+  rawTicks(): number {
+    const now = this.now();
+    const midnight = new Date(now.valueOf());
+    midnight.setHours(0, 0, 0, 0);
+    const msSinceMidnight = now.valueOf() - midnight.valueOf();
+    const msPerTick = 1000 / this.frequency;
+    return Math.floor(msSinceMidnight / msPerTick);
   }
 }
 
