@@ -12,7 +12,6 @@ import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
 import { stringToAscii } from "../AsciiChart.ts";
 import { roundToNearestEven } from "../Math.ts";
-import { ControlFlow } from "../ControlFlow.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -153,13 +152,13 @@ export class PaletteStatement extends Statement {
     const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory, { tag: TypeTag.LONG });
     try {
       if (attribute !== undefined && color !== undefined) {
-        screen.setPaletteEntry(attribute, color);
+        screen.setPaletteEntry(attribute & 0xff, color);
       } else if (this.array) {
         const attributes = screen.getMode().attributes;
         const values = readNumbersFromArray(this.array, attributes, context.memory);
         for (let i = 0; i < values.length; i++) {
           if (values[i] != -1) {
-            screen.setPaletteEntry(i, values[i]);
+            screen.setPaletteEntry(i & 0xff, values[i]);
           }
         }
       } else {
