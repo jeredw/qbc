@@ -146,6 +146,9 @@ REM_META_INCLUDE : [Rr][Ee][Mm] [ \t]* '$' [Ii][Nn][Cc][Ll][Uu][Dd][Ee] ~[\r\n]*
 REM : [Rr][Ee][Mm] -> pushMode(COMMENT_MODE);
 RESTORE : [Rr][Ee][Ss][Tt][Oo][Rr][Ee] ;
 RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
+// antlr's parser can't figure out how to parse "resume next" inside an inline
+// if, probably due to ambiguity with for .. next.
+RESUME_NEXT : [Rr][Ee][Ss][Uu][Mm][Ee] [ \t]+ [Nn][Ee][Xx][Tt];
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 RSET : [Rr][Ss][Ee][Tt] ;
 SCREEN : [Ss][Cc][Rr][Ee][Ee][Nn] ;

@@ -165,4 +165,21 @@
                 (statement 
                   (gosub_statement gosub 
                     (target 
-                      (line_number 30))))))))))) \n <EOF>)
+                      (line_number 30))))))))))) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (expr 
+          (variable_or_function_call err)) = 
+        (expr 
+          (literal 9))) then 
+      (if_inline_action 
+        (statement 
+          (resume_statement resume next))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (print_argument 
+                (expr 
+                  (literal "unexpected"))))))))) \n <EOF>)

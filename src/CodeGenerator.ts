@@ -1165,7 +1165,7 @@ export class CodeGenerator extends QBasicParserListener {
     if (this._chunk.procedure) {
       throw ParseError.fromToken(ctx.start!, "Illegal in procedure or DEF FN");
     }
-    this.addStatement(statements.resume({token: ctx.start!, next: !!ctx.NEXT()}), ctx.start!);
+    this.addStatement(statements.resume({token: ctx.start!, next: !!ctx.RESUME_NEXT()}), ctx.start!);
   }
 
   override enterReturn_statement = (ctx: parser.Return_statementContext) => {

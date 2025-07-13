@@ -815,7 +815,8 @@ restore_statement
 // A special kind of return statement just for ON ERROR handlers.
 // *** RESUME is illegal inside procedures or def fns.
 resume_statement
-  : RESUME (NEXT | target)?;
+  : RESUME target?
+  | RESUME_NEXT;
 
 // Return can optionally return anywhere. Awesome.
 return_statement

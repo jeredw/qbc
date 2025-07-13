@@ -24,3 +24,4 @@ if foo then yow
 if 1 then : print "hi"
 ' Inline if with implicit goto allows colon after target
 if 1 then 20 : else if 2 then gosub 30
+if err = 9 then resume next else print "unexpected"
