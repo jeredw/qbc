@@ -212,6 +212,11 @@ class Shell implements DebugProvider, DiskListener {
 
   private refreshFilePicker() {
     const files = this.disk.listFiles('');
+    files.sort((a: DiskEntry, b: DiskEntry): number => {
+      return a.isDirectory && !b.isDirectory ? -1 :
+        !a.isDirectory && b.isDirectory ? 1 :
+        a.name < b.name ? -1 : 1;
+    });
     const isRoot = this.disk.getCurrentDirectory().endsWith(':\\');
     this.filePicker.innerHTML = '';
     for (const file of files) {
