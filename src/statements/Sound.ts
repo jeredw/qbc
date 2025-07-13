@@ -280,7 +280,7 @@ function parsePlayCommandString(commands: string, state: PlayState): Song {
       case 'g': {
         let noteName = command;
         let length = state.noteLength;
-        const nameAndLength = command.match(/(.+)(\d+)$/);
+        const nameAndLength = command.match(/(.)(\d+)$/);
         if (nameAndLength) {
           noteName = nameAndLength[1];
           length = parseInt(nameAndLength[2], 10);
