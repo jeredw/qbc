@@ -940,7 +940,10 @@ function parseDrawCommandString(commandString: string): DrawProgram {
     const bytes = stringToAscii(address);
     return {pointer: bytes[0] + (bytes[1] << 8) + (bytes[2] << 16) + (bytes[3] << 24)};
   };
-  const value = (): DrawValue => {
+  const value = ({defaultLiteral}: {defaultLiteral?: number}): DrawValue => {
+    if (atEnd() && defaultLiteral !== undefined) {
+      return { literal: defaultLiteral };
+    }
     if (peek() === '=') {
       advance();
       return pointerValue();
@@ -956,6 +959,9 @@ function parseDrawCommandString(commandString: string): DrawProgram {
     for (let i = 0; i < 6; i++) {
       if (atEnd() || (peek() < '0' || peek() > '9')) {
         if (i === 0) {
+          if (defaultLiteral !== undefined) {
+            return {literal: defaultLiteral};
+          }
           throw new Error('expecting literal');
         }
         literal *= sign;
@@ -980,48 +986,48 @@ function parseDrawCommandString(commandString: string): DrawProgram {
     );
     switch (char) {
       case 'u':
-        return vertical(value(), [0, -1]);
+        return vertical(value({defaultLiteral: 1}), [0, -1]);
       case 'd':
-        return vertical(value(), [0, 1]);
+        return vertical(value({defaultLiteral: 1}), [0, 1]);
       case 'l':
-        return horizontal(value(), [-1, 0]);
+        return horizontal(value({defaultLiteral: 1}), [-1, 0]);
       case 'r':
-        return horizontal(value(), [1, 0]);
+        return horizontal(value({defaultLiteral: 1}), [1, 0]);
       case 'e':
-        return diagonal(value(), [1, -1]);
+        return diagonal(value({defaultLiteral: 1}), [1, -1]);
       case 'f':
-        return diagonal(value(), [1, 1]);
+        return diagonal(value({defaultLiteral: 1}), [1, 1]);
       case 'g':
-        return diagonal(value(), [-1, 1]);
+        return diagonal(value({defaultLiteral: 1}), [-1, 1]);
       case 'h':
-        return diagonal(value(), [-1, -1]);
+        return diagonal(value({defaultLiteral: 1}), [-1, -1]);
       case 'm': {
-        const amountX = value();
+        const amountX = value({});
         const relative = amountX.hasSign;
         if (advance() !== ',') {
           throw new Error('expecting comma');
         }
-        const amountY = value();
+        const amountY = value({});
         const direction = [1, 1];
         return {move: {noPlot, comeBack, relative, amountX, amountY, direction}};
       }
       case 'a':
-        return {setAngle: value()};
+        return {setAngle: value({})};
       case 't':
         if (advance() !== 'a') {
           throw new Error('expecting a for ta');
         }
-        return {turnAngle: value()};
+        return {turnAngle: value({})};
       case 'c':
-        return {setColor: value()};
+        return {setColor: value({})};
       case 's':
-        return {setScale: value()};
+        return {setScale: value({})};
       case 'p': {
-        const paintColor = value();
+        const paintColor = value({});
         if (advance() !== ',') {
           throw new Error('expecting comma');
         }
-        const borderColor = value();
+        const borderColor = value({});
         return {paint: {paintColor, borderColor}};
       }
       case 'x':
