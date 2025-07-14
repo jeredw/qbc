@@ -17,6 +17,7 @@ import { QBasicSymbolTag } from "./SymbolTable.ts";
 import { debugPrintValue, debugPrintVariable } from "./Values.ts";
 import { asciiToString, stringToAscii } from "./AsciiChart.ts";
 import { decodeGwBasicBinaryFile } from "./GwBasicFormat.ts";
+import { decodeQb45BinaryFile } from "./Qb45Format.ts";
 import JSZip from "jszip";
 
 enum RunState {
@@ -539,21 +540,27 @@ class EditorProxy {
 
 function decodeProgram(buffer: ArrayBuffer): number[] {
   try {
-    // This will throw if the input is not a GW-BASIC binary file.
+    // Throws if the input is not a QB45 binary file.
+    return decodeQb45BinaryFile(buffer);
+  } catch (e: unknown) {
+  }
+  try {
+    // Throws if the input is not a GW-BASIC binary file.
     return decodeGwBasicBinaryFile(buffer);
   } catch (e: unknown) {
-    // Assume the program is a plaintext program.
-    try {
-      // If the program is valid UTF-8, assume that any CP437 characters have
-      // already been translated to UTF-8 and translate them back to CP437.
-      const decoder = new TextDecoder('utf-8', { fatal: true });
-      const text = decoder.decode(buffer);
-      return stringToAscii(text);
-    } catch (e: unknown) {
-      // Otherwise treat the program as a CP437 string.
-      return Array.from(new Uint8Array(buffer));
-    }
   }
+
+  // Assume the program is a plaintext program.
+  try {
+    // If the program is valid UTF-8, assume that any CP437 characters have
+    // already been translated to UTF-8 and translate them back to CP437.
+    const decoder = new TextDecoder('utf-8', { fatal: true });
+    const text = decoder.decode(buffer);
+    return stringToAscii(text);
+  } catch (e: unknown) {
+  }
+  // Otherwise treat the program as a CP437 string.
+  return Array.from(new Uint8Array(buffer));
 }
 
 function assertHTMLElement(element: Element | null): HTMLElement {
