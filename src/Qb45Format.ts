@@ -85,29 +85,57 @@ class Qb45Loader {
     const pcode = rawToken & 0x03ff;
     const param = (rawToken >> 10) & 0x3f;
     const S = stringToAscii;
-    const binaryOperator = (op: string): Entry => {
-      const b = this.pop();
-      const a = this.pop();
-      return {text: [...a.text, ...S(` ${op} `), ...b.text]};
-    };
-    const call = (fn: string, numArgs: number): Entry => {
-      let argumentList: number[] = [];
-      for (let i = 0; i < numArgs; i++) {
-        const argument = this.pop();
-        if (i > 0) {
-          argumentList = [...argument.text, ...S(', '), ...argumentList];
-        } else {
-          argumentList = argument.text;
+    const T = (template: string): Entry => {
+      const fields = template.match(/{[^}]+}|./g);
+      const maxStackArgument = Math.max(
+        ...(template.match(/{([0-9])}/g) ?? []).map((n: string) => +n[1])
+      );
+      const stackArguments: Ascii[] = [];
+      if (maxStackArgument >= 0) {
+        for (let i = 0; i < maxStackArgument + 1; i++) {
+          stackArguments.push(this.pop().text);
         }
       }
-      return {text: [...S(`${fn}(`), ...argumentList, ...S(')')]};
+      let parts: Ascii[] = [];
+      for (const field of fields ?? []) {
+        switch (field) {
+          case '{id}':
+            parts.push(this.id(this.u16()));
+            break;
+          case '{id+}':
+            parts.push(this.id(this.u16()));
+            parts.push(S(getSigil(param)));
+            break;
+          case '{0}':
+            parts.push(stackArguments[0]);
+            break;
+          case '{1}':
+            parts.push(stackArguments[1]);
+            break;
+          case '{2}':
+            parts.push(stackArguments[2]);
+            break;
+          case '{3}':
+            parts.push(stackArguments[3]);
+            break;
+          case '{4}':
+            parts.push(stackArguments[4]);
+            break;
+          case '{5}':
+            parts.push(stackArguments[5]);
+            break;
+          default:
+            parts.push(S(field));
+        }
+      }
+      return {pcode, text: parts.flat()};
     };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
         return {};
       case 0x006:
-        return {text: S(": ")};
+        return T(': ');
       case 0x008:
         this.endOfLine = true;
         this.endOfProgram = true;
@@ -115,7 +143,7 @@ class Qb45Loader {
       case 0x009:
         return {};  // end of watches, skip
       case 0x00b:
-        return {text: this.idWithSigil(this.u16(), param)};
+        return T('{id+}');
       case 0x00c: {
         const value = this.pop();
         const id = this.idWithSigil(this.u16(), param);
@@ -129,53 +157,67 @@ class Qb45Loader {
         return {text: assignment};
       }
       case 0x023:
-        return {pcode, text: S('const ')};
+        return T('const ');
+      case 0x025:
+        return T('byval {0}');
+      case 0x026: // TODO
+        return {};
+      case 0x027:
+        return T('com({0})');
+      case 0x028:
+        return T('on {0} gosub {id}');
+      case 0x029:
+        return T('key({0})');
+      case 0x02a:
+        return T('{0} off');
       case 0x0a6: {
         const length = this.u16();
-        return {text: [...S(`data`), ...this.string(length, true)]};
+        return {text: [...S('data'), ...this.string(length, true)]};
       }
       case 0x0e3: {
         const length = this.u16();
-        return {text: [...S(`rem`), ...this.string(length)]};
+        return {text: [...S('rem'), ...this.string(length)]};
       }
+      case 0x100:
+        return T('{1} + {0}');
       case 0x15b:
-        return call('varptr', 1);
+        return T('varptr({0})');
       case 0x15c: {
         const skip = this.u16();
-        return call('varptr$', 1);
+        return T('varptr$({0})');
       }
       case 0x15d:
-        return call('varseg', 1);
+        return T('varseg({0})');
       case 0x15e:
-        return binaryOperator('>=');
+        return T('{1} >= {0}');
       case 0x15f:
-        return binaryOperator('>');
+        return T('{1} > {0}');
       case 0x160:
-        return binaryOperator('\\');
+        return T('{1} \\ {0}');
       case 0x161:
-        return binaryOperator('imp');
+        return T('{1} imp {0}');
       case 0x162:
-        return binaryOperator('<=');
+        return T('{1} <= {0}');
       case 0x163:
-        return binaryOperator('<');
+        return T('{1} < {0}');
       case 0x164:
-        return {text: S(`${param}`)};
+        return T(`${param}`);
       case 0x165:
-        return {text: S(`${this.i16()}`)};
+        return T(`${this.i16()}`);
       case 0x166:
-        return {text: S(`${this.i32()}`)};
+        return T(`${this.i32()}`);
       case 0x167:
-        return {text: S(`&H${this.u16().toString(16)}`)};
+        return T(`&H${this.u16().toString(16)}`);
       case 0x168:
-        return {text: S(`&H${this.u32().toString(16)}`)};
+        return T(`&H${this.u32().toString(16)}`);
       case 0x169:
-        return {text: S(`&O${this.u16().toString(8)}`)};
+        return T(`&O${this.u16().toString(8)}`);
       case 0x16a:
-        return {text: S(`&O${this.u32().toString(8)}`)};
+        return T(`&O${this.u32().toString(8)}`);
       case 0x16b:
-        return {text: S(`${this.f32()}`)};
+        return T(`${this.f32()}`);
       case 0x16c:
-        return {text: S(`${this.f64()}`)};
+        return T(`${this.f64()}`);
       case 0x16d: {
         const length = this.u16();
         const quotedString = this.string(length + 1);
@@ -185,31 +227,31 @@ class Qb45Loader {
         return {text: [...S('"'), ...quotedString]};
       }
       case 0x16e:
-        return {text: [...S('('), ...this.pop().text, ...S(')')]};
+        return T('({0})');
       case 0x16f:
-        return binaryOperator('mod');
+        return T('{1} mod {0}');
       case 0x170:
-        return binaryOperator('*');
+        return T('{1} * {0}');
       case 0x172:
         return {};
       case 0x173:
         return {};
       case 0x174:
-        return {text: [...S('not '), ...this.pop().text]};
+        return T('not {0}')
       case 0x175:
-        return binaryOperator('or');
+        return T('{1} or {0}');
       case 0x176:
-        return binaryOperator('^');
+        return T('{1} ^ {0}');
       case 0x177:
-        return binaryOperator('-');
+        return T('{1} - {0}');
       case 0x178:
-        return {text: [...S('-'), ...this.pop().text]};
+        return T('-{0}');
       case 0x179:
-        return binaryOperator('xor');
+        return T('{1} xor {0}');
       case 0x17a:
-        return {text: S('uevent')};
+        return T('uevent');
       case 0x17b:
-        return {text: [...S('sleep'), ...this.pop().text]};
+        return T('sleep {0}');
     }
     throw new Error(`unrecognized token: ${pcode}`);
   }
