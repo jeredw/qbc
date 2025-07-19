@@ -57,7 +57,6 @@ class Qb45Loader {
         firstLine = false;
         this.stack = [];
         this.endOfLine = false;
-        continue;
       }
       if (text !== undefined) {
         // Some tokens are skipped or manipulate the current top of stack.
@@ -144,7 +143,7 @@ class Qb45Loader {
       return T(`CIRCLE ${params.join(', ')}`);
     };
     const defType = (): Entry => {
-      const skip = this.u16();
+      this.skipU16();
       const mask = this.u32();
       // Groups of letters A-Z are specified by bits 31, 30, etc. of mask.
       const ranges: number[][] = [];
@@ -172,15 +171,49 @@ class Qb45Loader {
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
+        return T(' '.repeat(param));
+      case 0x001:
+        this.endOfLine = true;
+        return T(' '.repeat(this.u16()));
+      case 0x002:
+        this.skipU16();
+        this.endOfLine = true;
         return {};
+      case 0x003:
+        this.skipU16();
+        this.endOfLine = true;
+        return T(' '.repeat(this.u16()));
+      case 0x004: {
+        this.endOfLine = true;
+        this.skipU16();
+        const label = this.id(this.u16());
+        const separator = label[0] >= '0'.charCodeAt(0) && label[0] <= '9'.charCodeAt(0) ? ' ' : ': ';
+        return {pcode, text: [...label, ...S(separator)]};
+      }
+      case 0x005: {
+        this.endOfLine = true;
+        this.skipU16();
+        const label = this.id(this.u16());
+        const indent = ' '.repeat(this.u16());
+        const separator = label[0] >= '0'.charCodeAt(0) && label[0] <= '9'.charCodeAt(0) ? '' : ':';
+        return {pcode, text: [...label, ...S(separator), ...S(indent)]};
+      }
       case 0x006:
         return T(': ');
+      case 0x007:
+        return T(' '.repeat(this.u16()));
       case 0x008:
         this.endOfLine = true;
         this.endOfProgram = true;
         return {};
       case 0x009:
         return {};  // end of watches, skip
+      case 0x00a: {
+        const length = this.u16();
+        // This token occurs for random unrecognized text in a program.
+        // In that case the first two bytes of string data seem to be \xff and should be skipped.
+        return {pcode, text: this.string(length).slice(2)};
+      }
       case 0x00b:
         return T('{id+}');
       case 0x00c: {
@@ -196,13 +229,35 @@ class Qb45Loader {
         return {text: assignment};
       }
       case 0x019: {
-        const skip = this.u16();
+        this.skipU16();
         return T('{id}');
       }
       case 0x01a:
         return T('SHARED');
       case 0x01b:
         return defType();
+      case 0x01c: {
+        if (this.stack.at(-2)?.pcode === 0x01a) {
+          return T('REDIM {1} {0}');
+        }
+        return T('REDIM {0}');
+      }
+      case 0x01d: {
+        this.skipU16();
+        return T('END TYPE');
+      }
+      case 0x01e: {
+        this.skipU16();
+        return T('SHARED ');
+      }
+      case 0x01f: {
+        this.skipU16();
+        return T('STATIC ');
+      }
+      case 0x020: {
+        this.skipU16();
+        return T('TYPE {id}');
+      }
       case 0x023:
         return T('CONST ');
       case 0x024:
@@ -237,6 +292,8 @@ class Qb45Loader {
         return T('TIMER');
       case 0x033:
         return T('TIMER({0})');
+      case 0x05b:
+        return T('GOTO {id}');
       case 0x07b:
       case 0x07c:
         return {};
@@ -268,24 +325,21 @@ class Qb45Loader {
       case 0x09f:
       case 0x0a0:
         return circle();
-      case 0x0a1: {
-        const skip = this.u16();
+      case 0x0a1:
+        this.skipU16();
         return T('CLEAR ');
-      }
-      case 0x0a2: {
-        const skip = this.u16();
+      case 0x0a2:
+        this.skipU16();
         return T('CLEAR ');
-      }
       case 0x0a3:
         return T('CLS ');
       case 0x0a4: {
-        const skip = this.u16();
+        this.skipU16();
         return T('COLOR ');
       }
-      case 0x0a6: {
-        const length = this.u16();
+      case 0x0a6:
+        this.skipU16();
         return {text: [...S('DATA'), ...this.string(length, true)]};
-      }
       case 0x0e3: {
         const length = this.u16();
         return {text: [...S('REM'), ...this.string(length)]};
@@ -391,10 +445,9 @@ class Qb45Loader {
         return T('LTRIM$({0})');
       case 0x12c:
         return T('LEFT$({1}, {0})');
-      case 0x12d: {
-        const skip = this.u16();
+      case 0x12d:
+        this.skipU16();
         return T('LEN({0})');
-      }
       case 0x12e:
         return T('LOC({0})');
       case 0x12f:
@@ -487,10 +540,9 @@ class Qb45Loader {
         return T('VAL({0})');
       case 0x15b:
         return T('VARPTR({0})');
-      case 0x15c: {
-        const skip = this.u16();
+      case 0x15c:
+        this.skipU16();
         return T('VARPTR$({0})');
-      }
       case 0x15d:
         return T('VARSEG({0})');
       case 0x15e:
@@ -615,6 +667,11 @@ class Qb45Loader {
     const value = this.data.getInt16(this.offset, littleEndian);
     this.offset += 2;
     return value;
+  }
+
+  private skipU16() {
+    // Read and discard so dataview throws if we go out of bounds.
+    const _ = this.u16();
   }
 
   private u16(): number {
