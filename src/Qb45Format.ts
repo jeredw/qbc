@@ -13,6 +13,7 @@ type Ascii = number[];
 // An entry on the p-code parse stack.
 interface Entry {
   pcode?: number;  // Token that pushed this entry.
+  tag?: string;  // A tag identifying this type of token.
   text: Ascii;  // Text associated.
 }
 
@@ -34,16 +35,16 @@ class Qb45Loader {
     const magic = this.u16();
     const version = this.u16();
     if (magic != 0xfc || version != 1) {
-      throw new Error('not a qb45 binary file');
+      throw new Error('Not a QB45 binary file');
     }
-    // Skip over the symbol table
+    // Skip over the symbol table.
     this.offset = SYMBOL_TABLE_START - 2;
     const symbolTableSize = this.u16();
     this.offset += symbolTableSize;
     const mainModuleSize = this.u16();
     let firstLine = true;
     while (this.offset < this.data.byteLength) {
-      const {pcode, text} = this.parseToken();
+      const {pcode, tag, text} = this.parseToken();
       if (this.endOfLine) {
         for (let i = 0; i < this.stack.length; i++) {
           this.output.push(...this.stack[i].text);
@@ -61,7 +62,7 @@ class Qb45Loader {
       if (text !== undefined) {
         // Some tokens are skipped or manipulate the current top of stack.
         // Otherwise, if there is text, assume that we need to push it.
-        this.push({pcode, text});
+        this.push({pcode, tag, text});
       }
     }
     return this.output;
@@ -79,12 +80,12 @@ class Qb45Loader {
     return top;
   }
 
-  private parseToken(): {pcode?: number, text?: Ascii} {
+  private parseToken(): {pcode?: number, tag?: string, text?: Ascii} {
     const rawToken = this.u16();
     const pcode = rawToken & 0x03ff;
     const param = (rawToken >> 10) & 0x3f;
     const S = stringToAscii;
-    const T = (template: string): Entry => {
+    const T = (template: string, tag?: string): Entry => {
       const fields = template.match(/{[^}]+}|./g);
       const maxStackArgument = Math.max(
         ...(template.match(/{([0-9]+)}/g) ?? []).map((n: string) => +n[1])
@@ -110,11 +111,15 @@ class Qb45Loader {
             parts.push(this.id(this.u16()));
             parts.push(S(getSigil(param)));
             break;
+          case '{tab-to-column}':
+            this.skipU16();
+            parts.push(S(' '));
+            break;
           default:
             parts.push(S(field));
         }
       }
-      return {pcode, text: parts.flat()};
+      return {pcode, tag, text: parts.flat()};
     };
     const circle = (): Entry => {
       const params: string[] = ['', '', '', '', '', ''];
@@ -174,7 +179,7 @@ class Qb45Loader {
         return T(' '.repeat(param));
       case 0x001:
         this.endOfLine = true;
-        return T(' '.repeat(this.u16()));
+        return T('{tab-to-column}');
       case 0x002:
         this.skipU16();
         this.endOfLine = true;
@@ -182,7 +187,7 @@ class Qb45Loader {
       case 0x003:
         this.skipU16();
         this.endOfLine = true;
-        return T(' '.repeat(this.u16()));
+        return T('{tab-to-column}');
       case 0x004: {
         this.endOfLine = true;
         this.skipU16();
@@ -194,14 +199,14 @@ class Qb45Loader {
         this.endOfLine = true;
         this.skipU16();
         const label = this.id(this.u16());
-        const indent = ' '.repeat(this.u16());
+        this.skipU16();  // Skip tab-to-column.
         const separator = label[0] >= '0'.charCodeAt(0) && label[0] <= '9'.charCodeAt(0) ? '' : ':';
-        return {pcode, text: [...label, ...S(separator), ...S(indent)]};
+        return {pcode, text: [...label, ...S(separator), ...S(' ')]};
       }
       case 0x006:
         return T(': ');
       case 0x007:
-        return T(' '.repeat(this.u16()));
+        return T(':{tab-to-column}');
       case 0x008:
         this.endOfLine = true;
         this.endOfProgram = true;
@@ -216,18 +221,53 @@ class Qb45Loader {
       }
       case 0x00b:
         return T('{id+}');
-      case 0x00c: {
-        const value = this.pop();
-        const id = this.idWithSigil(this.u16(), param);
-        const assignment = [...id, ...S(' = '), ...value.text];
-        const top = this.stack.at(-1);
-        if (top && top.pcode === 0x023) {
-          const delim = top.text.at(-1) === 0x20 ? [] : S(', ');
-          top.text = [...top.text, ...delim, ...assignment];
-          return {};
+      case 0x00c:
+        if (this.stack.at(-2)?.pcode === 0x023) {
+          // First parameter of CONST.
+          return T('{1} {id+} = {0}');
         }
-        return {text: assignment};
+        if (this.stack.at(-2)?.pcode === 0x00c) {
+          // Append parameter to CONST parameter list.
+          return T('{1}, {id+} = {0}');
+        }
+        return T('{id+} = {0}');
+      case 0x00d: {
+        const asType = this.stack.at(-1)?.tag === 'asType';
+        if (this.stack.at(-2)?.pcode === 0x00d && asType) {
+          // Append parameter to declaration list with AS type on stack.
+          return T('{1}, {id+} {0}');
+        }
+        if (this.stack.at(-1)?.pcode === 0x00d) {
+          // Append parameter to declaration list.
+          return T('{0}, {id+}')
+        }
+        if (this.stack.at(-2)?.tag === 'decl' && asType) {
+          // Begin declaration list with AS type on stack.
+          return T('{1} {id+} {0}');
+        }
+        if (this.stack.at(-1)?.tag === 'decl') {
+          // Begin declaration list.
+          return T('{0} {id+}');
+        }
+        if (asType) {
+          return T('{id+} {0}');
+        }
+        return T('{id+}');
       }
+      case 0x011:
+        return T('{0}.{id}');
+      case 0x012:
+        return T('{0}.{id} = {1}');
+      case 0x015:
+      case 0x016: {
+        const typeCode = this.u16();
+        const typeName = typeCode <= 5 ? S(getTypeName(typeCode)) : this.id(typeCode);
+        this.skipU16();  // Skip tab-to-column.
+        return {pcode, tag: 'asType', text: [...S('AS '), ...typeName]};
+      }
+      case 0x017:
+      case 0x018:
+        return {};
       case 0x019: {
         this.skipU16();
         return T('{id}');
@@ -237,7 +277,12 @@ class Qb45Loader {
       case 0x01b:
         return defType();
       case 0x01c: {
+        if (this.stack.at(-2)?.pcode === 0x01c) {
+          // Append another variable to a REDIM parameter list.
+          return T('{1}, {0}');
+        }
         if (this.stack.at(-2)?.pcode === 0x01a) {
+          // REDIM SHARED.
           return T('REDIM {1} {0}');
         }
         return T('REDIM {0}');
@@ -248,18 +293,18 @@ class Qb45Loader {
       }
       case 0x01e: {
         this.skipU16();
-        return T('SHARED ');
+        return T('SHARED', 'decl');
       }
       case 0x01f: {
         this.skipU16();
-        return T('STATIC ');
+        return T('STATIC', 'decl');
       }
       case 0x020: {
         this.skipU16();
         return T('TYPE {id}');
       }
       case 0x023:
-        return T('CONST ');
+        return T('CONST');
       case 0x024:
         return {};
       case 0x025:
@@ -609,6 +654,19 @@ class Qb45Loader {
         return T('UEVENT');
       case 0x17b:
         return T('SLEEP {0}');
+      case 0x17c: {
+        this.skipU16();
+        const maxLength = this.u16();
+        this.skipU16();  // Skip tab-to-column.
+        return {pcode, tag: 'asType', text: [...S('AS STRING * '), ...S(`${maxLength}`)]};
+      }
+      case 0x17d:
+        this.skipU16();
+        if (this.stack.at(-1)?.pcode === 0x01a) {
+          // DIM SHARED.
+          return T('DIM {0}', 'decl');
+        }
+        return T('DIM', 'decl');
     }
     throw new Error(`unrecognized token: ${pcode}`);
   }
@@ -740,4 +798,20 @@ function getDefTypeName(param: number): string {
       return 'STR';
   }
   return '';
+}
+
+function getTypeName(param: number): string {
+  switch (param) {
+    case 1:
+      return 'INTEGER';
+    case 2:
+      return 'LONG';
+    case 3:
+      return 'SINGLE';
+    case 4:
+      return 'DOUBLE';
+    case 5:
+      return 'STRING';
+  }
+  return 'ANY';
 }
