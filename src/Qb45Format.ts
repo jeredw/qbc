@@ -10,10 +10,16 @@ const SYMBOL_TABLE_START = 28;
 // A list of CP-437 ASCII character codes.
 type Ascii = number[];
 
+enum Tag {
+  DECLARATION_KEYWORD,
+  DECLARATION_LIST,
+  AS_TYPE,
+}
+
 // An entry on the p-code parse stack.
 interface Entry {
   pcode?: number;  // Token that pushed this entry.
-  tag?: string;  // A tag identifying this type of token.
+  tag?: Tag;  // A tag identifying this type of token.
   text: Ascii;  // Text associated.
 }
 
@@ -80,12 +86,12 @@ class Qb45Loader {
     return top;
   }
 
-  private parseToken(): {pcode?: number, tag?: string, text?: Ascii} {
+  private parseToken(): {pcode?: number, tag?: Tag, text?: Ascii} {
     const rawToken = this.u16();
     const pcode = rawToken & 0x03ff;
     const param = (rawToken >> 10) & 0x3f;
     const S = stringToAscii;
-    const T = (template: string, tag?: string): Entry => {
+    const T = (template: string, tag?: Tag): Entry => {
       const fields = template.match(/{[^}]+}|./g);
       const maxStackArgument = Math.max(
         ...(template.match(/{([0-9]+)}/g) ?? []).map((n: string) => +n[1])
@@ -96,7 +102,7 @@ class Qb45Loader {
           stackArguments.push(this.pop().text);
         }
       }
-      let parts: Ascii[] = [];
+      const parts: Ascii[] = [];
       for (const field of fields ?? []) {
         if (/{[0-9]+}/.test(field)) {
           const argumentIndex = +field.slice(1, -1);
@@ -173,6 +179,39 @@ class Qb45Loader {
       const type = getDefTypeName(mask & 7);
       return T(`DEF${type} ${rangeSpec}`);
     };
+    const arrayDeclaration = (): Entry => {
+      let stackIndex = 0;
+      let asType = '';
+      if (this.stack.at(-1)?.tag === Tag.AS_TYPE) {
+        stackIndex++;
+        asType = ' {0}';
+      }
+      const numBounds = this.u16();
+      if (numBounds % 2 !== 0) {
+        throw new Error('Expecting an even number of array bounds');
+      }
+      const bounds: string[] = [];
+      for (let i = 0; i < numBounds / 2; i++) {
+        const upper = stackIndex++;
+        const lower = stackIndex++;
+        if (this.stack.at(-1 - lower)?.pcode !== 0x018) {
+          bounds.unshift(`{${lower}} TO {${upper}}`);
+        } else {
+          // Still have to pop the dummy lower index (it will be an empty string).
+          bounds.unshift(`{${upper}}{${lower}}`);
+        }
+      }
+      let indices = bounds.length ? `(${bounds.join(', ')})` : '';
+      if (this.stack.at(-1 - stackIndex)?.tag === Tag.DECLARATION_LIST) {
+        // Add to declaration list.
+        return T(`{${stackIndex}}, {id+}${indices}${asType}`, Tag.DECLARATION_LIST);
+      }
+      if (this.stack.at(-1 - stackIndex)?.tag === Tag.DECLARATION_KEYWORD) {
+        // Begin new declaration list.
+        return T(`{${stackIndex}} {id+}${indices}${asType}`, Tag.DECLARATION_LIST);
+      }
+      return T(`{id+}${indices}${asType}`, Tag.DECLARATION_LIST);
+    };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
@@ -232,28 +271,30 @@ class Qb45Loader {
         }
         return T('{id+} = {0}');
       case 0x00d: {
-        const asType = this.stack.at(-1)?.tag === 'asType';
-        if (this.stack.at(-2)?.pcode === 0x00d && asType) {
+        const asType = this.stack.at(-1)?.tag === Tag.AS_TYPE;
+        if (this.stack.at(-2)?.tag === Tag.DECLARATION_LIST && asType) {
           // Append parameter to declaration list with AS type on stack.
-          return T('{1}, {id+} {0}');
+          return T('{1}, {id+} {0}', Tag.DECLARATION_LIST);
         }
-        if (this.stack.at(-1)?.pcode === 0x00d) {
+        if (this.stack.at(-1)?.tag === Tag.DECLARATION_LIST) {
           // Append parameter to declaration list.
-          return T('{0}, {id+}')
+          return T('{0}, {id+}', Tag.DECLARATION_LIST);
         }
-        if (this.stack.at(-2)?.tag === 'decl' && asType) {
+        if (this.stack.at(-2)?.tag === Tag.DECLARATION_KEYWORD && asType) {
           // Begin declaration list with AS type on stack.
-          return T('{1} {id+} {0}');
+          return T('{1} {id+} {0}', Tag.DECLARATION_LIST);
         }
-        if (this.stack.at(-1)?.tag === 'decl') {
+        if (this.stack.at(-1)?.tag === Tag.DECLARATION_KEYWORD) {
           // Begin declaration list.
-          return T('{0} {id+}');
+          return T('{0} {id+}', Tag.DECLARATION_LIST);
         }
         if (asType) {
-          return T('{id+} {0}');
+          return T('{id+} {0}', Tag.DECLARATION_LIST);
         }
-        return T('{id+}');
+        return T('{id+}', Tag.DECLARATION_LIST);
       }
+      case 0x010:
+        return arrayDeclaration();
       case 0x011:
         return T('{0}.{id}');
       case 0x012:
@@ -263,11 +304,12 @@ class Qb45Loader {
         const typeCode = this.u16();
         const typeName = typeCode <= 5 ? S(getTypeName(typeCode)) : this.id(typeCode);
         this.skipU16();  // Skip tab-to-column.
-        return {pcode, tag: 'asType', text: [...S('AS '), ...typeName]};
+        return {pcode, tag: Tag.AS_TYPE, text: [...S('AS '), ...typeName]};
       }
       case 0x017:
       case 0x018:
-        return {};
+        // 0x018 is used as a dummy token in array declaration expressions when only one bound is provided.
+        return T('');
       case 0x019: {
         this.skipU16();
         return T('{id}');
@@ -293,11 +335,11 @@ class Qb45Loader {
       }
       case 0x01e: {
         this.skipU16();
-        return T('SHARED', 'decl');
+        return T('SHARED', Tag.DECLARATION_KEYWORD);
       }
       case 0x01f: {
         this.skipU16();
-        return T('STATIC', 'decl');
+        return T('STATIC', Tag.DECLARATION_KEYWORD);
       }
       case 0x020: {
         this.skipU16();
@@ -658,21 +700,17 @@ class Qb45Loader {
         this.skipU16();
         const maxLength = this.u16();
         this.skipU16();  // Skip tab-to-column.
-        return {pcode, tag: 'asType', text: [...S('AS STRING * '), ...S(`${maxLength}`)]};
+        return {pcode, tag: Tag.AS_TYPE, text: [...S('AS STRING * '), ...S(`${maxLength}`)]};
       }
       case 0x17d:
         this.skipU16();
         if (this.stack.at(-1)?.pcode === 0x01a) {
           // DIM SHARED.
-          return T('DIM {0}', 'decl');
+          return T('DIM {0}', Tag.DECLARATION_KEYWORD);
         }
-        return T('DIM', 'decl');
+        return T('DIM', Tag.DECLARATION_KEYWORD);
     }
     throw new Error(`unrecognized token: ${pcode}`);
-  }
-
-  private idWithSigil(offset: number, param: number): Ascii {
-    return [...this.id(offset), ...stringToAscii(getSigil(param))];
   }
 
   private id(offset: number): Ascii {
