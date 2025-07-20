@@ -225,6 +225,19 @@ class Qb45Loader {
       }
       return T(`{id+}${indexList}`);
     };
+    const call = ({keyword, parenthesis}: {keyword: string, parenthesis: boolean}): Entry => {
+      const numParams = this.u16();
+      const params: string[] = [];
+      for (let i = 0; i < numParams; i++) {
+        params.unshift(`{${i}}`);
+      }
+      let paramList = params.join(', ');
+      if (numParams > 0 && parenthesis) {
+        paramList = `(${paramList})`;
+      }
+      const space = keyword ? '' : ' ';
+      return T(`${keyword}{id}${space}${paramList}`);
+    };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
@@ -239,7 +252,9 @@ class Qb45Loader {
       case 0x003:
         this.skipU16();
         this.endOfLine = true;
-        return T('{tab-to-column}');
+        return {pcode, text: [...S(' '.repeat(this.u16()))]};
+      // 34 and 35 are "used in $INCLUDEd lines".  Maybe .BI files?
+      case 0x034:
       case 0x004: {
         this.endOfLine = true;
         this.skipU16();
@@ -247,13 +262,14 @@ class Qb45Loader {
         const separator = label[0] >= '0'.charCodeAt(0) && label[0] <= '9'.charCodeAt(0) ? ' ' : ': ';
         return {pcode, text: [...label, ...S(separator)]};
       }
+      case 0x035:
       case 0x005: {
         this.endOfLine = true;
         this.skipU16();
         const label = this.id(this.u16());
-        this.skipU16();  // Skip tab-to-column.
+        const indent = ' '.repeat(1 + this.u16());
         const separator = label[0] >= '0'.charCodeAt(0) && label[0] <= '9'.charCodeAt(0) ? '' : ':';
-        return {pcode, text: [...label, ...S(separator), ...S(' ')]};
+        return {pcode, text: [...label, ...S(separator), ...S(indent)]};
       }
       case 0x006:
         return T(': ');
@@ -368,11 +384,13 @@ class Qb45Loader {
       case 0x023:
         return T('CONST');
       case 0x024:
+        // Breakpoints.
         return {};
       case 0x025:
         return T('BYVAL {0}');
-      case 0x026: // TODO
-        return {};
+      case 0x026:
+        // Used for single-line DEF FN definitions.
+        return T('{1} = {0}');
       case 0x027:
         return T('COM({0})');
       case 0x028:
@@ -399,6 +417,13 @@ class Qb45Loader {
         return T('TIMER');
       case 0x033:
         return T('TIMER({0})');
+      // Tokens 0x034 and 0x035 are handled above.
+      case 0x037:
+        return call({keyword: 'CALL ', parenthesis: true});
+      case 0x038:
+        return call({keyword: '', parenthesis: false});
+      case 0x039:
+        return call({keyword: 'CALLS ', parenthesis: true});
       case 0x03a:
         return T('CASE ELSE');
       case 0x03b:
@@ -991,11 +1016,12 @@ class Qb45Loader {
         return T(`${this.f64()}`);
       case 0x16d: {
         const length = this.u16();
-        const quotedString = this.string(length + 1);
-        if (quotedString.at(-1) !== 0x22) {
-          throw new Error('expecting string to have final "');
+        const string = this.string(length);
+        if (length & 1) {
+          // Strings are padded to 2-byte boundaries.
+          this.offset++;
         }
-        return {text: [...S('"'), ...quotedString]};
+        return {pcode, text: [...S('"'), ...string, ...S('"')]};
       }
       case 0x16e:
         return T('({0})');
