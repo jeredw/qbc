@@ -14,6 +14,7 @@ enum Tag {
   DECLARATION_KEYWORD,
   DECLARATION_LIST,
   AS_TYPE,
+  CASE,
 }
 
 // An entry on the p-code parse stack.
@@ -379,12 +380,165 @@ class Qb45Loader {
         return T('TIMER');
       case 0x033:
         return T('TIMER({0})');
+      case 0x03a:
+        return T('CASE ELSE');
+      case 0x03b:
+        if (this.stack.at(-2)?.tag === Tag.CASE) {
+          return T('{1}, {0}', Tag.CASE);
+        }
+        return T('CASE {0}', Tag.CASE);
+      case 0x03c:
+        if (this.stack.at(-3)?.tag === Tag.CASE) {
+          return T('{2}, {1} TO {0}', Tag.CASE);
+        }
+        return T('CASE {1} TO {0}', Tag.CASE);
+      case 0x03d:
+        if (this.stack.at(-2)?.tag === Tag.CASE) {
+          return T('{1}, IS = {0}', Tag.CASE);
+        }
+        return T('CASE IS = {0}', Tag.CASE);
+      case 0x03e:
+        if (this.stack.at(-2)?.tag === Tag.CASE) {
+          return T('{1}, IS < {0}', Tag.CASE);
+        }
+        return T('CASE IS < {0}', Tag.CASE);
+      case 0x03f:
+        if (this.stack.at(-2)?.tag === Tag.CASE) {
+          return T('{1}, IS > {0}', Tag.CASE);
+        }
+        return T('CASE IS > {0}', Tag.CASE);
+      case 0x040:
+        if (this.stack.at(-2)?.tag === Tag.CASE) {
+          return T('{1}, IS <= {0}', Tag.CASE);
+        }
+        return T('CASE IS <= {0}', Tag.CASE);
+      case 0x041:
+        if (this.stack.at(-2)?.tag === Tag.CASE) {
+          return T('{1}, IS >= {0}', Tag.CASE);
+        }
+        return T('CASE IS >= {0}', Tag.CASE);
+      case 0x042:
+        if (this.stack.at(-2)?.tag === Tag.CASE) {
+          return T('{1}, IS <> {0}', Tag.CASE);
+        }
+        return T('CASE IS <> {0}', Tag.CASE);
+      case 0x043:
+        return T('ON');
+      case 0x046:
+        return T('DO');
+      case 0x047:
+        return T('DO UNTIL {0}');
+      case 0x048:
+        this.skipU16();
+        return T('DO WHILE {0}');
+      case 0x049:
+        return T('ELSE ');
+      case 0x04a:
+        // Implicit GOTO line number.
+        this.skipU16();
+        return T('{id}');
+      case 0x04c:
+        return T(' ELSE ');
+      case 0x04d:
+        return T('ELSEIF {0} THEN');
+      case 0x04e:
+        return T('END');
+      case 0x04f:
+        return T('END DEF');
+      case 0x050:
+        return T('END IF');
+      case 0x052:
+        return T('END SELECT');
+      case 0x053:
+        this.skipU16();
+        return T('EXIT DO');
+      case 0x054:
+        this.skipU16();
+        return T('EXIT FOR');
+      case 0x056:
+        this.skipU16();
+        this.skipU16();
+        return T('FOR {2} = {1} TO {0}');
+      case 0x057:
+        this.skipU16();
+        this.skipU16();
+        return T('FOR {3} = {2} TO {1} STEP {0}');
+      case 0x059:
+        return T('GOSUB {id}');
       case 0x05b:
         return T('GOTO {id}');
+      case 0x05d:
+        this.skipU16();
+        return T('IF {0} THEN ');
+      case 0x05e:
+        return T('IF {0} THEN {id}');
+      case 0x060:
+        return T('IF {0} GOTO {id}');
+      case 0x061:
+        this.skipU16();
+        return T('IF {0} THEN');
+      case 0x062:
+        this.skipU16();
+        return T('LOOP');
+      case 0x063:
+        this.skipU16();
+        return T('LOOP UNTIL {0}');
+      case 0x064:
+        this.skipU16();
+        return T('LOOP WHILE {0}');
+      case 0x065:
+        this.skipU16();
+        this.skipU16();
+        return T('NEXT');
+      case 0x066:
+        this.skipU16();
+        this.skipU16();
+        if (this.stack.at(-1)?.pcode === 0x066) {
+          return T('{1}, {0}');
+        }
+        return T('NEXT {0}');
+      case 0x067:
+        return T('ON ERROR GOTO {id}');
+      case 0x06a:
+        return T('RESTORE');
+      case 0x06b:
+        return T('RESTORE {id}');
+      case 0x06c:
+        return T('RESUME');
+      case 0x06d:
+        return T('RESUME {id}');
+      case 0x06e:
+        return T('RESUME NEXT');
+      case 0x06f:
+        return T('RETURN');
+      case 0x070:
+        return T('RETURN {id}');
+      case 0x071:
+        return T('RUN {0}');
+      case 0x072:
+        return T('RUN {id}');
+      case 0x073:
+        return T('RUN');
+      case 0x074:
+        return T('SELECT CASE {0}');
+      case 0x075:
+        this.skipU16();
+        return T('STOP');
+      case 0x077:
+        return T('WAIT {1}, {0}')
+      case 0x078:
+        return T('WAIT {2}, {1}, {0}')
+      case 0x079:
+        this.skipU16();
+        return T('WEND')
+      case 0x07a:
+        this.skipU16();
+        return T('WHILE {0}')
+      // 7b and 7c are probably used in watch mode.
       case 0x07b:
       case 0x07c:
         return {};
-      // Dummy tokens for variable arguments in circle statement.
+      // 7e, 7f, and 80 are dummy tokens for optional arguments in the circle statement.
       case 0x07e:
       case 0x07f:
       case 0x080:
@@ -397,8 +551,24 @@ class Qb45Loader {
         return T('-({1}, {0})');
       case 0x084:
         return T('-STEP({1}, {0})');
+      case 0x085:
+        return T('FIELD {0}');
+      case 0x086:
+        return T(', {1} AS {0}');
       case 0x08a:
         return T('#{0}');
+      case 0x08c:
+        this.skipU16();
+        return {};
+      case 0x097: {
+        this.skipU16();  // Skip tab-to-column.
+        const length = this.u16();
+        return {pcode, text: [...S(`'`), ...this.string(length)]};
+      }
+      case 0x099: {
+        const length = this.u16();
+        return {pcode, text: [...S('$INCLUDE: \''), ...this.string(length)]};
+      }
       case 0x09a:
         return T('BEEP');
       case 0x09b:
@@ -427,10 +597,148 @@ class Qb45Loader {
       case 0x0a6:
         this.skipU16();
         return {text: [...S('DATA'), ...this.string(length, true)]};
+      case 0x0a7:
+        return T('DATE$ = {0}');
+      case 0x0a8:
+        return T('DEF SEG');
+      case 0x0a9:
+        return T('DEF SEG = {0}');
+      case 0x0aa:
+        return T('DRAW {0}');
+      case 0x0ab:
+        return T('ENVIRON {0}');
+      case 0x0ad:
+        return T('ERROR {0}');
+      case 0x0ae:
+        return T('FILES');
+      case 0x0af:
+        return T('FILES {0}');
+      case 0x0b0:
+        return T('GET {0}');
+      case 0x0b1:
+        return T('GET {1}, {0}');
+      case 0x0b2:
+        this.skipU16();
+        return T('GET {1}, , {0}');
+      case 0x0b3:
+        this.skipU16();
+        return T('GET {2}, {1}, {0}');
+      case 0x0b4:
+        return T('GET {1}, {0}');
+      case 0x0b7:
+        return T('IOCTL {1}, {0}');
+      case 0x0b9:
+        return T('KEY {1}, {0}');
+      case 0x0ba:
+        return T('KILL {0}');
+      case 0x0bf:
+        return T('LET ');
+      case 0x0c4:
+        return T('LSET {0} = {1}');
+      case 0x0c5:
+        return T('MID$({0}, {2}) = {1}');
+      case 0x0c6:
+        return T('MID$({0}, {3}, {2}) = {1}');
+      case 0x0c7:
+        return T('MKDIR {0}');
+      case 0x0c8:
+        return T('NAME {1} AS {0}');
+      case 0x0cb:
+        return T('OPEN {2}, {1}, {0}');
+      case 0x0cc:
+        return T('OPEN {3}, {2}, {1}, {0}');
+      case 0x0cd:
+        return T('OPTION BASE 0');
+      case 0x0ce:
+        return T('OPTION BASE 1');
+      case 0x0cf:
+        return T('OUT {1}, {0}');
+      case 0x0d1:
+        return T('PAINT {3}, {2}, {1}, {0}');
+      case 0x0d2:
+        return T('PALETTE');
+      case 0x0d3:
+        return T('PALETTE {1}, {0}');
+      case 0x0d4:
+        return T('PALETTE {0}');
+      case 0x0d5:
+        return T('PCOPY {1}, {0}');
+      case 0x0d6:
+        return T('PLAY {0}');
+      case 0x0d7:
+        return T('POKE {1}, {0}');
+      case 0x0d8:
+        return T('PRESET {0}');
+      case 0x0d9:
+        return T('PRESET {1}, {0}');
+      case 0x0da:
+        return T('PSET {0}');
+      case 0x0db:
+        return T('PSET {1}, {0}');
+      case 0x0dd:
+        return T('PUT {1}, {0}');
+      case 0x0de:
+        this.skipU16();
+        return T('PUT {1}, , {0}');
+      case 0x0df:
+        this.skipU16();
+        return T('PUT {2}, {1}, {0}');
+      case 0x0e0:
+        return T('RANDOMIZE');
+      case 0x0e1:
+        return T('RANDOMIZE {0}');
+      case 0x0e2:
+        if (this.stack.at(-1)?.pcode === 0x0e2) {
+          return T('{1}, {0}');
+        }
+        return T('READ {0}');
       case 0x0e3: {
         const length = this.u16();
         return {text: [...S('REM'), ...this.string(length)]};
       }
+      case 0x0e4:
+        return T('RESET');
+      case 0x0e5:
+        return T('RMDIR {0}');
+      case 0x0e6:
+        return T('RSET {0} = {1}');
+      case 0x0e8:
+        return T('SEEK {1}, {0}');
+      case 0x0e9:
+        return T('SHELL');
+      case 0x0ea:
+        return T('SHELL {0}');
+      case 0x0eb:
+        return T('SLEEP');
+      case 0x0ec:
+        return T('SOUND {1}, {0}');
+      case 0x0ed:
+        this.skipU16();
+        return T('SWAP {1}, {0}');
+      case 0x0ee:
+        return T('SYSTEM');
+      case 0x0ef:
+        return T('TIME$ = {0}');
+      case 0x0f0:
+        return T('TROFF');
+      case 0x0f1:
+        return T('TRON');
+      case 0x0f4:
+        return T('VIEW');
+      case 0x0f5:
+        return T('VIEW PRINT');
+      case 0x0f6:
+        return T('VIEW PRINT {1} TO {0}');
+      case 0x0f9:
+        return T('WIDTH LPRINT {0}')
+      case 0x0fa:
+        return T('WIDTH {1}, {0}')
+      case 0x0fb:
+        return T('WINDOW ({3}, {2})-({1}, {0})')
+      case 0x0fc:
+        return T('WINDOW')
+      case 0x0fd:
+        return T('WINDOW SCREEN ({3}, {2})-({1}, {0})')
       case 0x100:
         return T('{1} + {0}');
       case 0x101:
