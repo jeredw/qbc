@@ -213,6 +213,18 @@ class Qb45Loader {
       }
       return T(`{id+}${indices}${asType}`, Tag.DECLARATION_LIST);
     };
+    const arrayExpression = (): Entry => {
+      const numIndices = this.u16();
+      let indexList = '';
+      if (!(numIndices & 0x8000)) {
+        const indices: string[] = [];
+        for (let i = 0; i < numIndices; i++) {
+          indices.unshift(`{${i}}`);
+        }
+        indexList = `(${indices.join(', ')})`;
+      }
+      return T(`{id+}${indexList}`);
+    };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
@@ -293,6 +305,19 @@ class Qb45Loader {
           return T('{id+} {0}', Tag.DECLARATION_LIST);
         }
         return T('{id+}', Tag.DECLARATION_LIST);
+      }
+      case 0x00e: {
+        const nextToken = this.data.getUint16(this.offset + 4, true) & 0x3ff;
+        if (nextToken === 0x01c) {
+          // Array expressions in REDIM parameter lists parse as array declarations.
+          return arrayDeclaration();
+        }
+        return arrayExpression();
+      }
+      case 0x00f: {
+        const item = arrayExpression();
+        const value = this.pop();
+        return {pcode, text: [...item.text, ...S(' = '), ...value.text]};
       }
       case 0x010:
         return arrayDeclaration();
