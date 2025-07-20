@@ -185,7 +185,7 @@ class Qb45Loader {
       let asType = '';
       if (this.stack.at(-1)?.tag === Tag.AS_TYPE) {
         stackIndex++;
-        asType = ' {0}';
+        asType = '{0}';
       }
       const numBounds = this.u16();
       if (numBounds % 2 !== 0) {
@@ -202,7 +202,7 @@ class Qb45Loader {
           bounds.unshift(`{${upper}}{${lower}}`);
         }
       }
-      let indices = bounds.length ? `(${bounds.join(', ')})` : '';
+      const indices = `(${bounds.join(', ')})`;
       if (this.stack.at(-1 - stackIndex)?.tag === Tag.DECLARATION_LIST) {
         // Add to declaration list.
         return T(`{${stackIndex}}, {id+}${indices}${asType}`, Tag.DECLARATION_LIST);
@@ -287,7 +287,7 @@ class Qb45Loader {
         const asType = this.stack.at(-1)?.tag === Tag.AS_TYPE;
         if (this.stack.at(-2)?.tag === Tag.DECLARATION_LIST && asType) {
           // Append parameter to declaration list with AS type on stack.
-          return T('{1}, {id+} {0}', Tag.DECLARATION_LIST);
+          return T('{1}, {id+}{0}', Tag.DECLARATION_LIST);
         }
         if (this.stack.at(-1)?.tag === Tag.DECLARATION_LIST) {
           // Append parameter to declaration list.
@@ -295,14 +295,14 @@ class Qb45Loader {
         }
         if (this.stack.at(-2)?.tag === Tag.DECLARATION_KEYWORD && asType) {
           // Begin declaration list with AS type on stack.
-          return T('{1} {id+} {0}', Tag.DECLARATION_LIST);
+          return T('{1} {id+}{0}', Tag.DECLARATION_LIST);
         }
         if (this.stack.at(-1)?.tag === Tag.DECLARATION_KEYWORD) {
           // Begin declaration list.
           return T('{0} {id+}', Tag.DECLARATION_LIST);
         }
         if (asType) {
-          return T('{id+} {0}', Tag.DECLARATION_LIST);
+          return T('{id+}{0}', Tag.DECLARATION_LIST);
         }
         return T('{id+}', Tag.DECLARATION_LIST);
       }
@@ -330,21 +330,20 @@ class Qb45Loader {
         const typeCode = this.u16();
         const typeName = typeCode <= 5 ? S(getTypeName(typeCode)) : this.id(typeCode);
         this.skipU16();  // Skip tab-to-column.
-        return {pcode, tag: Tag.AS_TYPE, text: [...S('AS '), ...typeName]};
+        return {pcode, text: [...S(' AS '), ...typeName], tag: Tag.AS_TYPE};
       }
       case 0x017:
       case 0x018:
-        // 0x018 is used as a dummy token in array declaration expressions when only one bound is provided.
+        // 0x018 is used as a dummy token in array declarations when only one bound is provided for a dimension.
         return T('');
-      case 0x019: {
-        this.skipU16();
+      case 0x019:
+        // Used in user-defined type declarations.
         return T('{id}');
-      }
       case 0x01a:
-        return T('SHARED');
+        return T('SHARED');  // Modifier on DIM/REDIM/COMMON.
       case 0x01b:
         return defType();
-      case 0x01c: {
+      case 0x01c:
         if (this.stack.at(-2)?.pcode === 0x01c) {
           // Append another variable to a REDIM parameter list.
           return T('{1}, {0}');
@@ -354,23 +353,18 @@ class Qb45Loader {
           return T('REDIM {1} {0}');
         }
         return T('REDIM {0}');
-      }
-      case 0x01d: {
+      case 0x01d:
         this.skipU16();
         return T('END TYPE');
-      }
-      case 0x01e: {
+      case 0x01e:
         this.skipU16();
         return T('SHARED', Tag.DECLARATION_KEYWORD);
-      }
-      case 0x01f: {
+      case 0x01f:
         this.skipU16();
         return T('STATIC', Tag.DECLARATION_KEYWORD);
-      }
-      case 0x020: {
+      case 0x020:
         this.skipU16();
         return T('TYPE {id}');
-      }
       case 0x023:
         return T('CONST');
       case 0x024:
@@ -1033,7 +1027,7 @@ class Qb45Loader {
         this.skipU16();
         const maxLength = this.u16();
         this.skipU16();  // Skip tab-to-column.
-        return {pcode, tag: Tag.AS_TYPE, text: [...S('AS STRING * '), ...S(`${maxLength}`)]};
+        return {pcode, text: [...S(' AS STRING * '), ...S(`${maxLength}`)], tag: Tag.AS_TYPE};
       }
       case 0x17d:
         this.skipU16();
