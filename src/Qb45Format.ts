@@ -15,6 +15,7 @@ enum Tag {
   DECLARATION_LIST,
   AS_TYPE,
   CASE,
+  COORDINATE,
 }
 
 // An entry on the p-code parse stack.
@@ -177,13 +178,7 @@ class Qb45Loader {
       }
       params[1] = `{${argumentIndex++}}`;
       params[0] = `{${argumentIndex++}}`;
-      let lastValidArgument = 0;
-      for (lastValidArgument = params.length - 1; lastValidArgument >= 0; lastValidArgument--) {
-        if (params[lastValidArgument] !== '') {
-          break;
-        }
-      }
-      params.length = lastValidArgument + 1;
+      truncate(params);
       return T(`CIRCLE ${params.join(', ')}`);
     };
     const defType = (): Entry => {
@@ -328,6 +323,29 @@ class Qb45Loader {
         name = `${name} ALIAS "${aliasName}"`;
       }
       return {pcode, text: [...S(name), ...S(argumentList)]};
+    };
+    const computedGoto = (keyword: string): Entry => {
+      const length = this.i16() / 2;
+      const ids: string[] = [];
+      for (let i = 0; i < length; i++) {
+        ids.push(asciiToString(this.id(this.u16())));
+      }
+      return T(`ON {0} ${keyword} ${ids.join(', ')}`);
+    };
+    const lineStatement = (): Entry => {
+      const params: string[] = [];
+      const boxStyle = this.u16() & 3;
+      const mask = (pcode - 0xbb) & 3;
+      let paramCount = 0;
+      params.unshift(mask & 2 ? `{${paramCount++}}` : '');
+      params.unshift(
+        boxStyle === 1 ? 'B' :
+        boxStyle === 2 ? 'BF' : ''
+      );
+      params.unshift(mask & 1 ? `{${paramCount++}}` : '');
+      params.unshift(`{${paramCount++}}`);
+      truncate(params);
+      return T(`LINE ${params.join(', ')}`);
     };
     switch (pcode) {
       case 0x000:
@@ -644,12 +662,16 @@ class Qb45Loader {
       case 0x066:
         this.skipU16();
         this.skipU16();
-        if (this.stack.at(-1)?.pcode === 0x066) {
+        if (this.stack.at(-2)?.pcode === 0x066) {
           return T('{1}, {0}');
         }
         return T('NEXT {0}');
       case 0x067:
         return T('ON ERROR GOTO {id}');
+      case 0x068:
+        return computedGoto('GOSUB');
+      case 0x069:
+        return computedGoto('GOTO');
       case 0x06a:
         return T('RESTORE');
       case 0x06b:
@@ -699,12 +721,18 @@ class Qb45Loader {
       case 0x080:
         return T('{0}');
       case 0x081:
-        return T('({1}, {0})');
+        return T('({1}, {0})', Tag.COORDINATE);
       case 0x082:
-        return T('STEP({1}, {0})');
+        return T('STEP({1}, {0})', Tag.COORDINATE);
       case 0x083:
+        if (this.stack.at(-3)?.tag === Tag.COORDINATE) {
+          return T('{2}-({1}, {0})');
+        }
         return T('-({1}, {0})');
       case 0x084:
+        if (this.stack.at(-3)?.tag === Tag.COORDINATE) {
+          return T('{2}-STEP({1}, {0})');
+        }
         return T('-STEP({1}, {0})');
       case 0x085:
         return T('FIELD {0}');
@@ -786,6 +814,11 @@ class Qb45Loader {
         return T('KEY {1}, {0}');
       case 0x0ba:
         return T('KILL {0}');
+      case 0x0bb:
+      case 0x0bc:
+      case 0x0bd:
+      case 0x0be:
+        return lineStatement();
       case 0x0bf:
         return T('LET ');
       case 0x0c4:
@@ -843,7 +876,7 @@ class Qb45Loader {
       case 0x0e1:
         return T('RANDOMIZE {0}');
       case 0x0e2:
-        if (this.stack.at(-1)?.pcode === 0x0e2) {
+        if (this.stack.at(-2)?.pcode === 0x0e2) {
           return T('{1}, {0}');
         }
         return T('READ {0}');
@@ -1320,4 +1353,14 @@ function getBuiltinTypeName(param: number): string {
       return 'STRING';
   }
   return 'ANY';
+}
+
+function truncate(params: string[]) {
+  let lastValidArgument = 0;
+  for (lastValidArgument = params.length - 1; lastValidArgument >= 0; lastValidArgument--) {
+    if (params[lastValidArgument] !== '') {
+      break;
+    }
+  }
+  params.length = lastValidArgument + 1;
 }
