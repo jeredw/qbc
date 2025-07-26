@@ -24,6 +24,12 @@ interface Entry {
   text: Ascii;  // Text associated.
 }
 
+// A section of code in the program image.
+interface Section {
+  offset: number;
+  size: number;
+}
+
 // Loosely based on the QB45BIN.bas utility from the QB64 project, and a lot of
 // random experimentation.
 class Qb45Loader {
@@ -32,7 +38,7 @@ class Qb45Loader {
   output: number[] = [];
   stack: Entry[] = [];
   procedureType = '';
-  endOfProgram = false;
+  endOfSection = false;
   endOfLine = false;
 
   constructor(buffer: ArrayBuffer) {
@@ -49,15 +55,41 @@ class Qb45Loader {
     this.offset = SYMBOL_TABLE_START - 2;
     const symbolTableSize = this.u16();
     this.offset += symbolTableSize;
-    const mainModuleSize = this.u16();
-    let firstLine = true;
+    const sections: Section[] = [];
     while (this.offset < this.data.byteLength) {
+      const size = this.u16();
+      sections.push({offset: this.offset, size});
+      // Skip code and metadata.
+      this.offset += size + 17;
+      if (this.offset >= this.data.byteLength) {
+        break;
+      }
+      const nameLength = this.u16();
+      this.offset += nameLength + 3;
+    }
+    for (const section of sections) {
+      if (this.output.length > 0) {
+        this.output.push(...stringToAscii('\n\n'))
+      }
+      this.loadSection(section);
+    }
+    return this.output;
+  }
+
+  private loadSection(section: Section) {
+    this.stack = [];
+    this.endOfLine = false;
+    this.endOfSection = false;
+    this.offset = section.offset;
+    const end = Math.min(this.data.byteLength, section.offset + section.size);
+    let firstLine = true;
+    while (this.offset < end) {
       const {pcode, tag, text} = this.parseToken();
       if (this.endOfLine) {
         for (let i = 0; i < this.stack.length; i++) {
           this.output.push(...this.stack[i].text);
         }
-        if (this.endOfProgram) {
+        if (this.endOfSection) {
           break;
         }
         if (!firstLine) {
@@ -73,7 +105,6 @@ class Qb45Loader {
         this.push({pcode, tag, text});
       }
     }
-    return this.output;
   }
 
   private push(entry: Entry) {
@@ -239,7 +270,7 @@ class Qb45Loader {
       const space = keyword ? '' : ' ';
       return T(`${keyword}{id}${space}${paramList}`);
     };
-    const procedure = ({keyword, parenthesis}: {keyword?: string, parenthesis: boolean}): Entry => {
+    const procedure = ({keyword, parenthesis}: {keyword?: string, parenthesis?: boolean}): Entry => {
       this.offset += 2;  // Skip junk?
       let name = asciiToString(this.id(this.u16()));
       const flags = this.u16();
@@ -252,10 +283,10 @@ class Qb45Loader {
         procedureTypeFlag === 2 ? 'FUNCTION' :
         procedureTypeFlag === 3 ? 'DEF' : ''
       );
+      name = `${this.procedureType} ${name}`;
       if (keyword) {
         name = `${keyword} ${name}`;
       }
-      name = `${this.procedureType} ${name}`;
       const numArguments = this.i16();
       if (numArguments === -1) {
         // A value of -1 signals that there are no trailing parentheses in a declaration.
@@ -337,7 +368,7 @@ class Qb45Loader {
         return T(':{tab-to-column}');
       case 0x008:
         this.endOfLine = true;
-        this.endOfProgram = true;
+        this.endOfSection = true;
         return {};
       case 0x009:
         return {};  // end of watches, skip
@@ -580,6 +611,9 @@ class Qb45Loader {
         this.skipU16();
         this.skipU16();
         return T('FOR {3} = {2} TO {1} STEP {0}');
+      case 0x058:
+        // FUNCTION definition.
+        return procedure({});
       case 0x059:
         return T('GOSUB {id}');
       case 0x05b:
@@ -642,6 +676,9 @@ class Qb45Loader {
       case 0x075:
         this.skipU16();
         return T('STOP');
+      case 0x076:
+        // SUB definition.
+        return procedure({});
       case 0x077:
         return T('WAIT {1}, {0}')
       case 0x078:
