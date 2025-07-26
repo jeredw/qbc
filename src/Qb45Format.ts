@@ -31,6 +31,7 @@ class Qb45Loader {
   offset: number = 0;
   output: number[] = [];
   stack: Entry[] = [];
+  procedureType = '';
   endOfProgram = false;
   endOfLine = false;
 
@@ -226,7 +227,7 @@ class Qb45Loader {
       return T(`{id+}${indexList}`);
     };
     const call = ({keyword, parenthesis}: {keyword: string, parenthesis: boolean}): Entry => {
-      const numParams = this.u16();
+      const numParams = this.i16();
       const params: string[] = [];
       for (let i = 0; i < numParams; i++) {
         params.unshift(`{${i}}`);
@@ -238,18 +239,28 @@ class Qb45Loader {
       const space = keyword ? '' : ' ';
       return T(`${keyword}{id}${space}${paramList}`);
     };
-    const procedure = ({parenthesis}: {parenthesis: boolean}): Entry => {
+    const procedure = ({keyword, parenthesis}: {keyword?: string, parenthesis: boolean}): Entry => {
       this.offset += 2;  // Skip junk?
       let name = asciiToString(this.id(this.u16()));
       const flags = this.u16();
       if (flags & 0x80) {
         name += getSigil(flags & 7);
       }
-      const procedureType = (flags >> 8) & 3;
-      name = (procedureType === 1 ? 'DECLARE SUB ' :
-        procedureType === 2 ? 'DECLARE FUNCTION ' :
-        procedureType === 3 ? 'DEF ' : '') + name;
-      const numArguments = this.u16();
+      const procedureTypeFlag = (flags >> 8) & 3;
+      this.procedureType = (
+        procedureTypeFlag === 1 ? 'SUB' :
+        procedureTypeFlag === 2 ? 'FUNCTION' :
+        procedureTypeFlag === 3 ? 'DEF' : ''
+      );
+      if (keyword) {
+        name = `${keyword} ${name}`;
+      }
+      name = `${this.procedureType} ${name}`;
+      const numArguments = this.i16();
+      if (numArguments === -1) {
+        // A value of -1 signals that there are no trailing parentheses in a declaration.
+        parenthesis = false;
+      }
       const params: string[] = [];
       for (let i = 0; i < numArguments; i++) {
         let argName = asciiToString(this.id(this.u16()));
@@ -517,7 +528,7 @@ class Qb45Loader {
       case 0x043:
         return T('ON');
       case 0x044:
-        return procedure({parenthesis: true});
+        return procedure({keyword: 'DECLARE', parenthesis: true});
       case 0x045:
         // Used for def fn procedures.
         this.skipU16();
@@ -525,19 +536,22 @@ class Qb45Loader {
       case 0x046:
         return T('DO');
       case 0x047:
+        this.skipU16();
         return T('DO UNTIL {0}');
       case 0x048:
         this.skipU16();
         return T('DO WHILE {0}');
       case 0x049:
+        this.skipU16();
         return T('ELSE ');
       case 0x04a:
-        // Implicit GOTO line number.
-        this.skipU16();
+        // Implicit GOTO line number for 4c.
         return T('{id}');
       case 0x04c:
+        // Used for inline if ELSE.
         return T(' ELSE ');
       case 0x04d:
+        this.skipU16();
         return T('ELSEIF {0} THEN');
       case 0x04e:
         return T('END');
@@ -545,6 +559,8 @@ class Qb45Loader {
         return T('END DEF');
       case 0x050:
         return T('END IF');
+      case 0x051:
+        return T(`END ${this.procedureType}`);
       case 0x052:
         return T('END SELECT');
       case 0x053:
@@ -553,6 +569,9 @@ class Qb45Loader {
       case 0x054:
         this.skipU16();
         return T('EXIT FOR');
+      case 0x055:
+        this.skipU16();
+        return T(`EXIT ${this.procedureType}`);
       case 0x056:
         this.skipU16();
         this.skipU16();
