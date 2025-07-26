@@ -1,4 +1,4 @@
-import { stringToAscii } from "./AsciiChart";
+import { asciiToString, stringToAscii } from "./AsciiChart";
 
 export function decodeQb45BinaryFile(buffer: ArrayBuffer): number[] {
   return new Qb45Loader(buffer).decode();
@@ -238,6 +238,55 @@ class Qb45Loader {
       const space = keyword ? '' : ' ';
       return T(`${keyword}{id}${space}${paramList}`);
     };
+    const procedure = ({parenthesis}: {parenthesis: boolean}): Entry => {
+      this.offset += 2;  // Skip junk?
+      let name = asciiToString(this.id(this.u16()));
+      const flags = this.u16();
+      if (flags & 0x80) {
+        name += getSigil(flags & 7);
+      }
+      const procedureType = (flags >> 8) & 3;
+      name = (procedureType === 1 ? 'DECLARE SUB ' :
+        procedureType === 2 ? 'DECLARE FUNCTION ' :
+        procedureType === 3 ? 'DEF ' : '') + name;
+      const numArguments = this.u16();
+      const params: string[] = [];
+      for (let i = 0; i < numArguments; i++) {
+        let argName = asciiToString(this.id(this.u16()));
+        const argFlags = this.u16();
+        const argType = this.u16();
+        if (argFlags & 0x200) {
+          argName += getSigil(argType);
+        }
+        if (argFlags & 0x400) {
+          argName += '()';
+        }
+        if (argFlags & 0x800) {
+          argName = `SEG ${argName}`;
+        }
+        if (argFlags & 0x1000) {
+          argName = `BYVAL ${argName}`;
+        }
+        if (argFlags & 0x2000) {
+          const typeName = asciiToString(this.getTypeName(argType));
+          argName = `${argName} AS ${typeName}`;
+        }
+        params.push(argName);
+      }
+      let argumentList = params.join(', ');
+      if (parenthesis || argumentList) {
+        argumentList = ` (${argumentList})`;
+      }
+      if (flags & 0x8000) {
+        name = `${name} CDECL`;
+      }
+      const aliasLength = (flags >> 10) & 0x1f;
+      if (aliasLength > 0) {
+        const aliasName = asciiToString(this.string(aliasLength));
+        name = `${name} ALIAS "${aliasName}"`;
+      }
+      return {pcode, text: [...S(name), ...S(argumentList)]};
+    };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
@@ -343,8 +392,7 @@ class Qb45Loader {
         return T('{0}.{id} = {1}');
       case 0x015:
       case 0x016: {
-        const typeCode = this.u16();
-        const typeName = typeCode <= 5 ? S(getTypeName(typeCode)) : this.id(typeCode);
+        const typeName = this.getTypeName(this.u16());
         this.skipU16();  // Skip tab-to-column.
         return {pcode, text: [...S(' AS '), ...typeName], tag: Tag.AS_TYPE};
       }
@@ -468,6 +516,12 @@ class Qb45Loader {
         return T('CASE IS <> {0}', Tag.CASE);
       case 0x043:
         return T('ON');
+      case 0x044:
+        return procedure({parenthesis: true});
+      case 0x045:
+        // Used for def fn procedures.
+        this.skipU16();
+        return procedure({parenthesis: false});
       case 0x046:
         return T('DO');
       case 0x047:
@@ -564,6 +618,7 @@ class Qb45Loader {
       case 0x073:
         return T('RUN');
       case 0x074:
+        this.skipU16();
         return T('SELECT CASE {0}');
       case 0x075:
         this.skipU16();
@@ -1157,6 +1212,10 @@ class Qb45Loader {
     this.offset += 8;
     return value;
   }
+
+  private getTypeName(code: number): Ascii {
+    return code <= 5 ? stringToAscii(getBuiltinTypeName(code)) : this.id(code);
+  }
 }
 
 function getSigil(param: number): string {
@@ -1191,7 +1250,7 @@ function getDefTypeName(param: number): string {
   return '';
 }
 
-function getTypeName(param: number): string {
+function getBuiltinTypeName(param: number): string {
   switch (param) {
     case 1:
       return 'INTEGER';
