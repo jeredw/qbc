@@ -753,7 +753,7 @@ class Qb45Loader {
         // Used to attach variable lists to INPUT statements.
         return T('{1} {0}');
       case 0x089: {
-        const tokenLengthInBytes = this.byteLengthRoundedUp();
+        const tokenLengthInBytes = roundUp(this.u16());
         const format = inputFormat({promptArgument: 0});
         this.offset += tokenLengthInBytes - 2;  // inputFormat reads flags.
         return format ? T(`INPUT ${format}`) : T('INPUT');
@@ -764,13 +764,19 @@ class Qb45Loader {
         this.skipU16();
         return {};
       case 0x097: {
-        this.skipU16();  // Skip tab-to-column.
         const length = this.u16();
-        return {pcode, text: [...S(`'`), ...this.string(length)]};
+        const start = this.offset;
+        const tabOffset = this.u16();
+        const comment = this.string(length - 2);
+        this.offset = start + roundUp(length);
+        return {pcode, text: [...S(`${tabOffset > 0 ? ' ' : ''}'`), ...comment]};
       }
       case 0x099: {
         const length = this.u16();
-        return {pcode, text: [...S('$INCLUDE: \''), ...this.string(length)]};
+        const start = this.offset;
+        const path = this.string(length);
+        this.offset = start + roundUp(length);
+        return {pcode, text: [...S('$INCLUDE: \''), ...path]};
       }
       case 0x09a:
         return T('BEEP');
@@ -1393,6 +1399,10 @@ function getBuiltinTypeName(param: number): string {
       return 'STRING';
   }
   return 'ANY';
+}
+
+function roundUp(n: number): number {
+  return (n & 1) ? n + 1 : n;
 }
 
 function truncate(params: string[]) {
