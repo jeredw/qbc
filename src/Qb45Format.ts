@@ -907,7 +907,11 @@ class Qb45Loader {
       case 0x0a2:
         return varArgStatement('CLOSE');
       case 0x0a3:
-        return T('CLS ');
+        if (this.stack.at(-1)?.pcode === 0x173) {
+          // CLS with no argument is encoded with a null sentinel.
+          return T('CLS');
+        }
+        return T('CLS {0}');
       case 0x0a4:
         return varArgStatement('COLOR');
       case 0x0a6:
