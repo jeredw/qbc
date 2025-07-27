@@ -347,6 +347,14 @@ class Qb45Loader {
       truncate(params);
       return T(`LINE ${params.join(', ')}`);
     };
+    const inputFormat = ({promptArgument}: {promptArgument: number}): string => {
+      const flags = this.u16();
+      let semicolon = flags & 2 ? ';' : '';
+      let promptSeparator = flags & 1 ? ',' : ';';
+      let promptString = flags & 4 ? `{${promptArgument}}${promptSeparator}` : '';
+      let spaceBeforePrompt = semicolon && promptString ? ' ' : '';
+      return `${semicolon}${spaceBeforePrompt}${promptString}`;
+    };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
@@ -738,6 +746,18 @@ class Qb45Loader {
         return T('FIELD {0}');
       case 0x086:
         return T(', {1} AS {0}');
+      case 0x087:
+        // Used for INPUT # and LINE INPUT # statements.
+        return T('INPUT {0},');
+      case 0x088:
+        // Used to attach variable lists to INPUT statements.
+        return T('{1} {0}');
+      case 0x089: {
+        const tokenLengthInBytes = this.byteLengthRoundedUp();
+        const format = inputFormat({promptArgument: 0});
+        this.offset += tokenLengthInBytes - 2;  // inputFormat reads flags.
+        return format ? T(`INPUT ${format}`) : T('INPUT');
+      }
       case 0x08a:
         return T('#{0}');
       case 0x08c:
@@ -808,6 +828,12 @@ class Qb45Loader {
         return T('GET {2}, {1}, {0}');
       case 0x0b4:
         return T('GET {1}, {0}');
+      case 0x0b6:
+        // INPUT variable list.
+        if (this.stack.at(-2)?.pcode === 0x0b6) {
+          return T('{1}, {0}');
+        }
+        return T('{0}');
       case 0x0b7:
         return T('IOCTL {1}, {0}');
       case 0x0b9:
@@ -821,6 +847,15 @@ class Qb45Loader {
         return lineStatement();
       case 0x0bf:
         return T('LET ');
+      case 0x0c0: {
+        if (this.stack.at(-2)?.pcode === 0x087) {
+          // Handle LINE INPUT # statement.
+          this.skipU16();
+          return T('LINE {1} {0}');
+        }
+        const format = inputFormat({promptArgument: 1});
+        return format ? T(`LINE INPUT ${format} {0}`) : T('LINE INPUT {0}');
+      }
       case 0x0c4:
         return T('LSET {0} = {1}');
       case 0x0c5:
@@ -1260,6 +1295,11 @@ class Qb45Loader {
     const value = this.data.getInt16(this.offset, littleEndian);
     this.offset += 2;
     return value;
+  }
+
+  private byteLengthRoundedUp(): number {
+    const length = this.u16();
+    return (length & 1) ? length + 1 : length;
   }
 
   private skipU16() {
