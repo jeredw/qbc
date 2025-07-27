@@ -16,6 +16,9 @@ enum Tag {
   AS_TYPE,
   CASE,
   COORDINATE,
+  PRINT_COMMAND,
+  PRINT_USING,
+  PRINT_ARGUMENTS,
 }
 
 // An entry on the p-code parse stack.
@@ -723,6 +726,11 @@ class Qb45Loader {
       case 0x07b:
       case 0x07c:
         return {};
+      case 0x07d:
+        if (this.stack.at(-2)?.tag === Tag.PRINT_COMMAND) {
+          return T('{1} {0},', Tag.PRINT_COMMAND);
+        }
+        return T('PRINT {0},');
       // 7e, 7f, and 80 are dummy tokens for optional arguments in the circle statement.
       case 0x07e:
       case 0x07f:
@@ -763,6 +771,89 @@ class Qb45Loader {
       case 0x08c:
         this.skipU16();
         return {};
+      case 0x08f:
+        if (this.stack.at(-2)?.tag === Tag.PRINT_ARGUMENTS) {
+          return T('{1} SPC({0})', Tag.PRINT_ARGUMENTS);
+        }
+        return T('SPC({0})', Tag.PRINT_ARGUMENTS);
+      case 0x090:
+        if (this.stack.at(-2)?.tag === Tag.PRINT_ARGUMENTS) {
+          return T('{1} TAB({0})', Tag.PRINT_ARGUMENTS);
+        }
+        return T('TAB({0})', Tag.PRINT_ARGUMENTS);
+      case 0x091: {
+        // Append comma to PRINT argument list.
+        const top = this.stack.at(-1);
+        const separator = endsWithSeparator(top?.text) ? ' ,' : ',';
+        if (top?.tag === Tag.PRINT_ARGUMENTS) {
+          return T(`{0}${separator}`, Tag.PRINT_ARGUMENTS);
+        }
+        return T(`${separator}`, Tag.PRINT_ARGUMENTS);
+      }
+      case 0x092: {
+        // Append semicolon to PRINT argument list.
+        const top = this.stack.at(-1);
+        if (top?.pcode === 0x092) {
+          return T('{0}', Tag.PRINT_ARGUMENTS);
+        }
+        const separator = endsWithSeparator(top?.text) ? ' ;' : ';';
+        if (top?.tag === Tag.PRINT_ARGUMENTS) {
+          return T(`{0}${separator}`, Tag.PRINT_ARGUMENTS);
+        }
+        return T(`${separator}`, Tag.PRINT_ARGUMENTS);
+      }
+      case 0x093:
+        if (this.stack.at(-3)?.tag === Tag.PRINT_COMMAND) {
+          return T('{2} {1} {0}');
+        }
+        if (this.stack.at(-2)?.tag === Tag.PRINT_COMMAND) {
+          return T('{1} {0}');
+        }
+        if (this.stack.at(-1)?.tag === Tag.PRINT_COMMAND) {
+          return T('{0}');
+        }
+        if (this.stack.at(-2)?.tag === Tag.PRINT_USING) {
+          return T('PRINT {1} {0}');
+        }
+        if (this.stack.at(-1)?.tag === Tag.PRINT_USING ||
+            this.stack.at(-1)?.tag === Tag.PRINT_ARGUMENTS) {
+          return T('PRINT {0}');
+        }
+        return T('PRINT');
+      case 0x094: {
+        // Append argument + comma to PRINT argument list.
+        const separator = endsWithSeparator(this.stack.at(-1)?.text) ? ' ,' : ',';
+        if (this.stack.at(-2)?.tag === Tag.PRINT_ARGUMENTS) {
+          return T(`{1} {0}${separator}`, Tag.PRINT_ARGUMENTS);
+        }
+        return T(`{0}${separator}`, Tag.PRINT_ARGUMENTS);
+      }
+      case 0x095: {
+        // Append argument + semicolon to PRINT argument list.
+        const separator = endsWithSeparator(this.stack.at(-1)?.text) ? ' ;' : ';';
+        if (this.stack.at(-2)?.tag === Tag.PRINT_ARGUMENTS) {
+          return T(`{1} {0}${separator}`, Tag.PRINT_ARGUMENTS);
+        }
+        return T(`{0}${separator}`, Tag.PRINT_ARGUMENTS);
+      }
+      case 0x096:
+        if (this.stack.at(-4)?.tag === Tag.PRINT_COMMAND) {
+          return T('{3} {2} {1} {0}');
+        }
+        if (this.stack.at(-3)?.tag === Tag.PRINT_COMMAND) {
+          return T('{2} {1} {0}');
+        }
+        if (this.stack.at(-2)?.tag === Tag.PRINT_COMMAND) {
+          return T('{1} {0}');
+        }
+        if (this.stack.at(-3)?.tag === Tag.PRINT_USING) {
+          return T('PRINT {2} {1} {0}');
+        }
+        if (this.stack.at(-2)?.tag === Tag.PRINT_ARGUMENTS ||
+            this.stack.at(-2)?.tag === Tag.PRINT_USING) {
+          return T('PRINT {1} {0}');
+        }
+        return T('PRINT {0}');
       case 0x097: {
         const length = this.u16();
         const start = this.offset;
@@ -862,6 +953,8 @@ class Qb45Loader {
         const format = inputFormat({promptArgument: 1});
         return format ? T(`LINE INPUT ${format} {0}`) : T('LINE INPUT {0}');
       }
+      case 0x0c3:
+        return T('LPRINT', Tag.PRINT_COMMAND);
       case 0x0c4:
         return T('LSET {0} = {1}');
       case 0x0c5:
@@ -968,6 +1061,10 @@ class Qb45Loader {
         return T('WINDOW')
       case 0x0fd:
         return T('WINDOW SCREEN ({3}, {2})-({1}, {0})')
+      case 0x0fe:
+        return T('WRITE', Tag.PRINT_COMMAND);
+      case 0x0ff:
+        return T('USING {0};', Tag.PRINT_USING);
       case 0x100:
         return T('{1} + {0}');
       case 0x101:
@@ -1403,6 +1500,11 @@ function getBuiltinTypeName(param: number): string {
 
 function roundUp(n: number): number {
   return (n & 1) ? n + 1 : n;
+}
+
+function endsWithSeparator(text: Ascii | undefined): boolean {
+  return text?.at(-1) === ';'.charCodeAt(0) ||
+    text?.at(-1) === ','.charCodeAt(0);
 }
 
 function truncate(params: string[]) {
