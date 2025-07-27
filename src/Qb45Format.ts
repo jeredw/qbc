@@ -378,6 +378,47 @@ class Qb45Loader {
       const space = params.length > 0 ? ' ' : '';
       return T(`${keyword}${space}${params.join(', ')}${nullParams}`);
     };
+    const lockStatement = (keyword: string): Entry => {
+      const flags = this.u16();
+      if (!(flags & 2)) {
+        return T(`${keyword} {0}`);
+      }
+      const index = (flags >> 14) & 3;
+      if (index === 0) {
+        return T(`${keyword} {2}, {1} TO {0}`);
+      }
+      if (index === 1) {
+        // Remove implicit encoded "1" for the start argument.
+        this.stack.splice(-2, 1);
+        return T(`${keyword} {1}, TO {0}`);
+      }
+      return T(`${keyword} {1}, {0}`);
+    };
+    const openFormat = (): string => {
+      const flags = this.u16();
+      const forMode = (
+        (flags & 0x01) ? 'FOR INPUT' :
+        (flags & 0x02) ? 'FOR OUTPUT' :
+        (flags & 0x04) ? 'FOR RANDOM' :
+        (flags & 0x08) ? 'FOR APPEND' :
+        (flags & 0x10) ? 'FOR BINARY' :
+        ''
+      );
+      const accessMode = (
+        (flags & 0x300) === 0x100 ? 'ACCESS READ' :
+        (flags & 0x300) === 0x200 ? 'ACCESS WRITE' :
+        (flags & 0x300) === 0x300 ? 'ACCESS READ WRITE' :
+        ''
+      );
+      const lockMode = (
+        (flags & 0x7000) === 0x1000 ? 'LOCK READ WRITE' :
+        (flags & 0x7000) === 0x2000 ? 'LOCK WRITE' :
+        (flags & 0x7000) === 0x3000 ? 'LOCK READ' :
+        (flags & 0x7000) === 0x4000 ? 'SHARED' :
+        ''
+      );
+      return [forMode, accessMode, lockMode].filter((x) => x).join(' ');
+    };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
@@ -962,6 +1003,20 @@ class Qb45Loader {
         return T('GET {2}, {1}, {0}');
       case 0x0b4:
         return T('GET {1}, {0}');
+      case 0x0b5: {
+        const verbTag = this.i16();
+        const verb = (
+          verbTag === 0 ? 'OR' :
+          verbTag === 1 ? 'AND' :
+          verbTag === 2 ? 'PRESET' :
+          verbTag === 3 ? 'PSET' :
+          verbTag === 4 ? 'XOR' : ''
+        );
+        if (!verb) {
+          return T('PUT {1}, {0}');
+        }
+        return T(`PUT {1}, {0}, ${verb}`);
+      }
       case 0x0b6:
         // INPUT variable list.
         if (this.stack.at(-2)?.pcode === 0x0b6) {
@@ -970,6 +1025,15 @@ class Qb45Loader {
         return T('{0}');
       case 0x0b7:
         return T('IOCTL {1}, {0}');
+      case 0x0b8: {
+        const modeTag = this.i16();
+        const mode = (
+          modeTag === 1 ? 'ON' :
+          modeTag === 2 ? 'LIST' :
+          'OFF'
+        );
+        return T(`KEY ${mode}`);
+      }
       case 0x0b9:
         return T('KEY {1}, {0}');
       case 0x0ba:
@@ -992,6 +1056,8 @@ class Qb45Loader {
       }
       case 0x0c1:
         return varArgStatement('LOCATE');
+      case 0x0c2:
+        return lockStatement('LOCK');
       case 0x0c3:
         return T('LPRINT', Tag.PRINT_COMMAND);
       case 0x0c4:
@@ -1004,6 +1070,14 @@ class Qb45Loader {
         return T('MKDIR {0}');
       case 0x0c8:
         return T('NAME {1} AS {0}');
+      case 0x0c9: {
+        const format = openFormat();
+        return T(`OPEN {1} ${format} AS {0}`);
+      }
+      case 0x0ca: {
+        const format = openFormat();
+        return T(`OPEN {2} ${format} AS {1} LEN = {0}`);
+      }
       case 0x0cb:
         return T('OPEN {2}, {1}, {0}');
       case 0x0cc:
@@ -1086,6 +1160,8 @@ class Qb45Loader {
         return T('TROFF');
       case 0x0f1:
         return T('TRON');
+      case 0x0f2:
+        return lockStatement('UNLOCK');
       case 0x0f4:
         return T('VIEW');
       case 0x0f5:
