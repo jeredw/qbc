@@ -781,9 +781,9 @@ class Qb45Loader {
         // Used to attach variable lists to INPUT statements.
         return T('{1} {0}');
       case 0x089: {
-        const tokenLengthInBytes = roundUp(this.u16());
+        const length = roundUp(this.u16());
         const format = inputFormat({promptArgument: 0});
-        this.offset += tokenLengthInBytes - 2;  // inputFormat reads flags.
+        this.offset += length - 2;  // inputFormat reads flags.
         return format ? T(`INPUT ${format}`) : T('INPUT');
       }
       case 0x08a:
@@ -924,9 +924,14 @@ class Qb45Loader {
         }
         return T(`COMMON${blockName}`, Tag.DECLARATION_KEYWORD);
       }
-      case 0x0a6:
+      case 0x0a6: {
+        const length = this.u16();
+        const start = this.offset;
         this.skipU16();
-        return {text: [...S('DATA'), ...this.string(length, true)]};
+        const string = this.nullTerminatedString();
+        this.offset = start + roundUp(length);
+        return {text: [...S('DATA'), ...string]};
+      }
       case 0x0a7:
         return T('DATE$ = {0}');
       case 0x0a8:
@@ -1408,19 +1413,23 @@ class Qb45Loader {
     return result;
   }
 
-  private string(length: number, nullTerminated = false): Ascii {
-    // Always read and output length bytes, but if nullTerminated is true, truncate the
-    // string at the first \x00 byte.
+  private nullTerminatedString(): Ascii {
     const string: number[] = [];
-    let sawNull = false;
-    for (let i = 0; i < length; i++) {
+    while (this.offset < this.data.byteLength) {
       const byte = this.data.getUint8(this.offset++);
       if (byte === 0) {
-        sawNull = true;
+        break;
       }
-      if (!sawNull || !nullTerminated) {
-        string.push(byte);
-      }
+      string.push(byte);
+    }
+    return string;
+  }
+
+  private string(length: number): Ascii {
+    const string: number[] = [];
+    for (let i = 0; i < length; i++) {
+      const byte = this.data.getUint8(this.offset++);
+      string.push(byte);
     }
     return string;
   }
