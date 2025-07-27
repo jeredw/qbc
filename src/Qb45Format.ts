@@ -914,6 +914,16 @@ class Qb45Loader {
         return T('CLS {0}');
       case 0x0a4:
         return varArgStatement('COLOR');
+      case 0x0a5: {
+        this.skipU16();
+        const symbol = this.i16();
+        const blockName = symbol !== -1 ? ` /${asciiToString(this.id(symbol))}/` : '';
+        if (this.stack.at(-1)?.pcode === 0x01a) {
+          // COMMON SHARED.
+          return T(`COMMON {0}${blockName}`, Tag.DECLARATION_KEYWORD);
+        }
+        return T(`COMMON${blockName}`, Tag.DECLARATION_KEYWORD);
+      }
       case 0x0a6:
         this.skipU16();
         return {text: [...S('DATA'), ...this.string(length, true)]};
