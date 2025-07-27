@@ -358,6 +358,26 @@ class Qb45Loader {
       let spaceBeforePrompt = semicolon && promptString ? ' ' : '';
       return `${semicolon}${spaceBeforePrompt}${promptString}`;
     };
+    const varArgStatement = (keyword: string): Entry => {
+      const params: string[] = [];
+      const numParams = this.i16();
+      let nullParams = '';
+      for (let i = 0; i < numParams; i++) {
+        if (this.stack.at(-1 - i)?.pcode === 0x173) {
+          // This stack sentinel is just skipped.
+          nullParams += `{${i}}`;
+        } else if (this.stack.at(-1 - i)?.pcode === 0x172) {
+          // This sentinel indicates an empty parameter.
+          params.unshift('');
+          nullParams += `{${i}}`;
+        } else {
+          params.unshift(`{${i}}`);
+        }
+      }
+      truncate(params);
+      const space = params.length > 0 ? ' ' : '';
+      return T(`${keyword}${space}${params.join(', ')}${nullParams}`);
+    };
     switch (pcode) {
       case 0x000:
         this.endOfLine = true;
@@ -883,17 +903,13 @@ class Qb45Loader {
       case 0x0a0:
         return circle();
       case 0x0a1:
-        this.skipU16();
-        return T('CLEAR ');
+        return varArgStatement('CLEAR');
       case 0x0a2:
-        this.skipU16();
-        return T('CLEAR ');
+        return varArgStatement('CLOSE');
       case 0x0a3:
         return T('CLS ');
-      case 0x0a4: {
-        this.skipU16();
-        return T('COLOR ');
-      }
+      case 0x0a4:
+        return varArgStatement('COLOR');
       case 0x0a6:
         this.skipU16();
         return {text: [...S('DATA'), ...this.string(length, true)]};
@@ -907,6 +923,8 @@ class Qb45Loader {
         return T('DRAW {0}');
       case 0x0ab:
         return T('ENVIRON {0}');
+      case 0x0ac:
+        return varArgStatement('ERASE');
       case 0x0ad:
         return T('ERROR {0}');
       case 0x0ae:
@@ -953,6 +971,8 @@ class Qb45Loader {
         const format = inputFormat({promptArgument: 1});
         return format ? T(`LINE INPUT ${format} {0}`) : T('LINE INPUT {0}');
       }
+      case 0x0c1:
+        return varArgStatement('LOCATE');
       case 0x0c3:
         return T('LPRINT', Tag.PRINT_COMMAND);
       case 0x0c4:
@@ -1024,6 +1044,8 @@ class Qb45Loader {
         return T('RMDIR {0}');
       case 0x0e6:
         return T('RSET {0} = {1}');
+      case 0x0e7:
+        return varArgStatement('SCREEN');
       case 0x0e8:
         return T('SEEK {1}, {0}');
       case 0x0e9:
@@ -1312,8 +1334,10 @@ class Qb45Loader {
       case 0x170:
         return T('{1} * {0}');
       case 0x172:
+        // Stack sentinel for varargs statements.
         return T('');
       case 0x173:
+        // Stack sentinel for varargs statements.
         return T('');
       case 0x174:
         return T('NOT {0}')
