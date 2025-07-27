@@ -464,9 +464,11 @@ class Qb45Loader {
         return {};  // end of watches, skip
       case 0x00a: {
         const length = this.u16();
-        // This token occurs for random unrecognized text in a program.
-        // In that case the first two bytes of string data seem to be \xff and should be skipped.
-        return {pcode, text: this.string(length).slice(2)};
+        const start = this.offset;
+        this.skipU16();
+        const text = this.string(length);
+        this.offset = start + roundUp(length);
+        return {pcode, text};
       }
       case 0x00b:
         return T('{id+}');
@@ -1088,6 +1090,17 @@ class Qb45Loader {
         return T('OPTION BASE 1');
       case 0x0cf:
         return T('OUT {1}, {0}');
+      case 0x0d0:
+        if (this.stack.at(-2)?.pcode === 0x173 && this.stack.at(-1)?.pcode === 0x173) {
+          return T('PAINT {2}{1}{0}');
+        }
+        if (this.stack.at(-2)?.pcode === 0x173) {
+          return T('PAINT {2}, {1}, {0}');
+        }
+        if (this.stack.at(-1)?.pcode === 0x173) {
+          return T('PAINT {2}, {1}{0}');
+        }
+        return T('PAINT {2}, {1}, {0}');
       case 0x0d1:
         return T('PAINT {3}, {2}, {1}, {0}');
       case 0x0d2:
@@ -1129,7 +1142,10 @@ class Qb45Loader {
         return T('READ {0}');
       case 0x0e3: {
         const length = this.u16();
-        return {text: [...S('REM'), ...this.string(length)]};
+        const start = this.offset;
+        const string = this.string(length);
+        this.offset = start + roundUp(length);
+        return {text: [...S('REM'), ...string]};
       }
       case 0x0e4:
         return T('RESET');
@@ -1162,12 +1178,33 @@ class Qb45Loader {
         return T('TRON');
       case 0x0f2:
         return lockStatement('UNLOCK');
+      case 0x0f3:
+        if (this.stack.at(-2)?.pcode === 0x173 && this.stack.at(-1)?.pcode === 0x173) {
+          return T('VIEW ({5}, {4})-({3}, {2}){1}{0}');
+        }
+        if (this.stack.at(-1)?.pcode === 0x173) {
+          return T('VIEW ({5}, {4})-({3}, {2}), {1}{0}');
+        }
+        return T('VIEW ({5}, {4})-({3}, {2}), {1}, {0}');
       case 0x0f4:
         return T('VIEW');
       case 0x0f5:
         return T('VIEW PRINT');
       case 0x0f6:
         return T('VIEW PRINT {1} TO {0}');
+      case 0x0f7:
+        if (this.stack.at(-2)?.pcode === 0x173 && this.stack.at(-1)?.pcode === 0x173) {
+          return T('VIEW SCREEN ({5}, {4})-({3}, {2}){1}{0}');
+        }
+        if (this.stack.at(-1)?.pcode === 0x173) {
+          return T('VIEW SCREEN ({5}, {4})-({3}, {2}), {1}{0}');
+        }
+        return T('VIEW ({5}, {4})-({3}, {2}), {1}, {0}');
+      case 0x0f8:
+        if (this.stack.at(-1)?.pcode === 0x173) {
+          return T('WIDTH {1}{0}');
+        }
+        return T('WIDTH {1}, {0}');
       case 0x0f9:
         return T('WIDTH LPRINT {0}')
       case 0x0fa:
@@ -1415,11 +1452,9 @@ class Qb45Loader {
         return T(`${this.f64()}`);
       case 0x16d: {
         const length = this.u16();
+        const start = this.offset;
         const string = this.string(length);
-        if (length & 1) {
-          // Strings are padded to 2-byte boundaries.
-          this.offset++;
-        }
+        this.offset = start + roundUp(length);
         return {pcode, text: [...S('"'), ...string, ...S('"')]};
       }
       case 0x16e:
@@ -1428,11 +1463,13 @@ class Qb45Loader {
         return T('{1} MOD {0}');
       case 0x170:
         return T('{1} * {0}');
+      case 0x171:
+        return T('{1} <> {0}');
       case 0x172:
         // Stack sentinel for varargs statements.
         return T('');
       case 0x173:
-        // Stack sentinel for varargs statements.
+        // Empty argument placeholder.
         return T('');
       case 0x174:
         return T('NOT {0}')
@@ -1505,7 +1542,15 @@ class Qb45Loader {
     const string: number[] = [];
     for (let i = 0; i < length; i++) {
       const byte = this.data.getUint8(this.offset++);
-      string.push(byte);
+      if (byte === 0x0d) {
+        // Insert run length encoded span.
+        const length = this.data.getUint8(this.offset++);
+        const char = this.data.getUint8(this.offset++);
+        i += 2;
+        string.push(...new Array(length).fill(char));
+      } else {
+        string.push(byte);
+      }
     }
     return string;
   }
