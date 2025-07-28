@@ -793,7 +793,7 @@ class Qb45Loader {
         if (this.stack.at(-2)?.tag === Tag.PRINT_COMMAND) {
           return T('{1} {0},', Tag.PRINT_COMMAND);
         }
-        return T('PRINT {0},');
+        return T('PRINT {0},', Tag.PRINT_COMMAND);
       // 7e, 7f, and 80 are dummy tokens for optional arguments in the circle statement.
       case 0x07e:
       case 0x07f:
