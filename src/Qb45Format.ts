@@ -689,7 +689,7 @@ class Qb45Loader {
         return T('DO WHILE {0}');
       case 0x049:
         this.skipU16();
-        return T('ELSE ');
+        return T(' ELSE ');
       case 0x04a:
         // Implicit GOTO line number for 4c.
         return T('{id}');
