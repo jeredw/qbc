@@ -361,7 +361,47 @@ export function decodeGwBasicBinaryFile(buffer: ArrayBuffer): number[] {
           }
           output.push(...stringToAscii(`${code - 0x11}`));
         } else if (code >= 128) {
+          if (code === 231 && offset < data.byteLength) {
+            // Some older programs use => instead of >=, or =< instead of <=.
+            const peek = data.getUint8(offset);
+            if (peek === 230) {
+              output.push(...stringToAscii(">="));
+              offset++;
+              break;
+            }
+            if (peek === 232) {
+              output.push(...stringToAscii("<="));
+              offset++;
+              break;
+            }
+          }
+          if (code === 0xb1 && offset < data.byteLength) {
+            const peek = data.getUint8(offset);
+            if (peek === 0xe9) {
+              // WHILE is encoded as "WHILE +".  Skip the +.
+              offset++;
+            }
+          }
           output.push(...lookup(TOKENS_DEFAULT, code));
+        } else if (code === 0x3a) {
+          // Colons have special encoding issues...
+          if (offset < data.byteLength) {
+            const peek = data.getUint8(offset);
+            if (peek === 0xa1) {
+              // ELSE is encoded as ": ELSE".  Skip the :.
+              break;
+            }
+          }
+          if (offset + 1 < data.byteLength) {
+            const peek1 = data.getUint8(offset);
+            const peek2 = data.getUint8(offset + 1);
+            if (peek1 === 0x8f && peek2 === 0xd9) {
+              // ' is encoded as :REM '.  Skip the :REM.
+              offset++;
+              break;
+            }
+          }
+          output.push(code);
         } else {
           output.push(code);
         }
