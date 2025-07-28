@@ -8,9 +8,10 @@ import { isString, Type } from "../Types.ts";
 import { Statement } from "./Statement.ts";
 import { evaluateIntegerExpression, parseNumberFromString } from "../Expressions.ts";
 import { Token } from "antlr4ng";
-import { getSequentialReadAccessor } from "./FileSystem.ts";
-import { tryIo } from "../Files.ts";
-import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW } from "../Errors.ts";
+import { getFileAccessor, getSequentialReadAccessor } from "./FileSystem.ts";
+import { OpenMode, tryIo } from "../Files.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW, IOError, BAD_FILE_MODE } from "../Errors.ts";
+import { asciiToString } from "../AsciiChart.ts";
 
 export interface InputStatementArgs {
   token: Token;
@@ -448,11 +449,18 @@ export class InputFunction extends Statement {
     if (this.fileNumber) {
       let result = "";
       tryIo(this.token, () => {
-        const accessor = getSequentialReadAccessor({
+        const accessor = getFileAccessor({
           expr: this.fileNumber!,
           context
         });
-        result = accessor.readChars(numBytes);
+        const mode = accessor.openMode();
+        if (mode === OpenMode.INPUT || mode === OpenMode.RANDOM) {
+          result = accessor.readChars(numBytes);
+        } else if (mode === OpenMode.BINARY) {
+          result = asciiToString(accessor.getBytes(numBytes));
+        } else {
+          throw new IOError(BAD_FILE_MODE);
+        }
       });
       context.memory.write(this.result, string(result));
       return;

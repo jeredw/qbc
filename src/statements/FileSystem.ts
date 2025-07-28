@@ -383,7 +383,7 @@ function getFileHandle({expr, fileNumber, context}: GetFileAccessorArgs): Handle
   return handle;
 }
 
-function getFileAccessor(args: GetFileAccessorArgs): FileAccessor {
+export function getFileAccessor(args: GetFileAccessorArgs): FileAccessor {
   return getFileHandle(args).accessor;
 }
 
