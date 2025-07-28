@@ -10,6 +10,7 @@ const SYMBOL_TABLE_START = 28;
 // A list of CP-437 ASCII character codes.
 type Ascii = number[];
 
+// Tags on the token parse stack to help disassembly.
 enum Tag {
   DECLARATION_KEYWORD,
   DECLARATION_LIST,
@@ -34,8 +35,12 @@ interface Section {
   size: number;
 }
 
-// Loosely based on the QB45BIN.bas utility from the QB64 project, and a lot of
-// random experimentation.
+// Loads QB45 binary format .BAS files as text.
+//
+// These binary files contain a symbol table and serialized p-code instructions.
+// This implementation is based on the QB45BIN.BAS utility from the QB64
+// project, and a lot of trial and error.  QB45BIN.BAS does stricter parsing but
+// has a few broken rules.
 class Qb45Loader {
   data: DataView;
   offset: number = 0;
@@ -59,6 +64,8 @@ class Qb45Loader {
     this.offset = SYMBOL_TABLE_START - 2;
     const symbolTableSize = this.u16();
     this.offset += symbolTableSize;
+    // What follows is a list of program "sections" - the main module and then
+    // subroutines. Find all the code sections and then load them in order.
     const sections: Section[] = [];
     while (this.offset < this.data.byteLength) {
       const size = this.u16();
@@ -128,6 +135,8 @@ class Qb45Loader {
     const pcode = rawToken & 0x03ff;
     const param = (rawToken >> 10) & 0x3f;
     const S = stringToAscii;
+    // T() pushes a stack entry with text formatted using template, with
+    // stack or symbol values substituted for placeholders.
     const T = (template: string, tag?: Tag): Entry => {
       const fields = template.match(/{[^}]+}|./g);
       const maxStackArgument = Math.max(
@@ -164,6 +173,7 @@ class Qb45Loader {
       }
       return {pcode, tag, text: parts.flat()};
     };
+    // Parses the CIRCLE statement.
     const circle = (): Entry => {
       const params: string[] = ['', '', '', '', '', ''];
       let argumentIndex = 0;
@@ -184,6 +194,7 @@ class Qb45Loader {
       truncate(params);
       return T(`CIRCLE ${params.join(', ')}`);
     };
+    // Parses the bitset representation for deftype declarations.
     const defType = (): Entry => {
       this.skipU16();
       const mask = this.u32();
@@ -210,6 +221,7 @@ class Qb45Loader {
       const type = getDefTypeName(mask & 7);
       return T(`DEF${type} ${rangeSpec}`);
     };
+    // Parses array declarations in DIM statements for example.
     const arrayDeclaration = (): Entry => {
       let stackIndex = 0;
       let asType = '';
@@ -243,6 +255,7 @@ class Qb45Loader {
       }
       return T(`{id+}${indices}${asType}`, Tag.DECLARATION_LIST);
     };
+    // Parses array index expressions.
     const arrayExpression = (): Entry => {
       const numIndices = this.u16();
       let indexList = '';
@@ -255,6 +268,7 @@ class Qb45Loader {
       }
       return T(`{id+}${indexList}`);
     };
+    // Parses subroutine and function calls.
     const call = ({keyword, parenthesis}: {keyword: string, parenthesis: boolean}): Entry => {
       const numParams = this.i16();
       const params: string[] = [];
@@ -268,6 +282,7 @@ class Qb45Loader {
       const space = keyword ? '' : ' ';
       return T(`${keyword}{id}${space}${paramList}`);
     };
+    // Parses procedure declarations and definitions.
     const procedure = ({keyword, parenthesis}: {keyword?: string, parenthesis?: boolean}): Entry => {
       this.offset += 2;  // Skip junk?
       let name = asciiToString(this.id(this.u16()));
@@ -327,6 +342,7 @@ class Qb45Loader {
       }
       return {pcode, text: [...S(name), ...S(argumentList)]};
     };
+    // Parses ON...GOTO with a list of targets.
     const computedGoto = (keyword: string): Entry => {
       const length = this.i16() / 2;
       const ids: string[] = [];
@@ -335,6 +351,7 @@ class Qb45Loader {
       }
       return T(`ON {0} ${keyword} ${ids.join(', ')}`);
     };
+    // Parses the LINE statement.
     const lineStatement = (): Entry => {
       const params: string[] = [];
       const boxStyle = this.u16() & 3;
@@ -350,6 +367,7 @@ class Qb45Loader {
       truncate(params);
       return T(`LINE ${params.join(', ')}`);
     };
+    // Constructs a format string to be used with T() for INPUT statement arguments.
     const inputFormat = ({promptArgument}: {promptArgument: number}): string => {
       const flags = this.u16();
       let semicolon = flags & 2 ? ';' : '';
@@ -358,6 +376,9 @@ class Qb45Loader {
       let spaceBeforePrompt = semicolon && promptString ? ' ' : '';
       return `${semicolon}${spaceBeforePrompt}${promptString}`;
     };
+    // Parses builtin statements that consume a generic variable length argument list.
+    // Most builtin statements with variable arguments have separate tokens for each form,
+    // but a few use this encoding.
     const varArgStatement = (keyword: string): Entry => {
       const params: string[] = [];
       const numParams = this.i16();
@@ -378,6 +399,7 @@ class Qb45Loader {
       const space = params.length > 0 ? ' ' : '';
       return T(`${keyword}${space}${params.join(', ')}${nullParams}`);
     };
+    // Parses argument list for LOCK and UNLOCK statements.
     const lockStatement = (keyword: string): Entry => {
       const flags = this.u16();
       if (!(flags & 2)) {
@@ -394,6 +416,7 @@ class Qb45Loader {
       }
       return T(`${keyword} {1}, {0}`);
     };
+    // Returns a string decoding option arguments for the OPEN statement.
     const openFormat = (): string => {
       const flags = this.u16();
       const forMode = (
