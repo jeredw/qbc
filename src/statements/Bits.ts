@@ -13,6 +13,7 @@ import { Memory } from "../Memory.ts";
 import { Token } from "antlr4ng";
 import { readBytesFromArray, writeBytesToArray } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
+import { BlitOperation } from "../Drawing.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -687,8 +688,6 @@ export class BloadStatement extends Statement {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
     try {
-      const segment = context.memory.getSegment();
-      const {variable} = context.memory.readPointer(segment);
       const data = readEntireFile(context, path);
       if (data.length < 7) {
         throw new Error('bsave header missing');
@@ -701,6 +700,28 @@ export class BloadStatement extends Statement {
       if (newData.buffer.byteLength !== length) {
         throw new Error('bad length in bsave header');
       }
+      const segment = context.memory.getSegment();
+      if ((segment & 0xffff) === 0xa000) {
+        // Assume we are trying to BLOAD a full screen bitmap into video ram.
+        const mode = context.devices.screen.getMode();
+        const [width, height] = mode.geometry[0].dots;
+        const bppPerPlane = mode.bppPerPlane;
+        // Prepend a fake bitmap header like PUT assumes.
+        const bitmap = new Uint8Array([
+          (width * bppPerPlane) & 0xff, ((width * bppPerPlane) >> 8) & 0xff,
+          height & 0xff, (height >> 8) & 0xff,
+          ...newData
+        ]);
+        context.devices.screen.putBitmap({
+          x1: 0,
+          y1: 0,
+          step: false,
+          operation: BlitOperation.PSET,
+          buffer: bitmap.buffer,
+        });
+        return;
+      }
+      const {variable} = context.memory.readPointer(segment);
       writeBytesAtPointer(context.memory, variable, newData);
     } catch (e: unknown) {
       if (e instanceof IOError) {

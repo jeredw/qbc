@@ -1,0 +1,19 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n ' \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (literal &ha000)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id bload) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "test.pic"))) , 
+        (argument 
+          (expr 
+            (literal 0)))))) \n <EOF>)

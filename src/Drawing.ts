@@ -276,7 +276,7 @@ export class Plotter {
     // getInt16() throws if the buffer is empty.
     const width = data.getInt16(0, littleEndian) / bppPerPlane;
     const height = data.getInt16(2, littleEndian);
-    const sizeInBytes = 4 + Math.ceil(width / 8) * planes * height;
+    const sizeInBytes = 4 + Math.ceil((width * bppPerPlane) / 8) * planes * height;
     if (args.buffer.byteLength < sizeInBytes) {
       throw new Error('bitmap is not large enough')
     }
