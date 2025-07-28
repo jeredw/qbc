@@ -168,6 +168,7 @@ statement
   | resume_statement
   | return_statement
   | rset_statement
+  | run_statement
   | screen_statement
   | seek_statement
   | select_case_statement
@@ -825,6 +826,11 @@ return_statement
 
 rset_statement
   : RSET variable_or_function_call '=' expr
+  ;
+
+run_statement
+  : RUN line_number
+  | RUN expr?
   ;
 
 // screenmode is documented as required but is actually optional.

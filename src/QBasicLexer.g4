@@ -151,6 +151,7 @@ RESUME : [Rr][Ee][Ss][Uu][Mm][Ee] ;
 RESUME_NEXT : [Rr][Ee][Ss][Uu][Mm][Ee] [ \t]+ [Nn][Ee][Xx][Tt];
 RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 RSET : [Rr][Ss][Ee][Tt] ;
+RUN : [Rr][Uu][Nn] ;
 SCREEN : [Ss][Cc][Rr][Ee][Ee][Nn] ;
 SEEK : [Ss][Ee][Ee][Kk] ;
 SEG : [Ss][Ee][Gg] ;

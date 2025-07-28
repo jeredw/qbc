@@ -1,0 +1,14 @@
+(program 
+  (label 
+    (line_number 10)) 
+  (statement 
+    (run_statement run 
+      (line_number 10))) \n 
+  (statement 
+    (run_statement run 
+      (expr 
+        (literal "foo.bas")))) \n 
+  (statement 
+    (run_statement run 
+      (expr 
+        (variable_or_function_call donkey$)))) \n <EOF>)
