@@ -340,10 +340,10 @@ function parsePlayCommandString(commands: string, state: PlayState): Song {
       }
       case 't': {
         const newTempo = parseInt(command.slice(1), 10);
-        if (newTempo < 32 || newTempo > 255) {
+        if (newTempo < 32) {
           throw new Error('invalid tempo');
         }
-        state.tempo = newTempo;
+        state.tempo = newTempo > 255 ? 255 : newTempo;
         break;
       }
       case '.': {
