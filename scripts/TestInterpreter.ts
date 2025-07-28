@@ -10,6 +10,7 @@ import { TestJoystick } from "../src/Joystick.ts";
 import { PointerListener } from "../src/LightPen.ts";
 import { Canvas, createCanvas, registerFont } from "canvas"
 import { HttpModem, TestFetcher } from "../src/Modem.ts";
+import { Invoker } from "../src/Invocation.ts";
 
 async function interpret(program: string, input: string[], diskJson: string): Promise<[string, string | undefined]> {
   try {
@@ -29,6 +30,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       new TestFetcher(new Map([['/test', 'Here is some data']])),
       true,  // respondInstantly
     );
+    let invocations = '';
     const interpreter = new Interpreter({
       screen,
       speaker,
@@ -39,6 +41,16 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       joystick,
       lightPen,
       modem,
+    }, new class implements Invoker {
+      runProgram(fileName: string) {
+        if (fileName.toLowerCase() == 'error') {
+          throw new Error('thrown error during runProgram');
+        }
+        invocations += `RUN ${fileName}\n`;
+      }
+      restartProgram(statementIndex?: number) {
+        invocations += `RUN ${statementIndex ?? 0}\n`;
+      }
     });
     typeLines(input, keyboard);
     if (diskJson) {
@@ -58,6 +70,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       prefixLines("LPT1> ", printer.output),
       speaker.output,
       disk.modified ? prefixLines("FS> ", disk.saveToJson()) : '',
+      invocations
     ].join('');
     return [text, graphics];
   } catch (e: unknown) {

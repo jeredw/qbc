@@ -2,7 +2,7 @@ import { Devices } from "./Devices.ts";
 import { DebugInfo, Program } from "./Programs.ts";
 import { Memory } from "./Memory.ts";
 import { ControlFlowTag } from "./ControlFlow.ts";
-import { RuntimeError, RETURN_WITHOUT_GOSUB, ErrorHandling, RESUME_WITHOUT_ERROR, NO_RESUME, ILLEGAL_FUNCTION_CALL } from "./Errors.ts";
+import { RuntimeError, RETURN_WITHOUT_GOSUB, ErrorHandling, RESUME_WITHOUT_ERROR, NO_RESUME, ILLEGAL_FUNCTION_CALL, FILE_NOT_FOUND } from "./Errors.ts";
 import { ReturnStatement } from "./statements/Return.ts";
 import { ProgramData } from "./ProgramData.ts";
 import { Files } from "./Files.ts";
@@ -12,8 +12,13 @@ import { ResumeStatement } from "./statements/Errors.ts";
 import { DebugState } from "./DebugState.ts";
 import { ClearStatement } from "./statements/Clear.ts";
 
-export function invoke(devices: Devices, memory: Memory, program: Program, debug: DebugState) {
-  return new Invocation(devices, memory, program, debug);
+export interface Invoker {
+  runProgram(fileName: string): void;
+  restartProgram(statementIndex?: number): void;
+}
+
+export function invoke(devices: Devices, memory: Memory, program: Program, debug: DebugState, invoker: Invoker) {
+  return new Invocation(devices, memory, program, debug, invoker);
 }
 
 interface ProgramLocation {
@@ -41,6 +46,7 @@ export class Invocation {
   private random: RandomNumbers;
   private stack: ProgramLocation[]
   private debug: DebugState;
+  private invoker: Invoker;
   private stopRequested: boolean = true;
   private stopped: boolean = true;
   private stepFromLine?: number;
@@ -49,7 +55,7 @@ export class Invocation {
   nextLine: number = 1;
   private nextChunk = 0;
 
-  constructor(devices: Devices, memory: Memory, program: Program, debug: DebugState) {
+  constructor(devices: Devices, memory: Memory, program: Program, debug: DebugState, invoker: Invoker) {
     this.devices = devices;
     this.memory = memory;
     this.data = new ProgramData(program.data);
@@ -59,6 +65,7 @@ export class Invocation {
     this.errorHandling = {};
     this.program = program;
     this.debug = debug;
+    this.invoker = invoker;
   }
 
   stop() {
@@ -93,7 +100,7 @@ export class Invocation {
     });
   }
 
-  async restart(): Promise<void> {
+  async restart(statementIndex?: number): Promise<void> {
     const chunks = this.program.chunks;
     this.nextLine = 1;
     this.nextChunk = 0;
@@ -101,7 +108,7 @@ export class Invocation {
     this.data.restore(0);
     this.files = new Files();
     if (chunks.length > 0 && chunks[0].statements.length > 0) {
-      this.stack.push({chunkIndex: 0, statementIndex: 0});
+      this.stack.push({chunkIndex: 0, statementIndex: statementIndex ?? 0});
     }
     return this.start();
   }
@@ -294,6 +301,7 @@ export class Invocation {
           const clearStatement = statement as ClearStatement;
           for (const frame of this.stack) {
             if (frame.pusher === ControlFlowTag.CALL) {
+              this.stack[this.stack.length - 1].statementIndex--;
               throw RuntimeError.fromToken(statement.startToken!, ILLEGAL_FUNCTION_CALL);
             }
           }
@@ -305,6 +313,19 @@ export class Invocation {
           this.stack.length = 1;
           break;
         }
+        case ControlFlowTag.RUN:
+          if (controlFlow.program) {
+            try {
+              this.invoker.runProgram(controlFlow.program);
+            } catch (e: unknown) {
+              this.stack[this.stack.length - 1].statementIndex--;
+              throw RuntimeError.fromToken(statement.startToken!, FILE_NOT_FOUND);
+            }
+          } else {
+            this.invoker.restartProgram(statement.targetIndex);
+          }
+          // Halt this invocation if the new one didn't throw.
+          this.stack = [];
       }
     } catch (e: unknown) {
       if (e instanceof RuntimeError) {

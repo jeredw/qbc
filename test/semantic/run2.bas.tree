@@ -1,0 +1,13 @@
+(program ' \n 
+  (statement 
+    (run_statement run 
+      (line_number 200))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (line_number 200)) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)

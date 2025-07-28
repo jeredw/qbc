@@ -56,7 +56,7 @@ import {
   VarSegFunction
 } from "./Bits.ts";
 import { ReadStatement, RestoreStatement } from "./Data.ts";
-import { EndStatement, NoOpStatement, StopStatement } from "./End.ts";
+import { EndStatement, NoOpStatement, RunStatement, StopStatement } from "./Control.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement, SwapStatement } from "./Assignment.ts";
 import {
@@ -749,6 +749,10 @@ export function rsetString(token: Token, variable: Variable, stringExpr: parser.
 
 export function rtrim(args: BuiltinStatementArgs) {
   return new RtrimFunction(args);
+}
+
+export function run(token: Token, programExpr: parser.ExprContext | null) {
+  return new RunStatement(token, programExpr);
 }
 
 export function screenFunction(

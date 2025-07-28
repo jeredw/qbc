@@ -8,6 +8,7 @@ export enum ControlFlowTag {
   WAIT,
   STOP,
   CLEAR,
+  RUN,
 }
 
 export interface Goto {
@@ -51,6 +52,11 @@ export interface Clear {
   tag: ControlFlowTag.CLEAR;
 }
 
+export interface Run {
+  tag: ControlFlowTag.RUN;
+  program?: string;
+}
+
 export type ControlFlow =
   | Goto
   | Gosub
@@ -60,4 +66,5 @@ export type ControlFlow =
   | Halt
   | Wait
   | Stop
-  | Clear;
+  | Clear
+  | Run;

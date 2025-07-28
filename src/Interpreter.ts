@@ -11,7 +11,7 @@ import {
 } from "antlr4ng";
 import { ParseError } from "./Errors.ts";
 import { compile } from "./Programs.ts";
-import { Invocation, invoke } from "./Invocation.ts";
+import { Invocation, invoke, Invoker } from "./Invocation.ts";
 import { Devices } from "./Devices.ts";
 import { Memory } from "./Memory.ts";
 import { DebugState } from "./DebugState.ts";
@@ -19,7 +19,7 @@ import { DebugState } from "./DebugState.ts";
 export class Interpreter {
   debug: DebugState;
 
-  constructor(private devices: Devices) {
+  constructor(private devices: Devices, private invoker: Invoker) {
     this.debug = new DebugState();
   }
 
@@ -38,7 +38,7 @@ export class Interpreter {
     // Parse the program first to check correct syntax.
     const tree = parser.program();
     const program = compile(tree);
-    return invoke(this.devices, new Memory(program.staticSize), program, this.debug);
+    return invoke(this.devices, new Memory(program.staticSize), program, this.debug, this.invoker);
   }
 }
 

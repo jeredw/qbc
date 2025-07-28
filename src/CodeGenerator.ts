@@ -24,6 +24,7 @@ import { KeyStatementOperation } from "./statements/Keyboard.ts";
 import { FieldDefinition } from "./statements/FileSystem.ts";
 import { ErrorHandlerStatement, ResumeStatement } from "./statements/Errors.ts";
 import { getCodeGeneratorContext, getTyperContext } from "./ExtraParserContext.ts";
+import { RunStatement } from "./statements/Control.ts";
 
 export class CodeGenerator extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
@@ -63,7 +64,8 @@ export class CodeGenerator extends QBasicParserListener {
       let targetChunk = chunk;
       if (statement instanceof ErrorHandlerStatement ||
           statement instanceof EventHandlerStatement ||
-          statement instanceof ResumeStatement) {
+          statement instanceof ResumeStatement ||
+          statement instanceof RunStatement) {
         if (targetRef.label === '0') {
           // Just leave target undefined for ON ERROR GOTO 0.
           continue;
@@ -873,6 +875,18 @@ export class CodeGenerator extends QBasicParserListener {
     const expr = ctx.expr();
     const stringExpr = this.compileExpression(expr, expr.start!, { tag: TypeTag.STRING });
     this.addStatement(statements.rsetString(token, variable, stringExpr), token);
+  }
+
+  override enterRun_statement =(ctx: parser.Run_statementContext) => {
+    const token = ctx.start!;
+    const lineNumber = ctx.line_number();
+    const expr = ctx.expr();
+    const programExpr = expr && this.compileExpression(expr, expr.start!, { tag: TypeTag.STRING });
+    this.addStatement(statements.run(token, programExpr), token);
+    if (lineNumber) {
+      const label = this.canonicalizeLabel(lineNumber);
+      this.setTargetForCurrentStatement(label, ctx);
+    }
   }
 
   override enterName_statement = (ctx: parser.Name_statementContext) => {

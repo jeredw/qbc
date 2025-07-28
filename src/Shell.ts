@@ -5,7 +5,7 @@ import { ParseError, RuntimeError } from "./Errors.ts";
 import { CanvasScreen } from "./Screen.ts";
 import { LinePrinter } from "./Printer.ts";
 import { WebAudioSpeaker } from "./Speaker.ts";
-import { Invocation } from "./Invocation.ts";
+import { Invocation, Invoker } from "./Invocation.ts";
 import { KeyboardListener } from "./Keyboard.ts";
 import { RealTimeTimer } from "./Timer.ts";
 import { GamepadListener } from "./Joystick.ts";
@@ -30,7 +30,7 @@ interface DebugProvider {
   query(line: number, column: number): string | undefined;
 }
 
-class Shell implements DebugProvider, DiskListener {
+class Shell implements DebugProvider, DiskListener, Invoker {
   private root: HTMLElement;
   private interpreter: Interpreter;
   private invocation: Invocation | null = null;
@@ -80,7 +80,7 @@ class Shell implements DebugProvider, DiskListener {
       joystick: this.gamepad,
       lightPen: this.pointer,
       modem: this.modem,
-    });
+    }, this);
     this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
@@ -278,7 +278,21 @@ class Shell implements DebugProvider, DiskListener {
     }
   }
 
-  async run(restart = false) {
+  runProgram(fileName: string) {
+    const program = fileName.toLowerCase().endsWith('.bas') ? fileName : `${fileName}.bas`;
+    this.load(program);
+    setTimeout(() => {
+      this.run(true);
+    });
+  }
+
+  restartProgram(statementIndex?: number) {
+    setTimeout(() => {
+      this.run(true, statementIndex ?? 0);
+    });
+  }
+
+  async run(restart = false, statementIndex = 0) {
     this.root.classList.remove('blocked');
     this.updateState(RunState.RUNNING);
     this.interpreter.debug.pauseLine = undefined;
@@ -301,7 +315,7 @@ class Shell implements DebugProvider, DiskListener {
         this.modem.reset();
         this.invocation?.stop();
         this.invocation = this.interpreter.run(text);
-        await this.invocation.restart();
+        await this.invocation.restart(statementIndex);
       } else {
         await this.invocation?.start();
       }
