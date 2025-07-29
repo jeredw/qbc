@@ -313,6 +313,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
         this.speaker.reset();
         this.screen.reset();
         this.modem.reset();
+        this.disk.resetHandles();
         this.invocation?.stop();
         this.invocation = this.interpreter.run(text);
         await this.invocation.restart(statementIndex);

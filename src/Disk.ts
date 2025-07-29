@@ -13,6 +13,7 @@ export interface Disk extends Opener {
   rename(oldPath: string, newPath: string): void;
   writeFile(path: string, file: DiskFile): void;
   readFile(path: string): DiskFile;
+  resetHandles(): void;
 }
 
 export interface DiskFile {
@@ -45,6 +46,10 @@ export class MemoryDrive implements Disk {
   constructor(drive: string = "C", private diskListener?: DiskListener) {
     this.drive = drive;
     this.currentDirectory = {drive, names: ['']};
+  }
+
+  resetHandles() {
+    this.handles = new Map();
   }
 
   getCurrentDirectory(): string {
@@ -483,10 +488,10 @@ function parsePath(path: string, base: Path): Path {
   if (path.length == 0) {
     return base;
   }
-  if (path === '\\') {
+  if (path === '\\' || path === '/') {
     return {drive, names: ['']};
   }
-  const pathParts = path.split('\\');
+  const pathParts = path.split(/[/\\]/g);
   const absolute = pathParts[0] === '';
   const relNames: string[] = absolute ? pathParts : [...base.names, ...pathParts];
   const names: string[] = [];

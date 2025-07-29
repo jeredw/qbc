@@ -46,11 +46,13 @@ Bringup
   + qcards: Subscript out of range
   + qcards: Type mismatch during compiling
 + BARRACK, DROIDS, EPIC, BUG: 6c
++ COOKIE, AHIBOMB: BLOADs into 0xa000
 - 4ID16: SCREEN 13 : WIDTH 80 does pseudo-mode 0, can still OUT palette...
+- 4ID16: Space after file name is ignored.
+- ARC: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
 - PCHECKERS, BREAKOUT: local shadowing shared array in PUT
 - WHEEL OF WEALTH: marge simpson paint overflows circles
 - ARQANOID, BFIGHTER: redimensioning static array passed to function
-- COOKIE, AHIBOMB: BLOADs into 0xa000
 - ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
 - AMBUSH, AMBUSH2: multifile
 - ANCIENTHEROS: byval
@@ -66,15 +68,20 @@ Bringup
 IDE features
 - Persist filesystem to local storage
 - Load and save programs to filesystem
-- Add a filesystem browser
-- Add a way to upload/download files from browser
+- Key mapping controls / numpad arrow support
+- Speed controls
+- Full screen program
+- Add a catalog with program entries
+- Save states
+~ Add a way to upload/download files from browser
+~ Add a filesystem browser
 + Show symbols
 + Improve text editing, avoiding paste as HTML... bite the bullet and embed vscode?
 + Better debugging / single step UI
 
 Language features
 - Consider some x86 emulation for CALL ABSOLUTE
-- Multi-module program support: CHAIN, COMMON, RUN
+- Multi-module program support: -CHAIN, -COMMON, +RUN
 + Verify weird scoping rules for deffn work
 ~ Painting patterns
 ~ Debugging statements TRON, TROFF, STOP

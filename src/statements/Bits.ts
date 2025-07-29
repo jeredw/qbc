@@ -683,7 +683,7 @@ export class BloadStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const path = evaluateStringExpression(this.pathExpr, context.memory);
-    const offset = this.offsetExpr && (evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff);
+    const offset = (this.offsetExpr && (evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff)) ?? 0;
     if (offset !== 0) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
@@ -695,13 +695,14 @@ export class BloadStatement extends Statement {
       if (data[0] != 0xfd) {
         throw new Error('bad signature for bsave header');
       }
+      const storedSegment = (data[2] << 8) | data[1];
       const length = (data[6] << 8) | data[5];
       const newData = new Uint8Array(data.slice(7));
       if (newData.buffer.byteLength !== length) {
         throw new Error('bad length in bsave header');
       }
       const segment = context.memory.getSegment();
-      if ((segment & 0xffff) === 0xa000) {
+      if ((segment & 0xffff) === 0xa000  || (storedSegment === 0xa000 && !this.offsetExpr)) {
         // Assume we are trying to BLOAD a full screen bitmap into video ram.
         const mode = context.devices.screen.getMode();
         const [width, height] = mode.geometry[0].dots;
