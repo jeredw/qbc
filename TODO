@@ -6,6 +6,7 @@ General
 - Rewrite the antlr parser as a hand rolled recursive descent thing
 - Open up the repository and release a beta
 - Organize golden file tests a bit better and document expectations
+- Catch and show impl errors in UI
 
 Bringup
 + GORILLA
@@ -47,23 +48,26 @@ Bringup
   + qcards: Type mismatch during compiling
 + BARRACK, DROIDS, EPIC, BUG: 6c
 + COOKIE, AHIBOMB: BLOADs into 0xa000
++ ARCRPG: multifile
+- 3DBOUNCY: jumps into for loop without initializing counter
 - 4ID16: SCREEN 13 : WIDTH 80 does pseudo-mode 0, can still OUT palette...
 - 4ID16: Space after file name is ignored.
-- ARC: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
-- PCHECKERS, BREAKOUT: local shadowing shared array in PUT
-- WHEEL OF WEALTH: marge simpson paint overflows circles
-- ARQANOID, BFIGHTER: redimensioning static array passed to function
-- ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
+- ABSORB: POKE into 0xa000 + ...
+- ADVENTUR: qbasic permits multiple default else for block if...else...
+- ADVENTURE1, BLOBBLE: COMMON SHARED
 - AMBUSH, AMBUSH2: multifile
 - ANCIENTHEROS: byval
+- ARCRPG: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
+- ARQANOID, BFIGHTER: redimensioning static array passed to function
+- ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
+- ASSAULT: Reads back default palette with 3c7/3c9
+- ELYSIAN: multifile, self-modifying!
 - GBUGGIES: multifile, SADD
 - JOLT: multifile
 - MISERY20: doors don't work?
 - PANGALL: multifile
-- ARCRPG: multifile
-- ELYSIAN: multifile, self-modifying!
-- ADVENTUR: qbasic permits multiple default else for block if...else...
-- ADVENTURE1, BLOBBLE: COMMON SHARED
+- PCHECKERS, BREAKOUT: local shadowing shared array in PUT
+- WHEEL OF WEALTH: marge simpson paint overflows circles
 
 IDE features
 - Persist filesystem to local storage

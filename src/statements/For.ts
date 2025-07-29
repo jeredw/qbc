@@ -38,8 +38,14 @@ export class NextStatement extends Statement {
 
   override execute(context: ExecutionContext): ControlFlow | void {
     const [counterAddress, counterValue] = context.memory.dereference(this.counter);
-    if (!counterValue || !isNumeric(counterValue)) {
-      throw new Error("must be numeric");
+    if (!counterValue) {
+      // A GOTO can jump into a for loop skipping loop initialization.  In that
+      // case, the counter, increment, and end will be default initialized to 0,
+      // and the loop will be an infinite loop.
+      return {tag: ControlFlowTag.GOTO};
+    }
+    if (!isNumeric(counterValue)) {
+      throw new Error('expecting numeric loop counter');
     }
     const increment = getValueOrDefault(context.memory, this.increment, 1);
     const next = counterValue.number + increment;

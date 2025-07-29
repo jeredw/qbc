@@ -477,6 +477,7 @@ interface Path {
 }
 
 function parsePath(path: string, base: Path): Path {
+  path = path.trim();
   path = path.toUpperCase();
   const drive = base.drive;
   if (/^[A-Za-z]:/.test(path)) {
