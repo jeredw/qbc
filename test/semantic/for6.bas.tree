@@ -1,0 +1,44 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call j) = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (goto_statement goto 
+      (target 
+        (text_label 
+          (untyped_id n))))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 10)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call i)) ;))) \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call j) = 
+            (expr 
+              (expr 
+                (variable_or_function_call j)) + 
+              (expr 
+                (literal 1))))) \n 
+        (statement 
+          (if_inline_statement if 
+            (expr 
+              (expr 
+                (variable_or_function_call j)) > 
+              (expr 
+                (literal 10))) then 
+            (if_inline_action 
+              (statement 
+                (exit_statement exit for))))) \n 
+        (label 
+          (text_label 
+            (untyped_id n)) :) \n) next i)) \n <EOF>)
