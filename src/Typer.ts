@@ -538,6 +538,65 @@ export class Typer extends QBasicParserListener {
     });
   }
 
+  override enterCommon_statement = (ctx: parser.Common_statementContext) => {
+    if (this._chunk.procedure) {
+      throw ParseError.fromToken(ctx.start!, "Illegal in procedure or DEF FN");
+    }
+    if (!ctx.SHARED()) {
+      throw new Error('COMMON only implemented for COMMON SHARED declarations');
+    }
+    for (const common of ctx.scope_variable()) {
+      if (!!common.AS()) {
+        const asType = this.getType(common.type_name()!);
+        const allowPeriods = asType.tag != TypeTag.RECORD;
+        const name = getUntypedId(common.untyped_id()!, {allowPeriods});
+        const token = common.untyped_id()!.start!;
+        const symbol = this._chunk.symbols.lookupOrDefineVariable({
+          name,
+          type: asType,
+          token,
+          numDimensions: common.array_declaration() ? 1 : 0,
+          sharedDeclaration: true,
+          storageType: StorageType.STATIC,
+          isAsType: true,
+          arrayBaseIndex: this._arrayBaseIndex,
+          shared: true,
+        });
+        if (!isVariable(symbol)) {
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
+      } else {
+        const [name, sigil] = splitSigil(common.ID()?.getText()!);
+        const asType = this._chunk.symbols.getAsType(name);
+        const type = sigil ? typeOfSigil(sigil) :
+          asType ? asType :
+          this.getDefaultType(name);
+        const token = common.ID()!.symbol;
+        if (asType) {
+          if (sameType(type, asType)) {
+            throw ParseError.fromToken(token, "AS clause required");
+          }
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
+        const symbol = this._chunk.symbols.lookupOrDefineVariable({
+          name,
+          type,
+          token,
+          sigil,
+          numDimensions: common.array_declaration() ? 1 : 0,
+          sharedDeclaration: true,
+          storageType: StorageType.STATIC,
+          isAsType: false,
+          arrayBaseIndex: this._arrayBaseIndex,
+          shared: true,
+        });
+        if (!isVariable(symbol)) {
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
+      }
+    }
+  }
+
   override enterShared_statement = (ctx: parser.Shared_statementContext) => {
     if (!this._chunk.procedure || this._chunk.procedure.name.startsWith('fn')) {
       throw ParseError.fromToken(ctx.start!, "Illegal outside of SUB/FUNCTION");

@@ -1,0 +1,26 @@
+(program ' \n 
+  (statement 
+    (common_statement common shared 
+      (scope_variable x))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x))))) \n <EOF>)

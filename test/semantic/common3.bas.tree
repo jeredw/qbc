@@ -1,0 +1,13 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (common_statement common shared 
+          (scope_variable x))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n <EOF>)

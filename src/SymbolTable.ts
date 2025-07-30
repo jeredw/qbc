@@ -232,7 +232,7 @@ export class SymbolTable {
 
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, sigil, numDimensions, sharedDeclaration, token, storageType, isAsType, arrayBaseIndex}: {
+  lookupOrDefineVariable({name, type, sigil, numDimensions, sharedDeclaration, token, storageType, isAsType, arrayBaseIndex, shared}: {
       name: string,
       type: Type,
       sigil?: string,
@@ -242,6 +242,7 @@ export class SymbolTable {
       storageType: StorageType,
       isAsType: boolean,
       arrayBaseIndex: number,
+      shared?: boolean,
     }): QBasicSymbol {
     const builtin = this.lookupBuiltin(name, sigil, token);
     if (builtin) {
@@ -314,7 +315,7 @@ export class SymbolTable {
       // Arrays cannot be implicitly defined on the stack.
       throw ParseError.fromToken(token, "Array not defined");
     }
-    const variable = { name, type, sigil, token, storageType, isAsType, sharedDeclaration, ...array };
+    const variable = { name, type, sigil, token, storageType, isAsType, sharedDeclaration, shared, ...array };
     this.defineVariable(variable);
     return { tag: QBasicSymbolTag.VARIABLE, variable };
   }

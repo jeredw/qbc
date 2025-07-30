@@ -133,7 +133,7 @@ parse those using baked in rules.
 | `CLS`            | Statement   | -       | ✅      |
 | `COLOR`          | Statement   | ✅      | ✅      |
 | `COM`            | Statement   | ✅      | ✅      |
-| `COMMON`         | Statement   | ✅      | ⛔      |
+| `COMMON`         | Statement   | ✅      | 🚧      |
 | `CONST`          | Statement   | ✅      | ✅      |
 | `COS`            | Function    | -       | ✅      |
 | `CSNG`           | Function    | -       | ✅      |
