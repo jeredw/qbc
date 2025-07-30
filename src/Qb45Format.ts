@@ -424,7 +424,7 @@ class Qb45Loader {
         (flags & 0x02) ? 'FOR OUTPUT' :
         (flags & 0x04) ? 'FOR RANDOM' :
         (flags & 0x08) ? 'FOR APPEND' :
-        (flags & 0x10) ? 'FOR BINARY' :
+        (flags & 0x20) ? 'FOR BINARY' :
         ''
       );
       const accessMode = (

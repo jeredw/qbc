@@ -12,6 +12,7 @@ import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { readVariableToBytes, writeBytesToVariable } from "./Bits.ts";
+import { TypeTag } from "../Types.ts";
 
 export interface OpenArgs {
   token: Token;
@@ -499,7 +500,7 @@ abstract class GetPutStatement extends Statement {
 
   protected getRecordNumber(context: ExecutionContext): number | undefined {
     return this.recordNumber &&
-      evaluateIntegerExpression(this.recordNumber, context.memory);
+      evaluateIntegerExpression(this.recordNumber, context.memory, { tag: TypeTag.LONG });
   }
 
   abstract randomAccess(handle: Handle, accessor: FileAccessor, context: ExecutionContext): void;
