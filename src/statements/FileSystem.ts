@@ -18,7 +18,7 @@ export interface OpenArgs {
   token: Token;
   name: ExprContext;
   fileNumber: ExprContext;
-  mode: OpenMode;
+  mode: OpenMode | ExprContext;
   recordLength?: ExprContext;
 }
 
@@ -44,7 +44,33 @@ export class OpenStatement extends Statement {
       device = context.devices.modem;
     }
     tryIo(this.args.token, () => {
-      const handle = device.open(name, this.args.mode, recordLength);
+      const modeSpec = this.args.mode;
+      let mode: OpenMode = OpenMode.RANDOM;
+      if (modeSpec instanceof ExprContext) {
+        const modeString = evaluateStringExpression(modeSpec, context.memory).toUpperCase();
+        switch (modeString.charAt(0)) {
+          case 'O':
+            mode = OpenMode.OUTPUT;
+            break;
+          case 'I':
+            mode = OpenMode.INPUT;
+            break;
+          case 'R':
+            mode = OpenMode.RANDOM;
+            break;
+          case 'B':
+            mode = OpenMode.BINARY;
+            break;
+          case 'A':
+            mode = OpenMode.APPEND;
+            break;
+          default:
+            throw new IOError(BAD_FILE_MODE);
+        }
+      } else {
+        mode = modeSpec;
+      }
+      const handle = device.open(name, mode, recordLength);
       context.files.handles.set(fileNumber, handle);
     });
   }

@@ -949,7 +949,17 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.gotoIndex(expr), ctx.start!);
   }
 
-  override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {}
+  override enterOpen_legacy_statement = (ctx: parser.Open_legacy_statementContext) => {
+    const token = ctx.start!;
+    const mode = this.compileExpression(ctx._openmode!, ctx._openmode!.start!, { tag: TypeTag.STRING });
+    const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
+    const name = this.compileExpression(ctx._file!, ctx._file!.start!, { tag: TypeTag.STRING });
+    let recordLength: parser.ExprContext | undefined;
+    if (ctx._reclen) {
+      recordLength = this.compileExpression(ctx._reclen, ctx._reclen.start!, { tag: TypeTag.INTEGER });
+    }
+    this.addStatement(statements.open({token, mode, name, fileNumber, recordLength}), token);
+  }
 
   override enterOpen_statement = (ctx: parser.Open_statementContext) => {
     const token = ctx.start!;
