@@ -272,6 +272,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     this.interpreter.debug.breakpoints = new Set();
     this.updateStateAfterRunning();
     this.editor.setValue(text);
+    this.updatePaperVisibility(text);
   }
 
   private updateState(state: RunState) {
@@ -314,6 +315,14 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     });
   }
 
+  private updatePaperVisibility(text: string) {
+    if (text.toLowerCase().includes('lprint')) {
+      this.printer.show();
+    } else {
+      this.printer.hide();
+    }
+  }
+
   async run(restart = false, statementIndex = 0) {
     this.root.classList.remove('blocked');
     this.updateState(RunState.RUNNING);
@@ -321,11 +330,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     this.editor.updateDecorations();
     this.editor.clearErrors();
     const text = this.editor.getValue();
-    if (text.toLowerCase().includes('lprint')) {
-      this.printer.show();
-    } else {
-      this.printer.hide();
-    }
+    this.updatePaperVisibility(text);
     try {
       this.screen.canvas.focus();
       // The QBasic IDE keeps key bindings around even if you start a new
