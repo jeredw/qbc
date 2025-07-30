@@ -788,16 +788,26 @@ export class PeekStatement extends Statement {
       context.memory.write(this.result, integer(data[address] ?? 0));
     } catch (e: unknown) {
       const segment = context.memory.getSegment();
-      const offset = address;
-      const linearAddress = (segment << 4) | offset;
       let data = 0;
-      switch (linearAddress) {
-        case 0x410:
-          data = 38;  // donkey.bas checks the BIOS equipment byte.
-          break;
-        case 0x46c:
-          data = context.devices.timer.rawTicks() & 0xff;
-          break;
+      if ((segment & 0xffff) === 0xa000) {
+        const mode = context.devices.screen.getMode();
+        if (mode.mode !== 13) {
+          throw new Error('Only support PEEKing video memory in mode 13');
+        }
+        const y = ~~(address / 320);
+        const x = ~~(address % 320);
+        data = context.devices.screen.getPixel(x, y, /*screen=*/ true);
+      } else {
+        const offset = address;
+        const linearAddress = (segment << 4) | offset;
+        switch (linearAddress) {
+          case 0x410:
+            data = 38;  // donkey.bas checks the BIOS equipment byte.
+            break;
+          case 0x46c:
+            data = context.devices.timer.rawTicks() & 0xff;
+            break;
+        }
       }
       context.memory.write(this.result, integer(data));
     }
@@ -822,6 +832,17 @@ export class PokeStatement extends Statement {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
     const byte = evaluateIntegerExpression(this.valueExpr, context.memory) & 255;
+    const segment = context.memory.getSegment();
+    if ((segment & 0xffff) === 0xa000) {
+      const mode = context.devices.screen.getMode();
+      if (mode.mode !== 13) {
+        throw new Error('Only support POKEing video memory in mode 13');
+      }
+      const y = ~~(address / 320);
+      const x = ~~(address % 320);
+      context.devices.screen.setPixel(x, y, byte, /*step=*/ false, /*screen=*/ true);
+      return;
+    }
     try {
       const [variable, data] = readBytesAtPointer(context.memory);
       if (address < data.length) {

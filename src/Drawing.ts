@@ -209,8 +209,12 @@ export class Plotter {
     return this.coordinates.windowToView(p);
   }
 
-  getPixel(ctx: CanvasRenderingContext2D, x: number, y: number): number {
-    const pv = this.windowToScreen({x, y});
+  private snap(p: Point): Point {
+    return {x: roundToNearestEven(p.x), y: roundToNearestEven(p.y)};
+  }
+
+  getPixel(ctx: CanvasRenderingContext2D, x: number, y: number, screen?: boolean): number {
+    const pv = screen ? this.snap({x, y}) : this.windowToScreen({x, y});
     if (this.clip.contains(pv)) {
       const imageData = ctx.getImageData(pv.x, pv.y, 1, 1);
       return imageData.data[0];
@@ -218,9 +222,9 @@ export class Plotter {
     return -1;
   }
 
-  setPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: number, step?: boolean) {
+  setPixel(ctx: CanvasRenderingContext2D, x: number, y: number, color: number, step?: boolean, screen?: boolean) {
     const pw = step ? {x: x + this.cursor.x, y: y + this.cursor.y} : {x, y};
-    const pv = this.windowToScreen(pw);
+    const pv = screen ? this.snap({x, y}): this.windowToScreen(pw);
     this.fillPixel(ctx, pv, color);
     this.cursor = {...pw};
   }

@@ -1,0 +1,72 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (def_fn_statement def fnoffs& 
+    ( 
+      (def_fn_parameter_list 
+        (def_fn_parameter x) , 
+        (def_fn_parameter y)) ) = 
+    (expr 
+      (expr 
+        (expr 
+          (variable_or_function_call y)) * 
+        (expr 
+          (literal 320))) + 
+      (expr 
+        (variable_or_function_call x)))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (literal &ha000)))) \n 
+  (statement 
+    (for_next_statement for y = 
+      (expr 
+        (literal 80)) to 
+      (expr 
+        (literal 120)) 
+      (block \n 
+        (statement 
+          (for_next_statement for x = 
+            (expr 
+              (literal 140)) to 
+            (expr 
+              (literal 180)) 
+            (block \n 
+              (statement 
+                (call_statement 
+                  (untyped_id poke) 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call fnoffs& 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call x))) , 
+                              (argument 
+                                (expr 
+                                  (variable_or_function_call y)))) )))) , 
+                    (argument 
+                      (expr 
+                        (literal 64)))))) \n) next x)) \n) next y)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call fnoffs& 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 160))) , 
+                          (argument 
+                            (expr 
+                              (literal 100)))) ))))) )))))) \n <EOF>)

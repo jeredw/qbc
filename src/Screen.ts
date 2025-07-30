@@ -56,8 +56,8 @@ export interface Screen extends Printer, LightPenTarget {
   getGraphicsCursor(): Point;
   setGraphicsCursor(p: Point): void;
   clear(options?: number): void;
-  getPixel(x: number, y: number): number;
-  setPixel(x: number, y: number, color?: number, step?: boolean): void;
+  getPixel(x: number, y: number, screen?: boolean): number;
+  setPixel(x: number, y: number, color?: number, step?: boolean, screen?: boolean): void;
   resetPixel(x: number, y: number, color?: number, step?: boolean): void;
   line(args: LineArgs, color?: number): void;
   circle(args: CircleArgs, color?: number): void;
@@ -219,14 +219,14 @@ class Page {
     this.dirty = true;
   }
 
-  getPixel(x: number, y: number): number {
+  getPixel(x: number, y: number, screen?: boolean): number {
     const ctx = this.canvas.getContext('2d')!;
-    return this.plotter.getPixel(ctx, x, y);
+    return this.plotter.getPixel(ctx, x, y, screen);
   }
 
-  setPixel(x: number, y: number, color: number, step?: boolean) {
+  setPixel(x: number, y: number, color: number, step?: boolean, screen?: boolean) {
     const ctx = this.canvas.getContext('2d')!;
-    this.plotter.setPixel(ctx, x, y, color, step);
+    this.plotter.setPixel(ctx, x, y, color, step, screen);
     this.dirty = true;
   }
 
@@ -733,18 +733,18 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.column = 1;
   }
 
-  getPixel(x: number, y: number): number {
+  getPixel(x: number, y: number, screen?: boolean): number {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    return this.activePage.getPixel(x, y);
+    return this.activePage.getPixel(x, y, screen);
   }
 
-  setPixel(x: number, y: number, color?: number, step?: boolean) {
+  setPixel(x: number, y: number, color?: number, step?: boolean, screen?: boolean) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.setPixel(x, y, this.checkColorArg(color, this.color.fgColor), step);
+    this.activePage.setPixel(x, y, this.checkColorArg(color, this.color.fgColor), step, screen);
   }
 
   resetPixel(x: number, y: number, color?: number, step?: boolean) {
@@ -1197,14 +1197,14 @@ export class TestScreen implements Screen {
     this.graphics.clear(options);
   }
 
-  getPixel(x: number, y: number): number {
+  getPixel(x: number, y: number, screen?: boolean): number {
     this.text.print(`[POINT ${x}, ${y}]`, true);
-    return this.graphics.getPixel(x, y);
+    return this.graphics.getPixel(x, y, screen);
   }
 
-  setPixel(x: number, y: number, color?: number, step?: boolean) {
+  setPixel(x: number, y: number, color?: number, step?: boolean, screen?: boolean) {
     this.text.print(`[PSET ${x}, ${y}, ${color}, ${step}]`, true);
-    this.graphics.setPixel(x, y, color, step);
+    this.graphics.setPixel(x, y, color, step, screen);
   }
 
   resetPixel(x: number, y: number, color?: number, step?: boolean) {
