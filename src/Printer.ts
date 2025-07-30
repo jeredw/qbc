@@ -51,6 +51,9 @@ export abstract class BasePrinter implements Printer {
   }
 
   print(text: string, newline: boolean) {
+    if (this.column > 1 && this.spaceLeftOnLine() < text.length) {
+      this.newLine();
+    }
     while (text.length > 0) {
       const space = this.spaceLeftOnLine();
       if (text.length > space) {

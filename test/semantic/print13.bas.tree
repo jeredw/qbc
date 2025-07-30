@@ -1,0 +1,64 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call string$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 76))) , 
+                  (argument 
+                    (expr 
+                      (literal "-")))) ))) + 
+          (expr 
+            (literal "]"))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 42))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call string$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 76))) , 
+                  (argument 
+                    (expr 
+                      (literal "-")))) ))) + 
+          (expr 
+            (literal "]"))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "abc"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call string$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 76))) , 
+                  (argument 
+                    (expr 
+                      (literal "-")))) ))) + 
+          (expr 
+            (literal "]"))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "abcd"))))) \n <EOF>)
