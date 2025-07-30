@@ -1,0 +1,43 @@
+(program ' \n 
+  (statement 
+    (common_statement common shared 
+      (scope_variable x% 
+        (array_declaration 
+          ( ))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )) = 
+          (expr 
+            (literal 42)))) \n 
+      (statement 
+        (for_next_statement for x% = 
+          (expr 
+            (literal 1)) to 
+          (expr 
+            (literal 4)) 
+          (block \n 
+            (statement 
+              (print_statement print 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call x%)) ;) 
+                (print_argument 
+                  (expr 
+                    (variable_or_function_call x% 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 0)))) )))))) \n) next x%)) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)

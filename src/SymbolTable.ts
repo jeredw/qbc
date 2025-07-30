@@ -176,58 +176,65 @@ export class SymbolTable {
   }
 
   lookupArray(name: string, sigil: string | undefined, type: Type, token: Token): Variable | undefined {
-    const mySlot = this._symbols.get(name);
-    const parentSlot = this._parent?._symbols.get(name);
-    const slot = mySlot ?? parentSlot;
     const isDefaultType = !sigil;
-    if (slot) {
+    const lookup = (slot?: Slot, sameScope?: boolean): Variable | undefined => {
+      if (!slot) {
+        return;
+      }
       if (slot.arrayVariables) {
         const asType = slot.arrayAsType ?? slot.scalarAsType;
         const lookupType = getLookupType({type, asType, isDefaultType});
         if (!asType || sameType(asType, lookupType)) {
           const variable = slot.arrayVariables.get(lookupType.tag);
-          if (variable && this.isVisible(variable, slot, mySlot)) {
+          if (variable && (sameScope || this.isVisible(variable))) {
             return variable;
           }
         }
         throw ParseError.fromToken(token, "Duplicate definition");
       }
-    }
+    };
+    return (
+      lookup(this._symbols.get(name), true) ??
+      lookup(this._parent?._symbols.get(name))
+    );
   }
 
   lookupVariable({name, sigil, array, type} : {name: string, sigil: string, array: boolean, type: Type}): Variable | undefined {
-    const mySlot = this._symbols.get(name);
-    const parentSlot = this._parent?._symbols.get(name);
-    const slot = mySlot ?? parentSlot;
     const isDefaultType = !sigil;
-    if (!slot) {
-      return;
-    }
-    if (!array && slot.scalarVariables) {
-      const asType = slot.scalarAsType ?? slot.arrayAsType;
-      const lookupType = getLookupType({type, asType, isDefaultType});
-      if (!asType || sameType(asType, lookupType)) {
-        const variable = slot.scalarVariables.get(lookupType.tag);
-        if (variable && this.isVisible(variable, slot, mySlot)) {
-          return variable;
-        }
+    const lookup = (slot?: Slot, sameScope?: boolean): Variable | undefined => {
+      if (!slot) {
+        return;
       }
-    }
-    if (array && slot.arrayVariables) {
-      const asType = slot.arrayAsType ?? slot.scalarAsType;
-      if (asType && isDefaultType) {
-        type = asType;
-      }
-      if (!asType || sameType(asType, type)) {
-        const variable = slot.arrayVariables.get(type.tag);
-        if (variable && this.isVisible(variable, slot, mySlot)) {
-          if (!variable.array) {
-            throw new Error("missing array dimensions");
+      if (!array && slot.scalarVariables) {
+        const asType = slot.scalarAsType ?? slot.arrayAsType;
+        const lookupType = getLookupType({type, asType, isDefaultType});
+        if (!asType || sameType(asType, lookupType)) {
+          const variable = slot.scalarVariables.get(lookupType.tag);
+          if (variable && (sameScope || this.isVisible(variable))) {
+            return variable;
           }
-          return variable;
         }
       }
-    }
+      if (array && slot.arrayVariables) {
+        const asType = slot.arrayAsType ?? slot.scalarAsType;
+        if (asType && isDefaultType) {
+          type = asType;
+        }
+        if (!asType || sameType(asType, type)) {
+          const variable = slot.arrayVariables.get(type.tag);
+          if (variable && (sameScope || this.isVisible(variable))) {
+            if (!variable.array) {
+              throw new Error("missing array dimensions");
+            }
+            return variable;
+          }
+        }
+      }
+    };
+    return (
+      lookup(this._symbols.get(name), true) ??
+      lookup(this._parent?._symbols.get(name))
+    );
   }
 
   // Look up a name, and if it is not found, define a new variable with that
@@ -248,15 +255,11 @@ export class SymbolTable {
     if (builtin) {
       return {tag: QBasicSymbolTag.BUILTIN, builtin};
     }
-    const mySlot = this._symbols.get(name);
-    const parentSlot = this._parent?._symbols.get(name);
-    let slot = mySlot ?? parentSlot;
-    if (numDimensions > 0 && !mySlot?.arrayVariables && parentSlot?.arrayVariables) {
-      // Shared arrays can have the same name as local scalars.
-      slot = parentSlot;
-    }
     const isDefaultType = !sigil;
-    if (slot) {
+    const lookup = (slot?: Slot, sameScope?: boolean): QBasicSymbol | undefined => {
+      if (!slot) {
+        return;
+      }
       if (slot.procedure) {
         if (!slot.procedure.result || !sigil || sameType(type, slot.procedure.result.type)) {
           return {tag: QBasicSymbolTag.PROCEDURE, procedure: slot.procedure};
@@ -281,7 +284,7 @@ export class SymbolTable {
         const lookupType = getLookupType({type, isDefaultType, asType});
         if (!asType || sameType(asType, lookupType)) {
           const variable = slot.scalarVariables.get(lookupType.tag);
-          if (variable && this.isVisible(variable, slot, mySlot)) {
+          if (variable && (sameScope || this.isVisible(variable))) {
             return {tag: QBasicSymbolTag.VARIABLE, variable};
           }
         }
@@ -291,7 +294,7 @@ export class SymbolTable {
         const lookupType = getLookupType({type, isDefaultType, asType});
         if (!asType || sameType(asType, lookupType)) {
           const variable = slot.arrayVariables.get(lookupType.tag);
-          if (variable && this.isVisible(variable, slot, mySlot)) {
+          if (variable && (sameScope || this.isVisible(variable))) {
             if (!variable.array) {
               throw new Error("missing array dimensions");
             }
@@ -303,6 +306,13 @@ export class SymbolTable {
           }
         }
       }
+    };
+    const existingSymbol = (
+      lookup(this._symbols.get(name), true) ??
+      lookup(this._parent?._symbols.get(name))
+    );
+    if (existingSymbol) {
+      return existingSymbol;
     }
     const array = numDimensions > 0 ? {
       array: {
@@ -541,9 +551,8 @@ export class SymbolTable {
     }
   }
 
-  private isVisible(variable: Variable, slot: Slot, mySlot?: Slot): boolean {
-    return slot === mySlot ||
-      this.defFn() ||
+  private isVisible(variable: Variable): boolean {
+    return this.defFn() ||
       !!variable.shared ||
       (!!this._name && !!variable.sharedWith?.has(this._name));
   }
