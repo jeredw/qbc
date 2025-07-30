@@ -238,9 +238,9 @@ interface Command {
 }
 
 function parsePlayCommandString(commands: string, state: PlayState): Song {
-  const pointers = commands.match(/x..../gi);
-  const stripped = commands.replace(/\s+/g, '').toLowerCase();
-  const tokens = stripped.match(/(o\d+|<|>|[a-g][-#+]?\d*|n\d+|m[lnsfb]|l\d+|p\d+|t\d+|\.|x....|.)/g) || [];
+  const pointers = commands.match(/x..../gsi);
+  commands = commands.replace(/x..../gsi, 'x').replace(/\s+/g, '').toLowerCase();
+  const tokens = commands.match(/(o\d+|<|>|[a-g][-#+]?\d*|n\d+|m[lnsfb]|l\d+|p\d+|t\d+|\.|x|.)/g) || [];
   const song: Song = {notes: []};
   const quarterNotesToSeconds = (quarterNotes: number) => {
     // quarter notes / (quarter notes / second)
