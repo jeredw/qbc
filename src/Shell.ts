@@ -349,6 +349,9 @@ class Shell implements DebugProvider, DiskListener, Invoker {
         throw error;
       }
     } finally {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
       this.updateStateAfterRunning();
     }
   }
