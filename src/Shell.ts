@@ -35,6 +35,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
   private interpreter: Interpreter;
   private invocation: Invocation | null = null;
 
+  private editorPane: HTMLElement;
   private editor: EditorProxy;
   private running: RunState;
   private runFromStartButton: HTMLElement;
@@ -83,6 +84,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     }, this);
     this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;
+    this.editorPane = assertHTMLElement(root.querySelector('.editor-pane'));
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
     this.editor = new EditorProxy(editorElement, this.interpreter.debug, this);
     this.runFromStartButton = assertHTMLElement(root.querySelector('.run-from-start'));
@@ -105,6 +107,8 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
     this.screen.canvas.addEventListener('pointerup', (e: PointerEvent) => this.pointerup(e));
     this.screen.canvas.addEventListener('pointermove', (e: PointerEvent) => this.pointermove(e));
+    this.screen.canvas.addEventListener('click', (e) => this.clickCanvas(e));
+    this.screen.canvas.addEventListener('fullscreenchange', (e) => this.fullscreenChange());
   }
 
   private pointerdown(e: PointerEvent) {
@@ -122,6 +126,24 @@ class Shell implements DebugProvider, DiskListener, Invoker {
   private pointermove(e: PointerEvent) {
     if (document.activeElement == this.screen.canvas) {
       this.pointer.pointermove(e);
+    }
+  }
+
+  private clickCanvas(e: MouseEvent) {
+    if (document.activeElement == this.screen.canvas) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        this.screen.canvas.requestFullscreen();
+      }
+    }
+  }
+
+  private fullscreenChange() {
+    if (document.fullscreenElement) {
+      this.editorPane.style.display = 'none';
+    } else {
+      this.editorPane.style.display = '';
     }
   }
 
