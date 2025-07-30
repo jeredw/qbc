@@ -161,7 +161,8 @@ export class KeyboardListener implements Keyboard {
         !!(customKey.flags & 128) === isExtendedKey(e, code)
       );
       const locationMatches = customKey.location === undefined ||
-        e.location === customKey.location;
+        e.location === customKey.location ||
+        (customKey.location === 3 && isNumberPad(e));
       const codeMatches = code === customKey.scanCode;
       if (modifiersMatch && locationMatches && codeMatches) {
         return customKey;
@@ -213,12 +214,13 @@ export class KeyboardListener implements Keyboard {
 }
 
 function getScanCode(e: KeyboardEvent): number | undefined {
-  return getScanCodeForKeyName(e.key, e.location) ||
+  const keyLocation = isNumberPad(e) ? 3 : e.location;
+  return getScanCodeForKeyName(e.key, keyLocation) ||
     // The default Mac en-US keyboard layout uses option + key to compose common
     // Unicode symbols, which won't show up in the key map.  Fall back to the
     // legacy keyCode property to get just e.g. Q for Alt+Q instead of œ.
     (e.altKey && e.key.length === 1 && !isPrintableAscii(e.key) ?
-     getScanCodeForKeyName(String.fromCharCode(e.keyCode), e.location) :
+     getScanCodeForKeyName(String.fromCharCode(e.keyCode), keyLocation) :
      undefined);
 }
 
@@ -303,6 +305,11 @@ function isNumLockOn(e: KeyboardEvent) {
   return e.getModifierState('NumLock') || (e as unknown as SoftKey).softNumLock;
 }
 
+function isNumberPad(e: KeyboardEvent) {
+  // Make the meta key force numpad to make arrows usable for Mac laptops.
+  return e.location === 3 || e.metaKey;
+}
+
 function keyToChar(e: KeyboardEvent): string | undefined {
   if (e.key.length === 1) {
     if (e.location === 3 && !isNumLockOn(e)) {
@@ -340,7 +347,7 @@ function defaultCustomKeys(): CustomKey[] {
 
 function isExtendedKey(e: KeyboardEvent, code: number): boolean {
   // This matches movement keys not on the numpad (not F11/F12).
-  return code >= 71 && e.location !== 3;
+  return code >= 71 && !isNumberPad(e);
 }
 
 function isPrintableAscii(keyName: string): boolean {
