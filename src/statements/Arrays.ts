@@ -27,7 +27,7 @@ export class DimStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    if (!this.result.array || !this.result.array.dynamic) {
+    if (!this.result.array || (!this.result.isParameter && !this.result.array.dynamic)) {
       throw new Error("dim of non-dynamic array");
     }
     if (!this.result.address) {
@@ -35,6 +35,10 @@ export class DimStatement extends Statement {
     }
     const oldDescriptor = getArrayDescriptor(this.result, context.memory);
     if (oldDescriptor.baseAddress) {
+      if (!oldDescriptor.dynamic) {
+        // This can happen when REDIMing a static array passed as an array parameter.
+        throw RuntimeError.fromToken(this.token, DUPLICATE_DEFINITION);
+      }
       if (!this.redim) {
         throw RuntimeError.fromToken(this.token, DUPLICATE_DEFINITION);
       }

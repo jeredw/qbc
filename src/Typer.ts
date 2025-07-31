@@ -450,11 +450,14 @@ export class Typer extends QBasicParserListener {
         if (!redim && dim.AS() && !existingVariable.isAsType) {
           throw ParseError.fromToken(variable.token, "AS clause required on first declaration");
         }
-        if (!existingVariable.array.dynamic) {
-          throw ParseError.fromToken(variable.token, "Array already dimensioned");
-        }
-        if (existingVariable.array.dimensions.length != variable.array.dimensions.length) {
-          throw ParseError.fromToken(variable.token, "Wrong number of dimensions");
+        // Can't check whether array arguments are dynamic at compile time.
+        if (!existingVariable.isParameter) {
+          if (!existingVariable.array.dynamic) {
+            throw ParseError.fromToken(variable.token, "Array already dimensioned");
+          }
+          if (existingVariable.array.dimensions.length != variable.array.dimensions.length) {
+            throw ParseError.fromToken(variable.token, "Wrong number of dimensions");
+          }
         }
         variable = existingVariable;
       } else if (existingVariable && existingVariable.sharedDeclaration) {

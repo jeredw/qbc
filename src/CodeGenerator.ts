@@ -490,7 +490,7 @@ export class CodeGenerator extends QBasicParserListener {
       if (!result) {
         continue;
       }
-      if (!result.array || !result.array.dynamic) {
+      if (!result.array || (!result.isParameter && !result.array.dynamic)) {
         throw new Error("found result on non-dynamic array dim")
       }
       const ranges = dim.dim_array_bounds();

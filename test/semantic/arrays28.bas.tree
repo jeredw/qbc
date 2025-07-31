@@ -1,0 +1,44 @@
+(program ' \n ' 
+  (statement 
+    (dynamic_metacommand  $DYNAMIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1))) ))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter a 
+          (array_declaration 
+            ( )))) ) 
+    (block \n 
+      (statement 
+        (dim_statement redim 
+          (dim_variable a 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 100))) ))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument x 
+          ( ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok")) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( x ))))))) \n <EOF>)
