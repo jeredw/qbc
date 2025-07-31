@@ -280,7 +280,7 @@ export class SymbolTable {
         throw ParseError.fromToken(token, "Duplicate definition");
       }
       if (numDimensions == 0 && slot.scalarVariables) {
-        const asType = slot.scalarAsType ?? slot.arrayAsType;
+        const asType = slot.scalarAsType;
         const lookupType = getLookupType({type, isDefaultType, asType});
         if (!asType || sameType(asType, lookupType)) {
           const variable = slot.scalarVariables.get(lookupType.tag);
@@ -290,7 +290,7 @@ export class SymbolTable {
         }
       }
       if (numDimensions > 0 && slot.arrayVariables) {
-        const asType = slot.arrayAsType ?? slot.scalarAsType;
+        const asType = slot.arrayAsType;
         const lookupType = getLookupType({type, isDefaultType, asType});
         if (!asType || sameType(asType, lookupType)) {
           const variable = slot.arrayVariables.get(lookupType.tag);
