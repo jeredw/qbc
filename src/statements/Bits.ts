@@ -341,7 +341,11 @@ export class VarSegFunction extends Statement {
     // reference will store the address of A(1), but discards information about
     // the array.  BSAVE and BLOAD need to look up the descriptor to know how
     // big items in A are, so variableSymbol is the actual symbol A().
-    const index = context.memory.writePointer(address, this.variableSymbol);
+    const index = this.variableSymbol.symbolIndex;
+    if (index === undefined) {
+      throw new Error('No symbol index to use as VARSEG pointer')
+    }
+    context.memory.writePointer(index, address, this.variableSymbol);
     context.memory.write(this.result, integer(index));
   }
 }
@@ -358,7 +362,11 @@ export class VarPtrStringFunction extends Statement {
 
   override execute(context: ExecutionContext) {
     const [address, _] = context.memory.dereference(this.variable);
-    const index = context.memory.writePointer(address, this.variableSymbol);
+    const index = this.variable.symbolIndex;
+    if (index === undefined) {
+      throw new Error('No symbol index to use as VARPTR$ pointer')
+    }
+    context.memory.writePointer(index, address, this.variableSymbol);
     const pointerBytes = [index & 0xff, (index >> 8) & 0xff, 0, 0];
     context.memory.write(this.result, string(asciiToString(pointerBytes)));
   }

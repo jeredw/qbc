@@ -56,13 +56,14 @@ Bringup
 + ADVENTURE1, BLOBBLE: COMMON SHARED
 + ARQANOID, BFIGHTER: redimensioning static array passed to function
 + ABSORB: POKE into 0xa000 + ...
++ ASSAULT: Reads back default palette with 3c7/3c9
+- ABSORB: PEEKing to copy arrays in a loop serializes whole array repeatedly
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AMBUSH, AMBUSH2: multifile
 - ANCIENTHEROS: byval
 - ANTS: chain
 - ARCRPG: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
 - ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
-- ASSAULT: Reads back default palette with 3c7/3c9
 - BOMB5: You can have both a line number and a label...
 - BOMBCOO: Uses VARSEG$/VARPTR with array index
 - BURNERS: Right shift key doesn't seem to work

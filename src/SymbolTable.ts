@@ -139,6 +139,7 @@ export class SymbolTable {
   private _staticIndex: number;
   private _record: Variable;
   private _elementOffset: number;
+  private static _symbolIndex = 0x0100;
   
   constructor({builtins, parent, name} : {builtins: StandardLibrary, parent?: SymbolTable, name?: string}) {
     this._builtins = builtins;
@@ -385,6 +386,7 @@ export class SymbolTable {
         // Parameters are passed by reference so only consume one stack slot.
         const size = variable.isParameter ? 1 : getStorageSize(variable);
         variable.address = this.allocate(variable.storageType, size);
+        variable.symbolIndex = SymbolTable._symbolIndex++;
       }
     } else {
       const asType = slot.arrayAsType ?? slot.scalarAsType;
@@ -408,6 +410,7 @@ export class SymbolTable {
       }
       if (!element) {
         this.allocateArray(variable);
+        variable.symbolIndex = SymbolTable._symbolIndex++;
       }
     }
     if (variable.type.tag == TypeTag.RECORD) {

@@ -25,6 +25,8 @@ export interface Variable {
   address?: Address;
   // The most recently assigned value, if any. For use in debugging.
   debugValue?: Value;
+  // A globally unique associated index, used for pointers with VARSEG.
+  symbolIndex?: number;
 }
 
 export interface RecordOffset {

@@ -62,7 +62,6 @@ export class Memory {
   dynamic: Frame[] = [];
   segment: number = 0;
   pointers: Map<number, Pointer> = new Map();
-  pointerSegment = 0x100;
 
   constructor(size: number) {
     this.static = new Frame(size);
@@ -78,7 +77,6 @@ export class Memory {
   reset() {
     this.clear();
     this.segment = 0;
-    this.pointerSegment = 0x100;
     this.pointers = new Map();
   }
 
@@ -182,19 +180,13 @@ export class Memory {
   readPointer(index: number): Pointer {
     const pointer = this.pointers.get(index);
     if (pointer === undefined) {
-      throw new Error("invalid pointer");
+      throw new Error("Pointer not previously installed with VARSEG");
     }
     return pointer;
   }
 
-  writePointer(address: Address, variable: Variable): number {
-    if (this.pointers.size > 65535) {
-      throw new Error("out of pointer space");
-    }
-    const result = this.pointerSegment;
-    this.pointers.set(result, {address, variable});
-    this.pointerSegment++;
-    return result;
+  writePointer(index: number, address: Address, variable: Variable) {
+    this.pointers.set(index, {address, variable});
   }
 
   private getStackFrame(frameIndexFromAddress: number | undefined): Frame {
