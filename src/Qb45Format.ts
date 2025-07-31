@@ -672,7 +672,7 @@ class Qb45Loader {
         }
         return T('CASE IS <> {0}', Tag.CASE);
       case 0x043:
-        return T('ON');
+        return T('CHAIN {0}');
       case 0x044:
         return procedure({keyword: 'DECLARE', parenthesis: true});
       case 0x045:

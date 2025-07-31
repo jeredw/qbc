@@ -783,6 +783,10 @@ export function seekStatement(token: Token, fileNumber: parser.ExprContext, offs
   return new SeekStatement(token, fileNumber, offset);
 }
 
+export function setmem(args: BuiltinStatementArgs) {
+  return new NoOpStatement();
+}
+
 export function sgn(args: BuiltinStatementArgs) {
   return new SgnFunction(args);
 }
