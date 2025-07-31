@@ -725,20 +725,9 @@ export class Typer extends QBasicParserListener {
 
   override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
     const [name, sigil] = splitSigil(ctx.ID(0)!.getText().toLowerCase());
-    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    const nextId = ctx.ID(1);
-    if (nextId) {
-      // If present, the variable name and type in NEXT must match FOR.
-      const [nextName, nextSigil] = splitSigil(nextId.getText().toLowerCase());
-      const nextType = nextSigil ? typeOfSigil(nextSigil) : this.getDefaultType(nextName);
-      if (name != nextName || !sameType(type, nextType)) {
-        throw ParseError.fromToken(ctx.ID(1)!.symbol, "NEXT without FOR");
-      }
-    }
-    if (!isNumericType(type)) {
-      // Non-numeric counters cause a type mismatch on the end expression.
-      throw ParseError.fromToken(ctx._end!.start!, "Type mismatch");
-    }
+    // This could actually be wrong, e.g. if we have DEFSTR I and DIM I AS INTEGER.
+    // We'll look up the correct as type below.
+    let type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const token = ctx.ID(0)!.symbol;
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
       name,
@@ -750,8 +739,32 @@ export class Typer extends QBasicParserListener {
       isAsType: false,
       arrayBaseIndex: this._arrayBaseIndex,
     });
+    if (!isVariable(symbol)) {
+      throw new Error('expecting variable for loop counter');
+    }
+    const loopVariable = symbol.variable;
     getTyperContext(ctx).$symbol = symbol;
     this._program.debugInfo.refs.push({token, symbol});
+    type = loopVariable.type;
+    const nextId = ctx.ID(1);
+    if (nextId) {
+      // If specified, the next variable must match the loop counter.
+      const [nextName, nextSigil] = splitSigil(nextId.getText().toLowerCase());
+      const nextType = nextSigil ? typeOfSigil(nextSigil) : this.getDefaultType(nextName);
+      const nextVariable = this._chunk.symbols.lookupVariable({
+        name: nextName,
+        sigil: nextSigil,
+        array: false,
+        type: nextType
+      });
+      if (nextVariable !== loopVariable) {
+        throw ParseError.fromToken(ctx.ID(1)!.symbol, "NEXT without FOR");
+      }
+    }
+    if (!isNumericType(type)) {
+      // Non-numeric counters cause a type mismatch on the end expression.
+      throw ParseError.fromToken(ctx._end!.start!, "Type mismatch");
+    }
     getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);
     if (ctx._increment) {
       getTyperContext(ctx).$increment = this.makeSyntheticVariable(type, ctx._increment!.start!);

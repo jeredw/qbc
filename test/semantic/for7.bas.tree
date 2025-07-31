@@ -1,0 +1,21 @@
+(program ' \n 
+  (statement 
+    (deftype_statement defstr 
+      (letter_range a - z))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id i) as 
+        (type_name integer)))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 4)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (literal "ok"))))) \n) next i)) \n <EOF>)

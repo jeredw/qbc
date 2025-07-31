@@ -51,6 +51,7 @@ Bringup
 + ARCRPG: multifile
 + 4ID16: Space after file name is ignored.
 + 3DBOUNCY: jumps into for loop without initializing counter
++ PCHECKERS, BREAKOUT: local shadowing shared array in PUT
 - 4ID16: SCREEN 13 : WIDTH 80 does pseudo-mode 0, can still OUT palette...
 - ABSORB: POKE into 0xa000 + ...
 - ADVENTUR: qbasic permits multiple default else for block if...else...
@@ -69,7 +70,6 @@ Bringup
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
 - PANGALL: multifile
-- PCHECKERS, BREAKOUT: local shadowing shared array in PUT
 - WHEEL OF WEALTH: marge simpson paint overflows circles
 
 IDE features
