@@ -98,7 +98,7 @@ export class StandardLibrary {
     _("rmdir string", statements.rmdir),
     _("rtrim string -> string", statements.rtrim),
     _("rnd single? -> single", statements.rnd),
-    _("setmem long", statements.setmem),
+    _("setmem long -> long", statements.setmem),
     _("sgn numeric -> numeric", statements.sgn),
     _("shell string", statements.shell),
     _("sin double -> double", statements.sin),
