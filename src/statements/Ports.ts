@@ -35,15 +35,12 @@ export class OutStatement extends Statement {
   private token: Token;
   private portExpr: ExprContext;
   private dataExpr: ExprContext;
-  private vgaPaletteIndex: number;
-  private vgaPaletteAttributes: number[];
 
   constructor(args: BuiltinStatementArgs) {
     super();
     this.token = args.token;
     this.portExpr = args.params[0].expr!;
     this.dataExpr = args.params[1].expr!;
-    this.vgaPaletteAttributes = [];
   }
 
   override execute(context: ExecutionContext) {
@@ -52,10 +49,8 @@ export class OutStatement extends Statement {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
     const port = portSpec & 0xffff;
-    const data = evaluateIntegerExpression(this.dataExpr, context.memory);
-    if (data < 0 || data > 255) {
-      throw RuntimeError.fromToken(this.token, OVERFLOW);
-    }
+    // OUT quietly wraps when data is out of range.
+    const data = evaluateIntegerExpression(this.dataExpr, context.memory) & 0xff;
     switch (port) {
       case 0x3c8:
         context.devices.screen.setVgaPaletteIndex(data);
