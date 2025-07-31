@@ -23,9 +23,13 @@ export class InpFunction extends BuiltinFunction1 {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
     const port = portSpec & 0xffff;
-    if (port === 0x60) {
-      const code = context.devices.keyboard.getLastScanCode();
-      return integer(code);
+    switch (port) {
+      case 0x3c9:
+        const data = context.devices.screen.getVgaPaletteData();
+        return integer(data);
+      case 0x60:
+        const code = context.devices.keyboard.getLastScanCode();
+        return integer(code);
     }
     return integer(0);
   }
@@ -52,6 +56,7 @@ export class OutStatement extends Statement {
     // OUT quietly wraps when data is out of range.
     const data = evaluateIntegerExpression(this.dataExpr, context.memory) & 0xff;
     switch (port) {
+      case 0x3c7:
       case 0x3c8:
         context.devices.screen.setVgaPaletteIndex(data);
         break;

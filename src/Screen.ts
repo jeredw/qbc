@@ -40,6 +40,7 @@ export interface Screen extends Printer, LightPenTarget {
   resetPalette(): void;
   setVgaPaletteIndex(index: number): void;
   setVgaPaletteData(data: number): void;
+  getVgaPaletteData(): number;
 
   setDrawState(state: DrawState): void;
   getDrawState(): DrawState;
@@ -365,6 +366,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       scale: 4,
     };
     this.vgaPaletteData = [];
+    this.vgaPaletteIndex = 0;
     this.softKeys = {keys: [], visible: false};
     this.configure(0, 0, 0, 0);
   }
@@ -376,6 +378,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     };
     this.softKeys = {keys: [], visible: false};
     this.vgaPaletteData = [];
+    this.vgaPaletteIndex = 0;
     this.configure(1, 0, 0, 0);
     this.configure(0, 0, 0, 0);
   }
@@ -603,6 +606,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
       this.vgaPaletteIndex++;
       this.visiblePage.dirty = true;
     }
+  }
+
+  getVgaPaletteData(): number {
+    if (this.vgaPaletteData.length === 0) {
+      const color = this.palette[this.vgaPaletteIndex++];
+      this.vgaPaletteData = [~~(color.red / 4), ~~(color.green / 4), ~~(color.blue / 4)];
+    }
+    return this.vgaPaletteData.pop() ?? 0;
   }
 
   setDrawState(state: DrawState): void {
@@ -1135,6 +1146,12 @@ export class TestScreen implements Screen {
     this.text.print(`[OUT &h3c9, ${data}]`, true);
     this.graphics.setVgaPaletteData(data);
     this.hasGraphics = true;
+  }
+
+  getVgaPaletteData(): number {
+    this.text.print(`[INP &h3c7]`, true);
+    this.hasGraphics = true;
+    return this.graphics.getVgaPaletteData();
   }
 
   setDrawState(state: DrawState) {

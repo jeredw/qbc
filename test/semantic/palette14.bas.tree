@@ -1,0 +1,145 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call r&) = 
+      (expr 
+        (literal 15)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call g&) = 
+      (expr 
+        (literal 24)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call b&) = 
+      (expr 
+        (literal 7)))) \n 
+  (statement 
+    (palette_statement palette 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (expr 
+          (expr 
+            (literal 256)) * 
+          (expr 
+            ( 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call r&)) * 
+                  (expr 
+                    (literal 256))) + 
+                (expr 
+                  (variable_or_function_call g&))) ))) + 
+        (expr 
+          (variable_or_function_call b&))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call r&) = 
+      (expr 
+        (literal 5)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call g&) = 
+      (expr 
+        (literal 4)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call b&) = 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (palette_statement palette 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (expr 
+          (expr 
+            (literal 256)) * 
+          (expr 
+            ( 
+              (expr 
+                (expr 
+                  (expr 
+                    (variable_or_function_call r&)) * 
+                  (expr 
+                    (literal 256))) + 
+                (expr 
+                  (variable_or_function_call g&))) ))) + 
+        (expr 
+          (variable_or_function_call b&))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id out) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal &h3c7))) , 
+        (argument 
+          (expr 
+            (literal 0)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h3c9)))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h3c9)))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h3c9)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h3c9)))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h3c9)))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call inp 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h3c9)))) )))))) \n <EOF>)
