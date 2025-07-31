@@ -1,0 +1,14 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (width_statement width 
+      (expr 
+        (literal 80)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) \n <EOF>)

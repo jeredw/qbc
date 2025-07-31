@@ -393,13 +393,29 @@ export class CanvasScreen extends BasePrinter implements Screen {
     const [currentWidth, currentHeight] = this.geometry.text;
     const desiredWidth = width ?? currentWidth;
     const desiredHeight = height ?? currentHeight;
-    const geometry = this.mode.geometry.find((entry) => (
-      entry.text[0] === desiredWidth && entry.text[1] === desiredHeight
-    ));
-    if (!geometry) {
-      throw new Error(`unsupported text geometry ${width}x${height}`);
+    // If you say e.g. WIDTH 80 in SCREEN 13, instead of failing, QBasic
+    // implicitly switches modes to mode 0.  Search forward through the list of
+    // screen modes for a matching text geometry.
+    let geometry: ScreenGeometry | undefined;
+    let mode = this.mode;
+    const modeIndex = SCREEN_MODES.findIndex((x) => x.mode === this.mode.mode);
+    if (modeIndex === -1) {
+      throw new Error('Invalid screen mode');
     }
-    this.setScreenMode(this.mode, geometry, 0, 0, 0);
+    const numModes = SCREEN_MODES.length;
+    for (let i = 0; i < numModes; i++) {
+      mode = SCREEN_MODES[(modeIndex + i) % numModes];
+      geometry = mode.geometry.find((entry: ScreenGeometry) => (
+        entry.text[0] === desiredWidth && entry.text[1] === desiredHeight
+      ));
+      if (geometry) {
+        break;
+      }
+    }
+    if (!geometry) {
+      throw new Error(`Unsupported text geometry ${width}x${height}`);
+    }
+    this.setScreenMode(mode, geometry, 0, 0, 0);
   }
 
   private setScreenMode(mode: ScreenMode, geometry: ScreenGeometry, colorSwitch: number, activePage: number, visiblePage: number) {
