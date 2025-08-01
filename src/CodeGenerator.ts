@@ -453,7 +453,7 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {
     const segment = ctx.expr() ?? undefined;
-    const segmentExpr = segment && this.compileExpression(segment, segment.start!, { tag: TypeTag.INTEGER });
+    const segmentExpr = segment && this.compileExpression(segment, segment.start!, { tag: TypeTag.LONG });
     this.addStatement(statements.defSeg(ctx.start!, segmentExpr), ctx.start!);
   }
 

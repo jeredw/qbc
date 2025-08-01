@@ -318,8 +318,13 @@ export class DefSegStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const segment = this.segmentExpr && evaluateIntegerExpression(this.segmentExpr, context.memory);
-    context.memory.setSegment(segment ?? 0);
+    const segment = (
+      this.segmentExpr && evaluateIntegerExpression(this.segmentExpr, context.memory, {tag: TypeTag.LONG})
+    ) ?? 0;
+    if (segment < -65536 || segment > 65535) {
+      throw RuntimeError.fromToken(this.token, OVERFLOW);
+    }
+    context.memory.setSegment(segment);
   }
 }
 
