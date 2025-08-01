@@ -25,7 +25,12 @@ export class CallAbsoluteStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const procedure = evaluateIntegerExpression(this.procedureExpr, context.memory, {tag: TypeTag.LONG});
+    let procedure = evaluateIntegerExpression(this.procedureExpr, context.memory, {tag: TypeTag.LONG});
+    if (procedure === 0) {
+      // The procedure may have been passed with VARPTR(a(0)) which will be zero,
+      // since we rely on DEF SEG. Check the current segment instead.
+      procedure = context.memory.getSegment();
+    }
     const {variable} = context.memory.readPointer(procedure);
     if (!variable) {
       throw new Error("Unknown pointer for CALL ABSOLUTE procedure.");
@@ -74,30 +79,8 @@ export class CallAbsoluteStatement extends Statement {
   }
 }
 
-interface InterruptHandler {
+export interface InterruptHandler {
   call(cpu: Basic86): void;
-}
-
-class MouseHandler implements InterruptHandler {
-  constructor(private mouse: Mouse) {
-  }
-
-  call(cpu: Basic86) {
-    switch (cpu.ax) {
-      case 0:
-        cpu.ax = 0xffff;  // Yes, there is a mouse.
-        cpu.bx = 2;       // Assume it has two buttons.
-        break;
-      case 1:
-        this.mouse.showCursor();
-        break;
-      case 2:
-        this.mouse.hideCursor();
-        break;
-      default:
-        throw new Error(`Unsupported mouse function ${cpu.ax}`);
-    }
-  }
 }
 
 class Basic86 {
@@ -242,9 +225,21 @@ class Basic86 {
             this.bx = this.readWord(this.ss, this.bp + offset);
             break;
           }
+          case 0xec:
+            this.bp = this.sp;
+            break;
           default:
             throw new Error(`Unrecognized argument ${ir}: ${arg}`);
         }
+        break;
+      }
+      case 0x92:
+        [this.dx, this.ax] = [this.ax, this.dx];
+        break;
+      case 0xb8: {
+        const imm16 = this.readWord(this.cs, this.ip);
+        this.ip += 2;
+        this.ax = imm16;
         break;
       }
       case 0xca: {
@@ -314,4 +309,55 @@ class Basic86 {
 
 function linearAddress(segment: number, offset: number): number {
   return (segment << 4) | offset;
+}
+
+class MouseHandler implements InterruptHandler {
+  constructor(private mouse: Mouse) {
+  }
+
+  call(cpu: Basic86) {
+    switch (cpu.ax) {
+      case 0:
+        cpu.ax = 0xffff;  // Yes, there is a mouse.
+        cpu.bx = 2;       // Assume it has two buttons.
+        break;
+      case 1:
+        this.mouse.showCursor();
+        break;
+      case 2:
+        this.mouse.hideCursor();
+        break;
+      case 3: {
+        const {x, y, buttonMask} = this.mouse.getState();
+        cpu.bx = buttonMask;
+        cpu.cx = x & 0xffff;
+        cpu.dx = y & 0xffff;
+        break;
+      }
+      case 5: {
+        const {buttonMask} = this.mouse.getState();
+        const {lastDownX, lastDownY, stickyDownCount} = this.mouse.getButtonState(cpu.bx, /* down= */ true);
+        cpu.ax = buttonMask;
+        cpu.bx = stickyDownCount;
+        cpu.cx = lastDownX & 0xffff;
+        cpu.dx = lastDownY & 0xffff;
+        break;
+      }
+      case 6: {
+        const {buttonMask} = this.mouse.getState();
+        const {lastUpX, lastUpY, stickyUpCount} = this.mouse.getButtonState(cpu.bx, /* down= */ false);
+        cpu.ax = buttonMask;
+        cpu.bx = stickyUpCount;
+        cpu.cx = lastUpX & 0xffff;
+        cpu.dx = lastUpY & 0xffff;
+        break;
+      }
+      case 7:
+      case 8:
+        // Just ignore range functions.
+        break;
+      default:
+        throw new Error(`Unsupported mouse function ${cpu.ax}`);
+    }
+  }
 }

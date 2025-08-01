@@ -145,6 +145,10 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     // this.screen.hideMouseCursor();
   }
 
+  scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
+    return this.screen.scaleMouseCoordinates(x, y);
+  }
+
   private pointerdown(e: PointerEvent) {
     if (document.activeElement == this.screen.canvas) {
       this.pointer.pointerdown(e);

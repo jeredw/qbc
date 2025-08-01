@@ -11,6 +11,7 @@ import { PointerListener } from "../src/LightPen.ts";
 import { Canvas, createCanvas, registerFont } from "canvas"
 import { HttpModem, TestFetcher } from "../src/Modem.ts";
 import { Invoker } from "../src/Invocation.ts";
+import { MouseListener } from "../src/Mouse.ts";
 
 async function interpret(program: string, input: string[], diskJson: string): Promise<[string, string | undefined]> {
   try {
@@ -30,6 +31,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       new TestFetcher(new Map([['/test', 'Here is some data']])),
       true,  // respondInstantly
     );
+    const mouse = new MouseListener(screen);
     let invocations = '';
     const interpreter = new Interpreter({
       screen,
@@ -41,6 +43,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       joystick,
       lightPen,
       modem,
+      mouse,
     }, new class implements Invoker {
       runProgram(fileName: string) {
         if (fileName.toLowerCase() == 'error') {

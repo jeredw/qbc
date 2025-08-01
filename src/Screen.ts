@@ -1110,6 +1110,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
   hideMouseCursor() {
     this.eraseMouseCursor();
   }
+
+  scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
+    return {
+      x: 2 * ~~((x / this.canvas.offsetWidth) * this.canvas.width),
+      y: ~~((y / this.canvas.offsetHeight) * this.canvas.height),
+    };
+  }
 }
 
 export class TestScreen implements Screen {
@@ -1410,6 +1417,10 @@ export class TestScreen implements Screen {
 
   hideMouseCursor() {
     this.text.print('[hide mouse]', true);
+  }
+
+  scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
+    return {x, y};
   }
 }
 
