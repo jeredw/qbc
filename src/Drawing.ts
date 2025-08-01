@@ -598,11 +598,28 @@ export class Plotter {
     start = Math.abs(start);
     end = Math.abs(end);
 
+    if (aspect < 0) {
+      // Passing e.g. aspect=-100.1 has the same effect as .9
+      aspect = 1 + (aspect % 1);
+    }
+    const [rx, ry] = aspect > 1 ?
+      [roundToNearestEven(radius / aspect), radius] :
+      [radius, roundToNearestEven(radius * aspect)];
+    if (ry === 0) {
+      // For extreme ellipses when aspect is near 0, draw a horizontal line.
+      // The algorithm will draw vertical lines for large aspects...
+      this.drawLine(ctx, {x: center.x - rx, y: center.y}, {x: center.x + rx, y: center.y}, color);
+      return;
+    }
+
     // TODO: Match QBasic's arc drawing.  This does not always seem to end the
     // circle at the same pixel as QBasic does.
     const pointToAngle = (x: number, y: number) => {
       const [cx, cy] = [x - center.x, center.y - y];
-      const angle = Math.atan2(cy, cx);
+      // For ellipses, we want theta satisfying
+      //   x = rx * cos(theta)
+      //   y = ry * sin(theta)
+      const angle = Math.atan2(cy / ry, cx / rx);
       return angle >= 0 ? angle : 2 * Math.PI + angle;
     };
     const isPointOnArc = (angle: number): boolean => {
@@ -642,20 +659,6 @@ export class Plotter {
       plot(roundToNearestEven(center.x + x), roundToNearestEven(center.y - y));
       plot(roundToNearestEven(center.x - x), roundToNearestEven(center.y - y));
     };
-
-    if (aspect < 0) {
-      // Passing e.g. aspect=-100.1 has the same effect as .9
-      aspect = 1 + (aspect % 1);
-    }
-    const [rx, ry] = aspect > 1 ?
-      [roundToNearestEven(radius / aspect), radius] :
-      [radius, roundToNearestEven(radius * aspect)];
-    if (ry === 0) {
-      // For extreme ellipses when aspect is near 0, draw a horizontal line.
-      // The algorithm will draw vertical lines for large aspects...
-      this.drawLine(ctx, {x: center.x - rx, y: center.y}, {x: center.x + rx, y: center.y}, color);
-      return;
-    }
 
     // TODO: Figure out how to make this pixel accurate.
     // When aspect = 1.0, QBasic's ellipses are normal Bresenham midpoint
