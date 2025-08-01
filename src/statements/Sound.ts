@@ -330,6 +330,9 @@ function parsePlayCommandString(commands: string, state: PlayState): Song {
       }
       case 'p': {
         const pauseLength = parseInt(command.slice(1), 10);
+        if (pauseLength === 0) {
+          break;
+        }
         if (pauseLength < 1 || pauseLength > 64) {
           throw new Error('invalid note length');
         }
