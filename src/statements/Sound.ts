@@ -239,7 +239,9 @@ interface Command {
 
 function parsePlayCommandString(commands: string, state: PlayState): Song {
   const pointers = commands.match(/x..../gsi);
-  commands = commands.replace(/x..../gsi, 'x').replace(/\s+/g, '').toLowerCase();
+  // It seems like commands can optionally end with a semicolon.
+  // Multiple semicolons in a row don't parse, but we'll allow it.
+  commands = commands.replace(/x..../gsi, 'x').replace(/[\s;]+/g, '').toLowerCase();
   const tokens = commands.match(/(o\d+|<|>|[a-g][-#+]?\d*|n\d+|m[lnsfb]|l\d+|p\d+|t\d+|\.|x|.)/g) || [];
   const song: Song = {notes: []};
   const quarterNotesToSeconds = (quarterNotes: number) => {
