@@ -736,9 +736,12 @@ export class BloadStatement extends Statement {
       }
       const segment = context.memory.getSegment();
       if ((segment & 0xffff) === 0xa000  || (storedSegment === 0xa000 && !this.offsetExpr)) {
-        // Assume we are trying to BLOAD a full screen bitmap into video ram.
+        // Assume we are trying to BLOAD a full width bitmap into video ram.
         const mode = context.devices.screen.getMode();
-        const [width, height] = mode.geometry[0].dots;
+        let [width, height] = mode.geometry[0].dots;
+        // Allow loading less than the full screen height because some programs load
+        // partial spritesheet bitmaps to save time GET'ing sprites.
+        height = ~~(length / width);
         const bppPerPlane = mode.bppPerPlane;
         // Prepend a fake bitmap header like PUT assumes.
         const bitmap = new Uint8Array([

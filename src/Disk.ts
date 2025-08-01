@@ -479,6 +479,10 @@ interface Path {
 function parsePath(path: string, base: Path): Path {
   path = path.trim();
   path = path.toUpperCase();
+  if (/[^\\\.]\.$/.test(path)) {
+    // DOS treats the path "FILE." with an empty extension the same as "FILE"
+    path = path.slice(0, -1);
+  }
   const drive = base.drive;
   if (/^[A-Za-z]:/.test(path)) {
     if (drive != path[0]) {
