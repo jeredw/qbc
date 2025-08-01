@@ -12,6 +12,7 @@ import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
 import { stringToAscii } from "../AsciiChart.ts";
 import { roundToNearestEven } from "../Math.ts";
+import { wrap16Bit } from "./Bits.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -314,15 +315,15 @@ export class LocateStatement extends Statement {
     const stop = this.stopExpr && evaluateIntegerExpression(this.stopExpr, context.memory);
     try {
       if (row !== undefined || column !== undefined) {
-        screen.locateCursor(row, column);
+        screen.locateTextCursor(row, column);
       }
       if (cursor === 0) {
-        screen.hideCursor();
+        screen.hideTextCursor();
       } else if (cursor !== undefined && cursor !== 0) {
-        screen.showCursor();
+        screen.showTextCursor();
       }
       if (start !== undefined && stop !== undefined) {
-        screen.configureCursor(start, stop);
+        screen.configureTextCursor(start, stop);
       }
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
@@ -1070,8 +1071,4 @@ function parseDrawCommandString(commandString: string): DrawProgram {
     }
   }
   return program;
-}
-
-function wrap16Bit(x: number) {
-  return x & 0x8000 ? (x & 0x7fff) - 0x8000 : x & 0x7fff;
 }

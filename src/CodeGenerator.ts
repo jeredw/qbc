@@ -25,6 +25,7 @@ import { FieldDefinition } from "./statements/FileSystem.ts";
 import { ErrorHandlerStatement, ResumeStatement } from "./statements/Errors.ts";
 import { getCodeGeneratorContext, getTyperContext } from "./ExtraParserContext.ts";
 import { RunStatement } from "./statements/Control.ts";
+import { CallAbsoluteParameter } from "./statements/Asm.ts";
 
 export class CodeGenerator extends QBasicParserListener {
   private _allLabels: Set<string> = new Set();
@@ -307,6 +308,25 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("missing procedure");
     }
     this.call(procedure, ctx.start!, ctx.argument_list());
+  }
+
+  override enterCall_absolute_statement = (ctx: parser.Call_absolute_statementContext) => {
+    const token = ctx.start!;
+    const proc = this.compileExpression(ctx._proc!, ctx._proc!.start!, { tag: TypeTag.INTEGER });
+    const params: CallAbsoluteParameter[] = [];
+    for (const parseExpr of ctx.call_absolute_argument_list()!.expr()) {
+      const variable = this.getVariableFromExpression(parseExpr);
+      if (variable) {
+        if (variable.type.tag != TypeTag.INTEGER) {
+          throw new Error('Only support integer arguments to CALL ABSOLUTE.');
+        }
+        params.push({variable});
+      } else {
+        const expr = this.compileExpression(parseExpr, parseExpr.start!, { tag: TypeTag.INTEGER });
+        params.push({expr});
+      }
+    }
+    this.addStatement(statements.callAbsolute(proc, params), token);
   }
 
   private indexArray(variable: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, result: Variable) {
@@ -1794,6 +1814,21 @@ export class CodeGenerator extends QBasicParserListener {
         const variable = codeGenerator.getVariable(variableCtx);
         const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
         codeGenerator.addStatement(statements.varptrString(ctx.start!, result, variable, variableSymbol), ctx.start!);
+      }
+
+      override enterSadd_function = (ctx: parser.Sadd_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        const variable = codeGenerator.getVariableFromExpression(ctx.expr());
+        if (!variable) {
+          throw ParseError.fromToken(ctx.start!, "Expected: variable");
+        }
+        codeGenerator.addStatement(statements.sadd(ctx.start!, result, variable), ctx.start!);
       }
 
       override enterVarptr_function = (ctx: parser.Varptr_functionContext) => {

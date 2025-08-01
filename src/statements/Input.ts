@@ -62,11 +62,11 @@ abstract class BaseInputStatement extends Statement {
     const isWordChar = (char: string) => /[A-Za-z0-9]/.test(char);
     const toggleInsert = () => {
       insert = !insert;
-      screen.configureCursor(0, 0, insert);
-      screen.showCursor();
+      screen.configureTextCursor(0, 0, insert);
+      screen.showTextCursor();
     };
     const move = (dx: number) => {
-      screen.moveCursor(dx);
+      screen.moveTextCursor(dx);
       position += dx;
     };
     const nextTab = () => 8 + 8 * Math.floor(position / 8);
@@ -77,8 +77,8 @@ abstract class BaseInputStatement extends Statement {
       if (this.args.mark) {
         screen.print("? ", false);
       }
-      screen.configureCursor(0, 0, insert);
-      screen.showCursor();
+      screen.configureTextCursor(0, 0, insert);
+      screen.showTextCursor();
     };
     prompt();
     // So we can test non-interactively with deno which doesn't have rAF
@@ -94,7 +94,7 @@ abstract class BaseInputStatement extends Statement {
           if (insert) {
             toggleInsert();
           }
-          screen.hideCursor();
+          screen.hideTextCursor();
           if (!this.args.sameLine) {
             screen.print('', true);
           }
@@ -131,7 +131,7 @@ abstract class BaseInputStatement extends Statement {
               buffer.push(' ');
               screen.print(' ', false);
             } else {
-              screen.moveCursor(1);
+              screen.moveTextCursor(1);
             }
             position++;
           }
@@ -186,7 +186,7 @@ abstract class BaseInputStatement extends Statement {
           if (buffer.length > 0 && position < buffer.length) {
             buffer.splice(position, 1);
             screen.print(buffer.slice(position).join('') + ' ', false);
-            screen.moveCursor(-(buffer.length - position + 1));
+            screen.moveTextCursor(-(buffer.length - position + 1));
           }
           break;
         case CursorCommand.DELETE_TO_END:
@@ -196,15 +196,15 @@ abstract class BaseInputStatement extends Statement {
           const numToDelete = buffer.length - position;
           buffer.splice(position, numToDelete);
           screen.print(' '.repeat(numToDelete), false);
-          screen.moveCursor(-numToDelete);
+          screen.moveTextCursor(-numToDelete);
           break;
         case CursorCommand.DELETE_LINE:
           if (insert) {
             toggleInsert();
           }
-          screen.moveCursor(-position);
+          screen.moveTextCursor(-position);
           screen.print(' '.repeat(buffer.length), false);
-          screen.moveCursor(-buffer.length);
+          screen.moveTextCursor(-buffer.length);
           buffer = [];
           position = 0;
           break;
@@ -223,7 +223,7 @@ abstract class BaseInputStatement extends Statement {
             }
             screen.print(buffer.slice(position).join(''), false);
             position += text.length;
-            screen.moveCursor(-(buffer.length - position));
+            screen.moveTextCursor(-(buffer.length - position));
           } else {
             for (let i = 0; i < text.length; i++) {
               buffer.splice(position++, 1, text[i]);

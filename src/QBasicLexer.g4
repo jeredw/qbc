@@ -153,6 +153,7 @@ RETURN : [Rr][Ee][Tt][Uu][Rr][Nn] ;
 RSET : [Rr][Ss][Ee][Tt] ;
 RUN : [Rr][Uu][Nn] ;
 SCREEN : [Ss][Cc][Rr][Ee][Ee][Nn] ;
+SADD : [Ss][Aa][Dd][Dd] ;
 SEEK : [Ss][Ee][Ee][Kk] ;
 SEG : [Ss][Ee][Gg] ;
 SELECT : [Ss][Ee][Ll][Ee][Cc][Tt] ;

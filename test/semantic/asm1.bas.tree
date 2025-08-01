@@ -1,0 +1,201 @@
+(program 
+  (declare_sub_statement DECLARE SUB 
+    (untyped_id MouseDriver) 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter ax%) , 
+        (declare_parameter bx%) , 
+        (declare_parameter cx%) , 
+        (declare_parameter dx%)) )) \n 
+  (declare_function_statement DECLARE FUNCTION MouseInit% 
+    ( )) \n \n 
+  (statement 
+    (dim_statement DIM SHARED 
+      (dim_variable Mouse$))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Mouse$) = 
+      (expr 
+        (variable_or_function_call SPACE$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 57)))) ))))) \n 
+  (statement 
+    (for_next_statement FOR i% = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 57)) 
+      (block \n 
+        (statement 
+          (read_statement READ 
+            (variable_or_function_call a$))) \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call h$) = 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (variable_or_function_call VAL 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (expr 
+                                    (literal "&H")) + 
+                                  (expr 
+                                    (variable_or_function_call a$))))) ))))) ))))) \n 
+        (statement 
+          (mid_statement MID$ 
+            ( 
+              (variable_or_function_call Mouse$) , 
+              (expr 
+                (variable_or_function_call i%)) , 
+              (expr 
+                (literal 1)) ) = 
+            (expr 
+              (variable_or_function_call h$)))) \n) NEXT i%)) \n \n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call MouseInit%))))) \n \n 
+  (function_statement FUNCTION MouseInit% 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call ax%) = 
+          (expr 
+            (literal 0)))) \n 
+      (statement 
+        (call_statement 
+          (untyped_id MouseDriver) 
+          (argument_list 
+            (argument 
+              (expr 
+                (variable_or_function_call ax%))) , 
+            (argument 
+              (expr 
+                (literal 0))) , 
+            (argument 
+              (expr 
+                (literal 0))) , 
+            (argument 
+              (expr 
+                (literal 0)))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call MouseInit%) = 
+          (expr 
+            (variable_or_function_call ax%)))) \n) 
+    (end_function_statement END FUNCTION)) \n \n 
+  (sub_statement SUB 
+    (untyped_id MouseDriver) 
+    ( 
+      (parameter_list 
+        (parameter ax%) , 
+        (parameter bx%) , 
+        (parameter cx%) , 
+        (parameter dx%)) ) 
+    (block \n 
+      (statement 
+        (def_seg_statement DEF SEG = 
+          (expr 
+            (builtin_function 
+              (varseg_function VARSEG 
+                ( 
+                  (variable_or_function_call Mouse$) )))))) \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call Mouse%) = 
+          (expr 
+            (builtin_function 
+              (sadd_function SADD 
+                ( 
+                  (expr 
+                    (variable_or_function_call Mouse$)) )))))) \n 
+      (statement 
+        (call_absolute_statement CALL Absolute 
+          ( 
+            (call_absolute_argument_list 
+              (expr 
+                (variable_or_function_call ax%)) , 
+              (expr 
+                (variable_or_function_call bx%)) , 
+              (expr 
+                (variable_or_function_call cx%)) , 
+              (expr 
+                (variable_or_function_call dx%))) , 
+            (expr 
+              (variable_or_function_call Mouse%)) ))) \n) 
+    (end_sub_statement END SUB)) \n \n 
+  (statement 
+    (data_statement DATA 
+      (data_item 55) , 
+      (data_item 89) , 
+      (data_item E5) , 
+      (data_item 8B) , 
+      (data_item 5E) , 
+      (data_item 0C) , 
+      (data_item 8B) , 
+      (data_item 07) , 
+      (data_item 50) , 
+      (data_item 8B) , 
+      (data_item 5E) , 
+      (data_item 0A) , 
+      (data_item 8B) , 
+      (data_item 07) , 
+      (data_item 50) , 
+      (data_item 8B))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item 5E) , 
+      (data_item 08) , 
+      (data_item 8B) , 
+      (data_item 0F) , 
+      (data_item 8B) , 
+      (data_item 5E) , 
+      (data_item 06) , 
+      (data_item 8B) , 
+      (data_item 17) , 
+      (data_item 5B) , 
+      (data_item 58) , 
+      (data_item 1E) , 
+      (data_item 07) , 
+      (data_item CD) , 
+      (data_item 33) , 
+      (data_item 53))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item 8B) , 
+      (data_item 5E) , 
+      (data_item 0C) , 
+      (data_item 89) , 
+      (data_item 07) , 
+      (data_item 58) , 
+      (data_item 8B) , 
+      (data_item 5E) , 
+      (data_item 0A) , 
+      (data_item 89) , 
+      (data_item 07) , 
+      (data_item 8B) , 
+      (data_item 5E) , 
+      (data_item 08) , 
+      (data_item 89) , 
+      (data_item 0F))) \n 
+  (statement 
+    (data_statement DATA 
+      (data_item 8B) , 
+      (data_item 5E) , 
+      (data_item 06) , 
+      (data_item 89) , 
+      (data_item 17) , 
+      (data_item 5D) , 
+      (data_item CA) , 
+      (data_item 08) , 
+      (data_item 00))) \n <EOF>)

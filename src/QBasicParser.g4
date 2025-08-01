@@ -348,7 +348,7 @@ call_statement
   ;
 
 call_absolute_statement
-  : CALL ABSOLUTE '(' (call_absolute_argument_list COMMA)? expr ')'
+  : CALL ABSOLUTE '(' (call_absolute_argument_list COMMA)? proc=expr ')'
   ;
 
 call_absolute_argument_list
@@ -992,6 +992,7 @@ builtin_function
   | mid_function
   | pen_function
   | play_function
+  | sadd_function
   | screen_function
   | seek_function
   | strig_function
@@ -1047,6 +1048,10 @@ pen_function
 
 play_function
   : PLAY '(' expr ')'
+  ;
+
+sadd_function
+  : SADD '(' expr ')'
   ;
 
 screen_function

@@ -1,6 +1,7 @@
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
 import { CircleArgs, GetBitmapArgs, LineArgs, PaintArgs, Plotter, Point, PutBitmapArgs } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
+import { MouseSurface } from './Mouse.ts';
 import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenGeometry, ScreenMode } from './ScreenMode.ts';
 
@@ -27,7 +28,7 @@ class DefaultCanvasProvider implements CanvasProvider {
   }
 }
 
-export interface Screen extends Printer, LightPenTarget {
+export interface Screen extends Printer, LightPenTarget, MouseSurface {
   reset(): void;
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
   setTextGeometry(width?: number, height?: number): void;
@@ -66,11 +67,12 @@ export interface Screen extends Printer, LightPenTarget {
   getBitmap(args: GetBitmapArgs): ArrayBuffer;
   putBitmap(args: PutBitmapArgs): void;
 
-  showCursor(): void;
-  hideCursor(): void;
-  moveCursor(dx: number): void;
-  locateCursor(row?: number, column?: number): void;
-  configureCursor(startScanline: number, endScanline: number, insert?: boolean): void;
+  showTextCursor(): void;
+  hideTextCursor(): void;
+  moveTextCursor(dx: number): void;
+  locateTextCursor(row?: number, column?: number): void;
+  configureTextCursor(startScanline: number, endScanline: number, insert?: boolean): void;
+
   getRow(): number;
   getColumn(): number;
   getCharAt(row: number, column: number): string;
@@ -340,9 +342,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
   // Text scrolls up when a newline would first enter this row, e.g. for a 25
   // line screen we would scroll up when entering notional line 26.
   private scrollEndRow: number;
-  private cursorShown: boolean = false;
+  private textCursorShown: boolean = false;
   private cursorStartScanline: number = 0;
   private cursorEndScanline: number = 31;
+  private mouseCursorShown: boolean = false;
+  private mouseX: number = 0;
+  private mouseY: number = 0;
   private cellWidth: number;
   private cellHeight: number;
   private pages: Page[];
@@ -835,7 +840,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
       ctx.putImageData(imageData, 0, 0);
       this.visiblePage.dirty = false;
     }
-    this.drawCursor(ctx);
+    this.drawTextCursor(ctx);
+    this.drawMouseCursor(ctx);
   }
 
   // Used for tests to map colors to the current palette and dump canvas.
@@ -847,8 +853,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return this.visiblePage.canvas;
   }
 
-  private drawCursor(ctx: CanvasRenderingContext2D) {
-    if (!this.cursorShown) {
+  private drawTextCursor(ctx: CanvasRenderingContext2D) {
+    if (!this.textCursorShown) {
       return;
     }
     const x = (this.column - 1) * this.cellWidth;
@@ -877,7 +883,38 @@ export class CanvasScreen extends BasePrinter implements Screen {
     ctx.putImageData(imageData, left, top);
   }
 
-  private eraseCursor() {
+  private drawMouseCursor(ctx: CanvasRenderingContext2D) {
+    // This is only called if we are not using the hardware mouse cursor.
+    if (!this.mouseCursorShown) {
+      return;
+    }
+    ctx.strokeStyle = '#000';
+    ctx.fillStyle = '#fff';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(this.mouseX, this.mouseY);
+    ctx.lineTo(this.mouseX + 10, this.mouseY + 10);
+    ctx.lineTo(this.mouseX + 6, this.mouseY + 10);
+    ctx.lineTo(this.mouseX + 9, this.mouseY + 14);
+    ctx.lineTo(this.mouseX + 8, this.mouseY + 16);
+    ctx.lineTo(this.mouseX + 4, this.mouseY + 11);
+    ctx.lineTo(this.mouseX, this.mouseY + 14);
+    ctx.stroke();
+    ctx.fill();
+  }
+
+  private eraseMouseCursor() {
+    if (this.headless) {
+      return;
+    }
+    const ctx = this.canvas.getContext('2d')!;
+    const x = this.mouseX;
+    const y = this.mouseY;
+    const imageData = this.visiblePage.getImageData(this.palette, x - 2, y - 2, 18, 18);
+    ctx.putImageData(imageData, x - 2, y - 2);
+  }
+
+  private eraseTextCursor() {
     if (this.headless) {
       return;
     }
@@ -904,21 +941,21 @@ export class CanvasScreen extends BasePrinter implements Screen {
     });
   }
 
-  showCursor() {
-    this.eraseCursor();
-    this.cursorShown = true;
+  showTextCursor() {
+    this.eraseTextCursor();
+    this.textCursorShown = true;
   }
   
-  hideCursor() {
-    this.eraseCursor();
-    this.cursorShown = false;
+  hideTextCursor() {
+    this.eraseTextCursor();
+    this.textCursorShown = false;
   }
 
-  moveCursor(dx: number) {
+  moveTextCursor(dx: number) {
     if (this.activePage !== this.visiblePage) {
       return;
     }
-    this.eraseCursor();
+    this.eraseTextCursor();
     this.column += dx;
     while (this.column > this.width) {
       this.column -= this.width;
@@ -930,7 +967,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
   }
 
-  locateCursor(row?: number, column?: number) {
+  locateTextCursor(row?: number, column?: number) {
     const [_, rows] = this.geometry.text;
     if (row !== undefined) {
       // LOCATE can jump to the last line on the screen even if it's outside the
@@ -948,7 +985,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
   }
 
-  configureCursor(startScanline: number, endScanline: number, insert?: boolean) {
+  configureTextCursor(startScanline: number, endScanline: number, insert?: boolean) {
     if (insert !== undefined) {
       this.cursorStartScanline = this.mode.mode === 0 ?
         (insert ? this.cellHeight / 2 : this.cellHeight - 2) :
@@ -1061,6 +1098,17 @@ export class CanvasScreen extends BasePrinter implements Screen {
       }
     }
     return !dark ? { row, column, x: left, y: top } : undefined;
+  }
+
+  showMouseCursor(x: number, y: number) {
+    this.eraseMouseCursor();
+    this.mouseCursorShown = true;
+    this.mouseX = clamp(x, 0, this.canvas.width);
+    this.mouseY = clamp(y, 0, this.canvas.height);
+  }
+
+  hideMouseCursor() {
+    this.eraseMouseCursor();
   }
 }
 
@@ -1270,32 +1318,32 @@ export class TestScreen implements Screen {
     this.graphics.putBitmap(args);
   }
 
-  showCursor() {
-    this.graphics.showCursor();
+  showTextCursor() {
+    this.graphics.showTextCursor();
   }
 
-  hideCursor() {
+  hideTextCursor() {
     this.text.print('□', false);
-    this.graphics.hideCursor();
+    this.graphics.hideTextCursor();
   }
 
-  moveCursor(dx: number) {
+  moveTextCursor(dx: number) {
     this.text.print((dx < 0 ? '←' : '→').repeat(Math.abs(dx)), false);
-    this.graphics.moveCursor(dx);
+    this.graphics.moveTextCursor(dx);
   }
 
-  locateCursor(row?: number, column?: number) {
+  locateTextCursor(row?: number, column?: number) {
     this.text.print(`[LOCATE ${row}, ${column}]`, true);
-    this.graphics.locateCursor(row, column);
+    this.graphics.locateTextCursor(row, column);
   }
 
-  configureCursor(startScanline: number, endScanline: number, insert?: boolean) {
+  configureTextCursor(startScanline: number, endScanline: number, insert?: boolean) {
     if (insert !== undefined) {
       this.text.print(insert ? '■' : '␣', false);
     } else {
       this.text.print(`[LOCATE ,,, ${startScanline}, ${endScanline}]`, true);
     }
-    this.graphics.configureCursor(startScanline, endScanline);
+    this.graphics.configureTextCursor(startScanline, endScanline);
   }
 
   getRow(): number {
@@ -1354,6 +1402,14 @@ export class TestScreen implements Screen {
       x: Math.floor(x / 8) * 8,
       y: Math.floor(y / 8) * 8
     };
+  }
+
+  showMouseCursor(x: number, y: number) {
+    this.text.print(`[show mouse ${x}, ${y}]`, true);
+  }
+
+  hideMouseCursor() {
+    this.text.print('[hide mouse]', true);
   }
 }
 

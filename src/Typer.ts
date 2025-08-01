@@ -1004,6 +1004,11 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$result = array;
   }
 
+  override enterSadd_function = (ctx: parser.Sadd_functionContext) => {
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
+    getTyperContext(ctx.parent!).$result = result;
+  }
+
   override enterVarptr_function = (ctx: parser.Varptr_functionContext) => {
     const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
     getTyperContext(ctx.parent!).$result = result;

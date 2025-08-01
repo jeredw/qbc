@@ -51,6 +51,7 @@ import {
   MksmbfFunction,
   PeekStatement,
   PokeStatement,
+  SaddFunction,
   VarPtrFunction,
   VarPtrStringFunction,
   VarSegFunction
@@ -159,6 +160,7 @@ import {
 import { ErdevFunction, ErdevStringFunction, ErlFunction, ErrFunction, ErrorHandlerStatement, ErrorStatement, ResumeStatement } from "./Errors.ts";
 import { CommandFunction } from "./Dos.ts";
 import { ClearStatement } from "./Clear.ts";
+import { CallAbsoluteParameter, CallAbsoluteStatement } from "./Asm.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -186,6 +188,10 @@ export function bsave(args: BuiltinStatementArgs) {
 
 export function call(chunkIndex: number, bindings: Binding[], stackSize: number) {
   return new CallStatement(chunkIndex, bindings, stackSize);
+}
+
+export function callAbsolute(procedure: parser.ExprContext, params: CallAbsoluteParameter[]) {
+  return new CallAbsoluteStatement(procedure, params);
 }
 
 export function case_(test: Variable, condition: parser.Case_exprContext) {
@@ -753,6 +759,10 @@ export function rtrim(args: BuiltinStatementArgs) {
 
 export function run(token: Token, programExpr: parser.ExprContext | null) {
   return new RunStatement(token, programExpr);
+}
+
+export function sadd(token: Token, result: Variable, variable: Variable) {
+  return new SaddFunction(token, result, variable);
 }
 
 export function screenFunction(

@@ -328,6 +328,26 @@ export class DefSegStatement extends Statement {
   }
 }
 
+export class SaddFunction extends Statement {
+  constructor(
+    private token: Token,
+    private result: Variable,
+    private variable: Variable,
+  ) {
+    super();
+  }
+
+  override execute(context: ExecutionContext) {
+    const [address, _] = context.memory.dereference(this.variable);
+    const index = this.variable.symbolIndex;
+    if (index === undefined) {
+      throw new Error('No symbol index to use as SADD pointer')
+    }
+    context.memory.writePointer(index, address, this.variable);
+    context.memory.write(this.result, integer(index));
+  }
+}
+
 export class VarSegFunction extends Statement {
   constructor(
     private token: Token,
@@ -892,4 +912,8 @@ export class FreFunction extends BuiltinFunction1 {
   override calculate(input: Value, _context: ExecutionContext): Value {
     return long(262144);
   }
+}
+
+export function wrap16Bit(x: number) {
+  return x & 0x8000 ? (x & 0x7fff) - 0x8000 : x & 0x7fff;
 }

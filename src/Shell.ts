@@ -19,6 +19,7 @@ import { asciiToString, stringToAscii } from "./AsciiChart.ts";
 import { decodeGwBasicBinaryFile } from "./GwBasicFormat.ts";
 import { decodeQb45BinaryFile } from "./Qb45Format.ts";
 import JSZip from "jszip";
+import { MouseListener, MouseSurface } from "./Mouse.ts";
 
 enum RunState {
   ENDED,
@@ -30,7 +31,7 @@ interface DebugProvider {
   query(line: number, column: number): string | undefined;
 }
 
-class Shell implements DebugProvider, DiskListener, Invoker {
+class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private root: HTMLElement;
   private interpreter: Interpreter;
   private invocation: Invocation | null = null;
@@ -56,6 +57,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
   private gamepad: GamepadListener;
   private pointer: PointerListener;
   private modem: HttpModem;
+  private mouse: MouseListener;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -68,6 +70,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     this.gamepad = new GamepadListener();
     this.pointer = new PointerListener(this.screen);
     this.modem = new HttpModem();
+    this.mouse = new MouseListener(this);
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -81,6 +84,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
       joystick: this.gamepad,
       lightPen: this.pointer,
       modem: this.modem,
+      mouse: this.mouse,
     }, this);
     this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;
@@ -104,11 +108,41 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     this.filePicker = assertHTMLElement(root.querySelector('.file-picker'));
     document.addEventListener('keydown', (e: KeyboardEvent) => this.keydown(e));
     document.addEventListener('keyup', (e: KeyboardEvent) => this.keyup(e));
+    this.screen.canvas.addEventListener('mousedown', (e: MouseEvent) => this.mousedown(e));
+    this.screen.canvas.addEventListener('mouseup', (e: MouseEvent) => this.mouseup(e));
+    this.screen.canvas.addEventListener('mousemove', (e: MouseEvent) => this.mousemove(e));
     this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
     this.screen.canvas.addEventListener('pointerup', (e: PointerEvent) => this.pointerup(e));
     this.screen.canvas.addEventListener('pointermove', (e: PointerEvent) => this.pointermove(e));
-    this.screen.canvas.addEventListener('click', (e) => this.clickCanvas(e));
     this.screen.canvas.addEventListener('fullscreenchange', (e) => this.fullscreenChange());
+  }
+
+  private mousedown(e: MouseEvent) {
+    if (document.activeElement == this.screen.canvas) {
+      this.mouse.mousedown(e);
+    }
+  }
+
+  private mouseup(e: MouseEvent) {
+    if (document.activeElement == this.screen.canvas) {
+      this.mouse.mouseup(e);
+    }
+  }
+
+  private mousemove(e: MouseEvent) {
+    if (document.activeElement == this.screen.canvas) {
+      this.mouse.mousemove(e);
+    }
+  }
+
+  showMouseCursor(x: number, y: number) {
+    this.screen.canvas.style.cursor = 'default';
+    // this.screen.showMouseCursor(x, y);
+  }
+
+  hideMouseCursor() {
+    this.screen.canvas.style.cursor = '';
+    // this.screen.hideMouseCursor();
   }
 
   private pointerdown(e: PointerEvent) {
@@ -129,25 +163,29 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     }
   }
 
-  private clickCanvas(e: MouseEvent) {
-    if (document.activeElement == this.screen.canvas) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        this.screen.canvas.requestFullscreen();
-      }
+  private toggleFullScreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      this.screen.canvas.requestFullscreen();
     }
   }
 
   private fullscreenChange() {
     if (document.fullscreenElement) {
+      document.body.classList.add('fullscreen');
       this.editorPane.style.display = 'none';
     } else {
+      document.body.classList.remove('fullscreen');
       this.editorPane.style.display = '';
     }
   }
 
   private keydown(e: KeyboardEvent): boolean | void {
+    if (e.metaKey && e.key === 'Enter') {
+      this.toggleFullScreen();
+      return false;
+    }
     if (document.activeElement == this.screen.canvas) {
       this.keyboard.keydown(e);
       e.preventDefault();
@@ -279,7 +317,7 @@ class Shell implements DebugProvider, DiskListener, Invoker {
     this.root.classList.toggle('running', state === RunState.RUNNING);
     this.root.classList.toggle('paused', state === RunState.PAUSED);
     if (state !== RunState.RUNNING) {
-      this.screen.hideCursor();
+      this.screen.hideTextCursor();
     }
     if (state === RunState.PAUSED) {
       if (this.invocation) {
