@@ -1,0 +1,25 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (color_statement COLOR 
+      (expr 
+        (literal 14)))) : 
+  (statement 
+    (circle_statement CIRCLE 
+      ( 
+        (expr 
+          (literal 500)) , 
+        (expr 
+          (literal 55)) ) , 
+      (expr 
+        (literal 30)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id DRAW) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "p14,14 u50 d100 u50 l50 r100 l50 g35 e35 f35 h70 f35 e35")))))) \n <EOF>)

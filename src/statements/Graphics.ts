@@ -827,6 +827,7 @@ export class DrawStatement extends Statement {
           const borderColor = this.readNumber(command.paint.borderColor, context);
           const p = screen.screenToWindow(cursor);
           screen.paint({step: false, x: p.x, y: p.y, borderColor}, paintColor);
+          state.color = paintColor;
         } else if (command.setColor) {
           // Draw color is separate state from the graphics fg color.
           state.color = this.readNumber(command.setColor, context);
