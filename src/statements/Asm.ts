@@ -25,12 +25,8 @@ export class CallAbsoluteStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    let procedure = evaluateIntegerExpression(this.procedureExpr, context.memory, {tag: TypeTag.LONG});
-    if (procedure === 0) {
-      // The procedure may have been passed with VARPTR(a(0)) which will be zero,
-      // since we rely on DEF SEG. Check the current segment instead.
-      procedure = context.memory.getSegment();
-    }
+    const procedure = context.memory.getSegment();
+    // const offset = evaluateIntegerExpression(this.procedureExpr, context.memory, {tag: TypeTag.LONG});
     const {variable} = context.memory.readPointer(procedure);
     if (!variable) {
       throw new Error("Unknown pointer for CALL ABSOLUTE procedure.");
@@ -233,8 +229,14 @@ class Basic86 {
         }
         break;
       }
+      case 0x91:
+        [this.cx, this.ax] = [this.ax, this.cx];
+        break;
       case 0x92:
         [this.dx, this.ax] = [this.ax, this.dx];
+        break;
+      case 0x93:
+        [this.cx, this.bx] = [this.ax, this.bx];
         break;
       case 0xb8: {
         const imm16 = this.readWord(this.cs, this.ip);
@@ -244,7 +246,6 @@ class Basic86 {
       }
       case 0xca: {
         const discard = this.readWord(this.cs, this.ip);
-        this.ip += 2;
         this.ip = this.popWord();
         this.cs = this.popWord();
         this.sp += discard;

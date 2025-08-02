@@ -338,13 +338,7 @@ export class SaddFunction extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const [address, _] = context.memory.dereference(this.variable);
-    const index = this.variable.symbolIndex;
-    if (index === undefined) {
-      throw new Error('No symbol index to use as SADD pointer')
-    }
-    context.memory.writePointer(index, address, this.variable);
-    context.memory.write(this.result, integer(index));
+    context.memory.write(this.result, integer(0));
   }
 }
 
@@ -408,7 +402,9 @@ export class VarPtrFunction extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    context.memory.write(this.result, integer(0));
+    const [address, _] = context.memory.dereference(this.variable);
+    const offset = address.arrayOffsetInBytes ?? 0;
+    context.memory.write(this.result, integer(offset));
   }
 }
 

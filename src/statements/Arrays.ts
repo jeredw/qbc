@@ -135,10 +135,12 @@ export class IndexArrayStatement extends Statement {
     if (!descriptor.baseAddress) {
       throw new Error("array not allocated");
     }
+    const bytesPerItem = getScalarVariableSizeInBytes(this.array, context.memory);
     context.memory.writeAddress(this.result.address, reference(this.array, {
       storageType: descriptor.storageType!,
       frameIndex: descriptor.baseAddress!.frameIndex,
-      index: descriptor.baseAddress!.index + offset
+      index: descriptor.baseAddress!.index + offset,
+      arrayOffsetInBytes: offset * bytesPerItem,
     }));
   }
 }

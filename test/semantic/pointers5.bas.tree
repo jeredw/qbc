@@ -1,0 +1,93 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "..")))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call s$) )))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (builtin_function 
+              (sadd_function sadd 
+                ( 
+                  (expr 
+                    (variable_or_function_call s$)) ))))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call asc 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "h")))) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (expr 
+              (builtin_function 
+                (sadd_function sadd 
+                  ( 
+                    (expr 
+                      (variable_or_function_call s$)) )))) + 
+            (expr 
+              (literal 1)))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call asc 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "i")))) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (builtin_function 
+                                (sadd_function sadd 
+                                  ( 
+                                    (expr 
+                                      (variable_or_function_call s$)) )))))) ))))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (expr 
+                                (builtin_function 
+                                  (sadd_function sadd 
+                                    ( 
+                                      (expr 
+                                        (variable_or_function_call s$)) )))) + 
+                              (expr 
+                                (literal 1))))) ))))) )))))) \n <EOF>)

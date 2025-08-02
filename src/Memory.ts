@@ -11,6 +11,7 @@ export interface Address {
   storageType: StorageType;
   frameIndex?: number;
   index: number;
+  arrayOffsetInBytes?: number;
 }
 
 export class Frame {

@@ -1,0 +1,39 @@
+(program ' \n ' 
+  (statement 
+    (static_metacommand  $STATIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) ))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter x% 
+          (array_declaration 
+            ( )))) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (builtin_function 
+                (varptr_function varptr 
+                  ( 
+                    (variable_or_function_call x% 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 10)))) )) ))))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument a% 
+          ( ))))) \n <EOF>)
