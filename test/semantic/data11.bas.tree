@@ -1,0 +1,35 @@
+(program 
+  (statement 
+    (data_statement data 
+      (data_item "a") , 
+      (data_item "b))) \n 
+  (statement 
+    (data_statement data 
+      (data_item 1) , 
+      (data_item 2) , 
+      (data_item 3) , 
+      (data_item "condor") , 
+      (data_item welp))) \n 
+  (statement 
+    (data_statement data 
+      (data_item "close quotes are optional: colons are tricky))) \n 
+  (statement 
+    (data_statement data 
+      (data_item *))) \n \n 
+  (statement 
+    (do_loop_statement do 
+      (block \n 
+        (statement 
+          (read_statement read 
+            (variable_or_function_call a$))) \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call a$))))) \n) loop 
+      (loop_condition while 
+        (expr 
+          (expr 
+            (variable_or_function_call a$)) <> 
+          (expr 
+            (literal "*")))))) \n <EOF>)

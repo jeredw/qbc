@@ -33,7 +33,7 @@ export class ReadStatement extends Statement {
     let value: Value;
     if (isString(this.result.type)) {
       value = dataItem.text ?
-        string(dataItem.quoted ? dataItem.text.slice(1, -1) : dataItem.text) :
+        string(dataItem.quoted ? trimQuotes(dataItem.text) : dataItem.text) :
         string('');
     } else {
       if (dataItem.quoted) {
@@ -53,4 +53,14 @@ export class ReadStatement extends Statement {
     }
     context.memory.write(this.result, value);
   }
+}
+
+function trimQuotes(item: string): string {
+  if (item.startsWith('"') && item.endsWith('"')) {
+    return item.slice(1, -1);
+  }
+  if (item.startsWith('"')) {
+    return item.slice(1);
+  }
+  return item;
 }

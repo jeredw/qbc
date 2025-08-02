@@ -262,7 +262,8 @@ DATA_COMMA : ',' ;
 DATA_COLON : ':' -> type(COLON), popMode ;
 DATA_NL : '\r'? '\n' -> type(NL), popMode ;
 // Everything between quotes is captured literally.
-DATA_QUOTED : '"' ~["\r\n]* '"' ;
+// Note: Close quote at end of line seems to be optional.
+DATA_QUOTED : '"' ~["\r\n]* ('"'?) ;
 // Otherwise, capture everything except leading and trailing whitespace.
 DATA_UNQUOTED : ~[ \t,\n\r:]   // _ "x" _
               | ~[ \t,\n\r:]~[ \t,\n\r:] // _ "xy" _
