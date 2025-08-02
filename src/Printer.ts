@@ -29,7 +29,7 @@ export abstract class BasePrinter implements Printer {
 
   abstract putChar(ch: string): void;
 
-  protected newLine() {
+  protected newLine(hanging = false) {
     this.column = 1;
     this.row++;
     this.putChar('\n');
@@ -56,11 +56,15 @@ export abstract class BasePrinter implements Printer {
     }
     while (text.length > 0) {
       const space = this.spaceLeftOnLine();
-      if (text.length > space) {
+      if (text.length >= space) {
+        // Note: If text exactly fills the line, newline after it so that column
+        // wraps back to 1. But if newline is false, flag this condition as a
+        // hanging newline, so that it is possible to print into the last cell
+        // of the screen without scrolling.
         this.putString(text.slice(0, space));
         text = text.slice(space);
-        this.newLine();
-        if (text.length == 0) {
+        this.newLine(text.length === 0 && !newline);
+        if (text.length === 0) {
           return;
         }
       } else {

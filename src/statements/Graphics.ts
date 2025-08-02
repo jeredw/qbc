@@ -455,7 +455,7 @@ export class ViewPrintStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     if (!this.topRow || !this.bottomRow) {
-      context.devices.screen.resetViewPrint();
+      context.devices.screen.resetViewPrint(/*fullscreen=*/ true);
       return;
     }
     const topRow = evaluateIntegerExpression(this.topRow, context.memory);

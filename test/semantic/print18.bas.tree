@@ -1,0 +1,34 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (view_print_statement view print)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "this should not scroll away"))))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 25)) , 
+      (expr 
+        (literal 80)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "2")) ;))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 25)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "4")) ;))) \n <EOF>)
