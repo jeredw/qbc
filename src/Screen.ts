@@ -800,35 +800,45 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.setPixel(x, y, this.checkColorArg(color, this.color.fgColor), step, screen);
+    const drawColor = this.checkColorArg(color, this.color.fgColor);
+    this.drawState.color = drawColor;
+    this.activePage.setPixel(x, y, drawColor, step, screen);
   }
 
   resetPixel(x: number, y: number, color?: number, step?: boolean) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.setPixel(x, y, this.checkColorArg(color, this.color.bgColor), step);
+    const drawColor = this.checkColorArg(color, this.color.bgColor);
+    this.drawState.color = drawColor;
+    this.activePage.setPixel(x, y, drawColor, step);
   }
 
   line(args: LineArgs, color?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.line(args, this.checkColorArg(color, this.color.fgColor));
+    const drawColor = this.checkColorArg(color, this.color.fgColor);
+    this.drawState.color = drawColor;
+    this.activePage.line(args, drawColor);
   }
 
   circle(args: CircleArgs, color?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.circle(args, this.checkColorArg(color, this.color.fgColor));
+    const drawColor = this.checkColorArg(color, this.color.fgColor);
+    this.drawState.color = drawColor;
+    this.activePage.circle(args, drawColor);
   }
 
   paint(args: PaintArgs, color?: number) {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.paint(args, this.checkColorArg(color, this.color.fgColor));
+    const drawColor = this.checkColorArg(color, this.color.fgColor);
+    this.drawState.color = drawColor;
+    this.activePage.paint(args, drawColor);
   }
 
   private checkColorArg(color: number | undefined, defaultColor: number): number {
