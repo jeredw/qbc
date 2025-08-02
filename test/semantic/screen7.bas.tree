@@ -1,0 +1,21 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (palette_statement palette 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (expr 
+          (literal 63)) + 
+        (expr 
+          (expr 
+            (literal 256)) * 
+          (expr 
+            (literal 63)))))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n <EOF>)

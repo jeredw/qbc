@@ -353,6 +353,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private pages: Page[];
   private activePage: Page;
   private visiblePage: Page;
+  private activePageIndex = 0;
+  private visiblePageIndex = 0;
   private palette: Color[];
   private canvasProvider: CanvasProvider;
   private headless?: boolean;
@@ -434,7 +436,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
       throw new Error(`invalid visible page ${visiblePage}`);
     }
     if (this.mode === mode && geometry == this.geometry) {
+      if (activePage === this.activePageIndex && visiblePage === this.visiblePageIndex) {
+        // Do nothing if already configured as requested.
+        return;
+      }
       // Same mode and geometry means we want to switch pages.
+      this.activePageIndex = activePage;
+      this.visiblePageIndex = visiblePage;
       this.activePage = this.pages[activePage];
       this.visiblePage = this.pages[visiblePage];
       this.visiblePage.dirty = true;
@@ -467,6 +475,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
     for (let i = 0; i < mode.pages; i++) {
       this.pages[i] = new Page(mode, geometry, this.color, this.canvasProvider);
     }
+    this.activePageIndex = activePage;
+    this.visiblePageIndex = visiblePage;
     this.activePage = this.pages[activePage];
     this.visiblePage = this.pages[visiblePage];
     if (this.headless) {
