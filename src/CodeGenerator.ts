@@ -314,16 +314,19 @@ export class CodeGenerator extends QBasicParserListener {
     const token = ctx.start!;
     const proc = this.compileExpression(ctx._proc!, ctx._proc!.start!, { tag: TypeTag.INTEGER });
     const params: CallAbsoluteParameter[] = [];
-    for (const parseExpr of ctx.call_absolute_argument_list()!.expr()) {
-      const variable = this.getVariableFromExpression(parseExpr);
-      if (variable) {
-        if (variable.type.tag != TypeTag.INTEGER) {
-          throw new Error('Only support integer arguments to CALL ABSOLUTE.');
+    const argumentList = ctx.call_absolute_argument_list();
+    if (argumentList) {
+      for (const parseExpr of argumentList.expr()) {
+        const variable = this.getVariableFromExpression(parseExpr);
+        if (variable) {
+          if (variable.type.tag != TypeTag.INTEGER) {
+            throw new Error('Only support integer arguments to CALL ABSOLUTE.');
+          }
+          params.push({variable});
+        } else {
+          const expr = this.compileExpression(parseExpr, parseExpr.start!, { tag: TypeTag.INTEGER });
+          params.push({expr});
         }
-        params.push({variable});
-      } else {
-        const expr = this.compileExpression(parseExpr, parseExpr.start!, { tag: TypeTag.INTEGER });
-        params.push({expr});
       }
     }
     this.addStatement(statements.callAbsolute(proc, params), token);
