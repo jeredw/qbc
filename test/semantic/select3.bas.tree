@@ -1,0 +1,38 @@
+(program ' \n 
+  (statement 
+    (select_case_statement select case 
+      (expr 
+        (literal "e")) 
+      (before_first_case \n) 
+      (case_block 
+        (case_statement case 
+          (case_expr 
+            (expr 
+              (variable_or_function_call chr$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 29)))) ))) to 
+            (expr 
+              (variable_or_function_call chr$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 255)))) ))))) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (print_argument 
+                (expr 
+                  (literal "ok"))))) \n)) 
+      (case_block 
+        (case_statement case else) 
+        (block \n 
+          (statement 
+            (print_statement print 
+              (print_argument 
+                (expr 
+                  (literal "nope"))))) \n)) 
+      (end_select_statement end select))) \n <EOF>)

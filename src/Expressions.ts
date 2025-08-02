@@ -17,6 +17,7 @@ import { Memory } from "./Memory.ts";
 import { Variable } from "./Variables.ts";
 import { roundToNearestEven } from "./Math.ts";
 import { getTyperContext } from "./ExtraParserContext.ts";
+import { compareAscii } from "./AsciiChart.ts";
 
 export function evaluateStringExpression(expr: ExprContext, memory: Memory): string {
   const value = evaluateExpression({
@@ -338,15 +339,15 @@ class ExpressionListener extends QBasicParserListener {
       case '=':
         return values.boolean(a.string == b.string);
       case '<':
-        return values.boolean(a.string < b.string);
+        return values.boolean(compareAscii(a.string, b.string) < 0);
       case '<=':
-        return values.boolean(a.string <= b.string);
+        return values.boolean(compareAscii(a.string, b.string) <= 0);
       case '<>':
         return values.boolean(a.string != b.string);
       case '>=':
-        return values.boolean(a.string >= b.string);
+        return values.boolean(compareAscii(a.string, b.string) >= 0);
       case '>':
-        return values.boolean(a.string > b.string);
+        return values.boolean(compareAscii(a.string, b.string) > 0);
       case '-':
       case '*':
       case '/':

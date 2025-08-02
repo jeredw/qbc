@@ -54,16 +54,6 @@ export const [asciiToChar, charToAscii] = (() => {
   return [asciiToChar, charToAscii];
 })();
 
-export function stringToAscii(str: string): number[] {
-  return str.split('').map((char) => {
-    const code = charToAscii.get(char);
-    if (code === undefined) {
-      throw new Error("unmapped character in string");
-    }
-    return code;
-  });
-}
-
 export function asciiToString(codes: number[]): string {
   return codes.map((code) => {
     const char = asciiToChar.get(code);
@@ -72,4 +62,37 @@ export function asciiToString(codes: number[]): string {
     }
     return char;
   }).join('');
+}
+
+export function stringToAscii(str: string): number[] {
+  return str.split('').map(lookupCharacter);
+}
+
+// Compares strings s and t using ASCII and returns
+// negative if s < t
+// zero     if s = t
+// positive if s > t
+export function compareAscii(s: string, t: string): number {
+  if (s == t) return 0;
+  const length = Math.min(s.length, t.length);
+  for (let i = 0; i < length; i++) {
+    const sc = lookupCharacter(s[i]);
+    const tc = lookupCharacter(t[i]);
+    const diff = sc - tc;
+    if (diff !== 0) {
+      return diff;
+    }
+  }
+  if (s.length > t.length) {
+    return 1;
+  }
+  return -1;
+}
+
+function lookupCharacter(c: string): number {
+  const code = charToAscii.get(c);
+  if (code === undefined) {
+    throw new Error("unknown character code in string");
+  }
+  return code;
 }
