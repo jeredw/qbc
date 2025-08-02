@@ -1016,10 +1016,23 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   getRow(): number {
+    const [columns, rows] = this.geometry.text;
+    if (this.column === columns + 1) {
+      // See note in getColumn().
+      return Math.min(rows, this.row + 1);
+    }
     return this.row;
   }
 
   override getColumn(): number {
+    const [columns, _] = this.geometry.text;
+    if (this.column === columns + 1) {
+      // After printing the last character of a column, column may be N+1 (we
+      // wait for more text to print a newline so that we can fill the lower
+      // right cell without scrolling.)
+      // But we need to report 1 so that pos() works correctly.
+      return 1;
+    }
     return this.column;
   }
 
