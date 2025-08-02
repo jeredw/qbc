@@ -395,7 +395,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (!mode) {
       throw new Error(`invalid screen mode ${modeNumber}`);
     }
-    const geometry = mode.geometry[0];
+    // Do not reset geometry if not changing the mode.
+    const geometry = this.mode?.mode === modeNumber ? this.geometry : mode.geometry[0];
     this.setScreenMode(mode, geometry, colorSwitch, activePage, visiblePage);
   }
 
