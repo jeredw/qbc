@@ -435,7 +435,26 @@ export class Typer extends QBasicParserListener {
         };
       }
       let treatAsDynamic = false;
-      if (existingVariable && (redim || (existingVariable.array?.dynamic && variable.array))) {
+      if (existingVariable && existingVariable.sharedDeclaration) {
+        // A variable first encountered as a COMMON SHARED declaration and later
+        // a DIM would normally be a duplicate definition.  Upgrade the SHARED
+        // symbol to a real one.
+        if (!!dim.AS() && !existingVariable.isAsType) {
+          throw ParseError.fromToken(existingVariable.token, "AS clause required");
+        }
+        if (!dim.AS() && existingVariable.isAsType) {
+          throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
+        }
+        existingVariable.sharedDeclaration = false;
+        if (existingVariable.array && arrayDescriptor.array) {
+          // SHARED doesn't have real array dimensions, so we need to reallocate
+          // array variables...
+          existingVariable.array.dynamic = arrayDescriptor.array.dynamic;
+          existingVariable.array.dimensions = arrayDescriptor.array.dimensions;
+          this._chunk.symbols.allocateArray(existingVariable);
+        }
+        variable = existingVariable;
+      } else if (existingVariable && (redim || (existingVariable.array?.dynamic && variable.array))) {
         // Redim on an existing array doesn't need to install new symbols.
         // It is also valid to dim a dynamic array multiple times to reallocate it,
         // but the array must be explicitly erased in between.
@@ -461,26 +480,6 @@ export class Typer extends QBasicParserListener {
           if (existingVariable.array.dimensions.length != variable.array.dimensions.length) {
             throw ParseError.fromToken(variable.token, "Wrong number of dimensions");
           }
-        }
-        variable = existingVariable;
-      } else if (existingVariable && existingVariable.sharedDeclaration) {
-        // A variable first encountered as a SHARED declaration and later a DIM
-        // would normally be a duplicate definition.  QBasic rearranges programs
-        // so this can't happen, but we'll allow it and upgrade the SHARED
-        // symbol to a real one.
-        if (!!dim.AS() && !existingVariable.isAsType) {
-          throw ParseError.fromToken(existingVariable.token, "AS clause required");
-        }
-        if (!dim.AS() && existingVariable.isAsType) {
-          throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
-        }
-        existingVariable.sharedDeclaration = false;
-        if (existingVariable.array && arrayDescriptor.array) {
-          // SHARED doesn't have real array dimensions, so we need to reallocate
-          // array variables...
-          existingVariable.array.dynamic = arrayDescriptor.array.dynamic;
-          existingVariable.array.dimensions = arrayDescriptor.array.dimensions;
-          this._chunk.symbols.allocateArray(existingVariable);
         }
         variable = existingVariable;
       } else {

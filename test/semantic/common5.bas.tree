@@ -1,0 +1,19 @@
+(program ' \n 
+  (statement 
+    (common_statement common shared 
+      (scope_variable a 
+        (array_declaration 
+          ( ))))) \n 
+  (statement 
+    (dim_statement redim 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 512))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)
