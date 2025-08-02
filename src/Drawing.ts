@@ -437,6 +437,11 @@ export class Plotter {
     const r = this.coordinates.view;
     ctx.fillStyle = cssForColorIndex(color);
     ctx.fillRect(r.x.start, r.y.start, r.x.length(), r.y.length());
+    this.resetCursor();
+  }
+
+  resetCursor() {
+    this.cursor = this.viewToWindow(this.coordinates.getViewCenter());
   }
 
   drawViewBox(ctx: CanvasRenderingContext2D, p1: Point, p2: Point, color?: number, border?: number) {
@@ -771,9 +776,10 @@ class ViewTransform {
   }
 
   getViewCenter(): Point {
+    // Note: round up so that cursor starts at the correct place.
     return {
-      x: (this.view.x.end - this.view.x.start) / 2,
-      y: (this.view.y.end - this.view.y.start) / 2
+      x: Math.round((this.view.x.end - this.view.x.start) / 2),
+      y: Math.round((this.view.y.end - this.view.y.start) / 2)
     }
   }
 

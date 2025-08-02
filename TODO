@@ -61,6 +61,7 @@ Bringup
 + QBASWIN: Quoted strings in DATA lists don't need a closing quote.
 + ARENA: Screwed up palette during cutscene.
 + BURNERS: Right shift key doesn't seem to work
++ FRACTAL: Menu options get overwritten with blank spaces
 - ABSORB: PEEKing to copy arrays in a loop serializes whole array repeatedly
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AMBUSH, AMBUSH2: multifile
@@ -70,8 +71,9 @@ Bringup
 - ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
 - BOMB5: You can have both a line number and a label...
 - BOMBCOO: Uses VARSEG$/VARPTR with array index
+- DBZGAME: IDE knows how to fix missing "s at end of line
+- DBZGAME: CALL should work without DECLARE
 - ELYSIAN: chain, self-modifying!
-- FRACTAL: Menu options get overwritten with blank spaces
 - GAMEBAS: VARSEG for record element
 - GBUGGIES: multifile, SADD
 - JOLT: multifile
@@ -79,6 +81,8 @@ Bringup
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
 - PANGALL: multifile
+- PENGUIN: Paint overflows.
+- QMIDI: Tries to read max columns from 0040:004a
 - SLUSSEN FIGHTERS: paint overflows
 - WHEEL OF WEALTH: marge simpson paint overflows circles
 

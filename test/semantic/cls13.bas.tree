@@ -1,0 +1,42 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (view_statement view 
+      ( 
+        (expr 
+          (literal 10)) , 
+        (expr 
+          (literal 10)) ) - 
+      ( 
+        (expr 
+          (literal 200)) , 
+        (expr 
+          (literal 200)) ) , 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 5)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 50)) , 
+        (expr 
+          (literal 50)) ) , 
+      (expr 
+        (literal 15)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (line_statement line - 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 5)))) \n <EOF>)

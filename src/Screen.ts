@@ -176,6 +176,10 @@ class Page {
     this.plotter.cursor = {...p};
   }
 
+  resetGraphicsCursor() {
+    this.plotter.resetCursor();
+  }
+
   private initText(color: Attributes) {
     const [columns, rows] = this.geometry.text;
     this.text = new Array(rows);
@@ -370,10 +374,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     super(0);
     this.canvasProvider = canvasProvider ?? new DefaultCanvasProvider();
     this.headless = !!canvasProvider;
-    this.drawState = {
-      matrix: [[1, 0], [0, 1]],
-      scale: 4,
-    };
+    this.resetDrawState();
     this.vgaPaletteData = [];
     this.vgaPaletteIndex = 0;
     this.softKeys = {keys: [], visible: false};
@@ -381,15 +382,19 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   reset() {
-    this.drawState = {
-      matrix: [[1, 0], [0, 1]],
-      scale: 4,
-    };
+    this.resetDrawState();
     this.softKeys = {keys: [], visible: false};
     this.vgaPaletteData = [];
     this.vgaPaletteIndex = 0;
     this.configure(1, 0, 0, 0);
     this.configure(0, 0, 0, 0);
+  }
+
+  private resetDrawState() {
+    this.drawState = {
+      matrix: [[1, 0], [0, 1]],
+      scale: 4,
+    };
   }
 
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
@@ -747,12 +752,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
       case 0:
         this.activePage.clearText(this.color);
         if (this.mode.mode !== 0) {
+          this.resetDrawState();
           this.activePage.clearGraphics(this.color);
           return;
         }
         break;
       case 1:
         if (this.mode.mode !== 0) {
+          this.resetDrawState();
           this.activePage.clearGraphics(this.color);
           return;
         }
@@ -770,9 +777,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
             this.updateSoftKeyLine();
           }
         } else if (this.activePage.viewSet) {
+          this.resetDrawState();
           this.activePage.clearGraphics(this.color);
           return;
         } else {
+          this.resetDrawState();
+          this.activePage.resetGraphicsCursor();
           this.activePage.clearText(this.color);
         }
         break;

@@ -1,0 +1,22 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "s2 u400")))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "l150")))))) \n <EOF>)
