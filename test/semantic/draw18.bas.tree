@@ -1,0 +1,23 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (color_statement color 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id draw) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "r10")))))) \n 
+  (statement 
+    (line_statement line - step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 10)) ))) \n <EOF>)

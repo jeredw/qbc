@@ -36,7 +36,6 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   copyPage(sourcePage: number, destPage: number): void;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
-  setFgColor(color: number): void;
   setPaletteEntry(attribute: number, color: number): void;
   resetPalette(): void;
   setVgaPaletteIndex(index: number): void;
@@ -85,6 +84,7 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
 export interface DrawState {
   matrix: number[][];
   scale: number;
+  color: number;
 }
 
 interface Attributes {
@@ -394,6 +394,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.drawState = {
       matrix: [[1, 0], [0, 1]],
       scale: 4,
+      color: 15,
     };
   }
 
@@ -565,10 +566,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
         this.setPaletteEntry(0, bgColor);
       }
     }
-  }
-
-  setFgColor(color: number) {
-    this.color.fgColor = color;
   }
 
   setPaletteEntry(attribute: number, color: number) {
@@ -1211,12 +1208,6 @@ export class TestScreen implements Screen {
   setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
     this.text.print(`[COLOR ${fgColor}, ${bgColor}, ${borderColor}]`, true);
     this.graphics.setColor(fgColor, bgColor, borderColor);
-    this.hasGraphics = true;
-  }
-
-  setFgColor(color: number) {
-    this.text.print(`[setFgColor ${color}]`, true);
-    this.graphics.setFgColor(color);
     this.hasGraphics = true;
   }
 

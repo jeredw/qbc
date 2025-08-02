@@ -780,8 +780,8 @@ export class DrawStatement extends Statement {
             x2: p2.x,
             y2: p2.y,
             outline: false,
-            fill: false
-          });
+            fill: false,
+          }, state.color);
         }
         if (!move.comeBack) {
           cursor = {...target};
@@ -828,11 +828,8 @@ export class DrawStatement extends Statement {
           const p = screen.screenToWindow(cursor);
           screen.paint({step: false, x: p.x, y: p.y, borderColor}, paintColor);
         } else if (command.setColor) {
-          // The color command affects the line color with no validation.
-          // Since COLOR controls the background in mode 1 and validates, we
-          // need a special accessor just to set the foreground color for
-          // drawing.
-          screen.setFgColor(this.readNumber(command.setColor, context));
+          // Draw color is separate state from the graphics fg color.
+          state.color = this.readNumber(command.setColor, context);
         } else if (command.execute) {
           // s$ = "r1 d1 x": s$ = s$ + varptr$(s$): draw s$
           // draws a diagonal squiggle and then fails with "Out of stack space".
