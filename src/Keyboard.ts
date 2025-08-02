@@ -15,6 +15,7 @@ export interface Keyboard {
 export interface Key {
   code: number;
   char?: string;
+  breakCode?: boolean;
   cursorCommand?: CursorCommand;
 }
 
@@ -182,7 +183,7 @@ export class KeyboardListener implements Keyboard {
     if (this.macros.has(e.key)) {
       // Skip this event.
     } else if (code !== undefined) {
-      this.inputBuffer.push({code: 0x80 | code});
+      this.inputBuffer.push({code: 0x80 | code, breakCode: true});
       this.lastScanCode = 0x80 | code;
     }
   }

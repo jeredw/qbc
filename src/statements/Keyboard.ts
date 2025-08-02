@@ -24,7 +24,7 @@ export class InkeyFunction extends Statement {
   override execute(context: ExecutionContext) {
     const key = context.devices.keyboard.input();
     // Skip break codes for inkey$.
-    const output = !key || (key.code & 0x80) || isModifier(key.code) ? string("") :
+    const output = !key || key.breakCode || isModifier(key.code) ? string("") :
       key.char ? string(key.char) :
       string(asciiToString([0, key.code]));
     context.memory.write(this.result, output);

@@ -1,0 +1,41 @@
+(program ' \n 
+  (statement 
+    (do_loop_statement do 
+      (block : 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call a$) = 
+            (expr 
+              (variable_or_function_call inkey$)))) :) loop 
+      (loop_condition while 
+        (expr 
+          (expr 
+            (variable_or_function_call a$)) = 
+          (expr 
+            (literal "")))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call asc 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call a$)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call asc 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (builtin_function 
+                      (mid_function mid$ 
+                        ( 
+                          (expr 
+                            (variable_or_function_call a$)) , 
+                          (expr 
+                            (literal 2)) , 
+                          (expr 
+                            (literal 1)) )))))) )))))) \n <EOF>)

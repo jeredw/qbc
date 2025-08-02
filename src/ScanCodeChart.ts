@@ -22,8 +22,8 @@ $ or 4     5       ║     G            34      ║     F4                 62
 * or 8     9       ║     L            38      ║     F8                 66
 ( or 9     10      ║     : or ;       39      ║     F9                 67
 ) or 0     11      ║     " or '       40      ║     F10                68
-_ or -     12      ║     ~ or \`      41      ║     F11                87
-+ or =     13      ║     Shift_1      42      ║     F12                88
+_ or -     12      ║     ~ or \`      41      ║     F11               133
++ or =     13      ║     Shift_1      42      ║     F12               134
 Backspace  14      ║     | or \\      43      ║     NumLock or Clear   69
 Tab        15      ║     Z            44      ║     ScrollLock         70
 Q          16      ║     X            45      ║     Home or 7_3        71
