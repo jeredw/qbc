@@ -119,6 +119,7 @@ export class Typer extends QBasicParserListener {
     this._chunk = this.makeProgramChunk(symbols, procedure);
     this._program.chunks.push(this._chunk);
     procedure.result!.address = this._chunk.symbols.allocate(StorageType.AUTOMATIC, 1);
+    procedure.hasBody = true;
     this.installParameters(parameters);
   }
 
@@ -169,6 +170,7 @@ export class Typer extends QBasicParserListener {
     this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
     this._chunk = this._program.chunks[procedure.programChunkIndex];
     procedure.result!.address = this._chunk.symbols.allocate(StorageType.AUTOMATIC, 1);
+    procedure.hasBody = true;
     this.installParameters(parameters);
   }
 
@@ -197,6 +199,7 @@ export class Typer extends QBasicParserListener {
     getTyperContext(ctx).$procedure = procedure;
     this._storageType = ctx.STATIC() ? StorageType.STATIC : StorageType.AUTOMATIC;
     this._chunk = this._program.chunks[procedure.programChunkIndex];
+    procedure.hasBody = true;
     this.installParameters(parameters);
   }
 

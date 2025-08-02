@@ -378,6 +378,9 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   private call(procedure: Procedure, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
+    if (!procedure.hasBody) {
+      throw ParseError.fromToken(token, "Subprogram not defined");
+    }
     if (procedure.result && !result || !procedure.result && result) {
       // Attempting to call a function with a call statement, or a sub from an expression.
       throw ParseError.fromToken(token, "Duplicate definition");
