@@ -44,7 +44,7 @@ function fakeKey(key: string, ctrlKey?: boolean): KeyboardEvent {
   return {
     key,
     ctrlKey: !!ctrlKey,
-    shiftKey: false,
+    shiftKey: key === 'Shift',
     altKey: false,
     getModifierState: () => false,
   } as unknown as KeyboardEvent;
@@ -152,10 +152,11 @@ export class KeyboardListener implements Keyboard {
       }
       // numpad arrows trigger arrow key events even if numlock is turned on.
       const ignoreNumLock = keyNumber >= 11 && keyNumber <= 14;
+      // When a modifier key is pressed on its own, its modifier flag is not true.
       const modifiersMatch = (
-        !!(customKey.flags & 3) === e.shiftKey &&
-        !!(customKey.flags & 4) === e.ctrlKey &&
-        !!(customKey.flags & 8) === e.altKey &&
+        (!!(customKey.flags & 3) === (e.shiftKey && e.key !== 'Shift')) &&
+        (!!(customKey.flags & 4) === (e.ctrlKey && e.key !== 'Control')) &&
+        (!!(customKey.flags & 8) === (e.altKey && e.key !== 'Alt')) &&
         (!!(customKey.flags & 32) === isNumLockOn(e) || ignoreNumLock) &&
         !!(customKey.flags & 64) === e.getModifierState('CapsLock') &&
         !!(customKey.flags & 128) === isExtendedKey(e, code)
