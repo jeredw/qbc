@@ -214,10 +214,10 @@ abstract class StringToBytes extends BuiltinFunction1 {
     if (!isString(input)) {
       throw new Error("expecting string");
     }
-    if (input.string.length != this.expectedNumBytes) {
+    if (input.string.length < this.expectedNumBytes) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    const bytes = stringToAscii(input.string);
+    const bytes = stringToAscii(input.string.slice(0, this.expectedNumBytes));
     return this.getValue(bytes);
   }
 
