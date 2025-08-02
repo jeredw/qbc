@@ -3,6 +3,7 @@ import { keyToScanCode, scanCodeToKey } from "./ScanCodeChart.ts"
 export interface Keyboard {
   input(): Key | undefined;
   numKeysPending(): number;
+  getLastModifierMask(): number;
   getLastScanCode(): number;
   setMacro(functionKey: number, text: string): void;
   getMacro(functionKey: number): string;
@@ -33,6 +34,9 @@ export function typeLines(lines: string[], listener: KeyboardListener) {
         ctrlKey = true;
         name = name.slice(5);
       }
+      if (name === 'EOF') {
+        return;
+      }
       listener.keydown(fakeKey(name, ctrlKey));
       listener.keyup(fakeKey(name, ctrlKey));
     }
@@ -46,7 +50,7 @@ function fakeKey(key: string, ctrlKey?: boolean): KeyboardEvent {
     key,
     ctrlKey: !!ctrlKey,
     shiftKey: key === 'Shift',
-    altKey: false,
+    altKey: key === 'Alt',
     getModifierState: () => false,
   } as unknown as KeyboardEvent;
 }
@@ -62,6 +66,7 @@ interface CustomKey {
 export class KeyboardListener implements Keyboard {
   inputBuffer: Key[] = [];
   lastScanCode: number = 0;
+  lastModifierMask: number = 0;
   macros: Map<string, string> = new Map();
   customKeys: CustomKey[] = [];
   softNumLockState: boolean = false;
@@ -73,6 +78,7 @@ export class KeyboardListener implements Keyboard {
   reset() {
     this.inputBuffer = [];
     this.lastScanCode = 0;
+    this.lastModifierMask = 0;
     this.macros = new Map();
     this.customKeys = defaultCustomKeys();
     this.softNumLockState = false;
@@ -139,6 +145,11 @@ export class KeyboardListener implements Keyboard {
       const cursorCommand = decodeCursorCommand(e);
       this.inputBuffer.push({code, char, cursorCommand});
       this.lastScanCode = code;
+      this.lastModifierMask = (
+        (e.shiftKey ? 3 : 0) |
+        (e.ctrlKey ? 4 : 0) |
+        (e.altKey ? 8 : 0)
+      );
     }
   }
 
@@ -185,7 +196,16 @@ export class KeyboardListener implements Keyboard {
     } else if (code !== undefined) {
       this.inputBuffer.push({code: 0x80 | code, breakCode: true});
       this.lastScanCode = 0x80 | code;
+      this.lastModifierMask = (
+        (e.shiftKey ? 3 : 0) |
+        (e.ctrlKey ? 4 : 0) |
+        (e.altKey ? 8 : 0)
+      );
     }
+  }
+
+  getLastModifierMask(): number {
+    return this.lastModifierMask;
   }
 
   getLastScanCode(): number {

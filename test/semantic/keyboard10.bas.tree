@@ -1,0 +1,25 @@
+(program ' \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h417)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal &h418)))) )))))) \n <EOF>)

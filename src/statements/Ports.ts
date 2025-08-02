@@ -27,6 +27,9 @@ export class InpFunction extends BuiltinFunction1 {
       case 0x3c9:
         const data = context.devices.screen.getVgaPaletteData();
         return integer(data);
+      case 0x3da:
+        const inVgaRetrace = context.devices.timer.inVgaRetrace();
+        return integer(inVgaRetrace ? 8 : 0);
       case 0x60:
         const code = context.devices.keyboard.getLastScanCode();
         return integer(code);

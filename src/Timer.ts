@@ -5,6 +5,7 @@ export interface Timer {
   time(): string;
   timer(): number;
   rawTicks(): number;
+  inVgaRetrace(): boolean;
 
   testTick?(): void;
 }
@@ -36,6 +37,10 @@ export class TestTimer {
 
   rawTicks() {
     return this.ticks;
+  }
+
+  inVgaRetrace(): boolean {
+    return (this.ticks % 2) === 0;
   }
 
   testTick() {
@@ -95,6 +100,11 @@ export class RealTimeTimer {
     const period = 1 / this.frequency;
     const timestamp = period * Math.floor((msSinceMidnight / 1000) / period);
     return +timestamp.toFixed(2);
+  }
+
+  inVgaRetrace(): boolean {
+    // Approximately 60 Hz.
+    return (this.now().valueOf() % 16) === 0;
   }
 
   rawTicks(): number {
