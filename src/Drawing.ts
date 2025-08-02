@@ -408,7 +408,10 @@ export class Plotter {
       };
       this.floodFill(ctx, pv, lookup, args.borderColor ?? color);
     } else {
-      this.floodFill(ctx, pv, () => color, args.borderColor ?? color);
+      // Color fill does not enqueue neighboring pixels if they are already the
+      // paint color.  This prevents paint escaping an area partially bordered
+      // by borderColor and the paint color.
+      this.floodFill(ctx, pv, () => color, args.borderColor ?? color, /*skipAlreadyPainted=*/ true);
     }
   }
 
@@ -721,12 +724,18 @@ export class Plotter {
     }
   }
 
-  private floodFill(ctx: CanvasRenderingContext2D, start: Point, color: (p: Point) => number, border: number) {
+  private floodFill(ctx: CanvasRenderingContext2D, start: Point, color: (p: Point) => number, border: number, skipAlreadyPainted=false) {
     const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
     const queue: Point[] = [start];
     const hash = (p: Point) => `${p.x},${p.y}`;
     const queued: Set<String> = new Set([hash(start)]);
     const enqueue = (p: Point) => {
+      if (skipAlreadyPainted) {
+        const offset = 4 * (imageData.width * p.y + p.x);
+        if (imageData.data[offset] === color(p)) {
+          return;
+        }
+      }
       if (!queued.has(hash(p))) {
         queued.add(hash(p));
         queue.push(p);
