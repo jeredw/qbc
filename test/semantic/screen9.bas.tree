@@ -1,0 +1,66 @@
+(program ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello")) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (builtin_function 
+                      (screen_function screen 
+                        ( 
+                          (expr 
+                            (variable_or_function_call csrlin)) , 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call pos 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 1)))) ))) - 
+                            (expr 
+                              (literal 1))) )))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "!")) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (builtin_function 
+                      (screen_function screen 
+                        ( 
+                          (expr 
+                            (variable_or_function_call csrlin)) , 
+                          (expr 
+                            (expr 
+                              (variable_or_function_call pos 
+                                ( 
+                                  (argument_list 
+                                    (argument 
+                                      (expr 
+                                        (literal 1)))) ))) - 
+                            (expr 
+                              (literal 1))) )))))) )))))) \n <EOF>)
