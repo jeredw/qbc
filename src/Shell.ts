@@ -262,7 +262,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     }
     let bytes = Array.from(new Uint8Array(buffer));
     if (path.endsWith('.BAS')) {
-       bytes = decodeProgram(buffer);
+       bytes = cleanupNewlines(decodeProgram(buffer));
     }
     this.disk.writeFile(path, {
       name: path,
@@ -623,6 +623,11 @@ class EditorProxy {
     this.editor.onMouseMove((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, hoverBreakpoint));
     this.editor.onMouseLeave(() => unhover());
   }
+}
+
+function cleanupNewlines(file: number[]) {
+  // Strip adjacent CRs since lots of programs have weird spacing like 0d 0d 0d 0a.
+  return file.filter((x, index) => x !== 13 || x !== file[index + 1]);
 }
 
 function decodeProgram(buffer: ArrayBuffer): number[] {
