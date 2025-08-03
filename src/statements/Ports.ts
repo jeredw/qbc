@@ -8,6 +8,8 @@ import { integer, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
+import { readBytesFromArray } from "./Arrays.ts";
+import { readVariableToBytes } from "./Bits.ts";
 
 export class InpFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -23,6 +25,9 @@ export class InpFunction extends BuiltinFunction1 {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
     const port = portSpec & 0xffff;
+    if (context.devices.blaster.usesPort(port)) {
+      return integer(context.devices.blaster.input(port));
+    }
     switch (port) {
       case 0x3c9:
         const data = context.devices.screen.getVgaPaletteData();
@@ -58,6 +63,19 @@ export class OutStatement extends Statement {
     const port = portSpec & 0xffff;
     // OUT quietly wraps when data is out of range.
     const data = evaluateIntegerExpression(this.dataExpr, context.memory) & 0xff;
+    const {blaster} = context.devices;
+    if (blaster.usesPort(port)) {
+      const addressRequest = blaster.output(port, data);
+      if (addressRequest !== undefined) {
+        const segment = addressRequest >> 4;
+        const {variable} = context.memory.readPointer(segment);
+        const bytes = variable.array ?
+          readBytesFromArray(variable, context.memory) :
+          readVariableToBytes(variable, context.memory);
+        blaster.sendData(bytes);
+      }
+      return;
+    }
     switch (port) {
       case 0x3c7:
       case 0x3c8:

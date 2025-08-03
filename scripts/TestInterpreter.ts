@@ -12,6 +12,7 @@ import { Canvas, createCanvas, registerFont } from "canvas"
 import { HttpModem, TestFetcher } from "../src/Modem.ts";
 import { Invoker } from "../src/Invocation.ts";
 import { MouseListener } from "../src/Mouse.ts";
+import { SoundBlaster } from "../src/SoundBlaster.ts";
 
 async function interpret(program: string, input: string[], diskJson: string): Promise<[string, string | undefined]> {
   try {
@@ -32,6 +33,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       true,  // respondInstantly
     );
     const mouse = new MouseListener(screen);
+    const blaster = new SoundBlaster(speaker);
     let invocations = '';
     const interpreter = new Interpreter({
       screen,
@@ -44,6 +46,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       lightPen,
       modem,
       mouse,
+      blaster,
     }, new class implements Invoker {
       runProgram(fileName: string) {
         if (fileName.toLowerCase() == 'error') {

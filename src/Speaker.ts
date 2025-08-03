@@ -5,6 +5,8 @@ export interface Speaker {
   setPlayState(state: PlayState): void;
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void>;
 
+  playSample(buffer: ArrayBuffer, sampleRate: number): void;
+
   testFinishNote?(): void;
 }
 
@@ -58,6 +60,10 @@ export class TestSpeaker implements Speaker {
     this.queueLength++;
     return Promise.resolve();
   }
+
+  playSample(buffer: ArrayBuffer, sampleRate: number) {
+    this.output += `SPEAKER> play sample ${buffer.byteLength} ${sampleRate}`;
+  }
 }
 
 interface Note {
@@ -72,6 +78,7 @@ interface Note {
 export class WebAudioSpeaker implements Speaker {
   audioContext: AudioContext;
   oscillator: OscillatorNode;
+  bufferSource: AudioBufferSourceNode;
   gainNode: GainNode;
   queue: Note[] = [];
   playState: PlayState;
@@ -108,6 +115,8 @@ export class WebAudioSpeaker implements Speaker {
     this.oscillator.type = "square";
     this.oscillator.connect(this.gainNode);
     this.oscillator.start();
+    this.bufferSource = this.audioContext.createBufferSource();
+    this.bufferSource.connect(this.audioContext.destination);
     this.queue = [];
     this.playState = {...DEFAULT_PLAY_STATE};
   }
@@ -168,5 +177,16 @@ export class WebAudioSpeaker implements Speaker {
     while (this.queue[0]?.done) {
       this.queue.shift();
     }
+  }
+
+  playSample(buffer: ArrayBuffer, sampleRate: number) {
+    const audioBuffer = this.audioContext.createBuffer(1, buffer.byteLength, sampleRate);
+    const channelData = audioBuffer.getChannelData(0);
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < Math.min(audioBuffer.length, bytes.byteLength); i++) {
+      channelData[i] = (bytes[i] - 128) / 128;
+    }
+    this.bufferSource.buffer = audioBuffer;
+    this.bufferSource.start();
   }
 }

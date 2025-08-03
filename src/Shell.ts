@@ -20,6 +20,7 @@ import { decodeGwBasicBinaryFile } from "./GwBasicFormat.ts";
 import { decodeQb45BinaryFile } from "./Qb45Format.ts";
 import JSZip from "jszip";
 import { MouseListener, MouseSurface } from "./Mouse.ts";
+import { SoundBlaster } from "./SoundBlaster.ts";
 
 enum RunState {
   ENDED,
@@ -58,6 +59,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private pointer: PointerListener;
   private modem: HttpModem;
   private mouse: MouseListener;
+  private blaster: SoundBlaster;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -71,6 +73,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.pointer = new PointerListener(this.screen);
     this.modem = new HttpModem();
     this.mouse = new MouseListener(this);
+    this.blaster = new SoundBlaster(this.speaker);
     this.root.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
@@ -85,6 +88,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
       lightPen: this.pointer,
       modem: this.modem,
       mouse: this.mouse,
+      blaster: this.blaster,
     }, this);
     this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;

@@ -8,6 +8,7 @@ import { Joystick } from "./Joystick.ts";
 import { LightPen } from "./LightPen.ts";
 import { Modem } from "./Modem.ts";
 import { Mouse } from "./Mouse.ts";
+import { SoundBlaster } from "./SoundBlaster.ts";
 
 export interface Devices {
   screen: Screen;
@@ -20,4 +21,5 @@ export interface Devices {
   lightPen: LightPen;
   modem: Modem;
   mouse: Mouse;
+  blaster: SoundBlaster;
 }
