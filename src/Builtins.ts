@@ -39,7 +39,7 @@ export class StandardLibrary {
     _("atn double -> double", statements.atn),
     _("beep", statements.beep),
     _("bload string integer?", statements.bload),
-    _("bsave string integer integer", statements.bsave),
+    _("bsave string integer long", statements.bsave),
     _("cdbl numeric -> double", statements.cdbl),
     _("chdir string", statements.chdir),
     _("chr numeric -> string", statements.chr),

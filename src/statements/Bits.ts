@@ -781,7 +781,7 @@ export class BsaveStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const path = evaluateStringExpression(this.pathExpr, context.memory);
-    const length = evaluateIntegerExpression(this.lengthExpr, context.memory) & 0xffff;
+    const length = evaluateIntegerExpression(this.lengthExpr, context.memory, {tag: TypeTag.LONG}) & 0xffff;
     const offset = evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff;
     try {
       const [_, bytes] = readBytesAtPointer(context.memory);

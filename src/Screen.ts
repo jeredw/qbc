@@ -1160,8 +1160,9 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
+    const scaleX = this.mode.mode === 13 ? 2 : 1;
     return {
-      x: 2 * ~~((x / this.canvas.offsetWidth) * this.canvas.width),
+      x: scaleX * ~~((x / this.canvas.offsetWidth) * this.canvas.width),
       y: ~~((y / this.canvas.offsetHeight) * this.canvas.height),
     };
   }
