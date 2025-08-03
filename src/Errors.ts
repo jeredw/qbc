@@ -172,6 +172,7 @@ export const
   OUT_OF_DATA = getErrorForCode(4),
   ILLEGAL_FUNCTION_CALL = getErrorForCode(5),
   OVERFLOW = getErrorForCode(6),
+  OUT_OF_MEMORY = getErrorForCode(7),
   SUBSCRIPT_OUT_OF_RANGE = getErrorForCode(9),
   DUPLICATE_DEFINITION = getErrorForCode(10),
   DIVISION_BY_ZERO = getErrorForCode(11),

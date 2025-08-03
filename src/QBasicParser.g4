@@ -120,6 +120,7 @@ statement
   | do_loop_statement
   | dynamic_metacommand
   | end_statement
+  | environ_statement
   | erase_statement
   | error_statement
   | event_control_statement
@@ -525,6 +526,10 @@ dynamic_metacommand
 
 end_statement
   : END
+  ;
+
+environ_statement
+  : ENVIRON expr
   ;
 
 // *** This grammar allows EXIT anywhere, and leaves it up to a later pass to
@@ -984,6 +989,7 @@ builtin_function
   : date_function
   | erdev_function
   | erdev_string_function
+  | environ_string_function
   | input_function
   | instr_function
   | IOCTL_STRING '(' '#'? filenum=expr ')'
@@ -1006,6 +1012,10 @@ builtin_function
 
 date_function
   : DATE_STRING
+  ;
+
+environ_string_function
+  : ENVIRON_STRING expr
   ;
 
 // These have the same name but different types so it's simpler to define them

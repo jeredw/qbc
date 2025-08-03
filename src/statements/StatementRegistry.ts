@@ -158,7 +158,7 @@ import {
   WindowStatement,
 } from "./Graphics.ts";
 import { ErdevFunction, ErdevStringFunction, ErlFunction, ErrFunction, ErrorHandlerStatement, ErrorStatement, ResumeStatement } from "./Errors.ts";
-import { CommandFunction } from "./Dos.ts";
+import { CommandFunction, EnvironFunction, EnvironStatement } from "./Dos.ts";
 import { ClearStatement } from "./Clear.ts";
 import { CallAbsoluteParameter, CallAbsoluteStatement } from "./Asm.ts";
 
@@ -292,6 +292,14 @@ export function defSeg(token: Token, segmentExpr?: parser.ExprContext) {
 
 export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs[], result: Variable, redim: boolean) {
   return new DimStatement(arrayBaseIndex, token, bounds, result, redim);
+}
+
+export function environ(expr: parser.ExprContext) {
+  return new EnvironStatement(expr);
+}
+
+export function environFunction(result: Variable, stringExpr?: parser.ExprContext, indexExpr?: parser.ExprContext) {
+  return new EnvironFunction(result, stringExpr, indexExpr);
 }
 
 export function erase(array: Variable) {

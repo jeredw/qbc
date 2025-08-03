@@ -81,6 +81,8 @@ DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 ELSE : [Ee][Ll][Ss][Ee] ;
 ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
+ENVIRON : [Ee][Nn][Vv][Ii][Rr][Oo][Nn] ;
+ENVIRON_STRING : [Ee][Nn][Vv][Ii][Rr][Oo][Nn] '$' ;
 EQV : [Ee][Qq][Vv] ;
 ERASE : [Ee][Rr][Aa][Ss][Ee] ;
 ERDEV : [Ee][Rr][Dd][Ee][Vv] ;

@@ -1,0 +1,61 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (environ_string_function environ$ 
+              (expr 
+                ( 
+                  (expr 
+                    (literal "BLASTER")) )))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (environ_string_function environ$ 
+              (expr 
+                ( 
+                  (expr 
+                    (literal "PATH")) )))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (environ_string_function environ$ 
+              (expr 
+                ( 
+                  (expr 
+                    (literal "BOGUS")) )))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (environ_string_function environ$ 
+              (expr 
+                ( 
+                  (expr 
+                    (literal 1)) )))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (environ_string_function environ$ 
+              (expr 
+                ( 
+                  (expr 
+                    (literal 2)) )))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (environ_string_function environ$ 
+              (expr 
+                ( 
+                  (expr 
+                    (literal 3)) )))))))) \n <EOF>)

@@ -163,8 +163,8 @@ parse those using baked in rules.
 | `ELSE`           | Keyword     | ✅      | ✅      |
 | `ELSEIF`         | Keyword     | ✅      | ✅      |
 | `END`            | Statement   | ✅      | ✅      |
-| `ENVIRON`        | Statement   | -       | ⛔      |
-| `ENVIRON$`       | Function    | -       | ⛔      |
+| `ENVIRON`        | Statement   | ✅      | 🚧      |
+| `ENVIRON$`       | Function    | ✅      | ✅      |
 | `EOF`            | Function    | -       | ✅      |
 | `EQV`            | Operator    | ✅      | ✅      |
 | `ERASE`          | Statement   | ✅      | ✅      |
@@ -289,6 +289,7 @@ parse those using baked in rules.
 | `RSET`           | Statement   | ✅      | ✅      |
 | `RTRIM$`         | Function    | -       | ✅      |
 | `RUN`            | Statement   | ✅      | ✅      |
+| `SADD`           | Function    | -       | 🚧      |
 | `SCREEN`         | Function    | ✅      | ✅      |
 | `SCREEN`         | Statement   | ✅      | 🚧      |
 | `SEEK`           | Function    | ✅      | ✅      |

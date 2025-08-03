@@ -589,6 +589,10 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.end(), ctx.start!);
   }
 
+  override enterEnviron_statement = (ctx: parser.Environ_statementContext) => {
+    this.addStatement(statements.environ(ctx.expr()), ctx.start!);
+  }
+
   override enterField_statement = (ctx: parser.Field_statementContext) => {
     const token = ctx.start!;
     const fileNumber = this.compileExpression(ctx._filenum!, ctx._filenum!.start!, { tag: TypeTag.INTEGER });
@@ -1593,6 +1597,24 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing result variable");
         }
         codeGenerator.addStatement(statements.dateFunction(result), ctx.start!);
+      }
+
+      override enterEnviron_string_function = (ctx: parser.Environ_string_functionContext) => {
+        if (alreadyCompiled(ctx)) {
+          return;
+        }
+        const result = getTyperContext(ctx.parent!).$result;
+        if (!result) {
+          throw new Error("missing result variable");
+        }
+        let stringExpr: parser.ExprContext | undefined;
+        let indexExpr: parser.ExprContext | undefined;
+        try {
+          stringExpr = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, {tag: TypeTag.STRING });
+        } catch (e: unknown) {
+          indexExpr = codeGenerator.compileExpression(ctx.expr(), ctx.expr().start!, {tag: TypeTag.INTEGER });
+        }
+        codeGenerator.addStatement(statements.environFunction(result, stringExpr, indexExpr), ctx.start!);
       }
 
       override enterErdev_function = (ctx: parser.Erdev_functionContext) => {
