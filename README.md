@@ -1,7 +1,12 @@
 # qbc
 
-This repository contains a reconstructed grammar and tools for playing with the
-MS-DOS QBasic 1.1 language.
+This repository contains a cleanroom TypeScript implementation of the MS-DOS
+QBasic 1.1 language with an interpreter, a test suite, and a web-based IDE and
+shell.
+
+- `npm run build` builds an antlr lexer and grammar
+- `npm run test` runs automated tests
+- `npm run serve` starts a dev server at http://localhost:5500/
 
 # Language
 
@@ -119,7 +124,7 @@ parse those using baked in rules.
 | `BLOAD`          | Statement   | -       | 🚧      |
 | `BSAVE`          | Statement   | -       | 🚧      |
 | `CALL`           | Statement   | ✅      | ✅      |
-| `CALL ABSOLUTE`  | Statement   | ✅      | ⛔      |
+| `CALL ABSOLUTE`  | Statement   | ✅      | 🚧      |
 | `CASE`           | Keyword     | ✅      | ✅      |
 | `CDBL`           | Function    | -       | ✅      |
 | `CHAIN`          | Statement   | -       | ⛔      |
@@ -370,7 +375,8 @@ to do that.
 ## DOS commands
 
 Some libraries for stuff like file I/O could plausibly make sense on a modern
-computer, and some are truly DOS specific.  How should all this behave?
+computer, and some are truly DOS specific.  Most interesting programs read data
+files, so we support a simple in-memory filesystem and commonly used I/O stuff.
 
 ### Really DOS specific
 
@@ -396,6 +402,10 @@ computer, and some are truly DOS specific.  How should all this behave?
 - `PLAY`, `SOUND`, `BEEP`: PC speaker tone and music player
 - `INP`, `OUTP`: directly access I/O ports
 
+QBasic has a pretty decent plotting library for CGA/EGA/VGA.  Matching this
+pixel for pixel is a challenge but we have to be very close for games to work
+right.
+
 ## Low-level memory commands
 
 - `CALL ABSOLUTE`: jumps to a machine code subroutine.
@@ -411,9 +421,75 @@ from segment `&H0001` (segment `&H0000` is reserved for memory-mapped I/O).
 bits of the selected variable.  This should be enough of a real memory model for
 `BSAVE` and `BLOAD` as well as `DRAW` and `PLAY` `X` commands.
 
+# "QBasic as She is Spoke"
+
+Official documentation and sample programs are a good start, but it's way more
+interesting to run the real QBasic programs people wrote.  These can reveal
+surprising quirks or make you think about the language in a different way.
+
+Validation is currently underway on 11,000 or so programs collected from
+archives of BBS's and the early web, mostly unfinished games written by
+teenagers in the '90s.  (Surprisingly, a few programs are from the 2000s and
+even the 2010s.)
+
+## Kissin cousins
+
+QBasic was related to QuickBasic ("QB45"), PDS, and Visual Basic.  It also
+succeeded GW-BASIC and has some legacy support.  You find lots of these files
+mixed together in program collections, so the web shell supports loading
+GW-BASIC binary files (even encrypted ones!) as well as QB45 binary format
+P-code (experimental).  But since QBasic is kind of a cut down QuickBasic, some
+stuff just doesn't work.
+
+## Surprising behavior
+
+- Block `IF` statements can have multiple default `ELSE` clauses.  Ditto
+`CASE ELSE` in `SELECT CASE`.
+- `PRINT USING` isn't a real statement.  `USING` is a particle that can appear
+once, anywhere in the `PRINT` argument list.
+- `DRAW`, `PLAY`, and `PRINT USING` have a ton of nuanced finicky specific
+undocumented parsing behavior.
+- `COMMON` was supposed to be for multi-module programs, but is mostly used just
+for `COMMON SHARED` as a kind of missing global declaration statement.
+
+## Missing batteries
+
+Lots of early home computer BASICs were tiny and spartan, and you couldn't do
+anything interesting without escaping the language by `PEEK`ing and `POKE`ing
+and `USR`ing.  QBasic was not that - it was a big 16-bit language with hundreds
+of features, a "batteries included" environment for novices to get stuff done.
+But as personal computing rocketed into the 1990's, QBasic was left behind
+missing more and more batteries.
+
+Case in point: almost every mid 90's PC had a mouse, but QBasic has no mouse
+API.  It does have passable joystick and light pen support, but nothing for
+mice.  (I really have no idea why Microsoft language designers bet on light pens
+over mice...)
+
+So even simple programs have to break through and use low-level memory and I/O
+commands to access drivers and hardware directly.  This was mostly done by
+copying and pasting snippets of magic code.  In practice to run interesting
+programs, we have to support some amount of `CALL ABSOLUTE`, `PEEK`/`POKE` and
+`INP`/`OUT` as substitutes for missing batteries.
+
+This project is about language ergonomics and not PC emulation, so we'll take a
+kind of permaculture approach here and model as little as necessary.
+
+## QB45 and code re-use
+
+As piracy became more rampant and QBasic became more obsolete, more people got a
+hold of the pro tools like QB45.  This opened up support for `$INCLUDE`
+directives and linkable code libraries.  A couple popular framework libraries
+started circulating like `DIRECTQB` to solve the missing batteries problem.
+
+Is there enough software out there that it's worth supporting some kind of FFI
+to model these, or is that not super interesting?
+
 # References
 
 - [QBasic help file](https://scruss.com/qbasic_hlp/T0002.html)
-- [QuickBasic help file](https://hwiegman.home.xs4all.nl/qb45-man/index.html)
+- [Microsoft QuickBASIC: Language Reference](https://www.pcjs.org/documents/books/mspl13/basic/qblang/)
+- [Microsoft QuickBASIC: Programming in BASIC](https://www.pcjs.org/documents/books/mspl13/basic/qbprog/)
 - [Example programs](https://github.com/InsaneJetman/classic-qbasic)
 - Tested against MS-DOS QBasic 1.1
+- Tested lots of random programs from the early web
