@@ -319,8 +319,9 @@ class MouseHandler implements InterruptHandler {
   call(cpu: Basic86) {
     switch (cpu.ax) {
       case 0:
-        cpu.ax = 0xffff;  // Yes, there is a mouse.
-        cpu.bx = 2;       // Assume it has two buttons.
+        // It is probably a safe assumption that the user has a mouse, with at least two buttons...
+        cpu.ax = 0xffff;
+        cpu.bx = 2;
         break;
       case 1:
         this.mouse.showCursor();
@@ -335,6 +336,10 @@ class MouseHandler implements InterruptHandler {
         cpu.dx = y & 0xffff;
         break;
       }
+      case 4:
+        // Ignore "move pointer", which is most often just used for initialization.
+        // Thankfully, there is no sane way to do this on the modern web.
+        break;
       case 5: {
         const {buttonMask} = this.mouse.getState();
         const {lastDownX, lastDownY, stickyDownCount} = this.mouse.getButtonState(cpu.bx, /* down= */ true);
