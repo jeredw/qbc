@@ -439,13 +439,46 @@ succeeded GW-BASIC and has some legacy support.  You find lots of these files
 mixed together in program collections, so the web shell supports loading
 GW-BASIC binary files (even encrypted ones!) as well as QB45 binary format
 P-code (experimental).  But since QBasic is kind of a cut down QuickBasic, some
-stuff just doesn't work.
+programs need minor modification, and some stuff just doesn't work.
 
 ## Surprising behavior
 
-- Lines can have a line number _and_ a textual label.
-- Block `IF` statements can have multiple default `ELSE` clauses.  Ditto
+### Labels
+
+Lines can have a line number _and_ a textual label.
+
+```basic
+10 foo: PRINT "hello world"
+20 GOTO foo
+```
+
+Line numbers can be decimals.
+
+```basic
+1   PRINT "hello world"
+1.5 END : REM just kidding
+2   GOTO 1
+```
+
+### Control flow
+
+Block `IF` statements can have multiple default `ELSE` clauses.  Ditto
 `CASE ELSE` in `SELECT CASE`.
+
+```basic
+IF condition THEN
+  PRINT "yep"
+ELSE IF another.condition THEN
+  PRINT "uh huh"
+ELSE
+  PRINT "welp"
+ELSE
+  PRINT "wait what"
+END IF
+```
+
+### Misc
+
 - `PRINT USING` isn't a real statement.  `USING` is a particle that can appear
 once, anywhere in the `PRINT` argument list.
 - `DRAW`, `PLAY`, and `PRINT USING` have a ton of nuanced finicky specific
@@ -456,16 +489,16 @@ for `COMMON SHARED` as a kind of missing global declaration statement.
 ## Missing batteries
 
 Lots of early home computer BASICs were tiny and spartan, and you couldn't do
-anything interesting without escaping the language by `PEEK`ing and `POKE`ing
-and `USR`ing.  QBasic was not that - it was a big 16-bit language with hundreds
-of features, a "batteries included" environment for novices to get stuff done.
-But as personal computing rocketed into the 1990's, QBasic was left behind
-missing more and more batteries.
+anything interesting without escaping the language by `PEEK`ing and `POKE`ing.
+QBasic was not that - it was a big 16-bit language with hundreds of features, a
+"batteries included" environment for novices to get stuff done.  But as personal
+computing rocketed into the 1990's, QBasic was left behind missing more and more
+batteries.
 
 Case in point: almost every mid 90's PC had a mouse, but QBasic has no mouse
 API.  It does have passable joystick and light pen support, but nothing for
-mice.  (I really have no idea why Microsoft language designers bet on light pens
-over mice...)
+mice.  I really have no idea why Microsoft language designers bet on light pens
+over mice...
 
 So even simple programs have to break through and use low-level memory and I/O
 commands to access drivers and hardware directly.  This was mostly done by
