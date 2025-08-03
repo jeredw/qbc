@@ -443,6 +443,7 @@ stuff just doesn't work.
 
 ## Surprising behavior
 
+- Lines can have a line number _and_ a textual label.
 - Block `IF` statements can have multiple default `ELSE` clauses.  Ditto
 `CASE ELSE` in `SELECT CASE`.
 - `PRINT USING` isn't a real statement.  `USING` is a particle that can appear
