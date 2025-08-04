@@ -586,6 +586,20 @@ class Qb45Loader {
       case 0x020:
         this.skipU16();
         return T('TYPE {id}');
+      case 0x021: {
+        const length = this.u16();
+        const start = this.offset;
+        const comment = this.string(length);
+        this.offset = start + roundUp(length);
+        return {pcode, text: [...S('$STATIC'), ...comment]};
+      }
+      case 0x022: {
+        const length = this.u16();
+        const start = this.offset;
+        const comment = this.string(length);
+        this.offset = start + roundUp(length);
+        return {pcode, text: [...S('$DYNAMIC'), ...comment]};
+      }
       case 0x023:
         return T('CONST');
       case 0x024:
