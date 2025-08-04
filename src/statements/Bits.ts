@@ -14,6 +14,7 @@ import { Token } from "antlr4ng";
 import { readArrayToBytes, writeBytesToArray } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
 import { BlitOperation } from "../Drawing.ts";
+import { SBMIDI_BYTES, SBMIDI_SEGMENT, SBSIM_BYTES, SBSIM_SEGMENT } from "../MidiDrivers.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -836,9 +837,22 @@ export class PeekStatement extends Statement {
       const [_, data] = readBytesAtPointer(context.memory);
       context.memory.write(this.result, integer(data[address] ?? 0));
     } catch (e: unknown) {
-      const segment = context.memory.getSegment();
+      const segment = context.memory.getSegment() & 0xffff;
       let data = 0;
-      if ((segment & 0xffff) === 0xa000) {
+      if (segment === SBMIDI_SEGMENT) {
+        // Map some fake data used to detect MIDI drivers.
+        data = (
+          address >= 271 ?
+          stringToAscii("SBMIDI")[address - 271] :
+          SBMIDI_BYTES[address]
+        ) ?? 0;
+      } else if (segment === SBSIM_SEGMENT) {
+        data = (
+          address >= 274 ?
+          stringToAscii("SBSIM")[address - 274] :
+          SBSIM_BYTES[address]
+        ) ?? 0;
+      } else if (segment === 0xa000) {
         const mode = context.devices.screen.getMode();
         if (mode.mode !== 13) {
           throw new Error('Only support PEEKing video memory in mode 13');

@@ -1,6 +1,7 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { asciiToString } from "../AsciiChart.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
+import { SBMIDI_SEGMENT, SBSIM_SEGMENT } from "../MidiDrivers.ts";
 import { Mouse } from "../Mouse.ts";
 import { getDefaultValue, integer, isNumeric } from "../Values.ts";
 import { Variable } from "../Variables.ts";
@@ -442,12 +443,24 @@ class DosHandler implements InterruptHandler {
 
   call(cpu: Basic86) {
     const ah = cpu.ax >> 8;
+    const al = cpu.ax & 0xff;
     switch (ah) {
       case 0x35:
-        // Get interrupt vector.  Used to detect SBMIDI / SBSIM, but usually
-        // fallback code ignores this anyway.
-        cpu.es = 0;
-        cpu.bx = 0;
+        // Get interrupt vector.  Used to detect SBMIDI / SBSIM.
+        switch (al) {
+          case 0x80:
+            cpu.es = SBMIDI_SEGMENT;
+            cpu.bx = 0;
+            break;
+          case 0x81:
+            cpu.es = SBSIM_SEGMENT;
+            cpu.bx = 0;
+            break;
+          default:
+            cpu.es = 0;
+            cpu.bx = 0;
+            break;
+        }
         break;
       case 0x3d:
         // Open file.  Assume this is going to precede a file read and just
