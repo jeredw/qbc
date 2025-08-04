@@ -45,6 +45,7 @@ export interface ProgramChunk {
 }
 
 export function compile(tree: ParseTree): Program {
+  SymbolTable._symbolIndex = 0x0100;
   const builtins = new StandardLibrary();
   const typer = new Typer(builtins);
   ParseTreeWalker.DEFAULT.walk(typer, tree);

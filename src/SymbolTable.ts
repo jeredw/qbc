@@ -139,7 +139,7 @@ export class SymbolTable {
   private _staticIndex: number;
   private _record: Variable;
   private _elementOffset: number;
-  private static _symbolIndex = 0x0100;
+  static _symbolIndex = 0x0100;
   
   constructor({builtins, parent, name} : {builtins: StandardLibrary, parent?: SymbolTable, name?: string}) {
     this._builtins = builtins;

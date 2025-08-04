@@ -1,12 +1,13 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
+import { asciiToString } from "../AsciiChart.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Mouse } from "../Mouse.ts";
-import { TypeTag } from "../Types.ts";
 import { getDefaultValue, integer, isNumeric } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { readBytesFromArray } from "./Arrays.ts";
-import { readVariableToBytes, wrap16Bit } from "./Bits.ts";
+import { readVariableToBytes, wrap16Bit, writeBytesToVariable } from "./Bits.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
+import { readEntireFile } from "./FileSystem.ts";
 import { Statement } from "./Statement.ts";
 
 export interface CallAbsoluteParameter {
@@ -62,6 +63,7 @@ export class CallAbsoluteStatement extends Statement {
     // Push return address for far call.  This sentinel value will stop the CPU stepping.
     cpu.pushWord(0xffff);
     cpu.pushWord(0xffff);
+    cpu.setInterruptHandler(0x21, new DosHandler(context));
     cpu.setInterruptHandler(0x33, new MouseHandler(context.devices.mouse));
     cpu.run({endCodeSegment: 0xffff, stepLimit: code.byteLength});
     // Store output parameter values.
@@ -184,6 +186,17 @@ class Basic86 {
       case 0x5f:
         this.di = this.popWord();
         break;
+      case 0x8a: {
+        const arg = this.readByte(this.cs, this.ip++);
+        switch (arg) {
+          case 0x07:
+            this.ax = (this.ax & 0xff00) | this.readByte(this.ds, this.bx);
+            break;
+          default:
+            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
+        }
+        break;
+      }
       case 0x89: {
         const arg = this.readByte(this.cs, this.ip++);
         switch (arg) {
@@ -196,8 +209,17 @@ class Basic86 {
           case 0x17:
             this.writeWord(this.ds, this.bx, this.dx);
             break;
+          case 0xda:
+            this.dx = this.bx;
+            break;
+          case 0xc6:
+            this.si = this.ax;
+            break;
           case 0xe5:
             this.bp = this.sp;
+            break;
+          case 0xf3:
+            this.bx = this.si;
             break;
           default:
             throw new Error(`Unrecognized argument ${ir}: ${arg}`);
@@ -217,12 +239,37 @@ class Basic86 {
             this.dx = this.readWord(this.ds, this.bx);
             break;
           case 0x5e: {
-            const offset = this.readByte(this.cs, this.ip++);
+            const offset = this.readSignedByte(this.cs, this.ip++);
             this.bx = this.readWord(this.ss, this.bp + offset);
             break;
           }
           case 0xec:
             this.bp = this.sp;
+            break;
+          default:
+            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
+        }
+        break;
+      }
+      case 0x8c: {
+        const arg = this.readByte(this.cs, this.ip++);
+        switch (arg) {
+          case 0xc1:
+            this.cx = this.es;
+            break;
+          default:
+            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
+        }
+        break;
+      }
+      case 0x8e: {
+        const arg = this.readByte(this.cs, this.ip++);
+        switch (arg) {
+          case 0x1f:
+            this.ds = this.readWord(this.ds, this.bx);
+            break;
+          case 0xdb:
+            this.ds = this.bx;
             break;
           default:
             throw new Error(`Unrecognized argument ${ir}: ${arg}`);
@@ -238,10 +285,21 @@ class Basic86 {
       case 0x93:
         [this.cx, this.bx] = [this.ax, this.bx];
         break;
+      case 0xb4: {
+        const imm8 = this.readByte(this.cs, this.ip++);
+        this.ax = (imm8 << 8) | (this.ax & 0x00ff);
+        break;
+      }
       case 0xb8: {
         const imm16 = this.readWord(this.cs, this.ip);
         this.ip += 2;
         this.ax = imm16;
+        break;
+      }
+      case 0xbb: {
+        const imm16 = this.readWord(this.cs, this.ip);
+        this.ip += 2;
+        this.bx = imm16;
         break;
       }
       case 0xca: {
@@ -251,6 +309,10 @@ class Basic86 {
         this.sp += discard;
         break;
       }
+      case 0xcb:
+        this.ip = this.popWord();
+        this.cs = this.popWord();
+        break;
       case 0xcd: {
         const arg = this.readByte(this.cs, this.ip++);
         const handler = this.interruptHandlers.get(arg);
@@ -289,6 +351,11 @@ class Basic86 {
   writeWord(segment: number, offset: number, value: number) {
     this.writeByte(segment, offset, value & 0xff);
     this.writeByte(segment, offset + 1, (value >> 8) & 0xff);
+  }
+
+  readSignedByte(segment: number, offset: number): number {
+    const data = this.readByte(segment, offset);
+    return data < 128 ? data : data - 256;
   }
 
   readByte(segment: number, offset: number): number {
@@ -364,6 +431,45 @@ class MouseHandler implements InterruptHandler {
         break;
       default:
         throw new Error(`Unsupported mouse function ${cpu.ax}`);
+    }
+  }
+}
+
+class DosHandler implements InterruptHandler {
+  constructor(private context: ExecutionContext) {
+  }
+
+  call(cpu: Basic86) {
+    const ah = cpu.ax >> 8;
+    switch (ah) {
+      case 0x35:
+        // Get interrupt vector.  Used to detect SBMIDI / SBSIM, but usually
+        // fallback code ignores this anyway.
+        cpu.es = 0;
+        cpu.bx = 0;
+        break;
+      case 0x3d:
+        // Open file.  Assume this is going to precede a file read and just
+        // return a handle with the path string's segment from ds.
+        cpu.ax = cpu.ds;
+        break;
+      case 0x3e:
+        // Close file.  Ignored.
+        break;
+      case 0x3f: {
+        // Read from file.  Assume that the "handle" in bx is a pointer to a
+        // null-terminated path name, and that we want to write to the beginning
+        // of the output variable in ds.
+        const {variable: nameVariable} = this.context.memory.readPointer(cpu.bx);
+        const {variable: dataVariable} = this.context.memory.readPointer(cpu.ds);
+        const nameBuffer = readVariableToBytes(nameVariable, this.context.memory);
+        const name = asciiToString(Array.from(new Uint8Array(nameBuffer.slice(0, nameBuffer.byteLength - 1))));
+        const data = readEntireFile(this.context, name);
+        writeBytesToVariable(dataVariable, new Uint8Array(data).buffer, this.context.memory);
+        break;
+      }
+      default:
+        throw new Error(`Unsupported DOS call ${ah}`);
     }
   }
 }
