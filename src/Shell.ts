@@ -241,10 +241,21 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     }
     const path = (name: string): string => '.\\' + name.toUpperCase().replace(/\//g, '\\').replace(/\\$/, '');
     // Some zip files don't have explicit directory objects, so instead go through
-    // all the files and try creating any necessary directories first.
+    // all the files and create any necessary directories first.
+    const directories: Set<string> = new Set();
     for (const file of Object.values(zip.files)) {
+      const directory = path(file.name).replace(/\\[^\\]*$/, '');
+      for (let i = 0; i <= directory.length; i++) {
+        if (i === directory.length || directory[i] == '\\') {
+          directories.add(directory.slice(0, i));
+        }
+      }
+    }
+    const sortedDirectories: string[] = Array.from(directories.values());
+    const depth = (dir: string) => dir.replace(/[^\\]/g, '').length;
+    sortedDirectories.sort((a: string, b: string) => depth(a) - depth(b));
+    for (const directory of sortedDirectories) {
       try {
-        const directory = path(file.name).replace(/\\[^\\]*$/, '');
         this.disk.makeDirectory(directory);
       } catch (e: unknown) {
       }
