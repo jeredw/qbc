@@ -486,12 +486,14 @@ class MidiHandler implements InterruptHandler {
     const {speaker} = this.context.devices;
     switch (cpu.bx) {
       case 0x4: {
-        // SBMIDI: Load a midi file... also, stop playing whatever is playing.
+        // SBMIDI: Load a midi file... also used to stop playing whatever is playing.
         speaker.stopMidi();
-        // DX:AX points to the data to load.
-        const {variable} = this.context.memory.readPointer(cpu.dx);
-        const data = readVariableToBytes(variable, this.context.memory);
-        speaker.loadMidi(data);
+        if (cpu.dx !== 0) {
+          // If DX is set, then DX:AX points to the data to load.
+          const {variable} = this.context.memory.readPointer(cpu.dx);
+          const data = readVariableToBytes(variable, this.context.memory);
+          speaker.loadMidi(data);
+        }
         break;
       }
       case 0x5:

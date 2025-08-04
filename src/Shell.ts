@@ -429,6 +429,8 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     if (this.root.classList.contains('blocked')) {
       return;
     }
+    // Don't keep playing beeps and boops while we're stepping...
+    this.speaker.reset();
     this.invocation?.stop();
     this.updateState(RunState.PAUSED);
   }
