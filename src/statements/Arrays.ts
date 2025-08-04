@@ -300,7 +300,7 @@ export function readNumbersFromArray(array: Variable, count: number, memory: Mem
   return result;
 }
 
-export function readBytesFromArray(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
+export function readArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   const numItems = getArrayLength(descriptor) - start;

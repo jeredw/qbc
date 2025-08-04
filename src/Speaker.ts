@@ -1,3 +1,5 @@
+import type {PlayerElement} from "./midi-player.d.ts";
+
 export interface Speaker {
   beep(): Promise<void>;
   getNoteQueueLength(): number;
@@ -6,6 +8,11 @@ export interface Speaker {
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void>;
 
   playSample(buffer: ArrayBuffer, sampleRate: number): void;
+
+  loadMidi(buffer: ArrayBuffer): void;
+  playMidi({restart, loop}: {restart: boolean, loop?: boolean}): void;
+  stopMidi(): void;
+  playingMidi(): boolean;
 
   testFinishNote?(): void;
 }
@@ -64,6 +71,23 @@ export class TestSpeaker implements Speaker {
   playSample(buffer: ArrayBuffer, sampleRate: number) {
     this.output += `SPEAKER> play sample ${buffer.byteLength} ${sampleRate}`;
   }
+
+  loadMidi(buffer: ArrayBuffer) {
+    this.output += `SPEAKER> load midi ${buffer.byteLength}`;
+  }
+
+  playMidi({restart, loop}: {restart: boolean, loop?: boolean}) {
+    this.output += `SPEAKER> play midi restart=${restart} loop=${loop}`;
+  }
+
+  stopMidi() {
+    this.output += `SPEAKER> stop midi`;
+  }
+
+  playingMidi(): boolean {
+    this.output += `SPEAKER> playing midi?`;
+    return false;
+  }
 }
 
 interface Note {
@@ -82,8 +106,10 @@ export class WebAudioSpeaker implements Speaker {
   gainNode: GainNode;
   queue: Note[] = [];
   playState: PlayState;
+  private midiStillLoading = false;
+  private pendingPlayMidi?: () => void;
 
-  constructor() {
+  constructor(private midiPlayer: PlayerElement) {
     this.reset();
   }
 
@@ -107,6 +133,7 @@ export class WebAudioSpeaker implements Speaker {
       // Make horrible beeping stop from last time.
       this.oscillator.stop();
     }
+    this.stopMidi();
     this.audioContext = new AudioContext();
     this.gainNode = this.audioContext.createGain();
     this.gainNode.connect(this.audioContext.destination);
@@ -188,5 +215,46 @@ export class WebAudioSpeaker implements Speaker {
     }
     this.bufferSource.buffer = audioBuffer;
     this.bufferSource.start();
+  }
+
+  loadMidi(buffer: ArrayBuffer) {
+    const blob = new Blob([buffer], { type: 'audio/midi' });
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataURI = e.target?.result;
+      if (dataURI) {
+        this.midiPlayer.src = dataURI as string;
+      }
+    }
+    this.midiStillLoading = true;
+    this.midiPlayer.addEventListener('load', (e) => {
+      this.midiStillLoading = false;
+      this.pendingPlayMidi?.();
+    });
+    reader.readAsDataURL(blob);
+  }
+
+  playMidi({restart, loop}: {restart: boolean, loop?: boolean}) {
+    this.pendingPlayMidi = undefined;
+    if (this.midiStillLoading) {
+      this.pendingPlayMidi = () => {
+        this.playMidi({restart: false, loop});
+      };
+      return;
+    }
+    if (restart) {
+      this.midiPlayer.reload();
+    }
+    this.midiPlayer.loop = !!loop;
+    this.midiPlayer.start();
+  }
+
+  stopMidi() {
+    this.pendingPlayMidi = undefined;
+    this.midiPlayer.stop();
+  }
+
+  playingMidi(): boolean {
+    return this.midiPlayer.playing;
   }
 }

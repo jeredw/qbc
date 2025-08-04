@@ -11,7 +11,7 @@ import { DiskEntry } from "../Disk.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
-import { readVariableToBytes, writeBytesToVariable } from "./Bits.ts";
+import { readScalarVariableToBytes, writeBytesToScalarVariable } from "./Bits.ts";
 import { TypeTag } from "../Types.ts";
 
 export interface OpenArgs {
@@ -555,7 +555,7 @@ export class GetIoStatement extends GetPutStatement {
       if (size > record.length) {
         throw RuntimeError.fromToken(this.token, BAD_RECORD_LENGTH);
       }
-      writeBytesToVariable(this.variable, new Uint8Array(record).buffer, context.memory);
+      writeBytesToScalarVariable(this.variable, new Uint8Array(record).buffer, context.memory);
       return;
     }
     copyRecordBufferToStringFields(handle.fields);
@@ -565,7 +565,7 @@ export class GetIoStatement extends GetPutStatement {
     const position = this.getRecordNumber(context);
     const size = getScalarVariableSizeInBytes(this.variable!, context.memory);
     const bytes = accessor.getBytes(size, position);
-    writeBytesToVariable(this.variable!, new Uint8Array(bytes).buffer, context.memory);
+    writeBytesToScalarVariable(this.variable!, new Uint8Array(bytes).buffer, context.memory);
   }
 }
 
@@ -585,7 +585,7 @@ export class PutIoStatement extends GetPutStatement {
       if (handle.fields.length > 0) {
         throw RuntimeError.fromToken(this.token, FIELD_STATEMENT_ACTIVE);
       }
-      const buffer = readVariableToBytes(this.variable, context.memory, /* stringsHaveLengthPrefixed */ true);
+      const buffer = readScalarVariableToBytes(this.variable, context.memory, /* stringsHaveLengthPrefixed */ true);
       const bytes = new Uint8Array(buffer);
       const record = accessor.getRecordBuffer();
       if (bytes.length > record.length) {
@@ -600,7 +600,7 @@ export class PutIoStatement extends GetPutStatement {
 
   binaryAccess(accessor: FileAccessor, context: ExecutionContext) {
     const position = this.getRecordNumber(context);
-    const bytes = new Uint8Array(readVariableToBytes(this.variable!, context.memory));
+    const bytes = new Uint8Array(readScalarVariableToBytes(this.variable!, context.memory));
     accessor.putBytes(Array.from(bytes), position);
   }
 }

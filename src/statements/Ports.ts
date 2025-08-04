@@ -1,14 +1,13 @@
 import { Token } from "antlr4ng";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { RuntimeError, OVERFLOW, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
+import { RuntimeError, OVERFLOW } from "../Errors.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
 import { integer, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { readBytesFromArray } from "./Arrays.ts";
 import { readVariableToBytes } from "./Bits.ts";
 
 export class InpFunction extends BuiltinFunction1 {
@@ -69,9 +68,7 @@ export class OutStatement extends Statement {
       if (addressRequest !== undefined) {
         const segment = addressRequest >> 4;
         const {variable} = context.memory.readPointer(segment);
-        const bytes = variable.array ?
-          readBytesFromArray(variable, context.memory) :
-          readVariableToBytes(variable, context.memory);
+        const bytes = readVariableToBytes(variable, context.memory);
         blaster.sendData(bytes);
       }
       return;

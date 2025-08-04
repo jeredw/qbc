@@ -9,9 +9,9 @@ import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
-import { Memory } from "../Memory.ts";
+import { Memory, StorageType } from "../Memory.ts";
 import { Token } from "antlr4ng";
-import { readBytesFromArray, writeBytesToArray } from "./Arrays.ts";
+import { readArrayToBytes, writeBytesToArray } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
 import { BlitOperation } from "../Drawing.ts";
 
@@ -353,18 +353,7 @@ export class VarSegFunction extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const [address, _] = context.memory.dereference(this.variable);
-    // To address array data, QBasic programs have to say e.g. VARSEG(A(1)),
-    // because VARSEG(A()) doesn't parse and VARSEG(A) refers to the scalar A.
-    // We compile VARSEG(A(1)) as _tmp = reference A(1): VARSEG(_tmp).  The _tmp
-    // reference will store the address of A(1), but discards information about
-    // the array.  BSAVE and BLOAD need to look up the descriptor to know how
-    // big items in A are, so variableSymbol is the actual symbol A().
-    const index = this.variableSymbol.symbolIndex;
-    if (index === undefined) {
-      throw new Error('No symbol index to use as VARSEG pointer')
-    }
-    context.memory.writePointer(index, address, this.variableSymbol);
+    const index = storePointer(this.variable, this.variableSymbol, context.memory);
     context.memory.write(this.result, integer(index));
   }
 }
@@ -380,15 +369,37 @@ export class VarPtrStringFunction extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const [address, _] = context.memory.dereference(this.variable);
-    const index = this.variable.symbolIndex;
-    if (index === undefined) {
-      throw new Error('No symbol index to use as VARPTR$ pointer')
-    }
-    context.memory.writePointer(index, address, this.variableSymbol);
+    const index = storePointer(this.variable, this.variableSymbol, context.memory);
     const pointerBytes = [index & 0xff, (index >> 8) & 0xff, 0, 0];
     context.memory.write(this.result, string(asciiToString(pointerBytes)));
   }
+}
+
+function storePointer(variable: Variable, variableSymbol: Variable, memory: Memory): number {
+  const [address, _] = memory.dereference(variable);
+  // To address array data, QBasic programs have to say e.g. VARSEG(A(1)),
+  // because VARSEG(A()) doesn't parse and VARSEG(A) refers to the scalar A.
+  // We compile VARSEG(A(1)) as _tmp = reference A(1): VARSEG(_tmp).  The _tmp
+  // reference will store the address of A(1), but discards information about
+  // the array.  BSAVE and BLOAD need to look up the descriptor to know how
+  // big items in A are, so variableSymbol is the actual symbol A().
+  const index = variableSymbol.symbolIndex;
+  if (index === undefined) {
+    throw new Error('No symbol index to use as pointer')
+  }
+  // If a procedure defines a dynamic array and then passes a pointer to it,
+  // the descriptor will be on its stack frame not the callee's, so we need to
+  // store a qualified address in the pointer table.
+  const frameIndex = memory.getStackFrameIndex();
+  let storedVariable = {...variableSymbol};
+  if (variableSymbol.array &&
+      variableSymbol.array.dynamic &&
+      variableSymbol.address?.storageType === StorageType.AUTOMATIC &&
+      frameIndex >= 0) {
+    storedVariable.address = {...variableSymbol.address, frameIndex};
+  }
+  memory.writePointer(index, address, storedVariable);
+  return index;
 }
 
 export class VarPtrFunction extends Statement {
@@ -530,18 +541,18 @@ export class LsetRecordStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const sourceBuffer = readVariableToBytes(this.source, context.memory);
-    const destBuffer = readVariableToBytes(this.dest, context.memory);
+    const sourceBuffer = readScalarVariableToBytes(this.source, context.memory);
+    const destBuffer = readScalarVariableToBytes(this.dest, context.memory);
     const source = new Uint8Array(sourceBuffer);
     const dest = new Uint8Array(destBuffer);
     for (let i = 0; i < Math.min(source.length, dest.length); i++) {
       dest[i] = source[i];
     }
-    writeBytesToVariable(this.dest, destBuffer, context.memory);
+    writeBytesToScalarVariable(this.dest, destBuffer, context.memory);
   }
 }
 
-export function writeBytesToVariable(variable: Variable, buffer: ArrayBuffer, memory: Memory, stringsHaveLengthPrefixed?: boolean) {
+export function writeBytesToScalarVariable(variable: Variable, buffer: ArrayBuffer, memory: Memory, stringsHaveLengthPrefixed?: boolean) {
   const data = new DataView(buffer);
   writeBytesToElement(variable, data, 0, memory, stringsHaveLengthPrefixed);
 }
@@ -612,7 +623,13 @@ function readStringFromBuffer(data: DataView, offset: number, maxLength: number)
   return asciiToString(codes);
 }
 
-export function readVariableToBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): ArrayBuffer {
+export function readVariableToBytes(variable: Variable, memory: Memory): ArrayBuffer {
+  return variable.array ?
+    readArrayToBytes(variable, memory) :
+    readScalarVariableToBytes(variable, memory);
+}
+
+export function readScalarVariableToBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): ArrayBuffer {
   const size = getScalarVariableSizeInBytes(variable, memory, stringsHaveLengthPrefixed);
   const buffer = new ArrayBuffer(size);
   const data = new DataView(buffer);
@@ -755,7 +772,7 @@ export class BloadStatement extends Statement {
         return;
       }
       const {variable} = context.memory.readPointer(segment);
-      writeBytesAtPointer(context.memory, variable, newData);
+      writeBytesToVariable(variable, newData, context.memory);
     } catch (e: unknown) {
       if (e instanceof IOError) {
         throw RuntimeError.fromToken(this.token, e.error);
@@ -885,7 +902,7 @@ export class PokeStatement extends Statement {
       const [variable, data] = readBytesAtPointer(context.memory);
       if (address < data.length) {
         data[address] = byte;
-        writeBytesAtPointer(context.memory, variable, data);
+        writeBytesToVariable(variable, data, context.memory);
       }
     } catch (e: unknown) {
     }
@@ -895,17 +912,15 @@ export class PokeStatement extends Statement {
 function readBytesAtPointer(memory: Memory): [Variable, Uint8Array] {
   const segment = memory.getSegment();
   const {variable} = memory.readPointer(segment);
-  const bytes = variable.array ?
-    readBytesFromArray(variable, memory) :
-    readVariableToBytes(variable, memory);
+  const bytes = readVariableToBytes(variable, memory);
   return [variable, new Uint8Array(bytes)];
 }
 
-function writeBytesAtPointer(memory: Memory, variable: Variable, data: Uint8Array) {
+export function writeBytesToVariable(variable: Variable, data: Uint8Array, memory: Memory) {
   if (variable.array) {
     writeBytesToArray(variable, data.buffer, memory);
   } else {
-    writeBytesToVariable(variable, data.buffer, memory);
+    writeBytesToScalarVariable(variable, data.buffer, memory);
   }
 }
 

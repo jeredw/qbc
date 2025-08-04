@@ -4,7 +4,6 @@ import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Mouse } from "../Mouse.ts";
 import { getDefaultValue, integer, isNumeric } from "../Values.ts";
 import { Variable } from "../Variables.ts";
-import { readBytesFromArray } from "./Arrays.ts";
 import { readVariableToBytes, wrap16Bit, writeBytesToVariable } from "./Bits.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { readEntireFile } from "./FileSystem.ts";
@@ -32,13 +31,11 @@ export class CallAbsoluteStatement extends Statement {
     if (!variable) {
       throw new Error("Unknown pointer for CALL ABSOLUTE procedure.");
     }
-    const bytes = variable.array ?
-      readBytesFromArray(variable, context.memory) :
-      readVariableToBytes(variable, context.memory);
+    const bytes = readVariableToBytes(variable, context.memory);
     const cpu = new Basic86();
     // Install program.
     cpu.cs = 0x0100; cpu.ip = 0x0000;
-    const code = new Uint8Array(bytes);
+    const code = patch(new Uint8Array(bytes));
     for (let i = 0; i < code.byteLength; i++) {
       cpu.writeByte(cpu.cs, cpu.ip + i, code[i]);
     }
@@ -65,6 +62,8 @@ export class CallAbsoluteStatement extends Statement {
     cpu.pushWord(0xffff);
     cpu.setInterruptHandler(0x21, new DosHandler(context));
     cpu.setInterruptHandler(0x33, new MouseHandler(context.devices.mouse));
+    cpu.setInterruptHandler(0x80, new MidiHandler(context));
+    cpu.setInterruptHandler(0x81, new MidiHandler(context));
     cpu.run({endCodeSegment: 0xffff, stepLimit: code.byteLength});
     // Store output parameter values.
     for (let i = 0; i < this.params.length; i++) {
@@ -379,6 +378,7 @@ function linearAddress(segment: number, offset: number): number {
   return (segment << 4) | offset;
 }
 
+// Simulates an int 33h mouse driver.
 class MouseHandler implements InterruptHandler {
   constructor(private mouse: Mouse) {
   }
@@ -435,6 +435,7 @@ class MouseHandler implements InterruptHandler {
   }
 }
 
+// Really hacky int 21h DOS services to assist with loading midi files.
 class DosHandler implements InterruptHandler {
   constructor(private context: ExecutionContext) {
   }
@@ -465,11 +466,137 @@ class DosHandler implements InterruptHandler {
         const nameBuffer = readVariableToBytes(nameVariable, this.context.memory);
         const name = asciiToString(Array.from(new Uint8Array(nameBuffer.slice(0, nameBuffer.byteLength - 1))));
         const data = readEntireFile(this.context, name);
-        writeBytesToVariable(dataVariable, new Uint8Array(data).buffer, this.context.memory);
+        writeBytesToVariable(dataVariable, new Uint8Array(data), this.context.memory);
         break;
       }
       default:
         throw new Error(`Unsupported DOS call ${ah}`);
     }
   }
+}
+
+// Simulates the SBMIDI and SBSIM 80h and 81h driver APIs.
+// It is hard to find official documentation about these APIs, so this is
+// modeled on what QMIDI.BAS seems to expect.
+class MidiHandler implements InterruptHandler {
+  constructor(private context: ExecutionContext) {
+  }
+
+  call(cpu: Basic86) {
+    const {speaker} = this.context.devices;
+    switch (cpu.bx) {
+      case 0x4: {
+        // SBMIDI: Load a midi file... also, stop playing whatever is playing.
+        speaker.stopMidi();
+        // DX:AX points to the data to load.
+        const {variable} = this.context.memory.readPointer(cpu.dx);
+        const data = readVariableToBytes(variable, this.context.memory);
+        speaker.loadMidi(data);
+        break;
+      }
+      case 0x5:
+        // SBMIDI: Play midi
+        speaker.playMidi({restart: true});
+        break;
+      case 0x8:
+        // SBMIDI: Resume playing
+        speaker.playMidi({restart: false});
+        break;
+      case 0x11:
+        // SBMIDI: Check play state
+        cpu.ax = speaker.playingMidi() ? 1 : 0;
+        break;
+      case 0x503:
+        // SBSIM: Pause midi without reloading the file
+        speaker.stopMidi();
+        break;
+      case 0x504:
+        // SBSIM: Resume midi playback
+        speaker.playMidi({restart: false});
+        break;
+      default:
+        throw new Error(`Unsupported SBMIDI call ${cpu.bx}`);
+    }
+  }
+}
+
+interface Patch {
+  program: number[];
+  rewrite: number[];
+}
+
+// Hacky fixes for commonly used snippets of machine language.
+const PATCHES: Patch[] = [
+  // This widely copied QMIDI.BAS < 4.0 "load midi" subroutine uses a clobbered
+  // DS after an int 21h call to open a file. This is probably? usually? safe
+  // for qbasic, but breaks our DS assignment.
+  {
+    program: [
+      0x1e,              // PUSH DS
+      0x55,              // PUSH BP
+      0x89, 0xe5,        // MOV  BP, SP
+      0xb8, 0x0, 0x3d,   // MOV  AX, 3d00     ; AH=3d open file
+      0x8b, 0x5e, 0xe,   // MOV  BX, [BP+e]
+      0x8b, 0x17,        // MOV  DX, [BX]     ; DX=path$ offset
+      0x8b, 0x5e, 0x10,  // MOV  BX, [BP+10]
+      0x8e, 0x1f,        // MOV  DS, [BX]     ; DS=path$ segment <-- Reassigns DS.
+      0xcd, 0x21,        // INT  21           ; Call dos
+      0x89, 0xc6,        // MOV  SI, AX       ; Save file handle
+      0xb4, 0x3f,        // MOV  AH, 3F       ; AH=3f read file
+      0x8b, 0x5e, 0x8,   // MOV  BX, [BP+8]
+      0x8b, 0xf,         // MOV  CX, [BX]     ; CX=length        <-- Assumes original DS.
+      0x8b, 0x5e, 0xa,   // MOV  BX, [BP+a]
+      0x8b, 0x17,        // MOV  DX, BX       ; DX=read buffer offset
+      0x8b, 0x5e, 0xc,   // MOV  BX, [BP+c]
+      0x8e, 0x1f,        // MOV  DS, [BX]     ; DS=read buffer segment
+      0x89, 0xf3,        // MOV  BX, SI       ; BX=handle
+      0xcd, 0x21,        // INT  21           ; Call dos
+      0xb4, 0x3e,        // MOV  AH, 3e       ; AH=3e close file
+      0xcd, 0x21,        // INT  21           ; Call dos
+      0x5d,              // POP  BP
+      0x1f,              // POP  DS
+      0xca, 0xa, 0x0,    // RETF a
+    ],
+    rewrite: [
+      0x1e,              // PUSH DS
+      0x55,              // PUSH BP
+      0x89, 0xe5,        // MOV  BP, SP
+      0xb8, 0x0, 0x3d,   // MOV  AX, 3d00     ; AH=3d open file
+      0x8b, 0x5e, 0xe,   // MOV  BX, [BP+e]
+      0x8b, 0x17,        // MOV  DX, [BX]     ; DX=path$ offset
+      0x8b, 0x5e, 0x10,  // MOV  BX, [BP+10]
+      0x8e, 0x1f,        // MOV  DS, [BX]     ; DS=path$ segment
+      0xcd, 0x21,        // INT  21           ; Call dos
+      // Begin patch
+      0x8b, 0x5e, 0x2,   // MOV  BX, [BP+2]   ; Get saved DS from stack
+      0x8e, 0xdb,        // MOV  DS, BX       ; Restore saved DS
+      // End patch
+      0x89, 0xc6,        // MOV  SI, AX       ; Save file handle
+      0xb4, 0x3f,        // MOV  AH, 3F       ; AH=3f read file
+      0x8b, 0x5e, 0x8,   // MOV  BX, [BP+8]
+      0x8b, 0xf,         // MOV  CX, [BX]     ; CX=length
+      0x8b, 0x5e, 0xa,   // MOV  BX, [BP+a]
+      0x8b, 0x17,        // MOV  DX, BX       ; DX=read buffer offset
+      0x8b, 0x5e, 0xc,   // MOV  BX, [BP+c]
+      0x8e, 0x1f,        // MOV  DS, [BX]     ; DS=read buffer segment
+      0x89, 0xf3,        // MOV  BX, SI       ; BX=handle
+      0xcd, 0x21,        // INT  21           ; Call dos
+      0xb4, 0x3e,        // MOV  AH, 3e       ; AH=3e close file
+      0xcd, 0x21,        // INT  21           ; Call dos
+      0x5d,              // POP  BP
+      0x1f,              // POP  DS
+      0xca, 0xa, 0x0,    // RETF a
+    ],
+  },
+];
+
+function patch(code: Uint8Array): Uint8Array {
+  for (const {program, rewrite} of PATCHES) {
+    if (code.byteLength === program.length) {
+      if (program.every((value, i) => value === code[i])) {
+        return new Uint8Array(rewrite);
+      }
+    }
+  }
+  return code;
 }

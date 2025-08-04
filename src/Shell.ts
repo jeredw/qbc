@@ -21,6 +21,7 @@ import { decodeQb45BinaryFile } from "./Qb45Format.ts";
 import JSZip from "jszip";
 import { MouseListener, MouseSurface } from "./Mouse.ts";
 import { SoundBlaster } from "./SoundBlaster.ts";
+import type {PlayerElement} from "./midi-player.d.ts";
 
 enum RunState {
   ENDED,
@@ -48,6 +49,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private importButton: HTMLElement;
   private importInput: HTMLInputElement;
   private filePicker: HTMLElement;
+  private midiPlayer: PlayerElement;
 
   private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;
@@ -64,7 +66,8 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   constructor(root: HTMLElement) {
     this.root = root;
     this.screen = new CanvasScreen();
-    this.speaker = new WebAudioSpeaker();
+    const midiPlayer = assertHTMLElement(document.querySelector('.midi-player')) as PlayerElement;
+    this.speaker = new WebAudioSpeaker(midiPlayer);
     this.printer = new LinePrinter(80);
     this.disk = new MemoryDrive("C", this);
     this.keyboard = new KeyboardListener();

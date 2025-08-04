@@ -6,7 +6,7 @@ import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressi
 import { double, integer, isNumeric, isString } from "../Values.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, OUT_OF_STACK_SPACE } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
-import { readBytesFromArray, readNumbersFromArray, writeBytesToArray } from "./Arrays.ts";
+import { readArrayToBytes, readNumbersFromArray, writeBytesToArray } from "./Arrays.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
@@ -702,7 +702,7 @@ export class PutGraphicsStatement extends Statement {
       const step = this.args.step;
       const x1 = evaluateIntegerExpression(this.args.x1, context.memory, { tag: TypeTag.SINGLE });
       const y1 = evaluateIntegerExpression(this.args.y1, context.memory, { tag: TypeTag.SINGLE });
-      const buffer = readBytesFromArray(this.args.array, context.memory);
+      const buffer = readArrayToBytes(this.args.array, context.memory);
       const operation = (
         this.args.preset ? BlitOperation.PRESET :
         this.args.pset ? BlitOperation.PSET :
