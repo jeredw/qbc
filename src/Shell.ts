@@ -362,7 +362,9 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   }
 
   runProgram(fileName: string) {
-    const program = fileName.toLowerCase().endsWith('.bas') ? fileName : `${fileName}.bas`;
+    const program = (
+      fileName.includes('.') || fileName.toLowerCase().endsWith('.bas') ? fileName : `${fileName}.bas`
+    );
     this.load(program);
     setTimeout(() => {
       this.run(true);

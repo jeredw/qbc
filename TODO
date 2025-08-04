@@ -64,13 +64,14 @@ Bringup
 + FRACTAL: Menu options get overwritten with blank spaces
 + PENGUIN: Paint overflows.
 + SLUSSEN FIGHTERS: paint overflows
++ ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
 - ABSORB: PEEKing to copy arrays in a loop serializes whole array repeatedly
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AMBUSH, AMBUSH2: multifile
 - ANCIENTHEROS: byval
 - ANTS: chain
 - ARCRPG: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
-- ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
+- ART334: Just including qb.bi, seems simple to support
 - BOMB5: You can have both a line number and a label...
 - BOMBCOO: Uses VARSEG$/VARPTR with array index
 - DBZGAME: IDE knows how to fix missing "s at end of line
