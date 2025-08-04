@@ -1,0 +1,16 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "hello")))) \n 
+  (if_block_statement if 
+    (expr 
+      (variable_or_function_call s$)) then \n 
+    (then_block 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "nope"))))) \n) 
+    (end_if_statement end if)) \n <EOF>)

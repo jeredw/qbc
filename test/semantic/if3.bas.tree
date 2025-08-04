@@ -1,0 +1,89 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo#) = 
+      (expr 
+        (literal 2d+20)))) \n 
+  (if_block_statement if 
+    (expr 
+      (variable_or_function_call foo#)) then \n 
+    (then_block 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "ok"))))) \n) 
+    (else_block_statement else 
+      (else_block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (literal "nope"))))) \n)) 
+    (end_if_statement end if)) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call bar#) = 
+      (expr 
+        (literal 0)))) \n 
+  (if_block_statement if 
+    (expr 
+      (variable_or_function_call bar#)) then \n 
+    (then_block 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "nope"))))) \n) 
+    (else_block_statement else 
+      (else_block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (literal "ok"))))) \n)) 
+    (end_if_statement end if)) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call foo!) = 
+      (expr 
+        (literal 6.02e23)))) \n 
+  (if_block_statement if 
+    (expr 
+      (variable_or_function_call foo!)) then \n 
+    (then_block 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "ok"))))) \n) 
+    (else_block_statement else 
+      (else_block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (literal "nope"))))) \n)) 
+    (end_if_statement end if)) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call bar#) = 
+      (expr 
+        (literal 0)))) \n 
+  (if_block_statement if 
+    (expr 
+      (variable_or_function_call bar#)) then \n 
+    (then_block 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "nope"))))) \n) 
+    (else_block_statement else 
+      (else_block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (literal "ok"))))) \n)) 
+    (end_if_statement end if)) \n <EOF>)

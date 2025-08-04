@@ -1503,7 +1503,7 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   private compileBoolean(expr: parser.ExprContext): parser.ExprContext {
-    return this.compileExpression(expr, expr.start!, {tag: TypeTag.LONG});
+    return this.compileExpression(expr, expr.start!, {tag: TypeTag.NUMERIC});
   }
 
   private getVariableFromExpression(expr: parser.ExprContext): Variable | undefined {

@@ -2,6 +2,7 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
+import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
@@ -46,5 +47,6 @@ export class IfTest extends Statement {
 }
 
 function evaluateBooleanExpression(expr: ExprContext, memory: Memory): boolean {
-  return evaluateIntegerExpression(expr, memory) != 0 ;
+  // Any numeric expression is a valid boolean. Floats evaluate true if != 0.
+  return evaluateIntegerExpression(expr, memory, {tag: TypeTag.NUMERIC}) != 0;
 }
