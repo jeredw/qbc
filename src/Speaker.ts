@@ -102,7 +102,7 @@ interface Note {
 export class WebAudioSpeaker implements Speaker {
   audioContext: AudioContext;
   oscillator: OscillatorNode;
-  bufferSource: AudioBufferSourceNode;
+  bufferSource?: AudioBufferSourceNode;
   gainNode: GainNode;
   queue: Note[] = [];
   playState: PlayState;
@@ -142,8 +142,6 @@ export class WebAudioSpeaker implements Speaker {
     this.oscillator.type = "square";
     this.oscillator.connect(this.gainNode);
     this.oscillator.start();
-    this.bufferSource = this.audioContext.createBufferSource();
-    this.bufferSource.connect(this.audioContext.destination);
     this.queue = [];
     this.playState = {...DEFAULT_PLAY_STATE};
   }
@@ -207,6 +205,11 @@ export class WebAudioSpeaker implements Speaker {
   }
 
   playSample(buffer: ArrayBuffer, sampleRate: number) {
+    if (this.bufferSource) {
+      this.bufferSource.disconnect();
+    }
+    this.bufferSource = this.audioContext.createBufferSource();
+    this.bufferSource.connect(this.audioContext.destination);
     const audioBuffer = this.audioContext.createBuffer(1, buffer.byteLength, sampleRate);
     const channelData = audioBuffer.getChannelData(0);
     const bytes = new Uint8Array(buffer);
