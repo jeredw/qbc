@@ -49,7 +49,6 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private importButton: HTMLElement;
   private importInput: HTMLInputElement;
   private filePicker: HTMLElement;
-  private midiPlayer: PlayerElement;
 
   private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;

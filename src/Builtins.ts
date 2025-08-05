@@ -103,7 +103,7 @@ export class StandardLibrary {
     _("shell string", statements.shell),
     _("sin double -> double", statements.sin),
     _("sleep long?", statements.sleep),
-    _("sound integer long", statements.sound),
+    _("sound integer single", statements.sound),
     _("space numeric -> string", statements.space),
     _("sqr double -> double", statements.sqr),
     _("stick integer -> integer", statements.stick),

@@ -40,7 +40,9 @@ export class SoundStatement extends Statement {
     if (frequency < 37 && frequency !== 0) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
-    const duration = evaluateIntegerExpression(this.duration, context.memory, { tag: TypeTag.LONG });
+    // The help file claims the duration argument is an integer, but that's
+    // plainly a lie - tons of sound effect loops use fractional durations.
+    const duration = evaluateIntegerExpression(this.duration, context.memory, { tag: TypeTag.SINGLE });
     if (duration < 0 || duration > 65535) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }

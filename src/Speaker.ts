@@ -108,6 +108,7 @@ export class WebAudioSpeaker implements Speaker {
   playState: PlayState;
   private midiStillLoading = false;
   private pendingPlayMidi?: () => void;
+  private playedNotesSinceReset = false;
 
   constructor(private midiPlayer: PlayerElement) {
     this.reset();
@@ -132,6 +133,10 @@ export class WebAudioSpeaker implements Speaker {
     if (this.oscillator) {
       // Make horrible beeping stop from last time.
       this.oscillator.stop();
+    }
+    if (this.bufferSource) {
+      this.bufferSource.disconnect();
+      this.bufferSource = undefined;
     }
     this.stopMidi();
     this.audioContext = new AudioContext();
@@ -174,9 +179,15 @@ export class WebAudioSpeaker implements Speaker {
     this.syncQueue();
     const now = this.audioContext.currentTime;
     if (onDuration === 0) {
-      this.reset();
+      if (this.playedNotesSinceReset) {
+        // Don't reset the audio context a ton if there are a run of SOUND ... O commands.
+        // This breaks audio in Chrome.
+        this.playedNotesSinceReset = false;
+        this.reset();
+      }
       return Promise.resolve();
     }
+    this.playedNotesSinceReset = true;
     const onTime = this.queue.at(-1)?.endTime ?? now;
     const offTime = onTime + onDuration;
     const endTime = offTime + offDuration;

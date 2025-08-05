@@ -1,0 +1,23 @@
+(program ' \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 500)) to 
+      (expr 
+        (literal 1500)) step 
+      (expr 
+        (literal 35)) 
+      (block \n 
+        (statement 
+          (call_statement 
+            (untyped_id sound) 
+            (argument_list 
+              (argument 
+                (expr 
+                  (variable_or_function_call i))) , 
+              (argument 
+                (expr 
+                  (expr 
+                    (variable_or_function_call i)) / 
+                  (expr 
+                    (literal 20000))))))) \n) next)) \n <EOF>)
