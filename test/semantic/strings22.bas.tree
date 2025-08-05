@@ -1,0 +1,22 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id s) as 
+        (type_name 
+          (fixed_string string * 4))))) \n 
+  (statement 
+    (mid_statement mid$ 
+      ( 
+        (variable_or_function_call s) , 
+        (expr 
+          (literal 2)) , 
+        (expr 
+          (literal 2)) ) = 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call s))))) \n <EOF>)

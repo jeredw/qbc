@@ -1,0 +1,33 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id s) as 
+        (type_name 
+          (fixed_string string * 10))))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id t) as 
+        (type_name 
+          (fixed_string string * 10))))) \n 
+  (statement 
+    (rset_statement rset 
+      (variable_or_function_call s) = 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call s))))) \n 
+  (statement 
+    (lset_statement lset 
+      (variable_or_function_call t) = 
+      (expr 
+        (literal "ok")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call t))))) \n <EOF>)

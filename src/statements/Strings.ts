@@ -1,4 +1,4 @@
-import { Value, cast, double, integer, isError, isNumeric, isString, string } from "../Values.ts";
+import { Value, cast, double, getDefaultValue, integer, isError, isNumeric, isString, string } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToChar, asciiToString, charToAscii, stringToAscii } from "../AsciiChart.ts";
@@ -182,7 +182,7 @@ export class MidStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const value = context.memory.read(this.variable) ?? string("");
+    const value = context.memory.read(this.variable) ?? getDefaultValue(this.variable);
     if (!isString(value)) {
       throw RuntimeError.fromToken(this.token, TYPE_MISMATCH);
     }
@@ -219,7 +219,7 @@ abstract class JustifyStringStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const value = context.memory.read(this.variable) ?? string("");
+    const value = context.memory.read(this.variable) ?? getDefaultValue(this.variable);
     if (!isString(value)) {
       throw RuntimeError.fromToken(this.token, TYPE_MISMATCH);
     }
