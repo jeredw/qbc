@@ -10,6 +10,7 @@ export class SoundBlaster {
   private dspIn: number[] = [];
   private timeConstant = 0;
   private playDone = false;
+  private oplAddress = 0;
 
   constructor(private speaker: Speaker) {
   }
@@ -20,7 +21,11 @@ export class SoundBlaster {
       return true;
     }
     if (port >= 0x220 && port <= 0x22f) {
-      // Sound Blaster DSP
+      // Sound Blaster DSP, FM synth, and mixer
+      return true;
+    }
+    if (port === 0x388 || port === 0x389) {
+      // FM synth
       return true;
     }
     return false;
@@ -40,6 +45,11 @@ export class SoundBlaster {
       }
       case 0x22e:
         return this.dspOut.length > 0 ? 0x80 : 0;
+      // @ts-ignore
+      case 0x228:
+      // fallthrough
+      case 0x388:
+        return this.speaker.readSynthesizerStatus();
     }
     return 0;
   }
@@ -77,6 +87,18 @@ export class SoundBlaster {
       case 0x22c:
         // DSP data register
         this.dspWrite(data);
+        break;
+      // @ts-ignore
+      case 0x228:
+        // fallthrough
+      case 0x388:
+        this.oplAddress = data;
+        break;
+      // @ts-ignore
+      case 0x229:
+        // fallthrough
+      case 0x389:
+        this.speaker.writeSynthesizerData(this.oplAddress, data);
         break;
     }
   }

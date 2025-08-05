@@ -1,4 +1,5 @@
-import type {PlayerElement} from "./midi-player.d.ts";
+import { Synthesizer } from "./Synthesizer.ts";
+import type { PlayerElement } from "./midi-player.d.ts";
 
 export interface Speaker {
   beep(): Promise<void>;
@@ -8,6 +9,8 @@ export interface Speaker {
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void>;
 
   playSample(buffer: ArrayBuffer, sampleRate: number): void;
+  writeSynthesizerData(address: number, data: number): void;
+  readSynthesizerStatus(): number;
 
   loadMidi(buffer: ArrayBuffer): void;
   playMidi({restart, loop}: {restart: boolean, loop?: boolean}): void;
@@ -72,6 +75,15 @@ export class TestSpeaker implements Speaker {
     this.output += `SPEAKER> play sample ${buffer.byteLength} ${sampleRate}`;
   }
 
+  writeSynthesizerData(address: number, data: number) {
+    this.output += `SPEAKER> write synthesizer data ${address} ${data}`;
+  }
+
+  readSynthesizerStatus(): number {
+    this.output += `SPEAKER> read synthesizer status`;
+    return 0;
+  }
+
   loadMidi(buffer: ArrayBuffer) {
     this.output += `SPEAKER> load midi ${buffer.byteLength}`;
   }
@@ -104,6 +116,7 @@ export class WebAudioSpeaker implements Speaker {
   oscillator: OscillatorNode;
   bufferSource?: AudioBufferSourceNode;
   gainNode: GainNode;
+  synthesizer: Synthesizer = new Synthesizer();
   queue: Note[] = [];
   playState: PlayState;
   private midiStillLoading = false;
@@ -140,6 +153,7 @@ export class WebAudioSpeaker implements Speaker {
     }
     this.stopMidi();
     this.audioContext = new AudioContext();
+    this.synthesizer.connect(this.audioContext);
     this.gainNode = this.audioContext.createGain();
     this.gainNode.connect(this.audioContext.destination);
     this.gainNode.gain.value = 0;
@@ -180,7 +194,7 @@ export class WebAudioSpeaker implements Speaker {
     const now = this.audioContext.currentTime;
     if (onDuration === 0) {
       if (this.playedNotesSinceReset) {
-        // Don't reset the audio context a ton if there are a run of SOUND ... O commands.
+        // Don't reset the audio context a ton if there is a run of SOUND ... O commands.
         // This breaks audio in Chrome.
         this.playedNotesSinceReset = false;
         this.reset();
@@ -229,6 +243,14 @@ export class WebAudioSpeaker implements Speaker {
     }
     this.bufferSource.buffer = audioBuffer;
     this.bufferSource.start();
+  }
+
+  writeSynthesizerData(address: number, data: number) {
+    this.synthesizer.writeRegister(this.audioContext.currentTime, address, data);
+  }
+
+  readSynthesizerStatus(): number {
+    return this.synthesizer.readStatus();
   }
 
   loadMidi(buffer: ArrayBuffer) {

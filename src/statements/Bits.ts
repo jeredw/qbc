@@ -876,6 +876,9 @@ export class PeekStatement extends Statement {
           case 0x46c:
             data = context.devices.timer.rawTicks() & 0xff;
             break;
+          case 0x46d:
+            data = (context.devices.timer.rawTicks() >> 8) & 0xff;
+            break;
         }
       }
       context.memory.write(this.result, integer(data));
