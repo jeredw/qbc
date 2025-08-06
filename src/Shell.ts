@@ -49,6 +49,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private importButton: HTMLElement;
   private importInput: HTMLInputElement;
   private filePicker: HTMLElement;
+  private catalogChannel: BroadcastChannel;
 
   private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;
@@ -121,6 +122,8 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.screen.canvas.addEventListener('pointerup', (e: PointerEvent) => this.pointerup(e));
     this.screen.canvas.addEventListener('pointermove', (e: PointerEvent) => this.pointermove(e));
     this.screen.canvas.addEventListener('fullscreenchange', (e) => this.fullscreenChange());
+    this.catalogChannel = new BroadcastChannel('catalog');
+    this.catalogChannel.onmessage = (e: MessageEvent) => this.runCatalogCommand(e);
   }
 
   private mousedown(e: MouseEvent) {
@@ -452,6 +455,26 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.updateState(RunState.RUNNING);
     await this.invocation?.stepOver();
     this.updateStateAfterRunning();
+  }
+
+  private async runCatalogCommand(e: MessageEvent) {
+    try {
+      const message = JSON.parse(e.data);
+      if (message['command'] === 'run') {
+        const archivePath: string = message['archive'];
+        const program: string = message['program'];
+        const response = await fetch(archivePath);
+        if (!response.ok) {
+          throw new Error('bad response');
+        }
+        const archive = await response.arrayBuffer();
+        await this.importArchive(archive);
+        this.load(program);
+        void this.run(true);
+        return;
+      }
+    } catch (e: unknown) {
+    }
   }
 
   playAudio() {
