@@ -2,7 +2,7 @@ import esbuildPluginTsc from 'esbuild-plugin-tsc';
 
 export function createBuildSettings(options) {
   return {
-    entryPoints: ['src/Shell.ts', 'src/Catalog.ts'],
+    entryPoints: ['src/Shell.ts', 'src/catalog/Catalog.ts'],
     outdir: 'www',
     bundle: true,
     loader: {
