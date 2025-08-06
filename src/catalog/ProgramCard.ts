@@ -1,18 +1,5 @@
 import { html, Component } from 'htm/preact'
 
-export interface ProgramEntry {
-  name: string;
-  archivePath: string;
-  title: string;
-  author?: string;
-  date: string;
-  screenshot: string;
-  tags: string[];
-  specs: string;
-  usage: string;
-  notes: string;
-}
-
 export class ProgramCard extends Component {
   launch(archive: string, program: string) {
     const channel = new BroadcastChannel('catalog');
@@ -40,19 +27,23 @@ export class ProgramCard extends Component {
     <div class="date">${props.entry.date}</div>
     <div class="tags">${props.entry.tags.join(', ')}</div>
     <div class="specs">
-Specs
-  ${props.entry.specs}
+Specs<br />
+  ${indentLines(props.entry.specs)}
     </div>
     <div class="controls">
-Controls
-  ${props.entry.usage}
+Controls<br />
+  ${indentLines(props.entry.usage)}
     </div>
     <div class="notes">
-Notes
-  ${props.entry.notes}
+Notes<br />
+  ${indentLines(props.entry.notes)}
     </div>
   </div>
 </article>
 `;
   }
+}
+
+function indentLines(lines: string): string {
+  return lines.split('\n').map((line) => `    ${line}`).join('\n');
 }
