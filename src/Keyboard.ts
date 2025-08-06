@@ -3,8 +3,16 @@ import { keyToScanCode, scanCodeToKey } from "./ScanCodeChart.ts"
 export interface Keyboard {
   input(): Key | undefined;
   numKeysPending(): number;
-  getLastModifierMask(): number;
   getLastScanCode(): number;
+  getShiftStatus(): number;
+  getExtendedShiftStatus(): number;
+  getInsertMode(): boolean;
+  turnOffInsertMode(): void;
+
+  toggleSoftNumLock(): void;
+  toggleSoftScrollLock(): void;
+  toggleSoftInsertMode(): void;
+
   setMacro(functionKey: number, text: string): void;
   getMacro(functionKey: number): string;
   mapKey(flags: number, scanCode: number, keyNumber: number): void;
@@ -22,36 +30,56 @@ export interface Key {
 
 interface SoftKey {
   softNumLock: boolean;
+  softScrollLock: boolean;
 }
 
 export function typeLines(lines: string[], listener: KeyboardListener) {
   for (const line of lines) {
     const keys = line.match(/⟨([^⟩]+)⟩|./g) || [];
     for (const key of keys) {
+      let down = true;
+      let up = true;
       let name = key.startsWith('⟨') ? key.slice(1, -1) : key;
       let ctrlKey: boolean | undefined;
       if (name.length > 1 && name.toLowerCase().startsWith('ctrl+')) {
         ctrlKey = true;
         name = name.slice(5);
       }
+      if (name.toLowerCase().startsWith('down ')) {
+        up = false;
+        name = name.slice(5);
+      } else if (name.toLowerCase().startsWith('up ')) {
+        down = false;
+        name = name.slice(3);
+      }
       if (name === 'EOF') {
         return;
       }
-      listener.keydown(fakeKey(name, ctrlKey));
-      listener.keyup(fakeKey(name, ctrlKey));
+      let keyLocation = 0;
+      if (/_[0-9]$/.test(name)) {
+        keyLocation = +(name.at(-1) ?? '0');
+        name = name.slice(0, -2);
+      }
+      if (down) {
+        listener.keydown(fakeKey(name, ctrlKey, keyLocation));
+      }
+      if (up) {
+        listener.keyup(fakeKey(name, ctrlKey, keyLocation));
+      }
     }
     listener.keydown(fakeKey('Enter'));
     listener.keyup(fakeKey('Enter'));
   }
 }
 
-function fakeKey(key: string, ctrlKey?: boolean): KeyboardEvent {
+function fakeKey(key: string, ctrlKey?: boolean, keyLocation?: number): KeyboardEvent {
   return {
     key,
     ctrlKey: !!ctrlKey,
     shiftKey: key === 'Shift',
     altKey: key === 'Alt',
     getModifierState: () => false,
+    ...keyLocation && {location: keyLocation},
   } as unknown as KeyboardEvent;
 }
 
@@ -66,10 +94,13 @@ interface CustomKey {
 export class KeyboardListener implements Keyboard {
   inputBuffer: Key[] = [];
   lastScanCode: number = 0;
-  lastModifierMask: number = 0;
+  shiftStatus: number = 0;
+  extendedShiftStatus: number = 0;
   macros: Map<string, string> = new Map();
   customKeys: CustomKey[] = [];
   softNumLockState: boolean = false;
+  softScrollLockState: boolean = false;
+  insertMode: boolean = false;
 
   constructor() {
     this.reset();
@@ -78,10 +109,13 @@ export class KeyboardListener implements Keyboard {
   reset() {
     this.inputBuffer = [];
     this.lastScanCode = 0;
-    this.lastModifierMask = 0;
+    this.shiftStatus = 0;
+    this.extendedShiftStatus = 0;
     this.macros = new Map();
     this.customKeys = defaultCustomKeys();
     this.softNumLockState = false;
+    this.softScrollLockState = false;
+    this.insertMode = false;
   }
 
   input(): Key | undefined {
@@ -119,8 +153,8 @@ export class KeyboardListener implements Keyboard {
   }
 
   keydown(e: KeyboardEvent) {
-    (e as unknown as SoftKey).softNumLock = this.softNumLockState;
-    if (e.key === 'Clear') {
+    this.addSoftKeyState(e);
+    if (e.key === 'Clear' || (e.ctrlKey && e.key === '0')) {
       // Use the "Clear" key as a software numlock for os x.
       this.softNumLockState = !this.softNumLockState;
     }
@@ -145,11 +179,7 @@ export class KeyboardListener implements Keyboard {
       const cursorCommand = decodeCursorCommand(e);
       this.inputBuffer.push({code, char, cursorCommand});
       this.lastScanCode = code;
-      this.lastModifierMask = (
-        (e.shiftKey ? 3 : 0) |
-        (e.ctrlKey ? 4 : 0) |
-        (e.altKey ? 8 : 0)
-      );
+      this.updateShiftStatus(e, true);
     }
   }
 
@@ -184,7 +214,7 @@ export class KeyboardListener implements Keyboard {
   }
 
   keyup(e: KeyboardEvent) {
-    (e as unknown as SoftKey).softNumLock = this.softNumLockState;
+    this.addSoftKeyState(e);
     const code = getScanCode(e);
     const keyNumber = this.detectCustomKey(e, code || 0);
     if (keyNumber !== undefined) {
@@ -196,20 +226,116 @@ export class KeyboardListener implements Keyboard {
     } else if (code !== undefined) {
       this.inputBuffer.push({code: 0x80 | code, breakCode: true});
       this.lastScanCode = 0x80 | code;
-      this.lastModifierMask = (
-        (e.shiftKey ? 3 : 0) |
-        (e.ctrlKey ? 4 : 0) |
-        (e.altKey ? 8 : 0)
-      );
+      this.updateShiftStatus(e, false);
     }
   }
 
-  getLastModifierMask(): number {
-    return this.lastModifierMask;
+  private addSoftKeyState(e: KeyboardEvent) {
+    let softKey = e as unknown as SoftKey;
+    softKey.softNumLock = this.softNumLockState;
+    softKey.softScrollLock = this.softScrollLockState;
+  }
+
+  private updateShiftStatus(e: KeyboardEvent, down: boolean) {
+    const leftShift = e.key === 'Shift' && e.location === 1;
+    const rightShift = e.key === 'Shift' && e.location === 2;
+    const leftAlt = e.key === 'Alt' && e.location === 1;
+    const rightAlt = e.key === 'Alt' && e.location === 2;
+    const leftControl = e.key === 'Control' && e.location === 1;
+    const rightControl = e.key === 'Control' && e.location === 2;
+    const statusMask = (
+      (rightShift ? 1 : 0) |
+      (leftShift ? 2 : 0) |
+      (leftControl || rightControl ? 4 : 0) |
+      (leftAlt || rightAlt ? 8 : 0)
+    );
+    const capsLock = e.key === 'CapsLock';
+    const numLock = e.key === 'NumLock';
+    const scrollLock = e.key === 'ScrollLock';
+    const pause = e.key === 'Pause';
+    const sysReq = e.key === 'PrintScreen';
+    const insert = e.key === 'Insert';
+    const extendedStatusMask = (
+      (rightControl ? 1 : 0) |
+      (leftAlt ? 2 : 0) |
+      (sysReq ? 4 : 0) |
+      (pause ? 8 : 0) |
+      (scrollLock ? 0x10 : 0) |
+      (numLock ? 0x20 : 0) |
+      (capsLock ? 0x40 : 0) |
+      (insert ? 0x080 : 0)
+    );
+    if (down) {
+      this.shiftStatus |= statusMask;
+      this.extendedShiftStatus |= extendedStatusMask;
+    } else {
+      this.shiftStatus &= ~statusMask;
+      this.extendedShiftStatus &= ~extendedStatusMask;
+    }
+    if (isScrollLockOn(e)) {
+      this.shiftStatus |= 0x10;
+    } else {
+      this.shiftStatus &= ~0x10;
+    }
+    if (isNumLockOn(e)) {
+      this.shiftStatus |= 0x20;
+    } else {
+      this.shiftStatus &= ~0x20;
+    }
+    if (e.getModifierState('CapsLock')) {
+      this.shiftStatus |= 0x40;
+    } else {
+      this.shiftStatus &= ~0x40;
+    }
+    this.updateInsertModeStatus();
+  }
+
+  private updateInsertModeStatus() {
+    if (this.insertMode) {
+      this.shiftStatus |= 0x80;
+    } else {
+      this.shiftStatus &= ~0x80;
+    }
+  }
+
+  getShiftStatus(): number {
+    return this.shiftStatus;
+  }
+
+  getExtendedShiftStatus(): number {
+    return this.extendedShiftStatus;
   }
 
   getLastScanCode(): number {
     return this.lastScanCode;
+  }
+
+  getInsertMode(): boolean {
+    return this.insertMode;
+  }
+
+  turnOffInsertMode() {
+    this.insertMode = false;
+    this.updateInsertModeStatus();
+  }
+
+  toggleSoftNumLock() {
+    const numLock = fakeKey('NumLock');
+    this.softNumLockState = !this.softNumLockState;
+    this.addSoftKeyState(numLock);
+    this.updateShiftStatus(numLock, false);
+  }
+
+  toggleSoftScrollLock() {
+    const scrollLock = fakeKey('ScrollLock');
+    this.softScrollLockState = !this.softScrollLockState;
+    this.addSoftKeyState(scrollLock);
+    this.updateShiftStatus(scrollLock, false);
+  }
+
+  toggleSoftInsertMode() {
+    this.insertMode = !this.insertMode;
+    this.updateInsertModeStatus();
   }
 
   setMacro(functionKey: number, text: string) {
@@ -321,6 +447,10 @@ function decodeCursorCommand(e: KeyboardEvent): CursorCommand | undefined {
       case '.': return CursorCommand.DELETE;
     }
   }
+}
+
+function isScrollLockOn(e: KeyboardEvent) {
+  return e.getModifierState('ScrollLock') || (e as unknown as SoftKey).softScrollLock;
 }
 
 function isNumLockOn(e: KeyboardEvent) {

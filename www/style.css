@@ -194,6 +194,26 @@ input[type="file"] {
   display: none;
 }
 
+.status-bar {
+  font-size: 12px;
+  padding: 8px 8px 0;
+}
+
+.status-scroll, .status-num, .status-insert {
+  cursor: pointer;
+}
+
+.key-status {
+  color: var(--qbc-dark-gray);
+  background: var(--qbc-black);
+  display: inline-flex;
+  gap: 8px;
+}
+
+.key-on {
+  color: var(--qbc-green);
+}
+
 .screen {
   cursor: none;
   image-rendering: pixelated;

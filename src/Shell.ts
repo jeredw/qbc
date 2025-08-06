@@ -50,6 +50,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private importInput: HTMLInputElement;
   private filePicker: HTMLElement;
   private catalogChannel: BroadcastChannel;
+  private statusBar: StatusBar;
 
   private screen: CanvasScreen;
   private speaker: WebAudioSpeaker;
@@ -77,7 +78,8 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.modem = new HttpModem();
     this.mouse = new MouseListener(this);
     this.blaster = new SoundBlaster(this.speaker);
-    this.root.appendChild(this.screen.canvas);
+    const outputPane = assertHTMLElement(root.querySelector('.output-pane'));
+    outputPane.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
     this.interpreter = new Interpreter({
@@ -93,6 +95,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
       mouse: this.mouse,
       blaster: this.blaster,
     }, this);
+    this.statusBar = new StatusBar(assertHTMLElement(root.querySelector('.status-bar')), this.keyboard);
     this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;
     this.editorPane = assertHTMLElement(root.querySelector('.editor-pane'));
@@ -187,9 +190,11 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private fullscreenChange() {
     if (document.fullscreenElement) {
       document.body.classList.add('fullscreen');
+      this.statusBar.hide();
       this.editorPane.style.display = 'none';
     } else {
       document.body.classList.remove('fullscreen');
+      this.statusBar.show();
       this.editorPane.style.display = '';
     }
   }
@@ -514,6 +519,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     }
     this.speaker.tick();
     this.gamepad.update();
+    this.statusBar.update();
     requestAnimationFrame(this.frame);
   }
 
@@ -666,6 +672,42 @@ class EditorProxy {
     this.editor.onMouseUp((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, setBreakpoint));
     this.editor.onMouseMove((e: monaco.editor.IEditorMouseEvent) => marginHandler(e, hoverBreakpoint));
     this.editor.onMouseLeave(() => unhover());
+  }
+}
+
+class StatusBar {
+  capsLock: HTMLElement;
+  scrollLock: HTMLElement;
+  numLock: HTMLElement;
+  insertMode: HTMLElement;
+
+  constructor(
+    private root: HTMLElement,
+    private keyboard: KeyboardListener,
+  ) {
+    this.capsLock = assertHTMLElement(root.querySelector('.status-caps'));
+    this.scrollLock = assertHTMLElement(root.querySelector('.status-scroll'));
+    this.scrollLock.addEventListener('click', () => keyboard.toggleSoftScrollLock());
+    this.numLock = assertHTMLElement(root.querySelector('.status-num'));
+    this.numLock.addEventListener('click', () => keyboard.toggleSoftNumLock());
+    this.insertMode = assertHTMLElement(root.querySelector('.status-insert'));
+    this.insertMode.addEventListener('click', () => keyboard.toggleSoftInsertMode());
+  }
+
+  hide() {
+    this.root.style.display = 'none';
+  }
+
+  show() {
+    this.root.style.display = '';
+  }
+
+  update() {
+    const shift = this.keyboard.getShiftStatus();
+    this.insertMode.classList.toggle('key-on', !!(shift & 0x80));
+    this.capsLock.classList.toggle('key-on', !!(shift & 0x40));
+    this.numLock.classList.toggle('key-on', !!(shift & 0x20));
+    this.scrollLock.classList.toggle('key-on', !!(shift & 0x10));
   }
 }
 

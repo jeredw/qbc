@@ -56,14 +56,18 @@ abstract class BaseInputStatement extends Statement {
   private lineEditor(context: ExecutionContext): Promise<void> {
     let position = 0;
     let buffer: string[] = [];
-    let insert = false;
     let finished: () => void;
     const {keyboard, screen, speaker} = context.devices;
     const isWordChar = (char: string) => /[A-Za-z0-9]/.test(char);
-    const toggleInsert = () => {
-      insert = !insert;
-      screen.configureTextCursor(0, 0, insert);
+    const showCursor = () => {
+      screen.configureTextCursor(0, 0, keyboard.getInsertMode());
       screen.showTextCursor();
+    };
+    const turnOffInsertModeAndResetCursor = () => {
+      if (keyboard.getInsertMode()) {
+        keyboard.turnOffInsertMode();
+        showCursor();
+      }
     };
     const move = (dx: number) => {
       screen.moveTextCursor(dx);
@@ -77,9 +81,9 @@ abstract class BaseInputStatement extends Statement {
       if (this.args.mark) {
         screen.print("? ", false);
       }
-      screen.configureTextCursor(0, 0, insert);
-      screen.showTextCursor();
+      showCursor();
     };
+    keyboard.turnOffInsertMode();
     prompt();
     // So we can test non-interactively with deno which doesn't have rAF
     const frame = globalThis.requestAnimationFrame ?? setTimeout;
@@ -91,9 +95,7 @@ abstract class BaseInputStatement extends Statement {
       }
       switch (key.cursorCommand) {
         case CursorCommand.ENTER:
-          if (insert) {
-            toggleInsert();
-          }
+          keyboard.turnOffInsertMode();
           screen.hideTextCursor();
           if (!this.args.sameLine) {
             screen.print('', true);
@@ -113,17 +115,13 @@ abstract class BaseInputStatement extends Statement {
           position = 0;
           break;
         case CursorCommand.LEFT:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           if (position > 0) {
             move(-1);
           }
           break;
         case CursorCommand.RIGHT:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           if (position >= 256) {
             speaker.beep();
           } else {
@@ -137,9 +135,7 @@ abstract class BaseInputStatement extends Statement {
           }
           break;
         case CursorCommand.FORWARD_WORD:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           while (position < buffer.length && isWordChar(buffer[position])) {
             move(1);
           }
@@ -148,9 +144,7 @@ abstract class BaseInputStatement extends Statement {
           }
           break;
         case CursorCommand.BACK_WORD:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           if (position > 0) {
             move(-1);
           }
@@ -162,19 +156,16 @@ abstract class BaseInputStatement extends Statement {
           }
           break;
         case CursorCommand.HOME:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           move(-position);
           break;
         case CursorCommand.END:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           move(buffer.length - position);
           break;
         case CursorCommand.INSERT:
-          toggleInsert();
+          keyboard.toggleSoftInsertMode();
+          showCursor();
           break;
         // @ts-ignore
         case CursorCommand.BACKSPACE:
@@ -190,29 +181,26 @@ abstract class BaseInputStatement extends Statement {
           }
           break;
         case CursorCommand.DELETE_TO_END:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           const numToDelete = buffer.length - position;
           buffer.splice(position, numToDelete);
           screen.print(' '.repeat(numToDelete), false);
           screen.moveTextCursor(-numToDelete);
           break;
         case CursorCommand.DELETE_LINE:
-          if (insert) {
-            toggleInsert();
-          }
+          turnOffInsertModeAndResetCursor();
           screen.moveTextCursor(-position);
           screen.print(' '.repeat(buffer.length), false);
           screen.moveTextCursor(-buffer.length);
           buffer = [];
           position = 0;
           break;
-        default:
+        default: {
           if (!key.char) {
             break;
           }
           const text = key.char === '\t' ? ' '.repeat(nextTab() - position) : key.char;
+          const insert = keyboard.getInsertMode();
           if (position >= 256 ||
             !insert && position + text.length > 255 ||
             insert && (buffer.length + text.length) > 255) {
@@ -230,6 +218,7 @@ abstract class BaseInputStatement extends Statement {
             }
             screen.print(text, false);
           }
+        }
       }
       frame(editorFrame);
     };

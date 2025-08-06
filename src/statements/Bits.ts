@@ -868,10 +868,10 @@ export class PeekStatement extends Statement {
             data = 38;  // donkey.bas checks the BIOS equipment byte.
             break;
           case 0x417:
-            data = context.devices.keyboard.getLastModifierMask();
+            data = context.devices.keyboard.getShiftStatus();
             break;
           case 0x418:
-            data = context.devices.keyboard.getLastScanCode();
+            data = context.devices.keyboard.getExtendedShiftStatus();
             break;
           case 0x46c:
             data = context.devices.timer.rawTicks() & 0xff;
