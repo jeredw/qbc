@@ -5,7 +5,7 @@ import { SBMIDI_SEGMENT, SBSIM_SEGMENT } from "../MidiDrivers.ts";
 import { Mouse } from "../Mouse.ts";
 import { getDefaultValue, integer, isNumeric } from "../Values.ts";
 import { Variable } from "../Variables.ts";
-import { readVariableToBytes, wrap16Bit, writeBytesToVariable } from "./Bits.ts";
+import { readVariableToBytes, signExtend16Bit, writeBytesToVariable } from "./Bits.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { readEntireFile } from "./FileSystem.ts";
 import { Statement } from "./Statement.ts";
@@ -71,7 +71,7 @@ export class CallAbsoluteStatement extends Statement {
       const {variable} = this.params[i];
       if (variable) {
         const value = cpu.readWord(PARAMETER_DS, 2 * i);
-        context.memory.write(variable, integer(wrap16Bit(value)));
+        context.memory.write(variable, integer(signExtend16Bit(value)));
       }
     }
   }

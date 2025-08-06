@@ -231,7 +231,7 @@ export class CviFunction extends StringToBytes {
   }
 
   override getValue(bytes: number[]): Value {
-    return integer((bytes[1] << 8) | bytes[0]);
+    return integer(signExtend16Bit((bytes[1] << 8) | bytes[0]));
   }
 }
 
@@ -241,6 +241,7 @@ export class CvlFunction extends StringToBytes {
   }
 
   override getValue(bytes: number[]): Value {
+    // The << operator is already 32-bit signed.
     return long((bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0]);
   }
 }
@@ -951,6 +952,6 @@ export class FreFunction extends BuiltinFunction1 {
   }
 }
 
-export function wrap16Bit(x: number) {
-  return x & 0x8000 ? (x & 0x7fff) - 0x8000 : x & 0x7fff;
+export function signExtend16Bit(x: number) {
+  return (x ^ 0x8000) - 0x8000;
 }

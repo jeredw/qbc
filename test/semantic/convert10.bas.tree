@@ -1,0 +1,63 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvi 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call chr$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 255)))) ))) + 
+                    (expr 
+                      (variable_or_function_call chr$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 255)))) )))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call cvl 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 255)))) ))) + 
+                        (expr 
+                          (variable_or_function_call chr$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 255)))) )))) + 
+                      (expr 
+                        (variable_or_function_call chr$ 
+                          ( 
+                            (argument_list 
+                              (argument 
+                                (expr 
+                                  (literal 255)))) )))) + 
+                    (expr 
+                      (variable_or_function_call chr$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 255)))) )))))) )))))) \n <EOF>)

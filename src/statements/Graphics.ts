@@ -12,7 +12,7 @@ import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
 import { stringToAscii } from "../AsciiChart.ts";
 import { roundToNearestEven } from "../Math.ts";
-import { wrap16Bit } from "./Bits.ts";
+import { signExtend16Bit } from "./Bits.ts";
 
 export class ScreenStatement extends Statement {
   constructor(
@@ -769,8 +769,8 @@ export class DrawStatement extends Statement {
         if (!move.noPlot) {
           const p1 = screen.screenToWindow(cursor);
           const p2 = screen.screenToWindow({
-            x: wrap16Bit(roundToNearestEven(target.x)),
-            y: wrap16Bit(roundToNearestEven(target.y))
+            x: signExtend16Bit(roundToNearestEven(target.x) & 0xffff),
+            y: signExtend16Bit(roundToNearestEven(target.y) & 0xffff)
           });
           screen.line({
             step1: false,
