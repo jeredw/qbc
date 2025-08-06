@@ -67,6 +67,7 @@ Bringup
 + ASSAULT, FATALCHOICE: looks at ENVIRON$("BLASTER")
 + MISERY20: doors don't work?
 + EVERDOWN, MARIO: Plays raw adlib music / sound effects
++ WORMS: Reads keys from both INKEY$ and PEEK(1047)
 - WARGAMES: Tons of AudioContext errors
 - ABSORB, MARIO: PEEKing to copy arrays in a loop serializes whole array repeatedly
 - ADVENTUR: qbasic permits multiple default else for block if...else...
@@ -97,7 +98,6 @@ Bringup
 - QMIDI: Tries to read max columns from 0040:004a
 - USEFL201: CALL ABSOLUTE with record type
 - WHEEL OF WEALTH: marge simpson paint overflows circles
-- WORMS: Reads keys from both INKEY$ and PEEK(1047)
 
 IDE features
 - Persist filesystem to local storage

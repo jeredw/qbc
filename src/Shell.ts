@@ -680,6 +680,7 @@ class StatusBar {
   scrollLock: HTMLElement;
   numLock: HTMLElement;
   insertMode: HTMLElement;
+  speedSpinner: HTMLInputElement;
 
   constructor(
     private root: HTMLElement,
@@ -692,6 +693,10 @@ class StatusBar {
     this.numLock.addEventListener('click', () => keyboard.toggleSoftNumLock());
     this.insertMode = assertHTMLElement(root.querySelector('.status-insert'));
     this.insertMode.addEventListener('click', () => keyboard.toggleSoftInsertMode());
+    this.speedSpinner = assertHTMLElement(root.querySelector('.speed-spinner')) as HTMLInputElement;
+    this.speedSpinner.addEventListener('input', (e) => {
+      Invocation.ReleaseUiThreadMs = +this.speedSpinner.value / 10;
+    });
   }
 
   hide() {
