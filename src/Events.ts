@@ -196,11 +196,13 @@ export class JoystickEventMonitor extends EventMonitor {
 
   override poll() {
     const state = this.joystick.getState();
+    // This maps a generic xbox gamepad's "A" button to the "lower" button and
+    // "B" button to the "upper" button.
     const buttons = [
-      !!state[0]?.stickyButtons[0],
       !!state[0]?.stickyButtons[1],
-      !!state[1]?.stickyButtons[0],
       !!state[1]?.stickyButtons[1],
+      !!state[0]?.stickyButtons[0],
+      !!state[1]?.stickyButtons[0],
     ];
     for (let channelIndex = 0; channelIndex < 4; channelIndex++) {
       const channel = this.channels[channelIndex];

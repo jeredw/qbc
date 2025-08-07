@@ -27,18 +27,19 @@ export class TestJoystick implements Joystick {
   }
 
   testTrigger(buttonIndex: number) {
+    // buttonIndex is from strig so must match what JoystickEventMonitor expects.
     switch (buttonIndex) {
       case 0:
-        this.state[0].stickyButtons[0] = true;
-        break;
-      case 1:
         this.state[0].stickyButtons[1] = true;
         break;
+      case 1:
+        this.state[1].stickyButtons[1] = true;
+        break;
       case 2:
-        this.state[1].stickyButtons[0] = true;
+        this.state[0].stickyButtons[0] = true;
         break;
       case 3:
-        this.state[1].stickyButtons[1] = true;
+        this.state[1].stickyButtons[0] = true;
         break;
     }
   }
