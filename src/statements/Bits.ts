@@ -861,6 +861,20 @@ export class PeekStatement extends Statement {
         const y = ~~(address / 320);
         const x = ~~(address % 320);
         data = context.devices.screen.getPixel(x, y, /*screen=*/ true);
+      } else if (segment === 0xb800) {
+        const mode = context.devices.screen.getMode();
+        if (mode.mode !== 0) {
+          throw new Error('Only support PEEKing text mode memory in mode 0');
+        }
+        const cellAddress = address >> 1;
+        const row = ~~(cellAddress / 80) + 1;
+        const column = ~~(cellAddress % 80) + 1;
+        if ((address & 1) === 0) {
+          const char = context.devices.screen.getCharAt(row, column);
+          data = stringToAscii(char)[0] ?? 0;
+        } else {
+          data = context.devices.screen.getAttributeAt(row, column);
+        }
       } else {
         const offset = address;
         const linearAddress = (segment << 4) | offset;
@@ -911,8 +925,8 @@ export class PokeStatement extends Statement {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
     const byte = evaluateIntegerExpression(this.valueExpr, context.memory) & 255;
-    const segment = context.memory.getSegment();
-    if ((segment & 0xffff) === 0xa000) {
+    const segment = context.memory.getSegment() & 0xffff;
+    if (segment === 0xa000) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 13) {
         throw new Error('Only support POKEing video memory in mode 13');
@@ -920,6 +934,21 @@ export class PokeStatement extends Statement {
       const y = ~~(address / 320);
       const x = ~~(address % 320);
       context.devices.screen.setPixel(x, y, byte, /*step=*/ false, /*screen=*/ true);
+      return;
+    }
+    if (segment === 0xb800) {
+      const mode = context.devices.screen.getMode();
+      if (mode.mode !== 0) {
+        throw new Error('Only support POKEing text mode memory in mode 0');
+      }
+      const cellAddress = address >> 1;
+      const row = ~~(cellAddress / 80) + 1;
+      const column = ~~(cellAddress % 80) + 1;
+      if ((address & 1) === 0) {
+        context.devices.screen.setCharAt(row, column, asciiToString([byte])[0] ?? ' ');
+      } else {
+        context.devices.screen.setAttributeAt(row, column, byte);
+      }
       return;
     }
     try {

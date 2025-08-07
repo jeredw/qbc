@@ -11,7 +11,7 @@ import { Token } from "antlr4ng";
 import { getFileAccessor, getSequentialReadAccessor } from "./FileSystem.ts";
 import { OpenMode, tryIo } from "../Files.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW, IOError, BAD_FILE_MODE } from "../Errors.ts";
-import { asciiToString } from "../AsciiChart.ts";
+import { asciiToString, CR, LF, TAB, trim } from "../AsciiChart.ts";
 
 export interface InputStatementArgs {
   token: Token;
@@ -199,7 +199,7 @@ abstract class BaseInputStatement extends Statement {
           if (!key.char) {
             break;
           }
-          const text = key.char === '\t' ? ' '.repeat(nextTab() - position) : key.char;
+          const text = key.char === TAB ? ' '.repeat(nextTab() - position) : key.char;
           const insert = keyboard.getInsertMode();
           if (position >= 256 ||
             !insert && position + text.length > 255 ||
@@ -255,7 +255,7 @@ export class InputStatement extends BaseInputStatement {
       pos++;
     };
     const skipWhitespace = () => {
-      while (pos < line.length && ' \r\n'.includes(line[pos])) {
+      while (pos < line.length && ` ${CR}${LF}`.includes(line[pos])) {
         pos++;
       }
     };
@@ -283,14 +283,14 @@ export class InputStatement extends BaseInputStatement {
       while (pos < line.length && line[pos] != ',') {
         pos++;
       }
-      return string(line.slice(start, pos).trim());
+      return string(trim(line.slice(start, pos)));
     };
     const numericItem = (type: Type) => {
       const start = pos;
       while (pos < line.length && line[pos] != ',') {
         pos++;
       }
-      const value = parseNumberFromString(line.slice(start, pos).trim() || '0');
+      const value = parseNumberFromString(trim(line.slice(start, pos)) || '0');
       if (value === undefined) {
         throw new Error();
       }
@@ -355,7 +355,7 @@ export class InputFileStatement extends Statement {
       const nextField = () => {
         // In most cases, char is the delimiter after the previous field.
         // But if the last field ended with '"', skip over one following comma.
-        const skip = char === '"' ? ', \r\n' : ' \r\n';
+        const skip = char === '"' ? `, ${CR}${LF}` : ` ${CR}${LF}`;
         if (!accessor.eof()) {
           nextChar();
         }
@@ -366,7 +366,7 @@ export class InputFileStatement extends Statement {
             break;
           }
         }
-        while (!accessor.eof() && ' \r\n'.includes(char)) {
+        while (!accessor.eof() && ` ${CR}${LF}`.includes(char)) {
           nextChar();
         }
       };
@@ -380,7 +380,7 @@ export class InputFileStatement extends Statement {
           }
           return result;
         }
-        while (!accessor.eof() && !",\r\n".includes(char)) {
+        while (!accessor.eof() && !`,${CR}${LF}`.includes(char)) {
           result += char;
           nextChar();
         }
@@ -388,7 +388,7 @@ export class InputFileStatement extends Statement {
       };
       const readUntilNumberDelimiter = () => {
         let result = "";
-        while (!accessor.eof() && !", \r\n".includes(char)) {
+        while (!accessor.eof() && !`, ${CR}${LF}`.includes(char)) {
           result += char;
           nextChar();
         }
@@ -402,7 +402,7 @@ export class InputFileStatement extends Statement {
           context.memory.write(variable, string(field));
         } else {
           const field = readUntilNumberDelimiter();
-          let value = parseNumberFromString(field.trim()) ?? getDefaultValue(variable);
+          let value = parseNumberFromString(trim(field)) ?? getDefaultValue(variable);
           if (isNumeric(value)) {
             value = cast(value, variable.type);
           }

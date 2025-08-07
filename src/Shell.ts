@@ -15,13 +15,13 @@ import "monaco-editor/esm/vs/editor/editor.all.js";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { QBasicSymbolTag } from "./SymbolTable.ts";
 import { debugPrintValue, debugPrintVariable } from "./Values.ts";
-import { asciiToString, stringToAscii } from "./AsciiChart.ts";
+import { asciiToString, stringToAscii, CR, LF, TAB, EOF } from "./AsciiChart.ts";
 import { decodeGwBasicBinaryFile } from "./GwBasicFormat.ts";
 import { decodeQb45BinaryFile } from "./Qb45Format.ts";
 import JSZip from "jszip";
 import { MouseListener, MouseSurface } from "./Mouse.ts";
 import { SoundBlaster } from "./SoundBlaster.ts";
-import type {PlayerElement} from "./midi-player.d.ts";
+import type { PlayerElement } from "./midi-player.d.ts";
 
 enum RunState {
   ENDED,
@@ -333,7 +333,11 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
 
   load(fileName: string) {
     const file = this.disk.readFile(fileName);
-    const text = asciiToString(file.bytes);
+    const text = asciiToString(file.bytes)
+      .replaceAll(CR, '\r')
+      .replaceAll(LF, '\n')
+      .replaceAll(TAB, '\t')
+      .replaceAll(EOF, '\x26');
     this.invocation?.stop();
     this.invocation = null;
     this.interpreter.debug.breakpoints = new Set();

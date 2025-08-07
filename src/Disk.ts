@@ -1,4 +1,4 @@
-import { asciiToString, charToAscii } from "./AsciiChart.ts";
+import { asciiToString, charToAscii, trim } from "./AsciiChart.ts";
 import { BAD_FILE_MODE, BAD_RECORD_NUMBER, FIELD_OVERFLOW, FILE_ALREADY_EXISTS, FILE_ALREADY_OPEN, FILE_NOT_FOUND, INPUT_PAST_END_OF_FILE, IOError, PATH_FILE_ACCESS_ERROR, PATH_NOT_FOUND } from "./Errors.ts";
 import { FileAccessor, Handle, isSequentialWriteMode, Opener, OpenMode } from "./Files.ts";
 import { BasePrinter } from "./Printer.ts";
@@ -479,7 +479,7 @@ interface Path {
 }
 
 function parsePath(path: string, base: Path): Path {
-  path = path.trim();
+  path = trim(path);
   path = path.toUpperCase();
   if (/[^\\\.]\.$/.test(path)) {
     // DOS treats the path "FILE." with an empty extension the same as "FILE"

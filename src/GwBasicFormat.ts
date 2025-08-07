@@ -1,4 +1,4 @@
-import { stringToAscii } from "./AsciiChart";
+import { stringToAscii, LF } from "./AsciiChart";
 import { mbfBytesToFloat32, mbfBytesToFloat64 } from "./statements/Bits";
 
 // https://www.chebucto.ns.ca/~af380/GW-BASIC-tokens.html
@@ -274,7 +274,7 @@ export function decodeGwBasicBinaryFile(buffer: ArrayBuffer): number[] {
           output.push(...stringToAscii(`"`));
         }
         inStringLiteral = false;
-        output.push(...stringToAscii('\n'));
+        output.push(...stringToAscii(LF));
         beginNewLine();
         break;
       case 0xb: { // octal

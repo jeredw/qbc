@@ -17,7 +17,7 @@ import { Memory } from "./Memory.ts";
 import { Variable } from "./Variables.ts";
 import { roundToNearestEven } from "./Math.ts";
 import { getTyperContext } from "./ExtraParserContext.ts";
-import { compareAscii } from "./AsciiChart.ts";
+import { compareAscii, trim } from "./AsciiChart.ts";
 
 export function evaluateStringExpression(expr: ExprContext, memory: Memory): string {
   const value = evaluateExpression({
@@ -419,7 +419,7 @@ export function parseLiteral(fullText: string, forceDouble?: boolean): values.Va
 
 export function parseNumberFromString(fullText: string): values.Value | undefined {
   let [text, sigil] = splitSigil(fullText);
-  text = text.trim();
+  text = trim(text);
   if (!isNumericLiteral(text)) {
     return;
   }
@@ -446,7 +446,7 @@ export function parseNumberFromString(fullText: string): values.Value | undefine
 }
 
 export function parseNumberFromStringPrefix(fullText: string): values.Value | undefined {
-  fullText = fullText.trim();
+  fullText = trim(fullText);
   for (let i = fullText.length; i > 0; i--) {
     const prefix = fullText.slice(0, i);
     if (isNumericLiteral(prefix)) {

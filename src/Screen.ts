@@ -2,7 +2,7 @@ import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToC
 import { CircleArgs, GetBitmapArgs, LineArgs, PaintArgs, Plotter, Point, PutBitmapArgs } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { MouseSurface } from './Mouse.ts';
-import { Printer, BasePrinter, StringPrinter } from './Printer.ts';
+import { Printer, BasePrinter, TestPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenGeometry, ScreenMode } from './ScreenMode.ts';
 
 export interface CanvasProvider {
@@ -77,6 +77,9 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   getColumn(): number;
   getCharAt(row: number, column: number): string;
   getColorAt(row: number, column: number): number;
+  getAttributeAt(row: number, column: number): number;
+  setCharAt(row: number, column: number, char: string): void;
+  setAttributeAt(row: number, column: number, attribute: number): void;
   setSoftKey(key: number, name: string): void;
   showSoftKeys(): void;
   hideSoftKeys(): void;
@@ -97,6 +100,10 @@ interface Attributes {
 interface CharacterCell {
   char: string;
   attributes: Attributes;
+}
+
+function emptyCell(color: Attributes): CharacterCell {
+  return {char: ' ', attributes: {...color}};
 }
 
 class Page {
@@ -183,13 +190,12 @@ class Page {
 
   private initText(color: Attributes) {
     const [columns, rows] = this.geometry.text;
-    this.text = new Array(rows);
-    for (let y = 0; y < rows; y++) {
-      this.text[y] = new Array(columns).fill({
-        char: ' ',
-        attributes: {...color}
-      });
-    }
+    this.text = Array.from(Array(rows), () => Array.from(Array(columns), () => emptyCell(color)));
+  }
+
+  private clearTextRow(y: number, color: Attributes) {
+    const [columns, _] = this.geometry.text;
+    this.text[y] = Array.from(Array(columns), () => emptyCell(color));
   }
 
   clearText(color: Attributes, startRow?: number, endRow?: number) {
@@ -197,11 +203,8 @@ class Page {
     const [_, rows] = this.geometry.text;
     startRow = startRow ?? 1;
     endRow = endRow ?? rows;
-    for (let y = startRow - 1; y < endRow - 1; y++) {
-      this.text[y].fill({
-        char: ' ',
-        attributes: {...color}
-      });
+    for (let y = startRow - 1; y <= endRow - 1; y++) {
+      this.clearTextRow(y, color);
     }
     ctx.fillStyle = cssForColorIndex(color.bgColor);
     const y = this.cellHeight * (startRow - 1);
@@ -216,7 +219,7 @@ class Page {
     this.dirty = true;
   }
 
-  getCharAt(row: number, col: number) {
+  getCharAt(row: number, col: number): CharacterCell {
     return this.text[row - 1][col - 1];
   }
 
@@ -326,7 +329,7 @@ class Page {
       const height = endRow * this.cellHeight - top;
       const text = ctx.getImageData(0, top, ctx.canvas.width, height);
       ctx.putImageData(text, 0, top - this.cellHeight);
-      this.text[endRow - 2].fill({char: ' ', attributes: {...color}});
+      this.clearTextRow(endRow - 2, color);
       for (let i = 0; i < this.text[endRow - 2].length; i++) {
         this.drawCell(ctx, endRow - 1, 1 + i);
       }
@@ -1077,6 +1080,26 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return cell.attributes.fgColor;
   }
 
+  getAttributeAt(row: number, column: number): number {
+    this.checkOnScreen(row, column);
+    const cell = this.activePage.getCharAt(row, column);
+    return cell.attributes.fgColor & 15 | (cell.attributes.bgColor << 4) & 0xf0;
+  }
+
+  setCharAt(row: number, column: number, char: string) {
+    this.checkOnScreen(row, column);
+    const cell = this.activePage.getCharAt(row, column);
+    cell.char = char;
+    this.activePage.putCharAt(row, column, cell);
+  }
+
+  setAttributeAt(row: number, column: number, attr: number) {
+    this.checkOnScreen(row, column);
+    const cell = this.activePage.getCharAt(row, column);
+    cell.attributes = {fgColor: attr & 15, bgColor: (attr >> 4) & 15};
+    this.activePage.putCharAt(row, column, cell);
+  }
+
   private checkOnScreen(row: number, column: number) {
     const [columns, rows] = this.geometry.text;
     if (row < 1 || column < 1 || row > rows || column > columns) {
@@ -1113,7 +1136,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       template += `${i + 1}`.padEnd(8, ' ');
     }
     for (let i = 1; i <= columns; i++) {
-      this.activePage.putCharAt(rows, i, {char: template.charAt(i - 1), attributes: this.color});
+      this.activePage.putCharAt(rows, i, {char: template.charAt(i - 1), attributes: {...this.color}});
     }
     const keyColor = this.mode.mode === 0 && this.color.bgColor === 0 ?
       {fgColor: 0, bgColor: this.mode.defaultFgColor} :
@@ -1174,12 +1197,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
 }
 
 export class TestScreen implements Screen {
-  text: StringPrinter;
+  text: TestPrinter;
   graphics: CanvasScreen;
   hasGraphics: boolean;
 
   constructor(canvasProvider: CanvasProvider) {
-    this.text = new StringPrinter();
+    this.text = new TestPrinter();
     this.graphics = new CanvasScreen(canvasProvider);
     this.hasGraphics = false;
   }
@@ -1419,6 +1442,18 @@ export class TestScreen implements Screen {
 
   getColorAt(row: number, column: number): number {
     return this.graphics.getColorAt(row, column);
+  }
+
+  getAttributeAt(row: number, column: number): number {
+    return this.graphics.getAttributeAt(row, column);
+  }
+
+  setCharAt(row: number, column: number, char: string) {
+    this.graphics.setCharAt(row, column, char);
+  }
+
+  setAttributeAt(row: number, column: number, attr: number) {
+    return this.graphics.setAttributeAt(row, column, attr);
   }
 
   setSoftKey(key: number, name: string) {

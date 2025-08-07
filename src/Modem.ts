@@ -1,4 +1,4 @@
-import { asciiToString, charToAscii, stringToAscii } from "./AsciiChart.ts";
+import { asciiToString, charToAscii, stringToAscii, CR, LF, trim } from "./AsciiChart.ts";
 import { BAD_FILE_MODE, BAD_FILE_NAME, FIELD_OVERFLOW, FILE_ALREADY_OPEN, INPUT_PAST_END_OF_FILE, IOError } from "./Errors.ts";
 import { FileAccessor, Handle, isSequentialWriteMode, Opener, OpenMode } from "./Files.ts";
 import { BasePrinter } from "./Printer.ts";
@@ -115,7 +115,7 @@ export class HttpModem implements Modem {
       return;
     }
     if (line.toLowerCase().startsWith('atdt')) {
-      const url = line.slice(4).trim();
+      const url = trim(line.slice(4));
       setTimeout(async () => this.printDataFromUrl(url), 0);
       return;
     }
@@ -282,5 +282,5 @@ function sleep(ms: number) {
 }
 
 function modemResponse(str: string): string {
-  return `\r\n\r\n${str}\r\n`;
+  return `${CR + LF + CR + LF}${str}${CR + LF}`;
 }

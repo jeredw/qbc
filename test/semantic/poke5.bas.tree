@@ -1,0 +1,247 @@
+(program 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (literal &hb800)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 0))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call asc 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "h")))) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 1))) , 
+        (argument 
+          (expr 
+            (literal &h18)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 2))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call asc 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "e")))) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 3))) , 
+        (argument 
+          (expr 
+            (literal &h18)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 4))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call asc 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "l")))) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 5))) , 
+        (argument 
+          (expr 
+            (literal &h18)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 6))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call asc 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "l")))) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 7))) , 
+        (argument 
+          (expr 
+            (literal &h18)))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 8))) , 
+        (argument 
+          (expr 
+            (variable_or_function_call asc 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal "o")))) ))))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id poke) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 9))) , 
+        (argument 
+          (expr 
+            (literal &h18)))))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call attr%) = 
+      (expr 
+        (variable_or_function_call peek 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 1)))) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call bg%) = 
+      (expr 
+        (expr 
+          (variable_or_function_call attr%)) \ 
+        (expr 
+          (literal 16))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call fg%) = 
+      (expr 
+        (expr 
+          (variable_or_function_call attr%)) and 
+        (expr 
+          (literal 15))))) \n 
+  (statement 
+    (color_statement color 
+      (expr 
+        (variable_or_function_call fg%)) , 
+      (expr 
+        (variable_or_function_call bg%)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 0)))) ))))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 2)))) ))))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 4)))) ))))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 6)))) ))))) ))) ;))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 8)))) ))))) )))))) \n <EOF>)

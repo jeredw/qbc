@@ -1,7 +1,7 @@
 import { MemoryDrive } from "../src/Disk.ts";
 import { ParseError, RuntimeError } from "../src/Errors.ts";
 import { Interpreter } from "../src/Interpreter.ts";
-import { StringPrinter } from "../src/Printer.ts";
+import { TestPrinter } from "../src/Printer.ts";
 import { TestScreen } from "../src/Screen.ts";
 import { TestSpeaker } from "../src/Speaker.ts";
 import { KeyboardListener, typeLines } from "../src/Keyboard.ts";
@@ -22,7 +22,7 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       }
     });
     const speaker = new TestSpeaker();
-    const printer = new StringPrinter();
+    const printer = new TestPrinter();
     const disk = new MemoryDrive();
     const keyboard = new KeyboardListener();
     const timer = new TestTimer();

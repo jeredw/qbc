@@ -1,4 +1,5 @@
 import { keyToScanCode, scanCodeToKey } from "./ScanCodeChart.ts"
+import { CR, BS, EOF, TAB } from "./AsciiChart.ts"
 
 export interface Keyboard {
   input(): Key | undefined;
@@ -472,10 +473,10 @@ function keyToChar(e: KeyboardEvent): string | undefined {
     }
   }
   switch (e.key) {
-    case 'Enter': return '\x0d';
-    case 'Backspace': return '◘';
-    case 'Escape': return '←';
-    case 'Tab': return '\x09';
+    case 'Enter': return CR;
+    case 'Backspace': return BS;
+    case 'Escape': return EOF;
+    case 'Tab': return TAB;
   }
 }
 

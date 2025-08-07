@@ -1,4 +1,4 @@
-import { charToAscii } from './AsciiChart.ts'
+import { charToAscii, CR, LF, TAB } from './AsciiChart.ts'
 
 export interface Printer {
   print(text: string, newline: boolean): void;
@@ -32,7 +32,7 @@ export abstract class BasePrinter implements Printer {
   protected newLine(hanging = false) {
     this.column = 1;
     this.row++;
-    this.putChar('\n');
+    this.putChar(LF);
   }
 
   private spaceLeftOnLine() {
@@ -41,7 +41,7 @@ export abstract class BasePrinter implements Printer {
 
   protected putString(text: string) {
     for (const ch of text) {
-      if (ch === '\n' || ch === '\r') {
+      if (ch === CR || ch === LF) {
         this.newLine();
       } else {
         this.putChar(ch);
@@ -113,7 +113,7 @@ export abstract class BasePrinter implements Printer {
   }
 }
 
-export class StringPrinter extends BasePrinter {
+export class TestPrinter extends BasePrinter {
   output: string = "";
 
   constructor() {
@@ -121,6 +121,12 @@ export class StringPrinter extends BasePrinter {
   }
 
   override putChar(ch: string) {
+    ch = (
+      ch === CR ? '\r' :
+      ch === LF ? '\n' :
+      ch === TAB ? '\t' :
+      ch
+    );
     this.output += ch;
   }
 }
@@ -222,7 +228,7 @@ export class LinePrinter extends BasePrinter {
             this.delay += FONT_DELAY;
             break;
         }
-      } else if (ch === '\n') {
+      } else if (ch === LF) {
         this.linesPrinted++;
         if (this.linesPrinted > 5) {
           this.paperWindow.scrollTop += 16;

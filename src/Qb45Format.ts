@@ -1,4 +1,4 @@
-import { asciiToString, stringToAscii } from "./AsciiChart";
+import { asciiToString, stringToAscii, LF } from "./AsciiChart";
 
 export function decodeQb45BinaryFile(buffer: ArrayBuffer): number[] {
   return new Qb45Loader(buffer).decode();
@@ -80,7 +80,7 @@ class Qb45Loader {
     }
     for (const section of sections) {
       if (this.output.length > 0) {
-        this.output.push(...stringToAscii('\n\n'))
+        this.output.push(...stringToAscii(LF + LF));
       }
       this.loadSection(section);
     }
@@ -104,7 +104,7 @@ class Qb45Loader {
           break;
         }
         if (!firstLine) {
-          this.output.push(...stringToAscii('\n'));
+          this.output.push(...stringToAscii(LF));
         }
         firstLine = false;
         this.stack = [];
