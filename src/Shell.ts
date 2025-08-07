@@ -158,6 +158,39 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   }
 
   scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
+    if (document.fullscreenElement) {
+      // In fullscreen mode, canvas content will be letterboxed with insets on
+      // either the left or top, and (x, y) will be relative to the top/left of
+      // the screen. Re-scale so that (x, y) is relative to content instead.
+      const {
+        offsetWidth: canvasWidth,
+        offsetHeight: canvasHeight,
+        width: contentWidth,
+        height: contentHeight
+      } = this.screen.canvas;
+      const contentAspectRatio = contentWidth / contentHeight;
+      const screenAspectRatio = window.innerWidth / window.innerHeight;
+
+      let usableWidth: number;
+      let usableHeight: number;
+      let insetLeft = 0;
+      let insetTop = 0;
+      if (screenAspectRatio > contentAspectRatio) {
+        usableHeight = canvasHeight;
+        usableWidth = usableHeight * contentAspectRatio;
+        insetLeft = (canvasWidth - usableWidth) / 2;
+      } else {
+        usableWidth = canvasWidth;
+        usableHeight = usableWidth / contentAspectRatio;
+        insetTop = (canvasHeight - usableHeight) / 2;
+      }
+      x = (x - insetLeft) * (contentWidth / usableWidth);
+      y = (y - insetTop) * (contentHeight / usableHeight);
+    } else {
+      // There is a 3px border for the focus ring when not in fullscreen mode.
+      x -= 3;
+      y -= 3;
+    }
     return this.screen.scaleMouseCoordinates(x, y);
   }
 
@@ -192,10 +225,12 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
       document.body.classList.add('fullscreen');
       this.statusBar.hide();
       this.editorPane.style.display = 'none';
+      this.screen.canvas.style.border = 'none';
     } else {
       document.body.classList.remove('fullscreen');
       this.statusBar.show();
       this.editorPane.style.display = '';
+      this.screen.canvas.style.border = '';
     }
   }
 

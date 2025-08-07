@@ -1,6 +1,7 @@
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
 import { CircleArgs, GetBitmapArgs, LineArgs, PaintArgs, Plotter, Point, PutBitmapArgs } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
+import { clamp } from './Math.ts';
 import { MouseSurface } from './Mouse.ts';
 import { Printer, BasePrinter, TestPrinter } from './Printer.ts';
 import { SCREEN_MODES, ScreenGeometry, ScreenMode } from './ScreenMode.ts';
@@ -1188,10 +1189,12 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
+    // Expect that (x, y) is in canvas content coordinates with (0, 0) at the
+    // upper left of the canvas content and (w, h) at the lower right.
     const scaleX = this.mode.mode === 13 ? 2 : 1;
     return {
-      x: scaleX * ~~((x / this.canvas.offsetWidth) * this.canvas.width),
-      y: ~~((y / this.canvas.offsetHeight) * this.canvas.height),
+      x: scaleX * ~~clamp(x, 0, this.canvas.width),
+      y: ~~clamp(y, 0, this.canvas.height)
     };
   }
 }
@@ -1509,14 +1512,4 @@ export class TestScreen implements Screen {
   scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
     return {x, y};
   }
-}
-
-function clamp(x: number, min: number, max: number): number {
-  if (x < min) {
-    return min;
-  }
-  if (x > max) {
-    return max;
-  }
-  return x;
 }
