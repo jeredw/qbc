@@ -1,0 +1,28 @@
+(program ' \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (seek_statement seek # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "stuff")))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call s$))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

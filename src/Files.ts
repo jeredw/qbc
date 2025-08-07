@@ -19,7 +19,7 @@ export interface Opener {
 export interface FileAccessor extends Printer {
   openMode(): OpenMode;
 
-  seek(pos: number): void;
+  seek(positionOrRecordNumber: number): void;
 
   readChars(numBytes: number): string;
   readLine(): string;

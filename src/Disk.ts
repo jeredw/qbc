@@ -300,16 +300,20 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     return this.mode;
   }
 
-  seek(pos: number) {
-    if (pos <= 0) {
+  seek(positionOrRecordNumber: number) {
+    if (positionOrRecordNumber <= 0) {
       throw new IOError(BAD_RECORD_NUMBER);
     }
-    this.position = pos - 1;
+    if (this.mode === OpenMode.RANDOM) {
+      this.position = (positionOrRecordNumber - 1) * this.recordLength;
+      return;
+    }
+    this.position = positionOrRecordNumber - 1;
   }
 
-  private readBytes(buffer: number[], position?: number) {
-    if (position !== undefined) {
-      this.seek(position);
+  private readBytes(buffer: number[], positionOrRecordNumber?: number) {
+    if (positionOrRecordNumber !== undefined) {
+      this.seek(positionOrRecordNumber);
     }
     this.lastAccessPosition = this.position;
     buffer.fill(0);
@@ -324,9 +328,9 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     }
   }
 
-  private writeBytes(bytes: number[], position?: number) {
-    if (position !== undefined) {
-      this.seek(position);
+  private writeBytes(bytes: number[], positionOrRecordNumber?: number) {
+    if (positionOrRecordNumber !== undefined) {
+      this.seek(positionOrRecordNumber);
     }
     this.lastAccessPosition = this.position;
     if (this.position >= this.file.bytes.length) {
@@ -347,16 +351,14 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     if (this.openMode() !== OpenMode.RANDOM) {
       throw new IOError(BAD_FILE_MODE);
     }
-    const position = recordNumber && (1 + (recordNumber - 1) * this.recordLength);
-    this.readBytes(this.recordBuffer, position);
+    this.readBytes(this.recordBuffer, recordNumber);
   }
 
   putRecord(recordNumber?: number) {
     if (this.openMode() !== OpenMode.RANDOM) {
       throw new IOError(BAD_FILE_MODE);
     }
-    const position = recordNumber && (1 + (recordNumber - 1) * this.recordLength);
-    this.writeBytes(this.recordBuffer, position);
+    this.writeBytes(this.recordBuffer, recordNumber);
   }
 
   getBytes(numBytes: number, position?: number): number[] {

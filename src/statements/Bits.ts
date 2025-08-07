@@ -657,7 +657,7 @@ export function readElementToBytes(data: DataView, offset: number, variable: Var
     case TypeTag.STRING: {
       const value = readString(variable, memory);
       if (stringsHaveLengthPrefixed) {
-        data.setInt16(offset, value.length);
+        data.setInt16(offset, value.length, true);
         copyString(data, offset + 2, value);
         return 2 + value.length;
       }
