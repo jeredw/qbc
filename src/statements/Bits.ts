@@ -874,6 +874,12 @@ export class PeekStatement extends Statement {
           case 0x418:
             data = context.devices.keyboard.getExtendedShiftStatus();
             break;
+          case 0x44a: {
+            const geometry = context.devices.screen.getGeometry();
+            const [columns, _] = geometry.text;
+            data = columns;
+            break;
+          }
           case 0x46c:
             data = context.devices.timer.rawTicks() & 0xff;
             break;

@@ -33,6 +33,7 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
   setTextGeometry(width?: number, height?: number): void;
   getMode(): ScreenMode;
+  getGeometry(): ScreenGeometry;
   copyPage(sourcePage: number, destPage: number): void;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
@@ -509,6 +510,10 @@ export class CanvasScreen extends BasePrinter implements Screen {
 
   getMode(): ScreenMode {
     return this.mode;
+  }
+
+  getGeometry(): ScreenGeometry {
+    return this.geometry;
   }
 
   copyPage(sourcePage: number, destPage: number) {
@@ -1208,6 +1213,10 @@ export class TestScreen implements Screen {
 
   getMode(): ScreenMode {
     return this.graphics.getMode();
+  }
+
+  getGeometry(): ScreenGeometry {
+    return this.graphics.getGeometry();
   }
 
   copyPage(sourcePage: number, destPage: number) {
