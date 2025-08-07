@@ -1,0 +1,55 @@
+(program ' \n ' \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "this is record 1")))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call s$))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "this is record 2")))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call s$))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.txt")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "2222")))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 2)) , 
+      (variable_or_function_call s$))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

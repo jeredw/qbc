@@ -585,14 +585,15 @@ export class PutIoStatement extends GetPutStatement {
       if (handle.fields.length > 0) {
         throw RuntimeError.fromToken(this.token, FIELD_STATEMENT_ACTIVE);
       }
+      accessor.getRecord(recordNumber);
       const buffer = readScalarVariableToBytes(this.variable, context.memory, /* stringsHaveLengthPrefixed */ true);
       const bytes = new Uint8Array(buffer);
       const record = accessor.getRecordBuffer();
       if (bytes.length > record.length) {
         throw RuntimeError.fromToken(this.token, BAD_RECORD_LENGTH);
       }
-      for (let i = 0; i < record.length; i++) {
-        record[i] = i < bytes.length ? bytes[i] : 0;
+      for (let i = 0; i < bytes.length; i++) {
+        record[i] = bytes[i];
       }
     }
     accessor.putRecord(recordNumber);
