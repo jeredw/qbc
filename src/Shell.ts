@@ -22,6 +22,7 @@ import JSZip from "jszip";
 import { MouseListener, MouseSurface } from "./Mouse.ts";
 import { SoundBlaster } from "./SoundBlaster.ts";
 import type { PlayerElement } from "./midi-player.d.ts";
+import { CommonData } from "./CommonData.ts";
 
 enum RunState {
   ENDED,
@@ -407,13 +408,13 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     }
   }
 
-  runProgram(fileName: string) {
+  runProgram(fileName: string, common?: CommonData) {
     const program = (
       fileName.includes('.') || fileName.toLowerCase().endsWith('.bas') ? fileName : `${fileName}.bas`
     );
     this.load(program);
     setTimeout(() => {
-      this.run(true);
+      this.run(true, 0, common);
     });
   }
 
@@ -431,7 +432,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     }
   }
 
-  async run(restart = false, statementIndex = 0) {
+  async run(restart = false, statementIndex = 0, common?: CommonData) {
     this.root.classList.remove('blocked');
     this.updateState(RunState.RUNNING);
     this.interpreter.debug.pauseLine = undefined;
@@ -450,7 +451,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
         this.modem.reset();
         this.disk.resetHandles();
         this.invocation?.stop();
-        this.invocation = this.interpreter.run(text);
+        this.invocation = this.interpreter.run(text, common);
         await this.invocation.restart(statementIndex);
       } else {
         await this.invocation?.start();

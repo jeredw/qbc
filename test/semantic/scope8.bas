@@ -1,5 +1,6 @@
 ' Test that local scalars can shadow global arrays of same type.
 common shared x%()
+dim x%(10)
 sub foo
   x%(0) = 42
   for x% = 1 to 4

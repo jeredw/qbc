@@ -1,0 +1,40 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id monkey) \n 
+    (type_element 
+      (untyped_id assertiveness) as 
+      (type_name_for_type_element double) \n) end type) \n \n 
+  (type_statement type 
+    (untyped_id trainer) \n 
+    (type_element 
+      (untyped_id age) as 
+      (type_name_for_type_element integer) \n) 
+    (type_element 
+      (untyped_id nom) as 
+      (type_name_for_type_element 
+        (fixed_string string * 5)) \n) 
+    (type_element 
+      (untyped_id pet) as 
+      (type_name_for_type_element 
+        (untyped_id monkey)) \n) end type) \n \n 
+  (statement 
+    (common_statement common 
+      (scope_variable 
+        (untyped_id stuff) as 
+        (type_name 
+          (untyped_id trainer))))) \n \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stuff.age))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stuff.nom))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call stuff.pet.assertiveness))))) \n <EOF>)

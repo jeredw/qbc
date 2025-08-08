@@ -240,12 +240,12 @@ export class SymbolTable {
 
   // Look up a name, and if it is not found, define a new variable with that
   // name and the given type.
-  lookupOrDefineVariable({name, type, sigil, numDimensions, sharedDeclaration, token, storageType, isAsType, arrayBaseIndex, shared}: {
+  lookupOrDefineVariable({name, type, sigil, numDimensions, scopeDeclaration, token, storageType, isAsType, arrayBaseIndex, shared}: {
       name: string,
       type: Type,
       sigil?: string,
       numDimensions: number,
-      sharedDeclaration?: boolean,
+      scopeDeclaration?: boolean,
       token: Token,
       storageType: StorageType,
       isAsType: boolean,
@@ -299,7 +299,7 @@ export class SymbolTable {
             if (!variable.array) {
               throw new Error("missing array dimensions");
             }
-            if (!sharedDeclaration && !variable.isParameter &&
+            if (!scopeDeclaration && !variable.scopeDeclaration && !variable.isParameter &&
                 variable.array.dimensions.length != numDimensions) {
               throw ParseError.fromToken(token, "Wrong number of dimensions");
             }
@@ -326,7 +326,7 @@ export class SymbolTable {
       // Arrays cannot be implicitly defined on the stack.
       throw ParseError.fromToken(token, "Array not defined");
     }
-    const variable = { name, type, sigil, token, storageType, isAsType, sharedDeclaration, shared, ...array };
+    const variable = { name, type, sigil, token, storageType, isAsType, scopeDeclaration, shared, ...array };
     this.defineVariable(variable);
     return { tag: QBasicSymbolTag.VARIABLE, variable };
   }

@@ -1,0 +1,12 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable 
+        (untyped_id m) as 
+        (type_name 
+          (fixed_string string * 5))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call m$))))) \n <EOF>)

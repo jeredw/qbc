@@ -4,6 +4,10 @@ import { Statement } from "./Statement.ts";
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { evaluateStringExpression } from "../Expressions.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
+import { readVariableToBytes } from "./Bits.ts";
+import { getArrayDescriptor } from "./Arrays.ts";
+import { ArrayBounds } from "../Variables.ts";
 
 export class EndStatement extends Statement {
   constructor() {
@@ -45,5 +49,34 @@ export class RunStatement extends Statement {
       return {tag: ControlFlowTag.RUN, program};
     }
     return {tag: ControlFlowTag.RUN};
+  }
+}
+
+export class ChainStatement extends Statement {
+  programExpr: ExprContext;
+
+  constructor({params}: BuiltinStatementArgs) {
+    super();
+    if (!params[0] || !params[0].expr) {
+      throw new Error("missing length arg");
+    }
+    this.programExpr = params[0].expr;
+  }
+
+  override execute(context: ExecutionContext): ControlFlow {
+    const program = evaluateStringExpression(this.programExpr, context.memory);
+    const {common} = context;
+    common.serializedValues = common.chainVariables.map((variable) => {
+      const type = variable.type;
+      const buffer = readVariableToBytes(variable, context.memory);
+      const bytes = new Uint8Array(buffer);
+      let dimensions: ArrayBounds[] | undefined;
+      if (variable.array) {
+        const descriptor = getArrayDescriptor(variable, context.memory);
+        dimensions = [...descriptor.dimensions];
+      }
+      return {type, dimensions, bytes};
+    });
+    return {tag: ControlFlowTag.CHAIN, program};
   }
 }

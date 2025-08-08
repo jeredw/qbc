@@ -1,0 +1,9 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable msg$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call msg$))))) \n <EOF>)

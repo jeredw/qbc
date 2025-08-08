@@ -13,8 +13,9 @@ import { HttpModem, TestFetcher } from "../src/Modem.ts";
 import { Invoker } from "../src/Invocation.ts";
 import { MouseListener } from "../src/Mouse.ts";
 import { SoundBlaster } from "../src/SoundBlaster.ts";
+import { CommonData } from "../src/CommonData.ts";
 
-async function interpret(program: string, input: string[], diskJson: string): Promise<[string, string | undefined]> {
+async function interpret(program: string, input: string[], diskJson: string, commonJson: string): Promise<[string, string | undefined]> {
   try {
     const screen = new TestScreen(new class CanvasProvider {
       createCanvas(width: number, height: number) {
@@ -48,9 +49,12 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
       mouse,
       blaster,
     }, new class implements Invoker {
-      runProgram(fileName: string) {
+      runProgram(fileName: string, common?: CommonData) {
         if (fileName.toLowerCase() == 'error') {
           throw new Error('thrown error during runProgram');
+        }
+        if (common) {
+          invocations += `COMMON ${common.toJson()}\n`
         }
         invocations += `RUN ${fileName}\n`;
       }
@@ -62,7 +66,8 @@ async function interpret(program: string, input: string[], diskJson: string): Pr
     if (diskJson) {
       disk.loadFromJson(diskJson);
     }
-    const invocation = interpreter.run(program + '\n');
+    const common = commonJson ? CommonData.fromJson(commonJson) : undefined;
+    const invocation = interpreter.run(program + '\n', common);
     await invocation.restart();
     let graphics: string | undefined;
     if (screen.hasGraphics) {
@@ -118,7 +123,13 @@ async function runTests(tests: string[]) {
       } catch {
         // Assume no disk image.
       }
-      const [outputText, graphics] = await interpret(program, input, diskJson);
+      let commonJson = "";
+      try {
+        commonJson = Deno.readTextFileSync(testPath + '.common');
+      } catch {
+        // Assume no common variables.
+      }
+      const [outputText, graphics] = await interpret(program, input, diskJson, commonJson);
       const diffCommand = new Deno.Command('diff', {
         args: ['-du', goldenPath, '-'],
         stdin: 'piped',

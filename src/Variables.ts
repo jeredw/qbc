@@ -14,9 +14,9 @@ export interface Variable {
   shared?: boolean;
   // Names of procedures with SHARED declarations for this variable.
   sharedWith?: Set<string>;
-  // If true, this variable has only been encountered in a SHARED declaration.
+  // If true, this variable has only been encountered in a COMMON or SHARED declaration.
   // If an actual DIM occurs later, it may replace this symbol.
-  sharedDeclaration?: boolean;
+  scopeDeclaration?: boolean;
   static?: boolean;
   token: Token;
   elements?: Map<string, Variable>;

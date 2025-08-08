@@ -1,0 +1,16 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable s$))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "hello world")))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id chain) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "chain4.bas")))))) \n <EOF>)

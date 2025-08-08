@@ -1,0 +1,29 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1))) , 
+            (dim_subscript 
+              (expr 
+                (literal 1))) , 
+            (dim_subscript 
+              (expr 
+                (literal 5))) ))))) \n 
+  (statement 
+    (common_statement common 
+      (scope_variable a 
+        (array_declaration 
+          ( ))))) \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( a , 
+                (expr 
+                  (literal 3)) ))))))) \n <EOF>)

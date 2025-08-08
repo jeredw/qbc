@@ -4,6 +4,14 @@
       (scope_variable x% 
         (array_declaration 
           ( ))))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
   (sub_statement sub 
     (untyped_id foo) 
     (block \n 

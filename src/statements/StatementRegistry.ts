@@ -57,7 +57,7 @@ import {
   VarSegFunction
 } from "./Bits.ts";
 import { ReadStatement, RestoreStatement } from "./Data.ts";
-import { EndStatement, NoOpStatement, RunStatement, StopStatement } from "./Control.ts";
+import { ChainStatement, EndStatement, NoOpStatement, RunStatement, StopStatement } from "./Control.ts";
 import { ForStatement, NextStatement } from "./For.ts";
 import { LetStatement, SwapStatement } from "./Assignment.ts";
 import {
@@ -161,6 +161,7 @@ import { ErdevFunction, ErdevStringFunction, ErlFunction, ErrFunction, ErrorHand
 import { CommandFunction, EnvironFunction, EnvironStatement } from "./Dos.ts";
 import { ClearStatement } from "./Clear.ts";
 import { CallAbsoluteParameter, CallAbsoluteStatement } from "./Asm.ts";
+import { CommonStatement } from "./Common.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -202,6 +203,10 @@ export function cdbl(args: BuiltinStatementArgs) {
   return new CdblFunction(args);
 }
 
+export function chain(args: BuiltinStatementArgs) {
+  return new ChainStatement(args);
+}
+
 export function chdir(args: BuiltinStatementArgs) {
   return new ChdirStatement(args);
 }
@@ -240,6 +245,10 @@ export function clng(args: BuiltinStatementArgs) {
 
 export function cls(args: BuiltinStatementArgs) {
   return new ClsStatement(args);
+}
+
+export function common(result: Variable) {
+  return new CommonStatement(result);
 }
 
 export function command(args: BuiltinStatementArgs) {

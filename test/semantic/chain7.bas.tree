@@ -1,0 +1,12 @@
+(program ' \n ' \n ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable 
+        (untyped_id m) as 
+        (type_name 
+          (fixed_string string * 4))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n <EOF>)

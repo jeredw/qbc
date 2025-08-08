@@ -337,7 +337,7 @@ export class CodeGenerator extends QBasicParserListener {
       throw new Error("indexing non array variable");
     }
     const args = argumentListCtx?.argument() ?? [];
-    if (variable.array.dimensions.length != args.length && !variable.isParameter) {
+    if (variable.array.dimensions.length != args.length && !variable.isParameter && !variable.scopeDeclaration) {
       throw ParseError.fromToken(token, "Wrong number of dimensions");
     }
     const indexExprs: parser.ExprContext[] = [];
@@ -475,7 +475,19 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.color(ctx.start!, arg1, arg2, arg3), ctx.start!);
   }
 
-  override enterCommon_statement = (ctx: parser.Common_statementContext) => {}
+  override enterCommon_statement = (ctx: parser.Common_statementContext) => {
+    if (ctx.block_name()) {
+      // Named blocks are skipped for chain.
+      return;
+    }
+    for (const common of ctx.scope_variable()) {
+      const result = getTyperContext(common).$result;
+      if (!result) {
+        throw new Error('Missing result for common variable');
+      }
+      this.addStatement(statements.common(result), ctx.start!);
+    }
+  }
 
   override enterDef_seg_statement = (ctx: parser.Def_seg_statementContext) => {
     const segment = ctx.expr() ?? undefined;

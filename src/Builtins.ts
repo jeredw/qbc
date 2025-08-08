@@ -41,6 +41,7 @@ export class StandardLibrary {
     _("bload string integer?", statements.bload),
     _("bsave string integer long", statements.bsave),
     _("cdbl numeric -> double", statements.cdbl),
+    _("chain string", statements.chain),
     _("chdir string", statements.chdir),
     _("chr numeric -> string", statements.chr),
     _("cint numeric -> integer", statements.cint),

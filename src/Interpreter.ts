@@ -15,6 +15,7 @@ import { Invocation, invoke, Invoker } from "./Invocation.ts";
 import { Devices } from "./Devices.ts";
 import { Memory } from "./Memory.ts";
 import { DebugState } from "./DebugState.ts";
+import { CommonData } from "./CommonData.ts";
 
 export class Interpreter {
   debug: DebugState;
@@ -23,7 +24,7 @@ export class Interpreter {
     this.debug = new DebugState();
   }
 
-  public run(text: string): Invocation {
+  public run(text: string, common?: CommonData): Invocation {
     // Add a trailing newline so the final statement has a terminator.
     const textWithNewline = text.endsWith('\n') ? text : text + '\n';
     const inputStream = CharStream.fromString(textWithNewline);
@@ -38,7 +39,7 @@ export class Interpreter {
     // Parse the program first to check correct syntax.
     const tree = parser.program();
     const program = compile(tree);
-    return invoke(this.devices, new Memory(program.staticSize), program, this.debug, this.invoker);
+    return invoke(this.devices, new Memory(program.staticSize), program, this.debug, this.invoker, common);
   }
 }
 

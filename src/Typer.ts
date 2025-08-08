@@ -435,8 +435,8 @@ export class Typer extends QBasicParserListener {
         };
       }
       let treatAsDynamic = false;
-      if (existingVariable && existingVariable.sharedDeclaration) {
-        // A variable first encountered as a COMMON SHARED declaration and later
+      if (existingVariable && existingVariable.scopeDeclaration) {
+        // A variable first encountered as a COMMON/SHARED declaration and later
         // a DIM would normally be a duplicate definition.  Upgrade the SHARED
         // symbol to a real one.
         if (!!dim.AS() && !existingVariable.isAsType) {
@@ -445,10 +445,10 @@ export class Typer extends QBasicParserListener {
         if (!dim.AS() && existingVariable.isAsType) {
           throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
         }
-        existingVariable.sharedDeclaration = false;
+        existingVariable.scopeDeclaration = false;
         if (existingVariable.array && arrayDescriptor.array) {
-          // SHARED doesn't have real array dimensions, so we need to reallocate
-          // array variables...
+          // COMMON and SHARED don't have real array dimensions, so we need to
+          // reallocate array variables...
           existingVariable.array.dynamic = arrayDescriptor.array.dynamic;
           existingVariable.array.dimensions = arrayDescriptor.array.dimensions;
           this._chunk.symbols.allocateArray(existingVariable);
@@ -547,10 +547,9 @@ export class Typer extends QBasicParserListener {
     if (this._chunk.procedure) {
       throw ParseError.fromToken(ctx.start!, "Illegal in procedure or DEF FN");
     }
-    if (!ctx.SHARED()) {
-      throw new Error('COMMON only implemented for COMMON SHARED declarations');
-    }
+    const shared = !!ctx.SHARED();
     for (const common of ctx.scope_variable()) {
+      let variable: Variable;
       if (!!common.AS()) {
         const asType = this.getType(common.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
@@ -561,15 +560,16 @@ export class Typer extends QBasicParserListener {
           type: asType,
           token,
           numDimensions: common.array_declaration() ? 1 : 0,
-          sharedDeclaration: true,
+          scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: true,
           arrayBaseIndex: this._arrayBaseIndex,
-          shared: true,
+          shared,
         });
         if (!isVariable(symbol)) {
           throw ParseError.fromToken(token, "Duplicate definition");
         }
+        variable = symbol.variable;
       } else {
         const [name, sigil] = splitSigil(common.ID()?.getText()!);
         const asType = this._chunk.symbols.getAsType(name);
@@ -589,16 +589,22 @@ export class Typer extends QBasicParserListener {
           token,
           sigil,
           numDimensions: common.array_declaration() ? 1 : 0,
-          sharedDeclaration: true,
+          scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: false,
           arrayBaseIndex: this._arrayBaseIndex,
-          shared: true,
+          shared,
         });
         if (!isVariable(symbol)) {
           throw ParseError.fromToken(token, "Duplicate definition");
         }
+        variable = symbol.variable;
       }
+      if (variable.scopeDeclaration && variable.array) {
+        // If we see common a() without a dim beforehand, assume a() is dynamic.
+        variable.array.dynamic = true;
+      }
+      getTyperContext(common).$result = variable;
     }
   }
 
@@ -621,7 +627,7 @@ export class Typer extends QBasicParserListener {
           type: asType,
           token,
           numDimensions: share.array_declaration_no_dimensions() ? 1 : 0,
-          sharedDeclaration: true,
+          scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: true,
           arrayBaseIndex: this._arrayBaseIndex,
@@ -649,7 +655,7 @@ export class Typer extends QBasicParserListener {
           token,
           sigil,
           numDimensions: share.array_declaration_no_dimensions() ? 1 : 0,
-          sharedDeclaration: true,
+          scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: false,
           arrayBaseIndex: this._arrayBaseIndex,

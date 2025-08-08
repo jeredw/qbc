@@ -11,14 +11,15 @@ import { RandomNumbers } from "./RandomNumbers.ts";
 import { ResumeStatement } from "./statements/Errors.ts";
 import { DebugState } from "./DebugState.ts";
 import { ClearStatement } from "./statements/Clear.ts";
+import { CommonData } from "./CommonData.ts";
 
 export interface Invoker {
-  runProgram(fileName: string): void;
+  runProgram(fileName: string, common?: CommonData): void;
   restartProgram(statementIndex?: number): void;
 }
 
-export function invoke(devices: Devices, memory: Memory, program: Program, debug: DebugState, invoker: Invoker) {
-  return new Invocation(devices, memory, program, debug, invoker);
+export function invoke(devices: Devices, memory: Memory, program: Program, debug: DebugState, invoker: Invoker, common?: CommonData) {
+  return new Invocation(devices, memory, program, debug, invoker, common);
 }
 
 interface ProgramLocation {
@@ -43,6 +44,7 @@ export class Invocation {
   private events: Events;
   private errorHandling: ErrorHandling;
   private random: RandomNumbers;
+  private common: CommonData;
   private stack: ProgramLocation[]
   private debug: DebugState;
   private invoker: Invoker;
@@ -54,13 +56,14 @@ export class Invocation {
   nextLine: number = 1;
   private nextChunk = 0;
 
-  constructor(devices: Devices, memory: Memory, program: Program, debug: DebugState, invoker: Invoker) {
+  constructor(devices: Devices, memory: Memory, program: Program, debug: DebugState, invoker: Invoker, common?: CommonData) {
     this.devices = devices;
     this.memory = memory;
     this.data = new ProgramData(program.data);
     this.files = new Files();
     this.events = new Events(devices);
     this.random = new RandomNumbers();
+    this.common = new CommonData(common);
     this.errorHandling = {};
     this.program = program;
     this.debug = debug;
@@ -219,6 +222,7 @@ export class Invocation {
         events: this.events,
         errorHandling: this.errorHandling,
         random: this.random,
+        common: this.common,
       });
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
@@ -325,6 +329,17 @@ export class Invocation {
           }
           // Halt this invocation if the new one didn't throw.
           this.stack = [];
+          break;
+        case ControlFlowTag.CHAIN:
+          try {
+            this.invoker.runProgram(controlFlow.program, this.common);
+          } catch (e: unknown) {
+            this.stack[this.stack.length - 1].statementIndex--;
+            throw RuntimeError.fromToken(statement.startToken!, FILE_NOT_FOUND);
+          }
+          // Halt this invocation if the new one didn't throw.
+          this.stack = [];
+          break;
       }
     } catch (e: unknown) {
       if (e instanceof RuntimeError) {

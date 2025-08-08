@@ -1,0 +1,90 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable a 
+        (array_declaration 
+          ( ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (lbound_function lbound 
+              ( a , 
+                (expr 
+                  (literal 1)) )))) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( a , 
+                (expr 
+                  (literal 1)) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (lbound_function lbound 
+              ( a , 
+                (expr 
+                  (literal 2)) )))) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( a , 
+                (expr 
+                  (literal 2)) ))))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0))) , 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2))) , 
+                (argument 
+                  (expr 
+                    (literal 2)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3))) , 
+                (argument 
+                  (expr 
+                    (literal 3)))) )))))) \n <EOF>)

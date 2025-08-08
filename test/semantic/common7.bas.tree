@@ -1,0 +1,14 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
+  (statement 
+    (common_statement common 
+      (scope_variable x 
+        (array_declaration 
+          ( ))))) \n <EOF>)

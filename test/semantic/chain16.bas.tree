@@ -1,0 +1,34 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (block_name / nope /) 
+      (scope_variable a) , 
+      (scope_variable b) , 
+      (scope_variable c))) \n 
+  (statement 
+    (common_statement common 
+      (scope_variable x%) , 
+      (scope_variable y%) , 
+      (scope_variable z%))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x%) = 
+      (expr 
+        (literal 42)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call y%) = 
+      (expr 
+        (literal 10)))) : 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call z%) = 
+      (expr 
+        (literal 20)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id chain) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "common17.bas")))))) \n <EOF>)

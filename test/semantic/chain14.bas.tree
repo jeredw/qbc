@@ -1,0 +1,45 @@
+(program ' \n ' 
+  (statement 
+    (static_metacommand  $STATIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 1))) , 
+            (dim_subscript 
+              (expr 
+                (literal 1))) , 
+            (dim_subscript 
+              (expr 
+                (literal 1))) ))))) \n 
+  (statement 
+    (common_statement common 
+      (scope_variable a 
+        (array_declaration 
+          ( ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1))) , 
+            (argument 
+              (expr 
+                (literal 1))) , 
+            (argument 
+              (expr 
+                (literal 1)))) )) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id chain) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "chain15.bas")))))) \n <EOF>)

@@ -1,0 +1,29 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable a%) , 
+      (scope_variable b%) , 
+      (scope_variable c%) , 
+      (scope_variable d%) , 
+      (scope_variable e%) , 
+      (scope_variable f%))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a%)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call b%)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call c%)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call d%)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call e%)) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call f%))))) \n <EOF>)

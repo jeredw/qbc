@@ -1,0 +1,16 @@
+(program ' \n ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable x% 
+        (array_declaration 
+          ( ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))))) \n <EOF>)

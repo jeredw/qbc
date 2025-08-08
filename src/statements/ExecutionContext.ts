@@ -5,6 +5,7 @@ import { Files } from "../Files.ts";
 import { Events } from "../Events.ts";
 import { RandomNumbers } from "../RandomNumbers.ts";
 import { ErrorHandling } from "../Errors.ts";
+import { CommonData } from "../CommonData.ts";
 
 export interface ExecutionContext {
   devices: Devices;
@@ -14,4 +15,5 @@ export interface ExecutionContext {
   events: Events;
   errorHandling: ErrorHandling;
   random: RandomNumbers;
+  common: CommonData;
 }
