@@ -72,16 +72,16 @@ Bringup
 + BIX42: Non-zero offset to BLOAD
 + WARGAMES: Tons of AudioContext errors
 + BIX: Reads stuff from ROM at FFA6, font data?
++ BOMBCOO: Uses VARSEG$/VARPTR with array index
 - ABSORB, MARIO: PEEKing to copy arrays in a loop serializes whole array repeatedly
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - AMBUSH, AMBUSH2: multifile
 - ANCIENTHEROS: byval
-- ANTS: chain
-- ARCRPG: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
+- ANTS, HB_INST, WATER1: chain
+- ARCRPG, BIX: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
 - ART334: Just including qb.bi, seems simple to support
 - BOMB5: You can have both a line number and a label...
-- BOMBCOO: Uses VARSEG$/VARPTR with array index
 - COOKIE: BLOADs into different pages offset from A000
 - DBZGAME: IDE knows how to fix missing "s at end of line
 - DBZGAME: CALL should work without DECLARE
@@ -92,11 +92,11 @@ Bringup
 - FULLDRAW: Calls BSAVE to save data from A000
 - GAMEBAS: VARSEG for record element
 - GBUGGIES: multifile, SADD
-- HB_INST: chain
 - JOLT: multifile
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
 - PANGALL: multifile
+- PONGBALL: Need mouse limit apis
 - USEFL201: CALL ABSOLUTE with record type
 - WHEEL OF WEALTH: marge simpson paint overflows circles
 
