@@ -189,7 +189,6 @@ export function getDefaultValue(variable: Variable): Value {
     case TypeTag.FIXED_STRING:
       return string(" ".repeat(variable.type.maxLength));
     case TypeTag.RECORD:
-      return reference(variable);
     case TypeTag.ANY:
     case TypeTag.NUMERIC:
     case TypeTag.PRINTABLE:
