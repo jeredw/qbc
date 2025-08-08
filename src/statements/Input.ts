@@ -352,18 +352,18 @@ export class InputFileStatement extends Statement {
       const nextChar = () => {
         char = accessor.readChars(1);
       };
-      // Skip over <ws>,?<ws>.
+      const peekChar = () => {
+        const pos = accessor.getSeek();
+        const next = accessor.readChars(1);
+        accessor.seek(pos);
+        return next;
+      };
       const nextField = () => {
+        // char is either a field delimiter, or empty at the start of a string.
         if (!accessor.eof()) {
           nextChar();
         }
-        while (!accessor.eof() && `, ${CR}${LF}`.includes(char)) {
-          const delim = char === ',';
-          nextChar();
-          if (delim) {
-            break;
-          }
-        }
+        // Skip whitespace after delimiter.
         while (!accessor.eof() && ` ${CR}${LF}`.includes(char)) {
           nextChar();
         }
@@ -374,6 +374,14 @@ export class InputFileStatement extends Statement {
           nextChar();
           while (!accessor.eof() && char !== '"') {
             result += char;
+            nextChar();
+          }
+          // Skip ahead to , if we have a list of strings like "foo"   ,  "bar".
+          // But if we have "foo""bar", treat the closing quote as the delimiter.
+          while (!accessor.eof() && peekChar() === ' ') {
+            nextChar();
+          }
+          if (!accessor.eof() && peekChar() === ',') {
             nextChar();
           }
           return result;

@@ -1,4 +1,5 @@
-' Bug: Multiple quoted string fields on a line, separate input statements.
+' Bug: Do not skip delimiters for multiple input statements reading quoted
+' strings on same line.
 open "test.txt" for output as #1
 write #1, "name", "bob", "eyes", "blue"
 close #1
