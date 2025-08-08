@@ -283,7 +283,7 @@ class Basic86 {
         [this.dx, this.ax] = [this.ax, this.dx];
         break;
       case 0x93:
-        [this.cx, this.bx] = [this.ax, this.bx];
+        [this.bx, this.ax] = [this.ax, this.bx];
         break;
       case 0xb4: {
         const imm8 = this.readByte(this.cs, this.ip++);
