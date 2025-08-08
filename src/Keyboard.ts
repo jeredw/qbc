@@ -472,10 +472,13 @@ function keyToChar(e: KeyboardEvent): string | undefined {
       return e.key;
     }
   }
+  if (e.ctrlKey && e.key == 'Z') {
+    return EOF;
+  }
   switch (e.key) {
     case 'Enter': return CR;
     case 'Backspace': return BS;
-    case 'Escape': return EOF;
+    case 'Escape': return '←';
     case 'Tab': return TAB;
   }
 }
