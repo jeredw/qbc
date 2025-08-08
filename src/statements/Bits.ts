@@ -14,7 +14,7 @@ import { Token } from "antlr4ng";
 import { readArrayToBytes, writeBytesToArray } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
 import { BlitOperation } from "../Drawing.ts";
-import { SBMIDI_BYTES, SBMIDI_SEGMENT, SBSIM_BYTES, SBSIM_SEGMENT } from "../MidiDrivers.ts";
+import * as baked from "../BakedInData.ts";
 
 export class CdblFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
@@ -850,19 +850,21 @@ export class PeekStatement extends Statement {
     } catch (e: unknown) {
     }
     let data = 0;
-    if (segment === SBMIDI_SEGMENT) {
+    if (segment === baked.SBMIDI_SEGMENT) {
       // Map some fake data used to detect MIDI drivers.
       data = (
         offset >= 271 ?
         stringToAscii("SBMIDI")[offset - 271] :
-        SBMIDI_BYTES[offset]
+        baked.SBMIDI_BYTES[offset]
       ) ?? 0;
-    } else if (segment === SBSIM_SEGMENT) {
+    } else if (segment === baked.SBSIM_SEGMENT) {
       data = (
         offset >= 274 ?
         stringToAscii("SBSIM")[offset - 274] :
-        SBSIM_BYTES[offset]
+        baked.SBSIM_BYTES[offset]
       ) ?? 0;
+    } else if (segment === baked.ROM_FONT_SEGMENT) {
+      data = baked.ROM_FONT_BYTES[offset - 0xe] ?? 0;
     } else if (segment === 0xa000) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 13) {

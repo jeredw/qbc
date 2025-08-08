@@ -1,7 +1,7 @@
 import { ExprContext } from "../../build/QBasicParser.ts";
 import { asciiToString } from "../AsciiChart.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
-import { SBMIDI_SEGMENT, SBSIM_SEGMENT } from "../MidiDrivers.ts";
+import { SBMIDI_SEGMENT, SBSIM_SEGMENT } from "../BakedInData.ts";
 import { Mouse } from "../Mouse.ts";
 import { getDefaultValue, integer, isNumeric } from "../Values.ts";
 import { Variable } from "../Variables.ts";
