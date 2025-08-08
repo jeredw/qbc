@@ -1,0 +1,23 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id monkey) \n 
+    (type_element 
+      (untyped_id assertiveness) as 
+      (type_name_for_type_element double) \n) end type) \n \n 
+  (type_statement type 
+    (untyped_id zoo) \n 
+    (type_element 
+      (untyped_id m) as 
+      (type_name_for_type_element 
+        (untyped_id monkey)) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id z) as 
+        (type_name 
+          (untyped_id zoo))))) \n \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call z.m))))) \n <EOF>)

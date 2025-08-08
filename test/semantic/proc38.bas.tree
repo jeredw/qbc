@@ -1,0 +1,16 @@
+(program ' \n 
+  (function_statement function foo 
+    (block \n 
+      (statement 
+        (for_next_statement for foo = 
+          (expr 
+            (literal 1)) to 
+          (expr 
+            (literal 10)) 
+          (block :) next foo)) \n) 
+    (end_function_statement end function)) \n \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call foo))))) \n <EOF>)

@@ -1,0 +1,31 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id thing) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element integer) \n) end type) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter 
+          (untyped_id r) as 
+          (type_name_for_parameter 
+            (untyped_id thing)))) ) 
+    (block \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id t) as 
+        (type_name 
+          (untyped_id thing))))) \n ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument 
+          (expr 
+            ( 
+              (expr 
+                (variable_or_function_call t)) )))))) \n <EOF>)

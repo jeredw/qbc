@@ -244,40 +244,19 @@ export class CodeGenerator extends QBasicParserListener {
     this.addLabelForNextStatement(labels.$label);
   }
 
-  private getLvalue(token: Token, symbol: QBasicSymbol): Variable {
-    if (isProcedure(symbol) && symbol.procedure.name == this._chunk.procedure?.name) {
-      if (!symbol.procedure.result) {
-        // e.g. SUB foo : foo = 42 : END SUB
-        throw ParseError.fromToken(token, "Duplicate definition");
-      }
-      return symbol.procedure.result;
-    }
-    if (!isVariable(symbol)) {
-      throw ParseError.fromToken(token, "Duplicate definition");
-    }
-    return symbol.variable;
-  }
-
   override enterAssignment_statement = (ctx: parser.Assignment_statementContext) => {
-    const assignee = ctx.variable_or_function_call();
-    const symbol = getTyperContext(assignee).$symbol;
-    if (!symbol) {
-      throw new Error("missing symbol");
-    }
-    const variable = this.getLvalue(assignee._name!, symbol);
-    if (variable.array) {
-      // Evaluate an array index expression for an lvalue first.
-      const result = getTyperContext(assignee).$result;
-      if (!result) {
-        throw new Error("missing result variable");
+    const token = ctx.start!;
+    const dest = this.getVariable(ctx.variable_or_function_call());
+    if (dest.type.tag === TypeTag.RECORD) {
+      const source = this.getVariableFromExpression(ctx.expr());
+      if (!source || !sameType(dest.type, source.type)) {
+        throw ParseError.fromToken(ctx.start!, "Type mismatch");
       }
-      this.indexArray(variable, assignee.start!, assignee.argument_list(), result);
-      const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
-      this.addStatement(statements.let_(result, expr), ctx.start!);
-    } else {
-      const expr = this.compileExpression(ctx.expr(), assignee._name!, variable.type);
-      this.addStatement(statements.let_(variable, expr), ctx.start!);
+      this.addStatement(statements.lsetRecord(dest, source), token);
+      return;
     }
+    const expr = this.compileExpression(ctx.expr(), token, dest.type);
+    this.addStatement(statements.let_(dest, expr), token);
   }
 
   override enterMid_statement = (ctx: parser.Mid_statementContext) => {
@@ -666,11 +645,10 @@ export class CodeGenerator extends QBasicParserListener {
     //   top: <body>
     //   Next(<token>, counter, $end, $increment?) -> top
     //   exit:
-    const symbol = getTyperContext(ctx).$symbol;
-    if (!symbol) {
-      throw new Error("missing symbol");
+    const counter = getTyperContext(ctx).$result;
+    if (!counter) {
+      throw new Error("Missing counter variable");
     }
-    const counter = this.getLvalue(ctx.ID(0)!.symbol, symbol);
     const start = ctx._start;
     if (!start) {
       throw new Error("missing start expr");
@@ -711,11 +689,7 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override exitFor_next_statement = (ctx: parser.For_next_statementContext) => {
-    const symbol = getTyperContext(ctx).$symbol;
-    if (!symbol) {
-      throw new Error("missing symbol");
-    }
-    const counter = this.getLvalue(ctx.ID(0)!.symbol, symbol);
+    const counter = getTyperContext(ctx).$result;
     const endVariable = getTyperContext(ctx).$end;
     if (!endVariable) {
       throw new Error("missing end");
@@ -919,7 +893,7 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.rsetString(token, variable, stringExpr), token);
   }
 
-  override enterRun_statement =(ctx: parser.Run_statementContext) => {
+  override enterRun_statement = (ctx: parser.Run_statementContext) => {
     const token = ctx.start!;
     const lineNumber = ctx.line_number();
     const expr = ctx.expr();

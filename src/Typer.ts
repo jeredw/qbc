@@ -2,7 +2,7 @@ import * as parser from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParseError } from "./Errors.ts";
 import type { Program, ProgramChunk } from "./Programs.ts";
-import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
+import { ParserRuleContext, ParseTreeWalker, TerminalNode, Token } from "antlr4ng";
 import {
   TypeTag,
   Type,
@@ -15,7 +15,7 @@ import {
   isNumericType
 } from "./Types.ts";
 import { ArrayBounds, Variable } from "./Variables.ts";
-import { SymbolTable, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
+import { SymbolTable, isProcedure, isVariable, isBuiltin, QBasicSymbol } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
 import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
 import { typeCheckExpression, parseLiteral, evaluateAsConstantExpression } from "./Expressions.ts";
@@ -734,12 +734,12 @@ export class Typer extends QBasicParserListener {
     }
   }
 
-  override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
-    const [name, sigil] = splitSigil(ctx.ID(0)!.getText().toLowerCase());
+  private getForLoopCounter(id: TerminalNode): Variable {
+    const token = id.symbol;
+    const [name, sigil] = splitSigil(id.getText().toLowerCase());
     // This could actually be wrong, e.g. if we have DEFSTR I and DIM I AS INTEGER.
     // We'll look up the correct as type below.
-    let type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    const token = ctx.ID(0)!.symbol;
+    const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const symbol = this._chunk.symbols.lookupOrDefineVariable({
       name,
       type,
@@ -750,35 +750,37 @@ export class Typer extends QBasicParserListener {
       isAsType: false,
       arrayBaseIndex: this._arrayBaseIndex,
     });
-    if (!isVariable(symbol)) {
-      throw new Error('expecting variable for loop counter');
-    }
-    const loopVariable = symbol.variable;
-    getTyperContext(ctx).$symbol = symbol;
     this._program.debugInfo.refs.push({token, symbol});
-    type = loopVariable.type;
+    if (isProcedure(symbol) && symbol.procedure.name == this._chunk.procedure?.name) {
+      if (!symbol.procedure.result) {
+        // e.g. SUB foo : foo = 42 : END SUB
+        throw ParseError.fromToken(token, "Duplicate definition");
+      }
+      return symbol.procedure.result;
+    }
+    if (!isVariable(symbol)) {
+      throw ParseError.fromToken(token, "Duplicate definition");
+    }
+    return symbol.variable;
+  }
+
+  override enterFor_next_statement = (ctx: parser.For_next_statementContext) => {
+    const counter = this.getForLoopCounter(ctx.ID(0)!);
+    getTyperContext(ctx).$result = counter;
     const nextId = ctx.ID(1);
     if (nextId) {
-      // If specified, the next variable must match the loop counter.
-      const [nextName, nextSigil] = splitSigil(nextId.getText().toLowerCase());
-      const nextType = nextSigil ? typeOfSigil(nextSigil) : this.getDefaultType(nextName);
-      const nextVariable = this._chunk.symbols.lookupVariable({
-        name: nextName,
-        sigil: nextSigil,
-        array: false,
-        type: nextType
-      });
-      if (nextVariable !== loopVariable) {
-        throw ParseError.fromToken(ctx.ID(1)!.symbol, "NEXT without FOR");
+      const nextVariable = this.getForLoopCounter(nextId);
+      if (nextVariable !== counter) {
+        throw ParseError.fromToken(nextId.symbol, "NEXT without FOR");
       }
     }
-    if (!isNumericType(type)) {
+    if (!isNumericType(counter.type)) {
       // Non-numeric counters cause a type mismatch on the end expression.
       throw ParseError.fromToken(ctx._end!.start!, "Type mismatch");
     }
-    getTyperContext(ctx).$end = this.makeSyntheticVariable(type, ctx._end!.start!);
+    getTyperContext(ctx).$end = this.makeSyntheticVariable(counter.type, ctx._end!.start!);
     if (ctx._increment) {
-      getTyperContext(ctx).$increment = this.makeSyntheticVariable(type, ctx._increment!.start!);
+      getTyperContext(ctx).$increment = this.makeSyntheticVariable(counter.type, ctx._increment!.start!);
     }
   }
 
