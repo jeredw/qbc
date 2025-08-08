@@ -732,9 +732,6 @@ export class BloadStatement extends Statement {
   override execute(context: ExecutionContext) {
     const path = evaluateStringExpression(this.pathExpr, context.memory);
     const offset = (this.offsetExpr && (evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff)) ?? 0;
-    if (offset !== 0) {
-      throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
-    }
     try {
       const data = readEntireFile(context, path);
       if (data.length < 7) {
@@ -749,8 +746,8 @@ export class BloadStatement extends Statement {
       if (newData.buffer.byteLength !== length) {
         throw new Error('bad length in bsave header');
       }
-      const segment = context.memory.getSegment();
-      if ((segment & 0xffff) === 0xa000  || (storedSegment === 0xa000 && !this.offsetExpr)) {
+      const segment = context.memory.getSegment() & 0xffff;
+      if (segment === 0xa000  || (storedSegment === 0xa000 && !this.offsetExpr)) {
         // Assume we are trying to BLOAD a full width bitmap into video ram.
         const mode = context.devices.screen.getMode();
         let [width, height] = mode.geometry[0].dots;
@@ -773,8 +770,18 @@ export class BloadStatement extends Statement {
         });
         return;
       }
-      const {variable} = context.memory.readPointer(segment);
-      writeBytesToVariable(variable, newData, context.memory);
+      if (offset === 0) {
+        const { variable } = context.memory.readPointer(segment);
+        writeBytesToVariable(variable, newData, context.memory);
+      } else {
+        const [variable, variableData] = readBytesAtPointer(segment, context.memory);
+        if (offset < variableData.length) {
+          for (let i = 0; i < newData.length && offset + i < variableData.length; i++) {
+            variableData[offset + i] = newData[i];
+          }
+          writeBytesToVariable(variable, variableData, context.memory);
+        }
+      }
     } catch (e: unknown) {
       if (e instanceof IOError) {
         throw RuntimeError.fromToken(this.token, e.error);
@@ -803,7 +810,8 @@ export class BsaveStatement extends Statement {
     const length = evaluateIntegerExpression(this.lengthExpr, context.memory, {tag: TypeTag.LONG}) & 0xffff;
     const offset = evaluateIntegerExpression(this.offsetExpr, context.memory) & 0xffff;
     try {
-      const [_, bytes] = readBytesAtPointer(context.memory);
+      const segment = context.memory.getSegment() & 0xffff;
+      const [_, bytes] = readBytesAtPointer(segment, context.memory);
       const data = new Uint8Array(length);
       data.set(new Uint8Array(bytes.slice(offset, offset + length)));
       const file = [0xfd, 0, 0, 0, 0, length & 0xff, (length >> 8) & 0xff, ...data];
@@ -819,109 +827,109 @@ export class BsaveStatement extends Statement {
 
 export class PeekStatement extends Statement {
   private token: Token;
-  private addressExpr: ExprContext;
+  private offsetExpr: ExprContext;
   private result: Variable;
 
   constructor({token, params, result}: BuiltinStatementArgs) {
     super();
     this.token = token;
-    this.addressExpr = params[0].expr!;
+    this.offsetExpr = params[0].expr!;
     this.result = result!;
   }
 
   override execute(context: ExecutionContext) {
-    const address = evaluateIntegerExpression(this.addressExpr, context.memory, { tag: TypeTag.LONG });
-    if (address < -65536 || address > 65535) {
+    const offset = evaluateIntegerExpression(this.offsetExpr, context.memory, { tag: TypeTag.LONG });
+    if (offset < -65536 || offset > 65535) {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
+    const segment = context.memory.getSegment() & 0xffff;
     try {
-      const [_, data] = readBytesAtPointer(context.memory);
-      context.memory.write(this.result, integer(data[address] ?? 0));
+      const [_, data] = readBytesAtPointer(segment, context.memory);
+      context.memory.write(this.result, integer(data[offset] ?? 0));
+      return;
     } catch (e: unknown) {
-      const segment = context.memory.getSegment() & 0xffff;
-      let data = 0;
-      if (segment === SBMIDI_SEGMENT) {
-        // Map some fake data used to detect MIDI drivers.
-        data = (
-          address >= 271 ?
-          stringToAscii("SBMIDI")[address - 271] :
-          SBMIDI_BYTES[address]
-        ) ?? 0;
-      } else if (segment === SBSIM_SEGMENT) {
-        data = (
-          address >= 274 ?
-          stringToAscii("SBSIM")[address - 274] :
-          SBSIM_BYTES[address]
-        ) ?? 0;
-      } else if (segment === 0xa000) {
-        const mode = context.devices.screen.getMode();
-        if (mode.mode !== 13) {
-          throw new Error('Only support PEEKing video memory in mode 13');
-        }
-        const y = ~~(address / 320);
-        const x = ~~(address % 320);
-        data = context.devices.screen.getPixel(x, y, /*screen=*/ true);
-      } else if (segment === 0xb800) {
-        const mode = context.devices.screen.getMode();
-        if (mode.mode !== 0) {
-          throw new Error('Only support PEEKing text mode memory in mode 0');
-        }
-        const cellAddress = address >> 1;
-        const row = ~~(cellAddress / 80) + 1;
-        const column = ~~(cellAddress % 80) + 1;
-        if ((address & 1) === 0) {
-          const char = context.devices.screen.getCharAt(row, column);
-          data = stringToAscii(char)[0] ?? 0;
-        } else {
-          data = context.devices.screen.getAttributeAt(row, column);
-        }
-      } else {
-        const offset = address;
-        const linearAddress = (segment << 4) | offset;
-        switch (linearAddress) {
-          case 0x410:
-            data = 38;  // donkey.bas checks the BIOS equipment byte.
-            break;
-          case 0x417:
-            data = context.devices.keyboard.getShiftStatus();
-            break;
-          case 0x418:
-            data = context.devices.keyboard.getExtendedShiftStatus();
-            break;
-          case 0x44a: {
-            const geometry = context.devices.screen.getGeometry();
-            const [columns, _] = geometry.text;
-            data = columns;
-            break;
-          }
-          case 0x46c:
-            data = context.devices.timer.rawTicks() & 0xff;
-            break;
-          case 0x46d:
-            data = (context.devices.timer.rawTicks() >> 8) & 0xff;
-            break;
-        }
-      }
-      context.memory.write(this.result, integer(data));
     }
+    let data = 0;
+    if (segment === SBMIDI_SEGMENT) {
+      // Map some fake data used to detect MIDI drivers.
+      data = (
+        offset >= 271 ?
+        stringToAscii("SBMIDI")[offset - 271] :
+        SBMIDI_BYTES[offset]
+      ) ?? 0;
+    } else if (segment === SBSIM_SEGMENT) {
+      data = (
+        offset >= 274 ?
+        stringToAscii("SBSIM")[offset - 274] :
+        SBSIM_BYTES[offset]
+      ) ?? 0;
+    } else if (segment === 0xa000) {
+      const mode = context.devices.screen.getMode();
+      if (mode.mode !== 13) {
+        throw new Error('Only support PEEKing video memory in mode 13');
+      }
+      const y = ~~(offset / 320);
+      const x = ~~(offset % 320);
+      data = context.devices.screen.getPixel(x, y, /*screen=*/ true);
+    } else if (segment === 0xb800) {
+      const mode = context.devices.screen.getMode();
+      if (mode.mode !== 0) {
+        throw new Error('Only support PEEKing text mode memory in mode 0');
+      }
+      const cellAddress = offset >> 1;
+      const row = ~~(cellAddress / 80) + 1;
+      const column = ~~(cellAddress % 80) + 1;
+      if ((offset & 1) === 0) {
+        const char = context.devices.screen.getCharAt(row, column);
+        data = stringToAscii(char)[0] ?? 0;
+      } else {
+        data = context.devices.screen.getAttributeAt(row, column);
+      }
+    } else {
+      const linearAddress = (segment << 4) | offset;
+      switch (linearAddress) {
+        case 0x410:
+          data = 38;  // donkey.bas checks the BIOS equipment byte.
+          break;
+        case 0x417:
+          data = context.devices.keyboard.getShiftStatus();
+          break;
+        case 0x418:
+          data = context.devices.keyboard.getExtendedShiftStatus();
+          break;
+        case 0x44a: {
+          const geometry = context.devices.screen.getGeometry();
+          const [columns, _] = geometry.text;
+          data = columns;
+          break;
+        }
+        case 0x46c:
+          data = context.devices.timer.rawTicks() & 0xff;
+          break;
+        case 0x46d:
+          data = (context.devices.timer.rawTicks() >> 8) & 0xff;
+          break;
+      }
+    }
+    context.memory.write(this.result, integer(data));
   }
 }
 
 export class PokeStatement extends Statement {
   private token: Token;
-  private addressExpr: ExprContext;
+  private offsetExpr: ExprContext;
   private valueExpr: ExprContext;
 
-  constructor({token, params, result}: BuiltinStatementArgs) {
+  constructor({token, params}: BuiltinStatementArgs) {
     super();
     this.token = token;
-    this.addressExpr = params[0].expr!;
+    this.offsetExpr = params[0].expr!;
     this.valueExpr = params[1].expr!;
   }
 
   override execute(context: ExecutionContext) {
-    const address = evaluateIntegerExpression(this.addressExpr, context.memory, { tag: TypeTag.LONG });
-    if (address < -65536 || address > 65535) {
+    const offset = evaluateIntegerExpression(this.offsetExpr, context.memory, { tag: TypeTag.LONG });
+    if (offset < -65536 || offset > 65535) {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
     const byte = evaluateIntegerExpression(this.valueExpr, context.memory) & 255;
@@ -931,8 +939,8 @@ export class PokeStatement extends Statement {
       if (mode.mode !== 13) {
         throw new Error('Only support POKEing video memory in mode 13');
       }
-      const y = ~~(address / 320);
-      const x = ~~(address % 320);
+      const y = ~~(offset / 320);
+      const x = ~~(offset % 320);
       context.devices.screen.setPixel(x, y, byte, /*step=*/ false, /*screen=*/ true);
       return;
     }
@@ -941,10 +949,10 @@ export class PokeStatement extends Statement {
       if (mode.mode !== 0) {
         throw new Error('Only support POKEing text mode memory in mode 0');
       }
-      const cellAddress = address >> 1;
-      const row = ~~(cellAddress / 80) + 1;
-      const column = ~~(cellAddress % 80) + 1;
-      if ((address & 1) === 0) {
+      const cellOffset = offset >> 1;
+      const row = ~~(cellOffset / 80) + 1;
+      const column = ~~(cellOffset % 80) + 1;
+      if ((offset & 1) === 0) {
         context.devices.screen.setCharAt(row, column, asciiToString([byte])[0] ?? ' ');
       } else {
         context.devices.screen.setAttributeAt(row, column, byte);
@@ -952,9 +960,9 @@ export class PokeStatement extends Statement {
       return;
     }
     try {
-      const [variable, data] = readBytesAtPointer(context.memory);
-      if (address < data.length) {
-        data[address] = byte;
+      const [variable, data] = readBytesAtPointer(segment, context.memory);
+      if (offset < data.length) {
+        data[offset] = byte;
         writeBytesToVariable(variable, data, context.memory);
       }
     } catch (e: unknown) {
@@ -962,9 +970,8 @@ export class PokeStatement extends Statement {
   }
 }
 
-function readBytesAtPointer(memory: Memory): [Variable, Uint8Array] {
-  const segment = memory.getSegment();
-  const {variable} = memory.readPointer(segment);
+function readBytesAtPointer(pointer: number, memory: Memory): [Variable, Uint8Array] {
+  const {variable} = memory.readPointer(pointer);
   const bytes = readVariableToBytes(variable, memory);
   return [variable, new Uint8Array(bytes)];
 }

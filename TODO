@@ -69,6 +69,7 @@ Bringup
 + EVERDOWN, MARIO: Plays raw adlib music / sound effects
 + WORMS: Reads keys from both INKEY$ and PEEK(1047)
 + QMIDI: Tries to read max columns from 0040:004a
++ BIX42: Non-zero offset to BLOAD
 - WARGAMES: Tons of AudioContext errors
 - ABSORB, MARIO: PEEKing to copy arrays in a loop serializes whole array repeatedly
 - ADVENTUR: qbasic permits multiple default else for block if...else...
@@ -78,7 +79,6 @@ Bringup
 - ANTS: chain
 - ARCRPG: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
 - ART334: Just including qb.bi, seems simple to support
-- BIX42: Non-zero offset to BLOAD
 - BOMB5: You can have both a line number and a label...
 - BOMBCOO: Uses VARSEG$/VARPTR with array index
 - COOKIE: BLOADs into different pages offset from A000

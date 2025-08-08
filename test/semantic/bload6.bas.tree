@@ -1,0 +1,144 @@
+(program ' \n 
+  (statement 
+    (deftype_statement defint 
+      (letter_range a - z))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 11))) ))))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable y 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 5))) ))))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 5)) 
+      (block \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call x 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call i)))) )) = 
+            (expr 
+              (expr 
+                (literal 10)) * 
+              (expr 
+                (variable_or_function_call i))))) \n 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call y 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (variable_or_function_call i)))) )) = 
+            (expr 
+              (variable_or_function_call i)))) \n) next i)) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call y 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 0)))) )) )))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id bsave) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "slice"))) , 
+        (argument 
+          (expr 
+            (builtin_function 
+              (varptr_function varptr 
+                ( 
+                  (variable_or_function_call y 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 0)))) )) ))))) , 
+        (argument 
+          (expr 
+            (expr 
+              (literal 6)) * 
+            (expr 
+              (literal 2))))))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call x 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 6)))) )) )))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id bload) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal "slice"))) , 
+        (argument 
+          (expr 
+            (builtin_function 
+              (varptr_function varptr 
+                ( 
+                  (variable_or_function_call x 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 6)))) )) )))))))) \n 
+  (statement 
+    (for_next_statement for i = 
+      (expr 
+        (literal 0)) to 
+      (expr 
+        (literal 5)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call x 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (variable_or_function_call i)))) ))) ;) 
+            (print_argument 
+              (expr 
+                (variable_or_function_call x 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (variable_or_function_call i)) + 
+                          (expr 
+                            (literal 6))))) )))))) \n) next i)) \n <EOF>)

@@ -116,6 +116,7 @@ export class IndexArrayStatement extends Statement {
     if (descriptor.dimensions.length !== this.indexExprs.length) {
       throw RuntimeError.fromToken(this.indexExprs[0].start!, SUBSCRIPT_OUT_OF_RANGE);
     }
+    // Note that arrays are stored in column major order, so A(0, 0) is adjacent to A(1, 0).
     for (let i = 0; i < this.indexExprs.length; i++) {
       const expr = this.indexExprs[i];
       const index = evaluateIntegerExpression(expr, context.memory);
