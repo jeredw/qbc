@@ -352,14 +352,12 @@ export class InputFileStatement extends Statement {
       const nextChar = () => {
         char = accessor.readChars(1);
       };
+      // Skip over <ws>,?<ws>.
       const nextField = () => {
-        // In most cases, char is the delimiter after the previous field.
-        // But if the last field ended with '"', skip over one following comma.
-        const skip = char === '"' ? `, ${CR}${LF}` : ` ${CR}${LF}`;
         if (!accessor.eof()) {
           nextChar();
         }
-        while (!accessor.eof() && skip.includes(char)) {
+        while (!accessor.eof() && `, ${CR}${LF}`.includes(char)) {
           const delim = char === ',';
           nextChar();
           if (delim) {
