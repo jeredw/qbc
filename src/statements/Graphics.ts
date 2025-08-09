@@ -6,7 +6,7 @@ import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressi
 import { double, integer, isNumeric, isString } from "../Values.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, OUT_OF_STACK_SPACE } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
-import { readArrayToBytes, readNumbersFromArray, writeBytesToArray } from "./Arrays.ts";
+import { readArraySliceToBytes, readNumbersFromArraySlice, writeBytesToArraySlice } from "./Arrays.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
@@ -156,7 +156,7 @@ export class PaletteStatement extends Statement {
         screen.setPaletteEntry(attribute & 0xff, color);
       } else if (this.array) {
         const attributes = screen.getMode().attributes;
-        const values = readNumbersFromArray(this.array, attributes, context.memory);
+        const values = readNumbersFromArraySlice(this.array, attributes, context.memory);
         for (let i = 0; i < values.length; i++) {
           if (values[i] != -1) {
             screen.setPaletteEntry(i & 0xff, values[i]);
@@ -673,7 +673,7 @@ export class GetGraphicsStatement extends Statement {
       const x2 = evaluateIntegerExpression(this.args.x2, context.memory, { tag: TypeTag.SINGLE });
       const y2 = evaluateIntegerExpression(this.args.y2, context.memory, { tag: TypeTag.SINGLE });
       const buffer = context.devices.screen.getBitmap({x1, y1, step1, x2, y2, step2});
-      writeBytesToArray(this.args.array, buffer, context.memory);
+      writeBytesToArraySlice(this.args.array, buffer, context.memory);
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
@@ -702,7 +702,7 @@ export class PutGraphicsStatement extends Statement {
       const step = this.args.step;
       const x1 = evaluateIntegerExpression(this.args.x1, context.memory, { tag: TypeTag.SINGLE });
       const y1 = evaluateIntegerExpression(this.args.y1, context.memory, { tag: TypeTag.SINGLE });
-      const buffer = readArrayToBytes(this.args.array, context.memory);
+      const buffer = readArraySliceToBytes(this.args.array, context.memory);
       const operation = (
         this.args.preset ? BlitOperation.PRESET :
         this.args.pset ? BlitOperation.PSET :

@@ -283,8 +283,10 @@ function getDescriptorAndBaseIndex(array: Variable, memory: Memory): {
   return {array, baseIndex, descriptor};
 }
 
-export function readNumbersFromArray(array: Variable, count: number, memory: Memory): number[] {
-  const {descriptor, baseIndex} = getDescriptorAndBaseIndex(array, memory);
+// Serializes a slice of an array as a JS array.
+// Only used for PALETTE USING, assumes the array is a simple array of integers or longs.
+export function readNumbersFromArraySlice(arrayOrRef: Variable, count: number, memory: Memory): number[] {
+  const {descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   const length = getNumItemsInArray(descriptor);
   if (start + count > length) {
@@ -302,7 +304,10 @@ export function readNumbersFromArray(array: Variable, count: number, memory: Mem
   return result;
 }
 
-export function readArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
+// Serializes a slice of an array as bytes.
+// If arrayOrRef is a reference from IndexArray, result is the slice of items
+// beginning at that index. Otherwise result is the full array contents.
+export function readArraySliceToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   const numItems = getNumItemsInArray(descriptor) - start;
@@ -321,7 +326,10 @@ export function readArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuf
   return result;
 }
 
-export function writeBytesToArray(arrayOrRef: Variable, buffer: ArrayBuffer, memory: Memory) {
+// Copies bytes to a slice of an array.
+// If arrayOrRef is a reference from IndexArray, copies bytes to the slice
+// beginning at that index, otherwise to the start of the array.
+export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer, memory: Memory) {
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   const numItems = getNumItemsInArray(descriptor) - start;

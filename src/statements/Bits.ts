@@ -11,7 +11,7 @@ import { Statement } from "./Statement.ts";
 import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
 import { Token } from "antlr4ng";
-import { readArrayToBytes, writeBytesToArray } from "./Arrays.ts";
+import { readArraySliceToBytes, writeBytesToArraySlice } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
 import { BlitOperation } from "../Drawing.ts";
 import * as baked from "../BakedInData.ts";
@@ -627,7 +627,7 @@ function readStringFromBuffer(data: DataView, offset: number, maxLength: number)
 
 export function readVariableToBytes(variable: Variable, memory: Memory): ArrayBuffer {
   return variable.array ?
-    readArrayToBytes(variable, memory) :
+    readArraySliceToBytes(variable, memory) :
     readScalarVariableToBytes(variable, memory);
 }
 
@@ -980,7 +980,7 @@ function readBytesAtPointer(pointer: number, memory: Memory): [Variable, Uint8Ar
 
 export function writeBytesToVariable(variable: Variable, data: Uint8Array, memory: Memory) {
   if (variable.array) {
-    writeBytesToArray(variable, data.buffer, memory);
+    writeBytesToArraySlice(variable, data.buffer, memory);
   } else {
     writeBytesToScalarVariable(variable, data.buffer, memory);
   }
