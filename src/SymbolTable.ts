@@ -2,7 +2,7 @@ import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures.ts";
 import { isNumericType, sameType, Type, TypeTag } from "./Types.ts";
 import { Constant } from "./Values.ts";
-import { getItemSize, getStorageSize, Variable } from "./Variables.ts";
+import { getScalarValueCount, getValueCount, Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
 import { Address, StorageType } from "./Memory.ts";
 import { Builtin, StandardLibrary } from "./Builtins.ts";
@@ -384,7 +384,7 @@ export class SymbolTable {
       slot.scalarVariables.set(variable.type.tag, variable);
       if (!element) {
         // Parameters are passed by reference so only consume one stack slot.
-        const size = variable.isParameter ? 1 : getStorageSize(variable);
+        const size = variable.isParameter ? 1 : getValueCount(variable);
         variable.address = this.allocate(variable.storageType, size);
         variable.symbolIndex = SymbolTable._symbolIndex++;
       }
@@ -405,8 +405,8 @@ export class SymbolTable {
         throw ParseError.fromToken(variable.token, "Array already dimensioned");
       }
       slot.arrayVariables.set(variable.type.tag, variable);
-      if (!variable.array.itemSize) {
-        variable.array.itemSize = getItemSize(variable);
+      if (!variable.array.valuesPerItem) {
+        variable.array.valuesPerItem = getScalarValueCount(variable);
       }
       if (!element) {
         this.allocateArray(variable);
@@ -510,7 +510,7 @@ export class SymbolTable {
     }
     if (!variable.array.dynamic) {
       // Parameters are passed by reference so only consume one stack slot.
-      const size = variable.isParameter ? 1 : getStorageSize(variable);
+      const size = variable.isParameter ? 1 : getValueCount(variable);
       if (size > 65535) {
         throw ParseError.fromToken(variable.token, "Subscript out of range");
       }

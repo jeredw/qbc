@@ -60,11 +60,11 @@ export class DimStatement extends Statement {
     if (numElements > 65535) {
       throw RuntimeError.fromToken(this.token, SUBSCRIPT_OUT_OF_RANGE);
     }
-    const itemSize = this.result.array.itemSize ?? 1;
-    const baseAddress = context.memory.allocate(numElements * itemSize);
+    const valuesPerItem = this.result.array.valuesPerItem ?? 1;
+    const baseAddress = context.memory.allocate(numElements * valuesPerItem);
     const descriptor = array(this.result, {
       storageType: StorageType.DYNAMIC,
-      itemSize: this.result.array.itemSize,
+      valuesPerItem: this.result.array.valuesPerItem,
       dynamic: true,
       baseAddress,
       dimensions
@@ -88,7 +88,7 @@ export class EraseStatement extends Statement {
       context.memory.write(this.array, array(this.array, {dimensions: []}))
       return;
     }
-    const numValues = getArrayLength(descriptor) * (descriptor.itemSize ?? 1);
+    const numValues = getNumItemsInArray(descriptor) * (descriptor.valuesPerItem ?? 1);
     for (let i = 0; i < numValues; i++) {
       context.memory.writeAddress({
         storageType: descriptor.storageType!,
@@ -112,7 +112,7 @@ export class IndexArrayStatement extends Statement {
   override execute(context: ExecutionContext) {
     const descriptor = getArrayDescriptor(this.array, context.memory);
     let offset = this.array.recordOffset?.offset || 0;
-    let stride = descriptor.itemSize!;
+    let stride = descriptor.valuesPerItem!;
     // Array shape isn't checked at compile time for parameters.
     if (descriptor.dimensions.length !== this.indexExprs.length) {
       throw RuntimeError.fromToken(this.indexExprs[0].start!, SUBSCRIPT_OUT_OF_RANGE);
@@ -253,7 +253,7 @@ export function getArrayDescriptor(variable: Variable, memory: Memory): ArrayDes
   return value.descriptor;
 }
 
-function getArrayLength(descriptor: ArrayDescriptor): number {
+function getNumItemsInArray(descriptor: ArrayDescriptor): number {
   return descriptor.dimensions.map((range) => {
     if (range.upper === undefined || range.lower === undefined) {
       throw new Error('expecting bounds to be defined');
@@ -286,9 +286,9 @@ function getDescriptorAndBaseIndex(array: Variable, memory: Memory): {
 export function readNumbersFromArray(array: Variable, count: number, memory: Memory): number[] {
   const {descriptor, baseIndex} = getDescriptorAndBaseIndex(array, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
-  const length = getArrayLength(descriptor);
+  const length = getNumItemsInArray(descriptor);
   if (start + count > length) {
-    throw new Error('not enough elements in array');
+    throw new Error('Not enough items in array');
   }
   const result: number[] = [];
   for (let i = 0; i < count; i++) {
@@ -305,18 +305,18 @@ export function readNumbersFromArray(array: Variable, count: number, memory: Mem
 export function readArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
-  const numItems = getArrayLength(descriptor) - start;
-  const itemSize = descriptor.itemSize!;
+  const numItems = getNumItemsInArray(descriptor) - start;
+  const valuesPerItem = descriptor.valuesPerItem!;
   const bytesPerItem = getBytesPerItem(array, memory);
   const result = new ArrayBuffer(numItems * bytesPerItem);
   const data = new DataView(result);
   let offset = 0;
   let index = 0;
   let item = makeItemVariable(array, descriptor, baseIndex)
-  while (index < numItems * itemSize) {
+  while (index < numItems * valuesPerItem) {
     item.address!.index = baseIndex + index;
     offset += readElementToBytes(data, offset, item, memory);
-    index += itemSize;
+    index += valuesPerItem;
   }
   return result;
 }
@@ -324,7 +324,7 @@ export function readArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuf
 export function writeBytesToArray(arrayOrRef: Variable, buffer: ArrayBuffer, memory: Memory) {
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
-  const numItems = getArrayLength(descriptor) - start;
+  const numItems = getNumItemsInArray(descriptor) - start;
   const bytesPerItem = getBytesPerItem(array, memory);
   if (buffer.byteLength % bytesPerItem != 0) {
     const padded = new ArrayBuffer(bytesPerItem * Math.ceil(buffer.byteLength / bytesPerItem));
@@ -339,7 +339,7 @@ export function writeBytesToArray(arrayOrRef: Variable, buffer: ArrayBuffer, mem
   while (offset < bytesToWrite) {
     item.address!.index = baseIndex + index;
     offset += writeBytesToElement(item, data, offset, memory);
-    index += descriptor.itemSize!;
+    index += descriptor.valuesPerItem!;
   }
 }
 

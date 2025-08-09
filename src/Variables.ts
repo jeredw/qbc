@@ -1,5 +1,5 @@
 import { Token } from "antlr4ng";
-import { getRecordLength, Type, TypeTag } from "./Types.ts"
+import { Type, TypeTag, UserDefinedType } from "./Types.ts"
 import { StorageType, Address, Memory } from "./Memory.ts";
 import type { Value } from "./Values.ts";
 
@@ -38,7 +38,7 @@ export interface ArrayDescriptor {
   storageType?: StorageType;
   dynamic?: boolean;
   baseAddress?: Address;
-  itemSize?: number;
+  valuesPerItem?: number;
   dimensions: ArrayBounds[];
   cachedBytes?: ArrayBuffer;
   cachedBytesDirty?: boolean;
@@ -49,12 +49,8 @@ export interface ArrayBounds {
   upper: number | undefined;
 }
 
-export function getItemSize(variable: Variable): number {
-  return variable.type.tag == TypeTag.RECORD ? getRecordLength(variable.type) : 1;
-}
-
-export function getStorageSize(variable: Variable): number {
-  const itemSize = getItemSize(variable);
+export function getValueCount(variable: Variable): number {
+  const valuesPerItem = getScalarValueCount(variable);
   if (variable.array) {
     let itemCount = 1;
     for (const bounds of variable.array.dimensions) {
@@ -64,9 +60,25 @@ export function getStorageSize(variable: Variable): number {
       itemCount = itemCount * (1 + bounds.upper - bounds.lower);
     }
     // Reserve one value for the array descriptor.
-    return 1 + itemCount * itemSize;
+    return 1 + itemCount * valuesPerItem;
   }
-  return itemSize;
+  return valuesPerItem;
+}
+
+export function getScalarValueCount(variable: Variable): number {
+  return variable.type.tag == TypeTag.RECORD ? getRecordValueCount(variable.type) : 1;
+}
+
+function getRecordValueCount(type: UserDefinedType): number {
+  let size = 0;
+  for (const {type: elementType} of type.elements) {
+    if (elementType.tag == TypeTag.RECORD) {
+      size += getRecordValueCount(elementType);
+    } else {
+      size++;
+    }
+  }
+  return size;
 }
 
 export function getScalarVariableSizeInBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {

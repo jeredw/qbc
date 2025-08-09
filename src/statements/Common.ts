@@ -34,7 +34,7 @@ export class CommonStatement extends Statement {
         const baseAddress = context.memory.allocate(value.bytes.byteLength);
         const newDescriptor = array(this.result, {
           storageType: StorageType.DYNAMIC,
-          itemSize: this.result.array.itemSize,
+          valuesPerItem: this.result.array.valuesPerItem,
           dynamic: true,
           baseAddress,
           dimensions: [...value.dimensions],
