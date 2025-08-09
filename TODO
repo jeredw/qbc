@@ -78,25 +78,23 @@ Bringup
 + JOLT: multifile
 + ARCRPG, BIX: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
 ~ ABSORB, MARIO: PEEKing to copy arrays in a loop serializes whole array repeatedly
++ ELYSIAN: chain, self-modifying!
++ ANTS, HB_INST, WATER1, QUEST: chain
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - AMBUSH, AMBUSH2: multifile
-- ANTS, HB_INST, WATER1, QUEST: chain
 - ART334: Just including qb.bi, seems simple to support
 - BOMB5: You can have both a line number and a label...
 - COOKIE: BLOADs into different pages offset from A000
 - DBZGAME: IDE knows how to fix missing "s at end of line
 - DBZGAME: CALL should work without DECLARE
 - DIGIREAL: Overflow in POKE...
-- DIGIREAL: Does tons of stuff with text screen via B800
+- DIGIREAL: Pokes into other page of text memory through B8000
 - DRAGDROP: Uses 3c2 to select bit planes for bload
-- ELYSIAN: chain, self-modifying!
 - FULLDRAW: Calls BSAVE to save data from A000
 - GAMEBAS: VARSEG for record element
-- GBUGGIES: multifile, SADD
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
-- PANGALL: multifile
 - PONGBALL: Need mouse limit apis
 - QBASWIN: Unrecognized opcode 131
 - USEFL201: CALL ABSOLUTE with record type
