@@ -338,6 +338,10 @@ class Qb45Loader {
       const aliasLength = (flags >> 10) & 0x1f;
       if (aliasLength > 0) {
         const aliasName = asciiToString(this.string(aliasLength));
+        if (aliasLength & 1) {
+          // Strings are padded to 16-bit boundaries.
+          this.offset++;
+        }
         name = `${name} ALIAS "${aliasName}"`;
       }
       return {pcode, text: [...S(name), ...S(argumentList)]};
