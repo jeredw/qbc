@@ -80,6 +80,8 @@ export class EraseStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const descriptor = getArrayDescriptor(this.array, context.memory);
+    descriptor.buffer = undefined;
+    descriptor.bufferDirty = false;
     if (!descriptor.baseAddress) {
       return;
     }
@@ -117,6 +119,11 @@ export class IndexArrayStatement extends Statement {
     if (descriptor.dimensions.length !== this.indexExprs.length) {
       throw RuntimeError.fromToken(this.indexExprs[0].start!, SUBSCRIPT_OUT_OF_RANGE);
     }
+    if (!this.forPointer) {
+      // read/write access through indexing invalidates any cached array bytes.
+      // TODO: Reads should not invalidate.
+      invalidateBuffer(this.array, context.memory);
+    }
     // Note that arrays are stored in column major order, so A(0, 0) is adjacent to A(1, 0).
     for (let i = 0; i < this.indexExprs.length; i++) {
       const expr = this.indexExprs[i];
@@ -137,6 +144,7 @@ export class IndexArrayStatement extends Statement {
     if (!descriptor.baseAddress) {
       throw new Error("array not allocated");
     }
+    // TODO: arraryOffsetInBytes is incorrect for record arrays with an element.
     const bytesPerItem = getBytesPerItem(this.array, context.memory);
     context.memory.writeAddress(this.result.address, reference(this.array, {
       storageType: descriptor.storageType!,
@@ -276,6 +284,9 @@ function getDescriptorAndBaseIndex(array: Variable, memory: Memory): {
     array = arrayRef.variable;
     baseIndex = arrayRef.address.index;
   }
+  if (array.recordOffset?.record) {
+    array = array.recordOffset?.record;
+  }
   const descriptor = getArrayDescriptor(array, memory);
   if (baseIndex === undefined) {
     baseIndex = descriptor.baseAddress!.index;
@@ -304,36 +315,51 @@ export function readNumbersFromArraySlice(arrayOrRef: Variable, count: number, m
   return result;
 }
 
+function readEntireArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
+  const {array, descriptor} = getDescriptorAndBaseIndex(arrayOrRef, memory);
+  if (!descriptor.buffer) {
+    const baseIndex = descriptor.baseAddress!.index;
+    const numItems = getNumItemsInArray(descriptor);
+    const valuesPerItem = descriptor.valuesPerItem!;
+    const bytesPerItem = getBytesPerItem(array, memory);
+    descriptor.buffer = new ArrayBuffer(numItems * bytesPerItem);
+    const data = new DataView(descriptor.buffer);
+    let offset = 0;
+    let index = 0;
+    let item = makeItemVariable(array, descriptor, baseIndex);
+    while (index < numItems * valuesPerItem) {
+      item.address!.index = baseIndex + index;
+      offset += readElementToBytes(data, offset, item, memory);
+      index += valuesPerItem;
+    }
+  }
+  return descriptor.buffer;
+}
+
 // Serializes a slice of an array as bytes.
 // If arrayOrRef is a reference from IndexArray, result is the slice of items
 // beginning at that index. Otherwise result is the full array contents.
 export function readArraySliceToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
+  const buffer = readEntireArrayToBytes(arrayOrRef, memory);
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
-  const numItems = getNumItemsInArray(descriptor) - start;
-  const valuesPerItem = descriptor.valuesPerItem!;
   const bytesPerItem = getBytesPerItem(array, memory);
-  const result = new ArrayBuffer(numItems * bytesPerItem);
-  const data = new DataView(result);
-  let offset = 0;
-  let index = 0;
-  let item = makeItemVariable(array, descriptor, baseIndex)
-  while (index < numItems * valuesPerItem) {
-    item.address!.index = baseIndex + index;
-    offset += readElementToBytes(data, offset, item, memory);
-    index += valuesPerItem;
-  }
-  return result;
+  return buffer.slice(start * bytesPerItem);
 }
 
-// Copies bytes to a slice of an array.
-// If arrayOrRef is a reference from IndexArray, copies bytes to the slice
-// beginning at that index, otherwise to the start of the array.
-export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer, memory: Memory) {
-  const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
-  const start = baseIndex - descriptor.baseAddress!.index;
-  const numItems = getNumItemsInArray(descriptor) - start;
+function invalidateBuffer(arrayOrRef: Variable, memory: Memory) {
+  const {array, descriptor} = getDescriptorAndBaseIndex(arrayOrRef, memory);
+  if (!descriptor.buffer) {
+    return;
+  }
+  if (!descriptor.bufferDirty) {
+    descriptor.buffer = undefined;
+    return;
+  }
+  const baseIndex = descriptor.baseAddress!.index;
+  const numItems = getNumItemsInArray(descriptor);
   const bytesPerItem = getBytesPerItem(array, memory);
+  let buffer = descriptor.buffer;
   if (buffer.byteLength % bytesPerItem != 0) {
     const padded = new ArrayBuffer(bytesPerItem * Math.ceil(buffer.byteLength / bytesPerItem));
     new Uint8Array(padded).set(new Uint8Array(buffer));
@@ -343,12 +369,35 @@ export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer
   const data = new DataView(buffer);
   let offset = 0;
   let index = 0;
-  let item = makeItemVariable(array, descriptor, baseIndex)
+  let item = makeItemVariable(array, descriptor, baseIndex);
   while (offset < bytesToWrite) {
     item.address!.index = baseIndex + index;
     offset += writeBytesToElement(item, data, offset, memory);
     index += descriptor.valuesPerItem!;
   }
+}
+
+// Copies bytes to a slice of an array.
+// If arrayOrRef is a reference from IndexArray, copies bytes to the slice
+// beginning at that index, otherwise to the start of the array.
+export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer, memory: Memory) {
+  const data = new Uint8Array(buffer);
+  const arrayBuffer = readEntireArrayToBytes(arrayOrRef, memory);
+  const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
+  const start = baseIndex - descriptor.baseAddress!.index;
+  const bytesPerItem = getBytesPerItem(array, memory);
+  const baseByteOffset = start * bytesPerItem;
+  descriptor.bufferDirty = true;
+  if (baseByteOffset + buffer.byteLength > arrayBuffer.byteLength) {
+    // Lots of programs bload stuff slightly beyond array bounds. To help this work,
+    // grow the buffer. We'll only truncate when it is invalidated.
+    const grow = new Uint8Array(baseByteOffset + buffer.byteLength);
+    grow.set(new Uint8Array(arrayBuffer));
+    grow.set(data, baseByteOffset);
+    descriptor.buffer = grow.buffer;
+    return;
+  }
+  new Uint8Array(arrayBuffer).set(data, baseByteOffset);
 }
 
 // Makes a synthetic variable to refer to an item of an array so that we can reuse utilities

@@ -76,12 +76,12 @@ Bringup
 + ORODRUIN: width 80, 43 then screen 9
 + WATER1: Uses framebuffer contents to control behavior after chaining
 + JOLT: multifile
-- ABSORB, MARIO: PEEKing to copy arrays in a loop serializes whole array repeatedly
++ ARCRPG, BIX: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
+~ ABSORB, MARIO: PEEKing to copy arrays in a loop serializes whole array repeatedly
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - AMBUSH, AMBUSH2: multifile
 - ANTS, HB_INST, WATER1, QUEST: chain
-- ARCRPG, BIX: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
 - ART334: Just including qb.bi, seems simple to support
 - BOMB5: You can have both a line number and a label...
 - COOKIE: BLOADs into different pages offset from A000
