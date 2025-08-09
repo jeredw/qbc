@@ -311,7 +311,7 @@ export class CodeGenerator extends QBasicParserListener {
     this.addStatement(statements.callAbsolute(proc, params), token);
   }
 
-  private indexArray(variable: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, result: Variable) {
+  private indexArray(variable: Variable, token: Token, argumentListCtx: parser.Argument_listContext | null, result: Variable, forPointer = false) {
     if (!variable.array) {
       throw new Error("indexing non array variable");
     }
@@ -327,7 +327,7 @@ export class CodeGenerator extends QBasicParserListener {
       }
       indexExprs.push(this.compileExpression(parseExpr, args[i].start!, {tag: TypeTag.INTEGER}));
     }
-    this.addStatement(statements.indexArray(variable, indexExprs, result));
+    this.addStatement(statements.indexArray(variable, indexExprs, result, forPointer));
   }
 
   private callBuiltin(builtin: Builtin, token: Token, argumentListCtx: parser.Argument_listContext | null, result?: Variable) {
@@ -1141,7 +1141,7 @@ export class CodeGenerator extends QBasicParserListener {
       if (!isNumericType(symbol.variable.type)) {
         throw ParseError.fromToken(ctx.start!, "Type mismatch");
       }
-      array = this.getVariable(ctx._arrayexpr);
+      array = this.getVariable(ctx._arrayexpr, /* forPointer= */ true);
       if (!array) {
         throw ParseError.fromToken(ctx.start!, "Expected: variable");
       }
@@ -1167,7 +1167,7 @@ export class CodeGenerator extends QBasicParserListener {
       if (!isNumericType(symbol.variable.type)) {
         throw ParseError.fromToken(ctx.start!, "Type mismatch");
       }
-      array = this.getVariable(ctx._arrayexpr);
+      array = this.getVariable(ctx._arrayexpr, /* forPointer= */ true);
       if (!array) {
         throw ParseError.fromToken(ctx.start!, "Expected: variable");
       }
@@ -1505,14 +1505,16 @@ export class CodeGenerator extends QBasicParserListener {
     }
   }
 
-  private getVariable(variableCtx: parser.Variable_or_function_callContext): Variable {
+  private getVariable(variableCtx: parser.Variable_or_function_callContext, forPointer = false): Variable {
     let variable = this.getVariableSymbol(variableCtx);
     if (variable.array) {
       const result = getTyperContext(variableCtx).$result;
       if (!result) {
         throw new Error("missing result variable");
       }
-      this.indexArray(variable, variableCtx.start!, variableCtx.argument_list(), result);
+      if (!alreadyCompiled(variableCtx)) {
+        this.indexArray(variable, variableCtx.start!, variableCtx.argument_list(), result, forPointer);
+      }
       variable = result;
     }
     return variable;
@@ -1811,7 +1813,7 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing result variable");
         }
         const variableCtx = ctx.variable_or_function_call();
-        const variable = codeGenerator.getVariable(variableCtx);
+        const variable = codeGenerator.getVariable(variableCtx, /* forPointer= */ true);
         const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
         codeGenerator.addStatement(statements.varseg(ctx.start!, result, variable, variableSymbol), ctx.start!);
       }
@@ -1825,7 +1827,7 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing result variable");
         }
         const variableCtx = ctx.variable_or_function_call();
-        const variable = codeGenerator.getVariable(variableCtx);
+        const variable = codeGenerator.getVariable(variableCtx, /* forPointer= */ true);
         const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
         codeGenerator.addStatement(statements.varptrString(ctx.start!, result, variable, variableSymbol), ctx.start!);
       }
@@ -1854,7 +1856,7 @@ export class CodeGenerator extends QBasicParserListener {
           throw new Error("missing result variable");
         }
         const variableCtx = ctx.variable_or_function_call();
-        const variable = codeGenerator.getVariable(variableCtx);
+        const variable = codeGenerator.getVariable(variableCtx, /* forPointer= */ true);
         const variableSymbol = codeGenerator.getVariableSymbol(variableCtx);
         codeGenerator.addStatement(statements.varptr(ctx.start!, result, variable, variableSymbol), ctx.start!);
       }

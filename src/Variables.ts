@@ -40,6 +40,8 @@ export interface ArrayDescriptor {
   baseAddress?: Address;
   itemSize?: number;
   dimensions: ArrayBounds[];
+  cachedBytes?: ArrayBuffer;
+  cachedBytesDirty?: boolean;
 }
 
 export interface ArrayBounds {

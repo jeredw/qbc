@@ -484,8 +484,8 @@ export function inputFunction(token: Token, n: parser.ExprContext, fileNumber: p
   return new InputFunction(token, n, fileNumber, result);
 }
 
-export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable) {
-  return new IndexArrayStatement(array, indexExprs, result);
+export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable, forPointer: boolean) {
+  return new IndexArrayStatement(array, indexExprs, result, forPointer);
 }
 
 export function instr(token: Token, start: parser.ExprContext | undefined, haystack: parser.ExprContext, needle: parser.ExprContext, result: Variable) {

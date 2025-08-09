@@ -747,7 +747,7 @@ export class BloadStatement extends Statement {
         throw new Error('bad length in bsave header');
       }
       const segment = context.memory.getSegment() & 0xffff;
-      if (segment === 0xa000  || (storedSegment === 0xa000 && !this.offsetExpr)) {
+      if (segment === 0xa000 || (storedSegment === 0xa000 && !this.offsetExpr)) {
         // Assume we are trying to BLOAD a full width bitmap into video ram.
         const mode = context.devices.screen.getMode();
         let [width, height] = mode.geometry[0].dots;

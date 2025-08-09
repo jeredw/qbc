@@ -103,7 +103,8 @@ export class IndexArrayStatement extends Statement {
   constructor(
     private array: Variable,
     private indexExprs: ExprContext[],
-    private result: Variable
+    private result: Variable,
+    private forPointer: boolean,
   ) {
     super();
   }
@@ -136,7 +137,7 @@ export class IndexArrayStatement extends Statement {
     if (!descriptor.baseAddress) {
       throw new Error("array not allocated");
     }
-    const bytesPerItem = getScalarVariableSizeInBytes(this.array, context.memory);
+    const bytesPerItem = getBytesPerItem(this.array, context.memory);
     context.memory.writeAddress(this.result.address, reference(this.array, {
       storageType: descriptor.storageType!,
       frameIndex: descriptor.baseAddress!.frameIndex,
@@ -306,7 +307,7 @@ export function readArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuf
   const start = baseIndex - descriptor.baseAddress!.index;
   const numItems = getArrayLength(descriptor) - start;
   const itemSize = descriptor.itemSize!;
-  const bytesPerItem = getScalarVariableSizeInBytes(array, memory);
+  const bytesPerItem = getBytesPerItem(array, memory);
   const result = new ArrayBuffer(numItems * bytesPerItem);
   const data = new DataView(result);
   let offset = 0;
@@ -324,7 +325,7 @@ export function writeBytesToArray(arrayOrRef: Variable, buffer: ArrayBuffer, mem
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   const numItems = getArrayLength(descriptor) - start;
-  const bytesPerItem = getScalarVariableSizeInBytes(array, memory);
+  const bytesPerItem = getBytesPerItem(array, memory);
   if (buffer.byteLength % bytesPerItem != 0) {
     const padded = new ArrayBuffer(bytesPerItem * Math.ceil(buffer.byteLength / bytesPerItem));
     new Uint8Array(padded).set(new Uint8Array(buffer));
@@ -368,6 +369,13 @@ function updateRecordOffsets(variable: Variable, record: Variable) {
     }
     variable.elements?.set(name, elementCopy);
   }
+}
+
+function getBytesPerItem(array: Variable, memory: Memory) {
+  if (array.recordOffset?.record) {
+    array = array.recordOffset?.record;
+  }
+  return getScalarVariableSizeInBytes(array, memory);
 }
 
 function unwrapNumber(value?: Value): number {
