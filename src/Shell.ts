@@ -447,7 +447,10 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
       if (restart) {
         this.keyboard.reset();
         this.speaker.reset();
-        this.screen.reset();
+        if (!common) {
+          // Keep graphics state when chaining programs.
+          this.screen.reset();
+        }
         this.modem.reset();
         this.disk.resetHandles();
         this.invocation?.stop();
