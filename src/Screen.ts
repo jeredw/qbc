@@ -408,8 +408,13 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (!mode) {
       throw new Error(`invalid screen mode ${modeNumber}`);
     }
-    // Do not reset geometry if not changing the mode.
-    const geometry = this.mode?.mode === modeNumber ? this.geometry : mode.geometry[0];
+    // Only reset text geometry if the new mode does not support the current geometry.
+    let matchingGeometry: ScreenGeometry | undefined;
+    if (this.geometry) {
+      const [columns, rows] = this.geometry.text;
+      matchingGeometry = findTextGeometry(mode, columns, rows);
+    }
+    const geometry = matchingGeometry ?? mode.geometry[0];
     this.setScreenMode(mode, geometry, colorSwitch, activePage, visiblePage);
   }
 
@@ -429,9 +434,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     const numModes = SCREEN_MODES.length;
     for (let i = 0; i < numModes; i++) {
       mode = SCREEN_MODES[(modeIndex + i) % numModes];
-      geometry = mode.geometry.find((entry: ScreenGeometry) => (
-        entry.text[0] === desiredWidth && entry.text[1] === desiredHeight
-      ));
+      geometry = findTextGeometry(mode, desiredWidth, desiredHeight);
       if (geometry) {
         break;
       }
@@ -1512,4 +1515,10 @@ export class TestScreen implements Screen {
   scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
     return {x, y};
   }
+}
+
+function findTextGeometry(mode: ScreenMode, width: number, height: number): ScreenGeometry | undefined {
+  return mode.geometry.find((entry) => (
+    entry.text[0] === width && entry.text[1] === height
+  ));
 }

@@ -1,0 +1,26 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (width_statement width 
+      (expr 
+        (literal 80)) , 
+      (expr 
+        (literal 43)))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 9)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 40)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "hello world"))))) \n <EOF>)
