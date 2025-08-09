@@ -80,7 +80,6 @@ Bringup
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - AMBUSH, AMBUSH2: multifile
-- ANCIENTHEROS: byval
 - ANTS, HB_INST, WATER1, QUEST: chain
 - ARCRPG, BIX: BLOAD/PUT happily loads and uses 4 bytes beyond array bounds...
 - ART334: Just including qb.bi, seems simple to support
@@ -107,10 +106,10 @@ IDE features
 - Persist filesystem to local storage
 - Load and save programs to filesystem
 - Key mapping controls / numpad arrow support
-- Speed controls
 - Add a catalog with program entries
 - Save states
 - Break during input seems to leave editor coroutine around
+~ Speed controls
 ~ Add a way to upload/download files from browser
 ~ Add a filesystem browser
 + Show symbols
@@ -119,8 +118,8 @@ IDE features
 + Full screen program
 
 Language features
-- Treat CALL ABSOLUTE with CD 33 + four args as mouse handler
-- Multi-module program support: -CHAIN, -COMMON, +RUN
+~ Treat CALL ABSOLUTE with CD 33 + four args as mouse handler
++ Multi-module program support: CHAIN, COMMON, RUN
 + Verify weird scoping rules for deffn work
 ~ Painting patterns
 ~ Debugging statements TRON, TROFF, STOP
@@ -136,8 +135,8 @@ Language features
   "The $STATIC and $DYNAMIC metacommands affect all arrays except implicitly
   dimensioned arrays (arrays not declared in a DIM statement). Implicitly
   dimensioned arrays are always allocated as if $STATIC had been used."
-- PEEK and POKE for memory mapped I/O stuff (keyboard lights?)
-- Improve hacky VARSEG pointers so they can be recycled
++ PEEK and POKE for memory mapped I/O stuff (keyboard lights?)
++ Improve hacky VARSEG pointers so they can be recycled
 - Deal with "advanced features"
   - ALIAS: doesn't parse
   - BYVAL: parses for DECLARE, but not for definitions...
@@ -148,10 +147,10 @@ Language features
   - Int86
   - Int86X
   - LOCAL: syntax error
-  - SADD: can call it... seems to work?
+  + SADD: can call it... seems to work?
   - Interrupt
   - InterruptX
-  - SETMEM: can call it...
+  + SETMEM: can call it...
   - SIGNAL: parses, unavailable
   - UEVENT: parses, unavailable
 + Support PEEK and POKE for VARSEG pointers

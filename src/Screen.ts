@@ -391,7 +391,9 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.softKeys = {keys: [], visible: false};
     this.vgaPaletteData = [];
     this.vgaPaletteIndex = 0;
-    this.configure(1, 0, 0, 0);
+    // Force mode 0 to reinitialize with default text geometry by first
+    // switching to a mode that only supports 80x25.
+    this.configure(2, 0, 0, 0);
     this.configure(0, 0, 0, 0);
   }
 
