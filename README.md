@@ -1,18 +1,28 @@
-# qbc
+# QBasic for web browsers
 
 This repository contains a cleanroom TypeScript implementation of the MS-DOS
-QBasic 1.1 language with an interpreter, a test suite, and a web-based IDE and
-shell.
+QBasic 1.1 language with an interpreter, a test suite, and a web-based IDE
+(using VS code) and shell.
 
-- `npm run build` builds an antlr lexer and grammar
+- `npm run build` builds an [antlr](https://www.antlr.org/) lexer and grammar
 - `npm run test` runs automated tests
 - `npm run serve` starts a dev server at http://localhost:5500/
 
 You can try out the latest release at https://qbasic.run
 
-# Language
+## Status of this project
 
-## IDE behavior
+This is still an early beta in active development.  Lots of [features are
+supported](#feature-status), but stuff might be slow and have bugs.  I've
+only really tested things in desktop Chrome on a Mac.  Many open items are
+tracked in the TODO file.
+
+I'm gonna come clean, I have no actual use for a QBasic interpreter in
+2025.  My main interest here is to have fun studying the language and
+the software people wrote with it.  But if this is somehow actually useful to
+you, please feel free to use it!
+
+# QBasic Language Notes
 
 QBasic uses a fancy IDE that automatically formats your code as you type, so
 it's not clear what lexical rules an independent grammar for QBasic should use.
