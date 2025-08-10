@@ -386,8 +386,8 @@ export class SymbolTable {
         // Parameters are passed by reference so only consume one stack slot.
         const size = variable.isParameter ? 1 : getValueCount(variable);
         variable.address = this.allocate(variable.storageType, size);
-        variable.symbolIndex = SymbolTable._symbolIndex++;
       }
+      variable.symbolIndex = SymbolTable._symbolIndex++;
     } else {
       const asType = slot.arrayAsType ?? slot.scalarAsType;
       if (asType && (variable.isAsType || variable.sigil) && !sameType(asType, variable.type)) {
