@@ -7,6 +7,7 @@ General
 - Open up the repository and release a beta
 - Organize golden file tests a bit better and document expectations
 - Catch and show impl errors in UI
+- Rewrite expression evaluation to use a compiled representation
 
 Bringup
 + GORILLA
@@ -82,17 +83,21 @@ Bringup
 + ANTS, HB_INST, WATER1, QUEST: chain
 + GAMEBAS: VARSEG for record element
 + AMBUSH, AMBUSH2: multifile
++ FMTRACK: Files load with F#s instead of empty notes
+- 4LANG: Unrecognized argument 139: 118
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - ART334: Just including qb.bi, seems simple to support
 - BOMB5: You can have both a line number and a label...
-- COOKIE: BLOADs into different pages offset from A000
+- COOKIE, FMTRACK: BLOADs into different pages offset from A000
 - DBZGAME: IDE knows how to fix missing "s at end of line
 - DBZGAME: CALL should work without DECLARE
 - DIGIREAL: Overflow in POKE...
 - DIGIREAL: Pokes into other page of text memory through B8000
 - DRAGDROP: Uses 3c2 to select bit planes for bload
 - FULLDRAW: Calls BSAVE to save data from A000
+- FMTRACK: Sets ram font by SHELLing to a temporary com file...
+- KEYLITES: Uses &h17 to set keyboard status lights
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
 - PONGBALL: Need mouse limit apis
@@ -107,6 +112,10 @@ IDE features
 - Add a catalog with program entries
 - Save states
 - Break during input seems to leave editor coroutine around
+- Add a sampling profiler that shows heat maps per line
+- Status message when compiling, polling for input
+- Clear filesystem when loading from catalog
+- Don't disable break when sound is playing
 ~ Speed controls
 ~ Add a way to upload/download files from browser
 ~ Add a filesystem browser

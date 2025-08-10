@@ -63,6 +63,10 @@ export class ScreenFunction extends Statement {
       } else {
         const char = context.devices.screen.getCharAt(row, column);
         contents = stringToAscii(char)[0] ?? 0;
+        // SCREEN reports control characters as spaces.
+        if (contents < 32) {
+          contents = 32;
+        }
       }
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);

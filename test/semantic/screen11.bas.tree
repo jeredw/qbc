@@ -1,0 +1,51 @@
+(program 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (screen_function screen 
+              ( 
+                (expr 
+                  (literal 1)) , 
+                (expr 
+                  (literal 1)) ))))))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (literal &hb800)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call peek 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 2)))) )))))) \n <EOF>)

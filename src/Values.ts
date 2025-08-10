@@ -187,7 +187,7 @@ export function getDefaultValue(variable: Variable): Value {
     case TypeTag.LONG:
       return long(0);
     case TypeTag.FIXED_STRING:
-      return string(" ".repeat(variable.type.maxLength));
+      return string("\x00".repeat(variable.type.maxLength));
     case TypeTag.RECORD:
     case TypeTag.ANY:
     case TypeTag.NUMERIC:
