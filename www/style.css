@@ -129,8 +129,16 @@ body {
   border: 0;
 }
 
-.help {
+.right-buttons {
   margin-left: auto;
+}
+
+.disable-sound,
+.sound-on .enable-sound {
+  display: none;
+}
+.sound-on .disable-sound {
+  display: inline;
 }
 
 .help-pane {

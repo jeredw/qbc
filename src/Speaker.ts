@@ -119,6 +119,7 @@ export class WebAudioSpeaker implements Speaker {
   synthesizer: Synthesizer = new Synthesizer();
   queue: Note[] = [];
   playState: PlayState;
+  enabled = false;
   private midiStillLoading = false;
   private pendingPlayMidi?: () => void;
   private playedNotesSinceReset = false;
@@ -131,14 +132,21 @@ export class WebAudioSpeaker implements Speaker {
   }
 
   enable() {
+    this.enabled = true;
     if (this.audioContext.state === 'suspended') {
       this.audioContext.resume();
+      // The midi player thing uses Tone.js under the hood which has this start method.
+      window['Tone'] && window['Tone'].start?.();
+      this.midiPlayer.start();
     }
   }
 
   disable() {
+    this.enabled = false;
     if (this.audioContext.state !== 'suspended') {
       this.audioContext.suspend();
+      // Tone does not appear to have a stop method.
+      this.midiPlayer.stop();
     }
   }
 
@@ -161,6 +169,9 @@ export class WebAudioSpeaker implements Speaker {
     this.oscillator.type = "square";
     this.oscillator.connect(this.gainNode);
     this.oscillator.start();
+    if (!this.enabled) {
+      this.audioContext.suspend();
+    }
     this.queue = [];
     this.playState = {...DEFAULT_PLAY_STATE};
   }
@@ -282,7 +293,9 @@ export class WebAudioSpeaker implements Speaker {
       this.midiPlayer.reload();
     }
     this.midiPlayer.loop = !!loop;
-    this.midiPlayer.start();
+    if (this.enabled) {
+      this.midiPlayer.start();
+    }
   }
 
   stopMidi() {

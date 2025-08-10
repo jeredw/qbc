@@ -115,6 +115,10 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.stepButton.addEventListener('click', () => setTimeout(() => this.step()));
     this.stepOverButton = assertHTMLElement(root.querySelector('.step-over'));
     this.stepOverButton.addEventListener('click', () => setTimeout(() => this.stepOver()));
+    const disableSoundButton = assertHTMLElement(root.querySelector('.disable-sound'));
+    disableSoundButton.addEventListener('click', () => this.muteAudio());
+    const enableSoundButton = assertHTMLElement(root.querySelector('.enable-sound'));
+    enableSoundButton.addEventListener('click', () => this.playAudio());
     this.helpButton = assertHTMLElement(root.querySelector('.help'));
     this.helpButton.addEventListener('click', () => this.toggleHelp());
     this.closeHelpButton = assertHTMLElement(root.querySelector('.close-help'));
@@ -537,13 +541,13 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   playAudio() {
     this.speaker.enable();
     this.printer.enableAudio();
-    this.root.classList.add('sound-enabled');
+    this.root.classList.add('sound-on');
   }
 
   muteAudio() {
     this.speaker.disable();
     this.printer.disableAudio();
-    this.root.classList.remove('sound-enabled');
+    this.root.classList.remove('sound-on');
   }
 
   query(line: number, column: number): string | undefined {
