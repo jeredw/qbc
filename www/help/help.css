@@ -1,0 +1,83 @@
+:root {
+  --qbc-black: #000000;
+  --qbc-blue: #0000aa;
+  --qbc-green: #00aa00;
+  --qbc-cyan: #00aaaa;
+  --qbc-red: #aa0000;
+  --qbc-magenta: #aa00aa;
+  --qbc-brown: #aa5500;
+  --qbc-light-gray: #aaaaaa;
+  --qbc-dark-gray: #555555;
+  --qbc-high-blue: #5555ff;
+  --qbc-high-green: #55ff55;
+  --qbc-high-cyan: #55ffff;
+  --qbc-high-red: #ff5555;
+  --qbc-high-magenta: #ff55ff;
+  --qbc-yellow: #ffff55;
+  --qbc-white: #ffffff;
+  --qbc-paper-font: rgb(0, 0, 0);
+  --qbc-paper-green: rgb(180, 203, 193);
+  --qbc-paper-white: rgb(255, 255, 255);
+}
+
+::selection {
+  background: var(--qbc-light-gray);
+  color: var(--qbc-black);
+}
+
+@font-face {
+  font-family: 'Web IBM VGA 8x16';
+  font-style: normal;
+  font-weight: normal;
+  src: url(/WebPlus_IBM_VGA_8x16.woff) format('woff');
+}
+
+body {
+  background: var(--qbc-black);
+  color: var(--qbc-light-gray);
+  font-family: 'Web IBM VGA 8x16';
+  font-size: 22px;
+  max-width: 800px;
+  margin-inline-start: 20px;
+}
+
+code {
+  font-family: 'Web IBM VGA 8x16';
+}
+
+pre {
+  font-family: 'Web IBM VGA 8x16';
+  margin: 20px;
+  padding: 8px;
+  background: var(--qbc-blue);
+  color: var(--qbc-gray);
+}
+
+.keyword {
+  color: var(--qbc-gray);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+pre {
+  min-width: 640px;
+}
+
+table {
+  border: 1px solid var(--qbc-light-gray);
+  margin: 20px;
+}
+
+th {
+  text-align: start;
+  border-bottom: 1px solid var(--qbc-light-gray);
+}
+
+th, td {
+  border-inline-end: 1px solid var(--qbc-light-gray);
+  padding: 4px;
+}
+
+th:last-child, td:last-child {
+  border-inline-end: none;
+}

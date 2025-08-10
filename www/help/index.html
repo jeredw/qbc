@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+<head>
+<title>QBasic Help</title>
+<link rel="preload" href="/WebPlus_IBM_VGA_8x16.woff" as="font" type="font/woff" crossorigin />
+<link href="help.css" rel="stylesheet">
+</head>
+<body>
+<p>If you are reading this, you must truly need help.  I'll do my best.
+<p>These books written by actual technical writers are really good, though
+somewhat dated and presuming less general technical knowledge and perhaps more
+nicotine and hairspray use than are now the norm.
+<ul>
+<li><a target="_blank"
+href="https://www.pcjs.org/documents/books/mspl13/basic/qblang/">Microsoft
+QuickBASIC: Language Reference</a>
+<li><a target="_blank"
+href="https://www.pcjs.org/documents/books/mspl13/basic/qbprog/">Microsoft
+QuickBASIC: Programming in BASIC</a>
+</ul>
+
+<p><a href="#quickstart">Quick Start</a>
+
+<a name="quickstart">
+<h2>Quick Start</h2>
+
+<p>Here's a simple program so you can see what we're dealing with.
+
+<pre>
+' This is a procedure (a subroutine) named PrintKey.
+' It takes one string parameter k$ and shows its value on
+' the screen.
+SUB PrintKey (k$)
+  PRINT "You pressed "; k$
+END SUB
+
+DO
+  ' Call the builtin function INKEY$ to read whatever key
+  ' is pending from the keyboard.
+  k$ = INKEY$
+  IF k$ <> "" THEN
+    ' If key is not empty, call our subroutine to display it.
+    PrintKey k$
+  END IF
+' Loop until a key is pressed.
+LOOP WHILE k$ = ""
+</pre>
+
+<p>QBasic is a <a class="keyword" href="#types">statically typed</a> procedural
+language with block structure and two levels of scope. Global variables exist
+the entire time a program is running, and are only visible outside procedures.
+Local variables are allocated on a stack each time a procedure is called, and
+only exist during that call.
+
+<p>Variables are implicitly defined the first time they are used, but can also
+be declared before use. Variable declarations can change default scope behavior.
+Globals can be made visible by declaring them <a class="keyword"
+href="#shared">SHARED</a> with all
+procedures or within specific procedures. Locals declared <a class="keyword"
+href="#static">STATIC</a> persist after procedure calls. Globals declared <a
+class="keyword" href="#common">COMMON</a> can persist after a program finishes,
+by being passed to another program (no, really).
+
+<p>By default, procedure parameters are passed by reference.
+
+<pre>
+' Increment adds 1 to its integer parameter.
+SUB Increment (i%)
+  ' This i% refers to the global j%, so modifying it
+  ' will also modify j%
+  i% = i% + 1
+END SUB
+
+j% = 41
+Increment j%
+PRINT j%  ' Prints 42.
+</pre>
+
+<p>Procedures defined with <a class="keyword" href="#function">FUNCTION</a>
+return a value instead of just modifying their parameters.
+
+<pre>
+' Increment% returns its integer parameter's value + 1.
+FUNCTION Increment% (i%)
+  ' Return by assigning to the function name.
+  Increment% = i% + 1
+END FUNCTION
+
+PRINT Increment(41)  ' Prints 42.
+</pre>
+
+<p>QBasic also supports some older procedure constructs <a class="keyword"
+href="#deffn">DEF FN</a> and <a class="keyword" href="#gosub">GOSUB</a>.</p>
+<p>Older BASICs use line numbers and <a class="keyword" href="#goto">GOTO</a>
+statements heavily, but QBasic prefers block structured programming constructs
+like <a class="keyword" href="#blockif">IF...END IF</a>, <a class="keyword"
+href="#blockdo">DO...LOOP</a>, <a class="keyword"
+href="#for">FOR...NEXT</a>.
+
+<pre>
+FOR i = 1 to 10
+  IF foo THEN
+    ' Do this if foo is true ...
+  ELSE IF bar THEN
+    ' Otherwise, do this if bar is true ...
+  ELSE
+    ' Otherwise, do this ...
+  END IF
+NEXT i
+</pre>
+
+<a name="values">
+<h3>Values</h3>
+
+<p>QBasic operates on signed integers, floating point numbers, and strings.
+
+<p>For integer operations, values outside 16-bit signed range are assumed to be
+32-bit. For floating point operations, numbers with 6 or fewer decimal places
+are treated as single-precision floats, else double-precision.
+
+<pre>
+  print 22 / 7  ' 3.142857
+  print 32768 * 4  ' 131072
+  print 320 * 200  ' Overflow error!
+</pre>
+
+<p>A runtime error occurs if operations overflow.
+
+<p>Strings are groups of bytes which may either be binary data or
+<a href="https://en.wikipedia.org/wiki/Code_page_437">CP437 ASCII</a> text.
+Variable-length strings are stored with a prefixed 16-bit integer length, so
+they may include NUL characters.
+
+<a name="types">
+<h3>Builtin Types</h3>
+
+<p>Values in QBasic programs have an associated type.
+
+<table>
+  <tr>
+    <th>Type name</th>
+    <th>Sigil</th>
+    <th>Range</th>
+    <th>Size</th>
+  </tr>
+  <tr>
+    <td><code>double</code></td>
+    <td>#</td>
+    <td>Double-precision float</td>
+    <td>8 bytes</td>
+  </tr>
+  <tr>
+    <td><code>single</code></td>
+    <td>!</td>
+    <td>
+      Single-precision float<br>
+      -3.402823e+38 to 3.402823e+38
+    </td>
+    <td>4 bytes</td>
+  </tr>
+  <tr>
+    <td><code>integer</code></td>
+    <td>%</td>
+    <td>
+      16-bit signed integer<br>
+      -32768 to 32767
+    </td>
+    <td>2 bytes</td>
+  </tr>
+  <tr>
+    <td><code>long</code></td>
+    <td>&</td>
+    <td>32-bit signed integer<br>
+      -2147483648 to 2147483647</td>
+    <td>4 bytes</td>
+  </tr>
+  <tr>
+    <td><code>string</code></td>
+    <td>$</td>
+    <td>Byte sequence<br>up to 32k</td>
+    <td>?</td>
+  </tr>
+  <tr>
+    <td><code>string * n%</code></td>
+    <td>$</td>
+    <td>Fixed length string</td>
+    <td>n% bytes</td>
+  </tr>
+</table>
+
+<a name="sigil">
+<p>The type of a value can be indicated by putting a sigil character after it.
+
+<pre>
+PRINT 320& * 200&  ' Impossibly huge 32-bit numbers.
+</pre>
+
+<h3>User-defined types</h3>
+
+<p>The <code>TYPE</code> statement lets you define your own types as
+compositions of <a class="keyword" href="#types">builtin types</a> and other
+user-defined types. Types consist of named elements. All elements must be of a
+fixed size.</p>
+
+<pre>
+' A Pet has a name which can be up to 20 characters long.
+TYPE Pet
+  Name AS STRING * 20
+END TYPE
+
+' A Person has a name up to 40 characters long,
+' an age which is presumed to be less than 32768,
+' a height as a single precision float in cm,
+' and a dog.
+TYPE Person
+  Name   AS STRING * 40
+  Age    AS INTEGER
+  Height AS SINGLE
+  Dog    AS Pet
+END TYPE
+
+' The variable Joe has type Person.
+DIM Joe AS Person
+
+' Use variable dot element to refer to type elements.
+Joe.Name = "Joe"
+Joe.Age  = 22
+Joe.Height = 182.88
+Joe.Dog.Name = "Milo"
+</pre>
+
+<p>A type element can be accessed using the syntax <code>var.element</code>.
+Note that element names cannot include periods or sigils, and elements cannot be
+arrays.
+
+<a name="variables">
+<h3>Variables</h3>
+
+<p>A variable is a name for a <a class="keyword" href="#values">value</a> or an
+<a class="keyword" href="#arrays">array</a> of values in memory. Variable names
+must start with a letter and may include letters, periods, and numbers.
+
+<p>A variable's <a class="keyword" href="#type">type</a> can be specified by
+putting a <a class="keyword" href="#sigil">sigil</a> after its name, so
+<code>p&</code> means a 32-bit signed integer <code>p</code>.  <code>p&</code>
+and <code>p$</code> are different variables.
+
+<p>Variables can also be declared to have some type using declaration statements
+<a class="keyword" href="#dim">DIM</a>
+<a class="keyword" href="#common">COMMON</a>
+<a class="keyword" href="#static">STATIC</a>
+<a class="keyword" href="#shared">SHARED</a> with <code>AS</code> syntax.
+For example, <code>DIM x AS INTEGER</code> declares
+<code>x</code> without any sigil to be a 16-bit signed integer. Afterwards, the
+name <code>x</code> can only have integer type.
+
+<pre>
+  DIM x as INTEGER
+  PRINT x   ' Ok, prints an integer named x.
+  PRINT x%  ' Ditto.
+  ' Since the name x has been declared as an integer, can't have
+  ' other variables named x with a different type anymore.
+  PRINT x$  ' Error: Duplicate definition.
+</pre>
+
+<p>If a variable name has no sigil and no AS-declared type, its type is
+determined by the current <a class="keyword" href="#deftype">DEFtype</a>.
+
+<a name="arrays">
+<h3>Arrays</h3>
+
+</body>
+</html>
