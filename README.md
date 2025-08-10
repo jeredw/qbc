@@ -84,10 +84,46 @@ overflow: PRINT "overflow": END
 
 should print "overflow".
 
-## TODO: Error codes
+## Error codes
 
-There are 70+ error codes for various specific error situations.  We're probably
-not going to model all of those exactly.
+There are around 60 error codes that can allegedly happen at runtime for various
+specific error situations.  We're probably not going to model all of those
+exactly.  Here are the supported runtime errors.
+
+```
+1       NEXT without FOR             38      Array not defined
+2       ✅Syntax error               39      CASE ELSE expected
+3       ✅RETURN without GOSUB       40      ✅Variable required
+4       ✅Out of DATA                50      ✅FIELD overflow
+5       ✅Illegal function call      51      Internal error
+6       ✅Overflow                   52      ✅Bad file name or number
+7       ✅Out of memory              53      ✅File not found
+8       Label not defined            54      ✅Bad file mode
+9       ✅Subscript out of range     55      ✅File already open
+10      ✅Duplicate definition       56      ✅FIELD statement active
+11      ✅Division by zero           57      Device I/O error
+12      Illegal in direct mode       58      ✅File already exists
+13      ✅Type mismatch              59      ✅Bad record length
+14      Out of string space          61      Disk full
+16      String formula too complex   62      ✅Input past end of file
+17      Cannot continue              63      ✅Bad record number
+18      Function not defined         64      ✅Bad file name
+19      ✅No RESUME                  67      Too many files
+20      ✅RESUME without error       68      Device unavailable
+24      Device timeout               69      Communication-buffer overflow
+25      Device fault                 70      Permission denied
+26      FOR without NEXT             71      Disk not ready
+27      Out of paper                 72      Disk-media error
+29      WHILE without WEND           73      ✅Advanced feature unavailable
+30      WEND without WHILE           74      Rename across disks
+33      Duplicate label              75      ✅Path/File access error
+35      Subprogram not defined       76      ✅Path not found
+37      Argument-count mismatch
+```
+
+Some errors like "WHILE without WEND" can happen at compile time, while others
+like "out of paper" are fairly unlikely to happen at any time in this
+environment.
 
 # Feature status
 
@@ -110,7 +146,7 @@ parse those using baked in rules.
 | Feature          | Category    | Parser  | Codegen |
 | ---------------- | ----------- | ------- | ------- |
 | `ABS`            | Function    | -       | ✅      |
-| `ABSOLUTE`       | Keyword     | ✅      | ⛔      |
+| `ABSOLUTE`       | Keyword     | ✅      | 🚧      |
 | `ACCESS`         | Keyword     | ✅      | ⛔      |
 | `AND`            | Operator    | ✅      | ✅      |
 | `ANY`            | Keyword     | ✅      | ✅      |
@@ -127,7 +163,7 @@ parse those using baked in rules.
 | `CALL ABSOLUTE`  | Statement   | ✅      | 🚧      |
 | `CASE`           | Keyword     | ✅      | ✅      |
 | `CDBL`           | Function    | -       | ✅      |
-| `CHAIN`          | Statement   | -       | ⛔      |
+| `CHAIN`          | Statement   | -       | 🚧      |
 | `CHDIR`          | Statement   | -       | ✅      |
 | `CHR$`           | Function    | -       | ✅      |
 | `CINT`           | Function    | -       | ✅      |
