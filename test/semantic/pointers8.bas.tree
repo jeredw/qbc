@@ -76,13 +76,13 @@
           (builtin_function 
             (varseg_function varseg 
               ( 
-                (variable_or_function_call thing.s) )))) ;) 
+                (variable_or_function_call thing.t) )))) ;) 
       (print_argument 
         (expr 
           (builtin_function 
             (varptr_function varptr 
               ( 
-                (variable_or_function_call thing.s) )))) ;) 
+                (variable_or_function_call thing.t) )))) ;) 
       (print_argument 
         (expr 
           (variable_or_function_call chr$ 

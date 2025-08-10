@@ -113,7 +113,7 @@ export class IndexArrayStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const descriptor = getArrayDescriptor(this.array, context.memory);
-    let offset = this.array.recordOffset?.offset || 0;
+    let valueIndex = this.array.recordOffset?.offset || 0;
     let stride = descriptor.valuesPerItem!;
     // Array shape isn't checked at compile time for parameters.
     if (descriptor.dimensions.length !== this.indexExprs.length) {
@@ -135,7 +135,7 @@ export class IndexArrayStatement extends Statement {
       if (index < bounds.lower || index > bounds.upper) {
         throw RuntimeError.fromToken(expr.start!, SUBSCRIPT_OUT_OF_RANGE);
       }
-      offset += stride * (index - bounds.lower);
+      valueIndex += stride * (index - bounds.lower);
       stride *= 1 + bounds.upper - bounds.lower;
     }
     if (this.result.address === undefined) {
@@ -144,13 +144,14 @@ export class IndexArrayStatement extends Statement {
     if (!descriptor.baseAddress) {
       throw new Error("array not allocated");
     }
-    // TODO: arraryOffsetInBytes is incorrect for record arrays with an element.
     const bytesPerItem = getBytesPerItem(this.array, context.memory);
+    const itemIndex = ~~(valueIndex / descriptor.valuesPerItem!);
+    const arrayOffsetInBytes = itemIndex * bytesPerItem + (this.array.recordOffset?.byteOffset ?? 0);
     context.memory.writeAddress(this.result.address, reference(this.array, {
       storageType: descriptor.storageType!,
       frameIndex: descriptor.baseAddress!.frameIndex,
-      index: descriptor.baseAddress!.index + offset,
-      arrayOffsetInBytes: offset * bytesPerItem,
+      index: descriptor.baseAddress!.index + valueIndex,
+      arrayOffsetInBytes,
     }));
   }
 }

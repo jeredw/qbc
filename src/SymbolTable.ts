@@ -2,7 +2,7 @@ import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures.ts";
 import { isNumericType, sameType, Type, TypeTag } from "./Types.ts";
 import { Constant } from "./Values.ts";
-import { getScalarValueCount, getValueCount, Variable } from "./Variables.ts";
+import { getElementSizeInBytes, getScalarValueCount, getScalarVariableSizeInBytes, getValueCount, Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
 import { Address, StorageType } from "./Memory.ts";
 import { Builtin, StandardLibrary } from "./Builtins.ts";
@@ -139,6 +139,7 @@ export class SymbolTable {
   private _staticIndex: number;
   private _record: Variable;
   private _elementOffset: number;
+  private _elementByteOffset: number;
   static _symbolIndex = 0x0100;
   
   constructor({builtins, parent, name} : {builtins: StandardLibrary, parent?: SymbolTable, name?: string}) {
@@ -410,8 +411,8 @@ export class SymbolTable {
       }
       if (!element) {
         this.allocateArray(variable);
-        variable.symbolIndex = SymbolTable._symbolIndex++;
       }
+      variable.symbolIndex = SymbolTable._symbolIndex++;
     }
     if (variable.type.tag == TypeTag.RECORD) {
       const conflicts = this._symbols.findPrefixDot(variable.name);
@@ -434,6 +435,7 @@ export class SymbolTable {
         // allocation, and element offsets are relative to that.
         this._record = variable;
         this._elementOffset = 0;
+        this._elementByteOffset = 0;
       }
       // Elements of user-defined type arrays get their own internal array
       // symbols named t().element.
@@ -450,10 +452,15 @@ export class SymbolTable {
           sharedWith: variable.sharedWith,
           static: variable.static,
           array: this._record.array,
-          recordOffset: {record: this._record, offset: this._elementOffset},
+          recordOffset: {
+            record: this._record,
+            offset: this._elementOffset,
+            byteOffset: this._elementByteOffset,
+          },
         };
         if (elementType.tag != TypeTag.RECORD) {
           this._elementOffset++;
+          this._elementByteOffset += getElementSizeInBytes(element);
         }
         this.defineVariable(element, true);
         variable.elements.set(elementName, element);

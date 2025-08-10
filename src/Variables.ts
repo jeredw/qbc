@@ -32,6 +32,7 @@ export interface Variable {
 export interface RecordOffset {
   record: Variable;
   offset: number;
+  byteOffset: number;
 }
 
 export interface ArrayDescriptor {
@@ -79,6 +80,26 @@ function getRecordValueCount(type: UserDefinedType): number {
     }
   }
   return size;
+}
+
+export function getElementSizeInBytes(variable: Variable) {
+  switch (variable.type.tag) {
+    case TypeTag.SINGLE:
+      return 4;
+    case TypeTag.DOUBLE:
+      return 8;
+    case TypeTag.INTEGER:
+      return 2;
+    case TypeTag.LONG:
+      return 4;
+    case TypeTag.FIXED_STRING:
+      return variable.type.maxLength;
+    case TypeTag.RECORD:
+      return Array.from(variable.elements?.values() ?? [])
+        .map((element: Variable) => getElementSizeInBytes(element))
+        .reduce((acc: number, sum: number) => acc + sum, 0);
+  }
+  throw new Error("Unsupported type for record element");
 }
 
 export function getScalarVariableSizeInBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {

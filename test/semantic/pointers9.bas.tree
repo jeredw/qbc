@@ -1,0 +1,156 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id stuff) \n 
+    (type_element 
+      (untyped_id s) as 
+      (type_name_for_type_element 
+        (fixed_string string * 2)) \n) 
+    (type_element 
+      (untyped_id t) as 
+      (type_name_for_type_element 
+        (fixed_string string * 10)) \n) end type) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id thing) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) )) as 
+        (type_name 
+          (untyped_id stuff))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call thing 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 10)))) ) . s) = 
+      (expr 
+        (literal "s")))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call thing 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 10)))) ) . t) = 
+      (expr 
+        (literal "t")))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call thing 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 10)))) ) . s) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (varseg_function varseg 
+              ( 
+                (variable_or_function_call thing 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) ) . s) )))) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (varptr_function varptr 
+              ( 
+                (variable_or_function_call thing 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) ) . s) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (builtin_function 
+                                (varptr_function varptr 
+                                  ( 
+                                    (variable_or_function_call thing 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 10)))) ) . s) )))))) ))))) )))))) \n 
+  (statement 
+    (def_seg_statement def seg = 
+      (expr 
+        (builtin_function 
+          (varseg_function varseg 
+            ( 
+              (variable_or_function_call thing 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 10)))) ) . t) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (varseg_function varseg 
+              ( 
+                (variable_or_function_call thing 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) ) . t) )))) ;) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (varptr_function varptr 
+              ( 
+                (variable_or_function_call thing 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 10)))) ) . t) )))) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call chr$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call peek 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (builtin_function 
+                                (varptr_function varptr 
+                                  ( 
+                                    (variable_or_function_call thing 
+                                      ( 
+                                        (argument_list 
+                                          (argument 
+                                            (expr 
+                                              (literal 10)))) ) . t) )))))) ))))) )))))) \n <EOF>)
