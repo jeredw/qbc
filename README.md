@@ -127,21 +127,9 @@ environment.
 
 # Feature status
 
-QBasic doesn't distinguish the core of the language from standard libraries,
-but it would be nice to keep the grammar down to a somewhat reasonable size
-rather than just having hundreds of rules to match all the possible pre-defined
-statements and functions.
-
-Built-in functions don't need any special parsing, and can just be defined by
-the runtime... unless they are also keywords used in other contexts, and thus
-not valid identifiers, like `TIMER`.
-
-In theory, many statements also shouldn't need special parsing and can be
-parsed the same way as CALLs would be.  However some statements can elide
-arguments in the middle of their argument list, which isn't supported for user
-defined functions.  And some statements have novel argument syntax like ordered
-pairs, file handles or keywords as arguments - it's probably easier just to
-parse those using baked in rules.
+Most language features are supported!  Tons of interesting complex programs run
+fine.  Features marked with 🚧 have working implementations with some
+limitations, while features marked with ⛔ don't work.
 
 | Feature          | Category    | Parser  | Codegen |
 | ---------------- | ----------- | ------- | ------- |
