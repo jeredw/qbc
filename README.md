@@ -8,6 +8,8 @@ shell.
 - `npm run test` runs automated tests
 - `npm run serve` starts a dev server at http://localhost:5500/
 
+You can try out the latest release at https://qbasic.run
+
 # Language
 
 ## IDE behavior
