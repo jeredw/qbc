@@ -48,8 +48,8 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private stepButton: HTMLElement;
   private stepOverButton: HTMLElement;
   private helpButton: HTMLElement;
-  private helpPane: HTMLElement;
   private closeHelpButton: HTMLElement;
+  private popOutHelpButton: HTMLElement;
   private importButton: HTMLElement;
   private importInput: HTMLInputElement;
   private filePicker: HTMLElement;
@@ -115,11 +115,12 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.stepButton.addEventListener('click', () => setTimeout(() => this.step()));
     this.stepOverButton = assertHTMLElement(root.querySelector('.step-over'));
     this.stepOverButton.addEventListener('click', () => setTimeout(() => this.stepOver()));
-    this.helpPane = assertHTMLElement(root.querySelector('.help-pane'));
     this.helpButton = assertHTMLElement(root.querySelector('.help'));
     this.helpButton.addEventListener('click', () => this.toggleHelp());
     this.closeHelpButton = assertHTMLElement(root.querySelector('.close-help'));
     this.closeHelpButton.addEventListener('click', () => this.closeHelp());
+    this.popOutHelpButton = assertHTMLElement(root.querySelector('.pop-out-help'));
+    this.popOutHelpButton.addEventListener('click', () => this.popOutHelp());
     this.importInput = root.querySelector('.import-input')!;
     this.importInput.addEventListener('input', () => this.importFiles());
     this.importButton = assertHTMLElement(root.querySelector('.import'));
@@ -567,6 +568,11 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   }
 
   private closeHelp() {
+    this.editorPane.classList.remove('help-shown');
+  }
+
+  private popOutHelp() {
+    window.open('/help', '_blank');
     this.editorPane.classList.remove('help-shown');
   }
 
