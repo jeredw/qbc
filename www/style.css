@@ -115,15 +115,17 @@ body {
   grid-column-start: 1;
   grid-row-start: 1;
   max-width: 50vw;
+  border-inline-end: 2px solid var(--qbc-dark-gray);
 }
 
 .toolbar {
   display: flex;
   gap: 2px;
+  background: var(--qbc-high-blue);
 }
 
 .toolbar-button {
-  background: var(--qbc-light-gray);
+  background: transparent;
   border: 0;
 }
 
