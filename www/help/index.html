@@ -109,32 +109,10 @@ FOR i = 1 to 10
 NEXT i
 </pre>
 
-<a name="values">
-<h3>Values</h3>
-
-<p>QBasic operates on signed integers, floating point numbers, and strings.
-
-<p>For integer operations, values outside 16-bit signed range are assumed to be
-32-bit. For floating point operations, numbers with 6 or fewer decimal places
-are treated as single-precision floats, else double-precision.
-
-<pre>
-  print 22 / 7  ' 3.142857
-  print 32768 * 4  ' 131072
-  print 320 * 200  ' Overflow error!
-</pre>
-
-<p>A runtime error occurs if operations overflow.
-
-<p>Strings are groups of bytes which may either be binary data or
-<a target="_blank" href="https://en.wikipedia.org/wiki/Code_page_437">CP437
-ASCII</a> text. Variable-length strings are stored along with a 16-bit
-integer length, so they may include NUL characters.
-
 <a name="types">
 <h3>Builtin Types</h3>
 
-<p>Values in QBasic programs have an associated type.
+<p>All values in QBasic programs have an associated type.
 
 <table>
   <tr>
@@ -144,22 +122,7 @@ integer length, so they may include NUL characters.
     <th>Size</th>
   </tr>
   <tr>
-    <td><code>double</code></td>
-    <td>#</td>
-    <td>Double-precision float</td>
-    <td>8 bytes</td>
-  </tr>
-  <tr>
-    <td><code>single</code></td>
-    <td>!</td>
-    <td>
-      Single-precision float<br>
-      -3.402823e+38 to 3.402823e+38
-    </td>
-    <td>4 bytes</td>
-  </tr>
-  <tr>
-    <td><code>integer</code></td>
+    <td><code>INTEGER</code></td>
     <td>%</td>
     <td>
       16-bit signed integer<br>
@@ -168,20 +131,35 @@ integer length, so they may include NUL characters.
     <td>2 bytes</td>
   </tr>
   <tr>
-    <td><code>long</code></td>
+    <td><code>LONG</code></td>
     <td>&</td>
     <td>32-bit signed integer<br>
       -2147483648 to 2147483647</td>
     <td>4 bytes</td>
   </tr>
   <tr>
-    <td><code>string</code></td>
+    <td><code>SINGLE</code></td>
+    <td>!</td>
+    <td>
+      Single-precision float<br>
+      -3.402823e+38 to 3.402823e+38
+    </td>
+    <td>4 bytes</td>
+  </tr>
+  <tr>
+    <td><code>DOUBLE</code></td>
+    <td>#</td>
+    <td>Double-precision float</td>
+    <td>8 bytes</td>
+  </tr>
+  <tr>
+    <td><code>STRING</code></td>
     <td>$</td>
-    <td>Byte sequence<br>up to 32k</td>
+    <td>Variable length string<br>up to 32767 bytes</td>
     <td>?</td>
   </tr>
   <tr>
-    <td><code>string * n%</code></td>
+    <td><code>STRING * n%</code></td>
     <td>$</td>
     <td>Fixed length string</td>
     <td>n% bytes</td>
@@ -189,11 +167,226 @@ integer length, so they may include NUL characters.
 </table>
 
 <a name="sigil">
-<p>The type of a value can be indicated by putting a sigil character after it.
+<p>A value's type can be specified by putting a sigil character after it.
 
 <pre>
 PRINT 320& * 200&  ' Impossibly huge 32-bit numbers.
 </pre>
+
+<a name="values">
+<h3>Literal values</h3>
+
+<p>QBasic operates on integers, floating point numbers (floats), and strings.
+
+<p>A base-10 number with no decimal point and no sigil is read as the smallest
+type that fits it: an integer, a long, or a double.  But note -32768 is read as
+a long, and -2147483648 as a double.  Integers can be given in hex by prefixing
+them with <code>&H</code> and octal by prefixing them with <code>&O</code>.
+Numbers are always signed, so <code>&HFFFF = -1</code>.
+
+<p>Numbers with a decimal point like 3.14 or numbers in scientific notation like
+6.02E23 are floats.  Decimals are read as singles if they have 7 or fewer
+digits, else doubles.  Scientific notation numbers are singles if they use E to
+mark the exponent, and doubles if they use D.  If you try to write an E-number
+with more than 7 digits, QBasic changes E to D when you press enter.
+
+<pre>
+  print 42        ' integer
+  print 32768     ' long
+  print 3.142857  ' single
+  print 6.02e23   ' single
+  print 6.02d23   ' double
+</pre>
+
+<p>Strings are groups of bytes which may either be binary data or
+<a target="_blank" href="https://en.wikipedia.org/wiki/Code_page_437">CP437
+ASCII</a> text. Variable-length strings are stored along with a 16-bit
+integer length, so they may include NUL characters.
+
+<pre>
+  s$ = "I am a string."
+  ' To put quotes in a string, use CHR$(34).
+  t$ = CHR$(34) + "I say," + CHR$(34) + " he said."
+  ' Strings can contain arbitrary bytes.
+  u$ = CHR$(0) + CHR$(26)
+</pre>
+
+<p>The + operator concatenates two strings into a new string.
+
+<p>See this note for more details about how qbasic.run handles <a class="keyword"
+href="#encodings">string encodings</a>.
+
+<a name="arith-ops">
+<h3>Arithmetic Operators</h3>
+
+<table>
+  <tr>
+    <th>Operator</th>
+    <th>Description</th>
+    <th>Result Type</th>
+  </tr>
+  <tr>
+    <td><code>a + b</code></td>
+    <td>Addition</td>
+    <td>Most precise of a or b</td>
+  </tr>
+  <tr>
+    <td><code>a - b</code></td>
+    <td>Subtraction</td>
+    <td>Most precise of a or b</td>
+  </tr>
+  <tr>
+    <td><code>a * b</code></td>
+    <td>Multiplication</td>
+    <td>Most precise of a or b</td>
+  </tr>
+  <tr>
+    <td><code>a / b</code></td>
+    <td>Floating point division</td>
+    <td>a or b DOUBLE -> DOUBLE<br>
+        otherwise SINGLE</td>
+  </tr>
+  <tr>
+    <td><code>a \ b</code></td>
+    <td>Integer division</td>
+    <td>a and b INTEGER -> INTEGER<br>
+        otherwise LONG</td>
+  </tr>
+  <tr>
+    <td><code>a MOD b</code></td>
+    <td>Integer remainder</td>
+    <td>a and b INTEGER -> INTEGER<br>
+        otherwise LONG</td>
+  </tr>
+  <tr>
+    <td><code>a ^ b</code></td>
+    <td>Floating point exponent</td>
+    <td>a or b DOUBLE -> DOUBLE<br>
+        otherwise SINGLE</td>
+  </tr>
+  <tr>
+    <td><code>-a</code></td>
+    <td>Negation</td>
+    <td>a</td>
+  </tr>
+</table>
+
+<p>(For "most precise", DOUBLE > SINGLE > LONG > INTEGER.)
+
+<p>Arithmetic precision is determined by operand types, which can be confusing.
+
+<pre>
+  print 320 * 200 ' Overflow error!
+</pre>
+
+<p>A runtime error occurs if math operations overflow.  In the example above,
+320 and 200 are both 16-bit signed integers, but their product 64000 > 32767.
+Similarly, there are runtime errors for division by zero and 0 ^ -k.
+
+<p>If operands are not already the correct types, they are converted first.  For
+example, this means double arguments to integer division must fit in a long.
+
+<pre>
+  print 2147483648# \ 2#  ' Overflow error!
+</pre>
+
+There are a few more details about qbasic.run artihmetic <a class="keyword"
+href="#precision">precision</a>.
+
+<a name="comparison-ops">
+<h3>Comparison Operators</h3>
+
+<table>
+  <tr>
+    <th>Operator</th>
+    <th>Description</th>
+  </tr>
+  <tr></tr>
+    <td><code>a = b</code></td>
+    <td>Equals</td>
+  </tr>
+  <tr>
+    <td><code>a &lt; b</code></td>
+    <td>Less than</td>
+  </tr>
+  <tr>
+    <td><code>a &lt;= b</code></td>
+    <td>Less than or equal</td>
+  </tr>
+  <tr>
+    <td><code>a &lt;&gt; b</code></td>
+    <td>Not equals</td>
+  </tr>
+  <tr>
+    <td><code>a &gt;= b</code></td>
+    <td>Greater than or equal</td>
+  </tr>
+  <tr>
+    <td><code>a &gt; b</code></td>
+    <td>Greater than</td>
+  </tr>
+</table>
+
+<p>a and b must both be numeric types or both be strings.  String comparison is
+is lexicographic: a &lt; b if the first differing character code is lower in a
+than b or a is a prefix of b.
+
+<p>The result is an integer 0 for false and -1 for true.
+
+<a name="logic-ops">
+<h3>Logical Operators</h3>
+
+<table>
+  <tr>
+    <th>Operator</th>
+    <th>Description</th>
+  </tr>
+  <tr></tr>
+    <td><code>a AND b</code></td>
+    <td>a & b</td>
+  </tr>
+  <tr>
+    <td><code>a OR b</code></td>
+    <td>a | b</td>
+  </tr>
+  <tr>
+    <td><code>a XOR b</code></td>
+    <td>a ^ b</td>
+  </tr>
+  <tr>
+    <td><code>a EQV b</code></td>
+    <td>~(a ^ b)</td>
+  </tr>
+  <tr>
+    <td><code>a IMP b</code></td>
+    <td>~a | b</td>
+  </tr>
+  <tr>
+    <td><code>NOT a</code></td>
+    <td>~a</td>
+  </tr>
+</table>
+
+<p>These are really just arithmetic operations.  The result is an integer or
+long following the same rules as for <a class="keyword"
+href="#arith-ops">division</a>.
+
+<a name="conversions">
+<h3>Type conversions</h3>
+
+<p>Arithmetic operators automatically <a class="keyword"
+href="#arith-ops">convert</a> operands to the necessary precision.
+
+<p>Builtin functions and statements and user-defined procedures expect certain
+parameter types.  If a value has the wrong numeric type, QBasic tries to convert
+it to the expected type.  A runtime error occurs if the conversion is illegal.
+
+<p>Conversion functions
+  <a class="keyword" href="#cint">CINT</a>
+  <a class="keyword" href="#clng">CLNG</a>
+  <a class="keyword" href="#csng">CSNG</a>
+  <a class="keyword" href="#cdbl">CDBL</a>
+can be called explicitly.
 
 <h3>User-defined types</h3>
 
@@ -268,6 +461,44 @@ determined by the current <a class="keyword" href="#deftype">DEFtype</a>.
 
 <a name="arrays">
 <h3>Arrays</h3>
+
+<a name="encodings">
+<h3>Encodings</h3>
+
+<p>qbasic.run represents strings using Unicode internally so that debuggers and
+other tools see intelligible strings, while QBasic code still sees the original
+CP437 code points.  For example, CP437 character 1 (☺︎) is stored as U+263A.
+Since JavaScript strings use UTF-16, this makes little practical difference.
+
+<p>When you open a program, the shell usually guesses it is CP437 encoded and
+translates it to Unicode to deal with funky characters like ☺ or ░▒▓.  But if
+the program is already valid UTF-8, the shell first tries to load it without
+doing any translation - so you can edit programs with modern tools, save them as
+UTF-8, and reload them later.  This heuristic mostly works fine since extended
+ASCII isn't likely to be valid UTF-8, and nonprintable characters 1-31 aren't
+recognized code points.
+
+<p>DOS used &H0A &H0D for new lines in text files, while Unix uses just &H0A.
+qbasic.run will parse either &H0A &H0D or just &H0A as a newline, but writes
+&H0A.
+
+<a name="precision">
+<h3>Precision</h3>
+
+<p>Semantically JavaScript does all math with doubles, so qbasic.run uses
+doubles.  It tries to match single precision results by internally rounding to
+the nearest single-precision values using <a target="_blank"
+href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/fround">Math.fround()</a>.
+But this is not exact.
+
+<p>When floats must be converted to integers for arithmetic, halfway cases
+are rounded to the nearest even number.  This is different than standard
+JavaScript rounding which rounds halfway cases up.  qbasic.run rounds correctly.
+
+<pre>
+  print 3.5 \ 1  ' 4
+  print 2.5 \ 1  ' 2
+</pre>
 
 </body>
 </html>
