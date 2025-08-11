@@ -7,6 +7,8 @@
 </head>
 <body>
 <p>If you are reading this, you must truly need help.  I'll do my best.
+<p><a href="#quick-start">Quick Start</a>
+
 <p>These books written by actual technical writers are really good, though
 somewhat dated and presuming less general technical knowledge and perhaps more
 nicotine and hairspray use than are now the norm.
@@ -19,10 +21,7 @@ href="https://www.pcjs.org/documents/books/mspl13/basic/qbprog/">Microsoft
 QuickBASIC: Programming in BASIC</a>
 </ul>
 
-<p><a href="#quickstart">Quick Start</a>
-
-<a name="quickstart">
-<h2>Quick Start</h2>
+<h2 id="quick-start">Quick Start</h2>
 
 <p>Here's a simple program so you can see what we're dealing with.
 
@@ -109,8 +108,7 @@ FOR i = 1 to 10
 NEXT i
 </pre>
 
-<a name="types">
-<h3>Builtin Types</h3>
+<h3 id="types">Builtin Types</h3>
 
 <p>All values in QBasic programs have an associated type.
 
@@ -166,23 +164,23 @@ NEXT i
   </tr>
 </table>
 
-<a name="sigil">
-<p>A value's type can be specified by putting a sigil character after it.
+<p id="sigil">A value's type can be specified by putting a sigil character after it.
 
 <pre>
 PRINT 320& * 200&  ' Impossibly huge 32-bit numbers.
 </pre>
 
-<a name="values">
-<h3>Literal values</h3>
+<h3 id="values">Literal values</h3>
 
-<p>QBasic operates on integers, floating point numbers (floats), and strings.
+<p>QBasic operates on signed integers, floating point numbers (floats), and
+strings.
 
 <p>A base-10 number with no decimal point and no sigil is read as the smallest
 type that fits it: an integer, a long, or a double.  But note -32768 is read as
 a long, and -2147483648 as a double.  Integers can be given in hex by prefixing
 them with <code>&H</code> and octal by prefixing them with <code>&O</code>.
-Numbers are always signed, so <code>&HFFFF = -1</code>.
+Numbers are always signed, so &HFFFF = -1%.  To get 65535, you have to use
+&HFFFF&.
 
 <p>Numbers with a decimal point like 3.14 or numbers in scientific notation like
 6.02E23 are floats.  Decimals are read as singles if they have 7 or fewer
@@ -216,8 +214,7 @@ integer length, so they may include NUL characters.
 <p>See this note for more details about how qbasic.run handles <a class="keyword"
 href="#encodings">string encodings</a>.
 
-<a name="arith-ops">
-<h3>Arithmetic Operators</h3>
+<h3 id="arith-ops">Arithmetic Operators</h3>
 
 <table>
   <tr>
@@ -293,8 +290,7 @@ example, this means double arguments to integer division must fit in a long.
 There are a few more details about qbasic.run artihmetic <a class="keyword"
 href="#precision">precision</a>.
 
-<a name="comparison-ops">
-<h3>Comparison Operators</h3>
+<h3 id="comparison-ops">Comparison Operators</h3>
 
 <table>
   <tr>
@@ -333,8 +329,7 @@ than b or a is a prefix of b.
 
 <p>The result is an integer 0 for false and -1 for true.
 
-<a name="logic-ops">
-<h3>Logical Operators</h3>
+<h3 id="logic-ops">Logical Operators</h3>
 
 <table>
   <tr>
@@ -371,22 +366,25 @@ than b or a is a prefix of b.
 long following the same rules as for <a class="keyword"
 href="#arith-ops">division</a>.
 
-<a name="conversions">
-<h3>Type conversions</h3>
+<h3 name="conversions">Type conversions</h3>
 
 <p>Arithmetic operators automatically <a class="keyword"
-href="#arith-ops">convert</a> operands to the necessary precision.
+href="#arith-ops">convert</a> operand types when necessary.
 
 <p>Builtin functions and statements and user-defined procedures expect certain
 parameter types.  If a value has the wrong numeric type, QBasic tries to convert
 it to the expected type.  A runtime error occurs if the conversion is illegal.
+
+<p>Some builtin functions are polymorphic.  For example <a class="keyword"
+href="#abs">ABS</a> accepts any numeric type and returns a value of the same
+type.
 
 <p>Conversion functions
   <a class="keyword" href="#cint">CINT</a>
   <a class="keyword" href="#clng">CLNG</a>
   <a class="keyword" href="#csng">CSNG</a>
   <a class="keyword" href="#cdbl">CDBL</a>
-can be called explicitly.
+can explicitly cast a value to a desired type.
 
 <h3>User-defined types</h3>
 
@@ -426,8 +424,7 @@ Joe.Dog.Name = "Milo"
 Note that element names cannot include periods or sigils, and elements cannot be
 arrays.
 
-<a name="variables">
-<h3>Variables</h3>
+<h3 id="variables">Variables</h3>
 
 <p>A variable is a name for a <a class="keyword" href="#values">value</a> or an
 <a class="keyword" href="#arrays">array</a> of values in memory. Variable names
@@ -459,11 +456,9 @@ name <code>x</code> can only have integer type.
 <p>If a variable name has no sigil and no AS-declared type, its type is
 determined by the current <a class="keyword" href="#deftype">DEFtype</a>.
 
-<a name="arrays">
-<h3>Arrays</h3>
+<h3 id="arrays">Arrays</h3>
 
-<a name="encodings">
-<h3>Encodings</h3>
+<h3 id="encodings">Encodings</h3>
 
 <p>qbasic.run represents strings using Unicode internally so that debuggers and
 other tools see intelligible strings, while QBasic code still sees the original
@@ -482,8 +477,7 @@ recognized code points.
 qbasic.run will parse either &H0A &H0D or just &H0A as a newline, but writes
 &H0A.
 
-<a name="precision">
-<h3>Precision</h3>
+<h3 id="precision">Precision</h3>
 
 <p>Semantically JavaScript does all math with doubles, so qbasic.run uses
 doubles.  It tries to match single precision results by internally rounding to

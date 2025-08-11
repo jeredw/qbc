@@ -41,6 +41,19 @@ body {
   margin-inline-start: 20px;
 }
 
+a, a:visited {
+  color: var(--qbc-white);
+}
+a.keyword {
+  color: var(--qbc-gray);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+h2, h3 {
+  color: var(--qbc-white);
+}
+
 code {
   font-family: 'Web IBM VGA 8x16';
 }
@@ -51,12 +64,6 @@ pre {
   padding: 8px;
   background: var(--qbc-blue);
   color: var(--qbc-gray);
-}
-
-.keyword {
-  color: var(--qbc-gray);
-  text-decoration: underline;
-  text-decoration-style: dotted;
 }
 
 pre {
