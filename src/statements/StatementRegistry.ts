@@ -41,7 +41,7 @@ import {
   CvsmbfFunction,
   DefSegStatement,
   FreFunction,
-  LenStatement,
+  LenFunction,
   LsetRecordStatement,
   MkdFunction,
   MkdmbfFunction,
@@ -566,7 +566,7 @@ export function let_(variable: Variable, expr: parser.ExprContext) {
 }
 
 export function len(variable: Variable | undefined, stringExpr: parser.ExprContext | undefined, result: Variable) {
-  return new LenStatement(variable, stringExpr, result);
+  return new LenFunction(variable, stringExpr, result);
 }
 
 export function line(args: LineStatementArgs) {

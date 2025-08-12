@@ -954,7 +954,7 @@ export class Typer extends QBasicParserListener {
   }
 
   override enterLen_function = (ctx: parser.Len_functionContext) => {
-    const result = this.makeSyntheticVariable({tag: TypeTag.LONG}, ctx.start!);
+    const result = this.makeSyntheticVariable({tag: TypeTag.INTEGER}, ctx.start!);
     getTyperContext(ctx.parent!).$result = result;
   };
 
@@ -994,7 +994,7 @@ export class Typer extends QBasicParserListener {
   }
 
   override enterTimer_function = (ctx: parser.Timer_functionContext) => {
-    const result = this.makeSyntheticVariable({tag: TypeTag.DOUBLE}, ctx.start!);
+    const result = this.makeSyntheticVariable({tag: TypeTag.SINGLE}, ctx.start!);
     getTyperContext(ctx.parent!).$result = result;
   }
 

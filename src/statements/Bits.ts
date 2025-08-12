@@ -288,7 +288,7 @@ export class CvdmbfFunction extends StringToBytes {
   }
 }
 
-export class LenStatement extends Statement {
+export class LenFunction extends Statement {
   constructor(
     private variable: Variable | undefined,
     private stringExpr: ExprContext | undefined,
@@ -304,10 +304,10 @@ export class LenStatement extends Statement {
       return;
     }
     if (!this.variable) {
-      throw new Error("missing both string expr and variable");
+      throw new Error("Missing both string expr and variable");
     }
     const size = getScalarVariableSizeInBytes(this.variable, context.memory);
-    context.memory.write(this.result, long(size));
+    context.memory.write(this.result, integer(size));
   }
 }
 
