@@ -1,0 +1,18 @@
+(program ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (literal "h")))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (builtin_function 
+              (len_function len 
+                ( 
+                  (expr 
+                    (variable_or_function_call s$)) )))) + 
+          (expr 
+            (literal &h7fff)))))) ' \n <EOF>)

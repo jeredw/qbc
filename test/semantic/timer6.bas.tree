@@ -1,0 +1,14 @@
+(program ' \n ' \n ' \n ' \n 
+  (statement 
+    (event_control_statement timer step)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (builtin_function 
+                      (timer_function timer))))) )))))) \n <EOF>)
