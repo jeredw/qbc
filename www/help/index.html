@@ -371,13 +371,15 @@ href="#arith-ops">division</a>.
 <p>Arithmetic operators automatically <a class="keyword"
 href="#arith-ops">convert</a> operand types when necessary.
 
-<p>Builtin functions and statements and user-defined procedures expect certain
-parameter types.  If a value has the wrong numeric type, QBasic tries to convert
-it to the expected type.  A runtime error occurs if the conversion is illegal.
+<p>Builtins and user-defined procedures expect certain parameter types.  QBasic
+tries to convert numeric parameters to the expected numeric type, and tries to
+convert results to the expected type for assignments.  A runtime error occurs if
+a conversion is illegal.
 
 <p>Some builtin functions are polymorphic.  For example <a class="keyword"
 href="#abs">ABS</a> accepts any numeric type and returns a value of the same
-type.
+type.  And <a class="keyword" href="#sin">ATN</a> returns a double if its
+argument is a double, otherwise single.
 
 <p>Conversion functions
   <a class="keyword" href="#cint">CINT</a>

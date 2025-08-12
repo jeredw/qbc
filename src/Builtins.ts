@@ -27,7 +27,6 @@ export interface BuiltinStatementArgs {
 
 export interface BuiltinParam {
   expr?: ExprContext;
-  variable?: Variable;
 }
 
 let _ = parseBuiltinSpec;
@@ -36,19 +35,19 @@ export class StandardLibrary {
   builtins: Map<string, Builtin> = new Map([
     _("abs numeric -> numeric", statements.abs),
     _("asc string -> integer", statements.asc),
-    _("atn double -> double", statements.atn),
+    _("atn numeric -> float", statements.atn),
     _("beep", statements.beep),
     _("bload string integer?", statements.bload),
     _("bsave string integer long", statements.bsave),
     _("cdbl numeric -> double", statements.cdbl),
     _("chain string", statements.chain),
     _("chdir string", statements.chdir),
-    _("chr numeric -> string", statements.chr),
+    _("chr integer -> string", statements.chr),
     _("cint numeric -> integer", statements.cint),
     _("clng numeric -> long", statements.clng),
     _("cls integer?", statements.cls),
     _("command -> string", statements.command),
-    _("cos double -> double", statements.cos),
+    _("cos numeric -> float", statements.cos),
     _("csng numeric -> single", statements.csng),
     _("csrlin -> integer", statements.csrlin),
     _("cvd string -> double", statements.cvd),
@@ -61,7 +60,7 @@ export class StandardLibrary {
     _("eof integer -> integer", statements.eof),
     _("erl -> long", statements.erl),
     _("err -> integer", statements.err),
-    _("exp double -> double", statements.exp),
+    _("exp numeric -> float", statements.exp),
     _("fileattr integer integer -> integer", statements.fileattr),
     _("files string?", statements.files),
     _("fix numeric -> numeric", statements.fix),
@@ -76,16 +75,16 @@ export class StandardLibrary {
     _("left string integer -> string", statements.left),
     _("loc integer -> long", statements.loc),
     _("lof integer -> long", statements.lof),
-    _("log double -> double", statements.log),
+    _("log numeric -> float", statements.log),
     _("lpos integer -> integer", statements.lpos),
     _("ltrim string -> string", statements.ltrim),
-    _("mkd numeric -> string", statements.mkd),
+    _("mkd double -> string", statements.mkd),
     _("mkdir string", statements.mkdir),
-    _("mkdmbf numeric -> string", statements.mkdmbf),
-    _("mki numeric -> string", statements.mki),
-    _("mkl numeric -> string", statements.mkl),
-    _("mks numeric -> string", statements.mks),
-    _("mksmbf numeric -> string", statements.mksmbf),
+    _("mkdmbf double -> string", statements.mkdmbf),
+    _("mki integer -> string", statements.mki),
+    _("mkl long -> string", statements.mkl),
+    _("mks single -> string", statements.mks),
+    _("mksmbf single -> string", statements.mksmbf),
     _("oct long -> string", statements.oct),
     _("out long integer", statements.out),
     _("pcopy integer integer", statements.pcopy),
@@ -102,16 +101,16 @@ export class StandardLibrary {
     _("setmem long -> long", statements.setmem),
     _("sgn numeric -> numeric", statements.sgn),
     _("shell string", statements.shell),
-    _("sin double -> double", statements.sin),
+    _("sin numeric -> float", statements.sin),
     _("sleep long?", statements.sleep),
     _("sound integer single", statements.sound),
-    _("space numeric -> string", statements.space),
-    _("sqr double -> double", statements.sqr),
+    _("space integer -> string", statements.space),
+    _("sqr numeric -> float", statements.sqr),
     _("stick integer -> integer", statements.stick),
     _("str numeric -> string", statements.str),
     _("string integer any -> string", statements.string),
     _("system", statements.system),
-    _("tan double -> double", statements.tan),
+    _("tan numeric -> float", statements.tan),
     _("ucase string -> string", statements.ucase),
     _("val string -> double", statements.val),
     _("wait long integer integer?", statements.wait),
@@ -157,6 +156,7 @@ function parseTypeSpec(name: string, optional: boolean): BuiltinArgumentSpec {
     case "long": return {type: {tag: TypeTag.LONG}, optional};
     case "string": return {type: {tag: TypeTag.STRING}, optional};
     case "numeric": return {type: {tag: TypeTag.NUMERIC}, optional};
+    case "float": return {type: {tag: TypeTag.FLOAT}, optional};
     case "any": return {type: {tag: TypeTag.ANY}, optional};
   }
   throw new Error(`invalid argument ${name}`);

@@ -1,0 +1,34 @@
+(program ' \n 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id check))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call s$) = 
+      (expr 
+        (variable_or_function_call space$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (expr 
+                    (literal &h7fff)) + 
+                  (expr 
+                    (literal 1))))) ))))) ' \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id check)) :) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call err))))) \n 
+  (statement 
+    (resume_statement resume next)) \n <EOF>)

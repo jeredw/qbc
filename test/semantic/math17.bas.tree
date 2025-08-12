@@ -1,0 +1,247 @@
+(program ' \n ' \n ' \n ' \n ' \n 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id ok))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call abs 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &h7fff)))) ))) * 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call abs 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &h7fffffff)))) ))) * 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call abs 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1!)))) ))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call abs 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1#)))) ))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call fix 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &h7fff)))) ))) * 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call fix 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &h7fffffff)))) ))) * 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call fix 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1!)))) ))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call fix 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1#)))) ))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call int 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &h7fff)))) ))) * 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call int 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal &h7fffffff)))) ))) * 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call int 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1!)))) ))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call int 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1#)))) ))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call sgn 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr - 
+                      (expr 
+                        (literal 1))))) ))) * 
+          (expr 
+            (literal &h8000)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call sgn 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr - 
+                      (expr 
+                        (literal 1 &))))) ))) * 
+          (expr 
+            (literal &h80000000)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call sgn 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1!)))) ))))) )))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call sgn 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 1#)))) ))))) )))))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id ok)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok")) ;) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call err))))) \n 
+  (statement 
+    (resume_statement resume next)) \n <EOF>)

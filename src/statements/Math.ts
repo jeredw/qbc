@@ -58,10 +58,7 @@ export class ExpFunction extends BuiltinFunction1 {
     if (!isNumeric(input)) {
       throw new Error("expecting number");
     }
-    if (input.tag == TypeTag.DOUBLE) {
-      return cast(double(Math.exp(input.number)), this.result.type);
-    }
-    return cast(single(Math.exp(input.number)), this.result.type);
+    return cast(double(Math.exp(input.number)), this.result.type);
   }
 }
 
@@ -77,10 +74,7 @@ export class LogFunction extends BuiltinFunction1 {
     if (input.number <= 0) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    if (input.tag == TypeTag.DOUBLE) {
-      return cast(double(Math.log(input.number)), this.result.type);
-    }
-    return cast(single(Math.log(input.number)), this.result.type);
+    return cast(double(Math.log(input.number)), this.result.type);
   }
 }
 

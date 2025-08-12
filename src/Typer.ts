@@ -278,9 +278,8 @@ export class Typer extends QBasicParserListener {
       if (!symbol.builtin.returnType) {
         throw ParseError.fromToken(ctx._name!, "Duplicate definition");
       }
-      // Assume that a polymorphic numeric return type has the type of the first argument.
       let returnType = symbol.builtin.returnType;
-      if (returnType.tag == TypeTag.NUMERIC) {
+      if (returnType.tag == TypeTag.NUMERIC || returnType.tag == TypeTag.FLOAT) {
         const args = ctx.argument_list()?.argument() || [];
         if (args.length == 0) {
           throw ParseError.fromToken(ctx._name!, "Argument-count mismatch");
@@ -293,7 +292,13 @@ export class Typer extends QBasicParserListener {
         if (isError(value) || !isNumeric(value)) {
           throw ParseError.fromToken(ctx._name!, "Type mismatch");
         }
-        returnType = typeOfValue(value);
+        if (returnType.tag == TypeTag.NUMERIC) {
+          // Numeric return type is the same as the argument type.
+          returnType = typeOfValue(value);
+        } else {
+          // Float return type is double if the argument is a double, otherwise single.
+          returnType = {tag: value.tag === TypeTag.DOUBLE ? TypeTag.DOUBLE : TypeTag.SINGLE};
+        }
       }
       const result = this.makeSyntheticVariable(returnType, ctx._name!);
       getTyperContext(ctx).$result = result;

@@ -8,8 +8,9 @@ export enum TypeTag {
   FIXED_STRING,
   RECORD,
   ANY,
-  // Numeric is used for polymorphic builtins.
+  // Numeric and float are used for polymorphic builtins.
   NUMERIC,
+  FLOAT,
   // Used to type check print arguments.
   PRINTABLE,
   // Reference and array are only used for values, not types.
@@ -61,6 +62,10 @@ export interface NumericType {
   tag: TypeTag.NUMERIC;
 }
 
+export interface FloatType {
+  tag: TypeTag.FLOAT;
+}
+
 export interface PrintableType {
   tag: TypeTag.PRINTABLE;
 }
@@ -75,6 +80,7 @@ export type Type =
   | UserDefinedType
   | AnyType
   | NumericType
+  | FloatType
   | PrintableType;
 
 export function sameType(s: Type, t: Type) {
@@ -91,7 +97,7 @@ export function sameType(s: Type, t: Type) {
 }
 
 export function isNumericType(s: Type): boolean {
-  return s.tag == TypeTag.NUMERIC || s.tag == TypeTag.SINGLE || s.tag == TypeTag.DOUBLE || s.tag == TypeTag.INTEGER || s.tag == TypeTag.LONG;
+  return s.tag == TypeTag.FLOAT || s.tag == TypeTag.NUMERIC || s.tag == TypeTag.SINGLE || s.tag == TypeTag.DOUBLE || s.tag == TypeTag.INTEGER || s.tag == TypeTag.LONG;
 }
 
 export function isString(s: Type): boolean {

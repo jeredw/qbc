@@ -17,10 +17,10 @@ export abstract class BuiltinFunction1 extends Statement {
     this.token = token;
     this.params = params;
     if (this.params.length != 1 || !this.params[0].expr) {
-      throw new Error("expecting one expr argument");
+      throw new Error("Expecting one non-optional param");
     }
     if (!result) {
-      throw new Error("expecting result")
+      throw new Error("Missing result variable");
     }
     this.result = result;
   }
