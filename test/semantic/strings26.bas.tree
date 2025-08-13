@@ -1,0 +1,26 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n ' \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call atn 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (variable_or_function_call val 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal "1")))) ))))) )))))) \n <EOF>)
