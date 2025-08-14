@@ -104,12 +104,23 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterLabel = (ctx: parser.LabelContext) => {
-    const builtin = getTyperContext(ctx).$builtin;
-    if (builtin) {
-      // This is a misparsed label like "cls", call builtin instead.
-      this.callBuiltin(builtin, ctx.start!, null);
-      return;
+    const lineNumber = ctx.line_number() ?? ctx.decimal_label();
+    if (lineNumber) {
+      this.addLabel(lineNumber);
     }
+    const textLabel = ctx.text_label();
+    if (textLabel) {
+      const builtin = getTyperContext(textLabel).$builtin;
+      if (builtin) {
+        // This is a misparsed label like "cls", call builtin instead.
+        this.callBuiltin(builtin, ctx.start!, null);
+      } else {
+        this.addLabel(textLabel);
+      }
+    }
+  }
+
+  private addLabel(ctx: ParserRuleContext) {
     const label = this.canonicalizeLabel(ctx);
     if (this._allLabels.has(label)) {
       throw ParseError.fromToken(ctx.start!, "Duplicate label");
@@ -124,6 +135,10 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterTarget = (ctx: parser.TargetContext) => {
+    const textLabel = ctx.text_label();
+    if (textLabel && getTyperContext(textLabel).$builtin) {
+      throw ParseError.fromToken(textLabel.start!, "Expected: label or line number");
+    }
     const label = this.canonicalizeLabel(ctx);
     this.setTargetForCurrentStatement(label, ctx);
   }

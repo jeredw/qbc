@@ -65,7 +65,7 @@ export class Typer extends QBasicParserListener {
     this._program.staticSize = this._chunk.symbols.staticSize();
   }
 
-  override enterLabel = (ctx: parser.LabelContext) => {
+  override enterText_label = (ctx: parser.Text_labelContext) => {
     // Since it does not model most builtins, the grammar will parse cls : print
     // as a label cls followed by print.  Detect this and attach a builtin
     // symbol to ambiguous labels.

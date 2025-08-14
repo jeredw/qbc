@@ -73,10 +73,11 @@ block
 // Used to define labels.
 // *** Since this grammar does not include most builtin procedures, labels
 // are ambiguous with zero-argument builtin calls (e.g. CLS : PRINT).
-// It is not documented, but strangely, QBasic accepts decimal labels...
+// You can have both a line number and a text label.
 label
-  : line_number
-  | text_label COLON
+  : (line_number | decimal_label)? text_label COLON
+  | line_number
+// It is not documented, but strangely, QBasic accepts decimal labels...
   | decimal_label
   ;
 

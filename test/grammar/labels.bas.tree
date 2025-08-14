@@ -80,4 +80,13 @@
           (print_argument 
             (expr 
               (variable_or_function_call hi))))) \n) 
-    (end_if_statement end if)) \n <EOF>)
+    (end_if_statement end if)) \n 
+  (label 
+    (line_number 10) 
+    (text_label 
+      (untyped_id label)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "yep"))))) \n <EOF>)

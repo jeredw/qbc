@@ -1,0 +1,23 @@
+(program 
+  (statement 
+    (gosub_statement gosub 
+      (target 
+        (line_number 10)))) \n 
+  (statement 
+    (gosub_statement gosub 
+      (target 
+        (text_label 
+          (untyped_id noreally))))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (line_number 10) 
+    (text_label 
+      (untyped_id noreally)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n 
+  (statement 
+    (return_statement return)) \n <EOF>)

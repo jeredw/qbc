@@ -1909,10 +1909,9 @@
         (literal 2000)) 
       (block :) NEXT)) \n 
   (label 
-    (line_number 2220)) 
-  (statement 
-    (call_statement 
-      (untyped_id CLS))) : 
+    (line_number 2220) 
+    (text_label 
+      (untyped_id CLS)) :) 
   (statement 
     (goto_statement GOTO 
       (target 
@@ -1948,10 +1947,9 @@
         (literal 1000)) 
       (block :) NEXT)) \n 
   (label 
-    (line_number 2250)) 
-  (statement 
-    (call_statement 
-      (untyped_id CLS))) : 
+    (line_number 2250) 
+    (text_label 
+      (untyped_id CLS)) :) 
   (statement 
     (goto_statement GOTO 
       (target 

@@ -13,3 +13,4 @@ cls : print "hi"
 1: if 1 then
 print hi
 end if
+10 label: print "yep"
