@@ -27,9 +27,9 @@ options {
 // *** DECLARE and COMMON have to come before other statements.  This is easier
 // to check outside this grammar.
 //
-// Some statements must be the first statement on a line, like the block form
-// of IF (so you can't write "ELSE IF" instead of ELSEIF for example).  This is
-// a real restriction that QBasic enforces.
+// Some statements must be the first nonempty statement on a line, like the
+// block form of IF (so you can't write "ELSE IF" instead of ELSEIF for
+// example).  This is a real restriction that QBasic enforces.
 program
   // Any line can begin with a label, but labels on FUNCTION or SUB are bound
   // within the procedure body and not the program toplevel so are matched
@@ -39,7 +39,7 @@ program
      | label? declare_sub_statement
      | label? def_fn_statement
      | function_statement
-     | label? if_block_statement
+     | label? COLON* if_block_statement
      | label? option_statement
      | sub_statement
      | label? type_statement)
@@ -62,12 +62,12 @@ block
 // ...
 // ...}: END
   | (COLON statement?)* NL
-    (label? (statement? | if_block_statement) (COLON statement?)* NL)*
+    (label? COLON* (statement? | if_block_statement) (COLON statement?)* NL)*
 // Match block ending keyword in the parent statement, then match NL in the
 // parent block or program.  Match a label first on the last partial line so
 // that we prefer "label: (END)" instead of "call label ':' (END)".
     ( label?
-    | label? (statement? | if_block_statement) (COLON statement?)* COLON)
+    | label? COLON* (statement? | if_block_statement) (COLON statement?)* COLON)
   ;
 
 // Used to define labels.
@@ -235,7 +235,7 @@ def_fn_parameter
 
 // The IDE drops empty '()' parameter lists, so admit that.
 function_statement
-  : label? FUNCTION ID ('(' parameter_list? ')')? STATIC?
+  : label? COLON* FUNCTION ID ('(' parameter_list? ')')? STATIC?
     block
     end_function_statement
   ;
@@ -291,12 +291,12 @@ end_if_statement
   ;
 
 then_block
-  : (label? (statement? | if_block_statement) (COLON statement?)* NL)*
+  : (label? COLON* (statement? | if_block_statement) (COLON statement?)* NL)*
   ;
 
 else_block
   : statement? (COLON statement?)* NL
-    (label? (statement? | if_block_statement) (COLON statement?)* NL)*
+    (label? COLON* (statement? | if_block_statement) (COLON statement?)* NL)*
   ;
 
 // *** DIGITS must be 0 or 1, but that will be checked later.
@@ -306,7 +306,7 @@ option_statement
 
 // The IDE drops empty '()' parameter lists, so admit that.
 sub_statement
-  : label? SUB name=untyped_id ('(' parameter_list? ')')? STATIC?
+  : label? COLON* SUB name=untyped_id ('(' parameter_list? ')')? STATIC?
     block
     end_sub_statement
   ;
@@ -556,10 +556,10 @@ for_next_statement
     // NEXT_WITH_MANDATORY_ID counts as a statement separator to close the block.
     | (COLON statement?)* (COLON for_next_statement) NEXT_WITH_MANDATORY_ID ID
     | ((COLON statement?)* NL
-       (label? (statement? | if_block_statement) (COLON statement?)* NL)*
+       (label? COLON* (statement? | if_block_statement) (COLON statement?)* NL)*
        ( label?
        | label? for_next_statement (NEXT_WITH_MANDATORY_ID ID)
-       | label? (statement? | if_block_statement) (COLON statement?)*
+       | label? COLON* (statement? | if_block_statement) (COLON statement?)*
          (COLON for_next_statement) (NEXT_WITH_MANDATORY_ID ID))))
   ;
 

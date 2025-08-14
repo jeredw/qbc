@@ -10,3 +10,6 @@ blanks.ok : goto 20
 50
 cls : print "hi"
 3.5 gosub 3.5
+1: if 1 then
+print hi
+end if
