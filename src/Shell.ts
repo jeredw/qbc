@@ -622,6 +622,7 @@ class EditorProxy {
       colors: {
         "editor.background": "#0000aa",
         "editor.foreground": "#aaaaaa",
+        "editor.lineHighlightBorder": "#00000000",
       }
     });
     monaco.languages.register({id: "qbasic"});

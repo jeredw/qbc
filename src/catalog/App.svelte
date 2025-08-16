@@ -1,7 +1,8 @@
 <script lang="ts">
   import ProgramCard from './ProgramCard.svelte';
+  import type {ProgramEntry} from './Schema.ts';
 
-  let programs = $state([]);
+  let programs: ProgramEntry[] = $state([]);
 
   async function fetchData() {
     const response = await fetch('/catalog/db.json');
