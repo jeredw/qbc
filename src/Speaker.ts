@@ -134,6 +134,8 @@ export class WebAudioSpeaker implements Speaker {
   enable() {
     this.enabled = true;
     if (this.audioContext.state === 'suspended') {
+      // Reset note queue since it will have system timestamps.
+      this.queue = [];
       this.audioContext.resume();
       // The midi player thing uses Tone.js under the hood which has this start method.
       window['Tone'] && window['Tone'].start?.();
@@ -144,6 +146,8 @@ export class WebAudioSpeaker implements Speaker {
   disable() {
     this.enabled = false;
     if (this.audioContext.state !== 'suspended') {
+      // Reset note queue since it will have audiocontext timestamps.
+      this.queue = [];
       this.audioContext.suspend();
       // Tone does not appear to have a stop method.
       this.midiPlayer.stop();
@@ -202,7 +206,9 @@ export class WebAudioSpeaker implements Speaker {
 
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void> {
     this.syncQueue();
-    const now = this.audioContext.currentTime;
+    // If the audiocontext is suspended, its clock won't advance, but we ned to
+    // time notes correctly anyway since some programs rely on this for timing.
+    const now = this.enabled ? this.audioContext.currentTime : performance.now() / 1000;
     if (onDuration === 0) {
       if (this.playedNotesSinceReset) {
         // Don't reset the audio context a ton if there is a run of SOUND ... O commands.
@@ -225,9 +231,11 @@ export class WebAudioSpeaker implements Speaker {
     });
     const note = {frequency, onTime, offTime, endTime, promise, done: false};
     this.queue.push(note);
-    this.oscillator.frequency.setValueAtTime(frequency, onTime);
-    this.gainNode.gain.setValueAtTime(1, onTime);
-    this.gainNode.gain.setValueAtTime(0, offTime);
+    if (this.enabled) {
+      this.oscillator.frequency.setValueAtTime(frequency, onTime);
+      this.gainNode.gain.setValueAtTime(1, onTime);
+      this.gainNode.gain.setValueAtTime(0, offTime);
+    }
     if (!this.playState.playInBackground && this.queue.length > 2) {
       return this.queue[0].promise;
     }
