@@ -7,6 +7,7 @@
         "esModuleInterop": true,
         "noEmit": false,
         "noImplicitAny": true,
+        "verbatimModuleSyntax": true,
         "strictNullChecks": true,
         "preserveConstEnums": true,
         "noImplicitOverride": true,
@@ -17,9 +18,6 @@
         "forceConsistentCasingInFileNames": true,
         "skipLibCheck": true,
     },
-    "include": [
-        "build/**/*.ts",
-    ],
     "exclude": [
         "node_modules",
         "tests",

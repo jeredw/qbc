@@ -25,7 +25,10 @@ const renamePlugin = () => ({
 
 export function createBuildSettings(options) {
   return {
-    entryPoints: ['src/Shell.ts', 'src/catalog/Catalog.ts'],
+    entryPoints: [
+      'src/Shell.ts',
+      'src/catalog/Catalog.ts',
+    ],
     outdir: 'www',
     bundle: true,
 		mainFields: ["svelte", "browser", "module", "main"],

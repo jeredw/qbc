@@ -24,6 +24,12 @@ import { SoundBlaster } from "./SoundBlaster.ts";
 import type { PlayerElement } from "./midi-player.d.ts";
 import { CommonData } from "./CommonData.ts";
 
+window.MonacoEnvironment = {
+  getWorker() {
+    return new Worker("editor.worker.js");
+  }
+}
+
 enum RunState {
   ENDED,
   PAUSED,
