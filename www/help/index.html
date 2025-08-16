@@ -7,7 +7,20 @@
 </head>
 <body>
 <p>If you are reading this, you must truly need help.  I'll do my best.
-<p><a href="#quick-start">Quick Start</a>
+<p>
+  <a href="#quick-start">Quick Start</a>
+  <a href="#types">Builtin Types</a>
+  <a href="#values">Literal Values</a>
+  <a href="#arith-ops">Arithmetic Operators</a>
+  <a href="#comparison-ops">Comparison Operators</a>
+  <a href="#logic-ops">Logical Operators</a>
+  <a href="#conversions">Type Conversions</a>
+  <a href="#user-types">User-defined Types</a>
+  <a href="#constants">Named Constants</a>
+  <a href="#variables">Variables</a>
+  <a href="#arrays">Arrays</a>
+  <a href="#encodings">Character Encodings</a>
+  <a href="#precision">Precision</a>
 
 <p>These books written by actual technical writers are really good, though
 somewhat dated and presuming less general technical knowledge and perhaps more
@@ -110,7 +123,8 @@ NEXT i
 
 <h3 id="types">Builtin Types</h3>
 
-<p>All values in QBasic programs have an associated type.
+<p>All values in QBasic programs have an associated type which is determined at
+compile time.
 
 <table>
   <tr>
@@ -175,12 +189,12 @@ PRINT 320& * 200&  ' Impossibly huge 32-bit numbers.
 <p>QBasic operates on signed integers, floating point numbers (floats), and
 strings.
 
-<p>A base-10 number with no decimal point and no sigil is read as the smallest
+<p>A base ten number with no decimal point and no sigil is read as the smallest
 type that fits it: an integer, a long, or a double.  But note -32768 is read as
 a long, and -2147483648 as a double.  Integers can be given in hex by prefixing
 them with <code>&H</code> and octal by prefixing them with <code>&O</code>.
-Numbers are always signed, so &HFFFF = -1%.  To get 65535, you have to use
-&HFFFF&.
+Hex and octal numbers are implicitly signed, so &HFFFF = -1%.  To get 65535, you
+have to use &HFFFF&.
 
 <p>Numbers with a decimal point like 3.14 or numbers in scientific notation like
 6.02E23 are floats.  Decimals are read as singles if they have 7 or fewer
@@ -189,30 +203,29 @@ mark the exponent, and doubles if they use D.  If you try to write an E-number
 with more than 7 digits, QBasic changes E to D when you press enter.
 
 <pre>
-  print 42        ' integer
-  print 32768     ' long
-  print 3.142857  ' single
-  print 6.02e23   ' single
-  print 6.02d23   ' double
+PRINT 42        ' integer
+PRINT 32768     ' long
+PRINT 3.142857  ' single
+PRINT 6.02e23   ' single
+PRINT 6.02d23   ' double
 </pre>
 
-<p>Strings are groups of bytes which may either be binary data or
-<a target="_blank" href="https://en.wikipedia.org/wiki/Code_page_437">CP437
-ASCII</a> text. Variable-length strings are stored along with a 16-bit
-integer length, so they may include NUL characters.
+<p>Strings are groups of bytes which may either be binary data or text.
+Variable-length strings are stored along with a 16-bit integer length, so they
+may include NUL characters.
 
 <pre>
-  s$ = "I am a string."
-  ' To put quotes in a string, use CHR$(34).
-  t$ = CHR$(34) + "I say," + CHR$(34) + " he said."
-  ' Strings can contain arbitrary bytes.
-  u$ = CHR$(0) + CHR$(26)
+s$ = "I am a string."
+' To put quotes in a string, use CHR$(34).
+t$ = CHR$(34) + "I say," + CHR$(34) + " he said."
+' Strings can contain arbitrary bytes.
+u$ = CHR$(0) + CHR$(26)
 </pre>
 
 <p>The + operator concatenates two strings into a new string.
 
 <p>See this note for more details about how qbasic.run handles <a class="keyword"
-href="#encodings">string encodings</a>.
+href="#encodings">character encodings</a>.
 
 <h3 id="arith-ops">Arithmetic Operators</h3>
 
@@ -273,18 +286,19 @@ href="#encodings">string encodings</a>.
 <p>Arithmetic precision is determined by operand types, which can be confusing.
 
 <pre>
-  print 320 * 200 ' Overflow error!
+PRINT 320 * 200  ' Overflow error!
 </pre>
 
 <p>A runtime error occurs if math operations overflow.  In the example above,
 320 and 200 are both 16-bit signed integers, but their product 64000 > 32767.
 Similarly, there are runtime errors for division by zero and 0 ^ -k.
 
-<p>If operands are not already the correct types, they are converted first.  For
-example, this means double arguments to integer division must fit in a long.
+<p>If operands do not have the correct types, QBasic automatically converts them
+first.  For example, this means double operands for integer division must fit in
+a long.
 
 <pre>
-  print 2147483648# \ 2#  ' Overflow error!
+PRINT 2147483648# \ 2#  ' Overflow error!
 </pre>
 
 There are a few more details about qbasic.run artihmetic <a class="keyword"
@@ -324,7 +338,7 @@ href="#precision">precision</a>.
 </table>
 
 <p>a and b must both be numeric types or both be strings.  String comparison is
-is lexicographic: a &lt; b if the first differing character code is lower in a
+lexicographic: a &lt; b if the first differing character code is lower in a
 than b or a is a prefix of b.
 
 <p>The result is an integer 0 for false and -1 for true.
@@ -366,12 +380,12 @@ than b or a is a prefix of b.
 long following the same rules as for <a class="keyword"
 href="#arith-ops">division</a>.
 
-<h3 name="conversions">Type conversions</h3>
+<h3 id="conversions">Type Conversions</h3>
 
 <p>Arithmetic operators automatically <a class="keyword"
 href="#arith-ops">convert</a> operand types when necessary.
 
-<p>Builtins and user-defined procedures expect certain parameter types.  QBasic
+<p>Builtin functions and procedures expect certain parameter types.  QBasic
 tries to convert numeric parameters to the expected numeric type, and tries to
 convert results to the expected type for assignments.  A runtime error occurs if
 a conversion is illegal.
@@ -379,16 +393,17 @@ a conversion is illegal.
 <p>Some builtin functions are polymorphic.  For example <a class="keyword"
 href="#abs">ABS</a> accepts any numeric type and returns a value of the same
 type.  And <a class="keyword" href="#sin">ATN</a> returns a double if its
-argument is a double, otherwise single.
+argument is a double, otherwise single.  User-defined procedures are not
+polymorphic.
 
 <p>Conversion functions
   <a class="keyword" href="#cint">CINT</a>
   <a class="keyword" href="#clng">CLNG</a>
   <a class="keyword" href="#csng">CSNG</a>
   <a class="keyword" href="#cdbl">CDBL</a>
-can explicitly cast a value to a desired type.
+explicitly convert a value to a desired type.
 
-<h3>User-defined types</h3>
+<h3 id="user-types">User-defined Types</h3>
 
 <p>The <code>TYPE</code> statement lets you define your own types as
 compositions of <a class="keyword" href="#types">builtin types</a> and other
@@ -396,7 +411,7 @@ user-defined types. Types consist of named elements. All elements must be of a
 fixed size.</p>
 
 <pre>
-' A Pet has a name which can be up to 20 characters long.
+' A Pet has a name up to 20 characters long.
 TYPE Pet
   Name AS STRING * 20
 END TYPE
@@ -426,16 +441,78 @@ Joe.Dog.Name = "Milo"
 Note that element names cannot include periods or sigils, and elements cannot be
 arrays.
 
+<h3 id="constants">Named Constants</h3>
+
+<p>A constant is a name for a <a class="keyword" href="#values">value</a>
+defined at compile time.  Constants can be used in arithmetic expressions
+anywhere a value would be used.  A constant's type is automatically inferred
+from its value, or given by an explicit <a class="keyword"
+href="#sigil">sigil</a>.
+
+<pre>
+CONST False = 0
+CONST True = NOT False
+CONST Pi! = 3.14159
+</pre>
+
+Constants can be defined using arithmetic expressions involving values and other
+constants, but not function calls.
+
+<pre>
+' You can use arithmetic to define constants.
+CONST W = 80, H = 25, Area = W * H
+' This fails at compile time with "Invalid constant".
+CONST Angle = ATN(1)
+</pre>
+
+<p>A name used for a constant cannot also be used for a variable or procedure,
+and each constant name can only have one type.
+
+<pre>
+CONST W% = 80
+' This is a "Duplicate definition" error, because W is
+' already reserved for the value 80.
+CONST W$ = "Hello"
+' Ditto.
+W% = 40
+' Ditto.
+SUB W: END SUB
+</pre>
+
+<p>Constants defined in a procedure body are local to that procedure.
+
+<pre>
+CONST k% = 42, k2% = 1
+SUB foo
+  CONST k% = 50, k3% = 5
+  ' Prints 50, 1.
+  ' The local k% takes precedence over global k%,
+  ' but k2% is looked up from global scope.
+  PRINT k%, k2%
+END SUB
+' Prints 42, 0 because CONST k3% is not in scope here.
+' So this k3% is an implicit variable definition.
+PRINT k%, k3%
+foo
+</pre>
+
 <h3 id="variables">Variables</h3>
 
 <p>A variable is a name for a <a class="keyword" href="#values">value</a> or an
 <a class="keyword" href="#arrays">array</a> of values in memory. Variable names
 must start with a letter and may include letters, periods, and numbers.
 
-<p>A variable's <a class="keyword" href="#type">type</a> can be specified by
-putting a <a class="keyword" href="#sigil">sigil</a> after its name, so
-<code>p&</code> means a 32-bit signed integer <code>p</code>.  <code>p&</code>
-and <code>p$</code> are different variables.
+<pre>
+x = 2
+Thing42% = 1
+i.am.a.variable = 42
+</pre>
+
+<p>Every variable has a <a class="keyword" href="#type">type</a> defined at
+compile time. A variable's type can be specified by putting a <a class="keyword"
+href="#sigil">sigil</a> after its name, so <code>p&</code> means a 32-bit signed
+integer <code>p</code>.  <code>p&</code> and <code>p$</code> are different
+variables, and it is valid to use both in the same program.
 
 <p>Variables can also be declared to have some type using declaration statements
 <a class="keyword" href="#dim">DIM</a>
@@ -443,16 +520,16 @@ and <code>p$</code> are different variables.
 <a class="keyword" href="#static">STATIC</a>
 <a class="keyword" href="#shared">SHARED</a> with <code>AS</code> syntax.
 For example, <code>DIM x AS INTEGER</code> declares
-<code>x</code> without any sigil to be a 16-bit signed integer. Afterwards, the
-name <code>x</code> can only have integer type.
+<code>x</code> without any sigil to be a 16-bit signed integer. After an AS
+declaration, the name <code>x</code> can only have integer type.
 
 <pre>
-  DIM x as INTEGER
-  PRINT x   ' Ok, prints an integer named x.
-  PRINT x%  ' Ditto.
-  ' Since the name x has been declared as an integer, can't have
-  ' other variables named x with a different type anymore.
-  PRINT x$  ' Error: Duplicate definition.
+DIM x as INTEGER
+PRINT x   ' Ok, prints an integer named x.
+PRINT x%  ' Ditto.
+' Since the name x has been declared as an integer, can't have
+' other variables named x with a different type anymore.
+PRINT x$  ' Error: Duplicate definition.
 </pre>
 
 <p>If a variable name has no sigil and no AS-declared type, its type is
@@ -460,12 +537,81 @@ determined by the current <a class="keyword" href="#deftype">DEFtype</a>.
 
 <h3 id="arrays">Arrays</h3>
 
-<h3 id="encodings">Encodings</h3>
+<p>Arrays are groups of values with the same type.  A variable refers to an
+array of its type when it is followed by indices in parentheses.
+
+<pre>
+FOR i = 0 TO 2
+  ' Define the ith element of the array x.
+  ' The array is created implicitly when first used, and has
+  ' values of whatever type x has.
+  x(i) = i
+NEXT i
+' Sum the first, second, and third elements of x.
+PRINT x(0) + x(1) + x(2)
+</pre>
+
+<p>Note that the same name can refer to both an array variable and a normal
+variable with one value (a "scalar" variable).
+
+<pre>
+' q and q() are different variables.
+q = 42
+q(2) = 10
+PRINT q, q(2)
+</pre>
+
+<p>Arrays can have multiple dimensions with an index per dimension.
+
+<pre>
+m(1, 2) = 55
+n(0, 3, 6) = 6
+</pre>
+
+<p>Array indices usually start at 0, although this can be changed with <a
+class="keyword" href="#option">OPTION BASE</a>. Implicitly defined arrays have a
+maximum index of 10 in each dimension. You can specify bounds for each dimension
+with <a class="keyword" href="#dim">DIM</a>.
+
+<pre>
+' Define a 2d array x% of integer values.
+' First dimension has indices ranging from -5 to 5
+' Second dimension has indices ranging from 0 to 32
+DIM x%(-5 TO 5, 32)
+x%(-5, 0) = 30
+x%(4, 32) = 30
+</pre>
+
+<p>AS type declarations for a name apply to both array and scalar variables with
+that name.
+
+<pre>
+DIM x AS INTEGER
+x = 42
+' x(2) implicitly defines an integer array.
+x(2) = 10
+' Illegal because x$ is not an integer.
+x$(2) = "nope"
+
+DIM y(10) AS STRING
+' This is ok, because y has string type.
+y$ = "ok"
+' Illegal because y% is not a string.
+y% = 42
+</pre>
+
+<h3 id="array-allocation">Array Allocation</h3>
+
+<h3 id="encodings">Character Encodings</h3>
+
+<p>MS-DOS files like QBasic programs mostly use <a target="_blank"
+href="https://en.wikipedia.org/wiki/Code_page_437">CP437 ASCII</a> encoding.
 
 <p>qbasic.run represents strings using Unicode internally so that debuggers and
 other tools see intelligible strings, while QBasic code still sees the original
-CP437 code points.  For example, CP437 character 1 (☺︎) is stored as U+263A.
-Since JavaScript strings use UTF-16, this makes little practical difference.
+CP437 code points.  For example, CP437 character 1 (☺︎) is stored in memory as
+U+263A WHITE SMILING FACE.  Since JavaScript strings use UTF-16, this doesn't
+cost much.
 
 <p>When you open a program, the shell usually guesses it is CP437 encoded and
 translates it to Unicode to deal with funky characters like ☺ or ░▒▓.  But if
@@ -475,8 +621,8 @@ UTF-8, and reload them later.  This heuristic mostly works fine since extended
 ASCII isn't likely to be valid UTF-8, and nonprintable characters 1-31 aren't
 recognized code points.
 
-<p>DOS used &H0A &H0D for new lines in text files, while Unix uses just &H0A.
-qbasic.run will parse either &H0A &H0D or just &H0A as a newline, but writes
+<p>DOS used &H0D &H0A for new lines in text files, while Unix uses just &H0A.
+qbasic.run will parse either &H0D &H0A or just &H0A as a newline, but writes
 &H0A.
 
 <h3 id="precision">Precision</h3>

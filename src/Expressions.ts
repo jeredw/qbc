@@ -198,8 +198,12 @@ class ExpressionListener extends QBasicParserListener {
       return;
     }
     // Cast a to long first to detect overflow.
-    const _ = values.long(this.check(a.number));
-    this.push(values.long(this.check(~a.number)));
+    const longA = values.long(this.check(a.number));
+    if (!values.isNumeric(longA)) {
+      this.push(longA);
+      return;
+    }
+    this.push(values.long(this.check(~longA.number)));
   }
 
   override exitAndExpr = this.binaryOperator;
