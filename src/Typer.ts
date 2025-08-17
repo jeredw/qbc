@@ -456,6 +456,10 @@ export class Typer extends QBasicParserListener {
           throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
         }
         existingVariable.scopeDeclaration = false;
+        if (variable.shared) {
+          // COMMON followed by DIM SHARED should share a variable.
+          existingVariable.shared = true;
+        }
         if (existingVariable.array && arrayDescriptor.array) {
           // COMMON and SHARED don't have real array dimensions, so we need to
           // reallocate array variables...

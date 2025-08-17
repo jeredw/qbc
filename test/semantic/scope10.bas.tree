@@ -1,0 +1,31 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable x 
+        (array_declaration 
+          ( ))))) \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable x 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 10))) ))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n ' \n ' \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call x 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 5)))) )))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)
