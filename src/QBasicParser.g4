@@ -4,6 +4,11 @@
 // neutral notation, and so it relies on subsequent analysis to detect some
 // kinds of syntax issues.  These are noted with *** in comments.
 //
+// QBasic does not distinguish between the core language and a standard library.
+// This grammar parses many library ish statements with regular syntax as
+// implicit calls to builtin procedures.  This is arguably harder than just
+// having another 80-90 rules, but it seemed like a good idea at the time.
+//
 // Where possible, literal symbols like '+' are used instead of named tokens
 // like PLUS for legibility.  But QBasic's lexical grammar has many quirks,
 // e.g. DATA statements use CSV-like syntax.  So a couple tokens like ':' and
@@ -71,8 +76,10 @@ block
   ;
 
 // Used to define labels.
-// *** Since this grammar does not include most builtin procedures, labels
-// are ambiguous with zero-argument builtin calls (e.g. CLS : PRINT).
+// *** CLS: PRINT should be parsed as two statements, not a labeled PRINT.
+// Note the same ambiguity exists for foo:PRINT, which could be CALL foo: PRINT.
+// QBasic parses a labeled PRINT statement in this case, so we have to fix
+// ambiguity between labels and builtins later.
 // You can have both a line number and a text label.
 label
   : (line_number | decimal_label)? text_label COLON

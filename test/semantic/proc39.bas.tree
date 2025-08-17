@@ -1,0 +1,18 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "this should not be printed"))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (label 
+    (text_label 
+      (untyped_id foo)) :) 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "testing"))))) \n <EOF>)
