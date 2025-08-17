@@ -406,8 +406,12 @@ class ExpressionListener extends QBasicParserListener {
 
 export function parseLiteral(fullText: string, forceDouble?: boolean): values.Value {
   const [text, sigil] = splitSigil(fullText);
-  if (text.startsWith('"') && text.endsWith('"')) {
-    return values.string(text.substring(1, text.length - 1));
+  if (text.startsWith('"')) {
+    if (text.endsWith('"')) {
+      return values.string(text.substring(1, text.length - 1));
+    }
+    // QBasic automatically inserts missing close quotes at newlines.
+    return values.string(text.substring(1));
   }
   if (text.toLowerCase().startsWith('&h')) {
     return parseAmpConstant(text, 16, sigil);

@@ -46,7 +46,9 @@ DOUBLE_PRECISION_NUMBER
   | [0-9]+ (D_EXPONENT | '#')
   ;
 fragment D_EXPONENT : [dD] [-+]? [0-9]+ ;
-STRING_LITERAL : '"' ~["\r\n]* '"' ;
+// The IDE automatically closes string literals that don't end with ".
+// This comes up most often in old GW-BASIC programs.
+STRING_LITERAL : '"' ~["\r\n]* '"'? ;
 
 // Keywords, statements and functions that are not parsed as builtins.
 ABSOLUTE : [Aa][Bb][Ss][Oo][Ll][Uu][Tt][Ee] ;
