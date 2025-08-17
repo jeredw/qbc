@@ -1,3 +1,4 @@
+' Test gosub statement.
 gosub foo
 print i
 end

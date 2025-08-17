@@ -1,3 +1,4 @@
+' Test computed goto (multiway branch).
 on 2 + 2 goto 10, 20, 30, 40
 10 print "nope": end
 20 print "nope": end
