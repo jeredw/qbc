@@ -90,6 +90,7 @@ interface CustomKey {
   location?: number;
   enabled?: boolean;
   state?: boolean; 
+  ignoreModifiers?: boolean;
 }
 
 export class KeyboardListener implements Keyboard {
@@ -193,14 +194,12 @@ export class KeyboardListener implements Keyboard {
       if (!customKey) {
         continue;
       }
-      // numpad arrows trigger arrow key events even if numlock is turned on.
-      const ignoreNumLock = keyNumber >= 11 && keyNumber <= 14;
-      // When a modifier key is pressed on its own, its modifier flag is not true.
+      // Note when a modifier key is pressed on its own, its modifier flag is not true.
       const modifiersMatch = (
-        (!!(customKey.flags & 3) === (e.shiftKey && e.key !== 'Shift')) &&
-        (!!(customKey.flags & 4) === (e.ctrlKey && e.key !== 'Control')) &&
-        (!!(customKey.flags & 8) === (e.altKey && e.key !== 'Alt')) &&
-        (!!(customKey.flags & 32) === isNumLockOn(e) || ignoreNumLock) &&
+        !!(customKey.flags & 3) === (e.shiftKey && e.key !== 'Shift') &&
+        !!(customKey.flags & 4) === (e.ctrlKey && e.key !== 'Control') &&
+        !!(customKey.flags & 8) === (e.altKey && e.key !== 'Alt') &&
+        !!(customKey.flags & 32) === isNumLockOn(e) &&
         !!(customKey.flags & 64) === e.getModifierState('CapsLock') &&
         !!(customKey.flags & 128) === isExtendedKey(e, code)
       );
@@ -208,7 +207,7 @@ export class KeyboardListener implements Keyboard {
         e.location === customKey.location ||
         (customKey.location === 3 && isNumberPad(e));
       const codeMatches = code === customKey.scanCode;
-      if (modifiersMatch && locationMatches && codeMatches) {
+      if ((customKey.ignoreModifiers || modifiersMatch) && locationMatches && codeMatches) {
         return customKey;
       }
     }
@@ -486,18 +485,18 @@ function keyToChar(e: KeyboardEvent): string | undefined {
 function defaultCustomKeys(): CustomKey[] {
   const keys: CustomKey[] = new Array(32);
   for (let i = 1; i <= 10; i++) {
-    keys[i] = { flags: 0, scanCode: keyToScanCode.get(`F${i}`)! };
+    keys[i] = { flags: 0, ignoreModifiers: true, scanCode: keyToScanCode.get(`F${i}`)! };
   }
   // Arrow key events only match numpad arrows, not extended arrow keys.
-  keys[11] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowUp')! };
-  keys[12] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowLeft')! };
-  keys[13] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowRight')! };
-  keys[14] = { flags: 0, location: 3, scanCode: keyToScanCode.get('ArrowDown')! };
+  keys[11] = { flags: 0, ignoreModifiers: true, location: 3, scanCode: keyToScanCode.get('ArrowUp')! };
+  keys[12] = { flags: 0, ignoreModifiers: true, location: 3, scanCode: keyToScanCode.get('ArrowLeft')! };
+  keys[13] = { flags: 0, ignoreModifiers: true, location: 3, scanCode: keyToScanCode.get('ArrowRight')! };
+  keys[14] = { flags: 0, ignoreModifiers: true, location: 3, scanCode: keyToScanCode.get('ArrowDown')! };
   for (let i = 15; i <= 25; i++) {
     keys[i] = { flags: 0, scanCode: 0 };
   }
-  keys[30] = { flags: 0, scanCode: keyToScanCode.get(`F11`)! };
-  keys[31] = { flags: 0, scanCode: keyToScanCode.get(`F12`)! };
+  keys[30] = { flags: 0, ignoreModifiers: true, scanCode: keyToScanCode.get(`F11`)! };
+  keys[31] = { flags: 0, ignoreModifiers: true, scanCode: keyToScanCode.get(`F12`)! };
   return keys;
 }
 
