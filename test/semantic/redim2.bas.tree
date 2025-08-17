@@ -1,4 +1,4 @@
-(program 
+(program ' \n ' \n 
   (statement 
     (dim_statement redim 
       (dim_variable x 
@@ -26,4 +26,9 @@
               (argument_list 
                 (argument 
                   (expr 
-                    (literal 10)))) )))))) \n <EOF>)
+                    (literal 10)))) ))) ,) 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( x ))))))) \n <EOF>)

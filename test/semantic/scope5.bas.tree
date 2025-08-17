@@ -1,4 +1,4 @@
-(program 
+(program ' \n ' \n 
   (sub_statement sub 
     (untyped_id test) 
     (block \n 
@@ -6,7 +6,7 @@
         (static_statement static 
           (scope_variable foo 
             (array_declaration 
-              ( ))))) \n 
+              ( ))))) \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call foo 

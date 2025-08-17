@@ -1,4 +1,4 @@
-(program 
+(program ' \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call max%) = 
@@ -11,7 +11,7 @@
           ( 
             (dim_subscript 
               (expr 
-                (variable_or_function_call max%))) ))))) \n 
+                (variable_or_function_call max%))) ))))) \n \n 
   (statement 
     (for_next_statement for i = 
       (expr 
@@ -45,7 +45,7 @@
         (expr 
           (builtin_function 
             (ubound_function ubound 
-              ( x ))))))) \n 
+              ( x ))))))) \n \n 
   (statement 
     (assignment_statement 
       (variable_or_function_call max%) = 
@@ -61,7 +61,7 @@
           ( 
             (dim_subscript 
               (expr 
-                (variable_or_function_call max%))) ))))) \n 
+                (variable_or_function_call max%))) ))))) \n \n 
   (statement 
     (for_next_statement for i = 
       (expr 
