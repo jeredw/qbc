@@ -1,0 +1,23 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 3.402823e+38))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal 2.802597e-45))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 3.402823e+38)))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr - 
+          (expr 
+            (literal 2.802597e-45)))))) \n <EOF>)

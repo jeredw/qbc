@@ -211,10 +211,11 @@ export function string(string: string = ""): Value {
 }
 
 export function single(number: number): Value {
-  if (!isFinite(number) || number < -3.402823e+38 || number > 3.402823e+38) {
+  const float32 = Math.fround(number);
+  if (!isFinite(float32)) {
     return OVERFLOW;
   }
-  return {tag: TypeTag.SINGLE, number: Math.fround(number)};
+  return {tag: TypeTag.SINGLE, number: float32};
 }
 
 export function double(number: number): Value {
