@@ -1,0 +1,18 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)

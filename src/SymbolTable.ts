@@ -252,10 +252,10 @@ export class SymbolTable {
       isAsType: boolean,
       arrayBaseIndex: number,
       shared?: boolean,
-    }): QBasicSymbol {
+    }): {symbol: QBasicSymbol, newlyDefined?: boolean} {
     const builtin = this.lookupBuiltin(name, sigil, token);
     if (builtin) {
-      return {tag: QBasicSymbolTag.BUILTIN, builtin};
+      return {symbol: {tag: QBasicSymbolTag.BUILTIN, builtin}};
     }
     const isDefaultType = !sigil;
     const lookup = (slot?: Slot, sameScope?: boolean): QBasicSymbol | undefined => {
@@ -314,7 +314,7 @@ export class SymbolTable {
       lookup(this._parent?._symbols.get(name))
     );
     if (existingSymbol) {
-      return existingSymbol;
+      return {symbol: existingSymbol};
     }
     const array = numDimensions > 0 ? {
       array: {
@@ -329,7 +329,10 @@ export class SymbolTable {
     }
     const variable = { name, type, sigil, token, storageType, isAsType, scopeDeclaration, shared, ...array };
     this.defineVariable(variable);
-    return { tag: QBasicSymbolTag.VARIABLE, variable };
+    return {
+      symbol: {tag: QBasicSymbolTag.VARIABLE, variable},
+      newlyDefined: true
+    };
   }
 
   getAsType(name: string): Type | undefined {

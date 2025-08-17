@@ -522,8 +522,13 @@ export class CodeGenerator extends QBasicParserListener {
       if (!result) {
         continue;
       }
-      if (!result.array || (!result.isParameter && !result.array.dynamic)) {
-        throw new Error("found result on non-dynamic array dim")
+      if (!result.array) {
+        throw new Error('Missing array on DIM variable');
+      }
+      if (!result.isParameter && !result.array.dynamic) {
+        // This can happen when an array seen first in a SHARED declaration is
+        // presumed to be dynamic, but later found to be static.
+        throw ParseError.fromToken(dim.start!, "Array already dimensioned");
       }
       const ranges = dim.dim_array_bounds();
       if (!ranges) {

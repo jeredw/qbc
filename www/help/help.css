@@ -82,9 +82,14 @@ th {
 
 th, td {
   border-inline-end: 1px solid var(--qbc-light-gray);
+  vertical-align: top;
   padding: 4px;
 }
 
 th:last-child, td:last-child {
   border-inline-end: none;
+}
+
+.table-of-contents, .table-of-contents-section {
+  list-style-type: none;
 }

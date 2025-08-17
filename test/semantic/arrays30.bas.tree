@@ -1,0 +1,44 @@
+(program ' \n 
+  (statement 
+    (common_statement common 
+      (scope_variable a 
+        (array_declaration 
+          ( ))))) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter x 
+          (array_declaration 
+            ( )))) ) 
+    (block \n ' \n 
+      (statement 
+        (dim_statement redim 
+          (dim_variable x 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 50))) ))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) ))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument a 
+          ( ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (ubound_function ubound 
+              ( a ))))))) \n <EOF>)

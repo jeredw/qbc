@@ -262,7 +262,7 @@ export class Typer extends QBasicParserListener {
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
     const args = ctx.argument_list()?.argument() || [];
     const token = ctx._name!;
-    const symbol = this._chunk.symbols.lookupOrDefineVariable({
+    const {symbol, newlyDefined} = this._chunk.symbols.lookupOrDefineVariable({
       name,
       type,
       sigil,
@@ -325,6 +325,11 @@ export class Typer extends QBasicParserListener {
     if (isVariable(symbol)) {
       const variable = symbol.variable;
       if (variable.array) {
+        if (newlyDefined && this._storageType === StorageType.AUTOMATIC) {
+          // Implicitly defined arrays are not allowed in stack SUB/FUNCTION
+          // procedures, because nothing will allocate the memory first.
+          throw ParseError.fromToken(symbol.variable.token, "Array not defined");
+        }
         this._optionBaseAllowed = false;
         // Note that for record arrays, result is a record with references to
         // each element at this index.  So t(2) creates _v0 = index(t, 2), but
@@ -440,9 +445,9 @@ export class Typer extends QBasicParserListener {
         };
       }
       let treatAsDynamic = false;
-      if (existingVariable && existingVariable.scopeDeclaration) {
+      if (existingVariable && existingVariable.scopeDeclaration && !redim) {
         // A variable first encountered as a COMMON/SHARED declaration and later
-        // a DIM would normally be a duplicate definition.  Upgrade the SHARED
+        // a DIM would normally be a duplicate definition.  Upgrade the declared
         // symbol to a real one.
         if (!!dim.AS() && !existingVariable.isAsType) {
           throw ParseError.fromToken(existingVariable.token, "AS clause required");
@@ -454,7 +459,10 @@ export class Typer extends QBasicParserListener {
         if (existingVariable.array && arrayDescriptor.array) {
           // COMMON and SHARED don't have real array dimensions, so we need to
           // reallocate array variables...
-          existingVariable.array.dynamic = arrayDescriptor.array.dynamic;
+          if (arrayDescriptor.array.dynamic) {
+            existingVariable.array.dynamic = true;
+          }
+          treatAsDynamic = !!existingVariable.array.dynamic;
           existingVariable.array.dimensions = arrayDescriptor.array.dimensions;
           this._chunk.symbols.allocateArray(existingVariable);
         }
@@ -478,7 +486,9 @@ export class Typer extends QBasicParserListener {
           throw ParseError.fromToken(variable.token, "AS clause required on first declaration");
         }
         // Can't check whether array arguments are dynamic at compile time.
-        if (!existingVariable.isParameter) {
+        // For SHARED then REDIM before an actual DIM, we also don't yet know.
+        // We'll detect this in code generation.
+        if (!existingVariable.scopeDeclaration && !existingVariable.isParameter) {
           if (!existingVariable.array.dynamic) {
             throw ParseError.fromToken(variable.token, "Array already dimensioned");
           }
@@ -560,7 +570,7 @@ export class Typer extends QBasicParserListener {
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(common.untyped_id()!, {allowPeriods});
         const token = common.untyped_id()!.start!;
-        const symbol = this._chunk.symbols.lookupOrDefineVariable({
+        const {symbol} = this._chunk.symbols.lookupOrDefineVariable({
           name,
           type: asType,
           token,
@@ -588,7 +598,7 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(token, "Duplicate definition");
         }
-        const symbol = this._chunk.symbols.lookupOrDefineVariable({
+        const {symbol} = this._chunk.symbols.lookupOrDefineVariable({
           name,
           type,
           token,
@@ -627,7 +637,7 @@ export class Typer extends QBasicParserListener {
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(share.untyped_id()!, {allowPeriods});
         const token = share.untyped_id()!.start!;
-        const symbol = globalSymbols.lookupOrDefineVariable({
+        const {symbol} = globalSymbols.lookupOrDefineVariable({
           name,
           type: asType,
           token,
@@ -654,7 +664,7 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(token, "Duplicate definition");
         }
-        const symbol = globalSymbols.lookupOrDefineVariable({
+        const {symbol} = globalSymbols.lookupOrDefineVariable({
           name,
           type,
           token,
@@ -745,7 +755,7 @@ export class Typer extends QBasicParserListener {
     // This could actually be wrong, e.g. if we have DEFSTR I and DIM I AS INTEGER.
     // We'll look up the correct as type below.
     const type = sigil ? typeOfSigil(sigil) : this.getDefaultType(name);
-    const symbol = this._chunk.symbols.lookupOrDefineVariable({
+    const {symbol} = this._chunk.symbols.lookupOrDefineVariable({
       name,
       type,
       sigil,

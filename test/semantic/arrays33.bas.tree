@@ -1,0 +1,35 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) static 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call x% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (def_fn_statement def fnbar 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call t 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3)))) )) = 
+          (expr 
+            (literal 4)))) \n) end def) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call fnbar))))) \n <EOF>)
