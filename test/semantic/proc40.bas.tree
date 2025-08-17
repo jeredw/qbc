@@ -1,0 +1,13 @@
+(program ' \n 
+  (statement 
+    (call_statement call 
+      (untyped_id foo))) \n \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (literal "ok"))))) \n) 
+    (end_sub_statement end sub)) \n <EOF>)

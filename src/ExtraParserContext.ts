@@ -19,6 +19,8 @@ export interface TyperContext {
   $increment: Variable;
   // Saved test expression for select case.
   $test: Variable;
+  // Late bound procedure when CALLing an unknown procedure.
+  $procedureName: string;
 }
 
 export interface CodeGeneratorContext {

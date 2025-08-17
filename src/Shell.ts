@@ -392,7 +392,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
       .replaceAll(CR, '\r')
       .replaceAll(LF, '\n')
       .replaceAll(TAB, '\t')
-      .replaceAll(EOF, '\x26');
+      .replaceAll(EOF, '\x1a');
     this.invocation?.stop();
     this.invocation = null;
     this.interpreter.debug.breakpoints = new Set();

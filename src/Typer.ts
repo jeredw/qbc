@@ -853,6 +853,13 @@ export class Typer extends QBasicParserListener {
     }
     const procedure = this._chunk.symbols.lookupProcedure(name);
     if (!procedure) {
+      if (ctx.CALL()) {
+        // When the CALL keyword is present, procedures don't need to be
+        // declared first.  Try the lookup again in code generation after the
+        // whole program has been checked.
+        getTyperContext(ctx).$procedureName = name;
+        return;
+      }
       throw ParseError.fromToken(ctx.start!, "Subprogram not defined");
     }
     getTyperContext(ctx).$procedure = procedure;

@@ -48,6 +48,10 @@ export const [asciiToChar, charToAscii] = (() => {
       charToAscii.set(char, code);
     }
   }
+  charToAscii.set('\r', 13);
+  charToAscii.set('\n', 10);
+  charToAscii.set('\t', 9);
+  charToAscii.set('\x1a', 26);
   return [asciiToChar, charToAscii];
 })();
 

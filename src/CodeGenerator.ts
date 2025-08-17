@@ -297,9 +297,18 @@ export class CodeGenerator extends QBasicParserListener {
       this.callBuiltin(builtin, ctx.start!, ctx.argument_list());
       return;
     }
-    const procedure = getTyperContext(ctx).$procedure;
+    let procedure = getTyperContext(ctx).$procedure;
     if (!procedure) {
-      throw new Error("missing procedure");
+      // The procedure might have been CALL'ed before being declared or defined.
+      const name = getTyperContext(ctx).$procedureName;
+      if (!name) {
+        throw new Error("Missing procedure in CALL statement.");
+      }
+      const retryProcedureLookup = this._chunk.symbols.lookupProcedure(name);
+      if (!retryProcedureLookup) {
+        throw ParseError.fromToken(ctx.start!, "Subprogram not defined");
+      }
+      procedure = retryProcedureLookup;
     }
     this.call(procedure, ctx.start!, ctx.argument_list());
   }
