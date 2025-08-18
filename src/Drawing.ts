@@ -275,14 +275,19 @@ export class Plotter {
       {x: x1, y: y1};
     this.cursor = {...p1};
     const p1v = this.windowToScreen(p1);
-    const data = new DataView(args.buffer);
+    if (args.buffer.byteLength < 4) {
+      return;
+    }
+    let data = new DataView(args.buffer);
     const littleEndian = true;
-    // getInt16() throws if the buffer is empty.
     const width = data.getInt16(0, littleEndian) / bppPerPlane;
     const height = data.getInt16(2, littleEndian);
     const sizeInBytes = 4 + Math.ceil((width * bppPerPlane) / 8) * planes * height;
     if (args.buffer.byteLength < sizeInBytes) {
-      throw new Error('bitmap is not large enough')
+      // QBasic tolerates reading bitmap data out of bounds.
+      const padded = new Uint8Array(sizeInBytes);
+      padded.set(new Uint8Array(args.buffer), 0);
+      data = new DataView(padded.buffer);
     }
     const overwrite = (
       args.operation === BlitOperation.PSET ||

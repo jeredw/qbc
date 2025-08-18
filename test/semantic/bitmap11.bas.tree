@@ -1,0 +1,87 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable p% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call p% 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 0)))) )) = 
+      (expr 
+        (literal 24)))) ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call p% 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 1)))) )) = 
+      (expr 
+        (literal 1)))) ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call p% 
+        ( 
+          (argument_list 
+            (argument 
+              (expr 
+                (literal 2)))) )) = 
+      (expr 
+        (literal &h505)))) ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 3)) , 
+        (expr 
+          (literal 1)) ) , 
+      (expr 
+        (literal 5)))) ' \n 
+  (statement 
+    (pset_statement pset 
+      ( 
+        (expr 
+          (literal 4)) , 
+        (expr 
+          (literal 1)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (put_graphics_statement put 
+      ( 
+        (expr 
+          (literal 1)) , 
+        (expr 
+          (literal 1)) ) , p% , pset)) \n ' \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal 1)))) : 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call point 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 3))) , 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n <EOF>)
