@@ -139,8 +139,9 @@ class Qb45Loader {
     // stack or symbol values substituted for placeholders.
     const T = (template: string, tag?: Tag): Entry => {
       const fields = template.match(/{[^}]+}|./g);
+      const getIndex = (field: string) => +field.slice(1, -1);
       const maxStackArgument = Math.max(
-        ...(template.match(/{([0-9]+)}/g) ?? []).map((n: string) => +n[1])
+        ...(template.match(/{([0-9]+)}/g) ?? []).map(getIndex)
       );
       const stackArguments: Ascii[] = [];
       if (maxStackArgument >= 0) {
@@ -151,7 +152,7 @@ class Qb45Loader {
       const parts: Ascii[] = [];
       for (const field of fields ?? []) {
         if (/{[0-9]+}/.test(field)) {
-          const argumentIndex = +field.slice(1, -1);
+          const argumentIndex = getIndex(field);
           parts.push(stackArguments[argumentIndex]);
           continue;
         }
