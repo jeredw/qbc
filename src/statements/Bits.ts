@@ -706,7 +706,7 @@ function readNumber(variable: Variable, memory: Memory): number {
   return value.number;
 }
 
-function readString(variable: Variable, memory: Memory): string {
+export function readString(variable: Variable, memory: Memory): string {
   const value = memory.read(variable);
   if (!value) {
     return "";

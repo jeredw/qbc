@@ -50,8 +50,8 @@ export class CommonStatement extends Statement {
         }
       }
     }
-    if (this.result.type.tag === TypeTag.STRING && value.bytes.byteLength > 0) {
-      context.memory.write(this.result, string(" ".repeat(value.bytes.byteLength)));
+    if (!this.result.array && this.result.type.tag === TypeTag.STRING && value.bytes.byteLength > 0) {
+      context.memory.write(this.result, string("\x00".repeat(value.bytes.byteLength)));
     }
     writeBytesToVariable(this.result, value.bytes, context.memory)
   }

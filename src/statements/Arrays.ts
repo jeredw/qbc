@@ -3,12 +3,13 @@ import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError, DUPLICATE_DEFINITION, SUBSCRIPT_OUT_OF_RANGE } from "../Errors.ts";
 import { evaluateIntegerExpression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
-import { array, integer, isArray, isError, isNumeric, isReference, reference, Value } from "../Values.ts";
+import { array, integer, isArray, isError, isNumeric, isReference, reference, string, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { TypeTag } from "../Types.ts";
-import { readElementToBytes, writeBytesToElement } from "./Bits.ts";
+import { readElementToBytes, readString, writeBytesToElement } from "./Bits.ts";
+import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 
 export interface DimBoundsExprs {
   lower?: ExprContext;
@@ -319,6 +320,9 @@ export function readNumbersFromArraySlice(arrayOrRef: Variable, count: number, m
 function readEntireArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
   const {array, descriptor} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   if (!descriptor.buffer) {
+    if (array.type.tag === TypeTag.STRING) {
+      return readStringArrayToBytes(array, descriptor, memory);
+    }
     const baseIndex = descriptor.baseAddress!.index;
     const numItems = getNumItemsInArray(descriptor);
     const valuesPerItem = descriptor.valuesPerItem!;
@@ -344,6 +348,12 @@ export function readArraySliceToBytes(arrayOrRef: Variable, memory: Memory): Arr
   const buffer = readEntireArrayToBytes(arrayOrRef, memory);
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
+  if (array.type.tag === TypeTag.STRING) {
+    if (start !== 0) {
+      throw new Error('Only support slicing string array bytes from offset 0.');
+    }
+    return buffer;
+  }
   const bytesPerItem = getBytesPerItem(array, memory);
   return buffer.slice(start * bytesPerItem);
 }
@@ -355,6 +365,10 @@ function invalidateBuffer(arrayOrRef: Variable, memory: Memory) {
   }
   if (!descriptor.bufferDirty) {
     descriptor.buffer = undefined;
+    return;
+  }
+  if (array.type.tag === TypeTag.STRING) {
+    writeBytesToStringArray(array, descriptor, memory);
     return;
   }
   const baseIndex = descriptor.baseAddress!.index;
@@ -386,6 +400,11 @@ export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer
   const arrayBuffer = readEntireArrayToBytes(arrayOrRef, memory);
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
+  if (array.type.tag === TypeTag.STRING) {
+    if (start !== 0) {
+      throw new Error('Only support writing string array bytes from offset 0.');
+    }
+  }
   const bytesPerItem = getBytesPerItem(array, memory);
   const baseByteOffset = start * bytesPerItem;
   descriptor.bufferDirty = true;
@@ -399,6 +418,54 @@ export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer
     return;
   }
   new Uint8Array(arrayBuffer).set(data, baseByteOffset);
+}
+
+// QBasic stores variable length strings as a length and a pointer, so the
+// memory image of a string array is a list of lengths and pointers.  This isn't
+// especially useful on its own.
+//
+// We rely on byte serialization for CHAIN.  To make CHAIN work for string
+// arrays, we'll serialize them as a table of (length, offset) pairs followed by
+// the actual string data.  If there is some use for it, we could reuse the
+// table as a BSAVE image...
+
+function readStringArrayToBytes(array: Variable, descriptor: ArrayDescriptor, memory: Memory): ArrayBuffer {
+  const baseIndex = descriptor.baseAddress!.index;
+  const numItems = getNumItemsInArray(descriptor);
+  let item = makeItemVariable(array, descriptor, baseIndex);
+  const tableOfContents: number[] = [];
+  const stringData: number[] = [];
+  for (let index = 0; index < numItems; index++) {
+    item.address!.index = baseIndex + index;
+    const itemData = readString(item, memory);
+    const itemLength = itemData.length;
+    const offset = stringData.length + 4 * numItems;
+    tableOfContents.push(...[(itemLength & 0xff), (itemLength >> 8) & 0xff]);
+    tableOfContents.push(...[(offset & 0xff), (offset >> 8) & 0xff]);
+    stringData.push(...stringToAscii(itemData));
+  }
+  descriptor.buffer = new ArrayBuffer(tableOfContents.length + stringData.length);
+  new Uint8Array(descriptor.buffer).set(tableOfContents);
+  new Uint8Array(descriptor.buffer).set(stringData, tableOfContents.length);
+  return descriptor.buffer;
+}
+
+function writeBytesToStringArray(array: Variable, descriptor: ArrayDescriptor, memory: Memory) {
+  const baseIndex = descriptor.baseAddress!.index;
+  const numItems = getNumItemsInArray(descriptor);
+  if (!descriptor.buffer) {
+    return;
+  }
+  const data = new DataView(descriptor.buffer);
+  const bytes = new Uint8Array(descriptor.buffer);
+  let item = makeItemVariable(array, descriptor, baseIndex);
+  for (let index = 0; index < numItems; index++) {
+    item.address!.index = baseIndex + index;
+    const length = data.getUint16(4 * index, true);
+    const offset = data.getUint16(4 * index + 2, true);
+    const stringData = asciiToString(Array.from(bytes.slice(offset, offset + length)));
+    memory.write(item, string(stringData));
+  }
 }
 
 // Makes a synthetic variable to refer to an item of an array so that we can reuse utilities
@@ -432,6 +499,9 @@ function updateRecordOffsets(variable: Variable, record: Variable) {
 function getBytesPerItem(array: Variable, memory: Memory) {
   if (array.recordOffset?.record) {
     array = array.recordOffset?.record;
+  }
+  if (array.type.tag === TypeTag.STRING) {
+    return 4;
   }
   return getScalarVariableSizeInBytes(array, memory);
 }
