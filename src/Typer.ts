@@ -732,6 +732,7 @@ export class Typer extends QBasicParserListener {
           token: scope.untyped_id()!.start!,
           storageType: StorageType.STATIC,
           static: true,
+          scopeDeclaration: true,
           ...arrayDescriptor,
         });
       } else {
@@ -753,6 +754,7 @@ export class Typer extends QBasicParserListener {
           token: scope.ID()!.symbol,
           storageType: StorageType.STATIC,
           static: true,
+          scopeDeclaration: true,
           ...arrayDescriptor,
         });
       }

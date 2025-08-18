@@ -1,0 +1,30 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (static_statement static 
+          (scope_variable 
+            (untyped_id stuff) 
+            (array_declaration 
+              ( )) as 
+            (type_name 
+              (fixed_string string * 16))))) \n 
+      (statement 
+        (dim_statement redim 
+          (dim_variable 
+            (untyped_id stuff) 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 10))) , 
+                (dim_subscript 
+                  (expr 
+                    (literal 10))) )) as 
+            (type_name 
+              (fixed_string string * 16))))) \n) 
+    (end_sub_statement end sub)) \n \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo))) \n <EOF>)
