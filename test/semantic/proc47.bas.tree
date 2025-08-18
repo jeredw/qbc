@@ -1,0 +1,14 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter bar)) ) 
+    (block \n 
+      (statement 
+        (const_statement const 
+          (const_assignment bar = 
+            (const_expr 
+              (expr 
+                (literal 42)))))) \n) 
+    (end_sub_statement end sub)) \n <EOF>)

@@ -370,7 +370,10 @@ export class SymbolTable {
     if (variable.name.toLowerCase().startsWith('fn')) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
-    if (globalSlot.procedure || globalSlot.constant || localSlot.constant) {
+    if (globalSlot.procedure) {
+      throw ParseError.fromToken(variable.token, "Duplicate definition");
+    }
+    if (!variable.isParameter && (globalSlot.constant || localSlot.constant)) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
     if (globalSlot.defFns) {
@@ -383,7 +386,7 @@ export class SymbolTable {
     this.checkForAmbiguousRecord(variable);
     if (!variable.array) {
       const globalOfSameName = globalSlot.scalarVariables?.get(variable.type.tag);
-      if (globalOfSameName && this.isVisible(globalOfSameName)) {
+      if (globalOfSameName && !variable.isParameter && this.isVisible(globalOfSameName)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       const asType = slot.scalarAsType ?? slot.arrayAsType;
@@ -416,7 +419,7 @@ export class SymbolTable {
       variable.symbolIndex = SymbolTable._symbolIndex++;
     } else {
       const globalOfSameName = globalSlot.arrayVariables?.get(variable.type.tag);
-      if (globalOfSameName && this.isVisible(globalOfSameName)) {
+      if (globalOfSameName && !variable.isParameter && this.isVisible(globalOfSameName)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       const asType = slot.arrayAsType ?? slot.scalarAsType;

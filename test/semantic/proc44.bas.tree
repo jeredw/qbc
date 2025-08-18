@@ -1,0 +1,60 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable global% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) ))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter global% 
+          (array_declaration 
+            ( )))) ) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call global% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )) = 
+          (expr 
+            (literal 42)))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x% 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) ))))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument x% 
+          ( ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call x% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) ))) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call global% 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 0)))) )))))) \n <EOF>)

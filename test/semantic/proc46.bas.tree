@@ -1,0 +1,26 @@
+(program ' \n 
+  (statement 
+    (const_statement const 
+      (const_assignment bar = 
+        (const_expr 
+          (expr 
+            (literal 10)))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter bar)) ) 
+    (block \n 
+      (statement 
+        (print_statement print 
+          (print_argument 
+            (expr 
+              (variable_or_function_call bar))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (call_statement 
+      (untyped_id foo) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 42)))))) \n <EOF>)
