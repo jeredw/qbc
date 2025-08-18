@@ -1,0 +1,16 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable x%))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n ' \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable x%))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n <EOF>)

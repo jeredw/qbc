@@ -335,9 +335,25 @@ export class SymbolTable {
     };
   }
 
-  getAsType(name: string): Type | undefined {
-    const slot = this._symbols.get(name) ?? this._parent?._symbols.get(name);
-    return slot?.scalarAsType ?? slot?.arrayAsType;
+  getAsType(name: string, assumeShared?: boolean): Type | undefined {
+    const slot = this._symbols.get(name);
+    const asType = slot?.scalarAsType ?? slot?.arrayAsType;
+    if (asType) {
+      return asType;
+    }
+    const parentSlot = this._parent?._symbols.get(name);
+    if (parentSlot?.scalarAsType) {
+      const variable = parentSlot?.scalarVariables?.get(parentSlot?.scalarAsType.tag);
+      if (variable && (assumeShared || this.isVisible(variable))) {
+        return parentSlot?.scalarAsType;
+      }
+    }
+    if (parentSlot?.arrayAsType) {
+      const variable = parentSlot?.arrayVariables?.get(parentSlot?.arrayAsType.tag);
+      if (variable && (assumeShared || this.isVisible(variable))) {
+        return parentSlot?.arrayAsType;
+      }
+    }
   }
 
   variables(): Variable[] {
@@ -349,21 +365,27 @@ export class SymbolTable {
     if (builtin) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
+    const globalSlot = this._parent?._symbols.get(variable.name) ?? {};
+    const localSlot = this._symbols.get(variable.name) ?? {};
+    if (variable.name.toLowerCase().startsWith('fn')) {
+      throw ParseError.fromToken(variable.token, "Duplicate definition");
+    }
+    if (globalSlot.procedure || globalSlot.constant || localSlot.constant) {
+      throw ParseError.fromToken(variable.token, "Duplicate definition");
+    }
+    if (globalSlot.defFns) {
+      throw ParseError.fromToken(variable.token, "Cannot start with FN");
+    }
     const table = this.defFn() && !variable.static && !variable.isParameter ?
       this._parent!._symbols :
       this._symbols;
     const slot = table.get(variable.name) ?? {};
-    if (variable.name.toLowerCase().startsWith('fn')) {
-      throw ParseError.fromToken(variable.token, "Duplicate definition");
-    }
-    if (slot.procedure || slot.constant) {
-      throw ParseError.fromToken(variable.token, "Duplicate definition");
-    }
-    if (slot.defFns) {
-      throw ParseError.fromToken(variable.token, "Cannot start with FN");
-    }
     this.checkForAmbiguousRecord(variable);
     if (!variable.array) {
+      const globalOfSameName = globalSlot.scalarVariables?.get(variable.type.tag);
+      if (globalOfSameName && this.isVisible(globalOfSameName)) {
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
+      }
       const asType = slot.scalarAsType ?? slot.arrayAsType;
       if (asType && (variable.isAsType || variable.sigil) && !sameType(asType, variable.type)) {
         // dim x as string
@@ -393,6 +415,10 @@ export class SymbolTable {
       }
       variable.symbolIndex = SymbolTable._symbolIndex++;
     } else {
+      const globalOfSameName = globalSlot.arrayVariables?.get(variable.type.tag);
+      if (globalOfSameName && this.isVisible(globalOfSameName)) {
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
+      }
       const asType = slot.arrayAsType ?? slot.scalarAsType;
       if (asType && (variable.isAsType || variable.sigil) && !sameType(asType, variable.type)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");

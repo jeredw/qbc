@@ -663,7 +663,7 @@ export class Typer extends QBasicParserListener {
         this.shareVariable(symbol.variable, token);
       } else {
         const [name, sigil] = splitSigil(share.ID()?.getText()!);
-        const asType = this._chunk.symbols.getAsType(name);
+        const asType = this._chunk.symbols.getAsType(name, /* assumeShared= */ true);
         const type = sigil ? typeOfSigil(sigil) :
           asType ? asType :
           this.getDefaultType(name);
