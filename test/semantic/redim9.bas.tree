@@ -1,0 +1,28 @@
+(program ' \n ' 
+  (statement 
+    (dynamic_metacommand $DYNAMIC)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id f) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 20))) )) as 
+        (type_name integer)))) \n 
+  (statement 
+    (dim_statement redim 
+      (dim_variable 
+        (untyped_id f) 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 30))) )) as 
+        (type_name string)))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "nope"))))) \n <EOF>)

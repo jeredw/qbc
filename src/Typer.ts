@@ -425,11 +425,14 @@ export class Typer extends QBasicParserListener {
           asType ? asType :
           this.getDefaultType(name);
         if (asType) {
+          if (!sameType(type, asType)) {
+            throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
+          }
           // DIM...AS followed by DIM without AS for the same name always fails.
-          if (sameType(type, asType)) {
+          // But REDIM is allowed to drop AS.
+          if (!redim) {
             throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
           }
-          throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
         }
         existingVariable = this._chunk.symbols.lookupVariable({
           name, sigil, type, array: dimensions.length > 0,
@@ -488,6 +491,9 @@ export class Typer extends QBasicParserListener {
         }
         if (!redim && dim.AS() && !existingVariable.isAsType) {
           throw ParseError.fromToken(variable.token, "AS clause required on first declaration");
+        }
+        if (redim && !sameType(existingVariable.type, variable.type)) {
+          throw ParseError.fromToken(variable.token, "Duplicate definition");
         }
         // Can't check whether array arguments are dynamic at compile time.
         // For SHARED then REDIM before an actual DIM, we also don't yet know.
