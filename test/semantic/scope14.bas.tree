@@ -1,0 +1,14 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n ' \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call bar) = 
+          (expr 
+            (literal 2)))) \n) 
+    (end_sub_statement end sub)) \n 
+  (sub_statement sub 
+    (untyped_id bar) 
+    (block :) 
+    (end_sub_statement end sub)) \n <EOF>)

@@ -1,0 +1,8 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block :) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable foo))) \n <EOF>)

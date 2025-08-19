@@ -1,0 +1,21 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable a 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 2))) ))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable a 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n <EOF>)

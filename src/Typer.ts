@@ -378,11 +378,12 @@ export class Typer extends QBasicParserListener {
   }
 
   override enterDim_statement = (ctx: parser.Dim_statementContext) => {
-    if (ctx.SHARED() && this._chunk.procedure) {
+    const shared = !!ctx.SHARED();
+    if (shared && this._chunk.procedure) {
       throw ParseError.fromToken(ctx.SHARED()!.symbol, "Illegal in procedure or DEF FN");
     }
+    const redim = !!ctx.REDIM();
     for (const dim of ctx.dim_variable()) {
-      const redim = !!ctx.REDIM();
       const dimensions = this.getArrayBounds(dim.dim_array_bounds());
       if (redim && !dimensions.length) {
         throw ParseError.fromToken(dim.start!, "Expected: (");
@@ -405,16 +406,18 @@ export class Typer extends QBasicParserListener {
         const asType = this.getType(dim.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(dim.untyped_id()!, {allowPeriods});
-        existingVariable = this._chunk.symbols.lookupVariable({
-          name, sigil: '', array: dimensions.length > 0, type: asType
-        });
+        const lookup = {name, sigil: '', array: dimensions.length > 0, type: asType};
+        if (shared) {
+          this.checkForConflictingLocalVariables(lookup);
+        }
+        existingVariable = this._chunk.symbols.lookupVariable(lookup);
         variable = {
           name,
           type: asType,
           isAsType: true,
           token: dim.untyped_id()!.start!,
           storageType: this._storageType,
-          shared: !!ctx.SHARED(),
+          shared,
           ...arrayDescriptor,
         };
       } else {
@@ -434,16 +437,18 @@ export class Typer extends QBasicParserListener {
             throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
           }
         }
-        existingVariable = this._chunk.symbols.lookupVariable({
-          name, sigil, type, array: dimensions.length > 0,
-        });
+        const lookup = {name, sigil, type, array: dimensions.length > 0};
+        if (shared) {
+          this.checkForConflictingLocalVariables(lookup);
+        }
+        existingVariable = this._chunk.symbols.lookupVariable(lookup);
         variable = {
           name,
           type,
           sigil,
           token: dim.ID()!.symbol,
           storageType: this._storageType,
-          shared: !!ctx.SHARED(),
+          shared,
           ...arrayDescriptor,
         };
       }
@@ -457,6 +462,10 @@ export class Typer extends QBasicParserListener {
         }
         if (!dim.AS() && existingVariable.isAsType) {
           throw ParseError.fromToken(dim.ID()!.symbol, "AS clause required");
+        }
+        if (!existingVariable.array && isSharedGlobal(existingVariable) && this._chunk.procedure) {
+          // A new local variable aliasing a SHARED global is a duplicate definition.
+          throw ParseError.fromToken(dim.ID()!.symbol, "Duplicate definition");
         }
         existingVariable.scopeDeclaration = false;
         if (variable.shared) {
@@ -512,6 +521,15 @@ export class Typer extends QBasicParserListener {
       }
       if (dimensions.length > 0 && (dynamic || treatAsDynamic)) {
         getTyperContext(dim).$result = variable;
+      }
+    }
+  }
+
+  private checkForConflictingLocalVariables({name, sigil, array, type}: {name: string, sigil: string, array: boolean, type: Type}) {
+    for (let i = 1; i < this._program.chunks.length; i++) {
+      const localVariable = this._program.chunks[i].symbols.lookupVariable({name, sigil, array, type});
+      if (localVariable && !localVariable.isParameter && !isSharedGlobal(localVariable)) {
+        throw ParseError.fromToken(localVariable.token, "Duplicate definition");
       }
     }
   }
@@ -574,17 +592,21 @@ export class Typer extends QBasicParserListener {
     }
     const shared = !!ctx.SHARED();
     for (const common of ctx.scope_variable()) {
+      const numDimensions = common.array_declaration() ? 1 : 0;
       let variable: Variable;
       if (!!common.AS()) {
         const asType = this.getType(common.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(common.untyped_id()!, {allowPeriods});
         const token = common.untyped_id()!.start!;
+        if (shared) {
+          this.checkForConflictingLocalVariables({name, sigil: '', array: numDimensions > 0, type: asType});
+        }
         const {symbol} = this._chunk.symbols.lookupOrDefineVariable({
           name,
           type: asType,
           token,
-          numDimensions: common.array_declaration() ? 1 : 0,
+          numDimensions,
           scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: true,
@@ -608,12 +630,15 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(token, "Duplicate definition");
         }
+        if (shared) {
+          this.checkForConflictingLocalVariables({name, sigil, type, array: numDimensions > 0});
+        }
         const {symbol} = this._chunk.symbols.lookupOrDefineVariable({
           name,
           type,
           token,
           sigil,
-          numDimensions: common.array_declaration() ? 1 : 0,
+          numDimensions,
           scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: false,
@@ -642,16 +667,24 @@ export class Typer extends QBasicParserListener {
     // case there is a SHARED followed by DIM.
     const globalSymbols = this._program.chunks[0].symbols;
     for (const share of ctx.shared_variable()) {
+      const numDimensions = share.array_declaration_no_dimensions() ? 1 : 0;
       if (!!share.AS()) {
         const asType = this.getType(share.type_name()!);
         const allowPeriods = asType.tag != TypeTag.RECORD;
         const name = getUntypedId(share.untyped_id()!, {allowPeriods});
         const token = share.untyped_id()!.start!;
+        const existingVariable = this._chunk.symbols.lookupVariable({
+          name, sigil: '', array: numDimensions > 0, type: asType
+        });
+        if (existingVariable && !isSharedGlobal(existingVariable)) {
+          // Detect a SHARED declaration aliasing a local variable.
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
         const {symbol} = globalSymbols.lookupOrDefineVariable({
           name,
           type: asType,
           token,
-          numDimensions: share.array_declaration_no_dimensions() ? 1 : 0,
+          numDimensions,
           scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: true,
@@ -674,12 +707,19 @@ export class Typer extends QBasicParserListener {
           }
           throw ParseError.fromToken(token, "Duplicate definition");
         }
+        const existingVariable = this._chunk.symbols.lookupVariable({
+          name, sigil, type, array: numDimensions > 0,
+        });
+        if (existingVariable && !isSharedGlobal(existingVariable)) {
+          // Detect a SHARED declaration aliasing a local variable.
+          throw ParseError.fromToken(token, "Duplicate definition");
+        }
         const {symbol} = globalSymbols.lookupOrDefineVariable({
           name,
           type,
           token,
           sigil,
-          numDimensions: share.array_declaration_no_dimensions() ? 1 : 0,
+          numDimensions,
           scopeDeclaration: true,
           storageType: StorageType.STATIC,
           isAsType: false,
@@ -1181,4 +1221,8 @@ function getUntypedId(ctx: parser.Untyped_idContext | parser.Untyped_fnidContext
     throw ParseError.fromToken(ctx.start!, "Identifier cannot include period");
   }
   return id.toLowerCase();
+}
+
+function isSharedGlobal(variable: Variable): boolean {
+  return variable.shared || (variable.sharedWith?.size ?? 0) > 0;
 }

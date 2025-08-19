@@ -1,0 +1,72 @@
+(program ' \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable x) , 
+      (dim_variable z 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable s) , 
+      (dim_variable t 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter s) , 
+        (parameter t 
+          (array_declaration 
+            ( ))) , 
+        (parameter u) , 
+        (parameter v 
+          (array_declaration 
+            ( 2 )))) ) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable x) , 
+          (dim_variable y) , 
+          (dim_variable z 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 2))) ))) , 
+          (dim_variable w 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 2))) ))))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable y) , 
+      (dim_variable w 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable u) , 
+      (dim_variable v 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)

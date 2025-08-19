@@ -1,0 +1,39 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter x) , 
+        (parameter y 
+          (array_declaration 
+            ( )))) ) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable x 
+            (dim_array_bounds 
+              ( 
+                (dim_subscript 
+                  (expr 
+                    (literal 2))) ))) , 
+          (dim_variable y))) \n) 
+    (end_sub_statement end sub)) \n 
+  (sub_statement sub 
+    (untyped_id bar) 
+    ( 
+      (parameter_list 
+        (parameter x 
+          (array_declaration 
+            ( ))) , 
+        (parameter y)) ) 
+    (block \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim shared 
+      (dim_variable x) , 
+      (dim_variable y 
+        (dim_array_bounds 
+          ( 
+            (dim_subscript 
+              (expr 
+                (literal 2))) ))))) \n <EOF>)

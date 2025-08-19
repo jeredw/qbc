@@ -1,0 +1,11 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (shared_statement shared 
+          (shared_variable x%))) \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable x%))) \n) 
+    (end_sub_statement end sub)) \n <EOF>)

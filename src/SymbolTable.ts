@@ -2,7 +2,7 @@ import { Token } from "antlr4ng";
 import { Procedure } from "./Procedures.ts";
 import { isNumericType, sameType, Type, TypeTag } from "./Types.ts";
 import { Constant } from "./Values.ts";
-import { getElementSizeInBytes, getScalarValueCount, getScalarVariableSizeInBytes, getValueCount, Variable } from "./Variables.ts";
+import { getElementSizeInBytes, getScalarValueCount, getValueCount, Variable } from "./Variables.ts";
 import { ParseError } from "./Errors.ts";
 import { Address, StorageType } from "./Memory.ts";
 import { Builtin, StandardLibrary } from "./Builtins.ts";
@@ -81,6 +81,7 @@ export function isBuiltin(symbol: QBasicSymbol): symbol is BuiltinSymbol {
 
 type TypeToItemMap<T> = Map<TypeTag, T>
 
+// Slot contains all the symbols associated with a name in a particular symbol table.
 interface Slot {
   procedure?: Procedure;
   constant?: Constant;
@@ -91,8 +92,14 @@ interface Slot {
   arrayAsType?: Type;
 }
 
+// NameToSlotMap records all the name to symbol mappings for a symbol table.
 class NameToSlotMap {
   private _map: Map<string, Slot> = new Map();
+  // Installed in the global table to track local names, so that we can detect
+  // conflicts from procedures defined later in the program.
+  private _someLocalVariable: Map<string, Variable> = new Map();
+  private _someLocalArrayVariable: Map<string, Variable> = new Map();
+  private _someParameter: Map<string, Variable> = new Map();
 
   get(name: string): Slot | undefined {
     return this._map.get(canonicalName(name));
@@ -123,6 +130,30 @@ class NameToSlotMap {
 
   has(name: string) {
     return this._map.has(canonicalName(name));
+  }
+
+  setLocalVariable(variable: Variable) {
+    this._someLocalVariable.set(canonicalName(variable.name), variable);
+  }
+
+  setLocalArrayVariable(variable: Variable) {
+    this._someLocalArrayVariable.set(canonicalName(variable.name), variable);
+  }
+
+  getSomeLocalVariable(name: string) {
+    return this._someLocalVariable.get(canonicalName(name));
+  }
+
+  getSomeLocalArrayVariable(name: string) {
+    return this._someLocalArrayVariable.get(canonicalName(name));
+  }
+
+  setParameter(variable: Variable) {
+    this._someParameter.set(canonicalName(variable.name), variable);
+  }
+
+  getParameter(name: string) {
+    return this._someParameter.get(canonicalName(name));
   }
 }
 
@@ -365,18 +396,18 @@ export class SymbolTable {
     if (builtin) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
-    const globalSlot = this._parent?._symbols.get(variable.name) ?? {};
-    const localSlot = this._symbols.get(variable.name) ?? {};
+    const mySlot = this._symbols.get(variable.name) ?? {};
+    const parentSlot = this._parent?._symbols.get(variable.name) ?? {};
     if (variable.name.toLowerCase().startsWith('fn')) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
-    if (globalSlot.procedure) {
+    if (mySlot.procedure || parentSlot.procedure) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
-    if (!variable.isParameter && (globalSlot.constant || localSlot.constant)) {
+    if (!variable.isParameter && !variable.array && (mySlot.constant || parentSlot.constant)) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
-    if (globalSlot.defFns) {
+    if (mySlot.defFns || parentSlot.defFns) {
       throw ParseError.fromToken(variable.token, "Cannot start with FN");
     }
     const table = this.defFn() && !variable.static && !variable.isParameter ?
@@ -385,8 +416,8 @@ export class SymbolTable {
     const slot = table.get(variable.name) ?? {};
     this.checkForAmbiguousRecord(variable);
     if (!variable.array) {
-      const globalOfSameName = globalSlot.scalarVariables?.get(variable.type.tag);
-      if (globalOfSameName && !variable.isParameter && this.isVisible(globalOfSameName)) {
+      const global = parentSlot.scalarVariables?.get(variable.type.tag);
+      if (global && !variable.isParameter && this.isVisible(global)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       const asType = slot.scalarAsType ?? slot.arrayAsType;
@@ -418,8 +449,8 @@ export class SymbolTable {
       }
       variable.symbolIndex = SymbolTable._symbolIndex++;
     } else {
-      const globalOfSameName = globalSlot.arrayVariables?.get(variable.type.tag);
-      if (globalOfSameName && !variable.isParameter && this.isVisible(globalOfSameName)) {
+      const global = parentSlot.arrayVariables?.get(variable.type.tag);
+      if (global && !variable.isParameter && this.isVisible(global)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       const asType = slot.arrayAsType ?? slot.scalarAsType;
@@ -448,6 +479,7 @@ export class SymbolTable {
     }
     if (variable.type.tag == TypeTag.RECORD) {
       const conflicts = this._symbols.findPrefixDot(variable.name);
+      const parentConflicts = this._parent?._symbols.findPrefixDot(variable.name);
       if (conflicts) {
         const tokens = [
           getTokens(conflicts.arrayVariables),
@@ -499,11 +531,27 @@ export class SymbolTable {
       }
     }
     table.set(variable.name, slot);
+    if (this._parent && table !== this._parent._symbols) {
+      if (variable.isParameter) {
+        this._parent._symbols.setParameter(variable);
+      } else if (variable.array) {
+        this._parent._symbols.setLocalArrayVariable(variable);
+      } else {
+        this._parent._symbols.setLocalVariable(variable);
+      }
+    }
   }
   
   defineConstant(name: string, constant: Constant) {
     if (this._symbols.has(name)) {
       throw ParseError.fromToken(constant.token, "Duplicate definition");
+    }
+    // Detect a conflict between a global constant and a previously defined
+    // local variable name.
+    // Note local array variables do not conflict.
+    const localVariable = this._symbols.getSomeLocalVariable(name);
+    if (localVariable) {
+      throw ParseError.fromToken(localVariable.token, "Duplicate definition");
     }
     this._symbols.set(name, {constant});
   }
@@ -511,6 +559,16 @@ export class SymbolTable {
   defineProcedure(procedure: Procedure) {
     if (this._symbols.has(procedure.name)) {
       throw ParseError.fromToken(procedure.token, "Duplicate definition");
+    }
+    // Detect a conflict between a procedure name and a previously defined local
+    // variable or function parameter name.
+    const conflictingLocalVariable = (
+      this._symbols.getSomeLocalVariable(procedure.name) ||
+      this._symbols.getSomeLocalArrayVariable(procedure.name) ||
+      this._symbols.getParameter(procedure.name)
+    );
+    if (conflictingLocalVariable) {
+      throw ParseError.fromToken(conflictingLocalVariable.token, "Duplicate definition");
     }
     if (procedure.result) {
       procedure.result.address = this.allocate(procedure.result.storageType, 1);

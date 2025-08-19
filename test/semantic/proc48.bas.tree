@@ -1,0 +1,12 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter bar)) ) 
+    (block :) 
+    (end_sub_statement end sub)) \n 
+  (sub_statement sub 
+    (untyped_id bar) 
+    (block :) 
+    (end_sub_statement end sub)) \n <EOF>)

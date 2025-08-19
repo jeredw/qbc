@@ -1,0 +1,14 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable k))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (const_statement const 
+      (const_assignment k = 
+        (const_expr 
+          (expr 
+            (literal 42)))))) \n <EOF>)
