@@ -24,6 +24,10 @@
     <li><a href="#variables">Variables</a>
     <li><a href="#arrays">Arrays</a>
     <li><a href="#array-allocation">Array Allocation</a>
+    <li><a href="#scope">Names and Scope Rules</a>
+    <li><a href="#global-scope">Global Scope</a>
+    <li><a href="#local-scope">Local Scope</a>
+    <li><a href="#common-variables">Common Variables</a>
     </ol>
   </details>
   <li><details>
@@ -72,10 +76,10 @@ LOOP WHILE k$ = ""
 </pre>
 
 <p>QBasic is a <a class="keyword" href="#types">statically typed</a> procedural
-language with block structure and two levels of scope. Global variables exist
-the entire time a program is running, and are only visible outside procedures.
-Local variables are allocated on a stack each time a procedure is called, and
-only exist during that call.
+language with block structure and two levels of lexical scope.  Global variables
+exist the entire time a program is running, and are only visible outside
+procedures.  Local variables are allocated on a stack each time a procedure is
+called, and only exist during that call.
 
 <p>Variables are implicitly defined the first time they are used, but can also
 be declared before use. Variable declarations can change default scope behavior.
@@ -246,7 +250,8 @@ u$ = CHR$(0) + CHR$(26)
 <p>The + operator concatenates two strings into a new string.
 
 <p>See this note for more details about how qbasic.run handles <a class="keyword"
-href="#encodings">character encodings</a> for strings.
+href="#encodings">character encodings</a> for strings.  See this note for more
+details about <a href="memory-model">memory model</a> for string storage.
 
 <h3 id="arith-ops">Arithmetic Operators</h3>
 
@@ -603,8 +608,7 @@ m(1, 2) = 55
 n(0, 3, 6) = 6
 </pre>
 
-<p>Once an array is defined, you cannot change it to have a different number of
-dimensions.
+<p>You cannot change the number of dimensions an array has after it is defined.
 
 <pre>
 m(1, 2) = 55
@@ -673,11 +677,116 @@ SUB foo
 END SUB
 </pre>
 
+<p>Keen readers will notice this implies that QBasic has a simple garbage
+collector... dynamic arrays created in procedures are deallocated when their
+stack frame is torn down.
+
 <p>The metacommands
 <a class="keyword" href="#meta-static">$STATIC</a>
 <a class="keyword" href="#meta-dynamic">$DYNAMIC</a>
 can change default allocation behavior, except that arrays in non-STATIC
 procedures are always dynamic.
+
+<p>See this note for more details about <a href="memory-model">memory model</a>
+for array storage.
+
+<h3 id="scope">Names and Scope Rules</h3>
+
+<p>Procedures, parameters, variables, and constants share the same namespace -
+in general, a name can only refer to one of these things at any point in a
+program's text and this is fixed at compile time (lexical scope).  Trying to
+reuse the same name for two different things causes a "Duplicate definition"
+error.  For example, trying to define a variable with the same name as a
+procedure is a duplicate definition.
+
+<p><a href="#variables">Variables</a> are distinguished from each other not only
+by name, but also by type and whether they are a scalar or <a
+href="#arrays">array</a>.  So the name x can correspond to ten distinct
+variables: the scalars x!, x#, x$, x%, and x&, and the arrays x!(), x#(), x$(),
+x%(), and x&().  The same is true for parameters.
+
+<p>The "AS" declaration syntax such as DIM AS limits what variable types may be
+associated with a name.  If you write DIM x AS INTEGER, then only x% and x%()
+are valid variables with the name x.  Similarly, DIM x(10) AS INTEGER means only
+x% and x%() are valid variables with the name x.
+
+<p><a href="#constants">Constants</a> and <a href="#procedures">procedures</a>
+are identified only by name and not by type.  So CONST k% and CONST k$, and
+FUNCTION foo% and FUNCTION foo$, are duplicate definitions.
+
+<p>Note: QBasic permits constants to have the same name as array variables and
+procedure parameters, but not scalar variables or procedures.
+
+<h3 id="global-scope">Global Scope</h3>
+
+<p>A program has one default, global scope.
+
+<p>Procedures, constants, and variables defined at the top level of a program
+are global.  Procedures and constants are visible everywhere including inside
+of procedure bodies, but by default, global variables are only visible within
+the global scope.
+
+<p>To make a global variable visible inside a procedure body, it must be
+declared as <a href="#shared">SHARED</a>.
+
+<h3 id="local-scope">Local Scope</h3>
+
+<p>Each procedure has its own local scope.
+
+<p>Variables defined in a procedure are local to that procedure.  They can
+usually have the same name as a global variable, and "shadow" it inside the
+procedure body.  For instance if there is some normal unshared global variable
+x, and there is a SUB foo with a local variable x, code inside foo that
+references x sees the value of the local variable x.
+
+<pre>
+DIM x
+SUB foo
+  PRINT x  ' Prints 0 (local shadows global x).
+END SUB
+x = 42
+foo
+</pre>
+
+<p>If a global variable is shared with a procedure by being defined as DIM
+SHARED or COMMON SHARED or in a SHARED declaration, then local variables cannot
+shadow it.  SHARED variables participate in the local scope the same as other
+variables, so this would be a duplicate definition.
+
+<pre>
+DIM SHARED x
+SUB foo
+  DIM x  ' Error!  Duplicate definition.
+END SUB
+</pre>
+
+<p>Unlike local variables, procedure parameters can shadow SHARED globals.
+
+<pre>
+DIM SHARED x
+SUB foo(x)
+  PRINT x  ' Prints 42 (parameter shadows shared global x).
+END SUB
+x = 10
+foo 42
+</pre>
+
+<h3 id="common-variables">Common Variables</h3>
+
+<p>Variables declared with <a href="#common">COMMON</a> are global variables
+that can be shared by several different programs.  Each program must declare the
+same set of common variables in the same order.  When a program cedes control to
+a new program with <a href="#chain">CHAIN</a>, the memory backing its common
+variables is copied to the new program's memory (in COMMON declaration order) so
+that the new program retains the values.
+
+<p>The intended use of COMMON was to split up big programs to work within memory
+constraints using CHAIN.  However, COMMON declarations also have useful
+semantics for array declarations, and so many programs that don't use CHAIN
+still declare variables as COMMON.  An array declared first in a COMMON
+statement implicitly uses <a href="#array-allocation">dynamic</a> allocation,
+which is often desired.  And COMMON SHARED can declare a global array as shared
+without dimensioning it, while DIM SHARED cannot.
 
 <h2 id="impl">Implementation Notes</h2>
 
@@ -720,6 +829,18 @@ JavaScript rounding which rounds halfway cases up.  qbasic.run rounds correctly.
   print 3.5 \ 1  ' 4
   print 2.5 \ 1  ' 2
 </pre>
+
+<h3 id="memory-model">Memory Model</h3>
+
+<p>QBasic stored variable length strings as a 16-bit length and 16-bit offset
+into a table of string data.  This means a given string can store at most 32K
+characters, and all the strings in a program can total at most 32K.  Colocating
+string data in memory meant string operations could be more efficient.
+
+<p>QBasic allocated arrays using separate heap allocations, and so arrays could
+hold more data: a single array can hold up to 32K items, can span up to 64K of
+memory, and several large arrays can be in memory at once. So most programs use
+arrays to store data.
 
 </body>
 </html>
