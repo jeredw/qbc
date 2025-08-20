@@ -42,12 +42,14 @@ body {
 }
 
 a, a:visited {
-  color: var(--qbc-white);
-}
-a.keyword {
   color: var(--qbc-gray);
   text-decoration: underline;
   text-decoration-style: dotted;
+}
+
+a.external {
+  color: var(--qbc-white);
+  text-decoration-style: solid;
 }
 
 h2, h3 {
@@ -91,5 +93,6 @@ th:last-child, td:last-child {
 }
 
 .table-of-contents, .table-of-contents-section {
+  color: var(--qbc-white);
   list-style-type: none;
 }

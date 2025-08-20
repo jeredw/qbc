@@ -43,10 +43,10 @@
 somewhat dated and presuming less general technical knowledge and perhaps more
 nicotine and hairspray use than are now the norm.
 <ul>
-<li><a target="_blank"
+<li><a target="_blank" class="external"
 href="https://www.pcjs.org/documents/books/mspl13/basic/qblang/">Microsoft
 QuickBASIC: Language Reference</a>
-<li><a target="_blank"
+<li><a target="_blank" class="external"
 href="https://www.pcjs.org/documents/books/mspl13/basic/qbprog/">Microsoft
 QuickBASIC: Programming in BASIC</a>
 </ul>
@@ -75,20 +75,19 @@ DO
 LOOP WHILE k$ = ""
 </pre>
 
-<p>QBasic is a <a class="keyword" href="#types">statically typed</a> procedural
-language with block structure and two levels of lexical scope.  Global variables
-exist the entire time a program is running, and are only visible outside
-procedures.  Local variables are allocated on a stack each time a procedure is
-called, and only exist during that call.
+<p>QBasic is a <a href="#types">statically typed</a> procedural language with
+block structure and two levels of lexical scope.  Global variables exist the
+entire time a program is running, and are only visible outside procedures.
+Local variables are allocated on a stack each time a procedure is called, and
+only exist during that call.
 
 <p>Variables are implicitly defined the first time they are used, but can also
 be declared before use. Variable declarations can change default scope behavior.
-Globals can be made visible by declaring them <a class="keyword"
-href="#shared">SHARED</a> with all
-procedures or within specific procedures. Locals declared <a class="keyword"
+Globals can be made visible to all procedures or to specific procedures by
+declaring them <a href="#shared">SHARED</a>. Locals declared <a 
 href="#static">STATIC</a> persist after procedure calls. Globals declared <a
-class="keyword" href="#common">COMMON</a> can persist after a program finishes,
-by being passed to another program (no, really).
+href="#common">COMMON</a> can persist after a program finishes, by being passed
+to another program (no, really).
 
 <p>By default, procedure parameters are passed by reference.
 
@@ -105,8 +104,8 @@ Increment j%
 PRINT j%  ' Prints 42.
 </pre>
 
-<p>Procedures defined with <a class="keyword" href="#function">FUNCTION</a>
-return a value instead of just modifying their parameters.
+<p>Procedures defined with <a href="#function">FUNCTION</a> return a value
+instead of just modifying their parameters.
 
 <pre>
 ' Increment% returns its integer parameter's value + 1.
@@ -118,12 +117,12 @@ END FUNCTION
 PRINT Increment(41)  ' Prints 42.
 </pre>
 
-<p>QBasic also supports some older procedure constructs <a class="keyword"
-href="#deffn">DEF FN</a> and <a class="keyword" href="#gosub">GOSUB</a>.</p>
-<p>Older BASICs use line numbers and <a class="keyword" href="#goto">GOTO</a>
-statements heavily, but QBasic prefers block structured programming constructs
-like <a class="keyword" href="#blockif">IF...END IF</a>, <a class="keyword"
-href="#blockdo">DO...LOOP</a>, <a class="keyword"
+<p>QBasic also supports some older procedure constructs <a href="#deffn">DEF
+FN</a> and <a href="#gosub">GOSUB</a>.
+
+<p>Older BASICs use line numbers and <a href="#goto">GOTO</a> statements
+heavily, but QBasic prefers block structured programming constructs
+like <a href="#blockif">IF...END IF</a>, <a href="#blockdo">DO...LOOP</a>, <a 
 href="#for">FOR...NEXT</a>.
 
 <pre>
@@ -249,7 +248,7 @@ u$ = CHR$(0) + CHR$(26)
 
 <p>The + operator concatenates two strings into a new string.
 
-<p>See this note for more details about how qbasic.run handles <a class="keyword"
+<p>See this note for more details about how qbasic.run handles <a 
 href="#encodings">character encodings</a> for strings.  See this note for more
 details about <a href="#memory-model">memory model</a> for string storage.
 
@@ -331,7 +330,7 @@ first.  For example, this means DOUBLE operands for \ must fit in a LONG.
 PRINT 2147483648# \ 2#  ' Overflow error!
 </pre>
 
-There are a few more details about qbasic.run artihmetic <a class="keyword"
+There are a few more details about qbasic.run artihmetic <a 
 href="#precision">precision</a>.
 
 <h3 id="comparison-ops">Comparison Operators</h3>
@@ -408,12 +407,12 @@ than b or a is a prefix of b.
 
 <p>These are really just arithmetic operators.  The operands are first converted
 to LONG if necessary, and the result is INTEGER or LONG the same as for <a
-class="keyword" href="#arith-ops">integer division</a>.
+href="#arith-ops">integer division</a>.
 
 <h3 id="conversions">Type Conversions</h3>
 
-<p>Arithmetic operators automatically <a class="keyword"
-href="#arith-ops">convert</a> operand types as necessary.
+<p>Arithmetic operators automatically <a href="#arith-ops">convert</a> operand
+types as necessary.
 
 <p>Builtin functions and procedures expect specific parameter types.  QBasic
 tries to convert numeric parameters to the expected numeric type, and tries to
@@ -427,25 +426,24 @@ PRINT CHR$(65.2)  ' Prints "A"
 PRINT CHR$("A")
 </pre>
 
-<p>Some builtin functions are polymorphic.  For example <a class="keyword"
-href="#abs">ABS</a> accepts any numeric type and returns a value of the same
-type.  And <a class="keyword" href="#sin">ATN</a> returns a DOUBLE if its
-argument is a DOUBLE, otherwise SINGLE.  User-defined procedures are not
-polymorphic.
+<p>Some builtin functions are polymorphic.  For example <a href="#abs">ABS</a>
+accepts any numeric type and returns a value of the same type.  And <a
+href="#sin">ATN</a> returns a DOUBLE if its argument is a DOUBLE, otherwise
+SINGLE.  User-defined procedures are not polymorphic.
 
 <p>Conversion functions
-  <a class="keyword" href="#cint">CINT</a>
-  <a class="keyword" href="#clng">CLNG</a>
-  <a class="keyword" href="#csng">CSNG</a>
-  <a class="keyword" href="#cdbl">CDBL</a>
+  <a href="#cint">CINT</a>
+  <a href="#clng">CLNG</a>
+  <a href="#csng">CSNG</a>
+  <a href="#cdbl">CDBL</a>
 explicitly convert a value to a desired type.
 
 <h3 id="user-types">User-defined Types</h3>
 
 <p>The <code>TYPE</code> statement lets you define your own types as
-compositions of <a class="keyword" href="#types">builtin types</a> and
-previously defined user-defined types. Types consist of named elements. All
-elements must be of a size known at compile time.</p>
+compositions of <a href="#types">builtin types</a> and previously defined
+user-defined types. Types consist of named elements. All elements must be of a
+size known at compile time.</p>
 
 <pre>
 ' A Pet has a name up to 20 characters long.
@@ -474,17 +472,18 @@ Joe.Height = 182.88
 Joe.Dog.Name = "Milo"
 </pre>
 
-<p>Elements of a user-defined type can be accessed using period syntax as
-<code>variable.element</code>.  Note that element names cannot include periods
-or sigils, and elements cannot be arrays.
+<p>A variable can be defined with user-defined type using <a href="DIM">DIM</a>.
+DIM Joe AS Person defines Joe to have the Person type.  Elements of a
+user-defined type variable can be accessed using period syntax as
+variable.element.  Note that element names cannot include periods or sigils, and
+elements cannot be arrays.
 
 <h3 id="constants">Named Constants</h3>
 
-<p>A constant is a name for a <a class="keyword" href="#values">value</a>
-defined at compile time.  Constants can be used in arithmetic expressions
-anywhere a value would be used.  A constant's type is automatically inferred
-from its value, or given by an explicit <a class="keyword"
-href="#sigil">sigil</a>.
+<p>A constant is a name for a <a href="#values">value</a> defined at compile
+time.  Constants can be used in arithmetic expressions anywhere a value would be
+used.  A constant's type is automatically inferred from its value, or given by
+an explicit <a href="#sigil">sigil</a>.
 
 <pre>
 CONST False = 0
@@ -535,9 +534,9 @@ foo
 
 <h3 id="variables">Variables</h3>
 
-<p>A variable is a name for a <a class="keyword" href="#values">value</a> or an
-<a class="keyword" href="#arrays">array</a> of values in memory. Variable names
-must start with a letter and may include letters, periods, and numbers.
+<p>A variable is a name for a <a href="#values">value</a> or an <a
+href="#arrays">array</a> of values in memory. Variable names must start with a
+letter and may include letters, periods, and numbers.
 
 <pre>
 x = 2
@@ -545,20 +544,18 @@ Thing42% = 1
 i.am.a.variable! = 42
 </pre>
 
-<p>Every variable has a <a class="keyword" href="#types">type</a> defined at
-compile time. A variable's type can be specified by putting a <a class="keyword"
-href="#sigil">sigil</a> after its name.  For example, <code>p&</code> means a
-32-bit signed LONG named <code>p</code>.  <code>p&</code> and <code>p$</code>
-are different variables, and it is valid to use both in the same program.
+<p>Every variable has a <a href="#types">type</a> defined at compile time. A
+variable's type can be specified by putting a <a href="#sigil">sigil</a> after
+its name.  For example, <code>p&</code> means a 32-bit signed LONG named
+<code>p</code>.  <code>p&</code> and <code>p$</code> are different variables,
+and it is valid to use both in the same program.
 
 <p>Variables can also be declared to have some type using declaration statements
-<a class="keyword" href="#dim">DIM</a>
-<a class="keyword" href="#common">COMMON</a>
-<a class="keyword" href="#static">STATIC</a>
-<a class="keyword" href="#shared">SHARED</a> with <code>AS</code> syntax.
-For example, <code>DIM x AS INTEGER</code> declares <code>x</code> to be a
-16-bit signed integer. After this AS declaration, the name <code>x</code> can
-only be used for INTEGER variables.
+<a href="#dim">DIM</a> <a href="#common">COMMON</a> <a href="#static">STATIC</a>
+<a href="#shared">SHARED</a> with <code>AS</code> syntax.  For example,
+<code>DIM x AS INTEGER</code> declares <code>x</code> to be a 16-bit signed
+integer. After this AS declaration, the name <code>x</code> can only be used for
+INTEGER variables.
 
 <pre>
 DIM x AS INTEGER
@@ -570,7 +567,7 @@ PRINT x$  ' Error: Duplicate definition.
 </pre>
 
 <p>If a variable name has no sigil and no AS-declared type, its type is
-determined by the current <a class="keyword" href="#deftype">DEFtype</a>.
+determined by the current <a href="#deftype">DEFtype</a>.
 
 <h3 id="arrays">Arrays</h3>
 
@@ -617,10 +614,10 @@ m(1, 2, 3) = 42
 </pre>
 
 <p>Array indices for a dimension usually start at 0, although this can be
-changed with <a class="keyword" href="#option">OPTION BASE</a>. Implicitly
-defined arrays have a maximum index of 10 for each dimension. You can explicitly
-specify bounds for each dimension with <a class="keyword" href="#dim">DIM</a>,
-though the bounds must fit in INTEGER range.
+changed with <a href="#option">OPTION BASE</a>. Implicitly defined arrays have a
+maximum index of 10 for each dimension. You can explicitly specify bounds for
+each dimension with <a href="#dim">DIM</a>, though the bounds must fit in
+INTEGER range.
 
 <pre>
 ' Define a 2d array x% of integer values.
@@ -653,8 +650,8 @@ y% = 42
 
 <p>QBasic distinguishes between "static" and "dynamic" arrays. Static arrays
 are allocated at compile time, and dynamic arrays can be allocated and resized
-at runtime using <a class="keyword" href="#dim">DIM</a> <a class="keyword"
-href="#erase">ERASE</a> <a class="keyword" href="#erase">REDIM</a>.
+at runtime using <a href="#dim">DIM</a> <a href="#erase">ERASE</a> <a
+href="#erase">REDIM</a>.
 
 <p>How an array is allocated depends on how it is defined. Arrays are static if
 they are defined implicitly or DIM'd with constant bounds. Arrays are dynamic
@@ -681,11 +678,9 @@ END SUB
 collector... dynamic arrays created in procedures are deallocated when their
 stack frame is torn down.
 
-<p>The metacommands
-<a class="keyword" href="#meta-static">$STATIC</a>
-<a class="keyword" href="#meta-dynamic">$DYNAMIC</a>
-can change default allocation behavior, except that arrays in non-STATIC
-procedures are always dynamic.
+<p>The metacommands <a href="#meta-static">$STATIC</a> <a
+href="#meta-dynamic">$DYNAMIC</a> can change default allocation behavior, except
+that arrays in non-STATIC procedures are always dynamic.
 
 <p>See this note for more details about <a href="#memory-model">memory model</a>
 for array storage.
@@ -703,7 +698,7 @@ procedure is a duplicate definition.
 by name, but also by type and whether they are a scalar or <a
 href="#arrays">array</a>.  So the name x can correspond to ten distinct
 variables: the scalars x!, x#, x$, x%, and x&, and the arrays x!(), x#(), x$(),
-x%(), and x&().  The same is true for parameters.
+x%(), and x&().  The same rules apply for parameters within a procedure.
 
 <p>The "AS" declaration syntax such as DIM AS limits what variable types may be
 associated with a name.  If you write DIM x AS INTEGER, then only x% and x%()
@@ -715,16 +710,17 @@ are identified only by name and not by type.  So CONST k% and CONST k$, and
 FUNCTION foo% and FUNCTION foo$, are duplicate definitions.
 
 <p>Note: QBasic permits constants to have the same name as array variables and
-procedure parameters, but not scalar variables or procedures.
+procedure parameters, but not procedures or most scalar variables (see <a
+href="#local-scope">local scope</a>).
 
 <h3 id="global-scope">Global Scope</h3>
 
 <p>A program has one default, global scope.
 
 <p>Procedures, constants, and variables defined at the top level of a program
-are global.  Procedures and constants are visible everywhere including inside
-of procedure bodies, but by default, global variables are only visible within
-the global scope.
+are global.  Procedures and constants are visible everywhere including inside of
+procedure bodies, but by default, global variables are only visible outside of
+procedures.
 
 <p>To make a global variable visible inside a procedure body, it must be
 declared as <a href="#shared">SHARED</a>.
@@ -733,11 +729,11 @@ declared as <a href="#shared">SHARED</a>.
 
 <p>Each procedure has its own local scope.
 
-<p>Variables defined in a procedure are local to that procedure.  They can
-usually have the same name as a global variable, and "shadow" it inside the
-procedure body.  For instance if there is some normal unshared global variable
-x, and there is a SUB foo with a local variable x, code inside foo that
-references x sees the value of the local variable x.
+<p>Procedure parameters and variables defined in a procedure are local to that
+procedure.  They can usually have the same name as a global variable, and
+"shadow" it inside the procedure body.  For instance if there is some normal
+unshared global variable x, and there is a SUB foo with a local variable x, code
+inside foo that references x sees the value of the local variable x.
 
 <pre>
 DIM x
@@ -771,6 +767,9 @@ x = 10
 foo 42
 </pre>
 
+<p>Strangely, constants defined in a procedure can also shadow shared global
+variables.
+
 <h3 id="common-variables">Common Variables</h3>
 
 <p>Variables declared with <a href="#common">COMMON</a> are global variables
@@ -792,7 +791,7 @@ without dimensioning it, while DIM SHARED cannot.
 
 <h3 id="encodings">Character Encodings</h3>
 
-<p>MS-DOS files like QBasic programs mostly use <a target="_blank"
+<p>MS-DOS files like QBasic programs mostly use <a target="_blank" class="external"
 href="https://en.wikipedia.org/wiki/Code_page_437">CP437 ASCII</a> encoding.
 
 <p>qbasic.run represents strings using Unicode internally so that debuggers and
@@ -817,7 +816,7 @@ qbasic.run will parse either &H0D &H0A or just &H0A as a newline, but writes
 
 <p>Semantically JavaScript does all math with doubles, so qbasic.run uses
 doubles.  It tries to match single precision results by internally rounding to
-the nearest single-precision values using <a target="_blank"
+the nearest single-precision values using <a target="_blank" class="external"
 href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/fround">Math.fround()</a>.
 But this is not exact.
 
