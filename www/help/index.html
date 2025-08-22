@@ -19,7 +19,7 @@
     <li><a href="#comparison-ops">Comparison Operators</a>
     <li><a href="#logic-ops">Logical Operators</a>
     <li><a href="#conversions">Type Conversions</a>
-    <li><a href="#user-types">User-defined Types</a>
+    <li><a href="#user-defined-types">User Defined Types</a>
     <li><a href="#constants">Named Constants</a>
     <li><a href="#variables">Variables</a>
     <li><a href="#arrays">Arrays</a>
@@ -205,7 +205,7 @@ compile time.
 %, &, !, #, or $ after it. In qbasic.run we refer to these characters as
 "sigils", borrowing terminology from Perl 5.
 
-<p>QBasic also supports <a href="#user-types">user-defined types</a>.
+<p>QBasic also supports <a href="#user-defined-types">user defined types</a>.
 
 <h3 id="values">Literal values</h3>
 
@@ -429,7 +429,7 @@ PRINT CHR$("A")
 <p>Some builtin functions are polymorphic.  For example <a href="#abs">ABS</a>
 accepts any numeric type and returns a value of the same type.  And <a
 href="#sin">ATN</a> returns a DOUBLE if its argument is a DOUBLE, otherwise
-SINGLE.  User-defined procedures are not polymorphic.
+SINGLE.  User defined procedures are not polymorphic.
 
 <p>Conversion functions
   <a href="#cint">CINT</a>
@@ -438,12 +438,12 @@ SINGLE.  User-defined procedures are not polymorphic.
   <a href="#cdbl">CDBL</a>
 explicitly convert a value to a desired type.
 
-<h3 id="user-types">User-defined Types</h3>
+<h3 id="user-defined-types">User Defined Types</h3>
 
 <p>The <code>TYPE</code> statement lets you define your own types as
 compositions of <a href="#types">builtin types</a> and previously defined
-user-defined types. Types consist of named elements. All elements must be of a
-size known at compile time.</p>
+user defined types. Types consist of named elements. All elements must have a
+known size at compile time.</p>
 
 <pre>
 ' A Pet has a name up to 20 characters long.
@@ -472,11 +472,14 @@ Joe.Height = 182.88
 Joe.Dog.Name = "Milo"
 </pre>
 
-<p>A variable can be defined with user-defined type using <a href="DIM">DIM</a>.
+<p>A variable can be defined with user defined type using <a href="DIM">DIM</a>.
 DIM Joe AS Person defines Joe to have the Person type.  Elements of a
-user-defined type variable can be accessed using period syntax as
+user defined type variable can be accessed using period syntax as
 variable.element.  Note that element names cannot include periods or sigils, and
 elements cannot be arrays.
+
+<p>See this note for more quirks about how <a href="#element-lookup">element
+lookup</a> works.
 
 <h3 id="constants">Named Constants</h3>
 
@@ -829,6 +832,24 @@ JavaScript rounding which rounds halfway cases up.  qbasic.run rounds correctly.
   print 2.5 \ 1  ' 2
 </pre>
 
+<h3 id="element-lookup">Element Lookup</h3>
+
+<p>When you define a variable of a user defined type, qbasic.run implicitly
+defines variables for each type element. For example, if TYPE Point has elements
+x and y, we define variables P.x and P.y whenever a Point P is defined. QBasic
+probably hacked this the same way, which is why period is allowed in names.
+
+<p>The tricky part is that QBasic allows you to use periods in names for any
+other variables, constants, and functions, and not just for implicitly defined
+type elements. These names could be ambiguous with elements.
+
+<p>QBasic has a bunch of bolted on rules to avoid this ambiguity. It does not
+allow you to name user defined type variables or elements with periods. Also,
+after you define a user defined type variable P, QBasic seems to prohibit you
+from naming anything else P.whatever, regardless of scope or visibility rules.
+
+<p>qbasic.run implements these same weird rules.
+
 <h3 id="memory-model">Memory Model</h3>
 
 <p>QBasic stored variable length strings as a 16-bit length and 16-bit offset
@@ -840,6 +861,8 @@ string data in memory meant string operations could be more efficient.
 hold more data: a single array can hold up to 32K items, can span up to 64K of
 memory, and several large arrays can be in memory at once. So most programs use
 arrays to store data.
+
+TODO
 
 </body>
 </html>
