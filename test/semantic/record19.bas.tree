@@ -1,0 +1,21 @@
+(program ' \n 
+  (type_statement type 
+    (untyped_id test) \n 
+    (type_element 
+      (untyped_id x) as 
+      (type_name_for_type_element integer) \n) end type) \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    (block \n ' \n 
+      (statement 
+        (dim_statement dim 
+          (dim_variable 
+            (untyped_id r.x) as 
+            (type_name string)))) \n) 
+    (end_sub_statement end sub)) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id r) as 
+        (type_name 
+          (untyped_id test))))) \n <EOF>)

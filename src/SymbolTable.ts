@@ -100,18 +100,13 @@ class NameToSlotMap {
   private _someLocalVariable: Map<string, Variable> = new Map();
   private _someLocalArrayVariable: Map<string, Variable> = new Map();
   private _someParameter: Map<string, Variable> = new Map();
+  // Installed in the global table to detect and error on symbols that might be
+  // ambiguous with record elements.
+  private _recordVariableNames: Set<String> = new Set();
+  private _possibleConflictsWithRecordNames: Map<String, Token> = new Map();
 
   get(name: string): Slot | undefined {
     return this._map.get(canonicalName(name));
-  }
-
-  findPrefixDot(rawPrefix: string): Slot | undefined {
-    const prefix = canonicalName(rawPrefix);
-    for (const [name, slot] of this._map) {
-      if (name.startsWith(`${prefix}.`)) {
-        return slot;
-      }
-    }
   }
 
   variables(): Variable[] {
@@ -126,6 +121,30 @@ class NameToSlotMap {
 
   set(name: string, slot: Slot) {
     this._map.set(canonicalName(name), slot);
+  }
+
+  addRecordVariableName(name: string) {
+    name = canonicalName(name);
+    this._recordVariableNames.add(name);
+  }
+
+  conflictsWithRecordVariable(name: string): boolean {
+    name = canonicalName(name);
+    const prefix = textBeforeFirstPeriod(name);
+    return prefix ? this._recordVariableNames.has(prefix) : false;
+  }
+
+  addPossibleRecordNameConflict(name: string, token: Token) {
+    name = canonicalName(name);
+    const prefix = textBeforeFirstPeriod(name);
+    if (prefix) {
+      this._possibleConflictsWithRecordNames.set(prefix, token);
+    }
+  }
+
+  getSomeTokenConflictingWithRecordVariableName(name: string): Token | undefined {
+    name = canonicalName(name);
+    return this._possibleConflictsWithRecordNames.get(name);
   }
 
   has(name: string) {
@@ -159,6 +178,14 @@ class NameToSlotMap {
 
 function canonicalName(name: string): string {
   return name.toLowerCase();
+}
+
+function textBeforeFirstPeriod(name: string): string | undefined {
+  if (!name.includes('.')) {
+    return;
+  }
+  const [prefix] = name.split('.');
+  return prefix;
 }
 
 export class SymbolTable {
@@ -414,7 +441,11 @@ export class SymbolTable {
       this._parent!._symbols :
       this._symbols;
     const slot = table.get(variable.name) ?? {};
-    this.checkForAmbiguousRecord(variable);
+    // Try to give nice error messages for typo'd element names first.
+    this.checkForInvalidRecordElement(variable);
+    if (variable.type.tag !== TypeTag.RECORD && !element) {
+      this.checkForConflictingRecordVariables(variable.name, variable.token);
+    }
     if (!variable.array) {
       const global = parentSlot.scalarVariables?.get(variable.type.tag);
       if (global && !variable.isParameter && this.isVisible(global)) {
@@ -478,21 +509,12 @@ export class SymbolTable {
       variable.symbolIndex = SymbolTable._symbolIndex++;
     }
     if (variable.type.tag == TypeTag.RECORD) {
-      const conflicts = this._symbols.findPrefixDot(variable.name);
-      const parentConflicts = this._parent?._symbols.findPrefixDot(variable.name);
-      if (conflicts) {
-        const tokens = [
-          getTokens(conflicts.arrayVariables),
-          getTokens(conflicts.scalarVariables),
-          getTokens(conflicts.defFns),
-          conflicts.procedure?.token,
-          conflicts.constant?.token,
-        ].flat().filter((x) => !!x);
-        if (!tokens.length) {
-          throw new Error("expecting conflict token");
-        }
-        throw ParseError.fromToken(tokens[0], "Identifier cannot include period");
+      const globalTable = this._parent?._symbols ?? this._symbols;
+      const conflict = globalTable.getSomeTokenConflictingWithRecordVariableName(variable.name);
+      if (conflict) {
+        throw ParseError.fromToken(conflict, "Identifier cannot include period");
       }
+      globalTable.addRecordVariableName(variable.name);
       variable.elements = new Map();
       if (!element) {
         // The outermost record in a nested record type has the storage
@@ -546,6 +568,7 @@ export class SymbolTable {
     if (this._symbols.has(name)) {
       throw ParseError.fromToken(constant.token, "Duplicate definition");
     }
+    this.checkForConflictingRecordVariables(name, constant.token);
     // Detect a conflict between a global constant and a previously defined
     // local variable name.
     // Note local array variables do not conflict.
@@ -560,6 +583,7 @@ export class SymbolTable {
     if (this._symbols.has(procedure.name)) {
       throw ParseError.fromToken(procedure.token, "Duplicate definition");
     }
+    this.checkForConflictingRecordVariables(procedure.name, procedure.token);
     // Detect a conflict between a procedure name and a previously defined local
     // variable or function parameter name.
     const conflictingLocalVariable = (
@@ -574,6 +598,15 @@ export class SymbolTable {
       procedure.result.address = this.allocate(procedure.result.storageType, 1);
     }
     this._symbols.set(procedure.name, {procedure});
+  }
+
+  private checkForConflictingRecordVariables(name: string, token: Token) {
+    const globalTable = this._parent?._symbols ?? this._symbols;
+    const conflict = globalTable.conflictsWithRecordVariable(name);
+    if (conflict) {
+      throw ParseError.fromToken(token, "Identifier cannot include period");
+    }
+    globalTable.addPossibleRecordNameConflict(name, token);
   }
 
   defineFn(procedure: Procedure) {
@@ -634,11 +667,11 @@ export class SymbolTable {
     }
   }
 
-  private checkForAmbiguousRecord(variable: Variable) {
-    if (!variable.name.includes('.')) {
+  private checkForInvalidRecordElement(variable: Variable) {
+    const prefix = textBeforeFirstPeriod(variable.name);
+    if (!prefix) {
       return;
     }
-    const [prefix] = variable.name.split('.');
     const symbol = this._symbols.get(prefix);
     if (!symbol) {
       return;
@@ -688,6 +721,6 @@ function getLookupType({type, isDefaultType, asType}: {type: Type, isDefaultType
   return type;
 }
 
-function getTokens(map?: TypeToItemMap<Procedure|Variable>): Token[] {
-  return map ? Array.from(map.values()).map((item) => item.token) : [];
+function getEntries<T>(map?: TypeToItemMap<T>): T[] {
+  return Array.from(map?.values() ?? []);
 }
