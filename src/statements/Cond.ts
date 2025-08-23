@@ -1,13 +1,12 @@
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
 export class DoTest extends Statement {
-  constructor(private isWhile: boolean, private expr: ExprContext) {
+  constructor(private isWhile: boolean, private expr: Expression) {
     super();
   }
 
@@ -21,7 +20,7 @@ export class DoTest extends Statement {
 }
 
 export class LoopTest extends Statement {
-  constructor(private isWhile: boolean, private expr: ExprContext) {
+  constructor(private isWhile: boolean, private expr: Expression) {
     super();
   }
 
@@ -35,7 +34,7 @@ export class LoopTest extends Statement {
 }
 
 export class IfTest extends Statement {
-  constructor(private expr: ExprContext) {
+  constructor(private expr: Expression) {
     super();
   }
 
@@ -46,7 +45,7 @@ export class IfTest extends Statement {
   }
 }
 
-function evaluateBooleanExpression(expr: ExprContext, memory: Memory): boolean {
+function evaluateBooleanExpression(expr: Expression, memory: Memory): boolean {
   // Any numeric expression is a valid boolean. Floats evaluate true if != 0.
   return evaluateIntegerExpression(expr, memory, {tag: TypeTag.NUMERIC}) != 0;
 }

@@ -5,9 +5,8 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { string } from "../Values.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { isModifier } from "../ScanCodeChart.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { Token } from "antlr4ng";
-import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 
 export class InkeyFunction extends Statement {
@@ -41,8 +40,8 @@ export enum KeyStatementOperation {
 export interface KeyStatementArgs {
   token: Token;
   operation: KeyStatementOperation;
-  keyNumber?: ExprContext;
-  stringExpr?: ExprContext;
+  keyNumber?: Expression;
+  stringExpr?: Expression;
 }
 
 export class KeyStatement extends Statement {

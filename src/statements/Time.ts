@@ -1,10 +1,9 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { single, string } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { evaluateStringExpression } from "../Expressions.ts";
+import { evaluateStringExpression, Expression } from "../Expressions.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 
 export class DateFunction extends Statement {
@@ -19,7 +18,7 @@ export class DateFunction extends Statement {
 }
 
 export class DateStatement extends Statement {
-  constructor(private token: Token, private expr: ExprContext) {
+  constructor(private token: Token, private expr: Expression) {
     super();
   }
 
@@ -77,7 +76,7 @@ export class TimeFunction extends Statement {
 }
 
 export class TimeStatement extends Statement {
-  constructor(private token: Token, private expr: ExprContext) {
+  constructor(private token: Token, private expr: Expression) {
     super();
   }
 

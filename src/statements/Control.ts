@@ -1,9 +1,8 @@
 import { Token } from "antlr4ng";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { Statement } from "./Statement.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { evaluateStringExpression } from "../Expressions.ts";
+import { evaluateStringExpression, Expression } from "../Expressions.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { readVariableToBytes } from "./Bits.ts";
 import { getArrayDescriptor } from "./Arrays.ts";
@@ -39,7 +38,7 @@ export class NoOpStatement extends Statement {
 }
 
 export class RunStatement extends Statement {
-  constructor(private token: Token, private programExpr: ExprContext | null) {
+  constructor(private token: Token, private programExpr: Expression | null) {
     super();
   }
 
@@ -53,7 +52,7 @@ export class RunStatement extends Statement {
 }
 
 export class ChainStatement extends Statement {
-  programExpr: ExprContext;
+  programExpr: Expression;
 
   constructor({params}: BuiltinStatementArgs) {
     super();

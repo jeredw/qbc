@@ -1,6 +1,5 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
-import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
 import { integer, isError, isNumeric, isString, NumericValue, Value } from "../Values.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
@@ -15,16 +14,16 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 export interface PrintStatementArgs {
   token: Token;
   printer?: boolean;
-  fileNumber?: ExprContext;
-  format?: ExprContext;
+  fileNumber?: Expression;
+  format?: Expression;
   exprs: PrintExpr[];
 }
 
 export interface PrintExpr {
   token: Token;
-  expr?: ExprContext;
-  spaces?: ExprContext;
-  tab?: ExprContext;
+  expr?: Expression;
+  spaces?: Expression;
+  tab?: Expression;
   separator?: string;
 }
 
@@ -141,7 +140,7 @@ export class PrintUsingStatement extends BasePrintStatement {
     const formatString = evaluateStringExpression(this.args.format!, context.memory);
     const templates = parseFormatString(formatString);
     if (!templates.some((t: Template) => t.type !== TemplateType.LITERAL)) {
-      throw RuntimeError.fromToken(this.args.format!.start!, ILLEGAL_FUNCTION_CALL);
+      throw RuntimeError.fromToken(this.args.format!.token, ILLEGAL_FUNCTION_CALL);
     }
     let templateIndex = 0;
     const nextTemplate = () => {
@@ -180,7 +179,7 @@ export class PrintUsingStatement extends BasePrintStatement {
           const template = templates[templateIndex];
           nextTemplate();
           if (template.type != TemplateType.NUMBER) {
-            throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
+            throw RuntimeError.fromToken(expr.token, TYPE_MISMATCH);
           }
           const number = value.tag === TypeTag.SINGLE ? 
             parseFloat(value.number.toPrecision(7)) : value.number;
@@ -195,7 +194,7 @@ export class PrintUsingStatement extends BasePrintStatement {
           const template = templates[templateIndex];
           nextTemplate();
           if (template.type !== TemplateType.STRING) {
-            throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
+            throw RuntimeError.fromToken(expr.token, TYPE_MISMATCH);
           }
           const formatted = formatUsingStringTemplate(value.string, template);
           const printTrailingLiteral = isLiteral() && templateIndex !== 0;
@@ -592,7 +591,7 @@ export class WriteStatement extends BasePrintStatement {
 }
 
 export class WidthLprintStatement extends Statement {
-  constructor(private token: Token, private width: ExprContext) {
+  constructor(private token: Token, private width: Expression) {
     super();
   }
 

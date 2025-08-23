@@ -6,8 +6,7 @@ import { getErrorForCode, ILLEGAL_FUNCTION_CALL, RuntimeError } from "../Errors.
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { Variable } from "../Variables.ts";
 import { integer, long, string } from "../Values.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 
 export class ErrorHandlerStatement extends Statement {
   constructor(private token: Token) {
@@ -90,7 +89,7 @@ export class ErrFunction extends Statement {
 export class ErrorStatement extends Statement {
   constructor (
     private token: Token,
-    private errorCodeExpr: ExprContext
+    private errorCodeExpr: Expression
   ) {
     super();
   }

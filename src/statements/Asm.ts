@@ -1,6 +1,5 @@
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { asciiToString } from "../AsciiChart.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { SBMIDI_SEGMENT, SBSIM_SEGMENT } from "../BakedInData.ts";
 import { Mouse } from "../Mouse.ts";
 import { getDefaultValue, integer, isNumeric } from "../Values.ts";
@@ -12,7 +11,7 @@ import { Statement } from "./Statement.ts";
 
 export interface CallAbsoluteParameter {
   variable?: Variable;
-  expr?: ExprContext;
+  expr?: Expression;
 }
 
 // 16k should be enough for anybody.
@@ -20,7 +19,7 @@ const RAM_SIZE = 0x4000;
 
 export class CallAbsoluteStatement extends Statement {
   constructor(
-    private procedureExpr: ExprContext,
+    private procedureExpr: Expression,
     private params: CallAbsoluteParameter[]) {
     super();
   }

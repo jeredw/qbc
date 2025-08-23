@@ -6,9 +6,8 @@ import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
-import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
 import { Token } from "antlr4ng";
 import { readArraySliceToBytes, writeBytesToArraySlice } from "./Arrays.ts";
@@ -291,7 +290,7 @@ export class CvdmbfFunction extends StringToBytes {
 export class LenFunction extends Statement {
   constructor(
     private variable: Variable | undefined,
-    private stringExpr: ExprContext | undefined,
+    private stringExpr: Expression | undefined,
     private result: Variable
   ) {
     super();
@@ -314,7 +313,7 @@ export class LenFunction extends Statement {
 export class DefSegStatement extends Statement {
   constructor(
     private token: Token,
-    private segmentExpr?: ExprContext,
+    private segmentExpr?: Expression,
   ) {
     super();
   }
@@ -719,8 +718,8 @@ export function readString(variable: Variable, memory: Memory): string {
 
 export class BloadStatement extends Statement {
   private token: Token;
-  private pathExpr: ExprContext;
-  private offsetExpr?: ExprContext;
+  private pathExpr: Expression;
+  private offsetExpr?: Expression;
 
   constructor({token, params}: BuiltinStatementArgs) {
     super();
@@ -793,9 +792,9 @@ export class BloadStatement extends Statement {
 
 export class BsaveStatement extends Statement {
   private token: Token;
-  private pathExpr: ExprContext;
-  private offsetExpr: ExprContext;
-  private lengthExpr: ExprContext;
+  private pathExpr: Expression;
+  private offsetExpr: Expression;
+  private lengthExpr: Expression;
 
   constructor({token, params}: BuiltinStatementArgs) {
     super();
@@ -827,7 +826,7 @@ export class BsaveStatement extends Statement {
 
 export class PeekStatement extends Statement {
   private token: Token;
-  private offsetExpr: ExprContext;
+  private offsetExpr: Expression;
   private result: Variable;
 
   constructor({token, params, result}: BuiltinStatementArgs) {
@@ -919,8 +918,8 @@ export class PeekStatement extends Statement {
 
 export class PokeStatement extends Statement {
   private token: Token;
-  private offsetExpr: ExprContext;
-  private valueExpr: ExprContext;
+  private offsetExpr: Expression;
+  private valueExpr: Expression;
 
   constructor({token, params}: BuiltinStatementArgs) {
     super();
@@ -980,9 +979,9 @@ function readBytesAtPointer(pointer: number, memory: Memory): [Variable, Uint8Ar
 
 export function writeBytesToVariable(variable: Variable, data: Uint8Array, memory: Memory) {
   if (variable.array) {
-    writeBytesToArraySlice(variable, data.buffer, memory);
+    writeBytesToArraySlice(variable, data.buffer as ArrayBuffer, memory);
   } else {
-    writeBytesToScalarVariable(variable, data.buffer, memory);
+    writeBytesToScalarVariable(variable, data.buffer as ArrayBuffer, memory);
   }
 }
 

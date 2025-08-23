@@ -1,6 +1,5 @@
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
-import { evaluateExpression } from "../Expressions.ts";
+import { evaluateExpression, Expression } from "../Expressions.ts";
 import { Address, StorageType } from "../Memory.ts";
 import { getDefaultValue, isReference, reference, Value } from "../Values.ts";
 import { Variable } from "../Variables.ts";
@@ -9,7 +8,7 @@ import { Statement } from "./Statement.ts";
 
 export interface Binding {
   parameter: Variable;
-  expr?: ExprContext;
+  expr?: Expression;
   variable?: Variable;
   initToZero?: boolean;
 }

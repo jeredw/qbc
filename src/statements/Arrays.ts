@@ -1,7 +1,6 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError, DUPLICATE_DEFINITION, SUBSCRIPT_OUT_OF_RANGE } from "../Errors.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { Memory, StorageType } from "../Memory.ts";
 import { array, integer, isArray, isError, isNumeric, isReference, reference, string, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
@@ -12,8 +11,8 @@ import { readElementToBytes, readString, writeBytesToElement } from "./Bits.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 
 export interface DimBoundsExprs {
-  lower?: ExprContext;
-  upper: ExprContext;
+  lower?: Expression;
+  upper: Expression;
 }
 
 export class DimStatement extends Statement {
@@ -53,7 +52,7 @@ export class DimStatement extends Statement {
         this.arrayBaseIndex;
       const upper = evaluateIntegerExpression(boundsExprs.upper, context.memory);
       if (upper < lower) {
-        throw RuntimeError.fromToken(boundsExprs.upper.start!, SUBSCRIPT_OUT_OF_RANGE);
+        throw RuntimeError.fromToken(boundsExprs.upper.token, SUBSCRIPT_OUT_OF_RANGE);
       }
       dimensions.push({lower, upper});
       numElements *= 1 + upper - lower;
@@ -105,7 +104,7 @@ export class EraseStatement extends Statement {
 export class IndexArrayStatement extends Statement {
   constructor(
     private array: Variable,
-    private indexExprs: ExprContext[],
+    private indexExprs: Expression[],
     private result: Variable,
     private forPointer: boolean,
   ) {
@@ -118,7 +117,7 @@ export class IndexArrayStatement extends Statement {
     let stride = descriptor.valuesPerItem!;
     // Array shape isn't checked at compile time for parameters.
     if (descriptor.dimensions.length !== this.indexExprs.length) {
-      throw RuntimeError.fromToken(this.indexExprs[0].start!, SUBSCRIPT_OUT_OF_RANGE);
+      throw RuntimeError.fromToken(this.indexExprs[0].token, SUBSCRIPT_OUT_OF_RANGE);
     }
     if (!this.forPointer) {
       // read/write access through indexing invalidates any cached array bytes.
@@ -134,7 +133,7 @@ export class IndexArrayStatement extends Statement {
         throw new Error("array bounds undefined");
       }
       if (index < bounds.lower || index > bounds.upper) {
-        throw RuntimeError.fromToken(expr.start!, SUBSCRIPT_OUT_OF_RANGE);
+        throw RuntimeError.fromToken(expr.token, SUBSCRIPT_OUT_OF_RANGE);
       }
       valueIndex += stride * (index - bounds.lower);
       stride *= 1 + bounds.upper - bounds.lower;
@@ -162,7 +161,7 @@ abstract class ArrayBoundFunction extends Statement {
     protected token: Token,
     protected array: Variable,
     protected result: Variable,
-    protected whichExpr?: ExprContext
+    protected whichExpr?: Expression
   ) {
     super();
   }
@@ -181,7 +180,7 @@ abstract class ArrayBoundFunction extends Statement {
 }
 
 export class LboundFunction extends ArrayBoundFunction {
-  constructor(token: Token, array: Variable, result: Variable, whichExpr?: ExprContext) {
+  constructor(token: Token, array: Variable, result: Variable, whichExpr?: Expression) {
     super(token, array, result, whichExpr);
   }
 
@@ -202,7 +201,7 @@ export class LboundFunction extends ArrayBoundFunction {
 }
 
 export class UboundFunction extends ArrayBoundFunction {
-  constructor(token: Token, array: Variable, result: Variable, whichExpr?: ExprContext) {
+  constructor(token: Token, array: Variable, result: Variable, whichExpr?: Expression) {
     super(token, array, result, whichExpr);
   }
 

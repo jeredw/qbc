@@ -1,7 +1,6 @@
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
@@ -20,9 +19,9 @@ export class BranchStatement extends Statement {
 
 export class BranchIndexStatement extends Statement {
   gosub: boolean;
-  expr: ExprContext;
+  expr: Expression;
 
-  constructor({gosub, expr}: {gosub?: boolean, expr: ExprContext}) {
+  constructor({gosub, expr}: {gosub?: boolean, expr: Expression}) {
     super();
     this.gosub = !!gosub;
     this.expr = expr;
@@ -31,7 +30,7 @@ export class BranchIndexStatement extends Statement {
   override execute(context: ExecutionContext): ControlFlow | void {
     const index = evaluateIntegerExpression(this.expr, context.memory);
     if (index < 0 || index > 255) {
-      throw RuntimeError.fromToken(this.expr.start!, ILLEGAL_FUNCTION_CALL);
+      throw RuntimeError.fromToken(this.expr.token, ILLEGAL_FUNCTION_CALL);
     }
     if (index > 0 && index <= this.targets.length) {
       this.targetIndex = this.targets[index - 1];

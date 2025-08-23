@@ -3,9 +3,8 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { ADVANCED_FEATURE_UNAVAILABLE, ILLEGAL_FUNCTION_CALL, OUT_OF_MEMORY, RuntimeError } from "../Errors.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { Variable } from "../Variables.ts";
-import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { string } from "../Values.ts";
 
 // The environment is fixed and we just error if ENVIRON tries to set anything.
@@ -30,7 +29,7 @@ export class CommandFunction extends Statement {
 
 export class EnvironStatement extends Statement {
   constructor(
-    private expr: ExprContext,
+    private expr: Expression,
   ) {
     super();
   }
@@ -47,8 +46,8 @@ export class EnvironStatement extends Statement {
 export class EnvironFunction extends Statement {
   constructor(
     private result: Variable,
-    private stringExpr?: ExprContext,
-    private indexExpr?: ExprContext,
+    private stringExpr?: Expression,
+    private indexExpr?: Expression,
   ) {
     super();
   }

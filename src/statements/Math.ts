@@ -5,9 +5,8 @@ import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { Variable } from "../Variables.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { float32Bytes, float64Bytes } from "./Bits.ts";
 
 export class AbsFunction extends BuiltinFunction1 {
@@ -160,7 +159,7 @@ export class IntFunction extends BuiltinFunction1 {
 }
 
 export class RandomizeStatement extends Statement {
-  constructor(private seed?: ExprContext, private variable?: Variable) {
+  constructor(private seed?: Expression, private variable?: Variable) {
     super();
   }
 
@@ -192,7 +191,7 @@ export class RandomizeStatement extends Statement {
 
 export class RndFunction extends Statement {
   result: Variable;
-  n?: ExprContext;
+  n?: Expression;
 
   constructor({result, params}: BuiltinStatementArgs) {
     super();

@@ -1,8 +1,7 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { double, integer, isNumeric, isString } from "../Values.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, OUT_OF_STACK_SPACE } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
@@ -17,10 +16,10 @@ import { signExtend16Bit } from "./Bits.ts";
 export class ScreenStatement extends Statement {
   constructor(
     private token: Token,
-    private modeExpr?: ExprContext,
-    private colorSwitchExpr?: ExprContext,
-    private activePageExpr?: ExprContext,
-    private visiblePageExpr?: ExprContext
+    private modeExpr?: Expression,
+    private colorSwitchExpr?: Expression,
+    private activePageExpr?: Expression,
+    private visiblePageExpr?: Expression
   ) {
     super();
   }
@@ -45,9 +44,9 @@ export class ScreenFunction extends Statement {
   constructor(
     private token: Token,
     private result: Variable,
-    private rowExpr: ExprContext,
-    private columnExpr: ExprContext,
-    private colorFlag?: ExprContext
+    private rowExpr: Expression,
+    private columnExpr: Expression,
+    private colorFlag?: Expression
   ) {
     super();
   }
@@ -78,9 +77,9 @@ export class ScreenFunction extends Statement {
 export class ColorStatement extends Statement {
   constructor(
     private token: Token,
-    private arg1?: ExprContext,
-    private arg2?: ExprContext,
-    private arg3?: ExprContext,
+    private arg1?: Expression,
+    private arg2?: Expression,
+    private arg3?: Expression,
   ) {
     super();
   }
@@ -144,8 +143,8 @@ export class ColorStatement extends Statement {
 export class PaletteStatement extends Statement {
   constructor(
     private token: Token,
-    private attributeExpr?: ExprContext,
-    private colorExpr?: ExprContext,
+    private attributeExpr?: Expression,
+    private colorExpr?: Expression,
     private array?: Variable,
   ) {
     super();
@@ -177,7 +176,7 @@ export class PaletteStatement extends Statement {
 
 export class ClsStatement extends Statement {
   token: Token;
-  optionsExpr?: ExprContext;
+  optionsExpr?: Expression;
 
   constructor(private args: BuiltinStatementArgs) {
     super();
@@ -228,13 +227,13 @@ export class PosFunction extends Statement {
 export interface CircleStatementArgs {
   token: Token;
   step: boolean;
-  x: ExprContext;
-  y: ExprContext;
-  radius: ExprContext;
-  color?: ExprContext;
-  start?: ExprContext;
-  end?: ExprContext;
-  aspect?: ExprContext;
+  x: Expression;
+  y: Expression;
+  radius: Expression;
+  color?: Expression;
+  start?: Expression;
+  end?: Expression;
+  aspect?: Expression;
 }
 
 export class CircleStatement extends Statement {
@@ -264,15 +263,15 @@ export class CircleStatement extends Statement {
 export interface LineStatementArgs {
   token: Token;
   step1: boolean;
-  x1?: ExprContext;
-  y1?: ExprContext;
+  x1?: Expression;
+  y1?: Expression;
   step2: boolean;
-  x2: ExprContext;
-  y2: ExprContext;
-  color?: ExprContext;
+  x2: Expression;
+  y2: Expression;
+  color?: Expression;
   outline: boolean;
   fill: boolean; 
-  dash?: ExprContext;
+  dash?: Expression;
 }
 
 export class LineStatement extends Statement {
@@ -301,11 +300,11 @@ export class LineStatement extends Statement {
 export class LocateStatement extends Statement {
   constructor(
     private token: Token,
-    private rowExpr?: ExprContext,
-    private columnExpr?: ExprContext,
-    private cursorExpr?: ExprContext,
-    private startExpr?: ExprContext,
-    private stopExpr?: ExprContext
+    private rowExpr?: Expression,
+    private columnExpr?: Expression,
+    private cursorExpr?: Expression,
+    private startExpr?: Expression,
+    private stopExpr?: Expression
   ) {
     super();
   }
@@ -339,9 +338,9 @@ export class PsetStatement extends Statement {
   constructor(
     private token: Token,
     private step: boolean,
-    private xExpr: ExprContext,
-    private yExpr: ExprContext,
-    private colorExpr?: ExprContext
+    private xExpr: Expression,
+    private yExpr: Expression,
+    private colorExpr?: Expression
   ) {
     super();
   }
@@ -361,12 +360,12 @@ export class PsetStatement extends Statement {
 export interface PaintStatementArgs {
   token: Token;
   step: boolean;
-  x: ExprContext;
-  y: ExprContext;
-  color?: ExprContext;
-  borderColor?: ExprContext;
-  tile?: ExprContext;
-  background?: ExprContext;
+  x: Expression;
+  y: Expression;
+  color?: Expression;
+  borderColor?: Expression;
+  tile?: Expression;
+  background?: Expression;
 }
 
 export class PaintStatement extends Statement {
@@ -396,9 +395,9 @@ export class PresetStatement extends Statement {
   constructor(
     private token: Token,
     private step: boolean,
-    private xExpr: ExprContext,
-    private yExpr: ExprContext,
-    private colorExpr?: ExprContext
+    private xExpr: Expression,
+    private yExpr: Expression,
+    private colorExpr?: Expression
   ) {
     super();
   }
@@ -419,12 +418,12 @@ export class ViewStatement extends Statement {
   constructor(
     private token: Token,
     private screen: boolean,
-    private x1?: ExprContext,
-    private y1?: ExprContext,
-    private x2?: ExprContext,
-    private y2?: ExprContext,
-    private color?: ExprContext,
-    private border?: ExprContext
+    private x1?: Expression,
+    private y1?: Expression,
+    private x2?: Expression,
+    private y2?: Expression,
+    private color?: Expression,
+    private border?: Expression
   ) {
     super();
   }
@@ -451,8 +450,8 @@ export class ViewStatement extends Statement {
 export class ViewPrintStatement extends Statement {
   constructor(
     private token: Token,
-    private topRow?: ExprContext,
-    private bottomRow?: ExprContext,
+    private topRow?: Expression,
+    private bottomRow?: Expression,
   ) {
     super();
   }
@@ -476,10 +475,10 @@ export class WindowStatement extends Statement {
   constructor(
     private token: Token,
     private screen: boolean,
-    private x1?: ExprContext,
-    private y1?: ExprContext,
-    private x2?: ExprContext,
-    private y2?: ExprContext,
+    private x1?: Expression,
+    private y1?: Expression,
+    private x2?: Expression,
+    private y2?: Expression,
   ) {
     super();
   }
@@ -504,8 +503,8 @@ export class WindowStatement extends Statement {
 export class WidthScreenStatement extends Statement {
   constructor(
     private token: Token,
-    private columns?: ExprContext,
-    private lines?: ExprContext
+    private columns?: Expression,
+    private lines?: Expression
   ) {
     super();
   }
@@ -524,8 +523,8 @@ export class WidthScreenStatement extends Statement {
 export class PointFunction extends Statement {
   token: Token;
   params: BuiltinParam[];
-  arg1: ExprContext;
-  y?: ExprContext;
+  arg1: Expression;
+  y?: Expression;
   result: Variable;
 
   constructor({token, params, result}: BuiltinStatementArgs) {
@@ -578,8 +577,8 @@ export class PointFunction extends Statement {
 
 export class PcopyStatement extends Statement {
   token: Token;
-  sourcePageExpr: ExprContext;
-  destPageExpr: ExprContext;
+  sourcePageExpr: Expression;
+  destPageExpr: Expression;
 
   constructor({token, params}: BuiltinStatementArgs) {
     super();
@@ -608,8 +607,8 @@ export class PcopyStatement extends Statement {
 export class PmapFunction extends Statement {
   token: Token;
   params: BuiltinParam[];
-  coordinate: ExprContext;
-  n: ExprContext;
+  coordinate: Expression;
+  n: Expression;
   result: Variable;
 
   constructor({token, params, result}: BuiltinStatementArgs) {
@@ -655,11 +654,11 @@ export class PmapFunction extends Statement {
 export interface GetGraphicsStatementArgs {
   token: Token;
   step1: boolean;
-  x1: ExprContext;
-  y1: ExprContext;
+  x1: Expression;
+  y1: Expression;
   step2: boolean;
-  x2: ExprContext;
-  y2: ExprContext;
+  x2: Expression;
+  y2: Expression;
   array: Variable;
 }
 
@@ -687,8 +686,8 @@ export class GetGraphicsStatement extends Statement {
 export interface PutGraphicsStatementArgs {
   token: Token;
   step: boolean;
-  x1: ExprContext;
-  y1: ExprContext;
+  x1: Expression;
+  y1: Expression;
   array: Variable;
   preset?: boolean;
   pset?: boolean;
@@ -723,7 +722,7 @@ export class PutGraphicsStatement extends Statement {
 
 export class DrawStatement extends Statement {
   token: Token;
-  commandStringExpr: ExprContext;
+  commandStringExpr: Expression;
 
   constructor(private args: BuiltinStatementArgs) {
     super();

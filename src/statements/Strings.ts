@@ -2,10 +2,9 @@ import { Value, cast, double, getDefaultValue, integer, isError, isNumeric, isSt
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { asciiToChar, asciiToString, charToAscii, stringToAscii } from "../AsciiChart.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression, parseNumberFromStringPrefix } from "../Expressions.ts";
+import { evaluateExpression, evaluateIntegerExpression, evaluateStringExpression, Expression, parseNumberFromStringPrefix } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, TYPE_MISMATCH } from "../Errors.ts";
@@ -91,8 +90,8 @@ function upperCase(code: number): number {
 
 abstract class LRFunction extends Statement {
   token: Token;
-  stringExpr: ExprContext;
-  numExpr: ExprContext;
+  stringExpr: Expression;
+  numExpr: Expression;
   result: Variable;
 
   constructor({token, params, result}: BuiltinStatementArgs) {
@@ -148,9 +147,9 @@ export class RightFunction extends LRFunction {
 export class MidFunction extends Statement {
   constructor(
     private token: Token,
-    private stringExpr: ExprContext,
-    private startExpr: ExprContext,
-    private lengthExpr: ExprContext | undefined,
+    private stringExpr: Expression,
+    private startExpr: Expression,
+    private lengthExpr: Expression | undefined,
     private result: Variable
   ) {
     super();
@@ -174,9 +173,9 @@ export class MidStatement extends Statement {
   constructor(
     private token: Token,
     private variable: Variable,
-    private startExpr: ExprContext,
-    private lengthExpr: ExprContext | undefined,
-    private stringExpr: ExprContext,
+    private startExpr: Expression,
+    private lengthExpr: Expression | undefined,
+    private stringExpr: Expression,
   ) {
     super();
   }
@@ -213,7 +212,7 @@ abstract class JustifyStringStatement extends Statement {
   constructor(
     private token: Token,
     private variable: Variable,
-    private stringExpr: ExprContext
+    private stringExpr: Expression
   ) {
     super();
   }
@@ -234,7 +233,7 @@ abstract class JustifyStringStatement extends Statement {
 }
 
 export class LsetStringStatement extends JustifyStringStatement {
-  constructor(token: Token, variable: Variable, stringExpr: ExprContext) {
+  constructor(token: Token, variable: Variable, stringExpr: Expression) {
     super(token, variable, stringExpr);
   }
 
@@ -244,7 +243,7 @@ export class LsetStringStatement extends JustifyStringStatement {
 }
 
 export class RsetStringStatement extends JustifyStringStatement {
-  constructor(token: Token, variable: Variable, stringExpr: ExprContext) {
+  constructor(token: Token, variable: Variable, stringExpr: Expression) {
     super(token, variable, stringExpr);
   }
 
@@ -353,8 +352,8 @@ export class StrFunction extends BuiltinFunction1 {
 export class StringFunction extends Statement {
   token: Token;
   result: Variable;
-  length: ExprContext;
-  asciiCodeOrString: ExprContext;
+  length: Expression;
+  asciiCodeOrString: Expression;
 
   constructor({token, result, params}: BuiltinStatementArgs) {
     super();
@@ -435,9 +434,9 @@ export class ValFunction extends BuiltinFunction1 {
 export class InstrFunction extends Statement {
   constructor(
     private token: Token,
-    private start: ExprContext | undefined,
-    private haystack: ExprContext,
-    private needle: ExprContext,
+    private start: Expression | undefined,
+    private haystack: Expression,
+    private needle: Expression,
     private result: Variable
   ) {
     super()

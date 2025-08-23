@@ -1,4 +1,3 @@
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { CursorCommand } from "../Keyboard.ts";
 import { cast, getDefaultValue, isError, isNumeric, string, Value } from "../Values.ts";
@@ -6,7 +5,7 @@ import { Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { isString, Type } from "../Types.ts";
 import { Statement } from "./Statement.ts";
-import { evaluateIntegerExpression, parseNumberFromString } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression, parseNumberFromString } from "../Expressions.ts";
 import { Token } from "antlr4ng";
 import { getFileAccessor, getSequentialReadAccessor } from "./FileSystem.ts";
 import { OpenMode, tryIo } from "../Files.ts";
@@ -18,7 +17,7 @@ export interface InputStatementArgs {
   prompt?: string;
   mark?: boolean;
   sameLine?: boolean;
-  fileNumber?: ExprContext;
+  fileNumber?: Expression;
   variables: Variable[];
 }
 
@@ -425,8 +424,8 @@ export class InputFileStatement extends Statement {
 export class InputFunction extends Statement {
   constructor(
     private token: Token,
-    private n: ExprContext,
-    private fileNumber: ExprContext | undefined,
+    private n: Expression,
+    private fileNumber: Expression | undefined,
     private result: Variable
   ) {
     super();

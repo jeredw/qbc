@@ -24,7 +24,7 @@ import {
 import { BeepStatement, PlayFunction, PlayStatement, SoundStatement } from "./Sound.ts";
 import { BranchStatement, BranchIndexStatement } from "./Branch.ts";
 import { Binding, CallStatement } from "./Call.ts";
-import { CaseStatement } from "./Case.ts";
+import { CaseStatement, CaseExpression } from "./Case.ts";
 import { DoTest, IfTest, LoopTest } from "./Cond.ts";
 import {
   BloadStatement,
@@ -114,11 +114,10 @@ import {
   UcaseFunction,
   ValFunction,
 } from "./Strings.ts";
-import * as parser from "../../build/QBasicParser.ts";
 import { ControlFlowTag } from "../ControlFlow.ts";
 import { Token } from "antlr4ng";
 import { Variable } from "../Variables.ts";
-import { Builtin, BuiltinStatementArgs } from "../Builtins.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction, OutStatement } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
@@ -162,6 +161,7 @@ import { CommandFunction, EnvironFunction, EnvironStatement } from "./Dos.ts";
 import { ClearStatement } from "./Clear.ts";
 import { CallAbsoluteParameter, CallAbsoluteStatement } from "./Asm.ts";
 import { CommonStatement } from "./Common.ts";
+import { Expression } from "../Expressions.ts";
 
 export function abs(args: BuiltinStatementArgs) {
   return new AbsFunction(args);
@@ -191,11 +191,11 @@ export function call(chunkIndex: number, bindings: Binding[], stackSize: number)
   return new CallStatement(chunkIndex, bindings, stackSize);
 }
 
-export function callAbsolute(procedure: parser.ExprContext, params: CallAbsoluteParameter[]) {
+export function callAbsolute(procedure: Expression, params: CallAbsoluteParameter[]) {
   return new CallAbsoluteStatement(procedure, params);
 }
 
-export function case_(test: Variable, condition: parser.Case_exprContext) {
+export function case_(test: Variable, condition: CaseExpression) {
   return new CaseStatement(test, condition);
 }
 
@@ -223,11 +223,11 @@ export function clear() {
   return new ClearStatement();
 }
 
-export function close(fileNumber: parser.ExprContext) {
+export function close(fileNumber: Expression) {
   return new CloseStatement(fileNumber);
 }
 
-export function color(token: Token, arg1?: parser.ExprContext, arg2?: parser.ExprContext, arg3?: parser.ExprContext) {
+export function color(token: Token, arg1?: Expression, arg2?: Expression, arg3?: Expression) {
   return new ColorStatement(token, arg1, arg2, arg3);
 }
 
@@ -291,11 +291,11 @@ export function dateFunction(result: Variable) {
   return new DateFunction(result);
 }
 
-export function dateStatement(token: Token, expr: parser.ExprContext) {
+export function dateStatement(token: Token, expr: Expression) {
   return new DateStatement(token, expr);
 }
 
-export function defSeg(token: Token, segmentExpr?: parser.ExprContext) {
+export function defSeg(token: Token, segmentExpr?: Expression) {
   return new DefSegStatement(token, segmentExpr);
 }
 
@@ -303,11 +303,11 @@ export function dim(arrayBaseIndex: number, token: Token, bounds: DimBoundsExprs
   return new DimStatement(arrayBaseIndex, token, bounds, result, redim);
 }
 
-export function environ(expr: parser.ExprContext) {
+export function environ(expr: Expression) {
   return new EnvironStatement(expr);
 }
 
-export function environFunction(result: Variable, stringExpr?: parser.ExprContext, indexExpr?: parser.ExprContext) {
+export function environFunction(result: Variable, stringExpr?: Expression, indexExpr?: Expression) {
   return new EnvironFunction(result, stringExpr, indexExpr);
 }
 
@@ -315,7 +315,7 @@ export function erase(array: Variable) {
   return new EraseStatement(array);
 }
 
-export function do_(isWhile: boolean, expr: parser.ExprContext) {
+export function do_(isWhile: boolean, expr: Expression) {
   return new DoTest(isWhile, expr);
 }
 
@@ -323,7 +323,7 @@ export function draw(args: BuiltinStatementArgs) {
   return new DrawStatement(args);
 }
 
-export function elseIf(expr: parser.ExprContext) {
+export function elseIf(expr: Expression) {
   return new IfTest(expr);
 }
 
@@ -363,15 +363,15 @@ export function err(args: BuiltinStatementArgs) {
   return new ErrFunction(args);
 }
 
-export function error(token: Token, errorCodeExpr: parser.ExprContext) {
+export function error(token: Token, errorCodeExpr: Expression) {
   return new ErrorStatement(token, errorCodeExpr);
 }
 
-export function eventControl(token: Token, eventType: EventType, param: parser.ExprContext | undefined, state: EventChannelState) {
+export function eventControl(token: Token, eventType: EventType, param: Expression | undefined, state: EventChannelState) {
   return new EventControlStatement(token, eventType, param, state);
 }
 
-export function eventHandler(token: Token, eventType: EventType, param: parser.ExprContext | undefined) {
+export function eventHandler(token: Token, eventType: EventType, param: Expression | undefined) {
   return new EventHandlerStatement(token, eventType, param);
 }
 
@@ -399,7 +399,7 @@ export function exp(args: BuiltinStatementArgs) {
   return new ExpFunction(args);
 }
 
-export function field(token: Token, fileNumber: parser.ExprContext, fields: FieldDefinition[]) {
+export function field(token: Token, fileNumber: Expression, fields: FieldDefinition[]) {
   return new FieldStatement(token, fileNumber, fields);
 }
 
@@ -429,8 +429,8 @@ export function freefile(args: BuiltinStatementArgs) {
 
 export function getIo(
   token: Token,
-  fileNumber: parser.ExprContext,
-  recordNumber?: parser.ExprContext,
+  fileNumber: Expression,
+  recordNumber?: Expression,
   variable?: Variable
 ) {
   return new GetIoStatement(token, fileNumber, recordNumber, variable);
@@ -444,7 +444,7 @@ export function goto() {
   return new BranchStatement({});
 }
 
-export function gotoIndex(expr: parser.ExprContext) {
+export function gotoIndex(expr: Expression) {
   return new BranchIndexStatement({expr});
 }
 
@@ -452,7 +452,7 @@ export function gosub() {
   return new BranchStatement({gosub: true});
 }
 
-export function gosubIndex(expr: parser.ExprContext) {
+export function gosubIndex(expr: Expression) {
   return new BranchIndexStatement({gosub: true, expr});
 }
 
@@ -460,7 +460,7 @@ export function hex(args: BuiltinStatementArgs) {
   return new HexFunction(args);
 }
 
-export function if_(expr: parser.ExprContext) {
+export function if_(expr: Expression) {
   return new IfTest(expr);
 }
 
@@ -480,15 +480,15 @@ export function inputFile(args: InputStatementArgs) {
   return new InputFileStatement(args);
 }
 
-export function inputFunction(token: Token, n: parser.ExprContext, fileNumber: parser.ExprContext | undefined, result: Variable) {
+export function inputFunction(token: Token, n: Expression, fileNumber: Expression | undefined, result: Variable) {
   return new InputFunction(token, n, fileNumber, result);
 }
 
-export function indexArray(array: Variable, indexExprs: parser.ExprContext[], result: Variable, forPointer: boolean) {
+export function indexArray(array: Variable, indexExprs: Expression[], result: Variable, forPointer: boolean) {
   return new IndexArrayStatement(array, indexExprs, result, forPointer);
 }
 
-export function instr(token: Token, start: parser.ExprContext | undefined, haystack: parser.ExprContext, needle: parser.ExprContext, result: Variable) {
+export function instr(token: Token, start: Expression | undefined, haystack: Expression, needle: Expression, result: Variable) {
   return new InstrFunction(token, start, haystack, needle, result);
 }
 
@@ -504,7 +504,7 @@ export function kill(args: BuiltinStatementArgs) {
   return new KillStatement(args);
 }
 
-export function lbound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {
+export function lbound(token: Token, array: Variable, result: Variable, whichExpr?: Expression) {
   return new LboundFunction(token, array, result, whichExpr);
 }
 
@@ -526,11 +526,11 @@ export function loc(args: BuiltinStatementArgs) {
 
 export function locate(
   token: Token,
-  row?: parser.ExprContext,
-  column?: parser.ExprContext,
-  cursor?: parser.ExprContext,
-  start?: parser.ExprContext,
-  stop?: parser.ExprContext
+  row?: Expression,
+  column?: Expression,
+  cursor?: Expression,
+  start?: Expression,
+  stop?: Expression
 ) {
   return new LocateStatement(token, row, column, cursor, start, stop);
 }
@@ -545,9 +545,9 @@ export function ltrim(args: BuiltinStatementArgs) {
 
 export function midFunction(
   token: Token,
-  string: parser.ExprContext,
-  start: parser.ExprContext,
-  length: parser.ExprContext | undefined,
+  string: Expression,
+  start: Expression,
+  length: Expression | undefined,
   result: Variable) {
   return new MidFunction(token, string, start, length, result);
 }
@@ -555,17 +555,17 @@ export function midFunction(
 export function midStatement(
   token: Token,
   variable: Variable,
-  startExpr: parser.ExprContext,
-  lengthExpr: parser.ExprContext | undefined,
-  stringExpr: parser.ExprContext) {
+  startExpr: Expression,
+  lengthExpr: Expression | undefined,
+  stringExpr: Expression) {
   return new MidStatement(token, variable, startExpr, lengthExpr, stringExpr);
 }
 
-export function let_(variable: Variable, expr: parser.ExprContext) {
+export function let_(variable: Variable, expr: Expression) {
   return new LetStatement(variable, expr);
 }
 
-export function len(variable: Variable | undefined, stringExpr: parser.ExprContext | undefined, result: Variable) {
+export function len(variable: Variable | undefined, stringExpr: Expression | undefined, result: Variable) {
   return new LenFunction(variable, stringExpr, result);
 }
 
@@ -573,7 +573,7 @@ export function line(args: LineStatementArgs) {
   return new LineStatement(args);
 }
 
-export function loop(isWhile: boolean, expr: parser.ExprContext) {
+export function loop(isWhile: boolean, expr: Expression) {
   return new LoopTest(isWhile, expr);
 }
 
@@ -589,7 +589,7 @@ export function lsetRecord(dest: Variable, source: Variable) {
   return new LsetRecordStatement(dest, source);
 }
 
-export function lsetString(token: Token, variable: Variable, stringExpr: parser.ExprContext) {
+export function lsetString(token: Token, variable: Variable, stringExpr: Expression) {
   return new LsetStringStatement(token, variable, stringExpr);
 }
 
@@ -621,7 +621,7 @@ export function mksmbf(args: BuiltinStatementArgs) {
   return new MksmbfFunction(args);
 }
 
-export function name(token: Token, oldPathExpr: parser.ExprContext, newPathExpr: parser.ExprContext) {
+export function name(token: Token, oldPathExpr: Expression, newPathExpr: Expression) {
   return new NameStatement(token, oldPathExpr, newPathExpr);
 }
 
@@ -649,7 +649,7 @@ export function paint(args: PaintStatementArgs) {
   return new PaintStatement(args);
 }
 
-export function palette(token: Token, attributeExpr?: parser.ExprContext, colorExpr?: parser.ExprContext, array?: Variable) {
+export function palette(token: Token, attributeExpr?: Expression, colorExpr?: Expression, array?: Variable) {
   return new PaletteStatement(token, attributeExpr, colorExpr, array);
 }
 
@@ -669,7 +669,7 @@ export function playFunction(result: Variable) {
   return new PlayFunction(result);
 }
 
-export function playStatement(token: Token, commandString: parser.ExprContext) {
+export function playStatement(token: Token, commandString: Expression) {
   return new PlayStatement(token, commandString);
 }
 
@@ -700,9 +700,9 @@ export function printUsing(args: PrintStatementArgs) {
 export function pset(
   token: Token,
   step: boolean,
-  x: parser.ExprContext,
-  y: parser.ExprContext,
-  color?: parser.ExprContext
+  x: Expression,
+  y: Expression,
+  color?: Expression
 ) {
   return new PsetStatement(token, step, x, y, color);
 }
@@ -710,17 +710,17 @@ export function pset(
 export function preset(
   token: Token,
   step: boolean,
-  x: parser.ExprContext,
-  y: parser.ExprContext,
-  color?: parser.ExprContext
+  x: Expression,
+  y: Expression,
+  color?: Expression
 ) {
   return new PresetStatement(token, step, x, y, color);
 }
 
 export function putIo(
   token: Token,
-  fileNumber: parser.ExprContext,
-  recordNumber?: parser.ExprContext,
+  fileNumber: Expression,
+  recordNumber?: Expression,
   variable?: Variable
 ) {
   return new PutIoStatement(token, fileNumber, recordNumber, variable);
@@ -730,7 +730,7 @@ export function putGraphics(args: PutGraphicsStatementArgs) {
   return new PutGraphicsStatement(args);
 }
 
-export function randomize({seed, variable} : {seed?: parser.ExprContext, variable?: Variable}) {
+export function randomize({seed, variable} : {seed?: Expression, variable?: Variable}) {
   return new RandomizeStatement(seed, variable);
 }
 
@@ -766,7 +766,7 @@ export function rnd(args: BuiltinStatementArgs) {
   return new RndFunction(args);
 }
 
-export function rsetString(token: Token, variable: Variable, stringExpr: parser.ExprContext) {
+export function rsetString(token: Token, variable: Variable, stringExpr: Expression) {
   return new RsetStringStatement(token, variable, stringExpr);
 }
 
@@ -774,7 +774,7 @@ export function rtrim(args: BuiltinStatementArgs) {
   return new RtrimFunction(args);
 }
 
-export function run(token: Token, programExpr: parser.ExprContext | null) {
+export function run(token: Token, programExpr: Expression | null) {
   return new RunStatement(token, programExpr);
 }
 
@@ -785,28 +785,28 @@ export function sadd(token: Token, result: Variable, variable: Variable) {
 export function screenFunction(
   token: Token,
   result: Variable,
-  rowExpr: parser.ExprContext,
-  columnExpr: parser.ExprContext,
-  colorFlag?: parser.ExprContext
+  rowExpr: Expression,
+  columnExpr: Expression,
+  colorFlag?: Expression
 ) {
   return new ScreenFunction(token, result, rowExpr, columnExpr, colorFlag);
 }
 
 export function screenStatement(
   token: Token,
-  modeExpr?: parser.ExprContext,
-  colorSwitchExpr?: parser.ExprContext,
-  activePageExpr?: parser.ExprContext,
-  visiblePageExpr?: parser.ExprContext
+  modeExpr?: Expression,
+  colorSwitchExpr?: Expression,
+  activePageExpr?: Expression,
+  visiblePageExpr?: Expression
 ) {
   return new ScreenStatement(token, modeExpr, colorSwitchExpr, activePageExpr, visiblePageExpr);
 }
 
-export function seekFunction(token: Token, fileNumber: parser.ExprContext, result: Variable) {
+export function seekFunction(token: Token, fileNumber: Expression, result: Variable) {
   return new SeekFunction(token, fileNumber, result);
 }
 
-export function seekStatement(token: Token, fileNumber: parser.ExprContext, offset: parser.ExprContext) {
+export function seekStatement(token: Token, fileNumber: Expression, offset: Expression) {
   return new SeekStatement(token, fileNumber, offset);
 }
 
@@ -878,7 +878,7 @@ export function timeFunction(result: Variable) {
   return new TimeFunction(result);
 }
 
-export function timeStatement(token: Token, expr: parser.ExprContext) {
+export function timeStatement(token: Token, expr: Expression) {
   return new TimeStatement(token, expr);
 }
 
@@ -886,7 +886,7 @@ export function timer(result: Variable) {
   return new TimerFunction(result);
 }
 
-export function ubound(token: Token, array: Variable, result: Variable, whichExpr?: parser.ExprContext) {
+export function ubound(token: Token, array: Variable, result: Variable, whichExpr?: Expression) {
   return new UboundFunction(token, array, result, whichExpr);
 }
 
@@ -913,20 +913,20 @@ export function varptr(token: Token, result: Variable, variable: Variable, varia
 export function view_(
   token: Token,
   screen: boolean,
-  x1?: parser.ExprContext,
-  y1?: parser.ExprContext,
-  x2?: parser.ExprContext,
-  y2?: parser.ExprContext,
-  color?: parser.ExprContext,
-  border?: parser.ExprContext,
+  x1?: Expression,
+  y1?: Expression,
+  x2?: Expression,
+  y2?: Expression,
+  color?: Expression,
+  border?: Expression,
 ) {
   return new ViewStatement(token, screen, x1, y1, x2, y2, color, border);
 }
 
 export function viewPrint(
   token: Token,
-  topRow?: parser.ExprContext,
-  bottomRow?: parser.ExprContext,
+  topRow?: Expression,
+  bottomRow?: Expression,
 ) {
   return new ViewPrintStatement(token, topRow, bottomRow);
 }
@@ -935,29 +935,29 @@ export function wait(args: BuiltinStatementArgs) {
   return new NoOpStatement();
 }
 
-export function while_(expr: parser.ExprContext) {
+export function while_(expr: Expression) {
   return new DoTest(true, expr);
 }
 
-export function widthFile(token: Token, fileNumber: parser.ExprContext, width: parser.ExprContext) {
+export function widthFile(token: Token, fileNumber: Expression, width: Expression) {
   return new WidthFileStatement(token, fileNumber, width);
 }
 
-export function widthLprint(token: Token, width: parser.ExprContext) {
+export function widthLprint(token: Token, width: Expression) {
   return new WidthLprintStatement(token, width);
 }
 
-export function widthScreen(token: Token, columns?: parser.ExprContext, lines?: parser.ExprContext) {
+export function widthScreen(token: Token, columns?: Expression, lines?: Expression) {
   return new WidthScreenStatement(token, columns, lines);
 }
 
 export function window_(
   token: Token,
   screen: boolean,
-  x1?: parser.ExprContext,
-  y1?: parser.ExprContext,
-  x2?: parser.ExprContext,
-  y2?: parser.ExprContext,
+  x1?: Expression,
+  y1?: Expression,
+  x2?: Expression,
+  y2?: Expression,
 ) {
   return new WindowStatement(token, screen, x1, y1, x2, y2);
 }

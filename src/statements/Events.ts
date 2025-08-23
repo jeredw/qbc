@@ -1,9 +1,8 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
 import { EventChannelState } from "../Events.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
@@ -21,7 +20,7 @@ export class EventHandlerStatement extends Statement {
   constructor(
     private token: Token,
     private eventType: EventType,
-    private param: ExprContext | undefined
+    private param: Expression | undefined
   ) {
     super();
   }
@@ -95,7 +94,7 @@ export class EventControlStatement extends Statement {
   constructor(
     private token: Token,
     private eventType: EventType,
-    private param: ExprContext | undefined,
+    private param: Expression | undefined,
     private state: EventChannelState,
   ) {
     super();
@@ -171,7 +170,7 @@ function isValidKey(param: number): boolean {
 }
 
 export class SleepStatement extends Statement {
-  durationExpr?: ExprContext;
+  durationExpr?: Expression;
 
   constructor(private args: BuiltinStatementArgs) {
     super();

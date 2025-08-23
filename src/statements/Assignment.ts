@@ -1,6 +1,5 @@
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { RuntimeError } from "../Errors.ts";
-import { evaluateExpression } from "../Expressions.ts";
+import { evaluateExpression, Expression } from "../Expressions.ts";
 import { Memory } from "../Memory.ts";
 import { sameType, TypeTag } from "../Types.ts";
 import { isError } from "../Values.ts";
@@ -9,7 +8,7 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 
 export class LetStatement extends Statement {
-  constructor(private variable: Variable, private expr: ExprContext) {
+  constructor(private variable: Variable, private expr: Expression) {
     super();
   }
 
@@ -20,7 +19,7 @@ export class LetStatement extends Statement {
       memory: context.memory,
     });
     if (isError(value)) {
-      throw RuntimeError.fromToken(this.expr.start!, value);
+      throw RuntimeError.fromToken(this.expr.token, value);
     }
     context.memory.write(this.variable, value);
   }

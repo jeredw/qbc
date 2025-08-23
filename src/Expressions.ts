@@ -8,7 +8,7 @@ import {
   Builtin_functionContext,
 } from "../build/QBasicParser.ts";
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
-import { ParserRuleContext, ParseTreeWalker } from "antlr4ng";
+import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import * as values from "./Values.ts";
 import { splitSigil, Type, TypeTag } from "./Types.ts";
 import { ParseError, RuntimeError, TYPE_MISMATCH, ILLEGAL_FUNCTION_CALL, DIVISION_BY_ZERO, ILLEGAL_NUMBER, OVERFLOW } from "./Errors.ts";
@@ -19,32 +19,37 @@ import { roundToNearestEven } from "./Math.ts";
 import { getTyperContext } from "./ExtraParserContext.ts";
 import { compareAscii, trim } from "./AsciiChart.ts";
 
-export function evaluateStringExpression(expr: ExprContext, memory: Memory): string {
+export interface Expression {
+  token: Token;
+  ctx: ExprContext;
+}
+
+export function evaluateStringExpression(expr: Expression, memory: Memory): string {
   const value = evaluateExpression({
     expr,
     resultType: {tag: TypeTag.STRING},
     memory
   });
   if (values.isError(value)) {
-    throw RuntimeError.fromToken(expr.start!, value);
+    throw RuntimeError.fromToken(expr.token, value);
   }
   if (!values.isString(value)) {
-    throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
+    throw RuntimeError.fromToken(expr.token, TYPE_MISMATCH);
   }
   return value.string;
 }
 
-export function evaluateIntegerExpression(expr: ExprContext, memory: Memory, resultType?: Type): number {
+export function evaluateIntegerExpression(expr: Expression, memory: Memory, resultType?: Type): number {
   const value = evaluateExpression({
     expr,
     resultType: resultType ?? {tag: TypeTag.INTEGER},
     memory
   });
   if (values.isError(value)) {
-    throw RuntimeError.fromToken(expr.start!, value);
+    throw RuntimeError.fromToken(expr.token, value);
   }
   if (!values.isNumeric(value)) {
-    throw RuntimeError.fromToken(expr.start!, TYPE_MISMATCH);
+    throw RuntimeError.fromToken(expr.token, TYPE_MISMATCH);
   }
   return value.number;
 }
@@ -80,13 +85,13 @@ export function evaluateExpression({
   resultType,
   memory,
 }: {
-  expr: ExprContext,
+  expr: Expression,
   resultType?: Type,
   memory: Memory,
 }): values.Value {
   const forceDouble = resultType && resultType.tag == TypeTag.DOUBLE;
   const expressionListener = new ExpressionListener(false, memory, forceDouble);
-  ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
+  ParseTreeWalker.DEFAULT.walk(expressionListener, expr.ctx);
   const result = expressionListener.getResult();
   return resultType ? values.cast(result, resultType) : result;
 }

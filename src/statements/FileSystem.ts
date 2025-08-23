@@ -1,6 +1,5 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
-import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { integer, isNumeric, isString, long, string, StringValue, Value } from "../Values.ts";
@@ -16,10 +15,11 @@ import { TypeTag } from "../Types.ts";
 
 export interface OpenArgs {
   token: Token;
-  name: ExprContext;
-  fileNumber: ExprContext;
-  mode: OpenMode | ExprContext;
-  recordLength?: ExprContext;
+  name: Expression;
+  fileNumber: Expression;
+  mode?: OpenMode;
+  modeExpr?: Expression;
+  recordLength?: Expression;
 }
 
 export class OpenStatement extends Statement {
@@ -44,10 +44,9 @@ export class OpenStatement extends Statement {
       device = context.devices.modem;
     }
     tryIo(this.args.token, () => {
-      const modeSpec = this.args.mode;
       let mode: OpenMode = OpenMode.RANDOM;
-      if (modeSpec instanceof ExprContext) {
-        const modeString = evaluateStringExpression(modeSpec, context.memory).toUpperCase();
+      if (this.args.modeExpr) {
+        const modeString = evaluateStringExpression(this.args.modeExpr, context.memory).toUpperCase();
         switch (modeString.charAt(0)) {
           case 'O':
             mode = OpenMode.OUTPUT;
@@ -68,7 +67,10 @@ export class OpenStatement extends Statement {
             throw new IOError(BAD_FILE_MODE);
         }
       } else {
-        mode = modeSpec;
+        if (this.args.mode === undefined) {
+          throw new Error('Missing mode for open');
+        }
+        mode = this.args.mode;
       }
       const handle = device.open(name, mode, recordLength);
       context.files.handles.set(fileNumber, handle);
@@ -77,7 +79,7 @@ export class OpenStatement extends Statement {
 }
 
 export class CloseStatement extends Statement {
-  constructor(private fileNumber: ExprContext) {
+  constructor(private fileNumber: Expression) {
     super();
   }
 
@@ -218,8 +220,8 @@ export class KillStatement extends FileSystemStatement {
 export class NameStatement extends Statement {
   constructor(
     private token: Token,
-    private oldPathExpr: ExprContext,
-    private newPathExpr: ExprContext
+    private oldPathExpr: Expression,
+    private newPathExpr: Expression
   ) {
     super();
   }
@@ -288,7 +290,7 @@ export class LofFunction extends BuiltinFunction1 {
 export class SeekFunction extends Statement {
   constructor(
     private token: Token,
-    private fileNumber: ExprContext,
+    private fileNumber: Expression,
     private result: Variable
   ) {
     super();
@@ -307,8 +309,8 @@ export class SeekFunction extends Statement {
 export class SeekStatement extends Statement {
   constructor(
     private token: Token,
-    private fileNumber: ExprContext,
-    private offset: ExprContext
+    private fileNumber: Expression,
+    private offset: Expression
   ) {
     super();
   }
@@ -340,8 +342,8 @@ export class FreefileFunction extends Statement {
 
 export class FileattrFunction extends Statement {
   token: Token;
-  fileNumber: ExprContext;
-  attribute: ExprContext;
+  fileNumber: Expression;
+  attribute: Expression;
   result: Variable;
 
   constructor({token, result, params}: BuiltinStatementArgs) {
@@ -393,7 +395,7 @@ function encodeOpenMode(openMode: OpenMode): number {
 }
 
 interface GetFileAccessorArgs {
-  expr?: ExprContext;
+  expr?: Expression;
   fileNumber?: number;
   context: ExecutionContext;
 }
@@ -431,14 +433,14 @@ export function getSequentialReadAccessor(args: GetFileAccessorArgs): FileAccess
 }
 
 export interface FieldDefinition {
-  widthExpr: ExprContext;
+  widthExpr: Expression;
   variable: Variable;
 }
 
 export class FieldStatement extends Statement {
   constructor(
     private token: Token,
-    private fileNumber: ExprContext,
+    private fileNumber: Expression,
     private fields: FieldDefinition[]
   ) {
     super();
@@ -498,8 +500,8 @@ function copyRecordBufferToStringFields(values: StringValue[]) {
 abstract class GetPutStatement extends Statement {
   constructor(
     protected token: Token,
-    protected fileNumber: ExprContext,
-    protected recordNumber?: ExprContext,
+    protected fileNumber: Expression,
+    protected recordNumber?: Expression,
     protected variable?: Variable,
   ) {
     super();
@@ -536,8 +538,8 @@ abstract class GetPutStatement extends Statement {
 export class GetIoStatement extends GetPutStatement {
   constructor(
     token: Token,
-    fileNumber: ExprContext,
-    recordNumber?: ExprContext,
+    fileNumber: Expression,
+    recordNumber?: Expression,
     variable?: Variable,
   ) {
     super(token, fileNumber, recordNumber, variable);
@@ -572,8 +574,8 @@ export class GetIoStatement extends GetPutStatement {
 export class PutIoStatement extends GetPutStatement {
   constructor(
     token: Token,
-    fileNumber: ExprContext,
-    recordNumber?: ExprContext,
+    fileNumber: Expression,
+    recordNumber?: Expression,
     variable?: Variable,
   ) {
     super(token, fileNumber, recordNumber, variable);
@@ -609,8 +611,8 @@ export class PutIoStatement extends GetPutStatement {
 export class WidthFileStatement extends Statement {
   constructor(
     private token: Token,
-    private fileNumber: ExprContext,
-    private width: ExprContext
+    private fileNumber: Expression,
+    private width: Expression
   ) {
     super();
   }

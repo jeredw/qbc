@@ -2,8 +2,7 @@ import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
-import { ExprContext } from "../../build/QBasicParser.ts";
-import { evaluateIntegerExpression, evaluateStringExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, OUT_OF_STACK_SPACE } from "../Errors.ts";
 import { integer, isString } from "../Values.ts";
 import { TypeTag } from "../Types.ts";
@@ -26,8 +25,8 @@ export class BeepStatement extends Statement {
 const TICKS_PER_SECOND = 1193180 / 65535;
 
 export class SoundStatement extends Statement {
-  frequency: ExprContext;
-  duration: ExprContext;
+  frequency: Expression;
+  duration: Expression;
 
   constructor(private args: BuiltinStatementArgs) {
     super();
@@ -65,7 +64,7 @@ export class PlayFunction extends Statement {
 export class PlayStatement extends Statement {
   constructor(
     private token: Token,
-    private commandString: ExprContext
+    private commandString: Expression
   ) {
     super();
   }

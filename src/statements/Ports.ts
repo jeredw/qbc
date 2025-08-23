@@ -1,8 +1,7 @@
 import { Token } from "antlr4ng";
-import { ExprContext } from "../../build/QBasicParser.ts";
 import { BuiltinStatementArgs } from "../Builtins.ts";
 import { RuntimeError, OVERFLOW } from "../Errors.ts";
-import { evaluateIntegerExpression } from "../Expressions.ts";
+import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { TypeTag } from "../Types.ts";
 import { integer, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
@@ -44,8 +43,8 @@ export class InpFunction extends BuiltinFunction1 {
 
 export class OutStatement extends Statement {
   private token: Token;
-  private portExpr: ExprContext;
-  private dataExpr: ExprContext;
+  private portExpr: Expression;
+  private dataExpr: Expression;
 
   constructor(args: BuiltinStatementArgs) {
     super();

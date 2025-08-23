@@ -1,5 +1,5 @@
 import { Type, TypeTag } from "./Types.ts";
-import { ExprContext } from "../build/QBasicParser.ts";
+import { Expression } from "./Expressions.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Variable } from "./Variables.ts";
 import { Token } from "antlr4ng";
@@ -26,7 +26,7 @@ export interface BuiltinStatementArgs {
 }
 
 export interface BuiltinParam {
-  expr?: ExprContext;
+  expr?: Expression;
 }
 
 let _ = parseBuiltinSpec;
