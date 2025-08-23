@@ -521,6 +521,8 @@ once, anywhere in the `PRINT` argument list.
 undocumented parsing behavior.
 - `COMMON` was supposed to be for multi-module programs, but is mostly used just
 for `COMMON SHARED` as a kind of missing global declaration statement.
+- `STRIG ON` disappears after you type it!  This is old GW-BASIC syntax, and for
+some reason it compiles as empty instead of as an error.
 
 ## Missing batteries
 

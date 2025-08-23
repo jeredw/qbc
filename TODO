@@ -89,6 +89,7 @@ Bringup
 + DBZGAME: CALL should work without DECLARE
 + QPAINT: Double check if default ON KEY checks modifiers
 + DBZGAME: IDE knows how to fix missing "s at end of line
+- 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unrecognized argument 139: 118
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
@@ -105,10 +106,13 @@ Bringup
 - NFL: PRINT USING is really PRINT expr... USING!
 - PONGBALL: Need mouse limit apis
 - QBASWIN: Unrecognized opcode 131
+- QDALEKS: Corrupted characters after pressing H.
 - SNOOPY: Seems to use set 2 or weird german keyboard scancodes
 - SNOOPY: Really messed up adlib sound
 - STARTREK: Some kind of pcode with header magic 2fc (PDS?)
+- TF!DRAW: Mouse x coordinates scaled wrong
 - USEFL201, SPRIT256: CALL ABSOLUTE with record type
+- WATER: Ok why is this so slow?
 - WHEEL OF WEALTH: marge simpson paint overflows circles
 
 IDE features
@@ -136,13 +140,13 @@ Language features
 + Verify weird scoping rules for deffn work
 ~ Painting patterns
 ~ Debugging statements TRON, TROFF, STOP
-- Should be able to CALL SUBs without DECLARE
++ Should be able to CALL SUBs without DECLARE
 - Fully validate PRINT USING
 - DOS emulation for SYSTEM, SHELL, IOCTL
 - Do something with file locking LOCK/UNLOCK and ACCESS
-- Better I/O emulation for WAIT, INP, OUTP (VGA registers? more?)
+~ Better I/O emulation for WAIT, INP, OUTP (VGA registers? more?)
 - Match circle rasterization for squishy aspect ratios
-- Fix arithmetic precision for math functions, especially single vs double
++ Fix arithmetic precision for math functions, especially single vs double
   precision rounding issues
 - Storage metacommands should only apply to DIM arrays
   "The $STATIC and $DYNAMIC metacommands affect all arrays except implicitly
