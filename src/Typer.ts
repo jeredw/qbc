@@ -1157,8 +1157,9 @@ export class Typer extends QBasicParserListener {
       {}
     );
     return {
-      type,
       name,
+      type,
+      sigil,
       isAsType: !!asTypeCtx,
       isParameter: true,
       token: ctx.start!,

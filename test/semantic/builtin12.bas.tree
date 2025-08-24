@@ -1,0 +1,10 @@
+(program ' \n 
+  (sub_statement sub 
+    (untyped_id foo) 
+    ( 
+      (parameter_list 
+        (parameter files$ 
+          (array_declaration 
+            ( )))) ) 
+    (block \n) 
+    (end_sub_statement end sub)) \n <EOF>)
