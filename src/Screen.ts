@@ -1,3 +1,4 @@
+import { asciiToChar } from './AsciiChart.ts';
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
 import { CircleArgs, GetBitmapArgs, LineArgs, PaintArgs, Plotter, Point, PutBitmapArgs } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
@@ -81,6 +82,7 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   getAttributeAt(row: number, column: number): number;
   setCharAt(row: number, column: number, char: string): void;
   setAttributeAt(row: number, column: number, attribute: number): void;
+  recognizeCharAt(row: number, column: number): string;
   setSoftKey(key: number, name: string): void;
   showSoftKeys(): void;
   hideSoftKeys(): void;
@@ -231,6 +233,14 @@ class Page {
     this.dirty = true;
   }
 
+  recognizeCharAt(row: number, column: number, fontHash: Map<string, string>): string {
+    const left = (column - 1) * this.cellWidth;
+    const top = (row - 1) * this.cellHeight;
+    const ctx = this.canvas.getContext('2d')!;
+    const bitmap = ctx.getImageData(left, top, this.cellWidth, this.cellHeight);
+    return fontHash.get(hashCharacterCellBitmap(bitmap)) ?? ' ';
+  }
+
   getPixel(x: number, y: number, screen?: boolean): number {
     const ctx = this.canvas.getContext('2d')!;
     return this.plotter.getPixel(ctx, x, y, screen);
@@ -373,6 +383,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private softKeys: SoftKeys;
   private vgaPaletteIndex: number;
   private vgaPaletteData: number[];
+  private fontHash: Map<string, string>;
   canvas: HTMLCanvasElement;
 
   constructor(canvasProvider?: CanvasProvider) {
@@ -499,6 +510,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.visiblePageIndex = visiblePage;
     this.activePage = this.pages[activePage];
     this.visiblePage = this.pages[visiblePage];
+    this.buildFontHash();
     if (this.headless) {
       return;
     }
@@ -1106,10 +1118,36 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.activePage.putCharAt(row, column, cell);
   }
 
+  recognizeCharAt(row: number, column: number): string {
+    if (this.mode.mode === 0) {
+      return this.getCharAt(row, column);
+    }
+    this.checkOnScreen(row, column);
+    return this.visiblePage.recognizeCharAt(row, column, this.fontHash);
+  }
+
   private checkOnScreen(row: number, column: number) {
     const [columns, rows] = this.geometry.text;
     if (row < 1 || column < 1 || row > rows || column > columns) {
       throw new Error("off screen");
+    }
+  }
+
+  private buildFontHash() {
+    const charCanvas = this.canvasProvider.createCanvas(this.cellWidth, this.cellHeight);
+    const ctx = charCanvas.getContext('2d', { willReadFrequently: true })!;
+    ctx.font = `${this.cellHeight}px '${this.geometry.font}'`;
+    ctx.textBaseline = 'top';
+    this.fontHash = new Map();
+    for (let code = 0; code < 256; code++) {
+      const char = asciiToChar.get(code)!;
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, this.cellWidth, this.cellHeight);
+      ctx.fillStyle = '#fff';
+      ctx.fillText(char, 0, 0);
+      const imageData = ctx.getImageData(0, 0, this.cellWidth, this.cellHeight);
+      // Character 32 (space) should overwrite 0 (nul).
+      this.fontHash.set(hashCharacterCellBitmap(imageData), char);
     }
   }
 
@@ -1202,6 +1240,18 @@ export class CanvasScreen extends BasePrinter implements Screen {
       y: ~~clamp(y, 0, this.canvas.height)
     };
   }
+}
+
+function hashCharacterCellBitmap(bitmap: ImageData): string {
+  let result = '';
+  let index = 0;
+  for (let y = 0; y < bitmap.height; y++) {
+    for (let x = 0; x < bitmap.width; x++) {
+      result += bitmap.data[index] > 0 ? '1' : '0';
+      index += 4;
+    }
+  }
+  return result;
 }
 
 export class TestScreen implements Screen {
@@ -1462,6 +1512,10 @@ export class TestScreen implements Screen {
 
   setAttributeAt(row: number, column: number, attr: number) {
     return this.graphics.setAttributeAt(row, column, attr);
+  }
+
+  recognizeCharAt(row: number, column: number): string {
+    return this.graphics.recognizeCharAt(row, column);
   }
 
   setSoftKey(key: number, name: string) {

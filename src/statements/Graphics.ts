@@ -58,9 +58,13 @@ export class ScreenFunction extends Statement {
     let contents: number;
     try {
       if (colorFlag) {
-        contents = context.devices.screen.getColorAt(row, column);
+        if (context.devices.screen.getMode().mode === 0) {
+          contents = context.devices.screen.getColorAt(row, column);
+        } else {
+          contents = 0;
+        }
       } else {
-        const char = context.devices.screen.getCharAt(row, column);
+        const char = context.devices.screen.recognizeCharAt(row, column);
         contents = stringToAscii(char)[0] ?? 0;
         // SCREEN reports control characters as spaces.
         if (contents < 32) {
