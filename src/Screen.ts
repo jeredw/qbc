@@ -362,7 +362,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
   // Text scrolls up when a newline would first enter this row, e.g. for a 25
   // line screen we would scroll up when entering notional line 26.
   private scrollEndRow: number;
-  private needScroll = false;
   private textCursorShown: boolean = false;
   private cursorStartScanline: number = 0;
   private cursorEndScanline: number = 31;
@@ -497,7 +496,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.width = geometry.text[0];
     this.column = 1;
     this.row = 1;
-    this.needScroll = false;
     this.resetViewPrint();
     this.color = {fgColor: mode.defaultFgColor, bgColor: 0};
     [this.cellWidth, this.cellHeight] = geometry.characterBox;
@@ -686,7 +684,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.scrollEndRow = bottomRow + 1;
     this.row = topRow;
     this.column = 1;
-    this.needScroll = false;
   }
 
   resetViewPrint(fullscreen = false) {
@@ -694,7 +691,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.scrollEndRow = this.geometry.text[1] + (fullscreen ? 1 : 0);
     this.row = 1;
     this.column = 1;
-    this.needScroll = false;
   }
 
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
@@ -812,7 +808,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
     }
     this.row = this.scrollStartRow;
     this.column = 1;
-    this.needScroll = false;
   }
 
   getPixel(x: number, y: number, screen?: boolean): number {
@@ -985,26 +980,17 @@ export class CanvasScreen extends BasePrinter implements Screen {
     ctx.putImageData(imageData, x, y);
   }
 
-  override newLine(hanging: boolean) {
+  override newLine() {
     this.column = 1;
     this.row++;
     if (this.row >= this.scrollEndRow) {
-      if (hanging) {
-        this.needScroll = true;
-      } else {
-        this.activePage.scroll(this.scrollStartRow, this.scrollEndRow, this.color);
-        this.needScroll = false;
-      }
+      this.activePage.scroll(this.scrollStartRow, this.scrollEndRow, this.color);
       this.row = this.scrollEndRow - 1;
       this.column = 1;
     }
   }
 
   override putChar(char: string) {
-    if (this.needScroll) {
-      this.activePage.scroll(this.scrollStartRow, this.scrollEndRow, this.color);
-      this.needScroll = false;
-    }
     this.activePage.putCharAt(this.row, this.column, {
       char, attributes: {...this.color}
     });
@@ -1013,10 +999,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
   showTextCursor() {
     this.eraseTextCursor();
     this.textCursorShown = true;
-    if (this.needScroll) {
-      this.activePage.scroll(this.scrollStartRow, this.scrollEndRow, this.color);
-      this.needScroll = false;
-    }
   }
   
   hideTextCursor() {
@@ -1056,7 +1038,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
       }
       this.column = column;
     }
-    this.needScroll = false;
   }
 
   configureTextCursor(startScanline: number, endScanline: number, insert?: boolean) {
@@ -1079,10 +1060,18 @@ export class CanvasScreen extends BasePrinter implements Screen {
   }
 
   getRow(): number {
+    const [columns, rows] = this.geometry.text;
+    if (this.column > columns && this.row < rows) {
+      return this.row + 1;
+    }
     return this.row;
   }
 
   override getColumn(): number {
+    const [columns, _] = this.geometry.text;
+    if (this.column > columns) {
+      return 1;
+    }
     return this.column;
   }
 
