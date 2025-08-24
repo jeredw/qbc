@@ -35,6 +35,7 @@ export class CodeGenerator extends QBasicParserListener {
   private _syntheticLabelIndex = 0;
   private _arrayBaseIndex: number = 0;
   private _labelToDataIndex: Map<string, number> = new Map();
+  private _lastToken: Token;
 
   constructor(program: Program, arrayBaseIndex: number) {
     super();
@@ -45,6 +46,17 @@ export class CodeGenerator extends QBasicParserListener {
 
   get program() {
     return this._program;
+  }
+
+  get lastToken() {
+    return this._lastToken;
+  }
+
+  override enterEveryRule = (ctx: ParserRuleContext) => {
+    if (ctx.start) {
+      this._lastToken = ctx.start;
+    }
+    super.enterEveryRule(ctx);
   }
 
   override exitProgram = (_ctx: parser.ProgramContext) => {

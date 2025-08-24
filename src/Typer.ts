@@ -33,6 +33,7 @@ export class Typer extends QBasicParserListener {
   private _storageType: StorageType = StorageType.STATIC;
   private _builtins: StandardLibrary;
   private _useStaticArrays = true;
+  private _lastToken: Token;
 
   constructor(builtins: StandardLibrary) {
     super();
@@ -57,8 +58,19 @@ export class Typer extends QBasicParserListener {
     return this._arrayBaseIndex;
   }
 
+  get lastToken() {
+    return this._lastToken;
+  }
+
   private makeProgramChunk(symbols: SymbolTable, procedure?: Procedure): ProgramChunk {
     return {statements: [], labelToIndex: new Map(), indexToTarget: [], symbols, procedure, stackSize: 0};
+  }
+
+  override enterEveryRule = (ctx: ParserRuleContext) => {
+    if (ctx.start) {
+      this._lastToken = ctx.start;
+    }
+    super.enterEveryRule(ctx);
   }
 
   override exitProgram = (_ctx: parser.ProgramContext) => {

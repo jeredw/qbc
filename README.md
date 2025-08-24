@@ -107,7 +107,7 @@ exactly.  Here are the supported runtime errors.
 2       ✅Syntax error               39      CASE ELSE expected
 3       ✅RETURN without GOSUB       40      ✅Variable required
 4       ✅Out of DATA                50      ✅FIELD overflow
-5       ✅Illegal function call      51      Internal error
+5       ✅Illegal function call      51      ✅Internal error
 6       ✅Overflow                   52      ✅Bad file name or number
 7       ✅Out of memory              53      ✅File not found
 8       Label not defined            54      ✅Bad file mode

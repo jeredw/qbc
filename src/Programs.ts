@@ -6,6 +6,7 @@ import { UserDefinedType, } from "./Types.ts";
 import { Statement } from "./statements/Statement.ts";
 import { Procedure } from "./Procedures.ts";
 import { StandardLibrary } from "./Builtins.ts";
+import { ParseError, RuntimeError } from "./Errors.ts";
 
 export interface Program {
   chunks: ProgramChunk[];
@@ -48,8 +49,22 @@ export function compile(tree: ParseTree): Program {
   SymbolTable._symbolIndex = 0x0100;
   const builtins = new StandardLibrary();
   const typer = new Typer(builtins);
-  ParseTreeWalker.DEFAULT.walk(typer, tree);
+  try {
+    ParseTreeWalker.DEFAULT.walk(typer, tree);
+  } catch (error: unknown) {
+    if (error instanceof ParseError) {
+      throw error;
+    }
+    throw ParseError.internalError(typer.lastToken, error);
+  }
   const codeGenerator = new CodeGenerator(typer.program, typer.arrayBaseIndex);
-  ParseTreeWalker.DEFAULT.walk(codeGenerator, tree);
+  try {
+    ParseTreeWalker.DEFAULT.walk(codeGenerator, tree);
+  } catch (error: unknown) {
+    if (error instanceof ParseError) {
+      throw error;
+    }
+    throw ParseError.internalError(codeGenerator.lastToken, error);
+  }
   return codeGenerator.program;
 }

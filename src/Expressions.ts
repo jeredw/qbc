@@ -96,14 +96,12 @@ class BytecodeCompiler extends QBasicParserListener {
   private stack: TypeTag[] = [];
   private constantExpression: boolean;
   private callExpressionDepth: number;
-  private forceDouble: boolean;
   private maxStack: number;
 
-  constructor(constantExpression: boolean, double?: boolean) {
+  constructor(constantExpression: boolean) {
     super();
     this.constantExpression = constantExpression;
     this.callExpressionDepth = 0;
-    this.forceDouble = !!double;
     this.maxStack = 0;
   }
 
@@ -320,7 +318,7 @@ class BytecodeCompiler extends QBasicParserListener {
     if (this.callExpressionDepth > 0) {
       return;
     }
-    const literal = parseLiteral(ctx.getText(), this.forceDouble);
+    const literal = parseLiteral(ctx.getText());
     this.visitValue(ctx.start!, literal);
   }
 

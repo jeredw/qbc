@@ -1,5 +1,6 @@
 import { Token } from "antlr4ng"
 import { ErrorValue, error } from "./Values.ts";
+import { TypeTag } from "./Types.ts";
 
 export interface ErrorHandling {
   // True if currently handling an error.
@@ -41,6 +42,15 @@ export class ParseError extends Error {
     this.message = message;
   }
 
+  static internalError(token: Token | null, thrownError: unknown) {
+    return new ParseError(
+      token,
+      token?.line ?? 1,
+      token?.column ?? 0,
+      token?.text?.length ?? 1,
+      internalErrorMessage(thrownError));
+  }
+
   static fromToken(offendingSymbol: Token, message: string) {
     return new ParseError(
       offendingSymbol,
@@ -78,7 +88,7 @@ export class RuntimeError extends Error {
   private constructor(error: ErrorValue, offendingSymbol: Token | null, line: number, charPositionInLine: number, length: number, ...params: any[]) {
     super(...params);
     if (Error['captureStackTrace']) {
-      Error['captureStackTrace'](this, ParseError);
+      Error['captureStackTrace'](this, RuntimeError);
     }
     this.name = "RuntimeError";
     this.error = error;
@@ -87,6 +97,15 @@ export class RuntimeError extends Error {
     this.charPositionInLine = charPositionInLine;
     this.length = length;
     this.message = error.errorMessage;
+  }
+
+  static internalError(lineNumber: number, thrownError: unknown) {
+    const error: ErrorValue = {
+      tag: TypeTag.ERROR,
+      errorCode: INTERNAL_ERROR.errorCode,
+      errorMessage: internalErrorMessage(thrownError),
+    };
+    return new RuntimeError(error, null, lineNumber, 0, 1);
   }
 
   static fromToken(offendingSymbol: Token, error: ErrorValue) {
@@ -114,6 +133,10 @@ export class IOError extends Error {
     super(error.errorMessage);
     this.error = error;
   }
+}
+
+function internalErrorMessage(e: unknown): string {
+  return `Internal error\n${(e as Error).stack}`;
 }
 
 // Builtin error messages that can be returned by ERROR.
@@ -181,6 +204,7 @@ export const
   RESUME_WITHOUT_ERROR = getErrorForCode(20),
   VARIABLE_REQUIRED = getErrorForCode(40),
   FIELD_OVERFLOW = getErrorForCode(50),
+  INTERNAL_ERROR = getErrorForCode(51),
   BAD_FILE_NAME_OR_NUMBER = getErrorForCode(52),
   FILE_NOT_FOUND = getErrorForCode(53),
   BAD_FILE_MODE = getErrorForCode(54),

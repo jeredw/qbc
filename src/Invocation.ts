@@ -354,8 +354,9 @@ export class Invocation {
           top.statementIndex = this.errorHandling.targetIndex;
           return;
         }
+        throw e;
       }
-      throw e;
+      throw RuntimeError.internalError(this.nextLine, e);
     }
   }
 
