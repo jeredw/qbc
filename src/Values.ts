@@ -112,26 +112,6 @@ export function valueOfNumericType(tag: TypeTag): (number: number) => Value {
   throw new Error('not numeric');
 }
 
-export function mostPreciseFloatType(a: NumericValue, b: NumericValue): (number: number) => Value {
-  if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
-    return double;
-  }
-  return single;
-}
-
-export function mostPreciseType(a: NumericValue, b: NumericValue): (number: number) => Value {
-  if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
-    return double;
-  }
-  if (a.tag == TypeTag.SINGLE || b.tag == TypeTag.SINGLE) {
-    return single;
-  }
-  if (a.tag == TypeTag.LONG || b.tag == TypeTag.LONG) {
-    return long;
-  }
-  return integer;
-}
-
 export function cast(value: Value, desiredType: Type): Value {
   if (value.tag == TypeTag.ERROR) {
     return value;
@@ -163,20 +143,6 @@ export function cast(value: Value, desiredType: Type): Value {
     case TypeTag.PRINTABLE:
       return isNumeric(value) || isString(value) ? value : TYPE_MISMATCH;
   }
-}
-
-export function typeOfValue(value: Value): Type {
-  switch (value.tag) {
-    case TypeTag.SINGLE:
-    case TypeTag.DOUBLE:
-    case TypeTag.INTEGER:
-    case TypeTag.LONG:
-      return {tag: value.tag};
-    case TypeTag.STRING:
-    case TypeTag.FIXED_STRING:
-      return {tag: TypeTag.STRING};
-  }
-  throw new Error("unimplemented");
 }
 
 export function getDefaultValue(variable: Variable): Value {

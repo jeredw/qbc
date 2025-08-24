@@ -10,7 +10,7 @@ import {
 import { QBasicParserListener } from "../build/QBasicParserListener.ts";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import * as values from "./Values.ts";
-import { splitSigil, Type, TypeTag } from "./Types.ts";
+import { isNumericTag, isStringTag, splitSigil, Type, TypeTag } from "./Types.ts";
 import { ParseError, RuntimeError, TYPE_MISMATCH, ILLEGAL_FUNCTION_CALL, DIVISION_BY_ZERO, ILLEGAL_NUMBER, OVERFLOW } from "./Errors.ts";
 import { isConstant, isVariable } from "./SymbolTable.ts";
 import { Memory } from "./Memory.ts";
@@ -21,6 +21,8 @@ import { compareAscii, trim } from "./AsciiChart.ts";
 
 export interface Expression {
   token: Token;
+  resultType: Type;
+  bytecode: Bytecode[];
   ctx: ExprContext;
 }
 
@@ -61,22 +63,8 @@ export function evaluateAsConstantExpression({
   expr: ExprContext,
   resultType?: Type,
 }): values.Value {
-  const expressionListener = new ExpressionListener(true);
-  ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
-  const result = expressionListener.getResult();
-  return resultType ? values.cast(result, resultType) : result;
-}
-
-export function typeCheckExpression({
-  expr,
-  resultType,
-}: {
-  expr: ExprContext,
-  resultType?: Type,
-}): values.Value {
-  const expressionListener = new ExpressionListener(false);
-  ParseTreeWalker.DEFAULT.walk(expressionListener, expr);
-  const result = expressionListener.getResult();
+  const compiled = compileExpression(expr, expr.start!, resultType ?? { tag: TypeTag.ANY }, true);
+  const result = new BytecodeEvaluator(compiled).evaluate();
   return resultType ? values.cast(result, resultType) : result;
 }
 
@@ -89,76 +77,196 @@ export function evaluateExpression({
   resultType?: Type,
   memory: Memory,
 }): values.Value {
-  const forceDouble = resultType && resultType.tag == TypeTag.DOUBLE;
-  const expressionListener = new ExpressionListener(false, memory, forceDouble);
-  ParseTreeWalker.DEFAULT.walk(expressionListener, expr.ctx);
-  const result = expressionListener.getResult();
+  const result = new BytecodeEvaluator(expr).evaluate(memory);
   return resultType ? values.cast(result, resultType) : result;
 }
 
-class ExpressionListener extends QBasicParserListener {
-  private _stack: values.Value[] = [];
-  private _constantExpression: boolean;
-  private _callExpressionDepth: number;
-  private _typeCheck: boolean;
-  private _memory?: Memory;
-  private _forceDouble: boolean;
+export function compileExpression(expr: ExprContext, token: Token, desiredType: Type, constantExpression?: boolean): Expression {
+  const compiler = new BytecodeCompiler(!!constantExpression);
+  ParseTreeWalker.DEFAULT.walk(compiler, expr);
+  const resultType = compiler.typeCheckResult(desiredType);
+  if (!resultType) {
+    throw ParseError.fromToken(token, "Type mismatch");
+  }
+  return {token, bytecode: compiler.getBytecode(), ctx: expr, resultType};
+}
 
-  constructor(constantExpression: boolean, memory?: Memory, double?: boolean) {
+class BytecodeCompiler extends QBasicParserListener {
+  private bytecode: Bytecode[] = [];
+  private stack: TypeTag[] = [];
+  private constantExpression: boolean;
+  private callExpressionDepth: number;
+  private forceDouble: boolean;
+  private maxStack: number;
+
+  constructor(constantExpression: boolean, double?: boolean) {
     super();
-    this._constantExpression = constantExpression;
-    this._callExpressionDepth = 0;
-    this._typeCheck = !memory && !constantExpression;
-    this._memory = memory;
-    this._forceDouble = !!double;
+    this.constantExpression = constantExpression;
+    this.callExpressionDepth = 0;
+    this.forceDouble = !!double;
+    this.maxStack = 0;
   }
 
-  getResult() {
-    return this.pop();
+  getBytecode(): Bytecode[] {
+    return this.bytecode;
   }
 
-  private push(v: values.Value) {
-    this._stack.push(v);
-  }
-
-  private pop(): values.Value {
-    if (this._stack.length == 0) {
-      throw new Error('stack underflow while evaluating expression');
+  typeCheckResult(desiredType: Type): Type | undefined {
+    if (this.maxStack > MAX_STACK) {
+      throw new Error(`This is embarrassing, but I'll need more MAX_STACK.`);
     }
-    return this._stack.pop()!;
+    const resultTag = this.pop();
+    this.emitReturn(resultTag);
+    switch (desiredType.tag) {
+      case TypeTag.SINGLE:
+      case TypeTag.DOUBLE:
+      case TypeTag.INTEGER:
+      case TypeTag.LONG:
+        if (isNumericTag(resultTag)) {
+          return desiredType;
+        }
+        break;
+      case TypeTag.STRING:
+      case TypeTag.FIXED_STRING:
+        if (isStringTag(resultTag)) {
+          return desiredType;
+        }
+        break;
+      case TypeTag.RECORD:
+        break;
+      case TypeTag.NUMERIC:
+        if (isNumericTag(resultTag)) {
+          return {tag: resultTag} as Type;
+        }
+        break;
+      case TypeTag.FLOAT:
+        if (isNumericTag(resultTag)) {
+          if (resultTag === TypeTag.DOUBLE) {
+            return {tag: TypeTag.DOUBLE};
+          }
+          return {tag: TypeTag.SINGLE};
+        }
+        break;
+      case TypeTag.ANY:
+      case TypeTag.PRINTABLE:
+        if (isNumericTag(resultTag) || isStringTag(resultTag)) {
+          return {tag: resultTag} as Type;
+        }
+        break;
+    }
+  }
+
+  private emit(op: Operation) {
+    this.bytecode.push({op});
+  }
+
+  private emitPushString(string: string) {
+    this.bytecode.push({op: Operation.PUSH_STRING, string: string});
+  }
+
+  private emitPushNumber(number: number) {
+    this.bytecode.push({op: Operation.PUSH_NUMBER, number: number});
+  }
+
+  private emitPushStringVariable(variable: Variable) {
+    if (variable.type.tag === TypeTag.FIXED_STRING) {
+      this.bytecode.push({op: Operation.PUSH_STRING_VARIABLE, variable, maxLength: variable.type.maxLength});
+    } else {
+      this.bytecode.push({op: Operation.PUSH_STRING_VARIABLE, variable});
+    }
+  }
+
+  private emitPushNumberVariable(variable: Variable) {
+    this.bytecode.push({op: Operation.PUSH_NUMBER_VARIABLE, variable});
+  }
+
+  private emitReturn(t: TypeTag) {
+    switch (t) {
+      case TypeTag.DOUBLE:
+        this.emit(Operation.RETURN_DOUBLE);
+        break;
+      case TypeTag.SINGLE:
+        this.emit(Operation.RETURN_SINGLE);
+        break;
+      case TypeTag.LONG:
+        this.emit(Operation.RETURN_LONG);
+        break;
+      case TypeTag.INTEGER:
+        this.emit(Operation.RETURN_INTEGER);
+        break;
+      case TypeTag.FIXED_STRING:
+      case TypeTag.STRING:
+        this.emit(Operation.RETURN_STRING);
+        break;
+      default:
+        throw new Error("Unsupported expression type.");
+    }
+  }
+
+  private push(t: TypeTag) {
+    this.stack.push(t);
+    this.maxStack = Math.max(this.maxStack, this.stack.length);
+  }
+
+  private pop(): TypeTag {
+    const result = this.stack.pop();
+    if (result === undefined) {
+      throw new Error('Stack underflow while compiling expression');
+    }
+    return result;
+  }
+
+  private visitValue(token: Token, value: values.Value) {
+    if (values.isError(value)) {
+      throw ParseError.fromToken(token, value.errorMessage);
+    }
+    if (values.isString(value)) {
+      this.emitPushString(value.string);
+    } else if (values.isNumeric(value)) {
+      this.emitPushNumber(value.number);
+    } else {
+      throw new Error("Unknown value type");
+    }
+    this.push(value.tag);
+  }
+
+  private visitVariable(token: Token, variable: Variable) {
+    if (isStringTag(variable.type.tag)) {
+      this.emitPushStringVariable(variable);
+    } else if (isNumericTag(variable.type.tag)) {
+      this.emitPushNumberVariable(variable);
+    } else {
+      throw ParseError.fromToken(token, "Type mismatch");
+    }
+    this.push(variable.type.tag);
   }
 
   private binaryOperator = (ctx: ParserRuleContext) => {
-    if (this._callExpressionDepth > 0) {
+    if (this.callExpressionDepth > 0) {
       return;
     }
     const op = ctx.getChild(1)!.getText();
     const b = this.pop();
     const a = this.pop();
-    if (values.isNumeric(a) && values.isNumeric(b)) {
-      this.push(this.evaluateNumericBinaryOperator(op, a, b));
-    } else if (values.isString(a) && values.isString(b)) {
-      if (this._constantExpression && op == '+') {
+    if (isNumericTag(a) && isNumericTag(b)) {
+      this.push(this.compileNumericBinaryOperator(op, a, b));
+    } else if (isStringTag(a) && isStringTag(b)) {
+      if (this.constantExpression && op == '+') {
         throw ParseError.fromToken(ctx.start!, "Illegal function call");
       }
-      this.push(this.evaluateStringBinaryOperator(op, a, b));
-    // Propagate errors from earlier during evaluation.
-    } else if (values.isError(a)) {
-      this.push(a);
-    } else if (values.isError(b)) {
-      this.push(b);
+      this.push(this.compileStringBinaryOperator(ctx.start!, op));
     } else {
-      this.push(TYPE_MISMATCH);
+      throw ParseError.fromToken(ctx.start!, "Type mismatch");
     }
   }
 
   // Skip parens.
 
   override exitExponentExpr = (ctx: ExponentExprContext) => {
-    if (this._callExpressionDepth > 0) {
+    if (this.callExpressionDepth > 0) {
       return;
     }
-    if (this._constantExpression) {
+    if (this.constantExpression) {
       throw ParseError.fromToken(ctx.EXP().symbol, "Illegal function call");
     }
     this.binaryOperator(ctx);
@@ -166,17 +274,17 @@ class ExpressionListener extends QBasicParserListener {
 
   // Skip unary plus.
 
-  override exitUnaryMinusExpr = (_ctx: UnaryMinusExprContext) => {
-    if (this._callExpressionDepth > 0) {
+  override exitUnaryMinusExpr = (ctx: UnaryMinusExprContext) => {
+    if (this.callExpressionDepth > 0) {
       return;
     }
-    const a = this.pop();
-    if (!values.isNumeric(a)) {
-      this.push(TYPE_MISMATCH);
-      return;
+    const t = this.pop();
+    if (!isNumericTag(t)) {
+      throw ParseError.fromToken(ctx.MINUS().symbol, "Type mismatch");
     }
     // Note that k%=-32768:print -k% will overflow.
-    this.push(values.numericTypeOf(a)(this.check(-a.number)));
+    this.visitMostPreciseTypeOp(Operation.NEG, Operation.NEG, Operation.NEG_LONG, Operation.NEG_INTEGER, t, t);
+    this.push(t);
   }
 
   override exitMultiplyDivideExpr = this.binaryOperator;
@@ -185,30 +293,21 @@ class ExpressionListener extends QBasicParserListener {
   override exitPlusMinusExpr = this.binaryOperator;
   override exitComparisonExpr = this.binaryOperator;
 
-  override exitNotExpr = (_ctx: NotExprContext) => {
-    if (this._callExpressionDepth > 0) {
+  override exitNotExpr = (ctx: NotExprContext) => {
+    if (this.callExpressionDepth > 0) {
       return;
     }
-    const a = this.pop();
-    if (!values.isNumeric(a)) {
-      this.push(TYPE_MISMATCH);
-      return;
+    const t = this.pop();
+    if (!isNumericTag(t)) {
+      throw ParseError.fromToken(ctx.NOT().symbol, "Type mismatch");
     }
-    if (a.tag == TypeTag.INTEGER) {
-      this.push(values.integer(this.check(~a.number)));
-      return;
+    if (t === TypeTag.INTEGER || t === TypeTag.LONG) {
+      this.emit(Operation.NOT);
+      this.push(t);
+    } else {
+      this.emit(Operation.NOT_WITH_LONG_CONVERSION);
+      this.push(TypeTag.LONG);
     }
-    if (a.tag == TypeTag.LONG) {
-      this.push(values.long(this.check(~a.number)));
-      return;
-    }
-    // Cast a to long first to detect overflow.
-    const longA = values.long(this.check(a.number));
-    if (!values.isNumeric(longA)) {
-      this.push(longA);
-      return;
-    }
-    this.push(values.long(this.check(~longA.number)));
   }
 
   override exitAndExpr = this.binaryOperator;
@@ -218,145 +317,187 @@ class ExpressionListener extends QBasicParserListener {
   override exitImpExpr = this.binaryOperator;
 
   override exitValueExpr = (ctx: ValueExprContext) => {
-    if (this._callExpressionDepth > 0) {
+    if (this.callExpressionDepth > 0) {
       return;
     }
-    this.push(parseLiteral(ctx.getText(), this._forceDouble));
+    const literal = parseLiteral(ctx.getText(), this.forceDouble);
+    this.visitValue(ctx.start!, literal);
   }
 
   override enterBuiltin_function = (ctx: Builtin_functionContext) => {
-    this._callExpressionDepth++;
+    this.callExpressionDepth++;
   }
 
   override exitBuiltin_function = (ctx: Builtin_functionContext) => {
-    this._callExpressionDepth--;
-    if (this._callExpressionDepth > 0) {
+    this.callExpressionDepth--;
+    if (this.callExpressionDepth > 0) {
       return;
     }
     const result = getTyperContext(ctx).$result;
     if (!result) {
-      throw new Error('missing result variable');
+      throw new Error('Missing result variable');
     }
-    this.push(this.readVariable(result));
+    this.visitVariable(ctx.start!, result);
   }
 
   override enterVarCallExpr = (dispatchCtx: VarCallExprContext) => {
-    this._callExpressionDepth++;
-    if (this._callExpressionDepth > 1) {
+    this.callExpressionDepth++;
+    if (this.callExpressionDepth > 1) {
       // Do not recurse into argument expressions.  Those are evaluated separately.
       return;
     }
     const ctx = dispatchCtx.variable_or_function_call();
-    const result = getTyperContext(ctx).$result;
-    if (result) {
-      this.push(this.readVariable(result));
-      return;
-    }
-    if (this._constantExpression) {
+    if (this.constantExpression) {
       const constant = getTyperContext(ctx).$constant;
       if (!constant) {
         throw ParseError.fromToken(ctx.start!, "Invalid constant");
       }
-      this.push(constant.value);
+      this.visitValue(ctx.start!, constant.value);
+      return;
+    }
+    const result = getTyperContext(ctx).$result;
+    if (result) {
+      this.visitVariable(ctx.start!, result);
       return;
     }
     const symbol = getTyperContext(ctx).$symbol;
     if (!symbol) {
-      throw new Error("missing symbol");
+      throw new Error("Missing symbol");
     }
     if (isConstant(symbol)) {
-      this.push(symbol.constant.value);
+      this.visitValue(ctx.start!, symbol.constant.value);
       return;
     }
     if (isVariable(symbol)) {
-      this.push(this.readVariable(symbol.variable));
+      this.visitVariable(ctx.start!, symbol.variable);
       return;
     }
-    throw new Error("missing result for function call");
-  }
-
-  private readVariable(variable: Variable): values.Value {
-    if (variable.type.tag == TypeTag.RECORD) {
-      return TYPE_MISMATCH;
-    }
-    if (this._memory) {
-      const [_, value] = this._memory.dereference(variable);
-      if (value) {
-        return value;
-      }
-    }
-    return values.getDefaultValue(variable);
+    throw new Error("Missing result for function call");
   }
 
   override exitVarCallExpr = (_ctx: VarCallExprContext) => {
-    this._callExpressionDepth--;
+    this.callExpressionDepth--;
   }
 
-  private evaluateNumericBinaryOperator(op: string, a: values.NumericValue, b: values.NumericValue): values.Value {
-    const resultType = values.mostPreciseType(a, b);
+  private compileNumericBinaryOperator(op: string, a: TypeTag, b: TypeTag): TypeTag {
     switch (op.toLowerCase()) {
       case '+':
-        return resultType(this.check(a.number + b.number));
+        return this.visitMostPreciseTypeOp(Operation.ADD_DOUBLE, Operation.ADD_SINGLE, Operation.ADD_LONG, Operation.ADD_INTEGER, a, b);
       case '-':
-        return resultType(this.check(a.number - b.number));
+        return this.visitMostPreciseTypeOp(Operation.SUB_DOUBLE, Operation.SUB_SINGLE, Operation.SUB_LONG, Operation.SUB_INTEGER, a, b);
       case '*':
-        return resultType(this.check(a.number * b.number));
+        return this.visitMostPreciseTypeOp(Operation.MUL_DOUBLE, Operation.MUL_SINGLE, Operation.MUL_LONG, Operation.MUL_INTEGER, a, b);
       case '/':
-        return this.floatDivide(a, b);
+        return this.visitFloatOp(Operation.FDIV_DOUBLE, Operation.FDIV_SINGLE, a, b);
       case '\\':
-        return withIntegerCast(a, b, (a: values.NumericValue, b: values.NumericValue) => this.integerDivide(a, b));
+        return this.visitIntegerOp(Operation.IDIV_LONG, Operation.IDIV_INTEGER, a, b);
       case 'mod':
-        return withIntegerCast(a, b, (a: values.NumericValue, b: values.NumericValue) => this.integerRemainder(a, b));
-      case '^': {
-        if (a.number == 0 && b.number < 0 && !this._typeCheck) {
-          return ILLEGAL_FUNCTION_CALL;
-        }
-        const resultType = values.mostPreciseFloatType(a, b);
-        return resultType(this.check(Math.pow(a.number, b.number)));
-      }
+        return this.visitIntegerOp(Operation.IMOD_LONG, Operation.IMOD_INTEGER, a, b);
+      case '^':
+        return this.visitFloatOp(Operation.FEXP_DOUBLE, Operation.FEXP_SINGLE, a, b);
       case '=':
-        return values.boolean(a.number == b.number);
+        this.emit(Operation.CMP_EQ);
+        return TypeTag.INTEGER;
       case '<':
-        return values.boolean(a.number < b.number);
+        this.emit(Operation.CMP_LT);
+        return TypeTag.INTEGER;
       case '<=':
-        return values.boolean(a.number <= b.number);
+        this.emit(Operation.CMP_LE);
+        return TypeTag.INTEGER;
       case '<>':
-        return values.boolean(a.number != b.number);
+        this.emit(Operation.CMP_NE);
+        return TypeTag.INTEGER;
       case '>=':
-        return values.boolean(a.number >= b.number);
+        this.emit(Operation.CMP_GE);
+        return TypeTag.INTEGER;
       case '>':
-        return values.boolean(a.number > b.number);
+        this.emit(Operation.CMP_GT);
+        return TypeTag.INTEGER;
       case 'and':
-        return this.logicalOp(a, b, (a, b) => a & b);
+        return this.visitIntegerOp(Operation.AND, Operation.AND, a, b);
       case 'or':
-        return this.logicalOp(a, b, (a, b) => a | b);
+        return this.visitIntegerOp(Operation.OR, Operation.OR, a, b);
       case 'xor':
-        return this.logicalOp(a, b, (a, b) => a ^ b);
+        return this.visitIntegerOp(Operation.XOR, Operation.XOR, a, b);
       case 'eqv':
-        return this.logicalOp(a, b, (a, b) => ~(a ^ b));
+        return this.visitIntegerOp(Operation.EQV, Operation.EQV, a, b);
       case 'imp':
-        return this.logicalOp(a, b, (a, b) => ~a | b);
+        return this.visitIntegerOp(Operation.IMP, Operation.IMP, a, b);
       default:
         throw new Error(`Unknown operator ${op}`);
     }
   }
 
-  private evaluateStringBinaryOperator(op: string, a: values.StringValue, b: values.StringValue): values.Value {
+  private visitMostPreciseTypeOp(
+    opDouble: Operation,
+    opSingle: Operation,
+    opLong: Operation,
+    opInteger: Operation,
+    a: TypeTag,
+    b: TypeTag
+  ): TypeTag {
+    if (a === TypeTag.DOUBLE || b === TypeTag.DOUBLE) {
+      this.emit(opDouble);
+      return TypeTag.DOUBLE;
+    }
+    if (a === TypeTag.SINGLE || b === TypeTag.SINGLE) {
+      this.emit(opSingle);
+      return TypeTag.SINGLE;
+    }
+    if (a === TypeTag.LONG || b === TypeTag.LONG) {
+      this.emit(opLong);
+      return TypeTag.LONG;
+    }
+    this.emit(opInteger);
+    return TypeTag.INTEGER;
+  }
+
+  private visitFloatOp(opDouble: Operation, opSingle: Operation, a: TypeTag, b: TypeTag): TypeTag {
+    if (a === TypeTag.DOUBLE || b === TypeTag.DOUBLE) {
+      this.emit(opDouble);
+      return TypeTag.DOUBLE;
+    }
+    this.emit(opSingle);
+    return TypeTag.SINGLE;
+  }
+
+  private visitIntegerOp(opLong: Operation, opInteger: Operation, a: TypeTag, b: TypeTag): TypeTag {
+    if (a === TypeTag.INTEGER && b === TypeTag.INTEGER) {
+      this.emit(opInteger);
+      return TypeTag.INTEGER;
+    }
+    if ((a === TypeTag.INTEGER || a === TypeTag.LONG) && (b === TypeTag.INTEGER || b === TypeTag.LONG)) {
+      this.emit(opLong);
+      return TypeTag.LONG;
+    }
+    this.emit(Operation.CONVERT_ARGS_TO_LONG);
+    this.emit(opLong);
+    return TypeTag.LONG;
+  }
+
+  private compileStringBinaryOperator(token: Token, op: string): TypeTag {
     switch (op.toLowerCase()) {
       case '+':
-        return values.string(a.string + b.string);
+        this.emit(Operation.CONCATENATE);
+        return TypeTag.STRING;
       case '=':
-        return values.boolean(a.string == b.string);
+        this.emit(Operation.CMPS_EQ);
+        return TypeTag.INTEGER;
       case '<':
-        return values.boolean(compareAscii(a.string, b.string) < 0);
+        this.emit(Operation.CMPS_LT);
+        return TypeTag.INTEGER;
       case '<=':
-        return values.boolean(compareAscii(a.string, b.string) <= 0);
+        this.emit(Operation.CMPS_LE);
+        return TypeTag.INTEGER;
       case '<>':
-        return values.boolean(a.string != b.string);
+        this.emit(Operation.CMPS_NE);
+        return TypeTag.INTEGER;
       case '>=':
-        return values.boolean(compareAscii(a.string, b.string) >= 0);
+        this.emit(Operation.CMPS_GE);
+        return TypeTag.INTEGER;
       case '>':
-        return values.boolean(compareAscii(a.string, b.string) > 0);
+        this.emit(Operation.CMPS_GT);
+        return TypeTag.INTEGER;
       case '-':
       case '*':
       case '/':
@@ -368,45 +509,403 @@ class ExpressionListener extends QBasicParserListener {
       case 'xor':
       case 'eqv':
       case 'imp':
-        return TYPE_MISMATCH;
+        throw ParseError.fromToken(token, "Type mismatch");
       default:
         throw new Error(`Unknown operator ${op}`);
     }
   }
+}
 
-  private floatDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
-    if (b.number == 0 && !this._typeCheck) {
-      return DIVISION_BY_ZERO;
+enum Operation {
+  UNKNOWN,
+  PUSH_NUMBER,
+  PUSH_STRING,
+  PUSH_NUMBER_VARIABLE,
+  PUSH_STRING_VARIABLE,
+  ADD_DOUBLE,
+  ADD_SINGLE,
+  ADD_LONG,
+  ADD_INTEGER,
+  SUB_DOUBLE,
+  SUB_SINGLE,
+  SUB_LONG,
+  SUB_INTEGER,
+  MUL_DOUBLE,
+  MUL_SINGLE,
+  MUL_LONG,
+  MUL_INTEGER,
+  FDIV_DOUBLE,
+  FDIV_SINGLE,
+  FEXP_DOUBLE,
+  FEXP_SINGLE,
+  CONVERT_ARGS_TO_LONG,
+  IDIV_LONG,
+  IDIV_INTEGER,
+  IMOD_LONG,
+  IMOD_INTEGER,
+  AND,
+  OR,
+  XOR,
+  EQV,
+  IMP,
+  NOT,
+  NOT_WITH_LONG_CONVERSION,
+  NEG,
+  NEG_LONG,
+  NEG_INTEGER,
+  CMP_EQ,
+  CMP_LT,
+  CMP_LE,
+  CMP_NE,
+  CMP_GE,
+  CMP_GT,
+  CMPS_EQ,
+  CMPS_LT,
+  CMPS_LE,
+  CMPS_NE,
+  CMPS_GE,
+  CMPS_GT,
+  CONCATENATE,
+  RETURN_INTEGER,
+  RETURN_LONG,
+  RETURN_SINGLE,
+  RETURN_DOUBLE,
+  RETURN_STRING,
+}
+
+interface Bytecode {
+  op: Operation;
+  variable?: Variable;
+  number?: number;
+  string?: string;
+  maxLength?: number;
+}
+
+const MAX_STACK = 1024;
+const N: number[] = Array(MAX_STACK).fill(0);
+const S: string[] = Array(MAX_STACK).fill("");
+
+class BytecodeEvaluator {
+  private np: number = 0;
+  private sp: number = 0;
+
+  constructor(private expr: Expression) {
+  }
+
+  evaluate(memory?: Memory): values.Value {
+    for (const bytecode of this.expr.bytecode) {
+      switch (bytecode.op) {
+        case Operation.PUSH_NUMBER:
+          N[this.np++] = bytecode.number!;
+          break;
+        case Operation.PUSH_STRING:
+          S[this.sp++] = bytecode.string!;
+          break;
+        case Operation.PUSH_NUMBER_VARIABLE: {
+          const value = memory?.read(bytecode.variable!) as values.NumericValue;
+          N[this.np++] = value?.number ?? 0;
+          break;
+        }
+        case Operation.PUSH_STRING_VARIABLE: {
+          const value = memory?.read(bytecode.variable!) as values.StringValue;
+          S[this.sp++] = value?.string ?? (bytecode.maxLength ? "\x00".repeat(bytecode.maxLength) : "");
+          break;
+        }
+        case Operation.ADD_DOUBLE:
+          this.np--;
+          N[this.np - 1] += N[this.np];
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.ADD_SINGLE:
+          this.np--;
+          N[this.np - 1] = Math.fround(N[this.np - 1] + N[this.np]);
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.ADD_LONG:
+          this.np--;
+          N[this.np - 1] += N[this.np];
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.ADD_INTEGER: {
+          this.np--;
+          N[this.np - 1] += N[this.np];
+          if (isIntegerOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        }
+        case Operation.SUB_DOUBLE:
+          this.np--;
+          N[this.np - 1] -= N[this.np];
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.SUB_SINGLE:
+          this.np--;
+          N[this.np - 1] = Math.fround(N[this.np - 1] - N[this.np]);
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.SUB_LONG:
+          this.np--;
+          N[this.np - 1] -= N[this.np];
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.SUB_INTEGER:
+          this.np--;
+          N[this.np - 1] -= N[this.np];
+          if (isIntegerOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.MUL_DOUBLE:
+          this.np--;
+          N[this.np - 1] *= N[this.np];
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.MUL_SINGLE:
+          this.np--;
+          N[this.np - 1] = Math.fround(N[this.np - 1] * N[this.np]);
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.MUL_LONG:
+          this.np--;
+          N[this.np - 1] *= N[this.np];
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.MUL_INTEGER:
+          this.np--;
+          N[this.np - 1] *= N[this.np];
+          if (isIntegerOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.FDIV_DOUBLE:
+          this.np--;
+          if (N[this.np] == 0) {
+            return DIVISION_BY_ZERO;
+          }
+          N[this.np - 1] /= N[this.np];
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.FDIV_SINGLE:
+          this.np--;
+          if (N[this.np] == 0) {
+            return DIVISION_BY_ZERO;
+          }
+          N[this.np - 1] = Math.fround(N[this.np - 1] / N[this.np]);
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.FEXP_DOUBLE:
+          this.np--;
+          if (N[this.np] == 0 && N[this.np - 1] < 0) {
+            return ILLEGAL_FUNCTION_CALL;
+          }
+          N[this.np - 1] = Math.pow(N[this.np - 1], N[this.np]);
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.FEXP_SINGLE:
+          this.np--;
+          if (N[this.np] == 0 && N[this.np - 1] < 0) {
+            return ILLEGAL_FUNCTION_CALL;
+          }
+          N[this.np - 1] = Math.fround(Math.pow(N[this.np - 1], N[this.np]));
+          if (!isFinite(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.CONVERT_ARGS_TO_LONG:
+          N[this.np - 2] = roundToNearestEven(N[this.np - 2]);
+          if (isLongOverflow(N[this.np - 2])) {
+            return OVERFLOW;
+          }
+          N[this.np - 1] = roundToNearestEven(N[this.np - 1]);
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.IDIV_LONG:
+          this.np--;
+          if (N[this.np] == 0) {
+            return DIVISION_BY_ZERO;
+          }
+          N[this.np - 1] = Math.trunc(N[this.np - 1] / N[this.np]);
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.IDIV_INTEGER:
+          this.np--;
+          if (N[this.np] == 0) {
+            return DIVISION_BY_ZERO;
+          }
+          N[this.np - 1] = Math.trunc(N[this.np - 1] / N[this.np]);
+          if (isIntegerOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.IMOD_LONG:
+          this.np--;
+          if (N[this.np] == 0) {
+            return DIVISION_BY_ZERO;
+          }
+          N[this.np - 1] %= N[this.np];
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.IMOD_INTEGER:
+          this.np--;
+          if (N[this.np] == 0) {
+            return DIVISION_BY_ZERO;
+          }
+          N[this.np - 1] %= N[this.np];
+          if (isIntegerOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.AND:
+          N[this.np - 2] &= N[this.np - 1];
+          this.np--;
+          break;
+        case Operation.OR:
+          N[this.np - 2] |= N[this.np - 1];
+          this.np--;
+          break;
+        case Operation.XOR:
+          N[this.np - 2] ^= N[this.np - 1];
+          this.np--;
+          break;
+        case Operation.EQV:
+          N[this.np - 2] = ~(N[this.np - 2] ^ N[this.np - 1]);
+          this.np--;
+          break;
+        case Operation.IMP:
+          N[this.np - 2] = ~N[this.np - 2] | N[this.np - 1];
+          this.np--;
+          break;
+        case Operation.NOT:
+          N[this.np - 1] = ~N[this.np - 1];
+          break;
+        case Operation.NOT_WITH_LONG_CONVERSION:
+          N[this.np - 1] = roundToNearestEven(N[this.np - 1]);
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          N[this.np - 1] = ~N[this.np - 1];
+          break;
+        case Operation.NEG:
+          N[this.np - 1] = -N[this.np - 1];
+          break;
+        case Operation.NEG_LONG:
+          N[this.np - 1] = -N[this.np - 1];
+          if (isLongOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.NEG_INTEGER:
+          N[this.np - 1] = -N[this.np - 1];
+          if (isIntegerOverflow(N[this.np - 1])) {
+            return OVERFLOW;
+          }
+          break;
+        case Operation.CMP_EQ:
+          N[this.np - 2] = N[this.np - 2] == N[this.np - 1] ? values.TRUE : values.FALSE;
+          this.np--;
+          break;
+        case Operation.CMP_LT:
+          N[this.np - 2] = N[this.np - 2] < N[this.np - 1] ? values.TRUE : values.FALSE;
+          this.np--;
+          break;
+        case Operation.CMP_LE:
+          N[this.np - 2] = N[this.np - 2] <= N[this.np - 1] ? values.TRUE : values.FALSE;
+          this.np--;
+          break;
+        case Operation.CMP_NE:
+          N[this.np - 2] = N[this.np - 2] != N[this.np - 1] ? values.TRUE : values.FALSE;
+          this.np--;
+          break;
+        case Operation.CMP_GE:
+          N[this.np - 2] = N[this.np - 2] >= N[this.np - 1] ? values.TRUE : values.FALSE;
+          this.np--;
+          break;
+        case Operation.CMP_GT:
+          N[this.np - 2] = N[this.np - 2] > N[this.np - 1] ? values.TRUE : values.FALSE;
+          this.np--;
+          break;
+        case Operation.CMPS_EQ:
+          N[this.np++] = S[this.sp - 2] == S[this.sp - 1] ? values.TRUE : values.FALSE;
+          this.sp -= 2;
+          break;
+        case Operation.CMPS_LT:
+          N[this.np++] = compareAscii(S[this.sp - 2], S[this.sp - 1]) < 0 ? values.TRUE : values.FALSE;
+          this.sp -= 2;
+          break;
+        case Operation.CMPS_LE:
+          N[this.np++] = compareAscii(S[this.sp - 2], S[this.sp - 1]) <= 0 ? values.TRUE : values.FALSE;
+          this.sp -= 2;
+          break;
+        case Operation.CMPS_NE:
+          N[this.np++] = S[this.sp - 2] != S[this.sp - 1] ? values.TRUE : values.FALSE;
+          this.sp -= 2;
+          break;
+        case Operation.CMPS_GE:
+          N[this.np++] = compareAscii(S[this.sp - 2], S[this.sp - 1]) >= 0 ? values.TRUE : values.FALSE;
+          this.sp -= 2;
+          break;
+        case Operation.CMPS_GT:
+          N[this.np++] = compareAscii(S[this.sp - 2], S[this.sp - 1]) > 0 ? values.TRUE : values.FALSE;
+          this.sp -= 2;
+          break;
+        case Operation.CONCATENATE:
+          S[this.sp - 2] += S[this.sp - 1];
+          this.sp--;
+          break;
+        // These do not type check so that e.g. CVS() can return an inf.
+        case Operation.RETURN_INTEGER:
+          return {number: N[this.np - 1], tag: TypeTag.INTEGER};
+        case Operation.RETURN_LONG:
+          return {number: N[this.np - 1], tag: TypeTag.LONG};
+        case Operation.RETURN_SINGLE:
+          return {number: N[this.np - 1], tag: TypeTag.SINGLE};
+        case Operation.RETURN_DOUBLE:
+          return {number: N[this.np - 1], tag: TypeTag.DOUBLE};
+        case Operation.RETURN_STRING:
+          return {string: S[this.sp - 1], tag: TypeTag.STRING};
+      }
     }
-    const result = this.check(a.number / b.number);
-    if (a.tag == TypeTag.DOUBLE || b.tag == TypeTag.DOUBLE) {
-      return values.double(result);
-    }
-    return values.single(result);
+    return OVERFLOW;
   }
+}
 
-  private integerDivide(a: values.NumericValue, b: values.NumericValue): values.Value {
-    if (b.number == 0 && !this._typeCheck) {
-      return DIVISION_BY_ZERO;
-    }
-    // Integer division truncates.
-    return values.numericTypeOf(a)(Math.trunc(this.check(a.number / b.number)));
-  }
+function isIntegerOverflow(n: number): boolean {
+  return n < -32768 || n > 32767;
+}
 
-  private integerRemainder(a: values.NumericValue, b: values.NumericValue): values.Value {
-    if (b.number == 0 && !this._typeCheck) {
-      return DIVISION_BY_ZERO;
-    }
-    return values.numericTypeOf(a)(this.check(a.number % b.number));
-  }
-
-  private logicalOp(a: values.NumericValue, b: values.NumericValue, op: (a: number, b: number) => number): values.Value {
-    return withIntegerCast(a, b, (a, b) => values.numericTypeOf(a)(this.check(op(a.number, b.number))));
-  }
-
-  private check(n: number): number {
-    return this._typeCheck ? 0 : n;
-  }
+function isLongOverflow(n: number): boolean {
+  return n < -2147483648 || n > 2147483647;
 }
 
 export function parseLiteral(fullText: string, forceDouble?: boolean): values.Value {
@@ -529,19 +1028,4 @@ function parseAmpConstant(text: string, base: number, sigil: string): values.Val
     return values.long(signedLong);
   }
   return n > 0xffff ? values.long(signedLong) : values.integer(signedInteger);
-}
-
-function withIntegerCast(a: values.NumericValue, b: values.NumericValue, fn: (a: values.NumericValue, b: values.NumericValue) => values.Value): values.Value {
-  const bothOperandsAreShortIntegers =
-    a.tag == TypeTag.INTEGER && b.tag == TypeTag.INTEGER;
-  const integerType = bothOperandsAreShortIntegers ? values.integer : values.long;
-  const castA = integerType(roundToNearestEven(a.number));
-  const castB = integerType(roundToNearestEven(b.number));
-  if (!values.isNumeric(castA)) {
-    return castA;
-  }
-  if (!values.isNumeric(castB)) {
-    return castB;
-  }
-  return fn(castA, castB);
 }

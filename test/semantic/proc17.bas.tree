@@ -1,4 +1,4 @@
-(program 
+(program ' \n ' \n 
   (type_statement type 
     (untyped_id test) \n 
     (type_element 
@@ -27,7 +27,7 @@
         (assignment_statement 
           (variable_or_function_call tmp) = 
           (expr 
-            (variable_or_function_call t)))) \n 
+            (variable_or_function_call t)))) \n ' \n 
       (statement 
         (assignment_statement 
           (variable_or_function_call tmp.x) = 

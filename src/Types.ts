@@ -96,12 +96,20 @@ export function sameType(s: Type, t: Type) {
   return s.tag == t.tag;
 }
 
+export function isNumericTag(t: TypeTag): boolean {
+  return t === TypeTag.FLOAT || t === TypeTag.NUMERIC || t === TypeTag.SINGLE || t === TypeTag.DOUBLE || t === TypeTag.INTEGER || t === TypeTag.LONG;
+}
+
 export function isNumericType(s: Type): boolean {
-  return s.tag == TypeTag.FLOAT || s.tag == TypeTag.NUMERIC || s.tag == TypeTag.SINGLE || s.tag == TypeTag.DOUBLE || s.tag == TypeTag.INTEGER || s.tag == TypeTag.LONG;
+  return isNumericTag(s.tag);
+}
+
+export function isStringTag(t: TypeTag): boolean {
+  return t === TypeTag.STRING || t === TypeTag.FIXED_STRING;
 }
 
 export function isString(s: Type): boolean {
-  return s.tag == TypeTag.STRING || s.tag == TypeTag.FIXED_STRING;
+  return isStringTag(s.tag);
 }
 
 export function typeOfSigil(sigil: string): Type {

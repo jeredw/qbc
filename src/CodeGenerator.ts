@@ -5,8 +5,8 @@ import { ParseError } from "./Errors.ts";
 import { Program, ProgramChunk } from "./Programs.ts";
 import { ParserRuleContext, ParseTreeWalker, Token } from "antlr4ng";
 import { Variable } from "./Variables.ts";
-import { Expression, parseLiteral, typeCheckExpression } from "./Expressions.ts";
-import { isError, isString as isStringValue } from "./Values.ts";
+import { compileExpression, Expression, parseLiteral } from "./Expressions.ts";
+import { isString as isStringValue } from "./Values.ts";
 import { sameType, splitSigil, Type, TypeTag, isString as isStringType, isNumericType } from "./Types.ts";
 import { isBuiltin, isProcedure, isVariable } from "./SymbolTable.ts";
 import { Statement } from "./statements/Statement.ts";
@@ -1286,8 +1286,8 @@ export class CodeGenerator extends QBasicParserListener {
     if (!testVariable) {
       throw new Error("missing test");
     }
-    const textExpr = this.compileExpression(ctx.expr());
-    this.addStatement(statements.let_(testVariable, textExpr), ctx.start!);
+    const testExpr = this.compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.PRINTABLE });
+    this.addStatement(statements.let_(testVariable, testExpr), ctx.start!);
     const labels = getCodeGeneratorContext(ctx);
     labels.$exitLabel = this.makeSyntheticLabel();
     let nextBranchLabel = this.makeSyntheticLabel();
@@ -1578,7 +1578,7 @@ export class CodeGenerator extends QBasicParserListener {
     return symbol.variable;
   }
 
-  private compileExpression(expr: parser.ExprContext, token?: Token, resultType?: Type): Expression {
+  private compileExpression(expr: parser.ExprContext, token: Token, resultType: Type): Expression {
     const codeGenerator = this;
     ParseTreeWalker.DEFAULT.walk(new class extends QBasicParserListener {
       override exitVariable_or_function_call = (ctx: parser.Variable_or_function_callContext) => {
@@ -1907,13 +1907,7 @@ export class CodeGenerator extends QBasicParserListener {
         codeGenerator.addStatement(statements.varptr(ctx.start!, result, variable, variableSymbol), ctx.start!);
       }
     }, expr);
-    if (resultType && token) {
-      const value = typeCheckExpression({expr, resultType});
-      if (isError(value)) {
-        throw ParseError.fromToken(token, value.errorMessage);
-      }
-    }
-    return {ctx: expr, token: expr.start!};
+    return compileExpression(expr, token, resultType);
   }
 }
 

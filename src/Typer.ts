@@ -15,10 +15,10 @@ import {
   isNumericType
 } from "./Types.ts";
 import { ArrayBounds, Variable } from "./Variables.ts";
-import { SymbolTable, isProcedure, isVariable, isBuiltin, QBasicSymbol } from "./SymbolTable.ts";
+import { SymbolTable, isProcedure, isVariable, isBuiltin } from "./SymbolTable.ts";
 import { Procedure } from "./Procedures.ts";
-import { isError, isNumeric, typeOfValue, Value } from "./Values.ts";
-import { typeCheckExpression, parseLiteral, evaluateAsConstantExpression } from "./Expressions.ts";
+import { isError, isNumeric, Value } from "./Values.ts";
+import { parseLiteral, evaluateAsConstantExpression, compileExpression } from "./Expressions.ts";
 import { StorageType } from "./Memory.ts";
 import { StandardLibrary } from "./Builtins.ts";
 import { getTyperContext } from "./ExtraParserContext.ts";
@@ -278,7 +278,8 @@ export class Typer extends QBasicParserListener {
       if (!symbol.builtin.returnType) {
         throw ParseError.fromToken(ctx._name!, "Duplicate definition");
       }
-      let returnType = symbol.builtin.returnType;
+      const returnType = symbol.builtin.returnType;
+      let resultType = returnType;
       if (returnType.tag == TypeTag.NUMERIC || returnType.tag == TypeTag.FLOAT) {
         const args = ctx.argument_list()?.argument() || [];
         if (args.length == 0) {
@@ -288,19 +289,10 @@ export class Typer extends QBasicParserListener {
         if (!expr) {
           throw new Error("unimplemented");
         }
-        const value = typeCheckExpression({expr});
-        if (isError(value) || !isNumeric(value)) {
-          throw ParseError.fromToken(ctx._name!, "Type mismatch");
-        }
-        if (returnType.tag == TypeTag.NUMERIC) {
-          // Numeric return type is the same as the argument type.
-          returnType = typeOfValue(value);
-        } else {
-          // Float return type is double if the argument is a double, otherwise single.
-          returnType = {tag: value.tag === TypeTag.DOUBLE ? TypeTag.DOUBLE : TypeTag.SINGLE};
-        }
+        const {resultType: exprType} = compileExpression(expr, expr.start!, { tag: returnType.tag });
+        resultType = exprType;
       }
-      const result = this.makeSyntheticVariable(returnType, ctx._name!);
+      const result = this.makeSyntheticVariable(resultType, ctx._name!);
       getTyperContext(ctx).$result = result;
       return;
     }
@@ -891,9 +883,8 @@ export class Typer extends QBasicParserListener {
   }
 
   override exitSelect_case_statement = (ctx: parser.Select_case_statementContext) => {
-    const value = typeCheckExpression({expr: ctx.expr()});
-    const type = typeOfValue(value);
-    getTyperContext(ctx).$test = this.makeSyntheticVariable(type, ctx.start!);
+    const {resultType} = compileExpression(ctx.expr(), ctx.expr().start!, { tag: TypeTag.PRINTABLE });
+    getTyperContext(ctx).$test = this.makeSyntheticVariable(resultType, ctx.start!);
   }
 
   override enterCall_statement = (ctx: parser.Call_statementContext) => {
