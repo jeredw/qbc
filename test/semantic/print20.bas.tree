@@ -1,0 +1,113 @@
+(program ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 0)))) \n 
+  (statement 
+    (locate_statement locate 
+      (expr 
+        (literal 11)) , 
+      (expr 
+        (literal 25)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Tabs$) = 
+      (expr 
+        (variable_or_function_call SPACE$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 16)))) ))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Msg$) = 
+      (expr 
+        (expr 
+          (expr 
+            (variable_or_function_call Tabs$)) + 
+          (expr 
+            (literal "Stuff and things"))) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 13)))) )))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Msg$) = 
+      (expr 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call Msg$)) + 
+            (expr 
+              (variable_or_function_call Tabs$))) + 
+          (expr 
+            (literal "Hooray"))) + 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 13)))) )))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Msg$) = 
+      (expr 
+        (expr 
+          (expr 
+            (variable_or_function_call Msg$)) + 
+          (expr 
+            (variable_or_function_call Tabs$))) + 
+        (expr 
+          (literal "This is aligned text"))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Msg$) = 
+      (expr 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call Msg$)) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 13)))) )))) + 
+          (expr 
+            (variable_or_function_call Tabs$))) + 
+        (expr 
+          (literal "More here"))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call Msg$) = 
+      (expr 
+        (expr 
+          (expr 
+            (expr 
+              (variable_or_function_call Msg$)) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 13)))) )))) + 
+          (expr 
+            (variable_or_function_call Tabs$))) + 
+        (expr 
+          (literal "|"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call Msg$))))) \n <EOF>)

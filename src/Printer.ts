@@ -51,6 +51,23 @@ export abstract class BasePrinter implements Printer {
   }
 
   print(text: string, newline: boolean) {
+    // Break multiline strings before the first newline.
+    const cr = text.indexOf(CR);
+    const lf = text.indexOf(LF);
+    const firstNewline = (
+      cr >= 0 && lf >= 0 ? Math.min(cr, lf) :
+      cr >= 0 ? cr :
+      lf
+    );
+    if (firstNewline >= 0) {
+      this.print(text.slice(0, firstNewline), false);
+      this.newLine();
+      // If print is called with newline and the string includes a final newline
+      // character, two newlines are printed.
+      this.print(text.slice(firstNewline + 1), newline);
+      return;
+    }
+    // text does not include newlines, so it is ok to compare text.length to spaceLeftOnLine.
     if (this.column > this.width || this.column > 1 && this.spaceLeftOnLine() < text.length) {
       this.newLine();
     }

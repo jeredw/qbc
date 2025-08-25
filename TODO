@@ -92,20 +92,25 @@ Bringup
 ~ WATER: Ok why is this so slow?
 + QDALEKS: Corrupted characters after pressing H.
 + CRYSTAL: Box drawing is messed up
++ CRYSTAL: Reads h201 for joystick buttons
 - 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unrecognized argument 139: 118
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
+- ANIMA6: Implicit call without declaration first
 - ART334: Just including qb.bi, seems simple to support
+- CHARGEN: Reads key... but from port 62h instead of 60h?
 - COOKIE, FMTRACK: BLOADs into different pages offset from A000
-+ CRYSTAL: Reads h201 for joystick buttons
 - DIGIREAL: Overflow in POKE...
 - DIGIREAL: Pokes into other page of text memory through B8000
 - DRAGDROP: Uses 3c2 to select bit planes for bload
-- FULLDRAW: Calls BSAVE to save data from A000
+- FULLDRAW, BSV&LD: Calls BSAVE to save data from A000
 - FMTRACK: Sets ram font by SHELLing to a temporary com file...
 - FMTRACK: Piano sounds way off adlib
+- GAMEOVER: Paint overflow on G
+- KBARR: No break codes for f-keys
 - KEYLITES: Uses &h17 to set keyboard status lights
+- KMSCROLL: Doesn't erase background as text scrolls
 - MARIO: Game hangs for a long time after Mario dies
 - MARIO: Sound screwed up after game restarts after Mario death
 - MARIO: Serializing sprites array more often than needed
@@ -113,6 +118,7 @@ Bringup
 - NFL: PRINT USING is really PRINT expr... USING!
 - PONGBALL: Need mouse limit apis
 - QBASWIN: Unrecognized opcode 131
+- SCROLLF: Should this be drawing something
 - SNOOPY: Seems to use set 2 or weird german keyboard scancodes
 - SNOOPY: Really messed up adlib sound
 - STARTREK: Some kind of pcode with header magic 2fc (PDS?)
