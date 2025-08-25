@@ -4,9 +4,6 @@ import { boolean, integer, isNumeric, Value } from "../Values.ts";
 import { BuiltinFunction1 } from "./BuiltinFunction.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 
-const MIN_STICK = 1;
-const MAX_STICK = 200;
-
 export class StickFunction extends BuiltinFunction1 {
   constructor(args: BuiltinStatementArgs) {
     super(args);
@@ -22,14 +19,12 @@ export class StickFunction extends BuiltinFunction1 {
     }
     const state = context.devices.joystick.getState();
     const position = [
-      state[0]?.axes[0] ?? 0,
-      state[0]?.axes[1] ?? 0,
-      state[1]?.axes[0] ?? 0,
-      state[1]?.axes[1] ?? 0,
+      state[0]?.scaledAxes[0] ?? 0,
+      state[0]?.scaledAxes[1] ?? 0,
+      state[1]?.scaledAxes[0] ?? 0,
+      state[1]?.scaledAxes[1] ?? 0,
     ][axis];
-    const t = (position + 1) / 2;
-    const scaledPosition = Math.floor((1 - t) * MIN_STICK + t * MAX_STICK);
-    return integer(scaledPosition);
+    return integer(position);
   }
 }
 

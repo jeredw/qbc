@@ -27,6 +27,20 @@ export class InpFunction extends BuiltinFunction1 {
       return integer(context.devices.blaster.input(port));
     }
     switch (port) {
+      case 0x201: {
+        const [strobeCount, state] = context.devices.joystick.sample();
+        const data = (
+          (state[1]?.buttons[1] ? 0 : 0x80) |
+          (state[1]?.buttons[0] ? 0 : 0x40) |
+          (state[0]?.buttons[1] ? 0 : 0x20) |
+          (state[0]?.buttons[0] ? 0 : 0x10) |
+          (state[1]?.scaledAxes[1] > strobeCount ? 0x8 : 0) |
+          (state[1]?.scaledAxes[0] > strobeCount ? 0x4 : 0) |
+          (state[0]?.scaledAxes[1] > strobeCount ? 0x2 : 0) |
+          (state[0]?.scaledAxes[0] > strobeCount ? 0x1 : 0)
+        );
+        return integer(data);
+      }
       case 0x3c9:
         const data = context.devices.screen.getVgaPaletteData();
         return integer(data);
@@ -73,6 +87,9 @@ export class OutStatement extends Statement {
       return;
     }
     switch (port) {
+      case 0x201:
+        context.devices.joystick.resetCount();
+        break;
       case 0x3c7:
       case 0x3c8:
         context.devices.screen.setVgaPaletteIndex(data);

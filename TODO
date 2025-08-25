@@ -98,7 +98,7 @@ Bringup
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - ART334: Just including qb.bi, seems simple to support
 - COOKIE, FMTRACK: BLOADs into different pages offset from A000
-- CRYSTAL: Reads h201 for joystick buttons
++ CRYSTAL: Reads h201 for joystick buttons
 - DIGIREAL: Overflow in POKE...
 - DIGIREAL: Pokes into other page of text memory through B8000
 - DRAGDROP: Uses 3c2 to select bit planes for bload
@@ -131,6 +131,7 @@ IDE features
 - Status message when compiling, polling for input
 - Clear filesystem when loading from catalog
 - Don't disable break when sound is playing
+- FM synth sound doesn't mute on demand / on break
 ~ Speed controls
 ~ Add a way to upload/download files from browser
 ~ Add a filesystem browser
