@@ -26,7 +26,7 @@ export interface FileAccessor extends Printer {
 
   getRecordBuffer(): number[];
   getRecord(recordNumber?: number): void;
-  putRecord(recordNumber?: number): void;
+  putRecord(size: number, recordNumber?: number): void;
 
   getBytes(numBytes: number, position?: number): number[];
   putBytes(bytes: number[], position?: number): void;

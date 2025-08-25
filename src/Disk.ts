@@ -284,6 +284,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
   position: number;
   lastAccessPosition: number;
   recordBuffer: number[];
+  readPastEndOfFile: boolean;
 
   constructor(handle: MemoryDriveFileHandle, file: DiskFile, mode: OpenMode, recordLength?: number) {
     super(65535);  // No width set by default
@@ -317,14 +318,13 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     }
     this.lastAccessPosition = this.position;
     buffer.fill(0);
-    if (this.position >= this.file.bytes.length) {
-      return;
-    }
+    this.readPastEndOfFile = false;
     for (let i = 0; i < buffer.length; i++) {
-      buffer[i] = this.file.bytes[this.position++];
       if (this.position >= this.file.bytes.length) {
+        this.readPastEndOfFile = true;
         break;
       }
+      buffer[i] = this.file.bytes[this.position++];
     }
   }
 
@@ -354,11 +354,12 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     this.readBytes(this.recordBuffer, recordNumber);
   }
 
-  putRecord(recordNumber?: number) {
+  putRecord(size: number, recordNumber?: number) {
     if (this.openMode() !== OpenMode.RANDOM) {
       throw new IOError(BAD_FILE_MODE);
     }
-    this.writeBytes(this.recordBuffer, recordNumber);
+    this.writeBytes(size > 0 ? this.recordBuffer.slice(0, size) : this.recordBuffer, recordNumber);
+    this.position += this.recordLength;
   }
 
   getBytes(numBytes: number, position?: number): number[] {
@@ -375,6 +376,7 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
       throw new IOError(BAD_FILE_MODE);
     }
     this.writeBytes(bytes, position);
+    this.position += bytes.length;
   }
 
   putChar(ch: string) {
@@ -452,6 +454,9 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
   }
 
   eof(): boolean {
+    if (this.mode === OpenMode.RANDOM || this.mode === OpenMode.BINARY) {
+      return this.readPastEndOfFile;
+    }
     return this.position >= this.file.bytes.length;
   }
 

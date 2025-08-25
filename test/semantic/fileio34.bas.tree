@@ -1,0 +1,94 @@
+(program ' \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.dat")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.dat")) for 
+      (open_mode binary) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id x) as 
+        (type_name 
+          (fixed_string string * 4))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x) = 
+      (expr 
+        (variable_or_function_call string$ 
+          ( 
+            (argument_list 
+              (argument 
+                (expr 
+                  (literal 4))) , 
+              (argument 
+                (expr 
+                  (literal "x")))) ))))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call x$))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call x$))) \n 
+  (statement 
+    (seek_statement seek # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (dim_statement dim 
+      (dim_variable 
+        (untyped_id y) as 
+        (type_name 
+          (fixed_string string * 8))))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call y$))) \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call eof 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n ' \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call y$))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call eof 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 1)))) )))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

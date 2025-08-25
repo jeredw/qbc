@@ -582,7 +582,8 @@ export class PutIoStatement extends GetPutStatement {
   }
 
   randomAccess(handle: Handle, accessor: FileAccessor, context: ExecutionContext) {
-    const recordNumber = this.getRecordNumber(context);
+    const recordNumber = this.getRecordNumber(context) ?? accessor.getSeek();
+    let size = 0;
     if (this.variable) {
       if (handle.fields.length > 0) {
         throw RuntimeError.fromToken(this.token, FIELD_STATEMENT_ACTIVE);
@@ -594,11 +595,12 @@ export class PutIoStatement extends GetPutStatement {
       if (bytes.length > record.length) {
         throw RuntimeError.fromToken(this.token, BAD_RECORD_LENGTH);
       }
+      size = bytes.length;
       for (let i = 0; i < bytes.length; i++) {
         record[i] = bytes[i];
       }
     }
-    accessor.putRecord(recordNumber);
+    accessor.putRecord(size, recordNumber);
   }
 
   binaryAccess(accessor: FileAccessor, context: ExecutionContext) {
