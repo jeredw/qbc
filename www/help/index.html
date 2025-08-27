@@ -770,6 +770,18 @@ x = 10
 foo 42
 </pre>
 
+<p>Surprisingly, STATIC variables quietly shadow global variables.
+
+<pre>
+DIM SHARED x
+SUB foo
+  STATIC x
+  PRINT x  ' Prints 0...
+END SUB
+x = 10
+foo
+</pre>
+
 <p>Strangely, constants defined in a procedure can also shadow shared global
 variables.
 

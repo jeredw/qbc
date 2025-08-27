@@ -431,7 +431,7 @@ export class SymbolTable {
     if (mySlot.procedure || parentSlot.procedure) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
-    if (!variable.isParameter && !variable.array && (mySlot.constant || parentSlot.constant)) {
+    if (!variable.isParameter && !variable.array && !variable.static && (mySlot.constant || parentSlot.constant)) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
     if (mySlot.defFns || parentSlot.defFns) {
@@ -448,7 +448,7 @@ export class SymbolTable {
     }
     if (!variable.array) {
       const global = parentSlot.scalarVariables?.get(variable.type.tag);
-      if (global && !variable.isParameter && this.isVisible(global)) {
+      if (global && !variable.isParameter && !variable.static && this.isVisible(global)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       const asType = slot.scalarAsType ?? slot.arrayAsType;
@@ -481,7 +481,7 @@ export class SymbolTable {
       variable.symbolIndex = SymbolTable._symbolIndex++;
     } else {
       const global = parentSlot.arrayVariables?.get(variable.type.tag);
-      if (global && !variable.isParameter && this.isVisible(global)) {
+      if (global && !variable.isParameter && !variable.static && this.isVisible(global)) {
         throw ParseError.fromToken(variable.token, "Duplicate definition");
       }
       const asType = slot.arrayAsType ?? slot.scalarAsType;
