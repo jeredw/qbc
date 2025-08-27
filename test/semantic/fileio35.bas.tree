@@ -1,0 +1,37 @@
+(program ' \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.dat")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (print_statement print 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal 0))))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.dat")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (input_file_statement input 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (variable_or_function_call stuff%))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n <EOF>)

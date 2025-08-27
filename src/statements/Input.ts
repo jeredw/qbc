@@ -9,7 +9,7 @@ import { evaluateIntegerExpression, Expression, parseNumberFromString } from "..
 import { Token } from "antlr4ng";
 import { getFileAccessor, getSequentialReadAccessor } from "./FileSystem.ts";
 import { OpenMode, tryIo } from "../Files.ts";
-import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW, IOError, BAD_FILE_MODE } from "../Errors.ts";
+import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW, IOError, BAD_FILE_MODE, FIELD_OVERFLOW } from "../Errors.ts";
 import { asciiToString, CR, LF, TAB, trim } from "../AsciiChart.ts";
 
 export interface InputStatementArgs {
@@ -347,6 +347,11 @@ export class InputFileStatement extends Statement {
         expr: this.args.fileNumber!,
         context
       });
+      if (accessor.openMode() === OpenMode.RANDOM) {
+        // random access file will return a never-ending stream of nuls and
+        // overflow any field we try to read...
+        throw new IOError(FIELD_OVERFLOW);
+      }
       let char = '';
       const nextChar = () => {
         char = accessor.readChars(1);
