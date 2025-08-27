@@ -1,4 +1,4 @@
-import { isReference, Value } from "./Values.ts";
+import { isNumeric, isReference, isString, Value } from "./Values.ts";
 import { Variable } from "./Variables.ts";
 
 export enum StorageType {
@@ -208,4 +208,32 @@ export class Memory {
     }
     return this.dynamic[frameIndex];
   }
+}
+
+export function readNumber(memory: Memory, variable: Variable | null, defaultValue = 0): number {
+  if (!variable) {
+    return defaultValue;
+  }
+  const value = memory.read(variable);
+  if (!value) {
+    return defaultValue;
+  }
+  if (!isNumeric(value)) {
+    throw new Error('non-numeric value for numeric variable');
+  }
+  return value.number;
+}
+
+export function readString(memory: Memory, variable: Variable | null): string {
+  if (!variable) {
+    return "";
+  }
+  const value = memory.read(variable);
+  if (!value) {
+    return "";
+  }
+  if (!isString(value)) {
+    throw new Error('non-string value for string variable');
+  }
+  return value.string;
 }

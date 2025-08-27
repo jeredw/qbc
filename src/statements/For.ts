@@ -5,7 +5,7 @@ import { isError, isNumeric, numericTypeOf } from "../Values.ts";
 import { Variable } from "../Variables.ts";
 import { Statement } from "./Statement.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
-import { Memory } from "../Memory.ts";
+import { readNumber } from "../Memory.ts";
 
 export class ForStatement extends Statement {
   constructor(
@@ -17,9 +17,9 @@ export class ForStatement extends Statement {
   }
 
   override execute(context: ExecutionContext): ControlFlow | void {
-    const start = getValueOrDefault(context.memory, this.counter);
-    const end = getValueOrDefault(context.memory, this.end);
-    const increment = getValueOrDefault(context.memory, this.increment, 1);
+    const start = readNumber(context.memory, this.counter);
+    const end = readNumber(context.memory, this.end);
+    const increment = readNumber(context.memory, this.increment, 1);
     if (end > start && increment < 0 || end < start && increment >= 0) {
       return { tag: ControlFlowTag.GOTO };
     }
@@ -47,27 +47,18 @@ export class NextStatement extends Statement {
     if (!isNumeric(counterValue)) {
       throw new Error('expecting numeric loop counter');
     }
-    const increment = getValueOrDefault(context.memory, this.increment, 1);
+    const increment = readNumber(context.memory, this.increment, 1);
     const next = counterValue.number + increment;
     const nextValue = numericTypeOf(counterValue)(next);
     if (isError(nextValue)) {
       throw RuntimeError.fromToken(this.forToken, nextValue);
     }
     context.memory.writeAddress(counterAddress, nextValue);
-    const end = getValueOrDefault(context.memory, this.end);
+    // It's also possible to jump into a for loop with the counter already
+    // nonzero.  In that case, NEXT will fall out of the loop.
+    const end = readNumber(context.memory, this.end);
     if (increment == 0 || (increment > 0 && next <= end) || (increment < 0 && next >= end)) {
       return {tag: ControlFlowTag.GOTO};
     }
   }
-}
-
-function getValueOrDefault(memory: Memory, variable: Variable | null, defaultValue: number = 0): number {
-  if (!variable) {
-    return defaultValue;
-  }
-  const value = memory.read(variable);
-  if (!value || !isNumeric(value)) {
-    throw new Error("must be numeric");
-  }
-  return value.number;
 }

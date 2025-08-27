@@ -8,7 +8,7 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { Statement } from "./Statement.ts";
 import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
-import { Memory, StorageType } from "../Memory.ts";
+import { Memory, readNumber, readString, StorageType } from "../Memory.ts";
 import { Token } from "antlr4ng";
 import { readArraySliceToBytes, writeBytesToArraySlice } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
@@ -642,19 +642,19 @@ export function readElementToBytes(data: DataView, offset: number, variable: Var
   const type = variable.type;
   switch (type.tag) {
     case TypeTag.INTEGER:
-      data.setInt16(offset, readNumber(variable, memory), true);
+      data.setInt16(offset, readNumber(memory, variable), true);
       return 2;
     case TypeTag.LONG:
-      data.setInt32(offset, readNumber(variable, memory), true);
+      data.setInt32(offset, readNumber(memory, variable), true);
       return 4;
     case TypeTag.SINGLE:
-      data.setFloat32(offset, readNumber(variable, memory), true);
+      data.setFloat32(offset, readNumber(memory, variable), true);
       return 4;
     case TypeTag.DOUBLE:
-      data.setFloat64(offset, readNumber(variable, memory), true);
+      data.setFloat64(offset, readNumber(memory, variable), true);
       return 8;
     case TypeTag.STRING: {
-      const value = readString(variable, memory);
+      const value = readString(memory, variable);
       if (stringsHaveLengthPrefixed) {
         data.setInt16(offset, value.length, true);
         copyString(data, offset + 2, value);
@@ -664,7 +664,7 @@ export function readElementToBytes(data: DataView, offset: number, variable: Var
       return value.length;
     }
     case TypeTag.FIXED_STRING:
-      return copyStringWithPadding(data, offset, readString(variable, memory), type.maxLength);
+      return copyStringWithPadding(data, offset, readString(memory, variable), type.maxLength);
     case TypeTag.RECORD:
       let length = 0;
       for (const {name} of type.elements) {
@@ -692,28 +692,6 @@ function copyStringWithPadding(data: DataView, offset: number, string: string, m
     data.setUint8(offset + i, ascii[i] ?? 32);
   }
   return maxLength;
-}
-
-function readNumber(variable: Variable, memory: Memory): number {
-  const value = memory.read(variable);
-  if (!value) {
-    return 0;
-  }
-  if (!isNumeric(value)) {
-    throw new Error('non-numeric value for numeric variable');
-  }
-  return value.number;
-}
-
-export function readString(variable: Variable, memory: Memory): string {
-  const value = memory.read(variable);
-  if (!value) {
-    return "";
-  }
-  if (!isString(value)) {
-    throw new Error('non-string value for string variable');
-  }
-  return value.string;
 }
 
 export class BloadStatement extends Statement {

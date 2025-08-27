@@ -1,0 +1,39 @@
+(program ' \n ' \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call x) = 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (goto_statement goto 
+      (target 
+        (line_number 42)))) \n 
+  (statement 
+    (for_next_statement for x = 
+      (expr 
+        (literal 1)) to 
+      (expr 
+        (literal 5)) 
+      (block \n 
+        (statement 
+          (print_statement print 
+            (print_argument 
+              (expr 
+                (variable_or_function_call x))))) \n 
+        (label 
+          (line_number 42)) 
+        (statement 
+          (if_inline_statement if 
+            (expr 
+              (expr 
+                (variable_or_function_call x)) > 
+              (expr 
+                (literal 5))) then 
+            (if_inline_action 
+              (statement 
+                (exit_statement exit for))))) \n ' \n) next x)) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (literal "ok"))))) \n <EOF>)

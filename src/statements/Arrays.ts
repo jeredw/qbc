@@ -1,13 +1,13 @@
 import { Token } from "antlr4ng";
 import { RuntimeError, DUPLICATE_DEFINITION, SUBSCRIPT_OUT_OF_RANGE } from "../Errors.ts";
 import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
-import { Memory, StorageType } from "../Memory.ts";
+import { Memory, StorageType, readString } from "../Memory.ts";
 import { array, integer, isArray, isError, isNumeric, isReference, reference, string, Value } from "../Values.ts";
 import { ArrayBounds, ArrayDescriptor, getScalarVariableSizeInBytes, Variable } from "../Variables.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { TypeTag } from "../Types.ts";
-import { readElementToBytes, readString, writeBytesToElement } from "./Bits.ts";
+import { readElementToBytes, writeBytesToElement } from "./Bits.ts";
 import { asciiToString, stringToAscii } from "../AsciiChart.ts";
 
 export interface DimBoundsExprs {
@@ -436,7 +436,7 @@ function readStringArrayToBytes(array: Variable, descriptor: ArrayDescriptor, me
   const stringData: number[] = [];
   for (let index = 0; index < numItems; index++) {
     item.address!.index = baseIndex + index;
-    const itemData = readString(item, memory);
+    const itemData = readString(memory, item);
     const itemLength = itemData.length;
     const offset = stringData.length + 4 * numItems;
     tableOfContents.push(...[(itemLength & 0xff), (itemLength >> 8) & 0xff]);
