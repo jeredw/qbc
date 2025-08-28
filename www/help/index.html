@@ -35,6 +35,9 @@
     <ol class="table-of-contents-section">
       <li><a href="#encodings">Character Encodings</a>
       <li><a href="#precision">Precision</a>
+      <li><a href="#overflow">Overflow Checking</a>
+      <li><a href="#element-lookup">Element Lookup</a>
+      <li><a href="#memory-model">Memory Model</a>
     </ol>
   </details>
 </ol>
@@ -330,8 +333,9 @@ first.  For example, this means DOUBLE operands for \ must fit in a LONG.
 PRINT 2147483648# \ 2#  ' Overflow error!
 </pre>
 
-There are a few more details about qbasic.run artihmetic <a 
-href="#precision">precision</a>.
+<p>There are a few more details about qbasic.run artihmetic <a 
+href="#precision">precision</a>.  See this note for more about <a
+href="#overflow">overflow checking</a>.
 
 <h3 id="comparison-ops">Comparison Operators</h3>
 
@@ -843,6 +847,22 @@ JavaScript rounding which rounds halfway cases up.  qbasic.run rounds correctly.
   print 3.5 \ 1  ' 4
   print 2.5 \ 1  ' 2
 </pre>
+
+<h3 id="overflow">Overflow Checking</h3>
+
+<p>QBasic was ahead of its time in doing overflow checking for all its
+arithmetic.  The computers it ran on were very slow, and this added significant
+overhead - so much so that when the same programs were compiled as standalone
+executables by QBasic's commercial big brother, QuickBasic, it left off overflow
+checking.  So you got safe arithmetic for free, and if you were a pro, you could
+pay $100 for the good stuff.
+
+<p>As a result, in collections of old programs, you'll sometimes find programs
+that depend on unchecked overflow.  These programs only work in compiled form,
+not when run from within QBasic or the QuickBasic interpreter.
+
+<p>qbasic.run behaves like the interpreted QBasic environment and always checks
+overflow, so some old programs need to be adapted to work.
 
 <h3 id="element-lookup">Element Lookup</h3>
 
