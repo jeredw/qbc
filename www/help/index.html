@@ -858,11 +858,18 @@ checking.  So you got safe arithmetic for free, and if you were a pro, you could
 pay $100 for the good stuff.
 
 <p>As a result, in collections of old programs, you'll sometimes find programs
-that depend on unchecked overflow.  These programs only work in compiled form,
-not when run from within QBasic or the QuickBasic interpreter.
+that depend on unchecked overflow [1].  These programs only work in
+compiled form, not when run from within QBasic or the QuickBasic interpreter.
 
 <p>qbasic.run behaves like the interpreted QBasic environment and always checks
 overflow, so some old programs need to be adapted to work.
+
+<p>[1] It's not that these programs are sloppy.  They most often want to use
+unsigned 16-bit arithmetic for address calculations in graphics inner loops
+since the mode 13 VGA framebuffer is 64k.  QBasic just doesn't have unsigned
+integers, so programs had to depend on two's complement wrapping to write
+"efficient" code with 16-bit math.  Why 16-bit math was more efficient 10-15
+years after Intel processors were natively 32-bit is another question.
 
 <h3 id="element-lookup">Element Lookup</h3>
 
