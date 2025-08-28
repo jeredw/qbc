@@ -1,0 +1,31 @@
+(program ' \n 
+  (statement 
+    (on_error_statement on error goto 
+      (target 
+        (text_label 
+          (untyped_id foo))))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a%) = 
+      (expr 
+        (literal 42)))) \n 
+  (statement 
+    (assignment_statement 
+      (variable_or_function_call a%) = 
+      (expr 
+        (expr 
+          (literal 32767)) + 
+        (expr 
+          (literal 100))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call a%))))) \n 
+  (statement 
+    (end_statement end)) \n 
+  (label 
+    (text_label 
+      (untyped_id foo)) :) 
+  (statement 
+    (resume_statement resume next)) \n <EOF>)
