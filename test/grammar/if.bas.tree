@@ -182,4 +182,26 @@
             (print_statement print 
               (print_argument 
                 (expr 
-                  (literal "unexpected"))))))))) \n <EOF>)
+                  (literal "unexpected"))))))))) \n ' \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (literal 1)) then : 
+      (if_inline_action 
+        (statement 
+          (assignment_statement 
+            (variable_or_function_call x) = 
+            (expr 
+              (literal 0)))) :) 
+      (if_inline_else_statement else : 
+        (if_inline_action 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call y) = 
+              (expr 
+                (literal 0)))) : 
+          (statement 
+            (assignment_statement 
+              (variable_or_function_call z) = 
+              (expr 
+                (literal 0)))))))) \n <EOF>)

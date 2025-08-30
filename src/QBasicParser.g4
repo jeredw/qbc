@@ -603,7 +603,7 @@ if_inline_statement
   ;
 
 if_inline_else_statement
-  : ELSE if_inline_action
+  : ELSE COLON* if_inline_action
   ;
 
 if_inline_action
