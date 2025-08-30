@@ -95,9 +95,10 @@ Bringup
 + CRYSTAL: Reads h201 for joystick buttons
 + TETRIS: (f0ec0e) Hangs the tab when game starts!
 - 1PSCRLL2: Doesn't draw anything but looks like it should
-- 4LANG: Unrecognized argument 139: 118
+- 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
+- AE: Writes data past end of visible screen in A000, then reads back
 - ANIMA6: Implicit call without declaration first
 - ART334: Just including qb.bi, seems simple to support
 - CHARGEN: Reads key... but from port 62h instead of 60h?
@@ -120,6 +121,7 @@ Bringup
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
 - PONGBALL: Need mouse limit apis
+- QMANCHE1: Really cool but slow
 - QBASWIN: Unrecognized opcode 131
 - QBSNAKE: Uses SHELL to do a DIR to list files
 - SCROLLF: Should this be drawing something

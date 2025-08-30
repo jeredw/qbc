@@ -34,12 +34,14 @@ export class CallAbsoluteStatement extends Statement {
     const bytes = readVariableToBytes(variable, context.memory);
     const cpu = new Basic86();
     // Install program.
-    cpu.cs = 0x0100; cpu.ip = 0x0000;
+    cpu.cs = 0x0100;
+    cpu.ip = 0x0000;
     const code = patch(new Uint8Array(bytes));
     for (let i = 0; i < code.byteLength; i++) {
       cpu.writeByte(cpu.cs, cpu.ip + i, code[i]);
     }
-    cpu.ss = 0x03F0; cpu.sp = 0x0100;
+    cpu.ss = 0x03F0;
+    cpu.sp = 0x0100;
     const PARAMETER_DS = 0x0200;
     cpu.ds = PARAMETER_DS;
     // Push parameters.
@@ -80,25 +82,50 @@ export interface InterruptHandler {
   call(cpu: Basic86): void;
 }
 
+// To simplify decoding, registers are stored in arrays and indexed by their
+// modRM field index.
+const AX = 0, CX = 1, DX = 2, BX = 3, SP = 4, BP = 5, SI = 6, DI = 7;
+const ES = 0, CS = 1, SS = 2, DS = 3;
+// A sentinel segment value meaning that a modRM byte addresses a register.
+const REGISTER = -1;
+
+// Simulates a small subset of 8086 instructions for the kinds of stuff people
+// do in CALL ABSOLUTE.
 class Basic86 {
-  ax = 0
-  bx = 0
-  cx = 0
-  dx = 0
-  ds = 0
-  di = 0
-  es = 0
-  si = 0
-  ss = 0
-  sp = 0
-  bp = 0
-  cs = 0
+  registers = new Uint16Array(8)
+  segments = new Uint16Array(4)
   ip = 0
   interruptHandlers: Map<number, InterruptHandler> = new Map();
-  memory: number[];
+  memory: Uint8Array;
+
+  get es(): number { return this.segments[ES]; }
+  set es(value: number) { this.segments[ES] = value; }
+  get cs(): number { return this.segments[CS]; }
+  set cs(value: number) { this.segments[CS] = value; }
+  get ss(): number { return this.segments[SS]; }
+  set ss(value: number) { this.segments[SS] = value; }
+  get ds(): number { return this.segments[DS]; }
+  set ds(value: number) { this.segments[DS] = value; }
+
+  get ax(): number { return this.registers[AX]; }
+  set ax(value: number) { this.registers[AX] = value; }
+  get cx(): number { return this.registers[CX]; }
+  set cx(value: number) { this.registers[CX] = value; }
+  get dx(): number { return this.registers[DX]; }
+  set dx(value: number) { this.registers[DX] = value; }
+  get bx(): number { return this.registers[BX]; }
+  set bx(value: number) { this.registers[BX] = value; }
+  get sp(): number { return this.registers[SP]; }
+  set sp(value: number) { this.registers[SP] = value; }
+  get bp(): number { return this.registers[BP]; }
+  set bp(value: number) { this.registers[BP] = value; }
+  get si(): number { return this.registers[SI]; }
+  set si(value: number) { this.registers[SI] = value; }
+  get di(): number { return this.registers[DI]; }
+  set di(value: number) { this.registers[DI] = value; }
 
   constructor() {
-    this.memory = new Array(RAM_SIZE).fill(0);
+    this.memory = new Uint8Array(RAM_SIZE);
   }
 
   setInterruptHandler(vector: number, handler: InterruptHandler) {
@@ -117,203 +144,186 @@ class Basic86 {
   }
 
   private step() {
-    const ir = this.readByte(this.cs, this.ip++);
+    const ir = this.fetchByte();
     switch (ir) {
-      case 0x06:
-        this.pushWord(this.es);
+      // PUSH seg
+      case 0o006:
+      case 0o016:
+      case 0o026:
+      case 0o036:
+        this.pushWord(this.getSegment(ir >> 3));
         break;
-      case 0x07:
-        this.es = this.popWord();
+      // POP seg
+      case 0o007:
+      case 0o017:
+      case 0o027:
+      case 0o037:
+        this.setSegment(ir >> 3, this.popWord());
         break;
-      case 0x16:
-        this.pushWord(this.ss);
+      // PUSH reg
+      case 0o120:
+      case 0o121:
+      case 0o122:
+      case 0o123:
+      case 0o124:
+      case 0o125:
+      case 0o126:
+      case 0o127:
+        this.pushWord(this.getRegisterWord(ir));
         break;
-      case 0x17:
-        this.ss = this.popWord();
+      // POP reg
+      case 0o130:
+      case 0o131:
+      case 0o132:
+      case 0o133:
+      case 0o134:
+      case 0o135:
+      case 0o136:
+      case 0o137:
+        this.setRegisterWord(ir, this.popWord());
         break;
-      case 0x1e:
-        this.pushWord(this.ds);
-        break;
-      case 0x1f:
-        this.ds = this.popWord();
-        break;
-      case 0x50:
-        this.pushWord(this.ax);
-        break;
-      case 0x51:
-        this.pushWord(this.cx);
-        break;
-      case 0x52:
-        this.pushWord(this.dx);
-        break;
-      case 0x53:
-        this.pushWord(this.bx);
-        break;
-      case 0x54:
-        this.pushWord(this.sp);
-        break;
-      case 0x55:
-        this.pushWord(this.bp);
-        break;
-      case 0x56:
-        this.pushWord(this.si);
-        break;
-      case 0x57:
-        this.pushWord(this.di);
-        break;
-      case 0x58:
-        this.ax = this.popWord();
-        break;
-      case 0x59:
-        this.cx = this.popWord();
-        break;
-      case 0x5a:
-        this.dx = this.popWord();
-        break;
-      case 0x5b:
-        this.bx = this.popWord();
-        break;
-      case 0x5c:
-        this.sp = this.popWord();
-        break;
-      case 0x5d:
-        this.bp = this.popWord();
-        break;
-      case 0x5e:
-        this.si = this.popWord();
-        break;
-      case 0x5f:
-        this.di = this.popWord();
-        break;
-      case 0x8a: {
-        const arg = this.readByte(this.cs, this.ip++);
-        switch (arg) {
-          case 0x07:
-            this.ax = (this.ax & 0xff00) | this.readByte(this.ds, this.bx);
-            break;
-          default:
-            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
-        }
+      // XCHG r8, r/m8
+      case 0o206: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        const registerValue = this.getRegisterByte(registerNumber);
+        const memoryValue = this.readByte(segment, offset);
+        this.setRegisterByte(registerNumber, memoryValue);
+        this.writeByte(segment, offset, registerValue);
         break;
       }
-      case 0x89: {
-        const arg = this.readByte(this.cs, this.ip++);
-        switch (arg) {
-          case 0x07:
-            this.writeWord(this.ds, this.bx, this.ax);
-            break;
-          case 0x0f:
-            this.writeWord(this.ds, this.bx, this.cx);
-            break;
-          case 0x17:
-            this.writeWord(this.ds, this.bx, this.dx);
-            break;
-          case 0xda:
-            this.dx = this.bx;
-            break;
-          case 0xc6:
-            this.si = this.ax;
-            break;
-          case 0xe5:
-            this.bp = this.sp;
-            break;
-          case 0xf3:
-            this.bx = this.si;
-            break;
-          default:
-            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
-        }
+      // XCHG r16, r/m16
+      case 0o207: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        const registerValue = this.getRegisterWord(registerNumber);
+        const memoryValue = this.readWord(segment, offset);
+        this.setRegisterWord(registerNumber, memoryValue);
+        this.writeWord(segment, offset, registerValue);
         break;
       }
-      case 0x8b: {
-        const arg = this.readByte(this.cs, this.ip++);
-        switch (arg) {
-          case 0x07:
-            this.ax = this.readWord(this.ds, this.bx);
-            break;
-          case 0x0f:
-            this.cx = this.readWord(this.ds, this.bx);
-            break;
-          case 0x17:
-            this.dx = this.readWord(this.ds, this.bx);
-            break;
-          case 0x5e: {
-            const offset = this.readSignedByte(this.cs, this.ip++);
-            this.bx = this.readWord(this.ss, this.bp + offset);
-            break;
-          }
-          case 0xec:
-            this.bp = this.sp;
-            break;
-          default:
-            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
-        }
+      // MOV r/m8, r8
+      case 0o210: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        this.writeByte(segment, offset, this.getRegisterByte(registerNumber));
         break;
       }
-      case 0x8c: {
-        const arg = this.readByte(this.cs, this.ip++);
-        switch (arg) {
-          case 0xc1:
-            this.cx = this.es;
-            break;
-          default:
-            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
-        }
+      // MOV r/m16, r16
+      case 0o211: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        this.writeWord(segment, offset, this.getRegisterWord(registerNumber));
         break;
       }
-      case 0x8e: {
-        const arg = this.readByte(this.cs, this.ip++);
-        switch (arg) {
-          case 0x1f:
-            this.ds = this.readWord(this.ds, this.bx);
-            break;
-          case 0xdb:
-            this.ds = this.bx;
-            break;
-          default:
-            throw new Error(`Unrecognized argument ${ir}: ${arg}`);
-        }
+      // MOV r8, r/m8
+      case 0o212: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        this.setRegisterByte(registerNumber, this.readByte(segment, offset));
         break;
       }
-      case 0x91:
-        [this.cx, this.ax] = [this.ax, this.cx];
-        break;
-      case 0x92:
-        [this.dx, this.ax] = [this.ax, this.dx];
-        break;
-      case 0x93:
-        [this.bx, this.ax] = [this.ax, this.bx];
-        break;
-      case 0xb4: {
-        const imm8 = this.readByte(this.cs, this.ip++);
-        this.ax = (imm8 << 8) | (this.ax & 0x00ff);
+      // MOV r16, r/m16
+      case 0o213: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        this.setRegisterWord(registerNumber, this.readWord(segment, offset));
         break;
       }
-      case 0xb8: {
-        const imm16 = this.readWord(this.cs, this.ip);
-        this.ip += 2;
-        this.ax = imm16;
+      // MOV r/m16, seg
+      case 0o214: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        this.writeWord(segment, offset, this.getSegment(registerNumber));
         break;
       }
-      case 0xbb: {
-        const imm16 = this.readWord(this.cs, this.ip);
-        this.ip += 2;
-        this.bx = imm16;
+      // LEA r/16, r/m16
+      case 0o215: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        const result = segment === REGISTER ? this.getRegisterWord(offset) : linearAddress(segment, offset);
+        this.setRegisterWord(registerNumber, result);
         break;
       }
-      case 0xca: {
-        const discard = this.readWord(this.cs, this.ip);
+      // MOV seg, r/m16
+      case 0o216: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        this.setSegment(registerNumber, this.readWord(segment, offset));
+        break;
+      }
+      // POP r/m16
+      case 0o217: {
+        const [_, segment, offset] = this.decodeModRM();
+        this.writeWord(segment, offset, this.popWord());
+        break;
+      }
+      // XCHG AX, r16
+      case 0o221:
+      case 0o222:
+      case 0o223:
+      case 0o224:
+      case 0o225:
+      case 0o226:
+      case 0o227: {
+        const value = this.getRegisterWord(ir);
+        this.setRegisterWord(ir, this.ax);
+        this.ax = value;
+        break;
+      }
+      // MOV AL, [addr]
+      case 0o240: {
+        const offset = this.fetchWord();
+        this.setRegisterByte(AX, this.readByte(this.ds, offset));
+        break;
+      }
+      // MOV AX, [addr]
+      case 0o241: {
+        const offset = this.fetchWord();
+        this.setRegisterWord(AX, this.readWord(this.ds, offset));
+        break;
+      }
+      // MOV [addr], AL
+      case 0o242: {
+        const offset = this.fetchWord();
+        this.writeByte(this.ds, offset, this.getRegisterByte(AX));
+        break;
+      }
+      // MOV [addr], AX
+      case 0o243: {
+        const offset = this.fetchWord();
+        this.writeWord(this.ds, offset, this.getRegisterWord(AX));
+        break;
+      }
+      // MOV r8, d8
+      case 0o260:
+      case 0o261:
+      case 0o262:
+      case 0o263:
+      case 0o264:
+      case 0o265:
+      case 0o266:
+      case 0o267:
+        this.setRegisterByte(ir, this.fetchByte());
+        break;
+      // MOV r16, d16
+      case 0o270:
+      case 0o271:
+      case 0o272:
+      case 0o273:
+      case 0o274:
+      case 0o275:
+      case 0o276:
+      case 0o277:
+        this.setRegisterWord(ir, this.fetchWord());
+        break;
+      // RETF d16
+      case 0o312: {
+        const discard = this.fetchWord();
         this.ip = this.popWord();
         this.cs = this.popWord();
         this.sp += discard;
         break;
       }
-      case 0xcb:
+      // RETF
+      case 0o313:
         this.ip = this.popWord();
         this.cs = this.popWord();
         break;
-      case 0xcd: {
-        const arg = this.readByte(this.cs, this.ip++);
+      // INT d8
+      case 0o315: {
+        const arg = this.fetchByte();
         const handler = this.interruptHandlers.get(arg);
         if (!handler) {
           throw new Error(`No handler registered for interrupt ${arg}`);
@@ -323,6 +333,110 @@ class Basic86 {
       }
       default:
         throw new Error(`Unrecognized opcode ${ir}`);
+    }
+  }
+
+  private fetchByte(): number {
+    return this.readByte(this.cs, this.ip++)
+  }
+
+  private fetchSignedByte(): number {
+    return this.readSignedByte(this.cs, this.ip++)
+  }
+
+  private fetchWord(): number {
+    const word = this.readWord(this.cs, this.ip);
+    this.ip += 2;
+    return word;
+  }
+
+  private getRegisterByte(reg: number): number {
+    const word = this.registers[reg & 3];
+    return reg < 4 ? word & 0xff : (word >> 8) & 0xff;
+  }
+
+  private setRegisterByte(reg: number, byte: number) {
+    const word = this.registers[reg & 3];
+    this.registers[reg & 3] = (
+      reg < 4 ?
+      (word & 0xff00) | (byte & 0xff) :
+      ((byte << 8) & 0xff00) | (word & 0xff)
+    );
+  }
+
+  private getRegisterWord(reg: number): number {
+    return this.registers[reg & 7];
+  }
+
+  private setRegisterWord(reg: number, word: number) {
+    this.registers[reg & 7] = word;
+  }
+
+  private getSegment(seg: number): number {
+    return this.segments[seg & 3];
+  }
+
+  private setSegment(seg: number, word: number) {
+    this.segments[seg] = word;
+  }
+
+  private decodeModRM(): [registerNumber: number, segment: number, offset: number] {
+    const modRM = this.fetchByte();
+    return [(modRM >> 3) & 7, ...this.computeEffectiveAddress(modRM)];
+  }
+
+  private computeEffectiveAddress(modRM: number): [segment: number, offset: number] {
+    switch (modRM & 0o307) {
+      case 0o000:
+        return [this.ds, this.bx + this.si];
+      case 0o001:
+        return [this.ds, this.bx + this.di];
+      case 0o002:
+        return [this.ss, this.bx + this.si];
+      case 0o003:
+        return [this.ss, this.bx + this.di];
+      case 0o004:
+        return [this.ds, this.si];
+      case 0o005:
+        return [this.ds, this.di];
+      case 0o006:
+        return [this.ds, this.fetchWord()];
+      case 0o007:
+        return [this.ds, this.bx];
+      case 0o100:
+        return [this.ds, this.bx + this.si + this.fetchSignedByte()];
+      case 0o101:
+        return [this.ds, this.bx + this.di + this.fetchSignedByte()];
+      case 0o102:
+        return [this.ss, this.bx + this.si + this.fetchSignedByte()];
+      case 0o103:
+        return [this.ss, this.bx + this.di + this.fetchSignedByte()];
+      case 0o104:
+        return [this.ds, this.si + this.fetchSignedByte()];
+      case 0o105:
+        return [this.ds, this.di + this.fetchSignedByte()];
+      case 0o106:
+        return [this.ss, this.bp + this.fetchSignedByte()];
+      case 0o107:
+        return [this.ds, this.bx + this.fetchSignedByte()];
+      case 0o200:
+        return [this.ds, this.bx + this.si + this.fetchWord()];
+      case 0o201:
+        return [this.ds, this.bx + this.di + this.fetchWord()];
+      case 0o202:
+        return [this.ss, this.bx + this.si + this.fetchWord()];
+      case 0o203:
+        return [this.ss, this.bx + this.di + this.fetchWord()];
+      case 0o204:
+        return [this.ds, this.si + this.fetchWord()];
+      case 0o205:
+        return [this.ds, this.di + this.fetchWord()];
+      case 0o206:
+        return [this.ss, this.bp + this.fetchWord()];
+      case 0o207:
+        return [this.ds, this.bx + this.fetchWord()];
+      default:
+        return [REGISTER, modRM & 7];
     }
   }
 
@@ -342,22 +456,34 @@ class Basic86 {
   }
 
   readWord(segment: number, offset: number): number {
+    if (segment === REGISTER) {
+      return this.getRegisterWord(offset);
+    }
     const b0 = this.readByte(segment, offset);
     const b1 = this.readByte(segment, offset + 1);
     return b0 + (b1 << 8);
   }
 
   writeWord(segment: number, offset: number, value: number) {
+    if (segment === REGISTER) {
+      return this.setRegisterWord(offset, value);
+    }
     this.writeByte(segment, offset, value & 0xff);
     this.writeByte(segment, offset + 1, (value >> 8) & 0xff);
   }
 
   readSignedByte(segment: number, offset: number): number {
+    if (segment === REGISTER) {
+      return this.getRegisterByte(offset);
+    }
     const data = this.readByte(segment, offset);
     return data < 128 ? data : data - 256;
   }
 
   readByte(segment: number, offset: number): number {
+    if (segment === REGISTER) {
+      return this.getRegisterByte(offset);
+    }
     const address = linearAddress(segment, offset) & 0xffff;
     if (address > this.memory.length) {
       throw new Error('Read out of bounds');
@@ -366,6 +492,9 @@ class Basic86 {
   }
 
   writeByte(segment: number, offset: number, value: number) {
+    if (segment === REGISTER) {
+      return this.setRegisterByte(offset, value);
+    }
     const address = linearAddress(segment, offset) & 0xffff;
     if (address > this.memory.length) {
       throw new Error('Write out of bounds');
