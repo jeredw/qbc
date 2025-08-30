@@ -320,11 +320,12 @@ class MemoryDriveFileAccessor extends BasePrinter implements FileAccessor {
     buffer.fill(0);
     this.readPastEndOfFile = false;
     for (let i = 0; i < buffer.length; i++) {
-      if (this.position >= this.file.bytes.length) {
+      if (this.position < this.file.bytes.length) {
+        buffer[i] = this.file.bytes[this.position];
+      } else {
         this.readPastEndOfFile = true;
-        break;
       }
-      buffer[i] = this.file.bytes[this.position++];
+      this.position++;
     }
   }
 

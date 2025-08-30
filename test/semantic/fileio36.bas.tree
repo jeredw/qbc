@@ -1,0 +1,101 @@
+(program ' \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.dat")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (close_statement close # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test.dat")) for 
+      (open_mode random) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call x))) \n 
+  (statement 
+    (put_io_statement put # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call y))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (seek_function seek 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) ' \n 
+  (statement 
+    (seek_statement seek # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (expr 
+          (builtin_function 
+            (seek_function seek 
+              ( 
+                (expr 
+                  (literal 1)) )))) - 
+        (expr 
+          (literal 2))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (seek_function seek 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) ' \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call x))) \n 
+  (statement 
+    (get_io_statement get # 
+      (expr 
+        (literal 1)) , , 
+      (variable_or_function_call y))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (seek_function seek 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) ' \n 
+  (statement 
+    (seek_statement seek # 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (expr 
+          (builtin_function 
+            (seek_function seek 
+              ( 
+                (expr 
+                  (literal 1)) )))) - 
+        (expr 
+          (literal 2))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (builtin_function 
+            (seek_function seek 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) ' \n <EOF>)
