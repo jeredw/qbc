@@ -262,6 +262,18 @@ class Basic86 {
         this.ax = value;
         break;
       }
+      // PUSHF
+      case 0o234:
+        this.pushWord(0);
+        break;
+      // POPF
+      case 0o235:
+        this.popWord();
+        break;
+      // SAHF/LAHF
+      case 0o236:
+      case 0o237:
+        break;
       // MOV AL, [addr]
       case 0o240: {
         const offset = this.fetchWord();
@@ -638,6 +650,7 @@ class MidiHandler implements InterruptHandler {
         break;
       }
       case 0x5:
+      case 0x501:
         // SBMIDI: Play midi
         speaker.playMidi({restart: true});
         break;
@@ -648,6 +661,19 @@ class MidiHandler implements InterruptHandler {
       case 0x11:
         // SBMIDI: Check play state
         cpu.ax = speaker.playingMidi() ? 1 : 0;
+        break;
+      case 0x500: {
+        // SBMIDI: Load a midi file from path given by dx:ax.
+        const {variable: nameVariable} = this.context.memory.readPointer(cpu.dx);
+        const nameBuffer = readVariableToBytes(nameVariable, this.context.memory);
+        const name = asciiToString(Array.from(new Uint8Array(nameBuffer.slice(0, nameBuffer.byteLength - 1))));
+        const data = readEntireFile(this.context, name);
+        speaker.loadMidi(new Uint8Array(data).buffer);
+        break;
+      }
+      case 0x502:
+        // SBMIDI: Stop midi.
+        speaker.stopMidi();
         break;
       case 0x503:
         // SBSIM: Pause midi without reloading the file

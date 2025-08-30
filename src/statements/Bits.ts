@@ -388,14 +388,11 @@ function storePointer(variable: Variable, variableSymbol: Variable, memory: Memo
   if (index === undefined) {
     throw new Error('No symbol index to use as pointer')
   }
-  // If a procedure defines a dynamic array and then passes a pointer to it,
-  // the descriptor will be on its stack frame not the callee's, so we need to
-  // store a qualified address in the pointer table.
+  // Qualify address in case pointers to stack variables are passed to a
+  // different procedure.
   const frameIndex = memory.getStackFrameIndex();
   let storedVariable = {...variableSymbol};
-  if (variableSymbol.array &&
-      variableSymbol.array.dynamic &&
-      variableSymbol.address?.storageType === StorageType.AUTOMATIC &&
+  if (variableSymbol.address?.storageType === StorageType.AUTOMATIC &&
       frameIndex >= 0) {
     storedVariable.address = {...variableSymbol.address, frameIndex};
   }
