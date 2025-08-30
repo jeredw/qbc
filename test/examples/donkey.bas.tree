@@ -641,8 +641,7 @@
         (expr 
           (variable_or_function_call SAMPLES$)) = 
         (expr 
-          (literal "YES"))) THEN 
-      (if_inline_action :) 
+          (literal "YES"))) THEN : 
       (if_inline_else_statement ELSE 
         (if_inline_action 
           (statement 

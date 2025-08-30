@@ -141,8 +141,8 @@
   (statement 
     (if_inline_statement if 
       (expr 
-        (literal 1)) then 
-      (if_inline_action : 
+        (literal 1)) then : 
+      (if_inline_action 
         (statement 
           (print_statement print 
             (print_argument 
