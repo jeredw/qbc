@@ -85,9 +85,9 @@ export class MouseListener implements Mouse {
     this.state.buttonMask = e.buttons;
     for (let i = 0; i < 2; i++) {
       if (e.buttons & (1 << i)) {
-        this.buttonState[i].lastUpX = this.state.x;
-        this.buttonState[i].lastUpY = this.state.y;
-        this.buttonState[i].stickyUpCount++;
+        this.buttonState[i].lastDownX = this.state.x;
+        this.buttonState[i].lastDownY = this.state.y;
+        this.buttonState[i].stickyDownCount++;
       }
     }
   }
@@ -97,9 +97,9 @@ export class MouseListener implements Mouse {
     this.state.buttonMask = e.buttons;
     for (let i = 0; i < 2; i++) {
       if (e.buttons & (1 << i)) {
-        this.buttonState[i].lastDownX = this.state.x;
-        this.buttonState[i].lastDownY = this.state.y;
-        this.buttonState[i].stickyDownCount++;
+        this.buttonState[i].lastUpX = this.state.x;
+        this.buttonState[i].lastUpY = this.state.y;
+        this.buttonState[i].stickyUpCount++;
       }
     }
   }

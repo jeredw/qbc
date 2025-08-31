@@ -2,9 +2,8 @@ import { asciiToString } from "../AsciiChart.ts";
 import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { SBMIDI_SEGMENT, SBSIM_SEGMENT } from "../BakedInData.ts";
 import { Mouse } from "../Mouse.ts";
-import { getDefaultValue, integer, isNumeric } from "../Values.ts";
 import { Variable } from "../Variables.ts";
-import { readVariableToBytes, signExtend16Bit, writeBytesToVariable } from "./Bits.ts";
+import { readVariableToBytes, writeBytesToVariable } from "./Bits.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { readEntireFile } from "./FileSystem.ts";
 import { Statement } from "./Statement.ts";
@@ -45,18 +44,22 @@ export class CallAbsoluteStatement extends Statement {
     const PARAMETER_DS = 0x0200;
     cpu.ds = PARAMETER_DS;
     // Push parameters.
-    for (let i = 0; i < this.params.length; i++) {
-      cpu.pushWord(2 * i);
+    type Offset = {offset: number, length: number};
+    const offsets: Offset[] = new Array(this.params.length);
+    for (let i = 0, offset = 0; i < this.params.length; i++) {
+      cpu.pushWord(offset);
       const {variable, expr} = this.params[i];
       if (expr) {
         const value = evaluateIntegerExpression(expr, context.memory);
-        cpu.writeWord(cpu.ds, 2 * i, value);
+        cpu.writeWord(cpu.ds, offset, value);
+        offsets[i] = {offset, length: 2};
+        offset += 2;
       } else if (variable) {
-        const value = context.memory.read(variable) ?? getDefaultValue(variable);
-        if (!isNumeric(value)) {
-          throw new Error('Non-integer argument to CALL ABSOLUTE.');
-        }
-        cpu.writeWord(cpu.ds, 2 * i, value.number);
+        const variableBytes = readVariableToBytes(variable, context.memory);
+        const start = linearAddress(PARAMETER_DS, offset);
+        cpu.memory.set(new Uint8Array(variableBytes), start);
+        offsets[i] = {offset, length: variableBytes.byteLength};
+        offset += variableBytes.byteLength;
       }
     }
     // Push return address for far call.  This sentinel value will stop the CPU stepping.
@@ -71,8 +74,10 @@ export class CallAbsoluteStatement extends Statement {
     for (let i = 0; i < this.params.length; i++) {
       const {variable} = this.params[i];
       if (variable) {
-        const value = cpu.readWord(PARAMETER_DS, 2 * i);
-        context.memory.write(variable, integer(signExtend16Bit(value)));
+        const {offset, length} = offsets[i];
+        const start = linearAddress(PARAMETER_DS, offset);
+        const variableBytes = cpu.memory.slice(start, start + length);
+        writeBytesToVariable(variable, variableBytes, context.memory);
       }
     }
   }
@@ -88,6 +93,7 @@ const AX = 0, CX = 1, DX = 2, BX = 3, SP = 4, BP = 5, SI = 6, DI = 7;
 const ES = 0, CS = 1, SS = 2, DS = 3;
 // A sentinel segment value meaning that a modRM byte addresses a register.
 const REGISTER = -1;
+const CF = 0x0001, ZF = 0x0020, SF = 0x0080;
 
 // Simulates a small subset of 8086 instructions for the kinds of stuff people
 // do in CALL ABSOLUTE.
@@ -98,6 +104,7 @@ class Basic86 {
   interruptHandlers: Map<number, InterruptHandler> = new Map();
   memory: Uint8Array;
   segment = 0;
+  flags = 0;
 
   get es(): number { return this.segments[ES]; }
   set es(value: number) { this.segments[ES] = value; }
@@ -124,6 +131,12 @@ class Basic86 {
   set si(value: number) { this.registers[SI] = value; }
   get di(): number { return this.registers[DI]; }
   set di(value: number) { this.registers[DI] = value; }
+  get cf(): number { return this.flags & CF; }
+  set cf(value: boolean) { this.flags = (this.flags & ~CF) | (value ? CF : 0) }
+  get zf(): number { return this.flags & ZF; }
+  set zf(value: boolean) { this.flags = (this.flags & ~ZF) | (value ? ZF : 0) }
+  get sf(): number { return this.flags & SF; }
+  set sf(value: boolean) { this.flags = (this.flags & ~SF) | (value ? SF : 0) }
 
   constructor() {
     this.memory = new Uint8Array(RAM_SIZE);
@@ -145,6 +158,7 @@ class Basic86 {
   }
 
   private step() {
+    // https://gist.github.com/seanjensengrey/f971c20d05d4d0efc0781f2f3c0353da
     const data = this.fetchByte();
     const isPrefix = data === 0o046 || data === 0o056 || data === 0o066 || data === 0o076;
     this.segment = (
@@ -169,6 +183,15 @@ class Basic86 {
       case 0o037:
         this.setSegment(ir >> 3, this.popWord());
         break;
+      // CMP ax, d16
+      case 0o075: {
+        const arg = this.fetchWord();
+        const result = this.ax - arg;
+        this.zf = result === 0;
+        this.sf = result < 0;
+        this.cf = this.ax < arg;
+        break;
+      }
       // PUSH reg
       case 0o120:
       case 0o121:
@@ -191,6 +214,34 @@ class Basic86 {
       case 0o137:
         this.setRegisterWord(ir, this.popWord());
         break;
+      // JZ rel8
+      case 0o164: {
+        const offset = this.fetchSignedByte();
+        if (this.zf) {
+          this.ip += offset;
+        }
+        break;
+      }
+      // JNZ rel8
+      case 0o165: {
+        const offset = this.fetchSignedByte();
+        if (!this.zf) {
+          this.ip += offset;
+        }
+        break;
+      }
+      // SUB r/m16, imm8
+      case 0o203: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        const value = this.readWord(segment, offset);
+        const arg = this.fetchByte();
+        const result = value - arg;
+        this.zf = result === 0;
+        this.sf = result < 0;
+        this.cf = value < arg;
+        this.writeWord(segment, offset, result & 0xffff);
+        break;
+      }
       // XCHG r8, r/m8
       case 0o206: {
         const [registerNumber, segment, offset] = this.decodeModRM();
@@ -273,11 +324,11 @@ class Basic86 {
       }
       // PUSHF
       case 0o234:
-        this.pushWord(0);
+        this.pushWord(this.flags);
         break;
       // POPF
       case 0o235:
-        this.popWord();
+        this.flags = this.popWord();
         break;
       // SAHF/LAHF
       case 0o236:
@@ -368,6 +419,18 @@ class Basic86 {
           throw new Error(`No handler registered for interrupt ${arg}`);
         }
         handler.call(this);
+        break;
+      }
+      case 0o377: {
+        const [op, segment, offset] = this.decodeModRM();
+        switch (op) {
+          // PUSH r/m16
+          case 6:
+            this.pushWord(this.readWord(segment, offset));
+            break;
+          default:
+            throw new Error(`Unrecognized opcode ${ir} ${op}`);
+        }
         break;
       }
       default:

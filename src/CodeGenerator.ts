@@ -335,9 +335,6 @@ export class CodeGenerator extends QBasicParserListener {
       for (const parseExpr of argumentList.expr()) {
         const variable = this.getVariableFromExpression(parseExpr);
         if (variable) {
-          if (variable.type.tag != TypeTag.INTEGER) {
-            throw new Error('Only support integer arguments to CALL ABSOLUTE.');
-          }
           params.push({variable});
         } else {
           const expr = this.compileExpression(parseExpr, parseExpr.start!, { tag: TypeTag.INTEGER });
