@@ -59,6 +59,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   private importButton: HTMLElement;
   private importInput: HTMLInputElement;
   private filePicker: HTMLElement;
+  private outputPane: HTMLElement;
   private catalogChannel: BroadcastChannel;
   private statusBar: StatusBar;
 
@@ -88,8 +89,8 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.modem = new HttpModem();
     this.mouse = new MouseListener(this);
     this.blaster = new SoundBlaster(this.speaker);
-    const outputPane = assertHTMLElement(root.querySelector('.output-pane'));
-    outputPane.appendChild(this.screen.canvas);
+    this.outputPane = assertHTMLElement(root.querySelector('.output-pane'));
+    this.outputPane.appendChild(this.screen.canvas);
     this.root.appendChild(this.printer.paperWindow);
     requestAnimationFrame(this.frame);
     this.interpreter = new Interpreter({
@@ -144,7 +145,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     this.screen.canvas.addEventListener('pointerdown', (e: PointerEvent) => this.pointerdown(e));
     this.screen.canvas.addEventListener('pointerup', (e: PointerEvent) => this.pointerup(e));
     this.screen.canvas.addEventListener('pointermove', (e: PointerEvent) => this.pointermove(e));
-    this.screen.canvas.addEventListener('fullscreenchange', (e) => this.fullscreenChange());
+    this.outputPane.addEventListener('fullscreenchange', (e) => this.fullscreenChange());
     this.catalogChannel = new BroadcastChannel('catalog');
     this.catalogChannel.onmessage = (e: MessageEvent) => this.runCatalogCommand(e);
   }
@@ -179,33 +180,14 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
 
   scaleMouseCoordinates(x: number, y: number): {x: number, y: number} {
     if (document.fullscreenElement) {
-      // In fullscreen mode, canvas content will be letterboxed with insets on
-      // either the left or top, and (x, y) will be relative to the top/left of
-      // the screen. Re-scale so that (x, y) is relative to content instead.
       const {
         offsetWidth: canvasWidth,
         offsetHeight: canvasHeight,
         width: contentWidth,
         height: contentHeight
       } = this.screen.canvas;
-      const contentAspectRatio = contentWidth / contentHeight;
-      const screenAspectRatio = window.innerWidth / window.innerHeight;
-
-      let usableWidth: number;
-      let usableHeight: number;
-      let insetLeft = 0;
-      let insetTop = 0;
-      if (screenAspectRatio > contentAspectRatio) {
-        usableHeight = canvasHeight;
-        usableWidth = usableHeight * contentAspectRatio;
-        insetLeft = (canvasWidth - usableWidth) / 2;
-      } else {
-        usableWidth = canvasWidth;
-        usableHeight = usableWidth / contentAspectRatio;
-        insetTop = (canvasHeight - usableHeight) / 2;
-      }
-      x = (x - insetLeft) * (contentWidth / usableWidth);
-      y = (y - insetTop) * (contentHeight / usableHeight);
+      x = x * (contentWidth / canvasWidth);
+      y = y * (contentHeight / canvasHeight);
     } else {
       // There is a 3px border for the focus ring when not in fullscreen mode.
       x -= 3;
@@ -236,7 +218,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     } else {
-      this.screen.canvas.requestFullscreen();
+      this.outputPane.requestFullscreen();
     }
   }
 

@@ -283,6 +283,20 @@ input[type="file"] {
   outline: 1px dotted red;
 }
 
+.fullscreen .output-pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen .screen {
+  outline: none;
+  transform: none !important;
+  aspect-ratio: 4 / 3;
+  width: auto;
+  height: 100%;
+}
+
 .paper-window {
   height: 200px;
   overflow: auto;
