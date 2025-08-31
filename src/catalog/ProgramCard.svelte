@@ -18,16 +18,16 @@
 </script>
 
 <article class="program-card">
-  <div class="stamp"
-       onclick={() => launch(props.archivePath, props.name)}>
+  <button class="stamp"
+          onclick={() => launch(props.archivePath, props.name)}>
     <div class="name">{props.name.toUpperCase()}</div>
     <div class="screenshot">
-      <img class="screenshot-image" src="{props.screenshot}" />
+      <img class="screenshot-image" alt="{props.name} screenshot" src="{props.screenshot}" />
     </div>
-  </div>
+  </button>
   <div class="metadata">
-    <div class="title">{props.title} by {props.author}</div>
-    <div class="date">{props.date}</div>
+    <div class="title">{props.title}</div>
+    <div class="byline">by {props.author} ({props.date})</div>
     <div class="tags">{props.tags.join(', ')}</div>
     <div class="specs">
 Specs<br />
@@ -46,13 +46,28 @@ Notes<br />
 
 <style>
 .program-card {
-  display: inline-flex;
+  background: var(--qbc-black);
+  box-shadow: 16px 16px 2px 1px rgb(0 0 20 / 0.5);
+  display: flex;
+  min-width: 700px;
+  width: 60vw;
+  min-height: 50vh;
+  scroll-snap-stop: normal;
+  scroll-snap-align: center;
+  gap: 50px;
   padding: 20px;
-  border: 1px solid var(--qbc-brown);
-  width: 700px;
+  border: 2px solid var(--qbc-green);
+  outline-offset: 2px;
+  outline: 2px solid var(--qbc-green);
+  align-items: start;
+  margin: 20px;
 }
 
 .stamp {
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: inherit;
   cursor: pointer;
 }
 
@@ -63,6 +78,7 @@ Notes<br />
 
 .name, .title {
   color: var(--qbc-white);
+  font-size: 32px;
 }
 
 .screenshot {
@@ -70,8 +86,8 @@ Notes<br />
 }
 
 .screenshot-image {
-  object-fit: cover;
   width: 320px;
+  aspect-ratio: 4 / 3;
 }
 
 .controls, .specs, .notes {
