@@ -1,6 +1,7 @@
 import { asciiToString } from "../AsciiChart.ts";
 import { evaluateIntegerExpression, Expression } from "../Expressions.ts";
 import { SBMIDI_SEGMENT, SBSIM_SEGMENT } from "../BakedInData.ts";
+import { Screen } from "../Screen.ts";
 import { Mouse } from "../Mouse.ts";
 import { Variable } from "../Variables.ts";
 import { readVariableToBytes, writeBytesToVariable } from "./Bits.ts";
@@ -65,6 +66,7 @@ export class CallAbsoluteStatement extends Statement {
     // Push return address for far call.  This sentinel value will stop the CPU stepping.
     cpu.pushWord(0xffff);
     cpu.pushWord(0xffff);
+    cpu.setInterruptHandler(0x10, new VideoBiosHandler(context.devices.screen));
     cpu.setInterruptHandler(0x21, new DosHandler(context));
     cpu.setInterruptHandler(0x33, new MouseHandler(context.devices.mouse));
     cpu.setInterruptHandler(0x80, new MidiHandler(context));
@@ -117,12 +119,28 @@ class Basic86 {
 
   get ax(): number { return this.registers[AX]; }
   set ax(value: number) { this.registers[AX] = value; }
+  get ah() { return (this.ax & 0xff00) >> 8; }
+  set ah(value: number) { this.ax = ((value << 8) & 0xff00) | (this.ax & 0xff); }
+  get al() { return this.ax & 0xff; }
+  set al(value: number) { this.ax = (this.ax & 0xff00) | (value & 0xff); }
   get cx(): number { return this.registers[CX]; }
   set cx(value: number) { this.registers[CX] = value; }
+  get ch() { return (this.cx & 0xff00) >> 8; }
+  set ch(value: number) { this.cx = ((value << 8) & 0xff00) | (this.cx & 0xff); }
+  get cl() { return this.cx & 0xff; }
+  set cl(value: number) { this.cx = (this.cx & 0xff00) | (value & 0xff); }
   get dx(): number { return this.registers[DX]; }
   set dx(value: number) { this.registers[DX] = value; }
+  get dh() { return (this.dx & 0xff00) >> 8; }
+  set dh(value: number) { this.dx = ((value << 8) & 0xff00) | (this.dx & 0xff); }
+  get dl() { return this.dx & 0xff; }
+  set dl(value: number) { this.dx = (this.dx & 0xff00) | (value & 0xff); }
   get bx(): number { return this.registers[BX]; }
   set bx(value: number) { this.registers[BX] = value; }
+  get bh() { return (this.bx & 0xff00) >> 8; }
+  set bh(value: number) { this.bx = ((value << 8) & 0xff00) | (this.bx & 0xff); }
+  get bl() { return this.bx & 0xff; }
+  set bl(value: number) { this.bx = (this.bx & 0xff00) | (value & 0xff); }
   get sp(): number { return this.registers[SP]; }
   set sp(value: number) { this.registers[SP] = value; }
   get bp(): number { return this.registers[BP]; }
@@ -607,6 +625,32 @@ class Basic86 {
 
 function linearAddress(segment: number, offset: number): number {
   return (segment << 4) | offset;
+}
+
+// Simulates a very limited subset of int 10h video BIOS stuff.
+class VideoBiosHandler implements InterruptHandler {
+  constructor(private screen: Screen) {
+  }
+
+  call(cpu: Basic86) {
+    switch (cpu.ax) {
+      case 0x1130: {
+        const [_, rows] = this.screen.getGeometry().text;
+        cpu.dl = rows - 1;
+        break;
+      }
+      case 0x0f00: {
+        const [columns, _] = this.screen.getGeometry().text;
+        const mode = this.screen.getMode().mode;
+        cpu.ah = columns;
+        cpu.al = mode;
+        cpu.bh = 0;
+        break;
+      }
+      default:
+        throw new Error(`Unsupported video bios function ${cpu.ax}`);
+    }
+  }
 }
 
 // Simulates an int 33h mouse driver.

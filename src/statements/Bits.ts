@@ -864,6 +864,14 @@ export class PeekStatement extends Statement {
     } else {
       const linearAddress = (segment << 4) | offset;
       switch (linearAddress) {
+        // Some programs check for mouse support by peeking to see if there is
+        // an int 33h handler, so pretend there is.
+        case 0xcc:
+        case 0xcd:
+        case 0xce:
+        case 0xcf:
+          data = 1;
+          break;
         case 0x410:
           data = 38;  // donkey.bas checks the BIOS equipment byte.
           break;
