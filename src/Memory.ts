@@ -1,4 +1,5 @@
-import { isNumeric, isReference, isString, Value } from "./Values.ts";
+import { TypeTag } from "./Types.ts";
+import { isNumeric, isReference, isString, string, Value } from "./Values.ts";
 import { Variable } from "./Variables.ts";
 
 export enum StorageType {
@@ -63,6 +64,7 @@ export class Memory {
   dynamic: Frame[] = [];
   segment: number = 0;
   pointers: Map<number, Pointer> = new Map();
+  unnamedAllocationIndex: number = 0;
 
   constructor(size: number) {
     this.static = new Frame(size);
@@ -79,6 +81,7 @@ export class Memory {
     this.clear();
     this.segment = 0;
     this.pointers = new Map();
+    this.unnamedAllocationIndex = 0;
   }
 
   pushStack(size: number) {
@@ -188,6 +191,20 @@ export class Memory {
 
   writePointer(index: number, address: Address, variable: Variable) {
     this.pointers.set(index, {address, variable});
+  }
+
+  createDynamicPointer(size: number): number {
+    const index = 0xe000 + this.unnamedAllocationIndex++;
+    const address = this.allocate(1);
+    const variable: Variable = {
+      name: `_p${index}`,
+      type: { tag: TypeTag.FIXED_STRING, maxLength: size },
+      token: { type: 0, line: 0, column: 0, channel: 0, tokenIndex: 0, start: 0, stop: 0, tokenSource: null, inputStream: null },
+      storageType: StorageType.DYNAMIC,
+      address
+    };
+    this.pointers.set(index, {address, variable});
+    return index;
   }
 
   private getStackFrame(frameIndexFromAddress: number | undefined): Frame {

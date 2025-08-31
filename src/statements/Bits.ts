@@ -614,9 +614,9 @@ function readLengthPrefixedStringFromBuffer(data: DataView, offset: number): str
 }
 
 function readStringFromBuffer(data: DataView, offset: number, maxLength: number): string {
-  const codes: number[] = [];
-  for (let i = 0; i < maxLength; i++) {
-    codes.push(data.getUint8(offset + i) ?? 32);
+  const codes = Array(maxLength).fill(0);
+  for (let i = 0; i < maxLength && offset + i < data.byteLength; i++) {
+    codes[i] = data.getUint8(offset + i);
   }
   return asciiToString(codes);
 }

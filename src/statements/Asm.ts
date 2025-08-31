@@ -756,6 +756,15 @@ class DosHandler implements InterruptHandler {
         writeBytesToVariable(dataVariable, new Uint8Array(data), this.context.memory);
         break;
       }
+      case 0x48: {
+        // Allocate memory on the heap and return a pointer.
+        const size = 16 * cpu.bx;
+        cpu.ax = this.context.memory.createDynamicPointer(size);
+        break;
+      }
+      case 0x49:
+        // Free memory... we'll just leak it.
+        break;
       default:
         throw new Error(`Unsupported DOS call ${ah}`);
     }
@@ -792,7 +801,7 @@ class MidiHandler implements InterruptHandler {
         // SBMIDI: Resume playing
         speaker.playMidi({restart: false});
         break;
-      case 0x11:
+      case 0xb:
         // SBMIDI: Check play state
         cpu.ax = speaker.playingMidi() ? 1 : 0;
         break;
