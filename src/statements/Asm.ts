@@ -92,11 +92,12 @@ const REGISTER = -1;
 // Simulates a small subset of 8086 instructions for the kinds of stuff people
 // do in CALL ABSOLUTE.
 class Basic86 {
-  registers = new Uint16Array(8)
-  segments = new Uint16Array(4)
-  ip = 0
+  registers = new Uint16Array(8);
+  segments = new Uint16Array(4);
+  ip = 0;
   interruptHandlers: Map<number, InterruptHandler> = new Map();
   memory: Uint8Array;
+  segment = 0;
 
   get es(): number { return this.segments[ES]; }
   set es(value: number) { this.segments[ES] = value; }
@@ -144,7 +145,15 @@ class Basic86 {
   }
 
   private step() {
-    const ir = this.fetchByte();
+    const data = this.fetchByte();
+    const isPrefix = data === 0o046 || data === 0o056 || data === 0o066 || data === 0o076;
+    this.segment = (
+      data === 0o046 ? this.es :
+      data === 0o056 ? this.cs :
+      data === 0o066 ? this.ss :
+      this.ds
+    );
+    const ir = isPrefix ? this.fetchByte() : data;
     switch (ir) {
       // PUSH seg
       case 0o006:
@@ -277,25 +286,25 @@ class Basic86 {
       // MOV AL, [addr]
       case 0o240: {
         const offset = this.fetchWord();
-        this.setRegisterByte(AX, this.readByte(this.ds, offset));
+        this.setRegisterByte(AX, this.readByte(this.segment, offset));
         break;
       }
       // MOV AX, [addr]
       case 0o241: {
         const offset = this.fetchWord();
-        this.setRegisterWord(AX, this.readWord(this.ds, offset));
+        this.setRegisterWord(AX, this.readWord(this.segment, offset));
         break;
       }
       // MOV [addr], AL
       case 0o242: {
         const offset = this.fetchWord();
-        this.writeByte(this.ds, offset, this.getRegisterByte(AX));
+        this.writeByte(this.segment, offset, this.getRegisterByte(AX));
         break;
       }
       // MOV [addr], AX
       case 0o243: {
         const offset = this.fetchWord();
-        this.writeWord(this.ds, offset, this.getRegisterWord(AX));
+        this.writeWord(this.segment, offset, this.getRegisterWord(AX));
         break;
       }
       // MOV r8, d8
@@ -320,6 +329,24 @@ class Basic86 {
       case 0o277:
         this.setRegisterWord(ir, this.fetchWord());
         break;
+      // LES r16, m32
+      case 0o304: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        const resultOffset = this.readWord(segment, offset);
+        const resultSegment = this.readWord(segment, offset + 2);
+        this.setRegisterWord(registerNumber, resultOffset);
+        this.es = resultSegment;
+        break;
+      }
+      // LDS r16, m32
+      case 0o305: {
+        const [registerNumber, segment, offset] = this.decodeModRM();
+        const resultOffset = this.readWord(segment, offset);
+        const resultSegment = this.readWord(segment, offset + 2);
+        this.setRegisterWord(registerNumber, resultOffset);
+        this.ds = resultSegment;
+        break;
+      }
       // RETF d16
       case 0o312: {
         const discard = this.fetchWord();
@@ -400,53 +427,53 @@ class Basic86 {
   private computeEffectiveAddress(modRM: number): [segment: number, offset: number] {
     switch (modRM & 0o307) {
       case 0o000:
-        return [this.ds, this.bx + this.si];
+        return [this.segment, this.bx + this.si];
       case 0o001:
-        return [this.ds, this.bx + this.di];
+        return [this.segment, this.bx + this.di];
       case 0o002:
         return [this.ss, this.bx + this.si];
       case 0o003:
         return [this.ss, this.bx + this.di];
       case 0o004:
-        return [this.ds, this.si];
+        return [this.segment, this.si];
       case 0o005:
-        return [this.ds, this.di];
+        return [this.segment, this.di];
       case 0o006:
-        return [this.ds, this.fetchWord()];
+        return [this.segment, this.fetchWord()];
       case 0o007:
-        return [this.ds, this.bx];
+        return [this.segment, this.bx];
       case 0o100:
-        return [this.ds, this.bx + this.si + this.fetchSignedByte()];
+        return [this.segment, this.bx + this.si + this.fetchSignedByte()];
       case 0o101:
-        return [this.ds, this.bx + this.di + this.fetchSignedByte()];
+        return [this.segment, this.bx + this.di + this.fetchSignedByte()];
       case 0o102:
         return [this.ss, this.bx + this.si + this.fetchSignedByte()];
       case 0o103:
         return [this.ss, this.bx + this.di + this.fetchSignedByte()];
       case 0o104:
-        return [this.ds, this.si + this.fetchSignedByte()];
+        return [this.segment, this.si + this.fetchSignedByte()];
       case 0o105:
-        return [this.ds, this.di + this.fetchSignedByte()];
+        return [this.segment, this.di + this.fetchSignedByte()];
       case 0o106:
         return [this.ss, this.bp + this.fetchSignedByte()];
       case 0o107:
-        return [this.ds, this.bx + this.fetchSignedByte()];
+        return [this.segment, this.bx + this.fetchSignedByte()];
       case 0o200:
-        return [this.ds, this.bx + this.si + this.fetchWord()];
+        return [this.segment, this.bx + this.si + this.fetchWord()];
       case 0o201:
-        return [this.ds, this.bx + this.di + this.fetchWord()];
+        return [this.segment, this.bx + this.di + this.fetchWord()];
       case 0o202:
         return [this.ss, this.bx + this.si + this.fetchWord()];
       case 0o203:
         return [this.ss, this.bx + this.di + this.fetchWord()];
       case 0o204:
-        return [this.ds, this.si + this.fetchWord()];
+        return [this.segment, this.si + this.fetchWord()];
       case 0o205:
-        return [this.ds, this.di + this.fetchWord()];
+        return [this.segment, this.di + this.fetchWord()];
       case 0o206:
         return [this.ss, this.bp + this.fetchWord()];
       case 0o207:
-        return [this.ds, this.bx + this.fetchWord()];
+        return [this.segment, this.bx + this.fetchWord()];
       default:
         return [REGISTER, modRM & 7];
     }
