@@ -710,6 +710,8 @@ class MouseHandler implements InterruptHandler {
   }
 }
 
+let lastDosCall = 0;
+
 // Really hacky int 21h DOS services to assist with loading midi files.
 class DosHandler implements InterruptHandler {
   constructor(private context: ExecutionContext) {
@@ -748,6 +750,13 @@ class DosHandler implements InterruptHandler {
         // Read from file.  Assume that the "handle" in bx is a pointer to a
         // null-terminated path name, and that we want to write to the beginning
         // of the output variable in ds.
+        if (lastDosCall === 0x3f) {
+          // Hack: If the most recent DOS call was also a file read, assume that
+          // this call is intended to read the rest of the same file.  DS now
+          // points to some offset inside a buffer, which we can't track, so it
+          // will fail.  Just skip this.
+          break;
+        }
         const {variable: nameVariable} = this.context.memory.readPointer(cpu.bx);
         const {variable: dataVariable} = this.context.memory.readPointer(cpu.ds);
         const nameBuffer = readVariableToBytes(nameVariable, this.context.memory);
@@ -768,6 +777,7 @@ class DosHandler implements InterruptHandler {
       default:
         throw new Error(`Unsupported DOS call ${ah}`);
     }
+    lastDosCall = ah;
   }
 }
 
