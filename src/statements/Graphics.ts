@@ -5,7 +5,7 @@ import { evaluateIntegerExpression, evaluateStringExpression, Expression } from 
 import { double, integer, isNumeric, isString } from "../Values.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, OUT_OF_STACK_SPACE } from "../Errors.ts";
 import { Variable } from "../Variables.ts";
-import { readArraySliceToBytes, readNumbersFromArraySlice, writeBytesToArraySlice } from "./Arrays.ts";
+import { readSubArrayToBytes, readNumbersFromArraySlice, writeBytesToSubArray } from "./Arrays.ts";
 import { BuiltinParam, BuiltinStatementArgs } from "../Builtins.ts";
 import { TypeTag } from "../Types.ts";
 import { BlitOperation } from "../Drawing.ts";
@@ -679,8 +679,8 @@ export class GetGraphicsStatement extends Statement {
       const step2 = this.args.step2;
       const x2 = evaluateIntegerExpression(this.args.x2, context.memory, { tag: TypeTag.SINGLE });
       const y2 = evaluateIntegerExpression(this.args.y2, context.memory, { tag: TypeTag.SINGLE });
-      const buffer = context.devices.screen.getBitmap({x1, y1, step1, x2, y2, step2});
-      writeBytesToArraySlice(this.args.array, buffer, context.memory);
+      const data = context.devices.screen.getBitmap({x1, y1, step1, x2, y2, step2});
+      writeBytesToSubArray(this.args.array, data, context.memory);
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }
@@ -709,7 +709,7 @@ export class PutGraphicsStatement extends Statement {
       const step = this.args.step;
       const x1 = evaluateIntegerExpression(this.args.x1, context.memory, { tag: TypeTag.SINGLE });
       const y1 = evaluateIntegerExpression(this.args.y1, context.memory, { tag: TypeTag.SINGLE });
-      const buffer = readArraySliceToBytes(this.args.array, context.memory);
+      const data = readSubArrayToBytes(this.args.array, context.memory);
       const operation = (
         this.args.preset ? BlitOperation.PRESET :
         this.args.pset ? BlitOperation.PSET :
@@ -717,7 +717,7 @@ export class PutGraphicsStatement extends Statement {
         this.args.or ? BlitOperation.OR :
         BlitOperation.XOR
       );
-      context.devices.screen.putBitmap({x1, y1, step, operation, buffer});
+      context.devices.screen.putBitmap({x1, y1, step, operation, data});
     } catch (e: unknown) {
       throw RuntimeError.fromToken(this.args.token, ILLEGAL_FUNCTION_CALL);
     }

@@ -557,7 +557,7 @@ export class GetIoStatement extends GetPutStatement {
       if (size > record.length) {
         throw RuntimeError.fromToken(this.token, BAD_RECORD_LENGTH);
       }
-      writeBytesToScalarVariable(this.variable, new Uint8Array(record).buffer, context.memory);
+      writeBytesToScalarVariable(this.variable, new Uint8Array(record), context.memory);
       return;
     }
     copyRecordBufferToStringFields(handle.fields);
@@ -567,7 +567,7 @@ export class GetIoStatement extends GetPutStatement {
     const position = this.getRecordNumber(context);
     const size = getScalarVariableSizeInBytes(this.variable!, context.memory);
     const bytes = accessor.getBytes(size, position);
-    writeBytesToScalarVariable(this.variable!, new Uint8Array(bytes).buffer, context.memory);
+    writeBytesToScalarVariable(this.variable!, new Uint8Array(bytes), context.memory);
   }
 }
 

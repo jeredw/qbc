@@ -5,7 +5,7 @@ export class SoundBlaster {
   private address = [0, 0, 0];
   private lengthByteIndex = 0;
   private length = [0, 0];
-  private pendingAudioData?: ArrayBuffer;
+  private pendingAudioData?: Uint8Array;
   private dspOut: number[] = [];
   private dspIn: number[] = [];
   private timeConstant = 0;
@@ -158,8 +158,8 @@ export class SoundBlaster {
     }
   }
 
-  sendData(buffer: ArrayBuffer) {
-    this.pendingAudioData = buffer;
+  sendData(data: Uint8Array) {
+    this.pendingAudioData = data;
   }
 
   private play() {

@@ -10,7 +10,7 @@ import { Statement } from "./Statement.ts";
 import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { Memory, readNumber, readString, StorageType } from "../Memory.ts";
 import { Token } from "antlr4ng";
-import { readArraySliceToBytes, writeBytesToArraySlice } from "./Arrays.ts";
+import { markArrayBytesDirty, readSubArrayToBytes, writeBytesToSubArray } from "./Arrays.ts";
 import { readEntireFile, writeEntireFile } from "./FileSystem.ts";
 import { BlitOperation } from "../Drawing.ts";
 import * as baked from "../BakedInData.ts";
@@ -539,19 +539,17 @@ export class LsetRecordStatement extends Statement {
   }
 
   override execute(context: ExecutionContext) {
-    const sourceBuffer = readScalarVariableToBytes(this.source, context.memory);
-    const destBuffer = readScalarVariableToBytes(this.dest, context.memory);
-    const source = new Uint8Array(sourceBuffer);
-    const dest = new Uint8Array(destBuffer);
+    const source = readScalarVariableToBytes(this.source, context.memory);
+    const dest = readScalarVariableToBytes(this.dest, context.memory);
     for (let i = 0; i < Math.min(source.length, dest.length); i++) {
       dest[i] = source[i];
     }
-    writeBytesToScalarVariable(this.dest, destBuffer, context.memory);
+    writeBytesToScalarVariable(this.dest, dest, context.memory);
   }
 }
 
-export function writeBytesToScalarVariable(variable: Variable, buffer: ArrayBuffer, memory: Memory, stringsHaveLengthPrefixed?: boolean) {
-  const data = new DataView(buffer);
+export function writeBytesToScalarVariable(variable: Variable, bytes: Uint8Array, memory: Memory, stringsHaveLengthPrefixed?: boolean) {
+  const data = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   writeBytesToElement(variable, data, 0, memory, stringsHaveLengthPrefixed);
 }
 
@@ -621,18 +619,18 @@ function readStringFromBuffer(data: DataView, offset: number, maxLength: number)
   return asciiToString(codes);
 }
 
-export function readVariableToBytes(variable: Variable, memory: Memory): ArrayBuffer {
+export function readVariableToBytes(variable: Variable, memory: Memory): Uint8Array {
   return variable.array ?
-    readArraySliceToBytes(variable, memory) :
+    readSubArrayToBytes(variable, memory) :
     readScalarVariableToBytes(variable, memory);
 }
 
-export function readScalarVariableToBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): ArrayBuffer {
+export function readScalarVariableToBytes(variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): Uint8Array {
   const size = getScalarVariableSizeInBytes(variable, memory, stringsHaveLengthPrefixed);
   const buffer = new ArrayBuffer(size);
   const data = new DataView(buffer);
   readElementToBytes(data, 0, variable, memory, stringsHaveLengthPrefixed);
-  return buffer;
+  return new Uint8Array(buffer);
 }
 
 export function readElementToBytes(data: DataView, offset: number, variable: Variable, memory: Memory, stringsHaveLengthPrefixed?: boolean): number {
@@ -740,7 +738,7 @@ export class BloadStatement extends Statement {
           y1: 0,
           step: false,
           operation: BlitOperation.PSET,
-          buffer: bitmap.buffer,
+          data: bitmap,
         });
         return;
       }
@@ -947,7 +945,12 @@ export class PokeStatement extends Statement {
       const [variable, data] = readBytesAtPointer(segment, context.memory);
       if (offset < data.length) {
         data[offset] = byte;
-        writeBytesToVariable(variable, data, context.memory);
+        if (variable.array) {
+          // No need to copy back entire array, just mark bytes dirty.
+          markArrayBytesDirty(variable, context.memory);
+        } else {
+          writeBytesToVariable(variable, data, context.memory);
+        }
       }
     } catch (e: unknown) {
     }
@@ -957,14 +960,14 @@ export class PokeStatement extends Statement {
 function readBytesAtPointer(pointer: number, memory: Memory): [Variable, Uint8Array] {
   const {variable} = memory.readPointer(pointer);
   const bytes = readVariableToBytes(variable, memory);
-  return [variable, new Uint8Array(bytes)];
+  return [variable, bytes];
 }
 
 export function writeBytesToVariable(variable: Variable, data: Uint8Array, memory: Memory) {
   if (variable.array) {
-    writeBytesToArraySlice(variable, data.buffer as ArrayBuffer, memory);
+    writeBytesToSubArray(variable, data, memory);
   } else {
-    writeBytesToScalarVariable(variable, data.buffer as ArrayBuffer, memory);
+    writeBytesToScalarVariable(variable, data, memory);
   }
 }
 

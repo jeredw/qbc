@@ -66,7 +66,7 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   line(args: LineArgs, color?: number): void;
   circle(args: CircleArgs, color?: number): void;
   paint(args: PaintArgs, color?: number): void;
-  getBitmap(args: GetBitmapArgs): ArrayBuffer;
+  getBitmap(args: GetBitmapArgs): Uint8Array;
   putBitmap(args: PutBitmapArgs): void;
 
   showTextCursor(): void;
@@ -272,7 +272,7 @@ class Page {
     this.dirty = true;
   }
 
-  getBitmap(args: GetBitmapArgs): ArrayBuffer {
+  getBitmap(args: GetBitmapArgs): Uint8Array {
     const ctx = this.canvas.getContext('2d')!;
     const {bppPerPlane, planes} = this.mode;
     return this.plotter.getBitmap(ctx, args, bppPerPlane, planes);
@@ -872,7 +872,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     return color;
   }
 
-  getBitmap(args: GetBitmapArgs): ArrayBuffer {
+  getBitmap(args: GetBitmapArgs): Uint8Array {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
@@ -1438,7 +1438,7 @@ export class TestScreen implements Screen {
     this.graphics.paint(args, color);
   }
 
-  getBitmap(args: GetBitmapArgs): ArrayBuffer {
+  getBitmap(args: GetBitmapArgs): Uint8Array {
     this.text.print(`[GET ${args.step1}, ${args.x1}, ${args.y1}, ${args.step2}, ${args.x2}, ${args.y2}]`, true);
     return this.graphics.getBitmap(args);
   }

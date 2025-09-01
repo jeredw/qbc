@@ -67,8 +67,7 @@ export class ChainStatement extends Statement {
     const {common} = context;
     common.serializedValues = common.chainVariables.map((variable) => {
       const type = variable.type;
-      const buffer = readVariableToBytes(variable, context.memory);
-      const bytes = new Uint8Array(buffer);
+      const bytes = readVariableToBytes(variable, context.memory);
       let dimensions: ArrayBounds[] | undefined;
       if (variable.array) {
         const descriptor = getArrayDescriptor(variable, context.memory);

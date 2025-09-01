@@ -8,11 +8,11 @@ export interface Speaker {
   setPlayState(state: PlayState): void;
   tone(frequency: number, onDuration: number, offDuration: number): Promise<void>;
 
-  playSample(buffer: ArrayBuffer, sampleRate: number): void;
+  playSample(data: Uint8Array, sampleRate: number): void;
   writeSynthesizerData(address: number, data: number): void;
   readSynthesizerStatus(): number;
 
-  loadMidi(buffer: ArrayBuffer): void;
+  loadMidi(data: Uint8Array): void;
   playMidi({restart, loop}: {restart: boolean, loop?: boolean}): void;
   stopMidi(): void;
   playingMidi(): boolean;
@@ -71,8 +71,8 @@ export class TestSpeaker implements Speaker {
     return Promise.resolve();
   }
 
-  playSample(buffer: ArrayBuffer, sampleRate: number) {
-    this.output += `SPEAKER> play sample ${buffer.byteLength} ${sampleRate}`;
+  playSample(data: Uint8Array, sampleRate: number) {
+    this.output += `SPEAKER> play sample ${data.byteLength} ${sampleRate}`;
   }
 
   writeSynthesizerData(address: number, data: number) {
@@ -84,8 +84,8 @@ export class TestSpeaker implements Speaker {
     return 0;
   }
 
-  loadMidi(buffer: ArrayBuffer) {
-    this.output += `SPEAKER> load midi ${buffer.byteLength}`;
+  loadMidi(data: Uint8Array) {
+    this.output += `SPEAKER> load midi ${data.byteLength}`;
   }
 
   playMidi({restart, loop}: {restart: boolean, loop?: boolean}) {
@@ -248,17 +248,16 @@ export class WebAudioSpeaker implements Speaker {
     }
   }
 
-  playSample(buffer: ArrayBuffer, sampleRate: number) {
+  playSample(data: Uint8Array, sampleRate: number) {
     if (this.bufferSource) {
       this.bufferSource.disconnect();
     }
     this.bufferSource = this.audioContext.createBufferSource();
     this.bufferSource.connect(this.audioContext.destination);
-    const audioBuffer = this.audioContext.createBuffer(1, buffer.byteLength, sampleRate);
+    const audioBuffer = this.audioContext.createBuffer(1, data.byteLength, sampleRate);
     const channelData = audioBuffer.getChannelData(0);
-    const bytes = new Uint8Array(buffer);
-    for (let i = 0; i < Math.min(audioBuffer.length, bytes.byteLength); i++) {
-      channelData[i] = (bytes[i] - 128) / 128;
+    for (let i = 0; i < Math.min(audioBuffer.length, data.byteLength); i++) {
+      channelData[i] = (data[i] - 128) / 128;
     }
     this.bufferSource.buffer = audioBuffer;
     this.bufferSource.start();
@@ -272,8 +271,8 @@ export class WebAudioSpeaker implements Speaker {
     return this.synthesizer.readStatus();
   }
 
-  loadMidi(buffer: ArrayBuffer) {
-    const blob = new Blob([buffer], { type: 'audio/midi' });
+  loadMidi(data: Uint8Array) {
+    const blob = new Blob([data.buffer as ArrayBuffer], { type: 'audio/midi' });
     const reader = new FileReader();
     reader.onload = (e) => {
       const dataURI = e.target?.result;

@@ -316,11 +316,11 @@ export function readNumbersFromArraySlice(arrayOrRef: Variable, count: number, m
   return result;
 }
 
-function readEntireArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
+function readEntireArrayToBuffer(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
   const {array, descriptor} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   if (!descriptor.buffer) {
     if (array.type.tag === TypeTag.STRING) {
-      return readStringArrayToBytes(array, descriptor, memory);
+      return readStringArrayToBuffer(array, descriptor, memory);
     }
     const baseIndex = descriptor.baseAddress!.index;
     const numItems = getNumItemsInArray(descriptor);
@@ -343,18 +343,18 @@ function readEntireArrayToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuff
 // Serializes a slice of an array as bytes.
 // If arrayOrRef is a reference from IndexArray, result is the slice of items
 // beginning at that index. Otherwise result is the full array contents.
-export function readArraySliceToBytes(arrayOrRef: Variable, memory: Memory): ArrayBuffer {
-  const buffer = readEntireArrayToBytes(arrayOrRef, memory);
+export function readSubArrayToBytes(arrayOrRef: Variable, memory: Memory): Uint8Array {
+  const buffer = readEntireArrayToBuffer(arrayOrRef, memory);
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   if (array.type.tag === TypeTag.STRING) {
     if (start !== 0) {
       throw new Error('Only support slicing string array bytes from offset 0.');
     }
-    return buffer;
+    return new Uint8Array(buffer);
   }
   const bytesPerItem = getBytesPerItem(array, memory);
-  return buffer.slice(start * bytesPerItem);
+  return new Uint8Array(buffer).subarray(start * bytesPerItem);
 }
 
 function invalidateBuffer(arrayOrRef: Variable, memory: Memory) {
@@ -366,6 +366,7 @@ function invalidateBuffer(arrayOrRef: Variable, memory: Memory) {
     descriptor.buffer = undefined;
     return;
   }
+  descriptor.bufferDirty = false;
   if (array.type.tag === TypeTag.STRING) {
     writeBytesToStringArray(array, descriptor, memory);
     return;
@@ -394,9 +395,8 @@ function invalidateBuffer(arrayOrRef: Variable, memory: Memory) {
 // Copies bytes to a slice of an array.
 // If arrayOrRef is a reference from IndexArray, copies bytes to the slice
 // beginning at that index, otherwise to the start of the array.
-export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer, memory: Memory) {
-  const data = new Uint8Array(buffer);
-  const arrayBuffer = readEntireArrayToBytes(arrayOrRef, memory);
+export function writeBytesToSubArray(arrayOrRef: Variable, data: Uint8Array, memory: Memory) {
+  const buffer = readEntireArrayToBuffer(arrayOrRef, memory);
   const {array, descriptor, baseIndex} = getDescriptorAndBaseIndex(arrayOrRef, memory);
   const start = baseIndex - descriptor.baseAddress!.index;
   if (array.type.tag === TypeTag.STRING) {
@@ -407,16 +407,21 @@ export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer
   const bytesPerItem = getBytesPerItem(array, memory);
   const baseByteOffset = start * bytesPerItem;
   descriptor.bufferDirty = true;
-  if (baseByteOffset + buffer.byteLength > arrayBuffer.byteLength) {
+  if (baseByteOffset + data.byteLength > buffer.byteLength) {
     // Lots of programs bload stuff slightly beyond array bounds. To help this work,
     // grow the buffer. We'll only truncate when it is invalidated.
-    const grow = new Uint8Array(baseByteOffset + buffer.byteLength);
-    grow.set(new Uint8Array(arrayBuffer));
+    const grow = new Uint8Array(baseByteOffset + data.byteLength);
+    grow.set(new Uint8Array(buffer));
     grow.set(data, baseByteOffset);
     descriptor.buffer = grow.buffer;
     return;
   }
-  new Uint8Array(arrayBuffer).set(data, baseByteOffset);
+  new Uint8Array(buffer).set(data, baseByteOffset);
+}
+
+export function markArrayBytesDirty(arrayOrRef: Variable, memory: Memory) {
+  const {descriptor} = getDescriptorAndBaseIndex(arrayOrRef, memory);
+  descriptor.bufferDirty = true;
 }
 
 // QBasic stores variable length strings as a length and a pointer, so the
@@ -428,7 +433,7 @@ export function writeBytesToArraySlice(arrayOrRef: Variable, buffer: ArrayBuffer
 // the actual string data.  If there is some use for it, we could reuse the
 // table as a BSAVE image...
 
-function readStringArrayToBytes(array: Variable, descriptor: ArrayDescriptor, memory: Memory): ArrayBuffer {
+function readStringArrayToBuffer(array: Variable, descriptor: ArrayDescriptor, memory: Memory): ArrayBuffer {
   const baseIndex = descriptor.baseAddress!.index;
   const numItems = getNumItemsInArray(descriptor);
   let item = makeItemVariable(array, descriptor, baseIndex);

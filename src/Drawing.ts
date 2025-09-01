@@ -51,7 +51,7 @@ export interface PutBitmapArgs {
   x1: number;
   y1: number;
   operation: BlitOperation;
-  buffer: ArrayBuffer;
+  data: Uint8Array;
 }
 
 export enum BlitOperation {
@@ -229,7 +229,7 @@ export class Plotter {
     this.cursor = {...pw};
   }
 
-  getBitmap(ctx: CanvasRenderingContext2D, args: GetBitmapArgs, bppPerPlane: number, planes: number): ArrayBuffer {
+  getBitmap(ctx: CanvasRenderingContext2D, args: GetBitmapArgs, bppPerPlane: number, planes: number): Uint8Array {
     const [x1, y1] = [args.x1 ?? this.cursor.x, args.y1 ?? this.cursor.y];
     const p1 = args.step1 ?
       {x: x1 + this.cursor.x, y: y1 + this.cursor.y} :
@@ -265,7 +265,7 @@ export class Plotter {
         bitStream.finishByte();
       }
     }
-    return buffer;
+    return new Uint8Array(buffer);
   }
 
   putBitmap(ctx: CanvasRenderingContext2D, args: PutBitmapArgs, bppPerPlane: number, planes: number) {
@@ -275,19 +275,19 @@ export class Plotter {
       {x: x1, y: y1};
     this.cursor = {...p1};
     const p1v = this.windowToScreen(p1);
-    if (args.buffer.byteLength < 4) {
+    if (args.data.byteLength < 4) {
       return;
     }
-    let data = new DataView(args.buffer);
+    let view = new DataView(args.data.buffer, args.data.byteOffset, args.data.byteLength);
     const littleEndian = true;
-    const width = data.getInt16(0, littleEndian) / bppPerPlane;
-    const height = data.getInt16(2, littleEndian);
+    const width = view.getInt16(0, littleEndian) / bppPerPlane;
+    const height = view.getInt16(2, littleEndian);
     const sizeInBytes = 4 + Math.ceil((width * bppPerPlane) / 8) * planes * height;
-    if (args.buffer.byteLength < sizeInBytes) {
+    if (view.byteLength < sizeInBytes) {
       // QBasic tolerates reading bitmap data out of bounds.
       const padded = new Uint8Array(sizeInBytes);
-      padded.set(new Uint8Array(args.buffer), 0);
-      data = new DataView(padded.buffer);
+      padded.set(new Uint8Array(args.data), 0);
+      view = new DataView(padded.buffer);
     }
     const overwrite = (
       args.operation === BlitOperation.PSET ||
@@ -296,7 +296,7 @@ export class Plotter {
     const attributes = overwrite ?
       ctx.createImageData(width, height) :
       ctx.getImageData(p1v.x, p1v.y, width, height);
-    const bitStream = new BitStream(data, 4);
+    const bitStream = new BitStream(view, 4);
     let offset = 0;
     for (let y = 0; y < height; y++) {
       const rowStart = offset;

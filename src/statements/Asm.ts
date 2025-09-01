@@ -36,7 +36,7 @@ export class CallAbsoluteStatement extends Statement {
     // Install program.
     cpu.cs = 0x0100;
     cpu.ip = 0x0000;
-    const code = patch(new Uint8Array(bytes));
+    const code = patch(bytes);
     for (let i = 0; i < code.byteLength; i++) {
       cpu.writeByte(cpu.cs, cpu.ip + i, code[i]);
     }
@@ -58,7 +58,7 @@ export class CallAbsoluteStatement extends Statement {
       } else if (variable) {
         const variableBytes = readVariableToBytes(variable, context.memory);
         const start = linearAddress(PARAMETER_DS, offset);
-        cpu.memory.set(new Uint8Array(variableBytes), start);
+        cpu.memory.set(variableBytes, start);
         offsets[i] = {offset, length: variableBytes.byteLength};
         offset += variableBytes.byteLength;
       }
@@ -760,7 +760,7 @@ class DosHandler implements InterruptHandler {
         const {variable: nameVariable} = this.context.memory.readPointer(cpu.bx);
         const {variable: dataVariable} = this.context.memory.readPointer(cpu.ds);
         const nameBuffer = readVariableToBytes(nameVariable, this.context.memory);
-        const name = asciiToString(Array.from(new Uint8Array(nameBuffer.slice(0, nameBuffer.byteLength - 1))));
+        const name = asciiToString(Array.from(nameBuffer.slice(0, nameBuffer.byteLength - 1)));
         const data = readEntireFile(this.context, name);
         writeBytesToVariable(dataVariable, new Uint8Array(data), this.context.memory);
         break;
@@ -819,9 +819,9 @@ class MidiHandler implements InterruptHandler {
         // SBMIDI: Load a midi file from path given by dx:ax.
         const {variable: nameVariable} = this.context.memory.readPointer(cpu.dx);
         const nameBuffer = readVariableToBytes(nameVariable, this.context.memory);
-        const name = asciiToString(Array.from(new Uint8Array(nameBuffer.slice(0, nameBuffer.byteLength - 1))));
+        const name = asciiToString(Array.from(nameBuffer.slice(0, nameBuffer.byteLength - 1)));
         const data = readEntireFile(this.context, name);
-        speaker.loadMidi(new Uint8Array(data).buffer);
+        speaker.loadMidi(new Uint8Array(data));
         break;
       }
       case 0x502:
