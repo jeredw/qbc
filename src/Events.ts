@@ -26,6 +26,7 @@ export class Events {
   modem: ModemEventMonitor;
   devices: Devices;
   asleep?: SleepArgs;
+  enabled = false;
 
   constructor(devices: Devices) {
     this.devices = devices;
@@ -38,6 +39,9 @@ export class Events {
   }
 
   poll(): Trap | void {
+    if (!this.enabled) {
+      return;
+    }
     this.timer.poll();
     this.joystick.poll();
     this.keyboard.poll();

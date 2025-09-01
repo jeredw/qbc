@@ -27,6 +27,7 @@ export class EventHandlerStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const param = this.param ? evaluateIntegerExpression(this.param, context.memory) : 0;
+    context.events.enabled = true;
     switch (this.eventType) {
       case EventType.TIMER:
         if (param <= 0) {
@@ -102,6 +103,7 @@ export class EventControlStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const param = this.param ? evaluateIntegerExpression(this.param, context.memory) : 0;
+    context.events.enabled = true;
     switch (this.eventType) {
       case EventType.TIMER:
         if (this.state === EventChannelState.TEST) {
@@ -184,6 +186,7 @@ export class SleepStatement extends Statement {
       evaluateIntegerExpression(this.durationExpr, context.memory, { tag: TypeTag.LONG }) : 0;
     const start = context.devices.timer.timer();
     const numKeysPending = context.devices.keyboard.numKeysPending();
+    context.events.enabled = true;
     context.events.sleep({start, duration, numKeysPending});
   }
 }

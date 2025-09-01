@@ -197,7 +197,8 @@ export class Invocation {
         // Keep track of the most recent line number executed for ERL.
         this.errorHandling.lineNumber = statement.lineNumber;
       }
-      // TODO: check for program statement boundaries
+      // TODO: When events are enabled, they are extremely expensive - polling
+      // every statement is probably unnecessary, throttle this.
       const eventTrap = this.events.poll();
       if (eventTrap) {
         this.stack.push({
