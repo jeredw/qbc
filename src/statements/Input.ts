@@ -362,56 +362,93 @@ export class InputFileStatement extends Statement {
         accessor.seek(pos);
         return next;
       };
-      const nextField = () => {
-        // char is either a field delimiter, or empty at the start of a string.
-        if (!accessor.eof()) {
-          nextChar();
-        }
-        // Skip whitespace after delimiter.
-        while (!accessor.eof() && ` ${CR}${LF}`.includes(char)) {
+      const skipWhitespaceBeforeField = () => {
+        nextChar();  // Note: fails with "input past end of file" if eof
+        while (!accessor.eof() && char === ' ') {
           nextChar();
         }
       };
-      const readUntilStringDelimiter = () => {
-        let result = "";
-        if (char === '"') {
+      const skipToNextField = () => {
+        // Char is one of " , CR LF sp.
+        if (char === ',') {
+          return;
+        }
+        if (char === CR) {
+          if (!accessor.eof() && peekChar() === LF) {
+            nextChar();
+          }
+          return;
+        }
+        if (char === LF) {
+          return;
+        }
+        // char is " or sp.  Consume more spaces up to a comma or newline.
+        while (!accessor.eof() && peekChar() === ' ') {
+          nextChar();  // Consume ' '
+        }
+        if (!accessor.eof() && peekChar() === ',') {
+          nextChar();  // Consume ','
+          return;
+        }
+        if (!accessor.eof() && peekChar() === CR) {
           nextChar();
-          while (!accessor.eof() && char !== '"') {
-            result += char;
+          if (!accessor.eof() && peekChar() === LF) {
             nextChar();
           }
-          // Skip ahead to , if we have a list of strings like "foo"   ,  "bar".
-          // But if we have "foo""bar", treat the closing quote as the delimiter.
-          while (!accessor.eof() && peekChar() === ' ') {
-            nextChar();
-          }
-          if (!accessor.eof() && peekChar() === ',') {
-            nextChar();
-          }
+          return;
+        }
+        if (!accessor.eof() && peekChar() === LF) {
+          nextChar();
+          return;
+        }
+      };
+      const scanQuotedField = () => {
+        let result = "";
+        if (accessor.eof()) {
           return result;
         }
+        nextChar();  // Character after opening '"'.
+        while (!accessor.eof() && char !== '"') {
+          // Include newlines inside quotes.
+          result += char;
+          nextChar();
+        }
+        // Note skipToNextField() will skip just past , if we have a list of
+        // strings like "foo"   ,  "bar".  But if we have "foo""bar", it treats
+        // the closing quote as the delimiter.
+        skipToNextField();
+        return result;
+      };
+      const scanUnquotedField = () => {
+        let result = "";
         while (!accessor.eof() && !`,${CR}${LF}`.includes(char)) {
           result += char;
           nextChar();
         }
+        skipToNextField();
         return result;
+      }
+      const scanStringField = () => {
+        skipWhitespaceBeforeField();
+        return char === '"' ? scanQuotedField() : scanUnquotedField();
       };
-      const readUntilNumberDelimiter = () => {
+      const scanNumberField = () => {
+        skipWhitespaceBeforeField();
         let result = "";
         while (!accessor.eof() && !`, ${CR}${LF}`.includes(char)) {
           result += char;
           nextChar();
         }
+        skipToNextField();
         return result;
       };
       for (let i = 0; i < this.args.variables.length; i++) {
         const variable = this.args.variables[i];
-        nextField();
         if (isString(variable.type)) {
-          const field = readUntilStringDelimiter();
+          const field = scanStringField();
           context.memory.write(variable, string(field));
         } else {
-          const field = readUntilNumberDelimiter();
+          const field = scanNumberField();
           let value = parseNumberFromString(trim(field)) ?? getDefaultValue(variable);
           if (isNumeric(value)) {
             value = cast(value, variable.type);

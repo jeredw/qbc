@@ -1,0 +1,329 @@
+(program ' \r\n ' \r\n ' \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "test.dat")) FOR 
+      (open_mode OUTPUT) AS # 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal "   abc"))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (expr 
+                (expr 
+                  (expr 
+                    (expr 
+                      (expr 
+                        (expr 
+                          (literal "   ")) + 
+                        (expr 
+                          (variable_or_function_call CHR$ 
+                            ( 
+                              (argument_list 
+                                (argument 
+                                  (expr 
+                                    (literal 34)))) )))) + 
+                      (expr 
+                        (literal "def"))) + 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 34)))) )))) + 
+                  (expr 
+                    (literal " , "))) + 
+                (expr 
+                  (variable_or_function_call CHR$ 
+                    ( 
+                      (argument_list 
+                        (argument 
+                          (expr 
+                            (literal 34)))) )))) + 
+              (expr 
+                (literal "ghi"))) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 34)))) )))) + 
+          (expr 
+            (literal "   ")))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (expr 
+                (expr 
+                  (expr 
+                    (expr 
+                      (variable_or_function_call CHR$ 
+                        ( 
+                          (argument_list 
+                            (argument 
+                              (expr 
+                                (literal 34)))) ))) + 
+                    (expr 
+                      (literal "foo"))) + 
+                  (expr 
+                    (variable_or_function_call CHR$ 
+                      ( 
+                        (argument_list 
+                          (argument 
+                            (expr 
+                              (literal 34)))) )))) + 
+                (expr 
+                  (literal " "))) + 
+              (expr 
+                (variable_or_function_call CHR$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (literal 34)))) )))) + 
+            (expr 
+              (literal "bar"))) + 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 34)))) ))))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal 1)) ,) 
+      (print_argument 
+        (expr 
+          (literal 2)) ,) 
+      (print_argument 
+        (expr 
+          (literal 3))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal ""))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal "4 ,5  , 6"))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (expr 
+            (variable_or_function_call CHR$ 
+              ( 
+                (argument_list 
+                  (argument 
+                    (expr 
+                      (literal 34)))) ))) + 
+          (expr 
+            (literal "hello world")))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (expr 
+            (expr 
+              (literal "yep")) + 
+            (expr 
+              (variable_or_function_call CHR$ 
+                ( 
+                  (argument_list 
+                    (argument 
+                      (expr 
+                        (literal 34)))) )))) + 
+          (expr 
+            (literal "   ,   "))) ;))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (literal "okeyday"))))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (print_argument 
+        (expr 
+          (variable_or_function_call CHR$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 34)))) ))) ;))) \r\n 
+  (statement 
+    (close_statement CLOSE # 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (open_statement OPEN 
+      (expr 
+        (literal "test.dat")) FOR 
+      (open_mode INPUT) AS # 
+      (expr 
+        (literal 1)))) \r\n 
+  (statement 
+    (for_next_statement FOR i = 
+      (expr 
+        (literal 1)) TO 
+      (expr 
+        (literal 5)) 
+      (block \r\n 
+        (statement 
+          (input_file_statement INPUT 
+            (file_number # 
+              (expr 
+                (literal 1))) , 
+            (variable_or_function_call s$))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (print_argument 
+              (expr 
+                (variable_or_function_call s$)) ,) 
+            (print_argument 
+              (expr 
+                (variable_or_function_call HEX$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (builtin_function 
+                              (seek_function SEEK 
+                                ( 
+                                  (expr 
+                                    (literal 1)) )))) - 
+                          (expr 
+                            (literal 1))))) )))))) \r\n) NEXT i)) \r\n 
+  (statement 
+    (for_next_statement FOR i = 
+      (expr 
+        (literal 0)) TO 
+      (expr 
+        (literal 6)) 
+      (block \r\n 
+        (statement 
+          (input_file_statement INPUT 
+            (file_number # 
+              (expr 
+                (literal 1))) , 
+            (variable_or_function_call a%))) \r\n 
+        (statement 
+          (print_statement PRINT 
+            (print_argument 
+              (expr 
+                (variable_or_function_call a%)) ,) 
+            (print_argument 
+              (expr 
+                (variable_or_function_call HEX$ 
+                  ( 
+                    (argument_list 
+                      (argument 
+                        (expr 
+                          (expr 
+                            (builtin_function 
+                              (seek_function SEEK 
+                                ( 
+                                  (expr 
+                                    (literal 1)) )))) - 
+                          (expr 
+                            (literal 1))))) )))))) \r\n) NEXT i)) \r\n 
+  (statement 
+    (input_file_statement INPUT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (variable_or_function_call s$))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call s$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call HEX$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (expr 
+                      (builtin_function 
+                        (seek_function SEEK 
+                          ( 
+                            (expr 
+                              (literal 1)) )))) - 
+                    (expr 
+                      (literal 1))))) )))))) \r\n 
+  (statement 
+    (input_file_statement INPUT 
+      (file_number # 
+        (expr 
+          (literal 1))) , 
+      (variable_or_function_call s$))) \r\n 
+  (statement 
+    (print_statement PRINT 
+      (print_argument 
+        (expr 
+          (variable_or_function_call s$)) ,) 
+      (print_argument 
+        (expr 
+          (variable_or_function_call HEX$ 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (expr 
+                      (builtin_function 
+                        (seek_function SEEK 
+                          ( 
+                            (expr 
+                              (literal 1)) )))) - 
+                    (expr 
+                      (literal 1))))) )))))) \n <EOF>)
