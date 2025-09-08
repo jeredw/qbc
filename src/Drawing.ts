@@ -618,10 +618,9 @@ export class Plotter {
     const [rx, ry] = aspect > 1 ?
       [roundToNearestEven(radius / aspect), radius] :
       [radius, roundToNearestEven(radius * aspect)];
-    if (ry === 0) {
-      // For extreme ellipses when aspect is near 0, draw a horizontal line.
-      // The algorithm will draw vertical lines for large aspects...
-      this.drawLine(ctx, {x: center.x - rx, y: center.y}, {x: center.x + rx, y: center.y}, color);
+    if (rx === 0) {
+      // For extreme ellipses when aspect is large, draw a vertical line.
+      this.drawLine(ctx, {x: center.x, y: center.y - ry}, {x: center.x, y: center.y + ry}, color);
       return;
     }
 
@@ -666,60 +665,51 @@ export class Plotter {
         }
       }
     };
-    const plotQuadrants = (x: number, y: number) => {
-      plot(roundToNearestEven(center.x + x), roundToNearestEven(center.y + y));
-      plot(roundToNearestEven(center.x - x), roundToNearestEven(center.y + y));
-      plot(roundToNearestEven(center.x + x), roundToNearestEven(center.y - y));
-      plot(roundToNearestEven(center.x - x), roundToNearestEven(center.y - y));
+
+    // QBasic scan converts ellipses as circles and scales points to plot in
+    // each octant.  This results in stair stepping along either the left and
+    // right or top and bottom, and is actually probably slower than just using
+    // a more precise midpoint ellipse algorithm.
+    const [cx, cy] = [roundToNearestEven(center.x), roundToNearestEven(center.y)];
+    // Points are scaled using fixed point integer arithmetic with 8 bits
+    // of fraction.
+    const f = aspect < 1 ? Math.trunc(aspect * 256) : Math.trunc(256 / aspect);
+    const scale = (u: number) => Math.trunc((u * f + 128) / 256);
+    const plotOctants = (x: number, y: number) => {
+      const [sx, sy] = [scale(x), scale(y)];
+      if (aspect < 1) {
+        plot(cx + x, cy + sy);
+        plot(cx - x, cy + sy);
+        plot(cx + x, cy - sy);
+        plot(cx - x, cy - sy);
+        plot(cx + y, cy + sx);
+        plot(cx - y, cy + sx);
+        plot(cx + y, cy - sx);
+        plot(cx - y, cy - sx);
+      } else {
+        plot(cx + sx, cy + y);
+        plot(cx - sx, cy + y);
+        plot(cx + sx, cy - y);
+        plot(cx - sx, cy - y);
+        plot(cx + sy, cy + x);
+        plot(cx - sy, cy + x);
+        plot(cx + sy, cy - x);
+        plot(cx - sy, cy - x);
+      }
     };
 
-    // TODO: Figure out how to make this pixel accurate.
-    // When aspect = 1.0, QBasic's ellipses are normal Bresenham midpoint
-    // ellipses, otherwise they can have jagged boundaries.  When aspect > 1.0,
-    // the top/bottom edge stair steps, and when aspect < 1.0 the left/right
-    // edge stair steps.  This is especially noticeable in 320x200 modes where
-    // the default aspect is .83.  From this, we can conclude
-    // 1) the rasterizer operates in two regions
-    // 2) it can step x and y independently
-    // 3) aspect somehow affects the error term...
-    const [rxSquared, rySquared] = [rx * rx, ry * ry];
-    let [x, y] = [0, ry];
-
-    // Region 1 - top and bottom of circle, '^' and '_'
-    let error = roundToNearestEven(rySquared - rxSquared * ry + 0.25 * rxSquared);
-    let dx = 2 * rySquared * x;
-    let dy = 2 * rxSquared * y;
-    while (dx < dy) {
-      plotQuadrants(x, y);
-      if (error < 0) {
-        x++;
-        dx += 2 * rySquared;
-        error += rySquared + dx;
-      } else {
-        x++;
+    let [x, y] = [0, radius];
+    let error = 1 - radius;
+    while (x < y) {
+      plotOctants(x, y);
+      if (error >= 0) {
+        error += -2 * y + 2;
         y--;
-        dx += 2 * rySquared;
-        dy -= 2 * rxSquared;
-        error += rySquared + dx - dy;
       }
+      error += 2 * x + 3;
+      x++;
     }
-  
-    // Region 2 - left and right of circle, '(' and ')'
-    error = roundToNearestEven(rySquared * (x + 0.5) * (x + 0.5) + rxSquared * (y - 1) * (y - 1) - rxSquared * rySquared);
-    while (y >= 0) {
-      plotQuadrants(x, y);
-      if (error > 0) {
-        y--;
-        dy -= 2 * rxSquared;
-        error += rxSquared - dy;
-      } else {
-        y--;
-        x++;
-        dx += 2 * rySquared;
-        dy -= 2 * rxSquared;
-        error += rxSquared + dx - dy;
-      }
-    }
+    plotOctants(x, y);
 
     if (startPoint) {
       this.drawLine(ctx, center, startPoint, color);
