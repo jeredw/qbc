@@ -1,0 +1,112 @@
+(program ' \n 
+  (statement 
+    (call_statement 
+      (untyped_id cls))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 12)))) \n 
+  (statement 
+    (circle_statement circle 
+      ( 
+        (expr 
+          (literal 180)) , 
+        (expr 
+          (literal 70)) ) , 
+      (expr 
+        (literal 50)) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal .785)) , 
+      (expr 
+        (literal 6)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (circle_statement circle step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 60)) , 
+      (expr 
+        (literal 2)) , 
+      (expr 
+        (literal .785)) , 
+      (expr 
+        (literal 6.2)) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr 
+          (literal 30)) , 
+        (expr 
+          (literal 5)) ) - step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 40))) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 10)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - step 
+      ( 
+        (expr 
+          (literal 34)) , 
+        (expr 
+          (literal 0)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (line_statement line step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 1))) , 
+        (expr - 
+          (expr 
+            (literal 56))) ) - step 
+      ( 
+        (expr - 
+          (expr 
+            (literal 5))) , 
+        (expr 
+          (literal 6)) ) , 
+      (expr 
+        (literal 2)))) \n 
+  (statement 
+    (paint_statement paint step 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr - 
+          (expr 
+            (literal 2))) ) , 
+      (expr 
+        (literal 2)))) \n <EOF>)

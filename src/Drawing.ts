@@ -597,19 +597,21 @@ export class Plotter {
     radius: number,
     color: number,
     aspect: number,
-    start?: number,
-    end?: number,
+    start = 0,
+    end = 2 * Math.PI,
   ) {
-    start = start ?? 0;
-    end = end ?? 2 * Math.PI;
-    const drawLineToStart = start !== undefined && start < 0;
-    const drawLineToEnd = end !== undefined && end < 0;
-    let minToStart = 10;
-    let minToEnd = 10;
-    let startPoint: Point | undefined;
-    let endPoint: Point | undefined;
+    const drawLineToStart = start < 0;
+    const drawLineToEnd = end < 0;
     start = Math.abs(start);
     end = Math.abs(end);
+    if (start > 2 * Math.PI) {
+      throw new Error('Start angle out of bounds');
+    }
+    if (end > 2 * Math.PI) {
+      throw new Error('End angle out of bounds');
+    }
+    let startPoint: Point | undefined;
+    let endPoint: Point | undefined;
 
     if (aspect < 0) {
       // Passing e.g. aspect=-100.1 has the same effect as .9
@@ -624,45 +626,70 @@ export class Plotter {
       return;
     }
 
-    // TODO: Match QBasic's arc drawing.  This does not always seem to end the
-    // circle at the same pixel as QBasic does.
-    const pointToAngle = (x: number, y: number) => {
-      const [cx, cy] = [x - center.x, center.y - y];
-      // For ellipses, we want theta satisfying
-      //   x = rx * cos(theta)
-      //   y = ry * sin(theta)
-      const angle = Math.atan2(cy / ry, cx / rx);
-      return angle >= 0 ? angle : 2 * Math.PI + angle;
-    };
-    const isPointOnArc = (angle: number): boolean => {
-      if (start <= end) {
-        return angle >= start && angle <= end;
+    // QBasic uses the x-step during scan conversion and the current octant to
+    // determine if a point is on an arc.  It assumes there are Q = R cos(45)
+    // x-steps per octant, numbered counter-clockwise from 0 degrees.  Note that
+    // the step direction during rasterization (indicated by arrows on the
+    // diagram below) is sometimes clockwise and sometimes counter-clockwise.
+    //
+    //   octant | theta | step#                π/2
+    //  --------+-------+------          \← ← ← | → → →/
+    //        0 |     0 |  0             ↑  \ 2 | 1 /  ↑
+    //        1 |   π/4 |  Q             ↑  3  \|/  0  ↑
+    //        2 |   π/2 | 2Q          π  -------*-------   0
+    //        3 |  3π/4 | 3Q             ↓  4  /|\  7  ↓
+    //        4 |     π | 4Q             ↓  / 5 | 6 \  ↓
+    //        5 |  5π/4 | 5Q             /← ← ← | → → →\
+    //        6 |  3π/2 | 6Q                  3π/2
+    //        7 |  7π/4 | 7Q
+    //
+    // To convert from an angle to an x-step number in an octant, we project
+    // onto the x-axis.
+    const stepsPerOctant = roundToNearestEven(radius * Math.sqrt(2) / 2);
+    const angleToStep = (angle: number) => {
+      if (angle === 2 * Math.PI) {
+        return 0xffff;
       }
-      return !(angle >= end && angle <= start);
+      const octant = Math.floor(4 / Math.PI * angle);
+      switch (octant & 7) {
+        case 0:
+          return roundToNearestEven(radius * Math.abs(Math.sin(angle)));
+        case 1:
+          return 2 * stepsPerOctant - roundToNearestEven(radius * Math.abs(Math.cos(angle)));
+        case 2:
+          return 2 * stepsPerOctant + roundToNearestEven(radius * Math.abs(Math.cos(angle)));
+        case 3:
+          return 4 * stepsPerOctant - roundToNearestEven(radius * Math.abs(Math.sin(angle)));
+        case 4:
+          return 4 * stepsPerOctant + roundToNearestEven(radius * Math.abs(Math.sin(angle)));
+        case 5:
+          return 6 * stepsPerOctant - roundToNearestEven(radius * Math.abs(Math.cos(angle)));
+        case 6:
+          return 6 * stepsPerOctant + roundToNearestEven(radius * Math.abs(Math.cos(angle)));
+        case 7:
+          return 8 * stepsPerOctant - roundToNearestEven(radius * Math.abs(Math.sin(angle)));
+      }
+      throw new Error("invalid octant");
     };
-    const angleDifference = (a: number, b: number) => (
-      Math.abs(Math.atan2(Math.sin(b - a), Math.cos(b - a)))
-    );
-    const plot = (x: number, y: number) => {
+    const startStep = angleToStep(start);
+    const endStep = angleToStep(end);
+    const isStepOnArc = (step: number): boolean => {
+      if (startStep <= endStep) {
+        return step >= startStep && step <= endStep;
+      }
+      return !(step > endStep && step < startStep);
+    };
+    const plot = (x: number, y: number, step: number) => {
       x = Math.floor(x);
       y = Math.floor(y);
-      const angle = pointToAngle(x, y);
-      if (isPointOnArc(angle)) {
+      if (isStepOnArc(step)) {
         this.fillPixel(ctx, {x, y}, color);
       }
-      if (drawLineToStart) {
-        const toStart = angleDifference(angle, start);
-        if (toStart < minToStart) {
-          startPoint = {x, y};
-          minToStart = toStart;
-        }
+      if (drawLineToStart && step === startStep) {
+        startPoint = {x, y};
       }
-      if (drawLineToEnd) {
-        const toEnd = angleDifference(angle, end);
-        if (toEnd < minToEnd) {
-          endPoint = {x, y};
-          minToEnd = toEnd;
-        }
+      if (drawLineToEnd && step === endStep) {
+        endPoint = {x, y};
       }
     };
 
@@ -678,23 +705,23 @@ export class Plotter {
     const plotOctants = (x: number, y: number) => {
       const [sx, sy] = [scale(x), scale(y)];
       if (aspect < 1) {
-        plot(cx + x, cy + sy);
-        plot(cx - x, cy + sy);
-        plot(cx + x, cy - sy);
-        plot(cx - x, cy - sy);
-        plot(cx + y, cy + sx);
-        plot(cx - y, cy + sx);
-        plot(cx + y, cy - sx);
-        plot(cx - y, cy - sx);
+        plot(cx + y, cy - sx, x);
+        plot(cx + x, cy - sy, 2 * stepsPerOctant - x);
+        plot(cx - x, cy - sy, 2 * stepsPerOctant + x);
+        plot(cx - y, cy - sx, 4 * stepsPerOctant - x);
+        plot(cx - y, cy + sx, 4 * stepsPerOctant + x);
+        plot(cx - x, cy + sy, 6 * stepsPerOctant - x);
+        plot(cx + x, cy + sy, 6 * stepsPerOctant + x);
+        plot(cx + y, cy + sx, 8 * stepsPerOctant - x);
       } else {
-        plot(cx + sx, cy + y);
-        plot(cx - sx, cy + y);
-        plot(cx + sx, cy - y);
-        plot(cx - sx, cy - y);
-        plot(cx + sy, cy + x);
-        plot(cx - sy, cy + x);
-        plot(cx + sy, cy - x);
-        plot(cx - sy, cy - x);
+        plot(cx + sy, cy - x, x);
+        plot(cx + sx, cy - y, 2 * stepsPerOctant - x);
+        plot(cx - sx, cy - y, 2 * stepsPerOctant + x);
+        plot(cx - sy, cy - x, 4 * stepsPerOctant - x);
+        plot(cx - sy, cy + x, 4 * stepsPerOctant + x);
+        plot(cx - sx, cy + y, 6 * stepsPerOctant - x);
+        plot(cx + sx, cy + y, 6 * stepsPerOctant + x);
+        plot(cx + sy, cy + x, 8 * stepsPerOctant - x);
       }
     };
 
