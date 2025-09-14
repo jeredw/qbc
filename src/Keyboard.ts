@@ -262,7 +262,7 @@ export class KeyboardListener implements Keyboard {
     const sysReq = e.key === 'PrintScreen';
     const insert = e.key === 'Insert';
     const extendedStatusMask = (
-      (rightControl ? 1 : 0) |
+      (leftControl ? 1 : 0) |
       (leftAlt ? 2 : 0) |
       (sysReq ? 4 : 0) |
       (pause ? 8 : 0) |
