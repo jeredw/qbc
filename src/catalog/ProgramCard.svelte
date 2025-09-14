@@ -47,7 +47,7 @@ Notes<br />
 <style>
 .program-card {
   background: var(--qbc-black);
-  box-shadow: 16px 16px 2px 1px rgb(0 0 20 / 0.5);
+  box-shadow: 16px 26px 2px 1px rgb(0 0 20 / 0.5);
   display: flex;
   min-width: 700px;
   width: 60vw;

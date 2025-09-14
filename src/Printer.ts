@@ -149,6 +149,7 @@ export class TestPrinter extends BasePrinter {
 const CHAR_DELAY = 1000 / 80;
 const FONT_DELAY = 5 * CHAR_DELAY;
 const NEWLINE_DELAY = CHAR_DELAY * 80 * .5;
+const FORMFEED_DELAY = 5 * CHAR_DELAY * 80 * .5;
 
 interface ControlState {
   bold?: boolean;
@@ -250,6 +251,14 @@ export class LinePrinter extends BasePrinter {
         }
         this.delay += NEWLINE_DELAY;
         this.text.innerHTML += '<br>';
+      } else if (ch === '♀') {
+        const formFeedLines = 60 - (this.linesPrinted % 60);
+        this.linesPrinted += formFeedLines;
+        for (let i = 0; i < formFeedLines; i++) {
+          this.text.innerHTML += '<br>';
+        }
+        this.paperWindow.scrollBy({left: 0, top: 16 * formFeedLines, behavior: "smooth"});
+        this.delay += FORMFEED_DELAY;
       } else {
         this.delay += CHAR_DELAY;
         if (this.control.bold || this.control.italic) {
