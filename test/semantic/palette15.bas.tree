@@ -1,0 +1,39 @@
+(program ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 13)))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 0)) , 
+        (expr 
+          (literal 0)) ) - 
+      ( 
+        (expr 
+          (literal 32)) , 
+        (expr 
+          (literal 32)) ) , 
+      (expr 
+        (literal 1)) , 
+      (box_style bf))) \n 
+  (statement 
+    (palette_statement palette 
+      (expr 
+        (literal 1)) , 
+      (expr 
+        (expr 
+          (literal 63)) * 
+        (expr 
+          (expr 
+            (literal 256)) ^ 
+          (expr 
+            (literal 2)))))) \n 
+  (statement 
+    (palette_statement palette 
+      (expr 
+        (literal 1)) , 
+      (expr - 
+        (expr 
+          (literal 1))))) \n <EOF>)

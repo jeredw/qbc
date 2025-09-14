@@ -93,12 +93,7 @@ class ParseErrorListener extends BaseErrorListener {
     if (/^extraneous input 'else' expecting /.test(message)) {
       throw ParseError.fromToken(token, "ELSE without IF");
     }
-    if (/^no viable alternative at input/.test(message)) {
-      console.error(antlrMessage);
-      if (antlrError?.ctx instanceof Do_loop_statementContext) {
-        throw ParseError.fromToken(antlrError!.ctx!.start!, "DO without LOOP");
-      }
-    }
+    console.error(antlrMessage);
     throw ParseError.fromToken(token, message);
   }
 }

@@ -160,6 +160,10 @@ export class PaletteStatement extends Statement {
     const color = this.colorExpr && evaluateIntegerExpression(this.colorExpr, context.memory, { tag: TypeTag.LONG });
     try {
       if (attribute !== undefined && color !== undefined) {
+        if (color === -1) {
+          // Passing -1 quietly does nothing.
+          return;
+        }
         screen.setPaletteEntry(attribute & 0xff, color);
       } else if (this.array) {
         const attributes = screen.getMode().attributes;
