@@ -174,7 +174,13 @@ export class KeyboardListener implements Keyboard {
     }
     const macro = this.macros.get(e.key);
     if (macro) {
-      const keys = macro.split('').map((char) => ({code: 0, char}));
+      const keys = macro.split('').map((char) => {
+        switch (char) {
+          case '♪': return {code: 0, char, cursorCommand: CursorCommand.ENTER};
+          case '○': return {code: 0, char, cursorCommand: CursorCommand.TAB};
+          default: return {code: 0, char};
+        }
+      });
       this.inputBuffer.push(...keys);
     } else if (code !== undefined) {
       const char = keyToChar(e);

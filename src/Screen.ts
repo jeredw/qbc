@@ -1,4 +1,4 @@
-import { asciiToChar } from './AsciiChart.ts';
+import { asciiToChar, showControlChar } from './AsciiChart.ts';
 import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
 import { CircleArgs, GetBitmapArgs, LineArgs, PaintArgs, Plotter, Point, PutBitmapArgs } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
@@ -1181,7 +1181,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
       }
       const startColumn = 8 * i + 2 + (i >= 9 ? 1 : 0);
       const maxLength = i >= 9 ? 5 : 6;
-      const formattedName = keyName.slice(0, maxLength).padEnd(maxLength, ' ');
+      const formattedName = keyName.slice(0, maxLength).replace(/./g, showControlChar).padEnd(maxLength, ' ');
       for (let j = 0; j < maxLength; j++) {
         this.activePage.putCharAt(rows, startColumn + j, {char: formattedName.charAt(j), attributes: keyColor});
       }

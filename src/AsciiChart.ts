@@ -101,6 +101,23 @@ export function trim(s: string) {
   return s.replace(/^[ \r\n\t♪◙○]+/, '').replace(/[ \r\n\t♪◙○]+$/, '');
 }
 
+export function showControlChar(ch: string) {
+  switch (ch) {
+    case '•': return '♫';  // bell
+    case '◘': return '■';  // backspace
+    case '○': return '→';  // tab
+    case '◙': return '<';  // line feed
+    case '♂': return '⌂';  // vertical tab
+    case '♀': return '▬';  // form feed
+    case '♪': return '←';  // newline
+    case '∟': return '►';  // file separator
+    case '↔': return '◄';  // group separator
+    case '▲': return '↑';  // record separator
+    case '▼': return '↓';  // unit separator
+    default: return ch;
+  }
+}
+
 function lookupCharacter(c: string): number {
   const code = charToAscii.get(c);
   if (code === undefined) {
