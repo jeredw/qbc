@@ -93,7 +93,7 @@ export class CloseStatement extends Statement {
   }
 }
 
-function closeFile(handle: Handle) {
+export function closeFile(handle: Handle) {
   handle.owner.close(handle);
   for (const value of handle.fields) {
     value.field = undefined;

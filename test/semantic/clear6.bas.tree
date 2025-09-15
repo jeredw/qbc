@@ -1,0 +1,24 @@
+(program ' \n 
+  (statement 
+    (data_statement data 
+      (data_item 1) , 
+      (data_item 2) , 
+      (data_item 3))) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call i))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call i))))) \n 
+  (statement 
+    (clear_statement clear)) \n 
+  (statement 
+    (read_statement read 
+      (variable_or_function_call i))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call i))))) \n <EOF>)

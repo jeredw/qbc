@@ -1,0 +1,17 @@
+(program ' \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (clear_statement clear)) \n 
+  (statement 
+    (open_statement open 
+      (expr 
+        (literal "test")) for 
+      (open_mode output) as # 
+      (expr 
+        (literal 1)))) \n <EOF>)
