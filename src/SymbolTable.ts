@@ -429,7 +429,11 @@ export class SymbolTable {
       throw ParseError.fromToken(variable.token, "Duplicate definition");
     }
     if (mySlot.procedure || parentSlot.procedure) {
-      throw ParseError.fromToken(variable.token, "Duplicate definition");
+      if (variable.isParameter && parentSlot.procedure?.declared && parentSlot.procedure?.result) {
+        // Strangely, QBasic allows parameters to alias declared functions (but not subs).
+      } else {
+        throw ParseError.fromToken(variable.token, "Duplicate definition");
+      }
     }
     if (!variable.isParameter && !variable.array && !variable.static && (mySlot.constant || parentSlot.constant)) {
       throw ParseError.fromToken(variable.token, "Duplicate definition");

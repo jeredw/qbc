@@ -787,7 +787,9 @@ foo
 </pre>
 
 <p>Strangely, constants defined in a procedure can also shadow shared global
-variables.
+variables.  And parameters can shadow functions - but not subs - if the
+functions are first declared using DECLARE FUNCTION.  These are probably bugs,
+but real programs depend on them.
 
 <h3 id="common-variables">Common Variables</h3>
 

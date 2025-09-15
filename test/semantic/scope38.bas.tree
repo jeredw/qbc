@@ -1,0 +1,31 @@
+(program ' \n ' \n 
+  (declare_function_statement declare function bar 
+    ( )) \n 
+  (declare_function_statement declare function foo 
+    ( 
+      (declare_parameter_list 
+        (declare_parameter bar)) )) \n \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call foo 
+            ( 
+              (argument_list 
+                (argument 
+                  (expr 
+                    (literal 42)))) )))))) \n \n 
+  (function_statement function bar 
+    (block :) 
+    (end_function_statement end function)) \n 
+  (function_statement function foo 
+    ( 
+      (parameter_list 
+        (parameter bar)) ) 
+    (block \n 
+      (statement 
+        (assignment_statement 
+          (variable_or_function_call foo) = 
+          (expr 
+            (variable_or_function_call bar)))) \n) 
+    (end_function_statement end function)) \n <EOF>)

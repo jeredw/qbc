@@ -8,4 +8,5 @@ export interface Procedure {
   programChunkIndex: number;
   token: Token;
   hasBody?: boolean;
+  declared?: boolean;
 }

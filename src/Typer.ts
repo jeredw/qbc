@@ -164,7 +164,7 @@ export class Typer extends QBasicParserListener {
       this.checkDeclaration(token, declaration, parameters, type);
       return;
     }
-    this.installProcedure({name, type, token, parameters});
+    this.installProcedure({name, type, token, parameters, declared: true});
   }
 
   override enterFunction_statement = (ctx: parser.Function_statementContext) => {
@@ -195,7 +195,7 @@ export class Typer extends QBasicParserListener {
       this.checkDeclaration(ctx.start!, declaration, parameters);
       return;
     }
-    this.installProcedure({name, token, parameters});
+    this.installProcedure({name, token, parameters, declared: true});
   }
 
   override enterSub_statement = (ctx: parser.Sub_statementContext) => {
@@ -215,7 +215,7 @@ export class Typer extends QBasicParserListener {
     this.installParameters(parameters);
   }
 
-  private installProcedure({name, parameters, type, token}: {name: string, parameters: Variable[], type?: Type, token: Token}): Procedure {
+  private installProcedure({name, parameters, type, token, declared}: {name: string, parameters: Variable[], type?: Type, token: Token, declared?: boolean}): Procedure {
     const procedure: Procedure = {
       name,
       parameters,
@@ -224,6 +224,9 @@ export class Typer extends QBasicParserListener {
     };
     if (type) {
       procedure.result = {name, type, token, storageType: StorageType.AUTOMATIC};
+    }
+    if (declared) {
+      procedure.declared = true;
     }
     this._chunk.symbols.defineProcedure(procedure);
     const symbols = new SymbolTable({
