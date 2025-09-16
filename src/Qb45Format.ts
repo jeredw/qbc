@@ -33,7 +33,10 @@ interface Entry {
 interface Section {
   offset: number;
   size: number;
+  flags: number;
 }
+
+const LITTLE_ENDIAN = true;
 
 // Loads QB45 binary format .BAS files as text.
 //
@@ -49,6 +52,8 @@ class Qb45Loader {
   procedureType = '';
   endOfSection = false;
   endOfLine = false;
+  sectionFlags = 0;
+  customDefType = false;
 
   constructor(buffer: ArrayBuffer) {
     this.data = new DataView(buffer);
@@ -67,16 +72,18 @@ class Qb45Loader {
     // What follows is a list of program "sections" - the main module and then
     // subroutines. Find all the code sections and then load them in order.
     const sections: Section[] = [];
+    let flags = 0;
     while (this.offset < this.data.byteLength) {
       const size = this.u16();
-      sections.push({offset: this.offset, size});
+      sections.push({offset: this.offset, size, flags});
       // Skip code and metadata.
       this.offset += size + 17;
       if (this.offset >= this.data.byteLength) {
         break;
       }
       const nameLength = this.u16();
-      this.offset += nameLength + 3;
+      this.offset += nameLength + 2;
+      flags = this.u8();
     }
     for (const section of sections) {
       if (this.output.length > 0) {
@@ -92,8 +99,14 @@ class Qb45Loader {
     this.endOfLine = false;
     this.endOfSection = false;
     this.offset = section.offset;
+    this.sectionFlags = section.flags;
     const end = Math.min(this.data.byteLength, section.offset + section.size);
     let firstLine = true;
+    if (this.customDefType) {
+      // Reset default type after deftype in previous section.
+      this.output.push(...stringToAscii('DEFSNG A-Z' + LF));
+      this.customDefType = false;
+    }
     while (this.offset < end) {
       const {pcode, tag, text} = this.parseToken();
       if (this.endOfLine) {
@@ -220,6 +233,7 @@ class Qb45Loader {
       const L = (i: number) => String.fromCharCode('A'.charCodeAt(0) + i);
       const rangeSpec = ranges.map(([s, e]) => s === e ? L(s) : `${L(s)}-${L(e)}`).join(', ');
       const type = getDefTypeName(mask & 7);
+      this.customDefType = true;
       return T(`DEF${type} ${rangeSpec}`);
     };
     // Parses array declarations in DIM statements for example.
@@ -345,7 +359,11 @@ class Qb45Loader {
         }
         name = `${name} ALIAS "${aliasName}"`;
       }
-      return {pcode, text: [...S(name), ...S(argumentList)]};
+      let modifiers = '';
+      if (!keyword && (this.sectionFlags & 0x80)) {
+        modifiers = ' STATIC';
+      }
+      return {pcode, text: [...S(name), ...S(argumentList), ...S(modifiers)]};
     };
     // Parses ON...GOTO with a list of targets.
     const computedGoto = (keyword: string): Entry => {
@@ -1551,12 +1569,11 @@ class Qb45Loader {
       // Used for 0 in ON ERROR GOTO 0.
       return stringToAscii('0');
     }
-    const littleEndian = true;
     const symbolOffset = SYMBOL_TABLE_START + offset;
     const flags = this.data.getUint8(symbolOffset + 2);
     if (flags & 2) {
       // Short line number stored as integer.
-      const value = this.data.getUint16(symbolOffset + 4, littleEndian);
+      const value = this.data.getUint16(symbolOffset + 4, LITTLE_ENDIAN);
       return stringToAscii(`${value}`);
     }
     // A length prefixed string at symbolOffset + 3.
@@ -1604,8 +1621,7 @@ class Qb45Loader {
   }
 
   private i16(): number {
-    const littleEndian = true;
-    const value = this.data.getInt16(this.offset, littleEndian);
+    const value = this.data.getInt16(this.offset, LITTLE_ENDIAN);
     this.offset += 2;
     return value;
   }
@@ -1620,37 +1636,36 @@ class Qb45Loader {
     const _ = this.u16();
   }
 
+  private peekU16(): number {
+    return this.data.getUint16(this.offset, LITTLE_ENDIAN);
+  }
+
   private u16(): number {
-    const littleEndian = true;
-    const value = this.data.getUint16(this.offset, littleEndian);
+    const value = this.data.getUint16(this.offset, LITTLE_ENDIAN);
     this.offset += 2;
     return value;
   }
 
   private i32(): number {
-    const littleEndian = true;
-    const value = this.data.getInt32(this.offset, littleEndian);
+    const value = this.data.getInt32(this.offset, LITTLE_ENDIAN);
     this.offset += 4;
     return value;
   }
 
   private u32(): number {
-    const littleEndian = true;
-    const value = this.data.getUint32(this.offset, littleEndian);
+    const value = this.data.getUint32(this.offset, LITTLE_ENDIAN);
     this.offset += 4;
     return value;
   }
 
   private f32(): number {
-    const littleEndian = true;
-    const value = this.data.getFloat32(this.offset, littleEndian);
+    const value = this.data.getFloat32(this.offset, LITTLE_ENDIAN);
     this.offset += 4;
     return value;
   }
 
   private f64(): number {
-    const littleEndian = true;
-    const value = this.data.getFloat64(this.offset, littleEndian);
+    const value = this.data.getFloat64(this.offset, LITTLE_ENDIAN);
     this.offset += 8;
     return value;
   }
