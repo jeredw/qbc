@@ -209,7 +209,7 @@ export class WebAudioSpeaker implements Speaker {
     // If the audiocontext is suspended, its clock won't advance, but we ned to
     // time notes correctly anyway since some programs rely on this for timing.
     const now = this.enabled ? this.audioContext.currentTime : performance.now() / 1000;
-    if (onDuration === 0) {
+    if (onDuration === 0 && offDuration === 0) {
       if (this.playedNotesSinceReset) {
         // Don't reset the audio context a ton if there is a run of SOUND ... O commands.
         // This breaks audio in Chrome.
