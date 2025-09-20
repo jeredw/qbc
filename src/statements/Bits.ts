@@ -740,6 +740,11 @@ export class BloadStatement extends Statement {
           operation: BlitOperation.PSET,
           data: bitmap,
         });
+        // The VGA maps 64k but only uses 64000 bytes, and some programs use the
+        // extra space for auxiliary data like palettes.
+        if (length > mode.pageSize) {
+          context.devices.screen.setExtraFrameBufferData(newData.subarray(mode.pageSize));
+        }
         return;
       }
       if (offset === 0) {
@@ -842,9 +847,15 @@ export class PeekStatement extends Statement {
       if (mode.mode !== 13) {
         throw new Error('Only support PEEKing video memory in mode 13');
       }
-      const y = ~~(offset / 320);
-      const x = ~~(offset % 320);
-      data = context.devices.screen.getPixel(x, y, /*screen=*/ true);
+      const unsignedOffset = offset & 0xffff;
+      if (unsignedOffset >= mode.pageSize) {
+        const extraData = context.devices.screen.getExtraFrameBufferData();
+        data = extraData[unsignedOffset - mode.pageSize];
+      } else {
+        const y = ~~(unsignedOffset / 320);
+        const x = ~~(unsignedOffset % 320);
+        data = context.devices.screen.getPixel(x, y, /*screen=*/ true);
+      }
     } else if (segment === 0xb800) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 0) {
@@ -921,9 +932,15 @@ export class PokeStatement extends Statement {
       if (mode.mode !== 13) {
         throw new Error('Only support POKEing video memory in mode 13');
       }
-      const y = ~~(offset / 320);
-      const x = ~~(offset % 320);
-      context.devices.screen.setPixel(x, y, byte, /*step=*/ false, /*screen=*/ true);
+      const unsignedOffset = offset & 0xffff;
+      if (unsignedOffset >= mode.pageSize) {
+        const extraData = context.devices.screen.getExtraFrameBufferData();
+        extraData[unsignedOffset - mode.pageSize] = byte;
+      } else {
+        const y = ~~(unsignedOffset / 320);
+        const x = ~~(unsignedOffset % 320);
+        context.devices.screen.setPixel(x, y, byte, /*step=*/ false, /*screen=*/ true);
+      }
       return;
     }
     if (segment === 0xb800) {

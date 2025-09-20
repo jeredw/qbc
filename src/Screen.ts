@@ -44,6 +44,8 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   setVgaPaletteIndex(index: number): void;
   setVgaPaletteData(data: number): void;
   getVgaPaletteData(): number;
+  setExtraFrameBufferData(data: Uint8Array): void;
+  getExtraFrameBufferData(): Uint8Array;
 
   setDrawState(state: DrawState): void;
   getDrawState(): DrawState;
@@ -383,6 +385,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private vgaPaletteIndex: number;
   private vgaPaletteData: number[];
   private fontHash: Map<string, string>;
+  private extraFrameBufferData: Uint8Array;
   canvas: HTMLCanvasElement;
 
   constructor(canvasProvider?: CanvasProvider) {
@@ -401,6 +404,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.softKeys = {keys: [], visible: false};
     this.vgaPaletteData = [];
     this.vgaPaletteIndex = 0;
+    this.extraFrameBufferData = new Uint8Array(1536);
     // Force mode 0 to reinitialize with default text geometry by first
     // switching to a mode that only supports 80x25.
     this.configure(2, 0, 0, 0);
@@ -886,6 +890,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
       throw new Error('unsupported screen mode');
     }
     this.activePage.putBitmap(args);
+  }
+
+  setExtraFrameBufferData(data: Uint8Array): void {
+    this.extraFrameBufferData.set(data, 0);
+  }
+
+  getExtraFrameBufferData(): Uint8Array {
+    return this.extraFrameBufferData;
   }
 
   render() {
@@ -1448,6 +1460,15 @@ export class TestScreen implements Screen {
   putBitmap(args: PutBitmapArgs) {
     this.text.print(`[PUT ${args.step}, ${args.x1}, ${args.y1}, ${args.operation}]`, true);
     this.graphics.putBitmap(args);
+  }
+
+  setExtraFrameBufferData(data: Uint8Array): void {
+    this.text.print(`[setExtraFrameBufferData]`, true);
+    this.graphics.setExtraFrameBufferData(data);
+  }
+
+  getExtraFrameBufferData(): Uint8Array {
+    return this.graphics.getExtraFrameBufferData();
   }
 
   showTextCursor() {

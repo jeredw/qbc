@@ -16,6 +16,7 @@ export interface ScreenMode {
   pages: number;
   bppPerPlane: number;
   planes: number;
+  pageSize: number;
 }
 
 export const SCREEN_MODES: ScreenMode[] = [
@@ -35,6 +36,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 8,
     bppPerPlane: 0,
     planes: 0,
+    pageSize: 4000,
   },
   {
     mode: 1,
@@ -47,6 +49,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 1,
     bppPerPlane: 2,
     planes: 1,
+    pageSize: 16000,
   },
   {
     mode: 2,
@@ -59,6 +62,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 1,
     bppPerPlane: 1,
     planes: 1,
+    pageSize: 15500,
   },
   {
     mode: 7,
@@ -71,6 +75,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 8,
     bppPerPlane: 1,
     planes: 4,
+    pageSize: 32000,
   },
   {
     mode: 8,
@@ -83,6 +88,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 4,
     bppPerPlane: 1,
     planes: 4,
+    pageSize: 64000,
   },
   {
     mode: 9,
@@ -96,6 +102,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 2,
     bppPerPlane: 1,
     planes: 4,
+    pageSize: 64000,
   },
   {
     mode: 10,
@@ -109,6 +116,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 2,
     bppPerPlane: 1,
     planes: 2,
+    pageSize: 64000,
   },
   {
     mode: 11,
@@ -122,6 +130,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 1,
     bppPerPlane: 1,
     planes: 1,
+    pageSize: 64000,
   },
   {
     mode: 12,
@@ -135,6 +144,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 1,
     bppPerPlane: 1,
     planes: 4,
+    pageSize: 64000,
   },
   {
     mode: 13,
@@ -147,5 +157,6 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 1,
     bppPerPlane: 8,
     planes: 1,
+    pageSize: 64000,
   },
 ];
