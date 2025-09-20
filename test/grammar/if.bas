@@ -27,3 +27,6 @@ if 1 then 20 : else if 2 then gosub 30
 if err = 9 then resume next else print "unexpected"
 ' Inline if with else allows colon after else.
 if 1 then : x = 0 : else : y = 0 : z = 0
+' IDE fixes "endif" to be "end if".
+if foo then
+endif

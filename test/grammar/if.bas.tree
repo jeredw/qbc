@@ -204,4 +204,8 @@
             (assignment_statement 
               (variable_or_function_call z) = 
               (expr 
-                (literal 0)))))))) \n <EOF>)
+                (literal 0)))))))) \n ' \n 
+  (if_block_statement if 
+    (expr 
+      (variable_or_function_call foo)) then \n then_block 
+    (end_if_statement endif)) \n <EOF>)

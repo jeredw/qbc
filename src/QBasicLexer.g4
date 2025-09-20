@@ -83,6 +83,7 @@ DOUBLE : [Dd][Oo][Uu][Bb][Ll][Ee] ;
 ELSE : [Ee][Ll][Ss][Ee] ;
 ELSEIF : [Ee][Ll][Ss][Ee][Ii][Ff] ;
 END : [Ee][Nn][Dd] ;
+ENDIF : [Ee][Nn][Dd][Ii][Ff] ;
 ENVIRON : [Ee][Nn][Vv][Ii][Rr][Oo][Nn] ;
 ENVIRON_STRING : [Ee][Nn][Vv][Ii][Rr][Oo][Nn] '$' ;
 EQV : [Ee][Qq][Vv] ;

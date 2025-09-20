@@ -294,8 +294,9 @@ else_block_statement
   ;
 
 // Statements after END IF will be part of the parent of if_block_statement.
+// IDE turns "ENDIF" into "END IF".
 end_if_statement
-  : label? END IF
+  : label? (END IF | ENDIF)
   ;
 
 then_block
