@@ -132,4 +132,9 @@
         (expr 
           (literal 42))) , using 
       (expr 
-        (literal "#.##")) ;)) \n <EOF>)
+        (literal "#.##")) ;)) \n 
+  (statement 
+    (print_statement ? 
+      (print_argument 
+        (expr 
+          (literal "hello"))))) \n <EOF>)

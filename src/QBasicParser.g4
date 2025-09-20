@@ -772,8 +772,9 @@ preset_statement
 // separated by a ',' or ';'. There can be a trailing ',' or ';' even if
 // there is no other argument.  The IDE inserts a ';' between expressions that
 // have no separator.
+// The IDE turns '?' into PRINT for compatibility with old BASICs.
 print_statement
-  : PRINT (file_number COMMA)? print_argument*
+  : (PRINT | QUESTION_MARK) (file_number COMMA)? print_argument*
   ;
 
 // PRINT USING must use ';' expression separators - the IDE auto-corrects

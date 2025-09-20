@@ -138,6 +138,7 @@ PRESET : [Pp][Rr][Ee][Ss][Ee][Tt] ;
 PRINT : [Pp][Rr][Ii][Nn][Tt] ;
 PSET : [Pp][Ss][Ee][Tt] ;
 PUT : [Pp][Uu][Tt] ;
+QUESTION_MARK : '?' ;
 RANDOM : [Rr][Aa][Nn][Dd][Oo][Mm] ;
 RANDOMIZE : [Rr][Aa][Nn][Dd][Oo][Mm][Ii][Zz][Ee] ;
 READ : [Rr][Ee][Aa][Dd] ;
