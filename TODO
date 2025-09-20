@@ -103,6 +103,7 @@ x QBASWIN: Unrecognized opcode 131
 + WHEEL OF WEALTH: marge simpson paint overflows circles
 + GAMEOVER: Paint overflow on G
 + AE, ZIELQ: Writes data past end of visible screen in A000, then reads back
++ FMTRACK, ITFDEMO: Poke into DEF SEG A000 + offset
 - 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
@@ -112,7 +113,7 @@ x QBASWIN: Unrecognized opcode 131
 - ATTACK2, ELYSIAN, LYNADOT: More terrible abuses of inline if grammar
 - BREATH: Pretty simple use of inc/mak for a cool program
 - CHARGEN: Reads key... but from port 62h instead of 60h?
-- COOKIE, FMTRACK, MINIRPG2: BLOADs into different pages offset from A000
+- COOKIE1, MINIRPG2: BLOADs EGA graphics into different pages
 - DIGIREAL: Overflow in POKE...
 - DIGIREAL: Pokes into other page of text memory through B8000
 - DRAGDROP: Uses 3c2 to select bit planes for bload
@@ -120,7 +121,6 @@ x QBASWIN: Unrecognized opcode 131
 - FMTRACK: Sets ram font by SHELLing to a temporary com file...
 - FMTRACK: Piano sounds way off adlib
 - FX: Still a few fps too slow
-- ITFDEMO: Poke into DEF SEG A000 + offset
 - KBARR: No break codes for f-keys
 - KEYLITES: Uses &h17 to set keyboard status lights
 - KMSCROLL: Doesn't erase background as text scrolls

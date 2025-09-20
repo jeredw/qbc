@@ -719,8 +719,8 @@ export class BloadStatement extends Statement {
         throw new Error('bad length in bsave header');
       }
       const segment = context.memory.getSegment() & 0xffff;
-      if (segment === 0xa000 || (storedSegment === 0xa000 && !this.offsetExpr)) {
-        // Assume we are trying to BLOAD a full width bitmap into video ram.
+      if (isVideoMemoryAddress(segment) || (!this.offsetExpr && isVideoMemoryAddress(storedSegment))) {
+        // Assume we are trying to BLOAD a full width bitmap into video memory.
         const mode = context.devices.screen.getMode();
         let [width, height] = mode.geometry[0].dots;
         // Allow loading less than the full screen height because some programs load
@@ -733,9 +733,14 @@ export class BloadStatement extends Statement {
           height & 0xff, (height >> 8) & 0xff,
           ...newData
         ]);
+        const base = (
+          isVideoMemoryAddress(segment) ?
+          videoMemoryOffset(segment) :
+          videoMemoryOffset(storedSegment)
+        );
         context.devices.screen.putBitmap({
           x1: 0,
-          y1: 0,
+          y1: ~~(base / width),
           step: false,
           operation: BlitOperation.PSET,
           data: bitmap,
@@ -842,12 +847,13 @@ export class PeekStatement extends Statement {
       ) ?? 0;
     } else if (segment === baked.ROM_FONT_SEGMENT) {
       data = baked.ROM_FONT_BYTES[offset - 0xe] ?? 0;
-    } else if (segment === 0xa000) {
+    } else if (isVideoMemoryAddress(segment)) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 13) {
         throw new Error('Only support PEEKing video memory in mode 13');
       }
-      const unsignedOffset = offset & 0xffff;
+      const base = videoMemoryOffset(segment);
+      const unsignedOffset = base + (offset & 0xffff);
       if (unsignedOffset >= mode.pageSize) {
         const extraData = context.devices.screen.getExtraFrameBufferData();
         data = extraData[unsignedOffset - mode.pageSize];
@@ -927,12 +933,13 @@ export class PokeStatement extends Statement {
     }
     const byte = evaluateIntegerExpression(this.valueExpr, context.memory) & 255;
     const segment = context.memory.getSegment() & 0xffff;
-    if (segment === 0xa000) {
+    if (isVideoMemoryAddress(segment)) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 13) {
         throw new Error('Only support POKEing video memory in mode 13');
       }
-      const unsignedOffset = offset & 0xffff;
+      const base = videoMemoryOffset(segment);
+      const unsignedOffset = base + (offset & 0xffff);
       if (unsignedOffset >= mode.pageSize) {
         const extraData = context.devices.screen.getExtraFrameBufferData();
         extraData[unsignedOffset - mode.pageSize] = byte;
@@ -1000,4 +1007,12 @@ export class FreFunction extends BuiltinFunction1 {
 
 export function signExtend16Bit(x: number) {
   return (x ^ 0x8000) - 0x8000;
+}
+
+function isVideoMemoryAddress(segment: number) {
+  return segment >= 0xa000 && segment < 0xb000;
+}
+
+function videoMemoryOffset(segment: number) {
+  return (segment - 0xa000) * 16;
 }

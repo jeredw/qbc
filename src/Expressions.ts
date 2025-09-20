@@ -716,7 +716,7 @@ class BytecodeEvaluator {
           break;
         case Operation.FEXP_DOUBLE:
           this.np--;
-          if (N[this.np] == 0 && N[this.np - 1] < 0) {
+          if (N[this.np - 1] == 0 && N[this.np] < 0) {
             return ILLEGAL_FUNCTION_CALL;
           }
           N[this.np - 1] = Math.pow(N[this.np - 1], N[this.np]);
@@ -726,7 +726,7 @@ class BytecodeEvaluator {
           break;
         case Operation.FEXP_SINGLE:
           this.np--;
-          if (N[this.np] == 0 && N[this.np - 1] < 0) {
+          if (N[this.np - 1] == 0 && N[this.np] < 0) {
             return ILLEGAL_FUNCTION_CALL;
           }
           N[this.np - 1] = Math.fround(Math.pow(N[this.np - 1], N[this.np]));

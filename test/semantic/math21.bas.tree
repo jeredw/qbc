@@ -1,0 +1,19 @@
+(program ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr - 
+          (expr 
+            (expr 
+              (literal 1)) ^ 
+            (expr 
+              (literal 0))))))) ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal 0)) ^ 
+          (expr - 
+            (expr 
+              (literal 1))))))) ' \n <EOF>)
