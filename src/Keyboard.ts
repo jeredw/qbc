@@ -423,7 +423,7 @@ function decodeCursorCommand(e: KeyboardEvent): CursorCommand | undefined {
       case 'break': return CursorCommand.BREAK;
       case 'c': return CursorCommand.BREAK;
     }
-    if (e.location === 3 && !isNumLockOn(e)) {
+    if (isNumberPad(e) && !isNumLockOn(e)) {
       switch (e.key) {
         case '4': return CursorCommand.BACK_WORD;
         case '6': return CursorCommand.FORWARD_WORD;
@@ -443,7 +443,7 @@ function decodeCursorCommand(e: KeyboardEvent): CursorCommand | undefined {
     case 'Escape': return CursorCommand.DELETE_LINE;
     case 'Enter': return CursorCommand.ENTER;
   }
-  if (e.location === 3 && !isNumLockOn(e)) {
+  if (isNumberPad(e) && !isNumLockOn(e)) {
     switch (e.key) {
       case '4': return CursorCommand.LEFT;
       case '6': return CursorCommand.RIGHT;
@@ -470,7 +470,7 @@ function isNumberPad(e: KeyboardEvent) {
 
 function keyToChar(e: KeyboardEvent): string | undefined {
   if (e.key.length === 1) {
-    if (e.location === 3 && !isNumLockOn(e)) {
+    if (isNumberPad(e) && !isNumLockOn(e)) {
       return;
     }
     if (isPrintableAscii(e.key)) {
