@@ -28,10 +28,10 @@ export class ScreenStatement extends Statement {
     if (!this.modeExpr && !this.colorSwitchExpr && !this.activePageExpr && !this.visiblePageExpr) {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
-    const mode = this.modeExpr ? evaluateIntegerExpression(this.modeExpr, context.memory) : -1;
-    const colorSwitch = this.colorSwitchExpr ? evaluateIntegerExpression(this.colorSwitchExpr, context.memory) : 0;
-    const activePage = this.activePageExpr ? evaluateIntegerExpression(this.activePageExpr, context.memory) : 0;
-    const visiblePage = this.visiblePageExpr ? evaluateIntegerExpression(this.visiblePageExpr, context.memory) : 0;
+    const mode = this.modeExpr && evaluateIntegerExpression(this.modeExpr, context.memory);
+    const colorSwitch = this.colorSwitchExpr && evaluateIntegerExpression(this.colorSwitchExpr, context.memory);
+    const activePage = this.activePageExpr && evaluateIntegerExpression(this.activePageExpr, context.memory);
+    const visiblePage = this.visiblePageExpr && evaluateIntegerExpression(this.visiblePageExpr, context.memory);
     try {
       context.devices.screen.configure(mode, colorSwitch, activePage, visiblePage);
     } catch(e: unknown) {

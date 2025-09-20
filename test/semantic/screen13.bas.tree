@@ -1,0 +1,38 @@
+(program ' \n ' \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 7)) , , 
+      (expr 
+        (literal 0)) , 
+      (expr 
+        (literal 1)))) \n 
+  (statement 
+    (line_statement line 
+      ( 
+        (expr 
+          (literal 100)) , 
+        (expr 
+          (literal 100)) ) - 
+      ( 
+        (expr 
+          (literal 150)) , 
+        (expr 
+          (literal 150)) ) , 
+      (expr 
+        (literal 2)) , 
+      (box_style bf))) \n 
+  (statement 
+    (call_statement 
+      (untyped_id pcopy) 
+      (argument_list 
+        (argument 
+          (expr 
+            (literal 0))) , 
+        (argument 
+          (expr 
+            (literal 1)))))) \n 
+  (statement 
+    (screen_statement screen 
+      (expr 
+        (literal 7)))) \n <EOF>)

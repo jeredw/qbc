@@ -32,7 +32,7 @@ class DefaultCanvasProvider implements CanvasProvider {
 
 export interface Screen extends Printer, LightPenTarget, MouseSurface {
   reset(): void;
-  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number): void;
+  configure(modeNumber?: number, colorSwitch?: number, activePage?: number, visiblePage?: number): void;
   setTextGeometry(width?: number, height?: number): void;
   getMode(): ScreenMode;
   getGeometry(): ScreenGeometry;
@@ -415,8 +415,8 @@ export class CanvasScreen extends BasePrinter implements Screen {
     };
   }
 
-  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
-    const mode = modeNumber === -1 ? this.mode : SCREEN_MODES.find((entry) => entry.mode === modeNumber);
+  configure(modeNumber?: number, colorSwitch?: number, activePage?: number, visiblePage?: number) {
+    const mode = modeNumber === undefined ? this.mode : SCREEN_MODES.find((entry) => entry.mode === modeNumber);
     if (!mode) {
       throw new Error(`invalid screen mode ${modeNumber}`);
     }
@@ -457,29 +457,22 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.setScreenMode(mode, geometry, 0, 0, 0);
   }
 
-  private setScreenMode(mode: ScreenMode, geometry: ScreenGeometry, colorSwitch: number, activePage: number, visiblePage: number) {
-    if (activePage < 0 || activePage >= mode.pages) {
+  private setScreenMode(mode: ScreenMode, geometry: ScreenGeometry, colorSwitch?: number, activePage?: number, visiblePage?: number) {
+    if (activePage !== undefined && (activePage < 0 || activePage >= mode.pages)) {
       throw new Error(`invalid active page ${activePage}`);
     }
-    if (visiblePage < 0 || visiblePage >= mode.pages) {
+    if (visiblePage !== undefined && (visiblePage < 0 || visiblePage >= mode.pages)) {
       throw new Error(`invalid visible page ${visiblePage}`);
     }
     if (this.mode === mode && geometry == this.geometry) {
-      if (activePage === this.activePageIndex && visiblePage === this.visiblePageIndex) {
+      if ((activePage === undefined || activePage === this.activePageIndex) &&
+          (visiblePage === undefined || visiblePage === this.visiblePageIndex)) {
         // Do nothing if already configured as requested.
         return;
       }
       // Same mode and geometry means we want to switch pages.
-      this.activePageIndex = activePage;
-      this.visiblePageIndex = visiblePage;
-      this.activePage = this.pages[activePage];
-      this.visiblePage = this.pages[visiblePage];
-      this.visiblePage.dirty = true;
+      this.selectPages(activePage, visiblePage);
       this.resetPalette();
-      if (this.canvas) {
-        const ctx = this.canvas.getContext('2d')!
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      }
       for (const page of this.pages) {
         // Reset plotter state.
         page.reset();
@@ -504,10 +497,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     for (let i = 0; i < mode.pages; i++) {
       this.pages[i] = new Page(mode, geometry, this.color, this.canvasProvider);
     }
-    this.activePageIndex = activePage;
-    this.visiblePageIndex = visiblePage;
-    this.activePage = this.pages[activePage];
-    this.visiblePage = this.pages[visiblePage];
+    this.selectPages(activePage ?? 0, visiblePage ?? 0);
     this.buildFontHash();
     if (this.headless) {
       return;
@@ -525,6 +515,18 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.canvas.style.transform = `scale(${scaleX}, ${scaleY})`;
     const ctx = this.canvas.getContext('2d')!
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
+
+  private selectPages(activePage?: number, visiblePage?: number) {
+    if (activePage !== undefined) {
+      this.activePageIndex = activePage;
+      this.activePage = this.pages[activePage];
+    }
+    if (visiblePage !== undefined) {
+      this.visiblePageIndex = visiblePage;
+      this.visiblePage = this.pages[visiblePage];
+      this.visiblePage.dirty = true;
+    }
   }
 
   getMode(): ScreenMode {
@@ -1276,7 +1278,7 @@ export class TestScreen implements Screen {
     this.text.setWidth(columns);
   }
 
-  configure(modeNumber: number, colorSwitch: number, activePage: number, visiblePage: number) {
+  configure(modeNumber?: number, colorSwitch?: number, activePage?: number, visiblePage?: number) {
     this.text.print(`[SCREEN ${modeNumber}, ${colorSwitch}, ${activePage}, ${visiblePage}]`, true);
     this.graphics.configure(modeNumber, colorSwitch, activePage, visiblePage);
     this.hasGraphics = true;
