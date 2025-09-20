@@ -106,7 +106,7 @@ x QBASWIN: Unrecognized opcode 131
 - 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
-- AE: Writes data past end of visible screen in A000, then reads back
+- AE, ZIELQ: Writes data past end of visible screen in A000, then reads back
 - ANIMA6: Implicit call without declaration first
 - ART334: Just including qb.bi, seems simple to support
 - ATTACK2: More terrible abuses of inline if grammar
@@ -132,8 +132,9 @@ x QBASWIN: Unrecognized opcode 131
 - NFL: PRINT USING is really PRINT expr... USING!
 - PICKMAN: sub foo: if bar then end sub else print 42
 - PONGBALL: Need mouse limit apis
-- QMANCHE1: Really cool but slow
 - QBSNAKE: Uses SHELL to do a DIR to list files
+- QMANCHE1: Really cool but slow
+- QSKEY10: Modifier keycodes for inkey$ missing
 - SCROLLF: Should this be drawing something
 - SPHRFITE: Graphics are super messed up
 - SNOOPY: Seems to use set 2 or weird german keyboard scancodes

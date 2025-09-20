@@ -8,6 +8,7 @@ import { readVariableToBytes, writeBytesToVariable } from "./Bits.ts";
 import { ExecutionContext } from "./ExecutionContext.ts";
 import { readEntireFile } from "./FileSystem.ts";
 import { Statement } from "./Statement.ts";
+import { TypeTag } from "../Types.ts";
 
 export interface CallAbsoluteParameter {
   variable?: Variable;
@@ -26,12 +27,16 @@ export class CallAbsoluteStatement extends Statement {
 
   override execute(context: ExecutionContext) {
     const procedure = context.memory.getSegment();
-    // const offset = evaluateIntegerExpression(this.procedureExpr, context.memory, {tag: TypeTag.LONG});
+    const offset = evaluateIntegerExpression(this.procedureExpr, context.memory, {tag: TypeTag.LONG});
+    if (procedure === 0xffff && offset === 0xfff) {
+      // Reboot.
+      location.reload();
+    }
     const {variable} = context.memory.readPointer(procedure);
     if (!variable) {
       throw new Error("Unknown pointer for CALL ABSOLUTE procedure.");
     }
-    const bytes = readVariableToBytes(variable, context.memory);
+    const bytes = readVariableToBytes(variable, context.memory).subarray(offset);
     const cpu = new Basic86();
     // Install program.
     cpu.cs = 0x0100;
