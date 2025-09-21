@@ -105,13 +105,13 @@ x QBASWIN: Unrecognized opcode 131
 + AE, ZIELQ: Writes data past end of visible screen in A000, then reads back
 + FMTRACK, ITFDEMO: Poke into DEF SEG A000 + offset
 + SCROLLF: Should this be drawing something
++ ATTACK2, ELYSIAN: More terrible abuses of inline if grammar
 - 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - ANIMA6: Implicit call without declaration first
 - ART334: Just including qb.bi, seems simple to support
-- ATTACK2, ELYSIAN, LYNADOT: More terrible abuses of inline if grammar
 - BREATH: Pretty simple use of inc/mak for a cool program
 - CHARGEN: Reads key... but from port 62h instead of 60h?
 - COOKIE1, MINIRPG2: BLOADs EGA graphics into different pages

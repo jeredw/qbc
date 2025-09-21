@@ -227,4 +227,9 @@
             (print_statement print 
               (print_argument 
                 (expr 
-                  (literal "ok"))))))))) \n <EOF>)
+                  (literal "ok"))))))))) \n ' \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call foo)) then 
+      (if_inline_else_statement else))) \n <EOF>)

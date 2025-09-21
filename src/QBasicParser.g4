@@ -605,6 +605,7 @@ if_inline_statement
 
 if_inline_else_statement
   : ELSE COLON* if_inline_action
+  | ELSE
   ;
 
 if_inline_action

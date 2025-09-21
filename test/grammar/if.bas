@@ -32,3 +32,5 @@ if foo then
 endif
 ' Test that special lexer rules for next work inside inline if-else.
 if foo then for i = 1 to 10: next i else print "ok"
+' else and then can both be empty statements
+if foo then else
