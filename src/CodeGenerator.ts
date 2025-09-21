@@ -813,7 +813,10 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterInput_file_statement = (ctx: parser.Input_file_statementContext) => {
     const token = ctx.start!;
-    const fileNumber = this.compileExpression(ctx.file_number(), ctx.file_number().start!, { tag: TypeTag.INTEGER });
+    const fileNumber = (
+      ctx.file_number() && this.compileExpression(ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER }) ||
+      ctx._filenum && this.compileExpression(ctx._filenum, ctx._filenum.start!, { tag: TypeTag.INTEGER })
+    );
     const variables: Variable[] = [];
     for (const variableCtx of ctx.variable_or_function_call()) {
       const variable = this.getVariable(variableCtx);
@@ -844,7 +847,10 @@ export class CodeGenerator extends QBasicParserListener {
 
   override enterLine_input_file_statement = (ctx: parser.Line_input_file_statementContext) => {
     const token = ctx.start!;
-    const fileNumber = this.compileExpression(ctx.file_number(), ctx.file_number().start!, { tag: TypeTag.INTEGER });
+    const fileNumber = (
+      ctx.file_number() && this.compileExpression(ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER }) ||
+      ctx._filenum && this.compileExpression(ctx._filenum, ctx._filenum.start!, { tag: TypeTag.INTEGER })
+    );
     const variable = this.getVariable(ctx.variable_or_function_call());
     if (!isStringType(variable.type)) {
       throw ParseError.fromToken(variable.token, "Type mismatch");
@@ -1087,8 +1093,10 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterPrint_statement = (ctx: parser.Print_statementContext) => {
-    const fileNumber = ctx.file_number() && this.compileExpression(
-        ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER });
+    const fileNumber = (
+      ctx.file_number() && this.compileExpression(ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER }) ||
+      ctx._filenum && this.compileExpression(ctx._filenum, ctx._filenum.start!, { tag: TypeTag.INTEGER })
+    );
     this.addPrintStatement({ctx, fileNumber: fileNumber ?? undefined});
   }
 
@@ -1097,8 +1105,10 @@ export class CodeGenerator extends QBasicParserListener {
   }
 
   override enterPrint_using_statement = (ctx: parser.Print_using_statementContext) => {
-    const fileNumber = ctx.file_number() && this.compileExpression(
-        ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER });
+    const fileNumber = (
+      ctx.file_number() && this.compileExpression(ctx.file_number()!.expr(), ctx.file_number()!.expr().start!, { tag: TypeTag.INTEGER }) ||
+      ctx._filenum && this.compileExpression(ctx._filenum, ctx._filenum.start!, { tag: TypeTag.INTEGER })
+    );
     this.addPrintUsingStatement({ctx, fileNumber: fileNumber ?? undefined});
   }
 

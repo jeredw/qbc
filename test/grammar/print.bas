@@ -15,3 +15,5 @@ print using s$; 1; 1; 3;
 print using "#" + ".#"; 3.14
 print #42, using "#.##";
 ? "hello"
+print#1, "hi"
+print using#2, "#"; 42

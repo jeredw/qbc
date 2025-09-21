@@ -3,3 +3,4 @@ line input "line>"; line$
 line input "line>", line$
 line input ; line2$
 line input #1, bar$
+line input#1, foo$

@@ -36,4 +36,10 @@
           (variable_or_function_call a%))) , 
       (variable_or_function_call foo$) , 
       (variable_or_function_call bar%) , 
+      (variable_or_function_call baz$))) \n 
+  (statement 
+    (input_file_statement input# 
+      (expr 
+        (literal 42)) , 
+      (variable_or_function_call bar$) , 
       (variable_or_function_call baz$))) \n <EOF>)

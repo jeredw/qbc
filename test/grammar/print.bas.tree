@@ -137,4 +137,25 @@
     (print_statement ? 
       (print_argument 
         (expr 
-          (literal "hello"))))) \n <EOF>)
+          (literal "hello"))))) \n 
+  (statement 
+    (print_statement print# 
+      (expr 
+        (literal 1)) , 
+      (print_argument 
+        (expr 
+          (literal "hi"))))) \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (variable_or_function_call using#))) 
+      (print_argument 
+        (expr 
+          (literal 2)) ,) 
+      (print_argument 
+        (expr 
+          (literal "#")) ;) 
+      (print_argument 
+        (expr 
+          (literal 42))))) \n <EOF>)

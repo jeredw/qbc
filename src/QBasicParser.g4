@@ -629,6 +629,9 @@ input_statement
 input_file_statement
   : INPUT file_number COMMA
     variable_or_function_call (COMMA variable_or_function_call)*
+// Old programs often mash up the # with PRINT which is ambiguous.
+  | INPUT_HASH filenum=expr COMMA
+    variable_or_function_call (COMMA variable_or_function_call)*
   ;
 
 ioctl_statement
@@ -665,6 +668,8 @@ line_input_statement
 
 line_input_file_statement
   : LINE INPUT file_number COMMA variable_or_function_call
+// Old programs often mash up the # with PRINT which is ambiguous.
+  | LINE INPUT_HASH filenum=expr COMMA variable_or_function_call
   ;
 
 locate_statement
@@ -777,6 +782,8 @@ preset_statement
 // The IDE turns '?' into PRINT for compatibility with old BASICs.
 print_statement
   : (PRINT | QUESTION_MARK) (file_number COMMA)? print_argument*
+// Old programs often mash up the # with PRINT which is ambiguous.
+  | PRINT_HASH (filenum=expr COMMA)? print_argument*
   ;
 
 // PRINT USING must use ';' expression separators - the IDE auto-corrects
@@ -785,6 +792,8 @@ print_statement
 // separator.
 print_using_statement
   : PRINT (file_number COMMA)? USING format=expr ';' print_argument*
+// Old programs often mash up the # with PRINT which is ambiguous.
+  | PRINT_HASH (filenum=expr COMMA)? USING format=expr ';' print_argument*
   ;
 
 print_argument

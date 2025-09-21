@@ -6,3 +6,4 @@ input "y/n"; yn
 INPUT "Enter name and age: ";Person.FullName,Person.Age
 input #1, foo$, bar%, baz$
 input #a%, foo$, bar%, baz$
+input#42, bar$, baz$

@@ -16,4 +16,9 @@
       (file_number # 
         (expr 
           (literal 1))) , 
-      (variable_or_function_call bar$))) \n <EOF>)
+      (variable_or_function_call bar$))) \n 
+  (statement 
+    (line_input_file_statement line input# 
+      (expr 
+        (literal 1)) , 
+      (variable_or_function_call foo$))) \n <EOF>)
