@@ -758,7 +758,7 @@ export class DrawStatement extends Statement {
     try {
       const program = parseDrawCommandString(commandString);
       let outOfRange = false;
-      const state = screen.getDrawState();
+      let state = screen.getDrawState();
       let cursor = screen.windowToScreen(screen.getGraphicsCursor());
       const move = (move: MoveCommand) => {
         const x = move.direction[0] * this.readNumber(move.amountX, context);
@@ -859,6 +859,8 @@ export class DrawStatement extends Statement {
             throw new Error('expecting command string');
           }
           this.draw(xString.string, context, depth + 1);
+          state = screen.getDrawState();
+          cursor = screen.windowToScreen(screen.getGraphicsCursor());
         }
       }
       screen.setDrawState(state);

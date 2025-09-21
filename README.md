@@ -167,7 +167,7 @@ limitations, while features marked with ⛔ don't work.
 | `CHDIR`          | Statement   | -       | ✅      |
 | `CHR$`           | Function    | -       | ✅      |
 | `CINT`           | Function    | -       | ✅      |
-| `CIRCLE`         | Statement   | ✅      | 🚧      |
+| `CIRCLE`         | Statement   | ✅      | ✅      |
 | `CLEAR`          | Statement   | ✅      | ✅      |
 | `CLNG`           | Function    | -       | ✅      |
 | `CLOSE`          | Statement   | ✅      | ✅      |
