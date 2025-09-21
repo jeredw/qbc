@@ -104,6 +104,7 @@ x QBASWIN: Unrecognized opcode 131
 + GAMEOVER: Paint overflow on G
 + AE, ZIELQ: Writes data past end of visible screen in A000, then reads back
 + FMTRACK, ITFDEMO: Poke into DEF SEG A000 + offset
++ SCROLLF: Should this be drawing something
 - 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
@@ -135,7 +136,6 @@ x QBASWIN: Unrecognized opcode 131
 - QBSNAKE: Uses SHELL to do a DIR to list files
 - QMANCHE1: Really cool but slow
 - QSKEY10: Modifier keycodes for inkey$ missing
-- SCROLLF: Should this be drawing something
 - SPHRFITE: Graphics are super messed up
 - SNOOPY: Seems to use set 2 or weird german keyboard scancodes
 - SNOOPY: Really messed up adlib sound
