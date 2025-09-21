@@ -80,6 +80,7 @@ export class Invocation {
 
   async start(): Promise<void> {
     this.devices.speaker.setScheduler(this.scheduler);
+    this.scheduler.start();
     this.stopRequested = false;
     this.stopped = false;
     let lastYield = 0;

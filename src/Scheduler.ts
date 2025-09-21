@@ -2,6 +2,10 @@ export class Scheduler {
   constructor(private abortController: AbortController = new AbortController()) {
   }
 
+  start() {
+    this.abortController = new AbortController();
+  }
+
   abort() {
     this.abortController.abort();
   }
