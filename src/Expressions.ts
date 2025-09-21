@@ -751,7 +751,8 @@ class BytecodeEvaluator {
           }
           N[this.np - 1] = Math.trunc(N[this.np - 1] / N[this.np]);
           if (isLongOverflow(N[this.np - 1])) {
-            return OVERFLOW;
+            // QBasic fails to detect overflow during 32-bit division.
+            N[this.np - 1] &= 0xffffffff;
           }
           break;
         case Operation.IDIV_INTEGER:
@@ -761,7 +762,8 @@ class BytecodeEvaluator {
           }
           N[this.np - 1] = Math.trunc(N[this.np - 1] / N[this.np]);
           if (isIntegerOverflow(N[this.np - 1])) {
-            return OVERFLOW;
+            // QBasic reports overflow on division as division by zero.
+            return DIVISION_BY_ZERO;
           }
           break;
         case Operation.IMOD_LONG:
@@ -770,9 +772,6 @@ class BytecodeEvaluator {
             return DIVISION_BY_ZERO;
           }
           N[this.np - 1] %= N[this.np];
-          if (isLongOverflow(N[this.np - 1])) {
-            return OVERFLOW;
-          }
           break;
         case Operation.IMOD_INTEGER:
           this.np--;
@@ -781,7 +780,8 @@ class BytecodeEvaluator {
           }
           N[this.np - 1] %= N[this.np];
           if (isIntegerOverflow(N[this.np - 1])) {
-            return OVERFLOW;
+            // QBasic reports overflow on division as division by zero.
+            return DIVISION_BY_ZERO;
           }
           break;
         case Operation.AND:

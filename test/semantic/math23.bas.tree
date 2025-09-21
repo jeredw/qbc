@@ -1,0 +1,10 @@
+(program ' \n ' \n 
+  (statement 
+    (print_statement print 
+      (print_argument 
+        (expr 
+          (expr 
+            (literal &h80000000)) \ 
+          (expr - 
+            (expr 
+              (literal 1))))))) \n <EOF>)
