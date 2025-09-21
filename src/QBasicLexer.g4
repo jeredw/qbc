@@ -246,6 +246,10 @@ COMMENT_NL : '\r'? '\n' -> type(NL), popMode ;
 mode NEXT_MODE;
 
 NEXT_WITH_MANDATORY_ID : ',' ;
+// Hack: Inline if permits "ELSE" to terminate the THEN statement.
+// Only in this context, we have to treat ELSE as a statement terminator.
+// (Must recognize this before ID or we'll scan it as another NEXT_ID...)
+NEXT_ELSE : [Ee][Ll][Ss][Ee] -> type(ELSE), popMode ;
 // Have to replicate ID here to recognize NEXT ID?
 NEXT_ID : ([A-EG-Za-eg-z][A-Za-z0-9.]* TYPE_SIGIL?
         | [Ff][A-MO-Za-mo-z0-9.][A-Za-z0-9.]* TYPE_SIGIL?

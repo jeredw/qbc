@@ -30,3 +30,5 @@ if 1 then : x = 0 : else : y = 0 : z = 0
 ' IDE fixes "endif" to be "end if".
 if foo then
 endif
+' Test that special lexer rules for next work inside inline if-else.
+if foo then for i = 1 to 10: next i else print "ok"

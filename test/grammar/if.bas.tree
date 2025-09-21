@@ -208,4 +208,23 @@
   (if_block_statement if 
     (expr 
       (variable_or_function_call foo)) then \n then_block 
-    (end_if_statement endif)) \n <EOF>)
+    (end_if_statement endif)) \n ' \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call foo)) then 
+      (if_inline_action 
+        (statement 
+          (for_next_statement for i = 
+            (expr 
+              (literal 1)) to 
+            (expr 
+              (literal 10)) 
+            (block :) next i))) 
+      (if_inline_else_statement else 
+        (if_inline_action 
+          (statement 
+            (print_statement print 
+              (print_argument 
+                (expr 
+                  (literal "ok"))))))))) \n <EOF>)
