@@ -154,6 +154,9 @@ const FORMFEED_DELAY = 5 * CHAR_DELAY * 80 * .5;
 interface ControlState {
   bold?: boolean;
   italic?: boolean;
+  underline?: boolean;
+  sub?: boolean;
+  super?: boolean;
 }
 
 export class LinePrinter extends BasePrinter {
@@ -227,21 +230,48 @@ export class LinePrinter extends BasePrinter {
         const command = this.buffer.shift();
         const code = charToAscii.get(command || '');
         switch (code) {
-          case 69:  // ESC E
+          case 65:  // ESC A: Set n/72 line spacing
+            this.buffer.shift();
+            break;
+          case 67: {  // ESC C: Set page length
+            const arg = charToAscii.get(this.buffer.shift() || '');
+            if (arg === 0) {
+              // 0 means length in inches, skip amount.
+              this.buffer.shift();
+            }
+            break;
+          }
+          case 69:  // ESC E: Select bold font
             this.control.bold = true;
             this.delay += FONT_DELAY;
             break;
-          case 70:  // ESC F
+          case 70:  // ESC F: Cancel bold font
             this.control.bold = false;
             this.delay += FONT_DELAY;
             break;
-          case 52:  // ESC 4
+          case 52:  // ESC 4: Select italic font
             this.control.italic = true;
             this.delay += FONT_DELAY;
             break;
-          case 53:  // ESC 5
+          case 53:  // ESC 5: Cancel italic font
             this.control.italic = false;
             this.delay += FONT_DELAY;
+            break;
+          case 45: {  // ESC -: Turn underline on/off
+            const arg = charToAscii.get(this.buffer.shift() || '');
+            this.control.underline = (arg === 1 || arg === 49);
+            this.delay += FONT_DELAY;
+            break;
+          }
+          case 83: {  // ESC S: Select super/subscript
+            const arg = charToAscii.get(this.buffer.shift() || '');
+            this.control.sub = (arg === 1 || arg === 49);
+            this.control.super = !this.control.sub;
+            break;
+          }
+          case 84:  // ESC T: Cancel super/subscript
+            this.control.sub = false;
+            this.control.super = false;
             break;
         }
       } else if (ch === LF) {
@@ -259,9 +289,11 @@ export class LinePrinter extends BasePrinter {
         }
         this.paperWindow.scrollBy({left: 0, top: 16 * formFeedLines, behavior: "smooth"});
         this.delay += FORMFEED_DELAY;
+      } else if (ch === '☼') {
+        // Select condensed font.
       } else {
         this.delay += CHAR_DELAY;
-        if (this.control.bold || this.control.italic) {
+        if (this.control.bold || this.control.italic || this.control.underline || this.control.sub || this.control.super) {
           const span = document.createElement('span');
           span.innerText = ch;
           if (this.control.bold) {
@@ -269,6 +301,15 @@ export class LinePrinter extends BasePrinter {
           }
           if (this.control.italic) {
             span.classList.add('italic');
+          }
+          if (this.control.underline) {
+            span.classList.add('underline');
+          }
+          if (this.control.super) {
+            span.classList.add('super');
+          }
+          if (this.control.sub) {
+            span.classList.add('sub');
           }
           this.text.appendChild(span);
         } else {
