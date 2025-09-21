@@ -12,6 +12,7 @@ import { ResumeStatement } from "./statements/Errors.ts";
 import { DebugState } from "./DebugState.ts";
 import { ClearStatement } from "./statements/Clear.ts";
 import { CommonData } from "./CommonData.ts";
+import { Scheduler } from "./Scheduler.ts";
 
 export interface Invoker {
   runProgram(fileName: string, common?: CommonData): void;
@@ -45,6 +46,7 @@ export class Invocation {
   private errorHandling: ErrorHandling;
   private random: RandomNumbers;
   private common: CommonData;
+  private scheduler: Scheduler;
   private stack: ProgramLocation[]
   private debug: DebugState;
   private invoker: Invoker;
@@ -64,6 +66,7 @@ export class Invocation {
     this.events = new Events(devices);
     this.random = new RandomNumbers();
     this.common = new CommonData(common);
+    this.scheduler = new Scheduler();
     this.errorHandling = {};
     this.program = program;
     this.debug = debug;
@@ -72,9 +75,11 @@ export class Invocation {
 
   stop() {
     this.stopRequested = true;
+    this.scheduler.abort();
   }
 
   async start(): Promise<void> {
+    this.devices.speaker.setScheduler(this.scheduler);
     this.stopRequested = false;
     this.stopped = false;
     let lastYield = 0;
@@ -224,6 +229,7 @@ export class Invocation {
         errorHandling: this.errorHandling,
         random: this.random,
         common: this.common,
+        scheduler: this.scheduler,
       });
       this.stack[this.stack.length - 1].statementIndex++;
       if (!controlFlow) {
@@ -297,9 +303,7 @@ export class Invocation {
           this.stopRequested = true;
           break;
         case ControlFlowTag.WAIT:
-          this.debug.blockForIo?.(true);
           await controlFlow.promise;
-          this.debug.blockForIo?.(false);
           break;
         case ControlFlowTag.CLEAR: {
           const clearStatement = statement as ClearStatement;

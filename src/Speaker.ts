@@ -1,3 +1,4 @@
+import { Scheduler } from "./Scheduler.ts";
 import { Synthesizer } from "./Synthesizer.ts";
 import type { PlayerElement } from "./midi-player.d.ts";
 
@@ -17,6 +18,7 @@ export interface Speaker {
   stopMidi(): void;
   playingMidi(): boolean;
 
+  setScheduler(scheduler: Scheduler): void;
   testFinishNote?(): void;
 }
 
@@ -100,6 +102,9 @@ export class TestSpeaker implements Speaker {
     this.output += `SPEAKER> playing midi?`;
     return false;
   }
+
+  setScheduler(scheduler: Scheduler) {
+  }
 }
 
 interface Note {
@@ -119,6 +124,7 @@ export class WebAudioSpeaker implements Speaker {
   synthesizer: Synthesizer = new Synthesizer();
   queue: Note[] = [];
   playState: PlayState;
+  scheduler: Scheduler;
   enabled = false;
   private midiStillLoading = false;
   private pendingPlayMidi?: () => void;
@@ -181,13 +187,20 @@ export class WebAudioSpeaker implements Speaker {
   }
 
   beep(): Promise<void> {
-    this.oscillator.frequency.value = 900;
-    this.gainNode.gain.value = 1;
-    return new Promise((resolve) => {
-      setTimeout(() => {
+    let offTimer: number | undefined;
+    return this.scheduler.schedule({
+      start: (resolve) => {
+        this.oscillator.frequency.value = 900;
+        this.gainNode.gain.value = 1;
+        offTimer = setTimeout(() => {
+          this.gainNode.gain.value = 0;
+          resolve();
+        }, 300)
+      },
+      cancel: () => {
+        clearTimeout(offTimer);
         this.gainNode.gain.value = 0;
-        resolve();
-      }, 300)
+      }
     });
   }
 
@@ -222,12 +235,19 @@ export class WebAudioSpeaker implements Speaker {
     const onTime = this.queue.at(-1)?.endTime ?? now;
     const offTime = onTime + onDuration;
     const endTime = offTime + offDuration;
-    const promise: Promise<void> = new Promise((resolve) => {
-      const duration = 1000 * (endTime - now);
-      setTimeout(() => {
+    let timeoutId: number | undefined;
+    const promise = this.scheduler.schedule({
+      start: (resolve) => {
+        const duration = 1000 * (endTime - now);
+        timeoutId = setTimeout(() => {
+          note.done = true;
+          resolve();
+        }, duration);
+      },
+      cancel: () => {
+        clearTimeout(timeoutId);
         note.done = true;
-        resolve();
-      }, duration);
+      }
     });
     const note = {frequency, onTime, offTime, endTime, promise, done: false};
     this.queue.push(note);
@@ -312,5 +332,9 @@ export class WebAudioSpeaker implements Speaker {
 
   playingMidi(): boolean {
     return this.midiPlayer.playing;
+  }
+
+  setScheduler(scheduler: Scheduler) {
+    this.scheduler = scheduler;
   }
 }

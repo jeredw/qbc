@@ -56,6 +56,7 @@ abstract class BaseInputStatement extends Statement {
     let position = 0;
     let buffer: string[] = [];
     let finished: () => void;
+    let cancelled = false;
     const {keyboard, screen, speaker} = context.devices;
     const isWordChar = (char: string) => /[A-Za-z0-9]/.test(char);
     const showCursor = () => {
@@ -87,6 +88,9 @@ abstract class BaseInputStatement extends Statement {
     // So we can test non-interactively with deno which doesn't have rAF
     const frame = globalThis.requestAnimationFrame ?? setTimeout;
     const editorFrame = () => {
+      if (cancelled) {
+        return;
+      }
       const key = keyboard.input();
       if (!key) {
         frame(editorFrame);
@@ -221,9 +225,14 @@ abstract class BaseInputStatement extends Statement {
       }
       frame(editorFrame);
     };
-    return new Promise((resolve) => {
-      finished = resolve;
-      frame(editorFrame);
+    return context.scheduler.schedule({
+      start: (resolve) => {
+        finished = resolve;
+        frame(editorFrame);
+      },
+      cancel: () => {
+        cancelled = true;
+      }
     });
   }
 }
@@ -507,8 +516,12 @@ export class InputFunction extends Statement {
   private readStdin(numBytes: number, context: ExecutionContext): Promise<void> {
     let buffer: string[] = [];
     let finished: () => void;
+    let cancelled = false;
     const frame = globalThis.requestAnimationFrame ?? setTimeout;
     const keyWaitFrame = () => {
+      if (cancelled) {
+        return;
+      }
       const key = context.devices.keyboard.input();
       if (!key || !key.char) {
         frame(keyWaitFrame);
@@ -522,9 +535,14 @@ export class InputFunction extends Statement {
       }
       frame(keyWaitFrame);
     };
-    return new Promise((resolve) => {
-      finished = resolve;
-      frame(keyWaitFrame);
+    return context.scheduler.schedule({
+      start: (resolve) => {
+        finished = resolve;
+        frame(keyWaitFrame);
+      },
+      cancel: () => {
+        cancelled = true;
+      }
     });
   }
 }

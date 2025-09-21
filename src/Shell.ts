@@ -107,7 +107,6 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
       blaster: this.blaster,
     }, this);
     this.statusBar = new StatusBar(assertHTMLElement(root.querySelector('.status-bar')), this.keyboard);
-    this.interpreter.debug.blockForIo = (block: boolean) => this.blockDebugForIo(block);
     this.running = RunState.ENDED;
     this.editorPane = assertHTMLElement(root.querySelector('.editor-pane'));
     const editorElement = assertHTMLElement(root.querySelector('.editor'));
@@ -434,7 +433,6 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
   }
 
   async run(restart = false, statementIndex = 0, common?: CommonData) {
-    this.root.classList.remove('blocked');
     this.updateState(RunState.RUNNING);
     this.interpreter.debug.pauseLine = undefined;
     this.editor.updateDecorations();
@@ -474,14 +472,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
     }
   }
 
-  private blockDebugForIo(block: boolean) {
-    this.root.classList.toggle('blocked', block);
-  }
-
   pause() {
-    if (this.root.classList.contains('blocked')) {
-      return;
-    }
     // Don't keep playing beeps and boops while we're stepping...
     this.speaker.reset();
     this.invocation?.stop();

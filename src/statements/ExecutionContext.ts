@@ -6,6 +6,7 @@ import { Events } from "../Events.ts";
 import { RandomNumbers } from "../RandomNumbers.ts";
 import { ErrorHandling } from "../Errors.ts";
 import { CommonData } from "../CommonData.ts";
+import { Scheduler } from "../Scheduler.ts";
 
 export interface ExecutionContext {
   devices: Devices;
@@ -16,4 +17,5 @@ export interface ExecutionContext {
   errorHandling: ErrorHandling;
   random: RandomNumbers;
   common: CommonData;
+  scheduler: Scheduler;
 }

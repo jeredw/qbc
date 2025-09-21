@@ -80,11 +80,15 @@ export class PlayStatement extends Statement {
       throw RuntimeError.fromToken(this.token, ILLEGAL_FUNCTION_CALL);
     }
     speaker.setPlayState(state);
-    const play = async (song: Song, depth = 0) => {
+    let cancelled = false;
+    const play = async (song: Song, depth = 0, done?: () => void) => {
       if (depth > 200) {
         throw RuntimeError.fromToken(this.token, OUT_OF_STACK_SPACE);
       }
       for (const note of song.notes) {
+        if (cancelled) {
+          return;
+        }
         if (note.pointer) {
           const {address} = context.memory.readPointer(note.pointer);
           const xString = context.memory.readAddress(address);
@@ -99,8 +103,19 @@ export class PlayStatement extends Statement {
           await speaker.tone(note.pitch.frequency, note.onDuration, note.offDuration);
         }
       }
+      done?.();
     };
-    return {tag: ControlFlowTag.WAIT, promise: play(song)};
+    return {
+      tag: ControlFlowTag.WAIT,
+      promise: context.scheduler.schedule({
+        start: (resolve) => {
+          play(song, 0, resolve);
+        },
+        cancel: () => {
+          cancelled = true;
+        }
+      })
+    };
   }
 }
 
