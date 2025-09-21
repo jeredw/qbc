@@ -639,17 +639,25 @@ class VideoBiosHandler implements InterruptHandler {
 
   call(cpu: Basic86) {
     switch (cpu.ax) {
-      case 0x1130: {
-        const [_, rows] = this.screen.getGeometry().text;
-        cpu.dl = rows - 1;
-        break;
-      }
+      // Get columns
       case 0x0f00: {
         const [columns, _] = this.screen.getGeometry().text;
         const mode = this.screen.getMode().mode;
         cpu.ah = columns;
         cpu.al = mode;
         cpu.bh = 0;
+        break;
+      }
+      // Get rows
+      case 0x1130: {
+        const [_, rows] = this.screen.getGeometry().text;
+        cpu.dl = rows - 1;
+        break;
+      }
+      // Get video display combination
+      case 0x1a00: {
+        cpu.al = 0x1a;  // valid response
+        cpu.bl = 0x08;  // VGA with color display
         break;
       }
       default:
