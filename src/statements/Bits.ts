@@ -825,29 +825,8 @@ export class PeekStatement extends Statement {
       throw RuntimeError.fromToken(this.token, OVERFLOW);
     }
     const segment = context.memory.getSegment() & 0xffff;
-    try {
-      const [_, data] = readBytesAtPointer(segment, context.memory);
-      context.memory.write(this.result, integer(data[offset] ?? 0));
-      return;
-    } catch (e: unknown) {
-    }
     let data = 0;
-    if (segment === baked.SBMIDI_SEGMENT) {
-      // Map some fake data used to detect MIDI drivers.
-      data = (
-        offset >= 271 ?
-        stringToAscii("SBMIDI")[offset - 271] :
-        baked.SBMIDI_BYTES[offset]
-      ) ?? 0;
-    } else if (segment === baked.SBSIM_SEGMENT) {
-      data = (
-        offset >= 274 ?
-        stringToAscii("SBSIM")[offset - 274] :
-        baked.SBSIM_BYTES[offset]
-      ) ?? 0;
-    } else if (segment === baked.ROM_FONT_SEGMENT) {
-      data = baked.ROM_FONT_BYTES[offset - 0xe] ?? 0;
-    } else if (isVideoMemoryAddress(segment)) {
+    if (isVideoMemoryAddress(segment)) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 13) {
         throw new Error('Only support PEEKing video memory in mode 13');
@@ -876,7 +855,28 @@ export class PeekStatement extends Statement {
       } else {
         data = context.devices.screen.getAttributeAt(row, column);
       }
+    } else if (segment === baked.SBMIDI_SEGMENT) {
+      // Map some fake data used to detect MIDI drivers.
+      data = (
+        offset >= 271 ?
+        stringToAscii("SBMIDI")[offset - 271] :
+        baked.SBMIDI_BYTES[offset]
+      ) ?? 0;
+    } else if (segment === baked.SBSIM_SEGMENT) {
+      data = (
+        offset >= 274 ?
+        stringToAscii("SBSIM")[offset - 274] :
+        baked.SBSIM_BYTES[offset]
+      ) ?? 0;
+    } else if (segment === baked.ROM_FONT_SEGMENT) {
+      data = baked.ROM_FONT_BYTES[offset - 0xe] ?? 0;
     } else {
+      try {
+        const [_, data] = readBytesAtPointer(segment, context.memory);
+        context.memory.write(this.result, integer(data[offset] ?? 0));
+        return;
+      } catch (e: unknown) {
+      }
       const linearAddress = (segment << 4) | offset;
       switch (linearAddress) {
         // Some programs check for mouse support by peeking to see if there is

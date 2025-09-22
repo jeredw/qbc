@@ -121,6 +121,8 @@ class Page {
   private mode: ScreenMode;
   private geometry: ScreenGeometry;
   private plotter: Plotter;
+  private cachedImageData?: ImageData;
+  private ctx: CanvasRenderingContext2D;
 
   constructor(mode: ScreenMode, geometry: ScreenGeometry, color: Attributes, canvasProvider: CanvasProvider) {
     this.mode = mode;
@@ -130,21 +132,24 @@ class Page {
     this.plotter = new Plotter(width, height);
     this.canvas = canvasProvider.createCanvas(width, height);
     // We'll be reading this back a ton so request cpu rendering.
-    const ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
-    ctx.font = `${this.cellHeight}px '${geometry.font}'`;
-    ctx.textBaseline = 'top';
+    this.ctx = this.canvas.getContext('2d', { willReadFrequently: true })!;
+    this.ctx.font = `${this.cellHeight}px '${geometry.font}'`;
+    this.ctx.textBaseline = 'top';
     this.initText(color);
     this.clearGraphics(color);
     this.viewSet = false;
+    this.cachedImageData = undefined;
   }
 
   reset() {
+    this.cachedImageData = undefined;
     const [width, height] = this.geometry.dots;
     this.plotter.reset(width, height);
     this.viewSet = false;
   }
 
   setView(p1: Point, p2: Point, screen: boolean, color?: number, border?: number) {
+    this.cachedImageData = undefined;
     this.viewSet = true;
     this.plotter.setClip(p1, p2);
     if (screen) {
@@ -152,8 +157,7 @@ class Page {
     } else {
       this.plotter.setView(p1, p2);
     }
-    const ctx = this.canvas.getContext('2d')!;
-    this.plotter.drawViewBox(ctx, p1, p2, color, border);
+    this.plotter.drawViewBox(this.ctx, p1, p2, color, border);
     this.dirty = true;
   }
 
@@ -204,23 +208,23 @@ class Page {
   }
 
   clearText(color: Attributes, startRow?: number, endRow?: number) {
-    const ctx = this.canvas.getContext('2d')!;
+    this.cachedImageData = undefined;
     const [_, rows] = this.geometry.text;
     startRow = startRow ?? 1;
     endRow = endRow ?? rows;
     for (let y = startRow - 1; y <= endRow - 1; y++) {
       this.clearTextRow(y, color);
     }
-    ctx.fillStyle = cssForColorIndex(color.bgColor);
+    this.ctx.fillStyle = cssForColorIndex(color.bgColor);
     const y = this.cellHeight * (startRow - 1);
     const height = this.cellHeight * (1 + endRow - startRow);
-    ctx.fillRect(0, y, ctx.canvas.width, height);
+    this.ctx.fillRect(0, y, this.ctx.canvas.width, height);
     this.dirty = true;
   }
 
   clearGraphics(color: Attributes) {
-    const ctx = this.canvas.getContext('2d')!;
-    this.plotter.clearView(ctx, color.bgColor);
+    this.cachedImageData = undefined;
+    this.plotter.clearView(this.ctx, color.bgColor);
     this.dirty = true;
   }
 
@@ -230,77 +234,76 @@ class Page {
 
   putCharAt(row: number, col: number, char: CharacterCell) {
     this.text[row - 1][col - 1] = char;
-    const ctx = this.canvas.getContext('2d')!;
-    this.drawCell(ctx, row, col);
+    this.drawCell(row, col);
     this.dirty = true;
   }
 
   recognizeCharAt(row: number, column: number, fontHash: Map<string, string>): string {
     const left = (column - 1) * this.cellWidth;
     const top = (row - 1) * this.cellHeight;
-    const ctx = this.canvas.getContext('2d')!;
-    const bitmap = ctx.getImageData(left, top, this.cellWidth, this.cellHeight);
+    const bitmap = this.ctx.getImageData(left, top, this.cellWidth, this.cellHeight);
     return fontHash.get(hashCharacterCellBitmap(bitmap)) ?? ' ';
   }
 
   getPixel(x: number, y: number, screen?: boolean): number {
-    const ctx = this.canvas.getContext('2d')!;
-    return this.plotter.getPixel(ctx, x, y, screen);
+    if (!this.cachedImageData) {
+      this.cachedImageData = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    }
+    return this.plotter.getPixel(this.ctx, x, y, screen, this.cachedImageData);
   }
 
   setPixel(x: number, y: number, color: number, step?: boolean, screen?: boolean) {
-    const ctx = this.canvas.getContext('2d')!;
-    this.plotter.setPixel(ctx, x, y, color, step, screen);
+    this.plotter.setPixel(this.ctx, x, y, color, step, screen, this.cachedImageData);
     this.dirty = true;
   }
 
   line(args: LineArgs, color: number) {
-    const ctx = this.canvas.getContext('2d')!;
-    this.plotter.line(ctx, args, color);
+    this.cachedImageData = undefined;
+    this.plotter.line(this.ctx, args, color);
     this.dirty = true;
   }
 
   circle(args: CircleArgs, color: number) {
-    const ctx = this.canvas.getContext('2d')!;
+    this.cachedImageData = undefined;
     const aspect = args.aspect ?? 4 * (this.geometry.dots[1] / this.geometry.dots[0]) / 3;
-    this.plotter.circle(ctx, args, color, aspect);
+    this.plotter.circle(this.ctx, args, color, aspect);
     this.dirty = true;
   }
 
   paint(args: PaintArgs, color: number) {
-    const ctx = this.canvas.getContext('2d')!;
+    this.cachedImageData = undefined;
     const {bppPerPlane, planes} = this.mode;
-    this.plotter.paint(ctx, args, color, bppPerPlane, planes);
+    this.plotter.paint(this.ctx, args, color, bppPerPlane, planes);
     this.dirty = true;
   }
 
   getBitmap(args: GetBitmapArgs): Uint8Array {
-    const ctx = this.canvas.getContext('2d')!;
     const {bppPerPlane, planes} = this.mode;
-    return this.plotter.getBitmap(ctx, args, bppPerPlane, planes);
+    return this.plotter.getBitmap(this.ctx, args, bppPerPlane, planes);
   }
 
   putBitmap(args: PutBitmapArgs) {
-    const ctx = this.canvas.getContext('2d')!;
+    this.cachedImageData = undefined;
     const {bppPerPlane, planes} = this.mode;
-    this.plotter.putBitmap(ctx, args, bppPerPlane, planes);
+    this.plotter.putBitmap(this.ctx, args, bppPerPlane, planes);
     this.dirty = true;
   }
 
-  private drawCell(ctx: CanvasRenderingContext2D, row: number, col: number) {
+  private drawCell(row: number, col: number) {
+    this.cachedImageData = undefined;
     const x = (col - 1) * this.cellWidth;
     const y = (row - 1) * this.cellHeight;
     const cell = this.getCharAt(row, col);
-    ctx.fillStyle = cssForColorIndex(cell.attributes.bgColor);
-    ctx.fillRect(x, y, this.cellWidth, this.cellHeight);
-    ctx.fillStyle = cssForColorIndex(cell.attributes.fgColor);
-    ctx.fillText(cell.char, x, y);
+    this.ctx.fillStyle = cssForColorIndex(cell.attributes.bgColor);
+    this.ctx.fillRect(x, y, this.cellWidth, this.cellHeight);
+    this.ctx.fillStyle = cssForColorIndex(cell.attributes.fgColor);
+    this.ctx.fillText(cell.char, x, y);
+    this.dirty = true;
   }
 
   getImageData(palette: Color[], left: number, top: number, width: number, height: number, xorIndex: number = 0): ImageData {
-    const ctx = this.canvas.getContext('2d')!;
-    const colorIndices = ctx.getImageData(left, top, width, height);
-    const output = ctx.createImageData(colorIndices);
+    const colorIndices = this.ctx.getImageData(left, top, width, height);
+    const output = this.ctx.createImageData(colorIndices);
     let index = 0;
     for (let y = 0; y < colorIndices.height; y++) {
       for (let x = 0; x < colorIndices.width; x++) {
@@ -317,10 +320,10 @@ class Page {
   }
 
   copyFrom(other: Page) {
+    this.cachedImageData = undefined;
     const otherCtx = other.canvas.getContext('2d')!;
     const imageData = otherCtx.getImageData(0, 0, other.canvas.width, other.canvas.height);
-    const ctx = this.canvas.getContext('2d');
-    ctx?.putImageData(imageData, 0, 0);
+    this.ctx.putImageData(imageData, 0, 0);
     this.text = [];
     for (const otherRow of other.text) {
       const row: CharacterCell[] = [];
@@ -333,19 +336,20 @@ class Page {
   }
 
   scroll(startRow: number, endRow: number, color: Attributes) {
+    this.cachedImageData = undefined;
     for (let row = startRow; row < endRow && row < this.text.length; row++) {
       this.text[row - 1] = this.text[row].slice();
     }
     if (endRow > startRow) {
-      const ctx = this.canvas.getContext('2d')!;
       const top = startRow * this.cellHeight;
       const height = endRow * this.cellHeight - top;
-      const text = ctx.getImageData(0, top, ctx.canvas.width, height);
-      ctx.putImageData(text, 0, top - this.cellHeight);
+      const text = this.ctx.getImageData(0, top, this.ctx.canvas.width, height);
+      this.ctx.putImageData(text, 0, top - this.cellHeight);
       this.clearTextRow(endRow - 2, color);
       for (let i = 0; i < this.text[endRow - 2].length; i++) {
-        this.drawCell(ctx, endRow - 1, 1 + i);
+        this.drawCell(endRow - 1, 1 + i);
       }
+      this.dirty = true;
     }
   }
 }
