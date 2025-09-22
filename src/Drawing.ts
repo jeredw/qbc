@@ -602,14 +602,17 @@ export class Plotter {
   ) {
     const drawLineToStart = start < 0;
     const drawLineToEnd = end < 0;
+    const MAX_ANGLE = 6.283185720443725;
     start = Math.abs(start);
     end = Math.abs(end);
-    if (start > 2 * Math.PI) {
+    if (start > MAX_ANGLE) {
       throw new Error('Start angle out of bounds');
     }
-    if (end > 2 * Math.PI) {
+    start = Math.min(start, 2 * Math.PI);
+    if (end > MAX_ANGLE) {
       throw new Error('End angle out of bounds');
     }
+    end = Math.min(end, 2 * Math.PI);
     let startPoint: Point | undefined;
     let endPoint: Point | undefined;
 
