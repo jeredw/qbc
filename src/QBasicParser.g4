@@ -599,6 +599,9 @@ if_inline_statement
   : IF expr THEN COLON* if_inline_action COLON* if_inline_else_statement?
 // Can actually just omit THEN statement entirely when ELSE is present...
   | IF expr THEN COLON* if_inline_else_statement
+// THEN followed just by COLONs is ok - an empty statement would be ambiguous
+// with block if else.
+  | IF expr THEN COLON+
 // QBasic still parses this old BASICA/GW-BASIC syntax omitting THEN.
   | IF expr goto_statement if_inline_else_statement?
   ;

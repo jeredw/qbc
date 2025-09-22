@@ -232,4 +232,8 @@
     (if_inline_statement if 
       (expr 
         (variable_or_function_call foo)) then 
-      (if_inline_else_statement else))) \n <EOF>)
+      (if_inline_else_statement else))) \n ' \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (variable_or_function_call foo)) then :)) \n <EOF>)
