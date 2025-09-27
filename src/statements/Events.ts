@@ -185,8 +185,8 @@ export class SleepStatement extends Statement {
     const duration = this.durationExpr ?
       evaluateIntegerExpression(this.durationExpr, context.memory, { tag: TypeTag.LONG }) : 0;
     const start = context.devices.timer.timer();
-    const numKeysPending = context.devices.keyboard.numKeysPending();
+    const numKeyDownsPending = context.devices.keyboard.numKeyDownsPending();
     context.events.enabled = true;
-    context.events.sleep({start, duration, numKeysPending});
+    context.events.sleep({start, duration, numKeyDownsPending});
   }
 }

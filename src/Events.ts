@@ -14,7 +14,7 @@ export interface Trap {
 export interface SleepArgs {
   start: number;
   duration: number;
-  numKeysPending: number;
+  numKeyDownsPending: number;
 }
 
 export class Events {
@@ -52,7 +52,7 @@ export class Events {
       if (this.asleep.duration !== 0 &&
           this.devices.timer.timer() >= this.asleep.start + this.asleep.duration) {
         this.wakeUp();
-      } else if (this.devices.keyboard.numKeysPending() > this.asleep.numKeysPending) {
+      } else if (this.devices.keyboard.numKeyDownsPending() > this.asleep.numKeyDownsPending) {
         this.wakeUp();
       }
     }

@@ -3,7 +3,7 @@ import { CR, BS, EOF, TAB } from "./AsciiChart.ts"
 
 export interface Keyboard {
   input(): Key | undefined;
-  numKeysPending(): number;
+  numKeyDownsPending(): number;
   getLastScanCode(): number;
   getShiftStatus(): number;
   getExtendedShiftStatus(): number;
@@ -128,8 +128,8 @@ export class KeyboardListener implements Keyboard {
     return this.inputBuffer.shift();
   }
 
-  numKeysPending(): number {
-    return this.inputBuffer.length;
+  numKeyDownsPending(): number {
+    return this.inputBuffer.filter((key) => !key.breakCode).length;
   }
 
   monitorKey(keyNumber: number, enabled: boolean) {
