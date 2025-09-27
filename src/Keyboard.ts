@@ -9,10 +9,12 @@ export interface Keyboard {
   getExtendedShiftStatus(): number;
   getInsertMode(): boolean;
   turnOffInsertMode(): void;
+  getFrameLock(): boolean;
 
   toggleSoftNumLock(): void;
   toggleSoftScrollLock(): void;
   toggleSoftInsertMode(): void;
+  toggleFrameLock(): void;
 
   setMacro(functionKey: number, text: string): void;
   getMacro(functionKey: number): string;
@@ -103,6 +105,7 @@ export class KeyboardListener implements Keyboard {
   softNumLockState: boolean = false;
   softScrollLockState: boolean = false;
   insertMode: boolean = false;
+  frameLock: boolean = false;
 
   constructor() {
     this.reset();
@@ -118,6 +121,7 @@ export class KeyboardListener implements Keyboard {
     this.softNumLockState = false;
     this.softScrollLockState = false;
     this.insertMode = false;
+    this.frameLock = false;
   }
 
   input(): Key | undefined {
@@ -320,6 +324,10 @@ export class KeyboardListener implements Keyboard {
     return this.insertMode;
   }
 
+  getFrameLock(): boolean {
+    return this.frameLock;
+  }
+
   turnOffInsertMode() {
     this.insertMode = false;
     this.updateInsertModeStatus();
@@ -342,6 +350,10 @@ export class KeyboardListener implements Keyboard {
   toggleSoftInsertMode() {
     this.insertMode = !this.insertMode;
     this.updateInsertModeStatus();
+  }
+
+  toggleFrameLock() {
+    this.frameLock = !this.frameLock;
   }
 
   setMacro(functionKey: number, text: string) {

@@ -729,6 +729,7 @@ class StatusBar {
   scrollLock: HTMLElement;
   numLock: HTMLElement;
   insertMode: HTMLElement;
+  frameLock: HTMLElement;
   speedSpinner: HTMLInputElement;
 
   constructor(
@@ -746,6 +747,8 @@ class StatusBar {
     this.speedSpinner.addEventListener('input', (e) => {
       Invocation.ReleaseUiThreadMs = +this.speedSpinner.value / 10;
     });
+    this.frameLock = assertHTMLElement(root.querySelector('.status-flock'));
+    this.frameLock.addEventListener('click', () => keyboard.toggleFrameLock());
   }
 
   hide() {
@@ -762,6 +765,8 @@ class StatusBar {
     this.capsLock.classList.toggle('key-on', !!(shift & 0x40));
     this.numLock.classList.toggle('key-on', !!(shift & 0x20));
     this.scrollLock.classList.toggle('key-on', !!(shift & 0x10));
+    const frameLock = this.keyboard.getFrameLock();
+    this.frameLock.classList.toggle('key-on', frameLock);
   }
 }
 

@@ -8,6 +8,7 @@ import { isModifier } from "../ScanCodeChart.ts";
 import { Token } from "antlr4ng";
 import { evaluateIntegerExpression, evaluateStringExpression, Expression } from "../Expressions.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
 
 export class InkeyFunction extends Statement {
   result: Variable;
@@ -20,13 +21,32 @@ export class InkeyFunction extends Statement {
     this.result = result;
   }
 
-  override execute(context: ExecutionContext) {
+  override execute(context: ExecutionContext): ControlFlow | void {
     const key = context.devices.keyboard.input();
     // Skip break codes for inkey$.
     const output = !key || key.breakCode || isModifier(key.code) ? string("") :
       key.char ? string(key.char) :
       string(asciiToString([0, key.code]));
     context.memory.write(this.result, output);
+    if (context.devices.keyboard.getFrameLock()) {
+      let timeoutId: number | undefined;
+      return {
+        tag: ControlFlowTag.WAIT,
+        promise: context.scheduler.schedule({
+          start: (resolve) => {
+            timeoutId = setTimeout(() => {
+              timeoutId = undefined;
+              resolve();
+            }, 16);
+          },
+          cancel: () => {
+            if (timeoutId) {
+              clearTimeout(timeoutId);
+            }
+          }
+        })
+      };
+    }
   }
 }
 
