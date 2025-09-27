@@ -1040,7 +1040,7 @@ date_function
   ;
 
 environ_string_function
-  : ENVIRON_STRING expr
+  : ENVIRON_STRING '(' expr ')'
   ;
 
 // These have the same name but different types so it's simpler to define them

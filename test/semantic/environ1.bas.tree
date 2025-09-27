@@ -5,57 +5,68 @@
         (expr 
           (builtin_function 
             (environ_string_function environ$ 
-              (expr 
-                ( 
-                  (expr 
-                    (literal "BLASTER")) )))))))) \n 
+              ( 
+                (expr 
+                  (literal "BLASTER")) ))))))) \n 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
           (builtin_function 
             (environ_string_function environ$ 
-              (expr 
-                ( 
-                  (expr 
-                    (literal "PATH")) )))))))) \n 
+              ( 
+                (expr 
+                  (literal "PATH")) ))))))) \n 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
           (builtin_function 
             (environ_string_function environ$ 
-              (expr 
-                ( 
-                  (expr 
-                    (literal "BOGUS")) )))))))) \n 
+              ( 
+                (expr 
+                  (literal "BOGUS")) ))))))) \n 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
           (builtin_function 
             (environ_string_function environ$ 
-              (expr 
-                ( 
-                  (expr 
-                    (literal 1)) )))))))) \n 
+              ( 
+                (expr 
+                  (literal 1)) ))))))) \n 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
           (builtin_function 
             (environ_string_function environ$ 
-              (expr 
-                ( 
-                  (expr 
-                    (literal 2)) )))))))) \n 
+              ( 
+                (expr 
+                  (literal 2)) ))))))) \n 
   (statement 
     (print_statement print 
       (print_argument 
         (expr 
           (builtin_function 
             (environ_string_function environ$ 
+              ( 
+                (expr 
+                  (literal 3)) ))))))) \n 
+  (statement 
+    (if_inline_statement if 
+      (expr 
+        (expr 
+          (builtin_function 
+            (environ_string_function environ$ 
+              ( 
+                (expr 
+                  (literal "BLASTER")) )))) = 
+        (expr 
+          (literal ""))) then 
+      (if_inline_action 
+        (statement 
+          (print_statement print 
+            (print_argument 
               (expr 
-                ( 
-                  (expr 
-                    (literal 3)) )))))))) \n <EOF>)
+                (literal "noblast")))))))) \n <EOF>)

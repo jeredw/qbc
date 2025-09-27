@@ -5,3 +5,4 @@ print environ$("BOGUS")
 print environ$(1)
 print environ$(2)
 print environ$(3)
+if environ$("BLASTER") = "" then print "noblast"
