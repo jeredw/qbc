@@ -1,5 +1,6 @@
 import { Speaker } from "./Speaker.ts";
 
+// https://pdos.csail.mit.edu/6.828/2018/readings/hardware/SoundBlaster.pdf
 export class SoundBlaster {
   private addressByteIndex = 0;
   private address = [0, 0, 0];
@@ -76,6 +77,11 @@ export class SoundBlaster {
         if (data === 1) {
           this.lengthByteIndex = 0;
           this.addressByteIndex = 0;
+          if (this.length[0] === 0 && this.length[1] === 0) {
+            // Some programs initiate an empty transfer for an invalid address
+            // during initialization.
+            return;
+          }
           // Caller will sendData() from this address
           return (this.address[2] << 16) | (this.address[1] << 8) | this.address[0];
         }
