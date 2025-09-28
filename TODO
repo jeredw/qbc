@@ -106,6 +106,7 @@ x QBASWIN: Unrecognized opcode 131
 + FMTRACK, ITFDEMO: Poke into DEF SEG A000 + offset
 + SCROLLF: Should this be drawing something
 + ATTACK2, ELYSIAN: More terrible abuses of inline if grammar
++ STARODDS: BLOADs cga graphics into b800
 - 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
@@ -141,7 +142,6 @@ x QBASWIN: Unrecognized opcode 131
 - SPHRFITE: Graphics are super messed up
 - SNOOPY: Seems to use set 2 or weird german keyboard scancodes
 - SNOOPY: Really messed up adlib sound
-- STARODDS: BLOADs cga graphics into b800
 - STARTREK: Some kind of pcode with header magic 2fc (PDS?)
 - VSCAPE3: Installs its own int 9h handler
 

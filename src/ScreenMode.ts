@@ -62,7 +62,7 @@ export const SCREEN_MODES: ScreenMode[] = [
     pages: 1,
     bppPerPlane: 1,
     planes: 1,
-    pageSize: 15500,
+    pageSize: 16000,
   },
   {
     mode: 7,

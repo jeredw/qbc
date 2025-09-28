@@ -714,7 +714,7 @@ export class BloadStatement extends Statement {
       }
       const storedSegment = (data[2] << 8) | data[1];
       const length = (data[6] << 8) | data[5];
-      const newData = new Uint8Array(data.slice(7));
+      let newData: Uint8Array = new Uint8Array(data.slice(7));
       if (newData.buffer.byteLength !== length) {
         throw new Error('bad length in bsave header');
       }
@@ -722,11 +722,21 @@ export class BloadStatement extends Statement {
       if (isVideoMemoryAddress(segment) || (!this.offsetExpr && isVideoMemoryAddress(storedSegment))) {
         // Assume we are trying to BLOAD a full width bitmap into video memory.
         const mode = context.devices.screen.getMode();
+        if (mode.mode === 0) {
+          throw new Error('Only support BLOADing bitmap data');
+        }
         let [width, height] = mode.geometry[0].dots;
         // Allow loading less than the full screen height because some programs load
         // partial spritesheet bitmaps to save time GET'ing sprites.
-        height = ~~(length / width);
         const bppPerPlane = mode.bppPerPlane;
+        const pitch = (width * bppPerPlane) >> 3;
+        height = Math.min(height, ~~(length / pitch));
+        if (mode.mode === 1 || mode.mode === 2) {
+          // The CGA frame buffer is stored interleaved with 100 even scanlines
+          // followed by 100 odd scanlines (at an offset of 8192 bytes, not 80 *
+          // 1000 bytes).
+          newData = deinterleaveCgaData(newData, pitch);
+        }
         // Prepend a fake bitmap header like PUT assumes.
         const bitmap = new Uint8Array([
           (width * bppPerPlane) & 0xff, ((width * bppPerPlane) >> 8) & 0xff,
@@ -740,7 +750,7 @@ export class BloadStatement extends Statement {
         );
         context.devices.screen.putBitmap({
           x1: 0,
-          y1: ~~(base / width),
+          y1: ~~(base / pitch),
           step: false,
           operation: BlitOperation.PSET,
           data: bitmap,
@@ -826,7 +836,7 @@ export class PeekStatement extends Statement {
     }
     const segment = context.memory.getSegment() & 0xffff;
     let data = 0;
-    if (isVideoMemoryAddress(segment)) {
+    if (isVideoMemoryAddress(segment) && segment < 0xb800) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 13) {
         throw new Error('Only support PEEKing video memory in mode 13');
@@ -933,7 +943,7 @@ export class PokeStatement extends Statement {
     }
     const byte = evaluateIntegerExpression(this.valueExpr, context.memory) & 255;
     const segment = context.memory.getSegment() & 0xffff;
-    if (isVideoMemoryAddress(segment)) {
+    if (isVideoMemoryAddress(segment) && segment < 0xb800) {
       const mode = context.devices.screen.getMode();
       if (mode.mode !== 13) {
         throw new Error('Only support POKEing video memory in mode 13');
@@ -1010,9 +1020,22 @@ export function signExtend16Bit(x: number) {
 }
 
 function isVideoMemoryAddress(segment: number) {
-  return segment >= 0xa000 && segment < 0xb000;
+  return segment >= 0xa000 && segment < 0xb000 || segment >= 0xb800 && segment < 0xc000;
 }
 
 function videoMemoryOffset(segment: number) {
-  return (segment - 0xa000) * 16;
+  return segment < 0xb800 ? (segment - 0xa000) * 16 : ((segment - 0xb800) & 0x3fff) * 16;
+}
+
+function deinterleaveCgaData(data: Uint8Array, pitch: number): Uint8Array {
+  const result = new Uint8Array(data.byteLength);
+  let dest = 0;
+  let src = 0;
+  while (src + pitch < data.byteLength / 2) {
+    result.set(data.subarray(src, src + pitch), dest);
+    result.set(data.subarray(src + 0x2000, src + 0x2000 + pitch), dest + pitch);
+    dest += 2 * pitch;
+    src += pitch;
+  }
+  return result;
 }
