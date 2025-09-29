@@ -734,7 +734,7 @@ export class BloadStatement extends Statement {
         if (mode.mode === 1 || mode.mode === 2) {
           // The CGA frame buffer is stored interleaved with 100 even scanlines
           // followed by 100 odd scanlines (at an offset of 8192 bytes, not 80 *
-          // 1000 bytes).
+          // 100 bytes).
           newData = deinterleaveCgaData(newData, pitch);
         }
         // Prepend a fake bitmap header like PUT assumes.
@@ -743,18 +743,26 @@ export class BloadStatement extends Statement {
           height & 0xff, (height >> 8) & 0xff,
           ...newData
         ]);
-        const base = (
+        let base = (
           isVideoMemoryAddress(segment) ?
           videoMemoryOffset(segment) :
           videoMemoryOffset(storedSegment)
         );
+        const currentPage = context.devices.screen.getActivePage();
+        if (mode.mode >= 7 && mode.mode <= 10) {
+          // EGA modes map all pages in the same memory window.
+          const page = Math.floor(base / (0x10000 / mode.pages));
+          base &= 0x1fff;
+          context.devices.screen.setActivePage(page);
+        }
         context.devices.screen.putBitmap({
           x1: 0,
           y1: ~~(base / pitch),
           step: false,
-          operation: BlitOperation.PSET,
+          operation: BlitOperation.PSET_MASK,
           data: bitmap,
         });
+        context.devices.screen.setActivePage(currentPage);
         // The VGA maps 64k but only uses 64000 bytes, and some programs use the
         // extra space for auxiliary data like palettes.
         if (length > mode.pageSize) {

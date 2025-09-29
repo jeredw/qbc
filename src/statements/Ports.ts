@@ -90,6 +90,9 @@ export class OutStatement extends Statement {
       case 0x201:
         context.devices.joystick.resetCount();
         break;
+      case 0x3c5:
+        context.devices.screen.setVgaBitPlaneMask(data);
+        break;
       case 0x3c7:
       case 0x3c8:
         context.devices.screen.setVgaPaletteIndex(data);

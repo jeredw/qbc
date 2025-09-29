@@ -59,7 +59,8 @@ export enum BlitOperation {
   PRESET,
   AND,
   OR,
-  XOR
+  XOR,
+  PSET_MASK,
 }
 
 class Range {
@@ -274,7 +275,7 @@ export class Plotter {
     return new Uint8Array(buffer);
   }
 
-  putBitmap(ctx: CanvasRenderingContext2D, args: PutBitmapArgs, bppPerPlane: number, planes: number) {
+  putBitmap(ctx: CanvasRenderingContext2D, args: PutBitmapArgs, bppPerPlane: number, planes: number, bitPlaneMask: number) {
     const [x1, y1] = [args.x1 ?? this.cursor.x, args.y1 ?? this.cursor.y];
     const p1 = args.step ?
       {x: x1 + this.cursor.x, y: y1 + this.cursor.y} :
@@ -307,6 +308,9 @@ export class Plotter {
     for (let y = 0; y < height; y++) {
       const rowStart = offset;
       for (let plane = 0; plane < planes; plane++) {
+        if (!(bitPlaneMask & (1 << plane))) {
+          continue;
+        }
         offset = rowStart;
         for (let x = 0; x < width; x++) {
           let channel = 0;
@@ -315,6 +319,9 @@ export class Plotter {
           }
           const mask = ((1 << bppPerPlane) - 1) << plane;
           switch (args.operation) {
+            case BlitOperation.PSET_MASK:
+              attributes.data[offset] = (attributes.data[offset] & ~mask) | (channel << plane);
+              break;
             case BlitOperation.PSET:
               attributes.data[offset] |= channel << plane;
               break;

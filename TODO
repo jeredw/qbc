@@ -107,6 +107,8 @@ x QBASWIN: Unrecognized opcode 131
 + SCROLLF: Should this be drawing something
 + ATTACK2, ELYSIAN: More terrible abuses of inline if grammar
 + STARODDS: BLOADs cga graphics into b800
++ COOKIE1, MINIRPG2: BLOADs EGA graphics into different pages
+~ DRAGDROP: Uses 3c2 to select bit planes for bload
 - 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
@@ -114,11 +116,10 @@ x QBASWIN: Unrecognized opcode 131
 - ANIMA6: Implicit call without declaration first
 - ART334: Just including qb.bi, seems simple to support
 - BREATH: Pretty simple use of inc/mak for a cool program
+- BRICKO: Needs InterruptX (also does IPX networking)
 - CHARGEN: Reads key... but from port 62h instead of 60h?
-- COOKIE1, MINIRPG2: BLOADs EGA graphics into different pages
 - DIGIREAL: Overflow in POKE...
 - DIGIREAL: Pokes into other page of text memory through B8000
-- DRAGDROP: Uses 3c2 to select bit planes for bload
 - EVERDOWN, GORILLA: Speed is autodetected too fast
 - FLRMAP2: Just a little too slow
 - FULLDRAW, BSV&LD: Calls BSAVE to save data from A000
@@ -135,6 +136,7 @@ x QBASWIN: Unrecognized opcode 131
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
 - PICKMAN: sub foo: if bar then end sub else print 42
+- PIPELINE: Old absolute syntax, reads 46c, loop opcodes
 - PONGBALL: Need mouse limit apis
 - QBSNAKE: Uses SHELL to do a DIR to list files
 - QMANCHE1: Really cool but slow

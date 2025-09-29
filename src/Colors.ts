@@ -301,3 +301,20 @@ export function colorToGrayScale(color: Color): Color {
 export function cssForColorIndex(index: number): string {
   return `rgba(${index}, 0, 0, 255)`;
 }
+
+export const VGA_INDEX_TO_EGA_INDEX_4BIT: number[] = [
+   0,  1,  2,  3,  4,  5,  6,  7,
+  -1, -1, -1, -1, -1, -1, -1, -1,
+   8,  9, 10, 11, 12, 13, 14, 15,
+];
+
+export const VGA_INDEX_TO_EGA_INDEX_6BIT: number[] = [
+   0,  1,  2,  3,  4,  5, -1,  7,
+  -1, -1, -1, -1, -1, -1, -1, -1,
+  -1, -1, -1, -1,  6, -1, -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1,
+   8,  9, 10, 11, 12, 13, 14, 15,
+];

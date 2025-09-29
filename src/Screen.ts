@@ -1,5 +1,5 @@
 import { asciiToChar, showControlChar } from './AsciiChart.ts';
-import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, vgaIndexToColor } from './Colors.ts';
+import { Color, cssForColorIndex, DEFAULT_PALETTE, egaIndexToColor, monoIndexToColor, VGA_INDEX_TO_EGA_INDEX_4BIT, VGA_INDEX_TO_EGA_INDEX_6BIT, vgaIndexToColor } from './Colors.ts';
 import { CircleArgs, GetBitmapArgs, LineArgs, PaintArgs, Plotter, Point, PutBitmapArgs } from './Drawing.ts';
 import { LightPenTarget, LightPenTrigger } from './LightPen.ts';
 import { clamp } from './Math.ts';
@@ -37,6 +37,8 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   getMode(): ScreenMode;
   getGeometry(): ScreenGeometry;
   copyPage(sourcePage: number, destPage: number): void;
+  setActivePage(page: number): void;
+  getActivePage(): number;
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number): void;
   setPaletteEntry(attribute: number, color: number): void;
@@ -46,6 +48,8 @@ export interface Screen extends Printer, LightPenTarget, MouseSurface {
   getVgaPaletteData(): number;
   setExtraFrameBufferData(data: Uint8Array): void;
   getExtraFrameBufferData(): Uint8Array;
+  setVgaBitPlaneMask(mask: number): void;
+  getVgaBitPlaneMask(): number;
 
   setDrawState(state: DrawState): void;
   getDrawState(): DrawState;
@@ -139,6 +143,7 @@ class Page {
     this.clearGraphics(color);
     this.viewSet = false;
     this.cachedImageData = undefined;
+    this.reset();
   }
 
   reset() {
@@ -282,10 +287,10 @@ class Page {
     return this.plotter.getBitmap(this.ctx, args, bppPerPlane, planes);
   }
 
-  putBitmap(args: PutBitmapArgs) {
+  putBitmap(args: PutBitmapArgs, bitPlaneMask: number) {
     this.cachedImageData = undefined;
     const {bppPerPlane, planes} = this.mode;
-    this.plotter.putBitmap(this.ctx, args, bppPerPlane, planes);
+    this.plotter.putBitmap(this.ctx, args, bppPerPlane, planes, bitPlaneMask);
     this.dirty = true;
   }
 
@@ -390,6 +395,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
   private vgaPaletteData: number[];
   private fontHash: Map<string, string>;
   private extraFrameBufferData: Uint8Array;
+  private vgaBitPlaneMask: number;
   canvas: HTMLCanvasElement;
 
   constructor(canvasProvider?: CanvasProvider) {
@@ -399,6 +405,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.resetDrawState();
     this.vgaPaletteData = [];
     this.vgaPaletteIndex = 0;
+    this.vgaBitPlaneMask = 0xf;
     this.softKeys = {keys: [], visible: false};
     this.configure(0, 0, 0, 0);
   }
@@ -409,6 +416,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     this.vgaPaletteData = [];
     this.vgaPaletteIndex = 0;
     this.extraFrameBufferData = new Uint8Array(1536);
+    this.vgaBitPlaneMask = 0xf;
     // Force mode 0 to reinitialize with default text geometry by first
     // switching to a mode that only supports 80x25.
     this.configure(2, 0, 0, 0);
@@ -480,7 +488,6 @@ export class CanvasScreen extends BasePrinter implements Screen {
       }
       // Same mode and geometry means we want to switch pages.
       this.selectPages(activePage, visiblePage);
-      this.resetPalette();
       for (const page of this.pages) {
         // Reset plotter state.
         page.reset();
@@ -527,10 +534,16 @@ export class CanvasScreen extends BasePrinter implements Screen {
 
   private selectPages(activePage?: number, visiblePage?: number) {
     if (activePage !== undefined) {
+      if (activePage < 0 || activePage >= this.pages.length) {
+        throw new Error('Invalid active page');
+      }
       this.activePageIndex = activePage;
       this.activePage = this.pages[activePage];
     }
     if (visiblePage !== undefined) {
+      if (visiblePage < 0 || visiblePage >= this.pages.length) {
+        throw new Error('Invalid visible page');
+      }
       this.visiblePageIndex = visiblePage;
       this.visiblePage = this.pages[visiblePage];
       this.visiblePage.dirty = true;
@@ -553,6 +566,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
       throw new Error('dest page is invalid');
     }
     this.pages[destPage].copyFrom(this.pages[sourcePage]);
+  }
+
+  setActivePage(page: number): void {
+    this.selectPages(page);
+  }
+
+  getActivePage(): number {
+    return this.activePageIndex;
   }
 
   setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
@@ -656,7 +677,19 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (this.vgaPaletteData.length === 3) {
       const [red, green, blue] = this.vgaPaletteData;
       const color = red | (green << 8) | (blue << 16);
-      this.palette[this.vgaPaletteIndex] = vgaIndexToColor(color);
+      // In EGA modes, the VGA first maps attributes to EGA colors, then those
+      // are used as indices into the VGA palette.  So we have to translate DAC
+      // palette indices back to logical palette indices here.
+      const paletteIndex = (
+        (this.mode.mode === 7 || this.mode.mode === 8) ?
+        VGA_INDEX_TO_EGA_INDEX_4BIT[this.vgaPaletteIndex] :
+        this.mode.mode === 9 ?
+        VGA_INDEX_TO_EGA_INDEX_6BIT[this.vgaPaletteIndex] :
+        this.vgaPaletteIndex
+      );
+      if (paletteIndex >= 0) {
+        this.palette[paletteIndex] = vgaIndexToColor(color);
+      }
       this.vgaPaletteData = [];
       this.vgaPaletteIndex++;
       this.visiblePage.dirty = true;
@@ -893,7 +926,7 @@ export class CanvasScreen extends BasePrinter implements Screen {
     if (this.mode.mode === 0) {
       throw new Error('unsupported screen mode');
     }
-    this.activePage.putBitmap(args);
+    this.activePage.putBitmap(args, this.vgaBitPlaneMask);
   }
 
   setExtraFrameBufferData(data: Uint8Array): void {
@@ -902,6 +935,14 @@ export class CanvasScreen extends BasePrinter implements Screen {
 
   getExtraFrameBufferData(): Uint8Array {
     return this.extraFrameBufferData;
+  }
+
+  setVgaBitPlaneMask(mask: number): void {
+    this.vgaBitPlaneMask = mask <= 0xf ? mask : 0xf;
+  }
+
+  getVgaBitPlaneMask(): number {
+    return this.vgaBitPlaneMask;
   }
 
   render() {
@@ -1314,6 +1355,14 @@ export class TestScreen implements Screen {
     this.hasGraphics = true;
   }
 
+  setActivePage(page: number): void {
+    this.graphics.setActivePage(page);
+  }
+
+  getActivePage(): number {
+    return this.graphics.getActivePage();
+  }
+
   setColor(fgColor?: number, bgColor?: number, borderColor?: number) {
     this.text.print(`[COLOR ${fgColor}, ${bgColor}, ${borderColor}]`, true);
     this.graphics.setColor(fgColor, bgColor, borderColor);
@@ -1473,6 +1522,14 @@ export class TestScreen implements Screen {
 
   getExtraFrameBufferData(): Uint8Array {
     return this.graphics.getExtraFrameBufferData();
+  }
+
+  setVgaBitPlaneMask(mask: number) {
+    this.graphics.setVgaBitPlaneMask(mask);
+  }
+
+  getVgaBitPlaneMask(): number {
+    return this.graphics.getVgaBitPlaneMask();
   }
 
   showTextCursor() {
