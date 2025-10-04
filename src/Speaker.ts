@@ -251,7 +251,7 @@ export class WebAudioSpeaker implements Speaker {
     });
     const note = {frequency, onTime, offTime, endTime, promise, done: false};
     this.queue.push(note);
-    if (this.enabled) {
+    if (this.enabled && frequency !== 0) {
       this.oscillator.frequency.setValueAtTime(frequency, onTime);
       this.gainNode.gain.setValueAtTime(1, onTime);
       this.gainNode.gain.setValueAtTime(0, offTime);
