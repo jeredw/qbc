@@ -593,6 +593,9 @@ export class Synthesizer {
   }
 
   connect(audioContext: AudioContext) {
+    if (this.jsNode && this.gainNode) {
+      this.jsNode.disconnect(this.gainNode);
+    }
     Synthesizer.SampleRate = audioContext.sampleRate;
     this.gainNode = audioContext.createGain();
     this.gainNode.gain.value = 0.2;  // master volume
