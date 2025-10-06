@@ -109,13 +109,13 @@ x QBASWIN: Unrecognized opcode 131
 + STARODDS: BLOADs cga graphics into b800
 + COOKIE1, MINIRPG2: BLOADs EGA graphics into different pages
 ~ DRAGDROP: Uses 3c2 to select bit planes for bload
+x BREATH: Pretty simple use of inc/mak for a cool program
 - 1PSCRLL2: Doesn't draw anything but looks like it should
 - 4LANG: Unsupported mouse function 10
 - ADVENTUR: qbasic permits multiple default else for block if...else...
 - AIENGINE: Peek into scalar variable bytes w/o DEF SEG
 - ANIMA6: Implicit call without declaration first
 - ART334, FONT: Just including qb.bi, seems simple to support
-- BREATH: Pretty simple use of inc/mak for a cool program
 - BRICKO: Needs InterruptX (also does IPX networking)
 - CHARGEN: Reads key... but from port 62h instead of 60h?
 - DIGIREAL: Overflow in POKE...
@@ -133,6 +133,7 @@ x QBASWIN: Unrecognized opcode 131
 - MARIO: Sound screwed up after game restarts after Mario death
 - MARIO: Serializing sprites array more often than needed
 - MINESWE: Reassigns DS to varseg pointer
+- MONOTONY: Really cool demo, too slow
 - NEW PROTO CHESS SYSTEM: really slow to compile?  looks like nested fors confusing ATN
 - NFL: PRINT USING is really PRINT expr... USING!
 - PICKMAN: sub foo: if bar then end sub else print 42

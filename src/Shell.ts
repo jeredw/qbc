@@ -503,14 +503,19 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
       if (message['command'] === 'run') {
         const archivePath: string = message['archive'];
         const program: string = message['program'];
+        const frameLock: boolean = !!message['frameLock'];
         const response = await fetch(archivePath);
         if (!response.ok) {
           throw new Error('bad response');
         }
+        this.disk.reset();
         const archive = await response.arrayBuffer();
         await this.importArchive(archive);
         this.load(program);
         void this.run(true);
+        if (frameLock !== this.keyboard.getFrameLock()) {
+          this.keyboard.toggleFrameLock();
+        }
         return;
       }
     } catch (e: unknown) {

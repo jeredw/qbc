@@ -48,6 +48,13 @@ export class MemoryDrive implements Disk {
     this.currentDirectory = {drive, names: ['']};
   }
 
+  reset() {
+    this.currentDirectory = {drive: this.drive, names: ['']};
+    this.rootDirectory = directory('');
+    this.handles = new Map();
+    this.modified = false;
+  }
+
   resetHandles() {
     this.handles = new Map();
   }

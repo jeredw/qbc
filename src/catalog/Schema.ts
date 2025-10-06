@@ -9,4 +9,5 @@ export interface ProgramEntry {
   specs: string;
   usage: string;
   notes: string;
+  frameLock: boolean;
 }

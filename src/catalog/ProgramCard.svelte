@@ -1,13 +1,14 @@
 <script lang="ts">
   let props = $props();
 
-  function launch(archive: string, program: string) {
+  function launch(archive: string, program: string, frameLock: boolean) {
     const channel = new BroadcastChannel('catalog');
     channel.postMessage(
       JSON.stringify({
         command: 'run',
         archive,
-        program
+        program,
+        frameLock
       })
     );
   }
@@ -19,7 +20,7 @@
 
 <article class="program-card">
   <button class="stamp"
-          onclick={() => launch(props.archivePath, props.name)}>
+          onclick={() => launch(props.archivePath, props.name, props.frameLock)}>
     <div class="name">{props.name.toUpperCase()}</div>
     <div class="screenshot">
       <img class="screenshot-image" alt="{props.name} screenshot" src="{props.screenshot}" />
