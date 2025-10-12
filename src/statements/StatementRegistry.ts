@@ -121,7 +121,7 @@ import { BuiltinStatementArgs } from "../Builtins.ts";
 import { InkeyFunction, KeyStatement, KeyStatementArgs } from "./Keyboard.ts";
 import { InpFunction, OutStatement } from "./Ports.ts";
 import { InputFileStatement, InputFunction, InputStatement, InputStatementArgs, LineInputStatement } from "./Input.ts";
-import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement } from "./Time.ts";
+import { DateFunction, DateStatement, TimeFunction, TimerFunction, TimeStatement, WaitStatement } from "./Time.ts";
 import { EventControlStatement, EventHandlerStatement, EventType, SleepStatement } from "./Events.ts";
 import { EventChannelState } from "../Events.ts";
 import { StickFunction, StrigFunction } from "./Joystick.ts";
@@ -932,7 +932,7 @@ export function viewPrint(
 }
 
 export function wait(args: BuiltinStatementArgs) {
-  return new NoOpStatement();
+  return new WaitStatement(args);
 }
 
 export function while_(expr: Expression) {

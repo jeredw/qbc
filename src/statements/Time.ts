@@ -5,6 +5,9 @@ import { ExecutionContext } from "./ExecutionContext.ts";
 import { Statement } from "./Statement.ts";
 import { evaluateStringExpression, Expression } from "../Expressions.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL } from "../Errors.ts";
+import { ControlFlow, ControlFlowTag } from "../ControlFlow.ts";
+import { sleep } from "../Timer.ts";
+import { BuiltinStatementArgs } from "../Builtins.ts";
 
 export class DateFunction extends Statement {
   constructor(private result: Variable) {
@@ -124,12 +127,55 @@ function isValidTime(hours: number, minutes: number, seconds: number): boolean {
 }
 
 export class TimerFunction extends Statement {
+  static calls = 0;
+
   constructor(private result: Variable) {
     super();
   }
 
-  override execute(context: ExecutionContext) {
+  override execute(context: ExecutionContext): ControlFlow | void {
     const timestamp = context.devices.timer.timer();
     context.memory.write(this.result, single(timestamp));
+    if (context.devices.keyboard.getFrameLock()) {
+      // HACK: The TIMER function itself is pretty slow and takes around 1-2ms.
+      // Many programs use it in loops to calibrate "CPU speed", like GORILLA.BAS:
+      //
+      // 'CalcDelay:
+      // '  Checks speed of the machine.
+      // FUNCTION CalcDelay!
+      //   s! = TIMER
+      //   DO
+      //     i! = i! + 1
+      //   LOOP UNTIL TIMER - s! >= .5
+      //   CalcDelay! = i!
+      // END FUNCTION
+      //
+      // setTimeout() doesn't really have enough precision so just slow down every
+      // nth timer call.
+      TimerFunction.calls++;
+      if (TimerFunction.calls % 4 === 0) {
+        return {tag: ControlFlowTag.WAIT, promise: sleep(0)};
+      }
+    }
+  }
+}
+
+export class WaitStatement extends Statement {
+  static calls = 0;
+
+  constructor(args: BuiltinStatementArgs) {
+    super();
+  }
+
+  override execute(context: ExecutionContext): ControlFlow | void {
+    if (context.devices.keyboard.getFrameLock()) {
+      // HACK: WAIT is almost always used to sync with vertical retrace, to
+      // slow down programs that are too fast.  So instead of treating it as a
+      // real I/O statement, just wait for a while...
+      WaitStatement.calls++;
+      if (WaitStatement.calls % 4 === 0) {
+        return {tag: ControlFlowTag.WAIT, promise: sleep(0)};
+      }
+    }
   }
 }

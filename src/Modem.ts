@@ -2,6 +2,7 @@ import { asciiToString, charToAscii, stringToAscii, CR, LF, trim } from "./Ascii
 import { BAD_FILE_MODE, BAD_FILE_NAME, FIELD_OVERFLOW, FILE_ALREADY_OPEN, INPUT_PAST_END_OF_FILE, IOError } from "./Errors.ts";
 import { FileAccessor, Handle, isSequentialWriteMode, Opener, OpenMode } from "./Files.ts";
 import { BasePrinter } from "./Printer.ts";
+import { sleep } from "./Timer.ts";
 
 export interface Modem extends Opener {
   reset(): void;
@@ -275,10 +276,6 @@ function consumeFirstLine(buffer: number[]): string {
     }
   }
   return "";
-}
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function modemResponse(str: string): string {
