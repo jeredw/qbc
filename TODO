@@ -4,17 +4,39 @@ General
 - Write some articles or fun blog posts about aspects of the project
 - Improve parser error messages
 - Rewrite the antlr parser as a hand rolled recursive descent thing
-+ Open up the repository and release a beta
+- Run programs in a separate worker with an async event queue
+- Redo memory layout to use unboxed numbers and strings
 - Organize golden file tests a bit better and document expectations
++ Open up the repository and release a beta
 + Catch and show impl errors in UI
 + Rewrite expression evaluation to use a compiled representation
+
+IDE features
+- Persist filesystem to local storage
+- Load and save programs to filesystem
+- Key mapping controls / numpad arrow support
+- Save states
+- Add a sampling profiler that shows heat maps per line
+- Status message when compiling, polling for input
+- Clear filesystem when loading from catalog
+- FM synth sound doesn't mute on demand / on break
++ Don't disable break when sound is playing
++ Break during input seems to leave editor coroutine around
++ Add a catalog with program entries
+~ Speed controls
+~ Add a way to upload/download files from browser
+~ Add a filesystem browser
++ Show symbols
++ Improve text editing, avoiding paste as HTML... bite the bullet and embed vscode?
++ Better debugging / single step UI
++ Full screen program
 
 Bringup
 + GORILLA
   + gorilla: Duplicate definition CalcDelay (needs !)
   - gorilla: Speed is messed up (intro exits early)
 + MANDEL
-- MONEY
++ MONEY
 + NIBBLES
   + nibbles: Extra space after score
   - nibbles: Speed is messed up
@@ -25,7 +47,7 @@ Bringup
 + QMAZE
   + qmaze: Generating gets stuck
   + qmaze: Monster moves through walls
-- QPAINT
++ QPAINT
 + QSHIPS
   + qships: Illegal function call drawing ships
   + qships: Exception after drawing playfield
@@ -151,26 +173,6 @@ x BREATH: Pretty simple use of inc/mak for a cool program
 - VSCAPE3: Installs its own int 9h handler
 - WATER1: Pokes &ha000 + 40000 in screen 7 for some reason
 
-IDE features
-- Persist filesystem to local storage
-- Load and save programs to filesystem
-- Key mapping controls / numpad arrow support
-- Save states
-- Add a sampling profiler that shows heat maps per line
-- Status message when compiling, polling for input
-- Clear filesystem when loading from catalog
-- FM synth sound doesn't mute on demand / on break
-+ Don't disable break when sound is playing
-+ Break during input seems to leave editor coroutine around
-+ Add a catalog with program entries
-~ Speed controls
-~ Add a way to upload/download files from browser
-~ Add a filesystem browser
-+ Show symbols
-+ Improve text editing, avoiding paste as HTML... bite the bullet and embed vscode?
-+ Better debugging / single step UI
-+ Full screen program
-
 Language features
 ~ Treat CALL ABSOLUTE with CD 33 + four args as mouse handler
 + Multi-module program support: CHAIN, COMMON, RUN
@@ -182,13 +184,10 @@ Language features
 - DOS emulation for SYSTEM, SHELL, IOCTL
 - Do something with file locking LOCK/UNLOCK and ACCESS
 ~ Better I/O emulation for WAIT, INP, OUTP (VGA registers? more?)
-- Match circle rasterization for squishy aspect ratios
++ Match circle rasterization for squishy aspect ratios
 + Fix arithmetic precision for math functions, especially single vs double
   precision rounding issues
-- Storage metacommands should only apply to DIM arrays
-  "The $STATIC and $DYNAMIC metacommands affect all arrays except implicitly
-  dimensioned arrays (arrays not declared in a DIM statement). Implicitly
-  dimensioned arrays are always allocated as if $STATIC had been used."
++ Storage metacommands should only apply to DIM arrays
 + PEEK and POKE for memory mapped I/O stuff (keyboard lights?)
 + Improve hacky VARSEG pointers so they can be recycled
 - Deal with "advanced features"
