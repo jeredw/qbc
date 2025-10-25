@@ -47,7 +47,7 @@ export class Invocation {
   private random: RandomNumbers;
   private common: CommonData;
   private scheduler: Scheduler;
-  private stack: ProgramLocation[]
+  private stack: ProgramLocation[] = [];
   private debug: DebugState;
   private invoker: Invoker;
   private stopRequested: boolean = true;
@@ -84,6 +84,30 @@ export class Invocation {
     this.stopRequested = false;
     this.stopped = false;
     let lastYield = 0;
+    // Something like this gets rid of most of the awful microtask overhead, but
+    // needs more tuning.
+    // const nextStep = async (resolve: Function, reject: Function) => {
+    //   try {
+    //     while (true) {
+    //       for (let i = 1; i < 10000; i++) {
+    //         this.step();
+    //       }
+    //       if (this.isStopped()) {
+    //         resolve();
+    //         break;
+    //       }
+    //       if (performance.now() - lastYield > Invocation.ReleaseUiThreadMs) {
+    //         break;
+    //       }
+    //     }
+    //     setTimeout(() => {
+    //       lastYield = performance.now();
+    //       nextStep(resolve, reject)
+    //     }, 0);
+    //   } catch (error: unknown) {
+    //     reject(error);
+    //   }
+    // }
     const nextStep = async (resolve: Function, reject: Function) => {
       try {
         await this.step();
