@@ -60,6 +60,7 @@ export const TAB = '○';
 export const CR = '♪';
 export const LF = '◙';
 export const EOF = '→';
+export const NUL = '\x00';
 
 export function asciiToString(codes: number[]): string {
   return codes.map((code) => {

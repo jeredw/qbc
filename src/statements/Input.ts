@@ -10,7 +10,7 @@ import { Token } from "antlr4ng";
 import { getFileAccessor, getSequentialReadAccessor } from "./FileSystem.ts";
 import { OpenMode, tryIo } from "../Files.ts";
 import { RuntimeError, ILLEGAL_FUNCTION_CALL, OVERFLOW, IOError, BAD_FILE_MODE, FIELD_OVERFLOW } from "../Errors.ts";
-import { asciiToString, CR, LF, TAB, trim } from "../AsciiChart.ts";
+import { asciiToString, CR, LF, NUL, TAB, trim } from "../AsciiChart.ts";
 
 export interface InputStatementArgs {
   token: Token;
@@ -523,11 +523,12 @@ export class InputFunction extends Statement {
         return;
       }
       const key = context.devices.keyboard.input();
-      if (!key || !key.char) {
+      if (!key || key.breakCode) {
         frame(keyWaitFrame);
         return;
       }
-      buffer.push(key.char);
+      // Non-ASCII make codes like arrow keys read as CHR$(0).
+      buffer.push(key.char ?? NUL);
       if (buffer.length >= numBytes) {
         context.memory.write(this.result, string(buffer.join('')));
         finished();
