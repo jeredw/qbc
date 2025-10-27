@@ -318,7 +318,7 @@ export class SeekStatement extends Statement {
   override execute(context: ExecutionContext) {
     tryIo(this.token, () => {
       const accessor = getFileAccessor({expr: this.fileNumber, context});
-      const offset = evaluateIntegerExpression(this.offset, context.memory);
+      const offset = evaluateIntegerExpression(this.offset, context.memory, { tag: TypeTag.LONG });
       accessor.seek(offset);
     });
   }
