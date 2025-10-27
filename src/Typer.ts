@@ -657,6 +657,9 @@ export class Typer extends QBasicParserListener {
         }
         variable = symbol.variable;
       }
+      if (shared) {
+        variable.shared = true;
+      }
       if (variable.scopeDeclaration && variable.array) {
         // If we see common a() without a dim beforehand, assume a() is dynamic.
         variable.array.dynamic = true;
