@@ -504,6 +504,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
         const archivePath: string = message['archive'];
         const program: string = message['program'];
         const frameLock: boolean = !!message['frameLock'];
+        const speed: number = +message['speed'] || 100;
         const response = await fetch(archivePath);
         if (!response.ok) {
           throw new Error('bad response');
@@ -516,6 +517,7 @@ class Shell implements DebugProvider, DiskListener, MouseSurface, Invoker {
         if (frameLock !== this.keyboard.getFrameLock()) {
           this.keyboard.toggleFrameLock();
         }
+        this.statusBar.setSpeed(speed);
         return;
       }
     } catch (e: unknown) {
@@ -749,9 +751,7 @@ class StatusBar {
     this.insertMode = assertHTMLElement(root.querySelector('.status-insert'));
     this.insertMode.addEventListener('click', () => keyboard.toggleSoftInsertMode());
     this.speedSpinner = assertHTMLElement(root.querySelector('.speed-spinner')) as HTMLInputElement;
-    this.speedSpinner.addEventListener('input', (e) => {
-      Invocation.ReleaseUiThreadMs = +this.speedSpinner.value / 10;
-    });
+    this.speedSpinner.addEventListener('input', (e) => this.setSpeed(+this.speedSpinner.value));
     this.frameLock = assertHTMLElement(root.querySelector('.status-flock'));
     this.frameLock.addEventListener('click', () => keyboard.toggleFrameLock());
   }
@@ -772,6 +772,11 @@ class StatusBar {
     this.scrollLock.classList.toggle('key-on', !!(shift & 0x10));
     const frameLock = this.keyboard.getFrameLock();
     this.frameLock.classList.toggle('key-on', frameLock);
+  }
+
+  setSpeed(value: number) {
+    this.speedSpinner.value = '' + value;
+    Invocation.ReleaseUiThreadMs = value / 10;
   }
 }
 
