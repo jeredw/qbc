@@ -3299,7 +3299,13 @@
                         (literal 1)) TO 
                       (expr 
                         (variable_or_function_call curSpeed)) 
-                      (block :) NEXT a#)) \n \n ' \n 
+                      (block : 
+                        (statement 
+                          (assignment_statement 
+                            (variable_or_function_call delay!) = 
+                            (expr 
+                              (builtin_function 
+                                (timer_function timer))))) :) NEXT a#)) \n \n ' \n 
                   (statement 
                     (assignment_statement 
                       (variable_or_function_call kbd$) = 

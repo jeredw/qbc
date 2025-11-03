@@ -464,7 +464,7 @@ SUB PlayNibbles (NumPlayers, speed, diff$)
             END IF
 
             'Delay game
-            FOR a# = 1 TO curSpeed:  NEXT a#
+            FOR a# = 1 TO curSpeed: delay! = timer: NEXT a#
 
             'Get keyboard input & Change direction accordingly
             kbd$ = INKEY$
